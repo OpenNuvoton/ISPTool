@@ -1,0 +1,5 @@
+--create .\obj\SmartCardLib.lib
+.\obj\sclib_util.o
+.\obj\sclib_api.o
+.\obj\sclib_t0protocol.o
+.\obj\sclib_t1protocol.o
