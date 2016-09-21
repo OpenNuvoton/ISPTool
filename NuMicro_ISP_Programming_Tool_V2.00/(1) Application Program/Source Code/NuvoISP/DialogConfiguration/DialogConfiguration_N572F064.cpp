@@ -23,7 +23,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CDialogConfiguration_N572F064::CDialogConfiguration_N572F064(CWnd* pParent /*=NULL*/)
-	: CDialogResize2(CDialogConfiguration_N572F064::IDD, pParent)
+	: CDialogResize(CDialogConfiguration_N572F064::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CDialogConfiguration_N572)
 	m_nRadioClk = -1;
@@ -33,7 +33,7 @@ CDialogConfiguration_N572F064::CDialogConfiguration_N572F064(CWnd* pParent /*=NU
 
 void CDialogConfiguration_N572F064::DoDataExchange(CDataExchange* pDX)
 {
-	CDialogResize2::DoDataExchange(pDX);
+	CDialogResize::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CDialogConfiguration_N572)
 	DDX_Control(pDX, IDC_EDIT_FLASH_INFO4, m_FlashInfo4);
 	DDX_Control(pDX, IDC_EDIT_FLASH_INFO2, m_FlashInfo2);

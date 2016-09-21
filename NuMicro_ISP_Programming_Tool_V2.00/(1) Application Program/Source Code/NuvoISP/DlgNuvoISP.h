@@ -16,7 +16,7 @@
 #include "Resource.h"
 #include "DialogHex.h"
 //#include "..\DialogScrollable.h"
-#include "DialogResize.h"
+#include "DialogMain.h"
 #include "ISPProc.h"
 
 //#include "..\PartNumID.h"
@@ -30,13 +30,10 @@
 /////////////////////////////////////////////////////////////////////////////
 // CNuvoISPDlg dialog
 
-//class CNuvoISPDlg:public CDialogResize, public CISPProc
-class CNuvoISPDlg:public CDialogResize, public CISPProc
+class CNuvoISPDlg:public CDialogMain, public CISPProc
 {
 // Construction
 public:
-    //enum { IDD = IDD_DIALOG_NUC100};
-    //enum { IDD = IDD_DIALOG_NUC400};
     enum { IDD = IDD_DIALOG_NUVOISP};
 
     CNuvoISPDlg(UINT Template = CNuvoISPDlg::IDD, CWnd* pParent = NULL);	// standard constructor

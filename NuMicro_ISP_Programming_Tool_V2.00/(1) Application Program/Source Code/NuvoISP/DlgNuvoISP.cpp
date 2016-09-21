@@ -49,11 +49,11 @@ inline std::string size_str(unsigned int size)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-// CDialog_NUC4xx dialog
+// CNuvoISPDlg dialog
 
 CNuvoISPDlg::CNuvoISPDlg(UINT Template,
                          CWnd* pParent /*=NULL*/)
-    : CDialogResize(Template, pParent)
+    : CDialogMain(Template, pParent)
     , CISPProc(&m_hWnd)
 {
     m_bConnect = false;
@@ -83,7 +83,7 @@ CNuvoISPDlg::~CNuvoISPDlg()
 
 void CNuvoISPDlg::DoDataExchange(CDataExchange* pDX)
 {
-    CDialogResize::DoDataExchange(pDX);
+    CDialogMain::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CNuvoISPDlg)
     DDX_Control(pDX, IDC_TAB_DATA, m_TabData);
     DDX_Control(pDX, IDC_BUTTON_CONNECT, m_ButtonConnect);
@@ -121,7 +121,7 @@ END_MESSAGE_MAP()
 
 BOOL CNuvoISPDlg::OnInitDialog()
 {
-    CDialogResize::OnInitDialog();
+    CDialogMain::OnInitDialog();
 
     // IDM_ABOUTBOX must be in the system command range.
     ASSERT((IDM_ABOUTBOX & 0xFFF0) == IDM_ABOUTBOX);
@@ -516,7 +516,7 @@ BOOL CNuvoISPDlg::PreTranslateMessage(MSG* pMsg)
 {
     // TODO: Add your specialized code here and/or call the base class
     m_tooltip.RelayEvent(pMsg);
-    return CDialogResize::PreTranslateMessage(pMsg);
+    return CDialogMain::PreTranslateMessage(pMsg);
 }
 
 void CNuvoISPDlg::OnButtonConfig()

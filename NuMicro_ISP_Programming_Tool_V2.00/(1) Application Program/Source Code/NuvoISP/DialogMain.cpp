@@ -2,18 +2,15 @@
 //
 
 #include "stdafx.h"
-#include "DialogResize.h"
+#include "DialogMain.h"
 #include "resource.h"
 #include <cstring>
 
-#include "PartNumID.h"
-#include "FlashInfo.h"
-
 // CDialogScrollable dialog
 
-IMPLEMENT_DYNAMIC(CDialogResize, CDialog)
+IMPLEMENT_DYNAMIC(CDialogMain, CDialog)
 
-CDialogResize::CDialogResize(UINT nIDTemplate, CWnd* pParent /*=NULL*/ )
+CDialogMain::CDialogMain(UINT nIDTemplate, CWnd* pParent /*=NULL*/ )
     : CDialog(nIDTemplate, pParent)
 {
     m_bIsInitialized = false;
@@ -21,12 +18,12 @@ CDialogResize::CDialogResize(UINT nIDTemplate, CWnd* pParent /*=NULL*/ )
     m_ScrollBarWidth = 15;
 }
 
-CDialogResize::~CDialogResize()
+CDialogMain::~CDialogMain()
 {
 }
 
-BEGIN_MESSAGE_MAP(CDialogResize, CDialog)
-    //{{AFX_MSG_MAP(CDialogResize)
+BEGIN_MESSAGE_MAP(CDialogMain, CDialog)
+    //{{AFX_MSG_MAP(CDialogMain)
     ON_WM_SIZE()
     ON_WM_VSCROLL()
     ON_WM_HSCROLL()
@@ -35,12 +32,12 @@ BEGIN_MESSAGE_MAP(CDialogResize, CDialog)
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-void CDialogResize::DoDataExchange(CDataExchange* pDX)
+void CDialogMain::DoDataExchange(CDataExchange* pDX)
 {
     CDialog::DoDataExchange(pDX);
 }
 
-void CDialogResize::OnSize(UINT nType, int cx, int cy)
+void CDialogMain::OnSize(UINT nType, int cx, int cy)
 {
     // TODO: Add your message handler code here.
     CDialog::OnSize(nType, cx, cy);
@@ -100,7 +97,7 @@ void CDialogResize::OnSize(UINT nType, int cx, int cy)
     // TODO: Add your message handler code here
 }
 
-void CDialogResize::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+void CDialogMain::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
     // TODO: Add your message handler code here and/or call default
 
@@ -153,7 +150,7 @@ void CDialogResize::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
     CDialog::OnVScroll(nSBCode, nPos, pScrollBar);
 }
 
-void CDialogResize::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+void CDialogMain::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
     // TODO: Add your message handler code here and/or call default
 
@@ -207,7 +204,7 @@ void CDialogResize::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
     CDialog::OnHScroll(nSBCode, nPos, pScrollBar);
 }
 
-void CDialogResize::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
+void CDialogMain::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 {
     // TODO: Add your message handler code here and/or call default
 
@@ -219,7 +216,7 @@ void CDialogResize::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
         lpMMI->ptMinTrackSize.y = 310;
     }
 }
-BOOL CDialogResize::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+BOOL CDialogMain::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
     // TODO: Add your message handler code here and/or call default
     CDialog::OnMouseWheel(nFlags, zDelta, pt);
@@ -248,20 +245,24 @@ BOOL CDialogResize::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
     return CDialog::OnMouseWheel(nFlags, zDelta, pt);
 }
 
-void CDialogResize::ShowDlgItem(int nID, int nCmdShow)
+void CDialogMain::ShowDlgItem(int nID, int nCmdShow)
 {
     CWnd* pWnd = GetDlgItem(nID);
     if(pWnd != NULL)
         pWnd->ShowWindow(nCmdShow);
 }
 
-void CDialogResize::EnableDlgItem(int nID, BOOL bEnable)
+void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 {
     CWnd* pWnd = GetDlgItem(nID);
     if(pWnd != NULL)
         pWnd->EnableWindow(bEnable);
 }
 
+#ifndef _NO_CONFIGURATION_DLG
+
+#include "PartNumID.h"
+#include "FlashInfo.h"
 
 #include "DialogConfiguration_AU9100.h"
 #include "DialogConfiguration_M058.h"
@@ -292,7 +293,7 @@ void CDialogResize::EnableDlgItem(int nID, BOOL bEnable)
 
 extern CPartNumID *psChipData;
 
-bool CDialogResize::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
+bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
 {
 	bool ret = false;
     CDialog *pConfigDlg = NULL;
@@ -517,7 +518,7 @@ bool CDialogResize::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
 	return ret;
 }
 
-void CDialogResize::Test()
+void CDialogMain::Test()
 {
     CDialogConfiguration_NUC1xx *pDlg = NULL;
     unsigned int *Config;
@@ -538,7 +539,7 @@ void CDialogResize::Test()
 }
 
 /* called by DlgNuvoISP */
-bool CDialogResize::ConfigSetting(unsigned int id, unsigned int *pConfig, unsigned int size)
+bool CDialogMain::ConfigSetting(unsigned int id, unsigned int *pConfig, unsigned int size)
 {
 	if(QueryDataBase(id))
 	{
@@ -548,7 +549,9 @@ bool CDialogResize::ConfigSetting(unsigned int id, unsigned int *pConfig, unsign
 	return false;
 }
 
-BOOL CDialogResize::OnInitDialog() 
+#endif // #ifndef _NO_CONFIGURATION_DLG
+
+BOOL CDialogMain::OnInitDialog() 
  { 
 	CDialog::OnInitDialog();
 	m_bIsInitialized = true;

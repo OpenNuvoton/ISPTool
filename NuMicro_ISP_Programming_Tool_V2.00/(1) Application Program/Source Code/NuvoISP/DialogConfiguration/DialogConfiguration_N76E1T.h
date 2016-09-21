@@ -7,7 +7,7 @@
 // DialogConfiguration.h : header file
 //
 
-#include "DialogResize2.h"
+#include "DialogResize.h"
 
 
 /* Byte Mask Definitions */
@@ -25,7 +25,7 @@
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_N76E1T dialog
 
-class CDialogConfiguration_N76E1T : public CDialogResize2
+class CDialogConfiguration_N76E1T : public CDialogResize
 {
 // Construction
 public:

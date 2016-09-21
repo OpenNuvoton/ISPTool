@@ -4,12 +4,12 @@
 // DialogConfiguration.h : header file
 //
 
-#include "DialogResize2.h"
+#include "DialogResize.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_N572 dialog
 
-class CDialogConfiguration_N572F064 : public CDialogResize2
+class CDialogConfiguration_N572F064 : public CDialogResize
 {
 // Construction
 public:

@@ -7,12 +7,12 @@
 // DialogConfiguration.h : header file
 //
 
-#include "DialogResize2.h"
+#include "DialogResize.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_NUC102 dialog
 
-class CDialogConfiguration_NUC102 : public CDialogResize2
+class CDialogConfiguration_NUC102 : public CDialogResize
 {
 // Construction
 public:

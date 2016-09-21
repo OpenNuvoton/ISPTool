@@ -22,7 +22,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CDialogConfiguration_M05xCN::CDialogConfiguration_M05xCN(CWnd* pParent /*=NULL*/)
-	: CDialogResize2(CDialogConfiguration_M05xCN::IDD, pParent)
+	: CDialogResize(CDialogConfiguration_M05xCN::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CDialogConfiguration_M05xCN)
 	m_nRadioClk = -1;
@@ -45,7 +45,7 @@ CDialogConfiguration_M05xCN::CDialogConfiguration_M05xCN(CWnd* pParent /*=NULL*/
 
 void CDialogConfiguration_M05xCN::DoDataExchange(CDataExchange* pDX)
 {
-	CDialogResize2::DoDataExchange(pDX);
+	CDialogResize::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CDialogConfiguration_M05xCN)
 	DDX_Control(pDX, IDC_EDIT_FLASH_BASE_ADDRESS, m_FlashBaseAddress);
 	DDX_Radio(pDX, IDC_RADIO_CLK_E12M, m_nRadioClk);

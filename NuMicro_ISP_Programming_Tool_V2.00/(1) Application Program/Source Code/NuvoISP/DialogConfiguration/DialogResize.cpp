@@ -2,15 +2,15 @@
 //
 
 #include "stdafx.h"
-#include "DialogResize2.h"
+#include "DialogResize.h"
 #include "resource.h"
 #include <cstring>
 
 // CDialogScrollable dialog
 
-IMPLEMENT_DYNAMIC(CDialogResize2, CDialog)
+IMPLEMENT_DYNAMIC(CDialogResize, CDialog)
 
-CDialogResize2::CDialogResize2(UINT nIDTemplate, CWnd* pParent /*=NULL*/ )
+CDialogResize::CDialogResize(UINT nIDTemplate, CWnd* pParent /*=NULL*/ )
 	: CDialog(nIDTemplate, pParent)
 {
 	m_bIsInitialized = false;
@@ -18,12 +18,12 @@ CDialogResize2::CDialogResize2(UINT nIDTemplate, CWnd* pParent /*=NULL*/ )
 	m_ScrollBarWidth = 15;
 }
 
-CDialogResize2::~CDialogResize2()
+CDialogResize::~CDialogResize()
 {
 }
 
-BEGIN_MESSAGE_MAP(CDialogResize2, CDialog)
-	//{{AFX_MSG_MAP(CDialogResize2)
+BEGIN_MESSAGE_MAP(CDialogResize, CDialog)
+	//{{AFX_MSG_MAP(CDialogResize)
 	ON_WM_SIZE()
 	ON_WM_VSCROLL()
 	ON_WM_HSCROLL()
@@ -32,12 +32,12 @@ BEGIN_MESSAGE_MAP(CDialogResize2, CDialog)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-void CDialogResize2::DoDataExchange(CDataExchange* pDX)
+void CDialogResize::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 }
 
-void CDialogResize2::OnSize(UINT nType, int cx, int cy)
+void CDialogResize::OnSize(UINT nType, int cx, int cy)
 {
 	// TODO: Add your message handler code here.
 	CDialog::OnSize(nType, cx, cy);
@@ -100,7 +100,7 @@ void CDialogResize2::OnSize(UINT nType, int cx, int cy)
 	// TODO: Add your message handler code here
 }
 
-void CDialogResize2::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+void CDialogResize::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	// TODO: Add your message handler code here and/or call default
 
@@ -154,7 +154,7 @@ void CDialogResize2::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	CDialog::OnVScroll(nSBCode, nPos, pScrollBar);
 }
 
-void CDialogResize2::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+void CDialogResize::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	// TODO: Add your message handler code here and/or call default
 
@@ -209,7 +209,7 @@ void CDialogResize2::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	CDialog::OnHScroll(nSBCode, nPos, pScrollBar);
 }
 
-void CDialogResize2::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
+void CDialogResize::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 {
 	// TODO: Add your message handler code here and/or call default
 
@@ -222,7 +222,7 @@ void CDialogResize2::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
 		lpMMI->ptMinTrackSize.y = 310;
 	}
 }
-BOOL CDialogResize2::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt) 
+BOOL CDialogResize::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt) 
 {
 	// TODO: Add your message handler code here and/or call default
 	CDialog::OnMouseWheel(nFlags, zDelta, pt);
@@ -260,7 +260,7 @@ BOOL CDialogResize2::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
     if(pWnd != NULL)			\
 	pWnd->EnableWindow(FALSE); }
 
-void CDialogResize2::AdjustDPI()
+void CDialogResize::AdjustDPI()
 {
 	int nScreenHeight;
 	nScreenHeight = GetSystemMetrics(SM_CYSCREEN);

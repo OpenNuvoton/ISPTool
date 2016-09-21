@@ -24,7 +24,7 @@ static char THIS_FILE[] = __FILE__;
 
 CDialogConfiguration_TC8226::CDialogConfiguration_TC8226(unsigned int uProgramMemorySize,
 													 CWnd* pParent /*=NULL*/)
-	: CDialogResize2(CDialogConfiguration_TC8226::IDD, pParent)
+	: CDialogResize(CDialogConfiguration_TC8226::IDD, pParent)
 	, m_uProgramMemorySize(uProgramMemorySize)
 {
 	//{{AFX_DATA_INIT(CDialogConfiguration_TC8226)
@@ -53,7 +53,7 @@ CDialogConfiguration_TC8226::CDialogConfiguration_TC8226(unsigned int uProgramMe
 
 void CDialogConfiguration_TC8226::DoDataExchange(CDataExchange* pDX)
 {
-	CDialogResize2::DoDataExchange(pDX);
+	CDialogResize::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CDialogConfiguration_TC8226)
 	DDX_Control(pDX, IDC_EDIT_FLASH_BASE_ADDRESS, m_FlashBaseAddress);
 	DDX_Control(pDX, IDC_EDIT_DATA_FLASH_SIZE, m_DataFlashSize);
@@ -556,5 +556,5 @@ void CDialogConfiguration_TC8226::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar*
 	if(pScrollBar != NULL && pScrollBar->GetDlgCtrlID() == m_SpinDataFlashSize.GetDlgCtrlID())
 		return;
 
-	CDialogResize2::OnVScroll(nSBCode, nPos, pScrollBar);
+	CDialogResize::OnVScroll(nSBCode, nPos, pScrollBar);
 }

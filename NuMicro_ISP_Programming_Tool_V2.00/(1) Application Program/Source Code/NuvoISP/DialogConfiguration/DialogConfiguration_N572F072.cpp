@@ -19,7 +19,7 @@
 IMPLEMENT_DYNAMIC(CDialogConfiguration_N572F072, CDialog)
 
 CDialogConfiguration_N572F072::CDialogConfiguration_N572F072(CWnd* pParent /*=NULL*/)
-	: CDialogResize2(CDialogConfiguration_N572F072::IDD, pParent)
+	: CDialogResize(CDialogConfiguration_N572F072::IDD, pParent)
 	, m_uCoarseTimingCotrol(0)
 	, m_uFineTimingControl(0)
 	, m_nRadioCVDTV(0)
@@ -38,7 +38,7 @@ CDialogConfiguration_N572F072::~CDialogConfiguration_N572F072()
 
 void CDialogConfiguration_N572F072::DoDataExchange(CDataExchange* pDX)
 {
-	CDialogResize2::DoDataExchange(pDX);
+	CDialogResize::DoDataExchange(pDX);
 	DDX_CBIndex(pDX, IDC_COMBO_CSPI0_CT_072, m_uCoarseTimingCotrol);
 	DDX_CBIndex(pDX, IDC_COMBO_CSPI0_FT_072, m_uFineTimingControl);
 	DDX_Radio(pDX, IDC_RADIO_CVDTV_27_072, m_nRadioCVDTV);

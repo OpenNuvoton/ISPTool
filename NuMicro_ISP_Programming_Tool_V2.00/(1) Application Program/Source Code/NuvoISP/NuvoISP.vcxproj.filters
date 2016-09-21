@@ -65,7 +65,7 @@
     <ClCompile Include="fileinfo.cpp">
       <Filter>ISPTool</Filter>
     </ClCompile>
-    <ClCompile Include="DialogResize.cpp">
+    <ClCompile Include="DialogMain.cpp">
       <Filter>ISPTool</Filter>
     </ClCompile>
     <ClCompile Include="DialogHex.cpp">
@@ -161,7 +161,7 @@
     <ClCompile Include="DialogConfiguration\DialogConfiguration_NUC131.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogResize2.cpp">
+    <ClCompile Include="DialogConfiguration\DialogResize.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
     <ClCompile Include="NumEdit.cpp">

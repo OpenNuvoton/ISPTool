@@ -1,9 +1,9 @@
 #pragma once
 
-#include "DialogResize2.h"
+#include "DialogResize.h"
 // CDialogConfiguration_N572F072 dialog
 
-class CDialogConfiguration_N572F072 : public CDialogResize2
+class CDialogConfiguration_N572F072 : public CDialogResize
 {
 	DECLARE_DYNAMIC(CDialogConfiguration_N572F072)
 

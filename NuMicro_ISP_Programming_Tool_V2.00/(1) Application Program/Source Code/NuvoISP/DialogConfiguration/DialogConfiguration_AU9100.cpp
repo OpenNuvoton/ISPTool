@@ -25,7 +25,7 @@ static char THIS_FILE[] = __FILE__;
 CDialogConfiguration_AU9100::CDialogConfiguration_AU9100(unsigned int uProgramMemorySize,
 														 unsigned int uLDROM_Size,
 														 CWnd* pParent /*=NULL*/)
-	: CDialogResize2(CDialogConfiguration_AU9100::IDD, pParent)
+	: CDialogResize(CDialogConfiguration_AU9100::IDD, pParent)
 	, m_uProgramMemorySize(uProgramMemorySize)
 	, m_uLDROM_Size(uLDROM_Size)
 {
@@ -48,7 +48,7 @@ CDialogConfiguration_AU9100::CDialogConfiguration_AU9100(unsigned int uProgramMe
 
 void CDialogConfiguration_AU9100::DoDataExchange(CDataExchange* pDX)
 {
-	CDialogResize2::DoDataExchange(pDX);
+	CDialogResize::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CDialogConfiguration_AU9100)
 	DDX_Control(pDX, IDC_EDIT_FLASH_BASE_ADDRESS, m_FlashBaseAddress);
 	DDX_Control(pDX, IDC_EDIT_DATA_FLASH_SIZE, m_DataFlashSize);
@@ -396,6 +396,6 @@ void CDialogConfiguration_AU9100::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar*
 	if(pScrollBar != NULL && pScrollBar->GetDlgCtrlID() == m_SpinDataFlashSize.GetDlgCtrlID())
 		return;
 
-	CDialogResize2::OnVScroll(nSBCode, nPos, pScrollBar);
+	CDialogResize::OnVScroll(nSBCode, nPos, pScrollBar);
 }
 

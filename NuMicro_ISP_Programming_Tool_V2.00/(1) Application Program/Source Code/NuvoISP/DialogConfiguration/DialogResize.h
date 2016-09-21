@@ -1,13 +1,8 @@
 #pragma once
 
-
-struct CPartNumID;
-
-struct WINCTRLID {
-    int         btn;
-    int         path;
-    int         sizecksum;
-};
+#include "resource.h"
+#include "AppConfig.h"
+#include "NumEdit.h"
 
 class CDialogResize : public CDialog
 {
@@ -25,18 +20,9 @@ public:
 	BOOL m_bShowScrollBar;
 	CRect m_rect;		//original dialog rect info
 
-	bool ConfigDlgSel(unsigned int *pConfig, unsigned int size);
-	bool ConfigSetting(unsigned int id, unsigned int *pConfig, unsigned int size);
-
-	void ShowDlgItem(int nID, int nCmdShow);
-	void EnableDlgItem(int nID, BOOL bEnable);
-
-	void Test();
-
 protected:
+	void AdjustDPI();
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-
-	virtual BOOL OnInitDialog();
 
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);

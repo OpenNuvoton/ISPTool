@@ -63,7 +63,7 @@ static char THIS_FILE[] = __FILE__;
 
 CDialogConfiguration_N76E1T::CDialogConfiguration_N76E1T(unsigned int uDID,
 														 CWnd* pParent /*=NULL*/)
-	: CDialogResize2(CDialogConfiguration_N76E1T::IDD, pParent)
+	: CDialogResize(CDialogConfiguration_N76E1T::IDD, pParent)
 	, m_uDID(uDID)
 {
 	//{{AFX_DATA_INIT(CDialogConfiguration_N76E1T)
@@ -92,7 +92,7 @@ CDialogConfiguration_N76E1T::CDialogConfiguration_N76E1T(unsigned int uDID,
 
 void CDialogConfiguration_N76E1T::DoDataExchange(CDataExchange* pDX)
 {
-	CDialogResize2::DoDataExchange(pDX);
+	CDialogResize::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CDialogConfiguration_N76E1T)
 	DDX_Radio(pDX, IDC_RADIO_RPD_RESET, m_nRadio_RPD);
 	DDX_Radio(pDX, IDC_RADIO_OCDPWM_TRI, m_nRadio_OCDPWM);
@@ -484,6 +484,6 @@ void CDialogConfiguration_N76E1T::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar*
 	//if (pScrollBar != NULL && pScrollBar->GetDlgCtrlID() == m_SpinDataFlashSize.GetDlgCtrlID())
 	//	return;
 
-	CDialogResize2::OnVScroll(nSBCode, nPos, pScrollBar);
+	CDialogResize::OnVScroll(nSBCode, nPos, pScrollBar);
 }
 

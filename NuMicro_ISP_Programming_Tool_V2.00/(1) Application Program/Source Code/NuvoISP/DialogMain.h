@@ -1,16 +1,21 @@
 #pragma once
 
-#include "resource.h"
-#include "AppConfig.h"
-#include "NumEdit.h"
 
-class CDialogResize2 : public CDialog
+struct CPartNumID;
+
+struct WINCTRLID {
+    int         btn;
+    int         path;
+    int         sizecksum;
+};
+
+class CDialogMain : public CDialog
 {
-	DECLARE_DYNAMIC(CDialogResize2)
+	DECLARE_DYNAMIC(CDialogMain)
 
 public:
-	CDialogResize2(UINT nIDTemplate, CWnd* pParent = NULL ); // standard constructor
-	virtual ~CDialogResize2();
+	CDialogMain(UINT nIDTemplate, CWnd* pParent = NULL ); // standard constructor
+	virtual ~CDialogMain();
 
 // Dialog Data
 	int m_nScrollPosY; // to store the current vertical scroll position
@@ -20,9 +25,21 @@ public:
 	BOOL m_bShowScrollBar;
 	CRect m_rect;		//original dialog rect info
 
+
+#ifndef _NO_CONFIGURATION_DLG
+	bool ConfigDlgSel(unsigned int *pConfig, unsigned int size);
+	bool ConfigSetting(unsigned int id, unsigned int *pConfig, unsigned int size);
+	void Test();
+#endif
+
+	void ShowDlgItem(int nID, int nCmdShow);
+	void EnableDlgItem(int nID, BOOL bEnable);
+
+
 protected:
-	void AdjustDPI();
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+
+	virtual BOOL OnInitDialog();
 
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);

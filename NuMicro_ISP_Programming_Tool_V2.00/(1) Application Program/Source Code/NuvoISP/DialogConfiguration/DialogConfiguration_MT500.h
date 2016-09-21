@@ -5,10 +5,10 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "DialogResize2.h"
+#include "DialogResize.h"
 // CDialogConfiguration_MT500 ¹ï¸Ü¤è¶ô
 
-class CDialogConfiguration_MT500 : public CDialogResize2
+class CDialogConfiguration_MT500 : public CDialogResize
 {
 	//DECLARE_DYNAMIC(CDialogConfiguration_MT500)
 // Construction

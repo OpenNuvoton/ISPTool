@@ -27,8 +27,6 @@ inline const T *vector_ptr(const std::vector<T> &v)
         return NULL;
 }
 
-/////////////////////////////////////////////////////////////////////////////
-// CDialog_NUC4xx dialog
 
 CISPProc::CISPProc(HWND *pWnd)
 {
@@ -58,13 +56,14 @@ CISPProc::CISPProc(HWND *pWnd)
 	m_CONFIG[1] = 0xFFFFFFFF;
 	m_CONFIG_User[0] = 0xFFFFFFFF;
 	m_CONFIG_User[1] = 0xFFFFFFFF;
-
+	m_pAssistThread->m_bAutoDelete = TRUE;
 	m_eProcSts = EPS_OK;
 }
 
 CISPProc::~CISPProc()
 {
     Set_ThreadAction(NULL);
+	WaitForSingleObject(m_pAssistThread->m_hThread, 5000);
 }
 
 DWORD CISPProc::AssistThread(LPVOID pArg)
