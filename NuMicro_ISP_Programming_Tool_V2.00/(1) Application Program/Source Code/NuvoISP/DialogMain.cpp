@@ -288,6 +288,7 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 #include "DialogConfiguration_NUC1xx.h"
 #include "DialogConfiguration_NUC2xx.h"
 #include "DialogConfiguration_NUC4xx.h"
+#include "DialogConfiguration_M0564.h"
 
 #include "DialogConfiguration_N76E1T.h"
 
@@ -320,13 +321,13 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
 			else
 				pConfigDlg = new CDialogConfiguration_NUC1xx;	// "NUC100BN";
 
-            Config = (unsigned int*)(&(((CDialogConfiguration_NUC1xx*)pConfigDlg)->m_ConfigValue));
+            Config = (((CDialogConfiguration_NUC1xx*)pConfigDlg)->m_ConfigValue.m_value);
             break;
 
 
         case IDD_DIALOG_CONFIGURATION_NUC102:
             pConfigDlg = new CDialogConfiguration_NUC102;
-            Config = (unsigned int*)(&(((CDialogConfiguration_NUC102*)pConfigDlg)->m_ConfigValue));
+            Config = (((CDialogConfiguration_NUC102*)pConfigDlg)->m_ConfigValue.m_value);
             break;
 
 		case IDD_DIALOG_CONFIGURATION_NUC103:
@@ -335,7 +336,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
 			else
 				pConfigDlg = new CDialogConfiguration_NUC103;
 
-			Config = (unsigned int*)(&(((CDialogConfiguration_NUC103*)pConfigDlg)->m_ConfigValue));
+			Config = (((CDialogConfiguration_NUC103*)pConfigDlg)->m_ConfigValue.m_value);
             break;
 
 		case IDD_DIALOG_CONFIGURATION_NUC200:
@@ -344,7 +345,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
 			else
 				pConfigDlg = new CDialogConfiguration_NUC2xx;
 
-            Config = (unsigned int*)(&(((CDialogConfiguration_NUC2xx*)pConfigDlg)->m_ConfigValue));
+            Config = (((CDialogConfiguration_NUC2xx*)pConfigDlg)->m_ConfigValue.m_value);
             break;
 
         case IDD_DIALOG_CONFIGURATION_NUC131:
@@ -353,7 +354,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
 			else
 				pConfigDlg = new CDialogConfiguration_NUC131;
 
-            Config = (unsigned int*)(&(((CDialogConfiguration_NUC131*)pConfigDlg)->m_ConfigValue));
+            Config = (((CDialogConfiguration_NUC131*)pConfigDlg)->m_ConfigValue.m_value);
             break;
 
         case IDD_DIALOG_CONFIGURATION_NANO100:
@@ -362,7 +363,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
 			else
 				pConfigDlg = new CDialogConfiguration_Nano100;
 
-            Config = (unsigned int*)(&(((CDialogConfiguration_Nano100*)pConfigDlg)->m_ConfigValue));
+            Config = (((CDialogConfiguration_Nano100*)pConfigDlg)->m_ConfigValue.m_value);
             break;
 
         case IDD_DIALOG_CONFIGURATION_NANO100BN:
@@ -371,7 +372,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
 			else
 				pConfigDlg = new CDialogConfiguration_Nano100BN;
 
-            Config = (unsigned int*)(&(((CDialogConfiguration_Nano100BN*)pConfigDlg)->m_ConfigValue));
+            Config = (((CDialogConfiguration_Nano100BN*)pConfigDlg)->m_ConfigValue.m_value);
             break;
 
         case IDD_DIALOG_CONFIGURATION_NANO112:
@@ -380,7 +381,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
 			else
 				pConfigDlg = new CDialogConfiguration_Nano112;
 
-            Config = (unsigned int*)(&(((CDialogConfiguration_Nano112*)pConfigDlg)->m_ConfigValue));
+            Config = (((CDialogConfiguration_Nano112*)pConfigDlg)->m_ConfigValue.m_value);
             break;
 
         case IDD_DIALOG_CONFIGURATION_NANO103:
@@ -389,22 +390,22 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
 			else
 				pConfigDlg = new CDialogConfiguration_Nano103;
 
-            Config = (unsigned int*)(&(((CDialogConfiguration_Nano103*)pConfigDlg)->m_ConfigValue));
+            Config = (((CDialogConfiguration_Nano103*)pConfigDlg)->m_ConfigValue.m_value);
             break;
 
 		case IDD_DIALOG_CONFIGURATION_M051:
             pConfigDlg = new CDialogConfiguration_M05x;
-            Config = (unsigned int*)(&(((CDialogConfiguration_M05x*)pConfigDlg)->m_ConfigValue));
+            Config = (((CDialogConfiguration_M05x*)pConfigDlg)->m_ConfigValue.m_value);
             break;
 
 		case IDD_DIALOG_CONFIGURATION_M051CN:
             pConfigDlg = new CDialogConfiguration_M05xCN;
-            Config = (unsigned int*)(&(((CDialogConfiguration_M05xCN*)pConfigDlg)->m_ConfigValue));
+            Config = (((CDialogConfiguration_M05xCN*)pConfigDlg)->m_ConfigValue.m_value);
             break;
 
         case IDD_DIALOG_CONFIGURATION_M058:
             pConfigDlg = new CDialogConfiguration_M058;
-            Config = (unsigned int*)(&(((CDialogConfiguration_M058*)pConfigDlg)->m_ConfigValue));
+            Config = (((CDialogConfiguration_M058*)pConfigDlg)->m_ConfigValue.m_value);
            break;
 
         case IDD_DIALOG_CONFIGURATION_MINI51:
@@ -413,7 +414,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
 			else
 				pConfigDlg = new CDialogConfiguration_Mini51;
 
-            Config = (unsigned int*)(&(((CDialogConfiguration_Mini51*)pConfigDlg)->m_ConfigValue));
+            Config = (((CDialogConfiguration_Mini51*)pConfigDlg)->m_ConfigValue.m_value);
             break;
 
         case IDD_DIALOG_CONFIGURATION_MINI51BN:
@@ -422,7 +423,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
 			else
 				pConfigDlg = new CDialogConfiguration_Mini51BN;
 
-            Config = (unsigned int*)(&(((CDialogConfiguration_Mini51BN*)pConfigDlg)->m_ConfigValue));
+            Config = (((CDialogConfiguration_Mini51BN*)pConfigDlg)->m_ConfigValue.m_value);
             break;
 
         case IDD_DIALOG_CONFIGURATION_MINI51CN:
@@ -433,7 +434,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
 			else
 				pConfigDlg = new CDialogConfiguration_Mini51CN;
 
-            Config = (unsigned int*)(&(((CDialogConfiguration_Mini51CN*)pConfigDlg)->m_ConfigValue));
+            Config = (((CDialogConfiguration_Mini51CN*)pConfigDlg)->m_ConfigValue.m_value);
             break;
 
         case IDD_DIALOG_CONFIGURATION_NM1200:
@@ -442,7 +443,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
 			else
 				pConfigDlg = new CDialogConfiguration_NM1200;
 
-			Config = (unsigned int*)(&(((CDialogConfiguration_NM1200*)pConfigDlg)->m_ConfigValue));
+			Config = (((CDialogConfiguration_NM1200*)pConfigDlg)->m_ConfigValue.m_value);
             break;
 
         case IDD_DIALOG_CONFIGURATION_MT500:
@@ -451,7 +452,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
 			else
 				pConfigDlg = new CDialogConfiguration_MT500;
 
-			Config = (unsigned int*)(&(((CDialogConfiguration_MT500*)pConfigDlg)->m_ConfigValue));
+			Config = (((CDialogConfiguration_MT500*)pConfigDlg)->m_ConfigValue.m_value);
             break;
 
         case IDD_DIALOG_CONFIGURATION_NUC400:
@@ -460,7 +461,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
 			else
 				pConfigDlg = new CDialogConfiguration_NUC4xx;
 
-			Config = (unsigned int*)(&(((CDialogConfiguration_NUC4xx*)pConfigDlg)->m_ConfigValue));
+			Config = (((CDialogConfiguration_NUC4xx*)pConfigDlg)->m_ConfigValue.m_value);
             break;
 
         case IDD_DIALOG_CONFIGURATION_M451:
@@ -469,27 +470,36 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
 			else
 				pConfigDlg = new CDialogConfiguration_M451;
 
-            Config = (unsigned int*)(&(((CDialogConfiguration_M451*)pConfigDlg)->m_ConfigValue));
+            Config = (((CDialogConfiguration_M451*)pConfigDlg)->m_ConfigValue.m_value);
             break;
 
         case IDD_DIALOG_CONFIGURATION_N572:
             pConfigDlg = new CDialogConfiguration_N572;
-            Config = (unsigned int*)(&(((CDialogConfiguration_N572*)pConfigDlg)->m_ConfigValue));
+            Config = (((CDialogConfiguration_N572*)pConfigDlg)->m_ConfigValue.m_value);
             break;
 
         case IDD_DIALOG_CONFIGURATION_AU9100:
             pConfigDlg = new CDialogConfiguration_AU9100;
-            Config = (unsigned int*)(&(((CDialogConfiguration_AU9100*)pConfigDlg)->m_ConfigValue));
+            Config = (((CDialogConfiguration_AU9100*)pConfigDlg)->m_ConfigValue.m_value);
             break;
 
         case IDD_DIALOG_CONFIGURATION_NM1120:
             pConfigDlg = new CDialogConfiguration_NM1120;
-            Config = (unsigned int*)(&(((CDialogConfiguration_NM1120*)pConfigDlg)->m_ConfigValue));
+            Config = (((CDialogConfiguration_NM1120*)pConfigDlg)->m_ConfigValue.m_value);
             break;
 
 		case IDD_DIALOG_CONFIGURATION_N76E1T:
 			pConfigDlg = new CDialogConfiguration_N76E1T(psChipData->uID);
-            Config = (unsigned int*)(&(((CDialogConfiguration_N76E1T*)pConfigDlg)->m_ConfigValue));
+            Config = (((CDialogConfiguration_N76E1T*)pConfigDlg)->m_ConfigValue.m_value);
+			break;
+
+		case IDD_DIALOG_CONFIGURATION_M0564:	// M0564, NUC121, NUC125, NUC126
+			if (uProgramMemorySize)
+				pConfigDlg = new CDialogConfiguration_M0564(psChipData->uID, uProgramMemorySize);
+			else
+				pConfigDlg = new CDialogConfiguration_M0564();
+			
+			Config = (((CDialogConfiguration_M0564*)pConfigDlg)->m_ConfigValue.m_value);
 			break;
 
 		case 0x505:	// "NUC505";
@@ -523,7 +533,7 @@ void CDialogMain::Test()
     CDialogConfiguration_NUC1xx *pDlg = NULL;
     unsigned int *Config;
 	pDlg = new CDialogConfiguration_NUC1xx;	// "NUC100BN";
-	Config = (unsigned int*)(&(((CDialogConfiguration_NUC1xx*)pDlg)->m_ConfigValue));
+	Config = (((CDialogConfiguration_NUC1xx*)pDlg)->m_ConfigValue.m_value);
 	//Config[0] = 0x12345678;	// Crash
 	Config[0] = 0x00000000;
 	Config[1] = 0x87654321;

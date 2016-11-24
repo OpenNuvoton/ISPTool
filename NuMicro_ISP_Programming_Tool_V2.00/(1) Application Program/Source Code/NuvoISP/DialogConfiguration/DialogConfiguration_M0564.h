@@ -16,7 +16,7 @@ class CDialogConfiguration_M0564 : public CDialogResize
 {
 // Construction
 public:
-	CDialogConfiguration_M0564(unsigned int uProgramMemorySize = 256 * 1024,
+	CDialogConfiguration_M0564(unsigned int uPID = 0, unsigned int uProgramMemorySize = 256 * 1024,
 							  CWnd* pParent = NULL);   // standard constructor
 
 	static CString GetConfigWarning(const CAppConfig::M0564_configs_t &config);
@@ -48,6 +48,9 @@ public:
 	CSpinButtonCtrl	m_SpinDataFlashSize;
 
 	unsigned int	m_uProgramMemorySize;
+	unsigned int	m_uPID;
+	unsigned int	m_uPageSize;
+
 	//}}AFX_DATA
 
 	protected:

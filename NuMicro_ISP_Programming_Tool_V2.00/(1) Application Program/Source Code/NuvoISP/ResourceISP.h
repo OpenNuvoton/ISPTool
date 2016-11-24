@@ -13,15 +13,6 @@
 #define IDC_COMBO_COM_PORT              (ID_ISP + 1)
 #define IDC_COMBO_INTERFACE             (ID_ISP + 2)
 
-/* IDD_DIALOG_INFO_BLOCK_OPTION */
-#define IDC_COMBO_SPI_VENDOR            (ID_ISP + 1)
-#define IDC_EDIT_ENTER4B                (ID_ISP + 4)
-#define IDC_EDIT_EXIT4B                 (ID_ISP + 5)
-#define IDC_EDIT_RESET0                 (ID_ISP + 6)
-#define IDC_EDIT_RESET1                 (ID_ISP + 7)
-#define IDC_EDIT_STATUS                 (ID_ISP + 8)
-#define IDC_CHECK_IS_4BMODE             (ID_ISP + 9)
-
 /* IDD_DIALOG_NUVOISP_CLASSIC */
 #define IDC_RADIO_APROM                 (ID_ISP + 1)
 #define IDC_RADIO_NVM                   (ID_ISP + 2)

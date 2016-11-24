@@ -320,6 +320,10 @@
 #define IDR_MENU_ISD9000_SETTINGS       352
 #define IDS_NM1810_SERIES               353
 #define IDR_MENU_NM1810_SETTINGS        354
+#define IDS_NUC126_SERIES               355
+#define IDR_MENU_NUC126_SETTINGS        356
+#define IDS_I9200_SERIES                357
+#define IDR_MENU_I9200_SETTINGS         358
 #define IDS_FILE_EMPTY                  400
 #define IDS_CAN_NOT_DETECT_SPIFLASH_FOR_PROGRAMMING 401
 #define IDS_LOAD_EXTSTORAGE_FILE        402
@@ -465,6 +469,7 @@
 #define IDC_EDIT_FILEPATH_LDROM         1044
 #define IDC_LINK_OTP_OPTION             1044
 #define IDC_STATIC_CONFIG_VALUE_1111    1045
+#define IDC_LINK_SPI_OPTION             1045
 #define IDC_EDIT_FILEPATH_APROM         1046
 #define IDC_EDIT_FILEPATH_NVM           1047
 #define IDC_EDIT_FILEPATH_SPROM         1048
@@ -944,6 +949,25 @@
 #define IDC_RADIO_UART1_SEL3            1380
 #define IDC_SPROM_LOCK_CACHEABLE        1381
 #define IDC_CHECK_SHOW_PASSWORD         1381
+#define IDC_COMBO_VENDOR                1382
+#define IDC_COMBO_SPIM_CLOCK            1383
+#define IDC_EDIT_RESET0                 1385
+#define IDC_EDIT_RESET1                 1386
+#define IDC_EDIT_ENTER4BYTE             1387
+#define IDC_EDIT_EXIT4BYTE              1388
+#define IDC_EDIT_ENTER4BYTE_STATUS      1389
+#define IDC_EDIT_SPIMCLOCK              1390
+#define IDC_EDIT_RXDELAY                1391
+#define IDC_EDIT_RXEDGE                 1392
+#define IDC_EDIT_DUMMYCYCLE             1393
+#define IDC_CHECK_IS32MB                1394
+#define IDC_EDIT_RESERVE1               1396
+#define IDC_EDIT_RESERVE2               1397
+#define IDC_EDIT_RESERVE3               1398
+#define IDC_EDIT_RESERVE4               1399
+#define IDC_EDIT_RESERVE0               1400
+#define IDC_EDIT16                      1401
+#define IDC_EDIT_RESERVE5               1401
 #define IDD_DIALOG_NETVERSION           5080
 #define IDD_DIALOG_SCROLLABLE           5081
 #define IDD_DIALOG_CONFIGURATION_M058   5082
@@ -972,6 +996,7 @@
 #define IDD_DIALOG_M0564                5105
 #define IDD_DIALOG_SECURE_KEY_OPTION    5106
 #define IDD_DIALOG_CONFIGURATION_TC8826 5107
+#define IDD_DIALOG_SPIM_OPTION          5108
 #define IDC_STATIC_MYMESSAGE            5535
 #define IDC_STATIC_TOGET                5536
 #define IDC_BUTTON_OK                   5537
@@ -1043,14 +1068,16 @@
 #define ID_MENUITEM_CHIP_NUC121         32833
 #define ID_MENUITEM_CHIP_ISD9000        32834
 #define ID_MENUITEM_CHIP_NM1810         32835
+#define ID_MENUITEM_CHIP_NUC126         32836
+#define ID_MENUITEM_CHIP_I9200          32837
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        355
-#define _APS_NEXT_COMMAND_VALUE         32836
-#define _APS_NEXT_CONTROL_VALUE         1382
+#define _APS_NEXT_RESOURCE_VALUE        360
+#define _APS_NEXT_COMMAND_VALUE         32838
+#define _APS_NEXT_CONTROL_VALUE         1402
 #define _APS_NEXT_SYMED_VALUE           299
 #endif
 #endif

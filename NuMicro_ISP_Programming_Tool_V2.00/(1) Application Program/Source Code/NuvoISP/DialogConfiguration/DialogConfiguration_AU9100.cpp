@@ -22,12 +22,14 @@ static char THIS_FILE[] = __FILE__;
 // CDialogConfiguration_NUC1xx dialog
 
 
-CDialogConfiguration_AU9100::CDialogConfiguration_AU9100(unsigned int uProgramMemorySize,
+CDialogConfiguration_AU9100::CDialogConfiguration_AU9100(unsigned int uPID,
+														 unsigned int uProgramMemorySize,
 														 unsigned int uLDROM_Size,
 														 CWnd* pParent /*=NULL*/)
 	: CDialogResize(CDialogConfiguration_AU9100::IDD, pParent)
 	, m_uProgramMemorySize(uProgramMemorySize)
 	, m_uLDROM_Size(uLDROM_Size)
+	, m_uPID(uPID)
 {
 	//{{AFX_DATA_INIT(CDialogConfiguration_NUC1xx)
 	m_nRadioClk = -1;
@@ -107,6 +109,13 @@ BOOL CDialogConfiguration_AU9100::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	
+	unsigned int uPID = m_uPID & 0xFF00FF00;
+
+	if(uPID == 0x1d000400)		//I9200
+		m_uPageSize = NUMICRO_M0_FLASH_PAGE_SIZE;
+	else
+		m_uPageSize = AU91XX_FLASH_PAGE_SIZE;
+
 	// TODO: Add extra initialization here
 	UDACCEL pAccel[1];
 	pAccel[0].nInc = 1;
@@ -175,9 +184,9 @@ void CDialogConfiguration_AU9100::ConfigToGUI()
 	unsigned int uFlashBaseAddress = uConfig1;
 	m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
 
-	unsigned int uPageNum = uFlashBaseAddress / AU91XX_FLASH_PAGE_SIZE;
-	unsigned int uLimitNum = (m_bLDROM_EN ? m_uProgramMemorySize : (m_uProgramMemorySize + m_uLDROM_Size)) / AU91XX_FLASH_PAGE_SIZE;
-	unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * AU91XX_FLASH_PAGE_SIZE) : 0;
+	unsigned int uPageNum = uFlashBaseAddress / m_uPageSize;
+	unsigned int uLimitNum = (m_bLDROM_EN ? m_uProgramMemorySize : (m_uProgramMemorySize + m_uLDROM_Size)) / m_uPageSize;
+	unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * m_uPageSize) : 0;
 	m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uDataFlashSize : 0) / 1024.);
 	m_SpinDataFlashSize.EnableWindow(m_bDataFlashEnable ? TRUE : FALSE);
 
@@ -316,9 +325,9 @@ void CDialogConfiguration_AU9100::OnChangeEditFlashBaseAddress()
 	unsigned int uFlashBaseAddress = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
 	m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);
 
-	unsigned int uPageNum = uFlashBaseAddress / AU91XX_FLASH_PAGE_SIZE;
-	unsigned int uLimitNum = (m_bLDROM_EN ? m_uProgramMemorySize : (m_uProgramMemorySize + m_uLDROM_Size)) / AU91XX_FLASH_PAGE_SIZE;
-	unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * AU91XX_FLASH_PAGE_SIZE) : 0;
+	unsigned int uPageNum = uFlashBaseAddress / m_uPageSize;
+	unsigned int uLimitNum = (m_bLDROM_EN ? m_uProgramMemorySize : (m_uProgramMemorySize + m_uLDROM_Size)) / m_uPageSize;
+	unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * m_uPageSize) : 0;
 	m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uDataFlashSize : 0) / 1024.);
 
 	UpdateData(FALSE);
@@ -372,19 +381,19 @@ void CDialogConfiguration_AU9100::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRE
 
 	TCHAR *pEnd;
 	unsigned int uFlashBaseAddress = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
-	unsigned int uPageNum = uFlashBaseAddress / AU91XX_FLASH_PAGE_SIZE;
-	unsigned int uLimitNum = (m_bLDROM_EN ? m_uProgramMemorySize : (m_uProgramMemorySize + m_uLDROM_Size)) / AU91XX_FLASH_PAGE_SIZE;
+	unsigned int uPageNum = uFlashBaseAddress / m_uPageSize;
+	unsigned int uLimitNum = (m_bLDROM_EN ? m_uProgramMemorySize : (m_uProgramMemorySize + m_uLDROM_Size)) / m_uPageSize;
 
 	if(pNMUpDown->iDelta == 1)
 		uPageNum += 1;
 	else if(pNMUpDown->iDelta == -1 && uPageNum > 0)
 		uPageNum -= 1;
 
-	uFlashBaseAddress = 0 + min(uPageNum, uLimitNum) * AU91XX_FLASH_PAGE_SIZE;
+	uFlashBaseAddress = 0 + min(uPageNum, uLimitNum) * m_uPageSize;
 	m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
 	m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);
 
-	unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * AU91XX_FLASH_PAGE_SIZE) : 0;
+	unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * m_uPageSize) : 0;
 	m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uDataFlashSize : 0) / 1024.);
 
 	UpdateData(FALSE);
