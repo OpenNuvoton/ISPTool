@@ -268,6 +268,7 @@ void CNuvoISPDlg::OnButtonConnect()
         Set_ThreadAction(&CISPProc::Thread_CheckUSBConnect);
     } else if(m_fnThreadProcStatus != NULL) {
         /* Disconnect */
+		m_ISPLdDev.Close_Port();
         Set_ThreadAction(&CISPProc::Thread_Idle);
     }
 }

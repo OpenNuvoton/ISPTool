@@ -17,6 +17,7 @@ protected:
 
 	// Interface
 	ULONG			m_uInterface;
+	ULONG			m_uUSB_PID;		// for compatibility
 	CString			m_strComNum;
 	CHidIO			m_hidIO;
 	CUartIO			m_comIO;

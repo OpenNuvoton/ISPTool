@@ -105,14 +105,12 @@ void CISPProc::Thread_Idle()
 
     PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_CONNECT_STATUS, CONNECT_STATUS_NONE);
 
-    /* Delete previous ICE object */
     m_ISPLdDev.Close_Port();
 	m_eProcSts = EPS_OK;
 
     while(m_fnThreadProcStatus == &CISPProc::Thread_Idle)
         Sleep(100);
 }
-
 
 void CISPProc::Thread_CheckUSBConnect()
 {
@@ -121,23 +119,25 @@ void CISPProc::Thread_CheckUSBConnect()
 
     PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_CONNECT_STATUS, CONNECT_STATUS_USB);
 
-    /* Delete previous ICE object */
     m_ISPLdDev.Close_Port();
 
     DWORD dwWait = 0;
     while(m_fnThreadProcStatus == &CISPProc::Thread_CheckUSBConnect) {
         if(m_ISPLdDev.Open_Port(false)) {
-			m_eProcSts = EPS_ERR_CONNECT;
-            if(m_ISPLdDev.CMD_Connect(40)) {
-                Set_ThreadAction(&CISPProc::Thread_CheckDeviceConnect);
+            m_eProcSts = EPS_ERR_CONNECT;
+            try {
+                if(m_ISPLdDev.CMD_Connect(40)) {
+                    Set_ThreadAction(&CISPProc::Thread_CheckDeviceConnect);
+                }
+            } catch(...) {
+                Set_ThreadAction(&CISPProc::Thread_Idle);
             }
         } else {
-			m_eProcSts = EPS_ERR_OPENPORT;
+            m_eProcSts = EPS_ERR_OPENPORT;
             Sleep(1000);
         }
     }
 }
-
 
 void CISPProc::Thread_CheckDeviceConnect()
 {
@@ -146,30 +146,35 @@ void CISPProc::Thread_CheckDeviceConnect()
 
     PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_CONNECT_STATUS, CONNECT_STATUS_CONNECTING);
 
-    while(m_fnThreadProcStatus == &CISPProc::Thread_CheckDeviceConnect) {
-        if(m_ISPLdDev.Check_USB_Link()) {
+    try {
+        while(m_fnThreadProcStatus == &CISPProc::Thread_CheckDeviceConnect) {
+            if(m_ISPLdDev.Check_USB_Link()) {
 
-			// Re-Open COM Port to clear previous status
-			m_ISPLdDev.Close_Port();
-			m_ISPLdDev.Open_Port();
+                // Re-Open COM Port to clear previous status
+                m_ISPLdDev.Close_Port();
+                m_ISPLdDev.Open_Port();
 
-            m_ISPLdDev.SyncPackno();
-            m_ucFW_VER = m_ISPLdDev.GetVersion();
-            //printf("GetVersion: %X\n", m_ucFW_VER);
+                m_ISPLdDev.SyncPackno();
+                m_ucFW_VER = m_ISPLdDev.GetVersion();
+                //printf("GetVersion: %X\n", m_ucFW_VER);
 
-            m_ulDeviceID = m_ISPLdDev.GetDeviceID();
-            //printf("GetDeviceID: %X\n", m_ulDeviceID);
+                m_ulDeviceID = m_ISPLdDev.GetDeviceID();
+                //printf("GetDeviceID: %X\n", m_ulDeviceID);
 
-            m_ISPLdDev.ReadConfig(m_CONFIG);
-            //printf("ReadConfig: %X, %X\n", m_CONFIG[0], m_CONFIG[1]);
-			memcpy(m_CONFIG_User, m_CONFIG, sizeof(m_CONFIG));
-			m_eProcSts = EPS_OK;
+                m_ISPLdDev.ReadConfig(m_CONFIG);
+                //printf("ReadConfig: %X, %X\n", m_CONFIG[0], m_CONFIG[1]);
+                memcpy(m_CONFIG_User, m_CONFIG, sizeof(m_CONFIG));
+                m_eProcSts = EPS_OK;
 
-            Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
-        } else
-            Set_ThreadAction(&CISPProc::Thread_CheckUSBConnect);
+                Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
+            } else
+                Set_ThreadAction(&CISPProc::Thread_CheckUSBConnect);
+        }
+    } catch(...) {
+		Set_ThreadAction(&CISPProc::Thread_Idle);
     }
 }
+
 
 void CISPProc::Thread_CheckDisconnect()
 {
@@ -306,8 +311,10 @@ void CISPProc::Thread_ProgramFlash()
         }
     } catch(const TCHAR *szMSG) {
 
-        MessageBox(*MainHWND, szMSG, NULL, MB_ICONSTOP);
-        Set_ThreadAction(&CISPProc::Thread_CheckUSBConnect);
+        //MessageBox(*MainHWND, szMSG, NULL, MB_ICONSTOP);
+        //Set_ThreadAction(&CISPProc::Thread_CheckUSBConnect);
+		MessageBox(*MainHWND, _T("Lost connection!!!"), NULL, MB_ICONSTOP);
+		Set_ThreadAction(&CISPProc::Thread_Idle);
     }
 }
 

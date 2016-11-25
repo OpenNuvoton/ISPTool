@@ -19,18 +19,23 @@ ISPLdCMD::~ISPLdCMD() {
 
 bool ISPLdCMD::Open_Port(BOOL bErrorMsg)
 {
+	m_uUSB_PID = 0;
     ScopedMutex scopedLock(m_Mutex);
     if(m_bOpenPort)
         return true;
 
     switch(m_uInterface) {
     case 1:
-        //if (!m_hidIO.OpenDevice(FALSE, 0x0416, 0xA316)) {	// ISP FW < 0x30
-        if (!m_hidIO.OpenDevice(FALSE, 0x0416, 0x3F00)) {	// ISP FW >= 0x30
-    //        if(bErrorMsg)
-				//printf("No upload Device Found, Please Check the Link!\n");
-            return false;
-        }
+        if (m_hidIO.OpenDevice(FALSE, 0x0416, 0x3F00)) {	// ISP FW >= 0x30
+			m_uUSB_PID = 0x3F00;
+            break;
+        } else if (m_hidIO.OpenDevice(FALSE, 0x0416, 0xA316)) {	// ISP FW < 0x30
+			m_uUSB_PID = 0xA316;
+			break;
+		} else
+		{
+			return false;
+		}
         break;
 
     case 2:
@@ -77,12 +82,13 @@ bool ISPLdCMD::Check_USB_Link()
 
 BOOL ISPLdCMD::ReadFile(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, BOOL bCheckIndex)
 {
-    if(!m_bOpenPort)
-        throw _T("There is no Nu-Link connected to a USB port.");
-
 	bResendFlag = FALSE;
 
 	while(1) {
+
+		if(!m_bOpenPort)
+			throw _T("There is no Nu-Link connected to a USB port.");
+
 		DWORD dwLength;
 
         switch(m_uInterface) {
@@ -118,6 +124,9 @@ BOOL ISPLdCMD::ReadFile(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, B
 				memcpy(pcBuffer, m_acBuffer + 9, szMaxLen);
 
 			return TRUE;
+		}else if (m_uUSB_PID == 0xA316)
+		{
+			SleepEx(10,TRUE);
 		}else
 		{
 			printf("dwLength = %d, uCmdIndex = %d, %d, usCheckSum = %d, %d\n", dwLength, uCmdIndex, m_uCmdIndex, usCheckSum, m_usCheckSum);
@@ -167,7 +176,6 @@ BOOL ISPLdCMD::WriteFile(unsigned long uCmd, const char *pcBuffer, DWORD dwLen, 
 		m_uCmdIndex += 2;
 	else
 		Close_Port();
-
 
 	printf("Write Cmd : %X\n", uCmd);
 	return bRet;
@@ -365,6 +373,9 @@ BOOL ISPLdCMD::EraseAll()
 
 BOOL ISPLdCMD::CMD_Connect(DWORD dwMilliseconds)
 {
+	if(m_uUSB_PID == 0xA316)
+		m_uCmdIndex = 1;
+
 	BOOL ret = FALSE;
 
 	if(WriteFile(CMD_CONNECT, NULL, 0, USBCMD_TIMEOUT_LONG))
