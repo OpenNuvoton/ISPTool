@@ -41,6 +41,9 @@
 #define DBGLVL_PRINTF(...)
 
 
+// Used by DialogConfiguration_XXXX
+#include "AppConfig.h"
+#include "NumEdit.h"
 
 
 

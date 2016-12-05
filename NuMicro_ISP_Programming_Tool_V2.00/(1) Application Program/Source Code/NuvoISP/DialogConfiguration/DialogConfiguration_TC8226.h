@@ -9,12 +9,6 @@
 
 #include "DialogResize.h"
 
-// #include "resource.h"
-// #include "DialogResize.h"
-// #include "NumEdit.h"
-
-
-
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_TC8226 dialog
 

@@ -6,7 +6,7 @@
 #endif // _MSC_VER > 1000
 // DialogChipSelect.h : header file
 //
-#include "ResourceISP.h"
+#include "Resource.h"
 #include "HyperLink.h"
 /////////////////////////////////////////////////////////////////////////////
 // DlgInterfaceSel dialog

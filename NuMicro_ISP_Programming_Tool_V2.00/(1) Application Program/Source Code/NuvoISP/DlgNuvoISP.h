@@ -12,7 +12,6 @@
 //#else
 //#endif // #if (CMD_SECURITY)
 
-#include "ResourceISP.h"
 #include "Resource.h"
 #include "DialogHex.h"
 //#include "..\DialogScrollable.h"
