@@ -254,12 +254,6 @@ BOOL CDialogResize::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	}
 	return CDialog::OnMouseWheel(nFlags, zDelta, pt);
 }
-
-#define DISABLE_ITEM(ID)	{	\
-	pWnd = GetDlgItem(ID);		\
-    if(pWnd != NULL)			\
-	pWnd->EnableWindow(FALSE); }
-
 void CDialogResize::AdjustDPI()
 {
 	int nScreenHeight;
@@ -272,23 +266,4 @@ void CDialogResize::AdjustDPI()
 		m_rect.bottom = r1.bottom + 30;
 		MoveWindow(m_rect.left, m_rect.top, m_rect.Width(), nScreenHeight);
 	}
-
-	CWnd* pWnd;
-	/* Boot Options */
-	DISABLE_ITEM(IDC_RADIO_BS_LDROM);
-	DISABLE_ITEM(IDC_RADIO_BS_APROM);
-	DISABLE_ITEM(IDC_RADIO_BS_LDROM_APROM);
-	DISABLE_ITEM(IDC_RADIO_BS_APROM_LDROM);
-	DISABLE_ITEM(IDC_RADIO_BS_MKROM);
-
-	/* 8051 LDROM Size Options*/
-	DISABLE_ITEM(IDC_RADIO_LDSIZE_0K);
-	DISABLE_ITEM(IDC_RADIO_LDSIZE_1K);
-	DISABLE_ITEM(IDC_RADIO_LDSIZE_2K);
-	DISABLE_ITEM(IDC_RADIO_LDSIZE_3K);
-	DISABLE_ITEM(IDC_RADIO_LDSIZE_4K);
-
-	/* Request by MB20 Lucia Wang 2016.07.14 */
-	DISABLE_ITEM(IDC_RADIO_RPD_RESET);
-	DISABLE_ITEM(IDC_RADIO_RPD_INPUT);
 }
