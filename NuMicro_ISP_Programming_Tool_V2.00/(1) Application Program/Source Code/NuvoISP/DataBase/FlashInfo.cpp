@@ -7,8 +7,7 @@
 #endif
 
 FLASH_PID_INFO_BASE_T gsPidInfo;
-FLASH_DID_INFO_BASE_T gsDidInfo;
-
+#ifndef __NUVOTON__
 void *GetInfo(unsigned int uPID,
 			  FLASH_PID_INFO_BASE_T *pInfo)
 {
@@ -680,78 +679,37 @@ bool GetInfo(unsigned int uPID,
 
 	return true;
 }
+#endif
 
 /* 8051 1T Series */
-void *GetInfo_N76E1T(unsigned int uDID,
-					 FLASH_DID_INFO_BASE_T *pInfo)
-{
-	unsigned int uSID = (uDID & 0xFFFFFF00);
-
-	if ((uSID != 0x00002100) && 
-		(uSID != 0x00002F00) && 
-		(uSID != 0x00003600))
-		return NULL;
-
-	pInfo->uDID = uDID;
-
-	pInfo->uRAMSize = 512;
-	if (uSID == 0x00003600)
-		pInfo->uRAMSize <<= 1;
-
-	pInfo->uProgramMemorySize	  = 18 * 1024;
-	pInfo->uDataFlashSize		  = 0;
-	pInfo->uDataFlashStartAddress = 0;
-
-	if ((uDID & 0xFF) == 0x40)
-	{
-		pInfo->uDataFlashSize = 10 * 1024;
-	}
-
-	pInfo->uProgramMemorySize -= pInfo->uDataFlashSize;
-	pInfo->uDataFlashStartAddress = pInfo->uProgramMemorySize;
-
-	return pInfo;
-}
-
+#ifndef __NUVOTON__
 bool GetInfo_N76E1T(unsigned int uDID,
 					unsigned int uConfig0,
-					unsigned int uConfig1,
+					unsigned int uProgramMemorySize,
 					unsigned int *puLDROM_Addr,
-					unsigned int *puAPROM_Addr,
 					unsigned int *puNVM_Addr,
 					unsigned int *puLDROM_Size,
 					unsigned int *puAPROM_Size,
 					unsigned int *puNVM_Size)
 {
-	FLASH_DID_INFO_BASE_T flashInfo;
-	//unsigned int uSID = (uDID & 0xFFFFFF00);
-
-	if (GetInfo_N76E1T(uDID, &flashInfo) == NULL)
-		return false;
-	memcpy(&gsDidInfo, &flashInfo, sizeof(FLASH_DID_INFO_BASE_T));
-
 	unsigned int uLDSEL = (uConfig0 >> 8) & 0x07;
 
 	*puLDROM_Size = (0x07 - uLDSEL) * 1024;
 	if (*puLDROM_Size > 4096)
 		*puLDROM_Size = 4096;
 
-	*puLDROM_Addr = 18 * 1024 - *puLDROM_Size;
+	*puLDROM_Addr = uProgramMemorySize - *puLDROM_Size;
 
-	*puAPROM_Addr = 0;
-	*puAPROM_Size = flashInfo.uProgramMemorySize;
-	*puNVM_Addr = flashInfo.uDataFlashStartAddress;
-	*puNVM_Size = flashInfo.uDataFlashSize;
+	*puNVM_Size = 0;
 
-	if (flashInfo.uDataFlashSize != 0)
+	if ((uDID & 0xFF) == 0x40)
 	{
-		*puNVM_Size -= *puLDROM_Size;
+		*puNVM_Size = 10 * 1024 - *puLDROM_Size;
 	}
-	else
-	{
-		*puAPROM_Size -= *puLDROM_Size;
-	}
+
+	*puAPROM_Size = *puLDROM_Addr - *puNVM_Size;
+	*puNVM_Addr = *puAPROM_Size;
 
 	return true;
 }
-
+#endif

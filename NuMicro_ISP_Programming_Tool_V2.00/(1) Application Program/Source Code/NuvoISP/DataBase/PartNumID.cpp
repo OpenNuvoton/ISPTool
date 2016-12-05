@@ -2036,7 +2036,7 @@ bool UpdateSizeInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfi
                puAPROM_Size, puNVM_Size,
                auSPROM_Size, &uKPROM_Size))
         return true;
-    else return GetInfo_N76E1T(uID, uConfig0, uConfig1, &uLDROM_Addr, &uAPROM_Addr,
+    else return GetInfo_N76E1T(uID, uConfig0, 18 * 1024, &uLDROM_Addr,
                                    puNVM_Addr,
                                    &uLDROM_Size,
                                    puAPROM_Size, puNVM_Size);
