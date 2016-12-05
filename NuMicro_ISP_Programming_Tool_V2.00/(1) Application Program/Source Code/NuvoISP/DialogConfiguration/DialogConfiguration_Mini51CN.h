@@ -17,7 +17,7 @@ class CDialogConfiguration_Mini51CN : public CDialogResize
 // Construction
 public:
 	CDialogConfiguration_Mini51CN(unsigned int uProgramMemorySize = 16 * 1024,
-								  bool bIsMini58 = false,
+								  unsigned int uPID = 0,
 								  CWnd* pParent = NULL);   // standard constructor
 
 	static CString GetConfigWarning(const CAppConfig::Mini51_configs_t &config);
@@ -43,7 +43,7 @@ public:
 	CSpinButtonCtrl	m_SpinDataFlashSize;
 
 	unsigned int	m_uProgramMemorySize;
-	bool        	m_bIsMini58;
+	unsigned int	m_uPID;
 	//}}AFX_DATA
 
 

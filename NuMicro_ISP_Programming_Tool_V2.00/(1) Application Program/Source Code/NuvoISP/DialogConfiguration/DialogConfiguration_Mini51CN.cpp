@@ -23,11 +23,11 @@ static char THIS_FILE[] = __FILE__;
 
 
 CDialogConfiguration_Mini51CN::CDialogConfiguration_Mini51CN(unsigned int uProgramMemorySize,
-															 bool m_bIsMini58,
+															 unsigned int uPID,
 															 CWnd* pParent /*=NULL*/)
 	: CDialogResize(CDialogConfiguration_Mini51CN::IDD, pParent)
 	, m_uProgramMemorySize(uProgramMemorySize)
-	, m_bIsMini58(m_bIsMini58)
+	, m_uPID(uPID)
 {
 	//{{AFX_DATA_INIT(CDialogConfiguration_Mini51)
 	m_nRadioBov = -1;
@@ -126,7 +126,7 @@ void CDialogConfiguration_Mini51CN::ConfigToGUI()
 	unsigned int uConfig1 = m_ConfigValue.m_value[1];
 	unsigned int uFlashBaseAddress = uConfig1;
 
-	if (m_bIsMini58)
+	if ((m_uPID & 0xFFFFFF00) == 0x00A05800)
 	{
 		switch(uConfig0 & (MINI51_FLASH_CONFIG_CBOD2VEN | MINI51_FLASH_CONFIG_CBOV))
 		{
@@ -153,7 +153,7 @@ void CDialogConfiguration_Mini51CN::ConfigToGUI()
 				break;
 		}
 	}
-	else //if (m_uDID == 0x2600)
+	else
 	{
 		if(uConfig0 & MINI51_FLASH_CONFIG_CBOD2VEN)
 		{

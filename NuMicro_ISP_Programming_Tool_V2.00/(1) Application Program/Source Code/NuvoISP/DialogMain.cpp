@@ -425,9 +425,9 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
 
         case IDD_DIALOG_CONFIGURATION_MINI51CN:
 			if(uProgramMemorySize)
-				pConfigDlg = new CDialogConfiguration_Mini51CN(uProgramMemorySize, (psChipData->uID & 0xFF00) == 0x5800);
-			else if((psChipData->uID & 0x0000FF00) == 0x5800)
-				pConfigDlg = new CDialogConfiguration_Mini51CN(32*1024, true);
+				pConfigDlg = new CDialogConfiguration_Mini51CN(uProgramMemorySize, psChipData->uID);
+			else if((psChipData->uID & 0xFFFFFF00) == 0x00A05800)
+				pConfigDlg = new CDialogConfiguration_Mini51CN(32*1024, psChipData->uID);
 			else
 				pConfigDlg = new CDialogConfiguration_Mini51CN;
 
