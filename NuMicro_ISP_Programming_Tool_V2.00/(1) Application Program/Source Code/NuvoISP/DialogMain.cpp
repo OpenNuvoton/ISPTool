@@ -264,7 +264,6 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 #include "PartNumID.h"
 #include "FlashInfo.h"
 
-#include "DialogConfiguration_AU9100.h"
 #include "DialogConfiguration_M058.h"
 #include "DialogConfiguration_M05x.h"
 #include "DialogConfiguration_M05xCN.h"
@@ -273,8 +272,6 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 #include "DialogConfiguration_Mini51BN.h"
 #include "DialogConfiguration_Mini51CN.h"
 #include "DialogConfiguration_MT500.h"
-#include "DialogConfiguration_N570.h"
-#include "DialogConfiguration_N572.h"
 #include "DialogConfiguration_Nano100.h"
 #include "DialogConfiguration_Nano100BN.h"
 #include "DialogConfiguration_Nano103.h"
@@ -473,17 +470,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
             Config = (((CDialogConfiguration_M451*)pConfigDlg)->m_ConfigValue.m_value);
             break;
 
-        case IDD_DIALOG_CONFIGURATION_N572:
-            pConfigDlg = new CDialogConfiguration_N572;
-            Config = (((CDialogConfiguration_N572*)pConfigDlg)->m_ConfigValue.m_value);
-            break;
-
-        case IDD_DIALOG_CONFIGURATION_AU9100:
-            pConfigDlg = new CDialogConfiguration_AU9100;
-            Config = (((CDialogConfiguration_AU9100*)pConfigDlg)->m_ConfigValue.m_value);
-            break;
-
-        case IDD_DIALOG_CONFIGURATION_NM1120:
+         case IDD_DIALOG_CONFIGURATION_NM1120:
             pConfigDlg = new CDialogConfiguration_NM1120;
             Config = (((CDialogConfiguration_NM1120*)pConfigDlg)->m_ConfigValue.m_value);
             break;

@@ -123,7 +123,6 @@
     <ClCompile Include="DataBase\FlashInfo.cpp" />
     <ClCompile Include="DataBase\PartNumID.cpp" />
     <ClCompile Include="DialogConfiguration\AppConfig.cpp" />
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_AU9100.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M0564.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M058.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M05x.cpp" />
@@ -133,8 +132,6 @@
     <ClCompile Include="DialogConfiguration\DialogConfiguration_Mini51BN.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_Mini51CN.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_MT500.cpp" />
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_N570.cpp" />
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_N572.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_N76E1T.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_Nano100.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_Nano100BN.cpp" />
