@@ -1,15 +1,9 @@
 #ifndef ISP_USER_H
 #define ISP_USER_H
 
-#define FW_VERSION					0x30
+#define FW_VERSION					0x31
 
 #include "FMC_USER.h"
-
-//#define SUPPORT_WRITECKSUM
-#define USING_AUTODETECT 			// using autodetect for UART download
-//#define APPINFO_ON_DATA_FLASH		// must enable data flash and using first page
-//#define USING_RS485 				// To do... 
-									// default using GPD13 act as Rx/Tx switch for RS485 tranceiver
 
 #define CMD_UPDATE_APROM			0x000000A0
 #define CMD_UPDATE_CONFIG			0x000000A1

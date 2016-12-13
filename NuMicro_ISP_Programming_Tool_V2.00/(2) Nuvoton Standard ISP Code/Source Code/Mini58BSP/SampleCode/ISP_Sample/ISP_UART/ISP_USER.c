@@ -1,12 +1,3 @@
-/******************************************************************************
- * @file     ISP_USER.c
- * @brief    M5451 series ISP sample source file
- * @version  0x27
- * @date     31, December, 2014
- *
- * @note
- * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
- ******************************************************************************/
 #include <stdio.h>
 #include "string.h"
 #include "ISP_USER.h"

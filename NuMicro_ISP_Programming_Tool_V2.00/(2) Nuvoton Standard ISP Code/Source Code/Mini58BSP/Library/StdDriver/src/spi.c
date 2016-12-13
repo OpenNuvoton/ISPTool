@@ -46,6 +46,9 @@ uint32_t SPI_Open(SPI_T *spi,
 
     spi->CTL = u32MasterSlave | (u32DataWidth << SPI_CTL_DWIDTH_Pos) | (u32SPIMode);
 
+    if(u32MasterSlave == SPI_SLAVE)
+        spi->SSCTL = SPI_SSCTL_SSLTEN_Msk;
+
     return ( SPI_SetBusClock(spi, u32BusClock) );
 }
 
@@ -120,17 +123,16 @@ uint32_t SPI_SetBusClock(SPI_T *spi, uint32_t u32BusClock)
     } else if((CLK->CLKSEL1 & CLK_CLKSEL1_SPISEL_Msk) == CLK_CLKSEL1_SPISEL_PLL)
         u32ClkSrc = CLK_GetPLLClockFreq();
     else
-        u32ClkSrc = CLK_GetHCLKFreq(); 
-  
+        u32ClkSrc = CLK_GetHCLKFreq();
+
     if(u32BusClock > u32ClkSrc)
         u32BusClock = u32ClkSrc;
-    
+
     if(u32BusClock != 0) {
         u32Div = (((u32ClkSrc / u32BusClock) + 1) >> 1) - 1;
         if(u32Div > SPI_CLKDIV_DIVIDER_Msk)
             u32Div = SPI_CLKDIV_DIVIDER_Msk;
-    }
-    else
+    } else
         return 0;
 
     spi->CLKDIV = (spi->CLKDIV & ~SPI_CLKDIV_DIVIDER_Msk) | u32Div;

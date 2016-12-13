@@ -1,13 +1,12 @@
-/****************************************************************************
+/******************************************************************************
  * @file     main.c
- * @version  V2.00
- * $Revision: 5 $
- * $Date: 13/11/07 4:40p $
- * @brief    MINI51 Series UART Interface ISP Driver Sample Code
+ * @brief    Transmit and receive data from PC terminal through RS232 interface.
+ *
+ * @version  0x31
+ * @date     13, Dec, 2016
  *
  * @note
- * Copyright (C) 2011 Nuvoton Technology Corp. All rights reserved.
- *
+ * Copyright (C) 2016-2017 Nuvoton Technology Corp. All rights reserved.
  ******************************************************************************/
 #include <stdio.h>
 #include "targetdev.h"
@@ -138,3 +137,5 @@ _APROM:
     /* Trap the CPU */
     while(1);
 }
+
+/*** (C) 2016-2017 Nuvoton Technology Corp. ***/

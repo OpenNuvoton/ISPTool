@@ -2,12 +2,12 @@
  * @file     wdt.c
  * @version  V1.00
  * $Revision: 3 $
- * $Date: 15/05/28 1:16p $ 
+ * $Date: 15/05/28 1:16p $
  * @brief    Mini58 series WDT driver source file
  *
  * @note
  * Copyright (C) 2015 Nuvoton Technology Corp. All rights reserved.
-*****************************************************************************/ 
+*****************************************************************************/
 #include "Mini58Series.h"
 
 /** @addtogroup Mini58_Device_Driver Mini58 Device Driver
@@ -42,16 +42,16 @@
  * @param[in] u32EnableReset Enable WDT reset system function. Valid values are TRUE and FALSE
  * @param[in] u32EnableWakeup Enable WDT wake-up system function. Valid values are TRUE and FALSE
  * @return None
- */ 
+ */
 void  WDT_Open(uint32_t u32TimeoutInterval,
-                  uint32_t u32ResetDelay,
-                  uint32_t u32EnableReset,
-                  uint32_t u32EnableWakeup)
+               uint32_t u32ResetDelay,
+               uint32_t u32EnableReset,
+               uint32_t u32EnableWakeup)
 {
 
     WDT->CTL = u32TimeoutInterval | WDT_CTL_WDTEN_Msk |
-                (u32EnableReset << WDT_CTL_RSTEN_Pos) |
-                (u32EnableWakeup << WDT_CTL_WKEN_Pos);
+               (u32EnableReset << WDT_CTL_RSTEN_Pos) |
+               (u32EnableWakeup << WDT_CTL_WKEN_Pos);
     WDT->ALTCTL = u32ResetDelay;
     return;
 }
@@ -60,7 +60,7 @@ void  WDT_Open(uint32_t u32TimeoutInterval,
  * @brief This function stops WDT counting and disable WDT module
  * @param None
  * @return None
- */ 
+ */
 void WDT_Close(void)
 {
     WDT->CTL = 0;

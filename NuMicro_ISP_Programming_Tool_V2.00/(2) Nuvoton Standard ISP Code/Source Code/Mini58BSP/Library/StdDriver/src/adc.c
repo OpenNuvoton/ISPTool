@@ -2,12 +2,12 @@
  * @file     adc.c
  * @version  V1.00
  * $Revision: 4 $
- * $Date: 15/07/21 3:15p $ 
+ * $Date: 15/07/21 3:15p $
  * @brief    Mini58 series ADC driver source file
  *
  * @note
  * Copyright (C) 2015 Nuvoton Technology Corp. All rights reserved.
-*****************************************************************************/ 
+*****************************************************************************/
 #include "Mini58Series.h"
 
 /** @addtogroup Mini58_Device_Driver Mini58 Device Driver
@@ -31,12 +31,12 @@
   * @param[in] u32ChMask Channel enable bit. Each bit corresponds to a input channel. Bit 0 is channel 0, bit 1 is channel 1...
   * @return  None
   * @note Mini58 series MCU ADC can only convert 1 channel at a time. If more than 1 channels are enabled, only channel
-  *       with smallest number will be convert.  
+  *       with smallest number will be convert.
   * @note This API does not turn on ADC power nor does trigger ADC conversion
   */
 void ADC_Open(ADC_T *adc,
-              uint32_t u32InputMode, 
-              uint32_t u32OpMode,  
+              uint32_t u32InputMode,
+              uint32_t u32OpMode,
               uint32_t u32ChMask)
 {
     ADC->CHEN  = (ADC->CHEN & ~(ADC_CHEN_CHEN0_Msk |
@@ -58,7 +58,7 @@ void ADC_Open(ADC_T *adc,
 void ADC_Close(ADC_T *adc)
 {
     SYS->IPRST1 |= SYS_IPRST1_ADCRST_Msk;
-    SYS->IPRST1 &= ~SYS_IPRST1_ADCRST_Msk;    
+    SYS->IPRST1 &= ~SYS_IPRST1_ADCRST_Msk;
     return;
 
 }
@@ -87,7 +87,7 @@ void ADC_EnableHWTrigger(ADC_T *adc,
     } else {
         ADC->TRGDLY = (ADC->TRGDLY & ~ADC_TRGDLY_DELAY_Msk) | u32Param;
         ADC->CTL |= u32Source | ADC_CTL_HWTRGEN_Msk;
-    }    
+    }
     return;
 }
 
@@ -116,7 +116,7 @@ void ADC_DisableHWTrigger(ADC_T *adc)
   *                 - \ref ADC_SAMPLE_CLOCK_32
   *                 - \ref ADC_SAMPLE_CLOCK_64
   *                 - \ref ADC_SAMPLE_CLOCK_128
-  *                 - \ref ADC_SAMPLE_CLOCK_256  
+  *                 - \ref ADC_SAMPLE_CLOCK_256
   *                 - \ref ADC_SAMPLE_CLOCK_512
   *                 - \ref ADC_SAMPLE_CLOCK_1024
   * @return None
@@ -131,12 +131,12 @@ void ADC_SetExtraSampleTime(ADC_T *adc,
 /**
   * @brief Enable the interrupt(s) selected by u32Mask parameter.
   * @param[in] adc Base address of ADC module
-  * @param[in] u32Mask  The combination of interrupt status bits listed below. Each bit 
-  *                     corresponds to a interrupt status. This parameter decides which 
+  * @param[in] u32Mask  The combination of interrupt status bits listed below. Each bit
+  *                     corresponds to a interrupt status. This parameter decides which
   *                     interrupts will be enabled.
   *                     - \ref ADC_ADIF_INT
   *                     - \ref ADC_CMP0_INT
-  *                     - \ref ADC_CMP1_INT  
+  *                     - \ref ADC_CMP1_INT
   * @return None
   */
 void ADC_EnableInt(ADC_T *adc, uint32_t u32Mask)
@@ -146,20 +146,20 @@ void ADC_EnableInt(ADC_T *adc, uint32_t u32Mask)
     if(u32Mask & ADC_CMP0_INT)
         ADC->CMP0 |= ADC_CMP0_ADCMPIE_Msk;
     if(u32Mask & ADC_CMP1_INT)
-        ADC->CMP1 |= ADC_CMP1_ADCMPIE_Msk;        
-    
+        ADC->CMP1 |= ADC_CMP1_ADCMPIE_Msk;
+
     return;
-}                   
+}
 
 /**
   * @brief Disable the interrupt(s) selected by u32Mask parameter.
   * @param[in] adc Base address of ADC module
-  * @param[in] u32Mask  The combination of interrupt status bits listed below. Each bit 
-  *                     corresponds to a interrupt status. This parameter decides which 
+  * @param[in] u32Mask  The combination of interrupt status bits listed below. Each bit
+  *                     corresponds to a interrupt status. This parameter decides which
   *                     interrupts will be disabled.
   *                     - \ref ADC_ADIF_INT
   *                     - \ref ADC_CMP0_INT
-  *                     - \ref ADC_CMP1_INT  
+  *                     - \ref ADC_CMP1_INT
   * @return None
   */
 void ADC_DisableInt(ADC_T *adc, uint32_t u32Mask)
@@ -169,8 +169,8 @@ void ADC_DisableInt(ADC_T *adc, uint32_t u32Mask)
     if(u32Mask & ADC_CMP0_INT)
         ADC->CMP0 &= ~ADC_CMP0_ADCMPIE_Msk;
     if(u32Mask & ADC_CMP1_INT)
-        ADC->CMP1 &= ~ADC_CMP1_ADCMPIE_Msk;        
-    
+        ADC->CMP1 &= ~ADC_CMP1_ADCMPIE_Msk;
+
     return;
 }
 
@@ -180,39 +180,39 @@ void ADC_DisableInt(ADC_T *adc, uint32_t u32Mask)
   * @param[in] u32SeqTYPE   This parameter decides which type will be selected.
   *                     - \ref ADC_SEQMODE_TYPE_23SHUNT
   *                     - \ref ADC_SEQMODE_TYPE_1SHUNT
-  * @param[in] u32ModeSel  This parameter decides which mode will be selected.				 
+  * @param[in] u32ModeSel  This parameter decides which mode will be selected.
   *                     - \ref ADC_SEQMODE_MODESELECT_CH01
-  *                     - \ref ADC_SEQMODE_MODESELECT_CH12 
+  *                     - \ref ADC_SEQMODE_MODESELECT_CH12
   *                     - \ref ADC_SEQMODE_MODESELECT_CH02
   * @return None
   */
 void ADC_SeqModeEnable(ADC_T *adc, uint32_t u32SeqTYPE, uint32_t u32ModeSel)
 {
-	  // Enable ADC Sequential Mode
-		ADC->SEQCTL = ADC->SEQCTL  | ADC_SEQCTL_SEQEN_Msk;
+    // Enable ADC Sequential Mode
+    ADC->SEQCTL = ADC->SEQCTL  | ADC_SEQCTL_SEQEN_Msk;
 
-    // Select ADC Sequential Mode Type   
-    ADC->SEQCTL = (ADC->SEQCTL & ~(ADC_SEQCTL_SEQTYPE_Msk)) | (u32SeqTYPE << ADC_SEQCTL_SEQTYPE_Pos);       
-    
-	  // Select ADC Sequential Mode Type   
-		ADC->SEQCTL = (ADC->SEQCTL & ~(ADC_SEQCTL_MODESEL_Msk)) | (u32ModeSel << ADC_SEQCTL_MODESEL_Pos);
-	
+    // Select ADC Sequential Mode Type
+    ADC->SEQCTL = (ADC->SEQCTL & ~(ADC_SEQCTL_SEQTYPE_Msk)) | (u32SeqTYPE << ADC_SEQCTL_SEQTYPE_Pos);
+
+    // Select ADC Sequential Mode Type
+    ADC->SEQCTL = (ADC->SEQCTL & ~(ADC_SEQCTL_MODESEL_Msk)) | (u32ModeSel << ADC_SEQCTL_MODESEL_Pos);
+
     return;
-}  
+}
 
 /**
   * @brief ADC PWM Sequential Mode PWM Trigger Source and type.
   * @param[in] adc Base address of ADC module
   * @param[in] u32SeqModeTriSrc1  This parameter decides first PWM trigger source and type.
-  * @param[in] u32SeqModeTriSrc2  This parameter decides second PWM trigger source and type.                     
-  *                     
-  *                     
+  * @param[in] u32SeqModeTriSrc2  This parameter decides second PWM trigger source and type.
+  *
+  *
   * @return None
   */
 void ADC_SeqModeTriggerSrc(ADC_T *adc, uint32_t u32SeqModeTriSrc1, uint32_t u32SeqModeTriSrc2)
 {
     // Select PWM Trigger Source Selection for TRG1CTL or TRG2CTL
-    ADC->SEQCTL = (ADC->SEQCTL & ~(ADC_SEQCTL_TRG1CTL_Msk)) | (u32SeqModeTriSrc1 << ADC_SEQCTL_TRG1CTL_Pos);	
+    ADC->SEQCTL = (ADC->SEQCTL & ~(ADC_SEQCTL_TRG1CTL_Msk)) | (u32SeqModeTriSrc1 << ADC_SEQCTL_TRG1CTL_Pos);
     ADC->SEQCTL = (ADC->SEQCTL & ~(ADC_SEQCTL_TRG2CTL_Msk)) | (u32SeqModeTriSrc2 << ADC_SEQCTL_TRG2CTL_Pos);
     return;
 }

@@ -1,13 +1,13 @@
-	/**************************************************************************//**
- * @file     uart.c
- * @version  V1.00
- * $Revision: 3 $
- * $Date: 15/05/28 4:34p $ 
- * @brief    Mini58 series UART driver source file
- *
- * @note
- * Copyright (C) 2015 Nuvoton Technology Corp. All rights reserved.
-*****************************************************************************/ 
+/**************************************************************************//**
+* @file     uart.c
+* @version  V1.00
+* $Revision: 3 $
+* $Date: 15/05/28 4:34p $
+* @brief    Mini58 series UART driver source file
+*
+* @note
+* Copyright (C) 2015 Nuvoton Technology Corp. All rights reserved.
+*****************************************************************************/
 
 #include <stdio.h>
 #include "Mini58Series.h"
@@ -36,21 +36,19 @@
 void UART_ClearIntFlag(UART_T* uart , uint32_t u32InterruptFlag)
 {
 
-    if(u32InterruptFlag & UART_INTSTS_RLSINT_Msk) /* clear Receive Line Status Interrupt */       
-    {
+    if(u32InterruptFlag & UART_INTSTS_RLSINT_Msk) { /* clear Receive Line Status Interrupt */
         uart->FIFOSTS = UART_FIFOSTS_BIF_Msk | UART_FIFOSTS_FEF_Msk | UART_FIFOSTS_FEF_Msk;
         uart->FIFOSTS = UART_FIFOSTS_ADDRDETF_Msk;
     }
 
-    if(u32InterruptFlag & UART_INTSTS_MODEMINT_Msk)  /* clear Modem Interrupt */       
+    if(u32InterruptFlag & UART_INTSTS_MODEMINT_Msk)  /* clear Modem Interrupt */
         uart->MODEMSTS = UART_MODEMSTS_CTSDETF_Msk;
 
-    if(u32InterruptFlag & UART_INTSTS_BUFERRINT_Msk)  /* clear Buffer Error Interrupt */       
-    {
+    if(u32InterruptFlag & UART_INTSTS_BUFERRINT_Msk) { /* clear Buffer Error Interrupt */
         uart->FIFOSTS = UART_FIFOSTS_RXOVIF_Msk | UART_FIFOSTS_TXOVIF_Msk;
     }
 
-    if(u32InterruptFlag & UART_INTSTS_RXTOINT_Msk)  /* clear Modem Interrupt */       
+    if(u32InterruptFlag & UART_INTSTS_RXTOINT_Msk)  /* clear Modem Interrupt */
         uart->INTSTS = UART_INTSTS_RXTOIF_Msk;
 
 }
@@ -89,12 +87,12 @@ void UART_DisableFlowCtrl(UART_T* uart)
  *    @param[in]    u32InterruptFlag    The specified interrupt of UART module.
  *                                - \ref UART_INTEN_TOCNTEN_Msk        : Rx Time Out interrupt
  *                                - \ref UART_INTEN_WKCTSIEN_Msk       : Wakeup interrupt
- *                                - \ref UART_INTEN_BUFERRIEN_Msk      : Buffer Error interrupt   
- *                                - \ref UART_INTEN_RXTOIEN_Msk        : Rx time-out interrupt       
- *                                - \ref UART_INTEN_MODEMIEN_Msk       : Modem interrupt           
- *                                - \ref UART_INTEN_RLSIEN_Msk         : Rx Line status interrupt                              
- *                                - \ref UART_INTEN_THREIEN_Msk        : Tx empty interrupt          
- *                                - \ref UART_INTEN_RDAIEN_Msk         : Rx ready interrupt 
+ *                                - \ref UART_INTEN_BUFERRIEN_Msk      : Buffer Error interrupt
+ *                                - \ref UART_INTEN_RXTOIEN_Msk        : Rx time-out interrupt
+ *                                - \ref UART_INTEN_MODEMIEN_Msk       : Modem interrupt
+ *                                - \ref UART_INTEN_RLSIEN_Msk         : Rx Line status interrupt
+ *                                - \ref UART_INTEN_THREIEN_Msk        : Tx empty interrupt
+ *                                - \ref UART_INTEN_RDAIEN_Msk         : Rx ready interrupt
  *
  *    @return    None
  */
@@ -128,12 +126,12 @@ void UART_EnableFlowCtrl(UART_T* uart )
  *    @param[in]    u32InterruptFlag    The specified interrupt of UART module:
  *                                - \ref UART_INTEN_TOCNTEN_Msk        : Rx Time Out interrupt
  *                                - \ref UART_INTEN_WKCTSIEN_Msk       : Wakeup interrupt
- *                                - \ref UART_INTEN_BUFERRIEN_Msk      : Buffer Error interrupt   
- *                                - \ref UART_INTEN_RXTOIEN_Msk        : Rx time-out interrupt       
- *                                - \ref UART_INTEN_MODEMIEN_Msk       : Modem interrupt           
- *                                - \ref UART_INTEN_RLSIEN_Msk         : Rx Line status interrupt                              
- *                                - \ref UART_INTEN_THREIEN_Msk        : Tx empty interrupt          
- *                                - \ref UART_INTEN_RDAIEN_Msk         : Rx ready interrupt 
+ *                                - \ref UART_INTEN_BUFERRIEN_Msk      : Buffer Error interrupt
+ *                                - \ref UART_INTEN_RXTOIEN_Msk        : Rx time-out interrupt
+ *                                - \ref UART_INTEN_MODEMIEN_Msk       : Modem interrupt
+ *                                - \ref UART_INTEN_RLSIEN_Msk         : Rx Line status interrupt
+ *                                - \ref UART_INTEN_THREIEN_Msk        : Tx empty interrupt
+ *                                - \ref UART_INTEN_RDAIEN_Msk         : Rx ready interrupt
  *
  *    @return None
  */
@@ -154,27 +152,26 @@ void UART_EnableInt(UART_T*  uart, uint32_t u32InterruptFlag )
 void UART_Open(UART_T* uart, uint32_t u32baudrate)
 {
     uint8_t u8UartClkSrcSel;
-    uint32_t u32Clk = 0;   
-    uint32_t u32ClkDiv = 0;	
+    uint32_t u32Clk = 0;
+    uint32_t u32ClkDiv = 0;
     uint32_t u32Baud_Div;
 
     u8UartClkSrcSel = (CLK->CLKSEL1 & CLK_CLKSEL1_UARTSEL_Msk) >> CLK_CLKSEL1_UARTSEL_Pos;
-    uart->FUNSEL = UART_FUNC_SEL_UART; 
+    uart->FUNSEL = UART_FUNC_SEL_UART;
     uart->LINE = UART_WORD_LEN_8 | UART_PARITY_NONE | UART_STOP_BIT_1;
     uart->FIFO = UART_FIFO_RFITL_1BYTE | UART_FIFO_RTSTRGLV_1BYTE;
 
-		if(u8UartClkSrcSel == 0)
-		    u32Clk = __XTAL;
-		else if(u8UartClkSrcSel == 1)
-			u32Clk = CLK_GetPLLClockFreq();
-		else if(u8UartClkSrcSel >= 2)
-		    u32Clk = __HSI;
-		
-	u32ClkDiv = ( (CLK->CLKDIV & CLK_CLKDIV_UARTDIV_Msk) >> CLK_CLKDIV_UARTDIV_Pos ); 
-	u32Clk = u32Clk/(u32ClkDiv + 1);
-		
-    if(u32baudrate != 0)
-    {
+    if(u8UartClkSrcSel == 0)
+        u32Clk = __XTAL;
+    else if(u8UartClkSrcSel == 1)
+        u32Clk = CLK_GetPLLClockFreq();
+    else if(u8UartClkSrcSel >= 2)
+        u32Clk = __HSI;
+
+    u32ClkDiv = ( (CLK->CLKDIV & CLK_CLKDIV_UARTDIV_Msk) >> CLK_CLKDIV_UARTDIV_Pos );
+    u32Clk = u32Clk/(u32ClkDiv + 1);
+
+    if(u32baudrate != 0) {
         u32Baud_Div = UART_BAUD_MODE2_DIVIDER(u32Clk, u32baudrate);
 
         if(u32Baud_Div > 0xFFFF)
@@ -192,27 +189,25 @@ void UART_Open(UART_T* uart, uint32_t u32baudrate)
  *    @param[in]    pu8RxBuf        The buffer to receive the data of receive FIFO.
  *    @param[in]    u32ReadBytes    The the read bytes number of data.
  *
- *	@return 	u32Count: Receive byte count
- *	
+ *  @return     u32Count: Receive byte count
+ *
  */
 uint32_t UART_Read(UART_T* uart, uint8_t *pu8RxBuf, uint32_t u32ReadBytes)
 {
     uint32_t  u32Count, u32delayno;
 
-    for(u32Count=0; u32Count < u32ReadBytes; u32Count++)
-    {
+    for(u32Count=0; u32Count < u32ReadBytes; u32Count++) {
         u32delayno = 0;
 
-        while(uart->FIFOSTS & UART_FIFOSTS_RXEMPTY_Msk) /* Check RX empty => failed */    
-        {
-            u32delayno++;        
-            if( u32delayno >= 0x40000000 )        
-                return FALSE;               
+        while(uart->FIFOSTS & UART_FIFOSTS_RXEMPTY_Msk) { /* Check RX empty => failed */
+            u32delayno++;
+            if( u32delayno >= 0x40000000 )
+                return FALSE;
         }
         pu8RxBuf[u32Count] = uart->DAT;    /* Get Data from UART RX  */
     }
 
-	return u32Count;
+    return u32Count;
 
 }
 
@@ -232,24 +227,23 @@ uint32_t UART_Read(UART_T* uart, uint8_t *pu8RxBuf, uint32_t u32ReadBytes)
 void UART_SetLine_Config(UART_T* uart, uint32_t u32baudrate, uint32_t u32data_width, uint32_t u32parity, uint32_t  u32stop_bits)
 {
     uint8_t u8UartClkSrcSel;
-    uint32_t u32Clk = 0; 
-    uint32_t u32ClkDiv = 0;	
+    uint32_t u32Clk = 0;
+    uint32_t u32ClkDiv = 0;
     uint32_t u32Baud_Div = 0;
-	
+
     u8UartClkSrcSel = (CLK->CLKSEL1 & CLK_CLKSEL1_UARTSEL_Msk) >> CLK_CLKSEL1_UARTSEL_Pos;
-	
-		if(u8UartClkSrcSel == 0)
-		    u32Clk = __XTAL;
-	else if(u8UartClkSrcSel == 1)
-		u32Clk = CLK_GetPLLClockFreq();
-		else if(u8UartClkSrcSel >= 2)
-		    u32Clk = __HSI;
 
-	u32ClkDiv = ( (CLK->CLKDIV & CLK_CLKDIV_UARTDIV_Msk) >> CLK_CLKDIV_UARTDIV_Pos ); 
-	u32Clk = u32Clk/(u32ClkDiv + 1);
+    if(u8UartClkSrcSel == 0)
+        u32Clk = __XTAL;
+    else if(u8UartClkSrcSel == 1)
+        u32Clk = CLK_GetPLLClockFreq();
+    else if(u8UartClkSrcSel >= 2)
+        u32Clk = __HSI;
 
-    if(u32baudrate != 0)
-    {
+    u32ClkDiv = ( (CLK->CLKDIV & CLK_CLKDIV_UARTDIV_Msk) >> CLK_CLKDIV_UARTDIV_Pos );
+    u32Clk = u32Clk/(u32ClkDiv + 1);
+
+    if(u32baudrate != 0) {
         u32Baud_Div = UART_BAUD_MODE2_DIVIDER(u32Clk, u32baudrate);
 
         if(u32Baud_Div > 0xFFFF)
@@ -257,7 +251,7 @@ void UART_SetLine_Config(UART_T* uart, uint32_t u32baudrate, uint32_t u32data_wi
         else
             uart->BAUD = (UART_BAUD_MODE2 | u32Baud_Div);
     }
-    
+
     uart->LINE = u32data_width | u32parity | u32stop_bits;
 }
 
@@ -288,28 +282,28 @@ void UART_SetTimeoutCnt(UART_T* uart, uint32_t u32TOC)
  */
 void UART_SelectIrDAMode(UART_T* uart, uint32_t u32Buadrate, uint32_t u32Direction)
 {
-	uint8_t u8UartClkSrcSel;
-    uint32_t u32Clk = 0; 
-    uint32_t u32ClkDiv = 0;	
+    uint8_t u8UartClkSrcSel;
+    uint32_t u32Clk = 0;
+    uint32_t u32ClkDiv = 0;
 
     u8UartClkSrcSel = (CLK->CLKSEL1 & CLK_CLKSEL1_UARTSEL_Msk) >> CLK_CLKSEL1_UARTSEL_Pos;
 
-		if(u8UartClkSrcSel == 0)
-		    u32Clk = __XTAL;
-		else if(u8UartClkSrcSel == 1)
-			u32Clk = CLK_GetPLLClockFreq();
-		else if(u8UartClkSrcSel >= 2)
-		    u32Clk = __HSI;
-		
-	u32ClkDiv = ( (CLK->CLKDIV & CLK_CLKDIV_UARTDIV_Msk) >> CLK_CLKDIV_UARTDIV_Pos ); 
-	u32Clk = u32Clk/(u32ClkDiv + 1);
-		
-	uart->BAUD = UART_BAUD_MODE0 | UART_BAUD_MODE0_DIVIDER(u32Clk, u32Buadrate);
-    
-    uart->IRDA    &=  ~UART_IRDA_TXINV_Msk;  
+    if(u8UartClkSrcSel == 0)
+        u32Clk = __XTAL;
+    else if(u8UartClkSrcSel == 1)
+        u32Clk = CLK_GetPLLClockFreq();
+    else if(u8UartClkSrcSel >= 2)
+        u32Clk = __HSI;
+
+    u32ClkDiv = ( (CLK->CLKDIV & CLK_CLKDIV_UARTDIV_Msk) >> CLK_CLKDIV_UARTDIV_Pos );
+    u32Clk = u32Clk/(u32ClkDiv + 1);
+
+    uart->BAUD = UART_BAUD_MODE0 | UART_BAUD_MODE0_DIVIDER(u32Clk, u32Buadrate);
+
+    uart->IRDA    &=  ~UART_IRDA_TXINV_Msk;
     uart->IRDA |=     UART_IRDA_RXINV_Msk;
     uart->IRDA    = u32Direction ? uart->IRDA | UART_IRDA_TXEN_Msk : uart->IRDA &~ UART_IRDA_TXEN_Msk;
-    uart->FUNSEL = (0x2 << UART_FUNSEL_FUN_SEL_Pos);    
+    uart->FUNSEL = (0x2 << UART_FUNSEL_FUN_SEL_Pos);
 }
 
 
@@ -337,25 +331,23 @@ void UART_SelectRS485Mode(UART_T* uart, uint32_t u32Mode, uint32_t u32Addr)
  *    @param[in]    pu8TxBuf        The buffer to send the data to UART transmission FIFO.
  *    @param[in]    u32WriteBytes   The byte number of data.
  *
- *	@return	u32Count: transfer byte count
+ *  @return u32Count: transfer byte count
  */
 uint32_t UART_Write(UART_T* uart,uint8_t *pu8TxBuf, uint32_t u32WriteBytes)
 {
     uint32_t  u32Count, u32delayno;
 
-    for(u32Count=0; u32Count != u32WriteBytes; u32Count++)
-    {
+    for(u32Count=0; u32Count != u32WriteBytes; u32Count++) {
         u32delayno = 0;
-        while((uart->FIFOSTS & UART_FIFOSTS_TXEMPTYF_Msk) == 0)  /* Wait Tx empty and Time-out manner */
-        {
+        while((uart->FIFOSTS & UART_FIFOSTS_TXEMPTYF_Msk) == 0) { /* Wait Tx empty and Time-out manner */
             u32delayno++;
-            if( u32delayno >= 0x40000000 )             
-                return FALSE;               
+            if( u32delayno >= 0x40000000 )
+                return FALSE;
         }
         uart->DAT = pu8TxBuf[u32Count];    /* Send UART Data from buffer */
     }
 
-	return u32Count;
+    return u32Count;
 
 }
 

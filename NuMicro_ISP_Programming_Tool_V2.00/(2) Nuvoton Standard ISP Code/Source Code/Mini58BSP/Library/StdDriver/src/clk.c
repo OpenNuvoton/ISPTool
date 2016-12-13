@@ -79,7 +79,7 @@ void CLK_PowerDown(void)
   */
 void CLK_Idle(void)
 {
-    CLK->PWRCTL |= (CLK_PWRCTL_PDEN_Msk | CLK_PWRCTL_PDWKIF_Msk);
+    CLK->PWRCTL &= ~(CLK_PWRCTL_PDEN_Msk);
     __WFI();
 }
 
@@ -297,21 +297,20 @@ void CLK_SetSysTickClockSrc(uint32_t u32ClkSrc)
   * @param[in]  u32Count is System Tick reload value. It should be 0x1~0xFFFFFF.
   * @return     None
   * @details    This function set System Tick clock source, reload value, enable System Tick counter and interrupt.
-  *                    The register write-protection function should be disabled before using this function. 
+  *                    The register write-protection function should be disabled before using this function.
   */
 void CLK_EnableSysTick(uint32_t u32ClkSrc, uint32_t u32Count)
 {
-  SysTick->CTRL=0;
-  if( u32ClkSrc== CLK_CLKSEL0_STCLKSEL_HCLK )    /* Set System Tick clock source */
-     SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk;
-  else
-  {
-     SysTick->CTRL &= ~SysTick_CTRL_CLKSOURCE_Msk;   
-     CLK->CLKSEL0 = (CLK->CLKSEL0 & ~CLK_CLKSEL0_STCLKSEL_Msk) | u32ClkSrc; 
-  }
-  SysTick->LOAD  = u32Count;                /* Set System Tick reload value */
-  SysTick->VAL = 0;                         /* Clear System Tick current value and counter flag  */
-  SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk; /* Set System Tick counter enabled */
+    SysTick->CTRL=0;
+    if( u32ClkSrc== CLK_CLKSEL0_STCLKSEL_HCLK )    /* Set System Tick clock source */
+        SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk;
+    else {
+        SysTick->CTRL &= ~SysTick_CTRL_CLKSOURCE_Msk;
+        CLK->CLKSEL0 = (CLK->CLKSEL0 & ~CLK_CLKSEL0_STCLKSEL_Msk) | u32ClkSrc;
+    }
+    SysTick->LOAD  = u32Count;                /* Set System Tick reload value */
+    SysTick->VAL = 0;                         /* Clear System Tick current value and counter flag  */
+    SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk; /* Set System Tick counter enabled */
 }
 
 /**
@@ -321,7 +320,7 @@ void CLK_EnableSysTick(uint32_t u32ClkSrc, uint32_t u32Count)
   */
 void CLK_DisableSysTick(void)
 {
-  SysTick->CTRL = 0;    /* Set System Tick counter disabled */
+    SysTick->CTRL = 0;    /* Set System Tick counter disabled */
 }
 
 /**

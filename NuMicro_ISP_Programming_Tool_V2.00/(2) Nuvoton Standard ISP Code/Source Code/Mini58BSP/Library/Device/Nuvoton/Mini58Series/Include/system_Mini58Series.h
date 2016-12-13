@@ -2,20 +2,20 @@
  * @file     system_Mini58Series.h
  * @version  V1.00
  * $Revision: 5 $
- * $Date: 15/05/26 10:19a $ 
+ * $Date: 15/05/26 10:19a $
  * @brief    Mini58 series system clock definition file
  *
  * @note
  * Copyright (C) 2015 Nuvoton Technology Corp. All rights reserved.
- *****************************************************************************/  
- 
+ *****************************************************************************/
+
 
 #ifndef __SYSTEM_MINI58SERIES_H__
 #define __SYSTEM_MINI58SERIES_H__
 
 #ifdef __cplusplus
- extern "C" {
-#endif 
+extern "C" {
+#endif
 
 /*---------------------------------------------------------------------------------------------------------*/
 /* Macro Definition                                                                                        */
@@ -41,7 +41,7 @@ extern uint32_t PllClock;               /*!< PLL Output Clock Frequency         
  * @param  None
  * @return None
  *
- * @brief  Updates the SystemCoreClock with current core Clock 
+ * @brief  Updates the SystemCoreClock with current core Clock
  *         retrieved from CPU registers.
  */
 

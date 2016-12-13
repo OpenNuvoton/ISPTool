@@ -1,14 +1,14 @@
 /**************************************************************************//**
  * @file     Mini58Series.h
  * @version  V1.00
- * $Revision: 34 $
- * $Date: 15/06/05 3:18p $
+ * $Revision: 36 $
+ * $Date: 16/06/08 1:31p $
  * @brief    Mini58 series peripheral access layer header file.
  *           This file contains all the peripheral register's definitions,
  *           bits definitions and memory mapping for NuMicro Mini58 series MCU.
  *
  * @note
- * Copyright (C) 2015 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2015-2016 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 /**
    \mainpage NuMicro Mini58 Driver Reference Guide
@@ -47,51 +47,8 @@
    *
    * <b>Copyright Notice</b>
    *
-   * Copyright (C) 2015 Nuvoton Technology Corp. All rights reserved.
+   * Copyright (C) 2015-2016 Nuvoton Technology Corp. All rights reserved.
    */
-/**
-  * \page pg1 NuMicro Mini58 BSP Directory Structure
-  * Please refer to Readme.pdf under BSP root directory for the BSP directory structure
-  *
-  * \page pg2 Revision History
-  *
-  * \li Regenerated register and bit field definitions in Mini58Series.h based on Mini58 Technical Reference Manual Rev 1.0.
-  * \li Removed FMC_ReadDID(), FMC_DisableAPUpdate(), FMC_DisableSPUpdate(), FMC_SetBootSource(), FMC_DisableConfigUpdate(),
-  *     FMC_DisableLDUpdate(), FMC_EnableAPUpdate(), FMC_EnableSPUpdate(), FMC_EnableConfigUpdate(), FMC_EnableLDUpdate()
-  *     functions in fmc.c.
-  * \li Renamed TIMER_TOGGLE_TMXEXT to TIMER_TOGGLE_TMX_EXT in timer.h.
-  * \li Updated all IAR samples to set Reset_Handler() as entry point.
-  * \li Updated FMC_WriteConfig() to check input parameter in fmc.c.
-  * \li Updated TIMER_Open() and TIMER_Delay() to support the time-out calculation while timer clock is faster than
-  *     0x1FFFFFF Hz in timer.c.
-  * \li Updated UART_Open() and UART_SetLine_Config() to support using PLL as UART clock source in uart.c.
-  * \li Updated UART_SelectIrDAMode() to support using PLL and HIRC as UART clock source in uart.c.
-  * \li Updated WDT_Open() to support reset delay parameter in wdt.c.
-  * \li Updated Timer_Wakeup sample code to unlock protect register before entering Power-down mode.
-  * \li Added ACMP_SET_FILTER() macro in acmp.h.
-  * \li Added ADC_SeqModeEnable() and ADC_SeqModeTriggerSrc() functions in adc.c.
-  * \li Added CLK_EnableSysTick() and CLK_DisableSysTick() functions in clk.c.
-  * \li Added FMC_GetVectorPageAddr() function in fmc.c.
-  * \li Added PWM_SET_CMRD(), PWM_ENABLE_ASYMMETRIC_MODE(), and PWM_ENABLE_PCAEN() macros in pwm.h.
-  * \li Added PWM_EnableCenterInt(), PWM_DisableCenterInt(), PWM_ClearCenterIntFlag(), PWM_GetCenterIntFlag(),
-  *     PWM_EnableRiseInt(), PWM_DisableRiseInt(), PWM_ClearRiseIntFlag(), and PWM_GetRiseIntFlag() function in pwm.c.
-  * \li Added SPI_GET_TX_FIFO_FULL_FLAG() macro in spi.h.
-  * \li Added PWM_MaskAlign sample.
-  * \li Fixed ACMP_SET_NEG_SRC() and ACMP_ENABLE_RISING_EDGE_TRIGGER() implementation error in acmp.h.
-  * \li Fixed I2C_GetBusClockFreq() implementation error in i2c.c.
-  * \li Fixed  I2C_CLEAR_WAKEUP_FLAG(), I2C_DISABLE_CLOCK_STRETCH() and  I2C_ENABLE_CLOCK_STRETCH() implementation
-  *     error in i2c.h.
-  * \li Fixed TIMER_CAPTURE_RISING_* definition error in timer.h.
-  * \li Fixed TIMER_EnableCaptureDebounce() and TIMER_DisableCaptureDebounce() implementation error in timer.c.
-  * \li Fixed PWM_ENABLE_OUTPUT_INVERTER() implementation error in pwm.h.
-  * \li Fixed PWM_GetADCTriggerFlag() and PWM_ConfigOutputChannel()implementation error in pwm.c.
-  * \li Fixed SPI_SET_xSB_FIRST() implementation error in spi.h.
-  * \li Fixed UART_CLEAR_RTS(), UART_EnableFlowCtrl(), UART_ClearIntFlag() implementation error in uart.c and uart.h.
-  *
-  * <b>Revision 3.00.000</b>
-  * \li Initial release.
-*/
-
 
 #ifndef __MINI58SERIES_H__
 #define __MINI58SERIES_H__
@@ -11992,5 +11949,5 @@ typedef volatile unsigned long  vu32;       ///< Define 32-bit unsigned volatile
 
 #endif  // __MINI58SERIES_H__
 
-/*** (C) COPYRIGHT 2015 Nuvoton Technology Corp. ***/
+/*** (C) COPYRIGHT 2015-2016 Nuvoton Technology Corp. ***/
 
