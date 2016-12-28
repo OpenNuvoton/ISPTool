@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/binfile"
+        android:layout_width="262dp"
+        android:layout_height="wrap_content"
+        android:text="LOAD BIN FILE" />
+
+    <Button
+        android:id="@+id/ok"
+        android:layout_width="267dp"
+        android:layout_height="wrap_content"
+        android:text="START PROGRAMMER" />
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="264dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.01" />
+
+    <EditText
+        android:id="@+id/editText1"
+        android:layout_width="265dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.11"
+        android:ems="10"
+        android:gravity="center_vertical|top"
+        android:inputType="textMultiLine" >
+
+        <requestFocus />
+    </EditText>
+
+</LinearLayout>
