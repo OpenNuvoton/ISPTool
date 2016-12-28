@@ -12,7 +12,6 @@
 #include <string>
 #include <sstream>
 
-
 struct CPartNumID
 {
 	char szPartNumber[32];

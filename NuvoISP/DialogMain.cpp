@@ -277,7 +277,6 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 #include "DialogConfiguration_Nano103.h"
 #include "DialogConfiguration_Nano112.h"
 #include "DialogConfiguration_NM1120.h"
-#include "DialogConfiguration_NM1200.h"
 #include "DialogConfiguration_NUC102.h"
 #include "DialogConfiguration_NUC103.h"
 #include "DialogConfiguration_NUC103BN.h"
@@ -432,15 +431,6 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
 				pConfigDlg = new CDialogConfiguration_Mini51CN;
 
             Config = (((CDialogConfiguration_Mini51CN*)pConfigDlg)->m_ConfigValue.m_value);
-            break;
-
-        case IDD_DIALOG_CONFIGURATION_NM1200:
-			if(uProgramMemorySize)
-				pConfigDlg = new CDialogConfiguration_NM1200(uProgramMemorySize);
-			else
-				pConfigDlg = new CDialogConfiguration_NM1200;
-
-			Config = (((CDialogConfiguration_NM1200*)pConfigDlg)->m_ConfigValue.m_value);
             break;
 
         case IDD_DIALOG_CONFIGURATION_MT500:

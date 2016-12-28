@@ -39,7 +39,6 @@ public:
 	BOOL	m_bCheckBrownOutReset;
 	BOOL	m_bDataFlashEnable;
 	BOOL	m_bSecurityLock;
-	BOOL	m_bMassErase;
 	BOOL	m_bICELock;
 	BOOL	m_bWDTEnable;
 	BOOL	m_bWDTPowerDown;

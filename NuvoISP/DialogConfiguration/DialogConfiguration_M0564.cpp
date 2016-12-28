@@ -38,7 +38,6 @@ CDialogConfiguration_M0564::CDialogConfiguration_M0564(unsigned int uPID, unsign
 	m_bCheckBrownOutReset = FALSE;
 	m_bDataFlashEnable = FALSE;
 	m_bSecurityLock = FALSE;
-	m_bMassErase = FALSE;
 	m_bICELock = FALSE;
 	m_bWDTEnable = FALSE;
 	m_bWDTPowerDown = FALSE;
@@ -65,7 +64,6 @@ void CDialogConfiguration_M0564::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_CHECK_BROWN_OUT_RESET, m_bCheckBrownOutReset);
 	DDX_Check(pDX, IDC_CHECK_DATA_FLASH_ENABLE, m_bDataFlashEnable);
 	DDX_Check(pDX, IDC_CHECK_ICE_LOCK, m_bICELock);
-	DDX_Check(pDX, IDC_CHECK_MASS_ERASE, m_bMassErase);
 	DDX_Check(pDX, IDC_CHECK_SECURITY_LOCK, m_bSecurityLock);
 	DDX_Check(pDX, IDC_CHECK_WDT_ENABLE, m_bWDTEnable);
 	DDX_Check(pDX, IDC_CHECK_WDT_POWER_DOWN, m_bWDTPowerDown);
@@ -95,7 +93,6 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_M0564, CDialog)
 	ON_BN_CLICKED(IDC_CHECK_CLOCK_FILTER_ENABLE, OnCheckClick)
 	ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnCheckClick)
 	ON_BN_CLICKED(IDC_CHECK_ICE_LOCK, OnCheckClick)
-	ON_BN_CLICKED(IDC_CHECK_MASS_ERASE, OnCheckClick)
 	ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnCheckClick)
 	ON_BN_CLICKED(IDC_CHECK_WATCHDOG_ENABLE, OnCheckClick)
 	ON_BN_CLICKED(IDC_CHECK_WDT_POWER_DOWN, OnCheckClickWDTPD)
@@ -200,7 +197,6 @@ void CDialogConfiguration_M0564::ConfigToGUI(int nEventID)
 	m_bCheckBrownOutReset = ((uConfig0 & M0564_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
 	m_bDataFlashEnable = ((uConfig0 & M0564_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
 	m_bICELock = ((uConfig0 & M0564_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
-	m_bMassErase = ((uConfig0 & M0564_FLASH_CONFIG_MERASE) == 0 ? TRUE : FALSE);
 	m_bSecurityLock = ((uConfig0 & M0564_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
 
 	unsigned int uFlashBaseAddress = uConfig1;
@@ -331,11 +327,6 @@ void CDialogConfiguration_M0564::GUIToConfig(int nEventID)
 		uConfig0 &= ~M0564_FLASH_CONFIG_ICELOCK;
 	else
 		uConfig0 |= M0564_FLASH_CONFIG_ICELOCK;
-
-	if(m_bMassErase)
-		uConfig0 &= ~M0564_FLASH_CONFIG_MERASE;
-	else
-		uConfig0 |= M0564_FLASH_CONFIG_MERASE;
 
 	if(m_bSecurityLock)
 		uConfig0 &= ~M0564_FLASH_CONFIG_LOCK;
