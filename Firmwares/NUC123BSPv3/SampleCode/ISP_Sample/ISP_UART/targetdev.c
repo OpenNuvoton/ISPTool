@@ -39,7 +39,7 @@ void GetDataFlashInfo(uint32_t *addr, uint32_t *size)
         g_apromSize += 4096;
         FMC_Read_User(Config1, &uData);
 
-        if(uData > g_apromSize || uData < 0x200)//avoid config1 value from error
+        if(uData > g_apromSize || (uData & 0x1FF))//avoid config1 value from error
             uData = g_apromSize;
 
         *addr = uData;

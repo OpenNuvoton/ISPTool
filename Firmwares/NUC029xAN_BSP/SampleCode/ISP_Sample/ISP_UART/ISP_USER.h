@@ -1,7 +1,7 @@
 #ifndef ISP_USER_H
 #define ISP_USER_H
 
-#define FW_VERSION					0x30
+#define FW_VERSION					0x31
 
 #include "FMC_USER.h"
 

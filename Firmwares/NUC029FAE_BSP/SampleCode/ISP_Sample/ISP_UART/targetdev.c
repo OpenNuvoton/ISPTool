@@ -17,7 +17,7 @@ void GetDataFlashInfo(uint32_t *addr, uint32_t *size)
     FMC_Read_User(Config0, &uData);
     if((uData&0x01) == 0) { //DFEN enable
         FMC_Read_User(Config1, &uData);
-        if(uData > g_apromSize || uData < 0x200)//avoid config1 value from error
+        if(uData > g_apromSize || (uData & 0x1FF))//avoid config1 value from error
             uData = g_apromSize;
 
         *addr = uData;
