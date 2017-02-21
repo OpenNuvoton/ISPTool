@@ -100,7 +100,7 @@ bool UpdateFileInfo(CString strFN, struct fileinfo* sfinfo)
 
     size_t result = std::fread(&(sfinfo->vbuf[0]), 1, length, fp);
 		unsigned short cks = 0;
-		for(size_t i = 0; i < length; i++)
+		for(int i = 0; i < length; i++)
 			cks += sfinfo->vbuf[i];
 		sfinfo->usCheckSum = cks;
 		

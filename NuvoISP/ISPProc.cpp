@@ -29,6 +29,10 @@ inline const T *vector_ptr(const std::vector<T> &v)
 
 
 CISPProc::CISPProc(HWND *pWnd)
+	: m_bProgram_APROM(0)
+	, m_bProgram_NVM(0)
+	, m_bProgram_Config(0)
+	, m_bErase(0)
 {
     MainHWND = pWnd;
     m_hThreadMutex = ::CreateMutex(NULL, FALSE, NULL);
@@ -309,10 +313,7 @@ void CISPProc::Thread_ProgramFlash()
             m_eProcSts = EPS_PROG_DONE;
             Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
         }
-    } catch(const TCHAR *szMSG) {
-
-        //MessageBox(*MainHWND, szMSG, NULL, MB_ICONSTOP);
-        //Set_ThreadAction(&CISPProc::Thread_CheckUSBConnect);
+    } catch(...) {
 		MessageBox(*MainHWND, _T("Lost connection!!!"), NULL, MB_ICONSTOP);
 		Set_ThreadAction(&CISPProc::Thread_Idle);
     }

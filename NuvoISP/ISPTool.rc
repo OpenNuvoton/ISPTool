@@ -222,9 +222,9 @@ BEGIN
     GROUPBOX        "Data Flash Options",IDC_GROUP_DATA_FLASH,8,88,250,48
 END
 
-IDD_DIALOG_HEX DIALOG  0, 0, 308, 162
+IDD_DIALOG_HEX DIALOGEX 0, 0, 308, 162
 STYLE DS_SETFONT | WS_CHILD
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     PUSHBUTTON      "OK",IDOK,116,141,50,14,NOT WS_VISIBLE
     PUSHBUTTON      "Cancel",IDCANCEL,175,141,50,14,NOT WS_VISIBLE
@@ -232,11 +232,8 @@ BEGIN
     CONTROL         "8 bits",IDC_RADIO_UINT8,"Button",BS_AUTORADIOBUTTON | WS_GROUP,251,17,40,10
     CONTROL         "16 bits",IDC_RADIO_UINT16,"Button",BS_AUTORADIOBUTTON,251,32,44,10
     CONTROL         "32 bits",IDC_RADIO_UINT32,"Button",BS_AUTORADIOBUTTON,251,47,44,10
-    CONTROL         "",IDC_RICHEDIT_DATAVIEW,"RICHEDIT",TCS_HOTTRACK | TCS_VERTICAL | TCS_RAGGEDRIGHT | TCS_MULTISELECT | WS_BORDER | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP,7,7,230,120
+    CONTROL         "",IDC_RICHEDIT_DATAVIEW,"RICHEDIT",TCS_HOTTRACK | TCS_VERTICAL | TCS_RAGGEDRIGHT | TCS_MULTISELECT | WS_BORDER | WS_VSCROLL | WS_HSCROLL | WS_GROUP | WS_TABSTOP,7,7,230,120
     EDITTEXT        IDC_EDIT_DATAVIEW,7,126,48,29,ES_MULTILINE | ES_AUTOVSCROLL | ES_AUTOHSCROLL | NOT WS_VISIBLE | WS_VSCROLL | WS_HSCROLL
-    PUSHBUTTON      "Refresh",IDC_BUTTON_REFRESH,251,120,50,14
-    LTEXT           "",IDC_STATIC_CHECKSUM,243,67,8,8
-    PUSHBUTTON      "Refresh EXT",IDC_BUTTON_REFRESH_EXT,252,97,50,14
 END
 
 IDD_DIALOG_CONFIGURATION_M051 DIALOGEX 0, 0, 267, 215
@@ -718,7 +715,6 @@ BEGIN
     CONTROL         "APROM",IDC_RADIO_BS_APROM,"Button",WS_DISABLED | BS_AUTORADIOBUTTON,96,119,42,10
     CONTROL         "LDROM with IAP",IDC_RADIO_BS_LDROM_APROM,"Button",WS_DISABLED | BS_AUTORADIOBUTTON,18,133,70,10
     CONTROL         "APROM with IAP",IDC_RADIO_BS_APROM_LDROM,"Button",WS_DISABLED | BS_AUTORADIOBUTTON,96,133,70,10
-    CONTROL         "Boot Loader with IAP",IDC_RADIO_BS_MKROM,"Button",WS_DISABLED | BS_AUTORADIOBUTTON,174,133,80,10
     GROUPBOX        "XT1 Pins Multi-function Options",IDC_GROUP_GPF,8,148,250,28
     CONTROL         "Work as GPIO",IDC_RADIO_GPF_GPIO,"Button",BS_AUTORADIOBUTTON | WS_GROUP,18,161,62,10
     CONTROL         "Work as External 4~24MHz Crystal Pin",IDC_RADIO_GPF_CRYSTAL,
@@ -752,17 +748,18 @@ BEGIN
     LTEXT           "Config 3:",IDC_STATIC_CONFIG_3,140,425,29,8
     CTEXT           "0x00000000",IDC_STATIC_CONFIG_VALUE_3,172,423,54,14,SS_CENTERIMAGE,WS_EX_STATICEDGE
     CONTROL         "Security Boot Lock",IDC_CHECK_SECURITYBOOT_LOCK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,290,76,10
-    GROUPBOX        "Boot Loader SPIM Multi-function Pin Select",IDC_GROUP_SPIM_SELECT,8,302,250,42
-    CONTROL         "SPIM_CLK (PA.3)",IDC_RADIO_SPIM_SEL0,"Button",BS_AUTORADIOBUTTON | WS_GROUP,18,315,72,10
-    CONTROL         "SPIM_CLK (PE.13)",IDC_RADIO_SPIM_SEL1,"Button",BS_AUTORADIOBUTTON,138,315,76,10
-    CONTROL         "SPIM_CLK (PA.11)",IDC_RADIO_SPIM_SEL2,"Button",BS_AUTORADIOBUTTON,18,330,76,10
-    CONTROL         "SPIM_CLK (PC.2)",IDC_RADIO_SPIM_SEL3,"Button",BS_AUTORADIOBUTTON,138,330,72,10
-    GROUPBOX        "Boot Loader UART1 Multi-function Pin Select",IDC_GROUP_UART1_SELECT,8,349,250,42
-    CONTROL         "UART1_TXD (PB.3)",IDC_RADIO_UART1_SEL0,"Button",BS_AUTORADIOBUTTON | WS_GROUP,18,362,82,10
-    CONTROL         "UART1_TXD (PE.12)",IDC_RADIO_UART1_SEL1,"Button",BS_AUTORADIOBUTTON,138,362,84,10
-    CONTROL         "UART1_TXD (PE.8)",IDC_RADIO_UART1_SEL2,"Button",BS_AUTORADIOBUTTON,18,377,80,10
-    CONTROL         "UART1_TXD (PA.0)",IDC_RADIO_UART1_SEL3,"Button",BS_AUTORADIOBUTTON,138,377,80,10
+    GROUPBOX        "Boot Loader SPIM CLK/SS/MISO/MOSI Multi-function Pin Select",IDC_GROUP_SPIM_SELECT,8,302,250,42
+    CONTROL         "PA.3/PA.2/PA.0/PA.1",IDC_RADIO_SPIM_SEL0,"Button",BS_AUTORADIOBUTTON | WS_GROUP,18,315,103,10
+    CONTROL         "PE.13/PE.12/PE.10/PE.11",IDC_RADIO_SPIM_SEL1,"Button",BS_AUTORADIOBUTTON,138,315,103,10
+    CONTROL         "PA.11/PA.10/PE.5/PE.4",IDC_RADIO_SPIM_SEL2,"Button",BS_AUTORADIOBUTTON,18,330,103,10
+    CONTROL         "PC.2/PC.3/PC.0/PC.1",IDC_RADIO_SPIM_SEL3,"Button",BS_AUTORADIOBUTTON,138,330,103,10
+    GROUPBOX        "Boot Loader UART1 TXD/RXD Multi-function Pin Select",IDC_GROUP_UART1_SELECT,8,349,250,42
+    CONTROL         "PB.3/PB.2",IDC_RADIO_UART1_SEL0,"Button",BS_AUTORADIOBUTTON | WS_GROUP,18,362,82,10
+    CONTROL         "PE.12/PE.13",IDC_RADIO_UART1_SEL1,"Button",BS_AUTORADIOBUTTON,138,362,58,10
+    CONTROL         "PE.8/PE.9",IDC_RADIO_UART1_SEL2,"Button",BS_AUTORADIOBUTTON,18,377,50,10
+    CONTROL         "PA.0/PA.1",IDC_RADIO_UART1_SEL3,"Button",BS_AUTORADIOBUTTON,138,377,50,10
     CONTROL         "SPROM Lock Cacheable",IDC_SPROM_LOCK_CACHEABLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,138,275,96,10
+    CONTROL         "Boot Loader",IDC_CHECK_BOOT_LOADER,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,174,133,74,10
 END
 
 IDD_DIALOG_CONFIGURATION_NUC400 DIALOGEX 0, 0, 267, 434
@@ -1080,7 +1077,7 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,150,321,50,14
     CONTROL         "System clock stop detection",IDC_CHECK_CLOCK_STOP_DETECT,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,18,251,105,10
-    CONTROL         "ISP Flash Mass Erase",IDC_CHECK_MASS_ERASE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,136,251,85,10
+    CONTROL         "ISP Flash Mass Erase",IDC_CHECK_MASS_ERASE,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,136,251,85,10
 END
 
 IDD_DIALOG_CONFIGURATION_M451 DIALOGEX 0, 0, 267, 364
@@ -1352,7 +1349,7 @@ BEGIN
     CONTROL         "",IDC_SPIN_DATA_FLASH_SIZE,"msctls_updown32",UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,238,246,14,14
     LTEXT           "Data Flash Size:",IDC_STATIC_DATA_FLASH_SIZE,137,248,52,8
     GROUPBOX        "Data Flash Options",IDC_GROUP_DATA_FLASH,8,218,250,48
-    CONTROL         "ICE Lock",IDC_CHECK_ICE_LOCK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,137,286,45,10
+    CONTROL         "ICE Lock",IDC_CHECK_ICE_LOCK,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,137,286,45,10
 END
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1723,7 +1720,9 @@ BEGIN
     IDS_BINARY_FILES        "Binary Files (*.bin;*.hex;*.rom)|*.bin;*.hex;*.rom|All Files|*.*||"
     IDS_NOT_SELECT_OPERATION "You did not select any operation."
     IDS_PLS_SELECT_OPERATION 
-                            "Please click ""option"" to select at least one from ""Erase"" and ""Program""."
+                            "Please click ""Options"" to select at least one from ""Erase"" and ""Program""."
+    IDS_PLS_SELECT_OPERATION1 
+                            "Please click ""Program Options"" to select at least one from ""Erase"" and ""Program""."
     IDS_NOT_SELECT_OPEATION_CONTINUE 
                             "You did not select option ""Erase"" before ""Program""."
     IDS_ABOUT_TO_ERASE_CONFIG 
@@ -1764,7 +1763,7 @@ BEGIN
     IDS_NUC200_SERIES       "NUC200 Series"
     IDS_N512_SERIES         "N512 Series"
     IDS_CONTINUE            "Continue anyway?"
-    IDS_ONINFO_NO_OPEN      "Encrypted online project seed %d (id=%08x)\n* Have not used by an ICP project.\n"
+    IDS_ONINFO_NO_OPEN      "Online encrypted project seed %d (id=%08x)\n* Have not used by an ICP project.\n"
     IDS_NUC400_SERIES       "NUC400 Series"
     IDS_MT5XX_SERIES        "NM1500 Series"
     IDS_AU91XX_SERIES       "I9160/I9300/I91300 Series"
@@ -1788,11 +1787,12 @@ BEGIN
     IDS_KEY_NOT_MATCH       "Key not matched! Can not update flash data."
     IDS_UNLOCK_KEY_NOT_FOUND 
                             "Can not load unlock key setting! Please set unlock key in Options."
-    IDS_LOCK_KEY_NOT_FOUND  "Can not load lock key setting! Please set lock key in Key Options."
+    IDS_LOCK_KEY_NOT_FOUND  "Can not load KPROM settings! Please press ""KPROM Options"" to fill new settings."
     IDS_ISD9000_SERIES      "I91000 Series"
     IDS_I9200_SERIES        "I91200 Series"
     IDS_KPROM_WARNING       "If target chip is in write-protection mode by KPROM, and then the whole chip will be erased while offline download!"
     IDS_TC8226_SERIES       "M481 Series"
+    IDS_I94000_SERIES       "I94000 Series"
 END
 
 STRINGTABLE 
@@ -1846,6 +1846,7 @@ END
 
 STRINGTABLE 
 BEGIN
+    IDS_LD_INFOBLOCK_WARNING "Update information block will erase LDROM, continue?"
     IDS_FAILED_TO_VERIFY_INFO_BLOCK "Failed to verify information block!"
     IDS_FAILED_TO_VERIFY_SECURE_KEY "Failed to verify secure key!"
     IDS_INVALID_SECURE_KEY_FILE "Invalid secure key file!"
@@ -1880,6 +1881,7 @@ BEGIN
     IDS_DATA_SAVED_PS       "Data has been saved in %s."
     IDS_FW_UPDATE_VERSION   "The Nu-Link firmware has higher version %d,\nwhile current applicaton version is %d.\nThe application may work abnormally.\n\nBefore restoring the old Nu-Link firmware, please\n Remove any other devices connected on the Nu-Link!\n\nDo you want to restore the old Nu-Link firmware now?\n"
     IDS_NUC100_SERIES       "NUC100 Series"
+    IDS_N571                "N571 Series"
     IDS_N572                "N572 Series"
     IDS_NOT_SUPPORTED_CHIP  "No implement for this chip type!"
     IDS_NOT_SUPPORTED_SPIFLASH  "Not support for this spi flash!"
@@ -1918,7 +1920,7 @@ BEGIN
     IDS_N570_SERIES         "N570/N570S Series"
     IDS_N569_SERIES         "N569S Series"
 END
-	
+
 STRINGTABLE 
 BEGIN
     IDS_PASSWORD_NOT_MATCH  "Password not matched!"
@@ -2050,6 +2052,7 @@ BEGIN
     IDS_FAILED_TO_VERIFY_CODE_AREA "Failed to verify Code Area!"
     IDS_FAILED_TO_VERIFY_DATA_AREA "Failed to verify Data Area!"
     IDS_FAILED_TO_LOCK_MTP  "Failed to lock MTP!"
+    IDS_FAILED_TO_LOAD_MTP  "Failed to load MTP!"
     IDS_EXCEED_CODE_AREA    "The write size exceeds the limitation of Code Area size."
     IDS_WRONG_PASSWORD_ATTEMPT 
                             "Failed Password Count(s) = %d!\nThe offline data will be erased after %d failed password attempts."
@@ -2086,7 +2089,6 @@ BEGIN
     IDS_OTPPROMPT           "Current configuration of on-board chip is\n[%s]"
     IDS_OTPPROMPT_NONE      "Current configuration of on-board chip is not OTP type"
     IDS_REPORT_PROGRAM      "    Write Address:    0x%llx\n    Write Length:      0x%llX"
-    IDS_N571                "N571 Series"
 END
 
 STRINGTABLE 
@@ -2097,7 +2099,6 @@ BEGIN
     IDS_CIPHER_DISABLED_CONTINUE 
                             "The cipher function will be disabled. Continue MTP operation?"
     IDS_NOT_SUPPORTED_SWD   "The Nu-Link firmware's version is %d.\n\nThe application cannot support offline programming mode with current Nu-Link firmware.\n\nPlease update Nu-Link firmware!"
-    IDS_FAILED_TO_LOAD_MTP  "Failed to load MTP!"
 END
 
 STRINGTABLE 
@@ -2136,6 +2137,17 @@ BEGIN
                             "Boot new firmware, please wait for a while...\n\nIf long time no response, please confirm that the Nu-Link is in ICP/ICE mode, and plug out the Nu-Link from PC and plug in again!"
     IDS_FM_UPDATE_PLUGOUTIN_USB_WARNING 
                             "Please remove any device on the Nu-Link, and plug out the Nu-Link from PC and plug in again!\n\nBefore plug in, please confirm that the Nu-Link is in ICP/ICE mode."
+END
+
+STRINGTABLE
+BEGIN
+    IDS_KEY_EMPTY_WARNING   "Key can not be empty. Please try again!"
+    IDS_KEY_COMFIRM_NOT_MATCH_WARNING
+                            "Your key and confirm key don't match. Please try again!"
+    IDS_KEY_NOT_SELECT_DATA_WARNING
+                            "Please select the data you want to protect!"
+    IDS_KEY_REMAINING_RETRY_COUNT
+                            "Remaining retry count: %d"
 END
 
 #endif    // English (U.S.) resources
