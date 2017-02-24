@@ -19,7 +19,6 @@ public:
 	CDialogConfiguration_NM1120(unsigned int uProgramMemorySize = 29.5 * 1024,
 								   CWnd* pParent = NULL);   // standard constructor
 
-	static CString GetConfigWarning(const CAppConfig::NM1120_configs_t &config);
 
 	CAppConfig::NM1120_configs_t m_ConfigValue;
 

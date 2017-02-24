@@ -468,16 +468,6 @@ void CDialogConfiguration_N76E1T::OnOK()
 	CDialog::OnOK();
 }
 
-CString CDialogConfiguration_N76E1T::GetConfigWarning(const CAppConfig::N76E1T_configs_t &config)
-{
-	CString str;
-	unsigned char ucConfig0 = _GET_BYTE0(config.m_value[0]);
-
-	if (ucConfig0 & N76E1T_CONFIG_LOCK)
-		str += _T("   ") + _I(IDS_DISABLE_SECURITY_LOCK);
-
-	return str;
-}
 
 void CDialogConfiguration_N76E1T::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {

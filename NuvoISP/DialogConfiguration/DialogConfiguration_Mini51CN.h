@@ -20,7 +20,6 @@ public:
 								  unsigned int uPID = 0,
 								  CWnd* pParent = NULL);   // standard constructor
 
-	static CString GetConfigWarning(const CAppConfig::Mini51_configs_t &config);
 
 	CAppConfig::Mini51_configs_t m_ConfigValue;
 

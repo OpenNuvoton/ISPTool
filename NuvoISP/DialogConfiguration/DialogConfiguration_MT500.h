@@ -18,7 +18,6 @@ public:
 								unsigned int uDataFlashSize = 0,
 								CWnd* pParent = NULL);   // standard constructor
 
-	static CString GetConfigWarning(const CAppConfig::MT5xx_configs_t &config);
 
 	CAppConfig::MT5xx_configs_t m_ConfigValue;
 

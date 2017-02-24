@@ -18,7 +18,6 @@ class CDialogConfiguration_NUC102 : public CDialogResize
 public:
 	CDialogConfiguration_NUC102(CWnd* pParent = NULL);   // standard constructor
 
-	static CString GetConfigWarning(const CAppConfig::NUC1xx_configs_t &config);
 
 	CAppConfig::NUC1xx_configs_t m_ConfigValue;
 

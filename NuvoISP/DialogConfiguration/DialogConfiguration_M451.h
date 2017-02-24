@@ -19,7 +19,6 @@ public:
 	CDialogConfiguration_M451(unsigned int uProgramMemorySize = 256 * 1024,
 							  CWnd* pParent = NULL);   // standard constructor
 
-	static CString GetConfigWarning(const CAppConfig::M451_configs_t &config);
 
 	CAppConfig::M451_configs_t m_ConfigValue;
 

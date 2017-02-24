@@ -505,32 +505,6 @@ void CDialogConfiguration_NUC4xx::OnOK()
 }
 
 
-CString CDialogConfiguration_NUC4xx::GetConfigWarning(const CAppConfig::NUC4xx_configs_t &config)
-{
-	CString str;
-	unsigned int uConfig0 = config.m_value[0];
-	
-	switch(uConfig0 & NUC4XX_FLASH_CONFIG_CFOSC)
-	{
-	case NUC4XX_FLASH_CONFIG_E12M:
-		str += _T("   ") + _I(IDS_SELECT_EXTERNAL_12M_CLOCK);
-		break;
-	case NUC4XX_FLASH_CONFIG_E32K:
-		str += _T("   ") + _I(IDS_SELECT_EXTERNAL_32K_CLOCK);
-		break;
-	case NUC4XX_FLASH_CONFIG_PLL:
-		str += _T("   ") + _I(IDS_SELECT_PLL_CLOCK);
-		break;
-	default:
-		;
-	}
-
-	BOOL bSecurityLock = ((uConfig0 & NUC4XX_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
-	if(!bSecurityLock)
-		str += _T("   ") + _I(IDS_DISABLE_SECURITY_LOCK);
-
-	return str;
-}
 unsigned int CDialogConfiguration_NUC4xx::FMC_CRC8(unsigned int au32Data[], unsigned int i32Count)
 {
     int         i32ByteIdx;

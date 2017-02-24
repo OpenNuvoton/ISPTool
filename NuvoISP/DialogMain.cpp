@@ -505,26 +505,6 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
 	return ret;
 }
 
-void CDialogMain::Test()
-{
-    CDialogConfiguration_NUC1xx *pDlg = NULL;
-    unsigned int *Config;
-	pDlg = new CDialogConfiguration_NUC1xx;	// "NUC100BN";
-	Config = (((CDialogConfiguration_NUC1xx*)pDlg)->m_ConfigValue.m_value);
-	//Config[0] = 0x12345678;	// Crash
-	Config[0] = 0x00000000;
-	Config[1] = 0x87654321;
-	
-	//GetConfigWarning
-
-	CString str = pDlg->GetConfigWarning(pDlg->m_ConfigValue);
-	wprintf(str);
-	if(pDlg->DoModal() == IDOK)
-	{
-		printf("CONFIG01 = %8X, %8X\n", Config[0], Config[1]);
-	}
-}
-
 /* called by DlgNuvoISP */
 bool CDialogMain::ConfigSetting(unsigned int id, unsigned int *pConfig, unsigned int size)
 {

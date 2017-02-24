@@ -273,17 +273,6 @@ void CDialogConfiguration_Mini51BN::OnOK()
 }
 
 
-CString CDialogConfiguration_Mini51BN::GetConfigWarning(const CAppConfig::Mini51_configs_t &config)
-{
-	CString str;
-	unsigned int uConfig0 = config.m_value[0];
-
-	BOOL bSecurityLock = ((uConfig0 & MINI51_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
-	if(!bSecurityLock)
-		str += _T("   ") + _I(IDS_DISABLE_SECURITY_LOCK);
-
-	return str;
-}
 
 void CDialogConfiguration_Mini51BN::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)
 {

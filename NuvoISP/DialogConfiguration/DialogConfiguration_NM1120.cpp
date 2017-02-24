@@ -505,17 +505,6 @@ void CDialogConfiguration_NM1120::OnOK()
 }
 
 
-CString CDialogConfiguration_NM1120::GetConfigWarning(const CAppConfig::NM1120_configs_t &config)
-{
-	CString str;
-	unsigned int uConfig0 = config.m_value[0];
-
-	BOOL bSecurityLock = ((uConfig0 & NM1120_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
-	if(!bSecurityLock)
-		str += _T("   ") + _I(IDS_DISABLE_SECURITY_LOCK);
-
-	return str;
-}
 
 void CDialogConfiguration_NM1120::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)
 {

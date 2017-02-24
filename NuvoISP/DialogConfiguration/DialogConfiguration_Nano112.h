@@ -19,7 +19,6 @@ public:
 	CDialogConfiguration_Nano112(unsigned int uProgramMemorySize = 32 * 1024,
 								 CWnd* pParent = NULL);   // standard constructor
 
-	static CString GetConfigWarning(const CAppConfig::Nano100_configs_t &config);
 
 	CAppConfig::Nano100_configs_t m_ConfigValue;
 

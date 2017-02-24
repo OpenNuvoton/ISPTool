@@ -19,7 +19,6 @@ public:
 	CDialogConfiguration_Mini51BN(unsigned int uProgramMemorySize = 16 * 1024,
 								  CWnd* pParent = NULL);   // standard constructor
 
-	static CString GetConfigWarning(const CAppConfig::Mini51_configs_t &config);
 
 	CAppConfig::Mini51_configs_t m_ConfigValue;
 

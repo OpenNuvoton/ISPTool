@@ -18,7 +18,6 @@ class CDialogConfiguration_M05x : public CDialogResize
 public:
 	CDialogConfiguration_M05x(CWnd* pParent = NULL);   // standard constructor
 
-	static CString GetConfigWarning(const CAppConfig::M05x_configs_t &config);
 
 	CAppConfig::M05x_configs_t m_ConfigValue;
 

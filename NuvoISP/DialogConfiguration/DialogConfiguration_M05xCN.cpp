@@ -385,29 +385,3 @@ void CDialogConfiguration_M05xCN::OnOK()
 }
 
 
-CString CDialogConfiguration_M05xCN::GetConfigWarning(const CAppConfig::M05x_configs_t &config)
-{
-	CString str;
-	unsigned int uConfig0 = config.m_value[0];
-
-	switch(uConfig0 & M05X_FLASH_CONFIG_CFOSC)
-	{
-	case M05X_FLASH_CONFIG_E12M:
-		str += _T("   ") + _I(IDS_SELECT_EXTERNAL_12M_CLOCK);
-		break;
-	case M05X_FLASH_CONFIG_E32K:
-		str += _T("   ") + _I(IDS_SELECT_EXTERNAL_32K_CLOCK);
-		break;
-	case M05X_FLASH_CONFIG_PLL:
-		str += _T("   ") + _I(IDS_SELECT_PLL_CLOCK);
-		break;
-	default:
-		;
-	}
-
-	BOOL bSecurityLock = ((uConfig0 & M05X_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
-	if(!bSecurityLock)
-		str += _T("   ") + _I(IDS_DISABLE_SECURITY_LOCK);
-
-	return str;
-}

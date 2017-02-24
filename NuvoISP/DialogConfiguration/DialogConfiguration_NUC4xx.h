@@ -19,7 +19,6 @@ public:
 	CDialogConfiguration_NUC4xx(unsigned int uProgramMemorySize = 512 * 1024,
 								CWnd* pParent = NULL);   // standard constructor
 
-	static CString GetConfigWarning(const CAppConfig::NUC4xx_configs_t &config);
 
 	CAppConfig::NUC4xx_configs_t m_ConfigValue;
 

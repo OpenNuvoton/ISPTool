@@ -32,7 +32,6 @@ public:
 	CDialogConfiguration_N76E1T(unsigned int uProgramMemorySize = 18 * 1024,
 								CWnd* pParent = NULL);
 
-	static CString GetConfigWarning(const CAppConfig::N76E1T_configs_t &config);
 
 	CAppConfig::N76E1T_configs_t m_ConfigValue;
 

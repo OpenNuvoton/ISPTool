@@ -440,26 +440,6 @@ void CDialogConfiguration_M0564::OnOK()
 }
 
 
-CString CDialogConfiguration_M0564::GetConfigWarning(const CAppConfig::M0564_configs_t &config)
-{
-	CString str;
-	unsigned int uConfig0 = config.m_value[0];
-
-	switch(uConfig0 & M0564_FLASH_CONFIG_CFOSC)
-	{
-	case M0564_FLASH_CONFIG_E12M:
-		str += _T("   ") + _I(IDS_SELECT_EXTERNAL_12M_CLOCK);
-		break;
-	default:
-		;
-	}
-
-	BOOL bSecurityLock = ((uConfig0 & M0564_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
-	if(!bSecurityLock)
-		str += _T("   ") + _I(IDS_DISABLE_SECURITY_LOCK);
-
-	return str;
-}
 
 void CDialogConfiguration_M0564::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)
 {

@@ -21,7 +21,6 @@ public:
 								unsigned int uDataFlashSize = 0,
 								CWnd* pParent = NULL);   // standard constructor
 
-	static CString GetConfigWarning(const CAppConfig::NUC1xx_configs_t &config);
 
 	CAppConfig::NUC1xx_configs_t m_ConfigValue;
 

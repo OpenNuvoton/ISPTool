@@ -385,26 +385,6 @@ void CDialogConfiguration_Nano103::OnOK()
 }
 
 
-CString CDialogConfiguration_Nano103::GetConfigWarning(const CAppConfig::Nano100_configs_t &config)
-{
-	CString str;
-	unsigned int uConfig0 = config.m_value[0];
-
-	switch(uConfig0 & NANO100_FLASH_CONFIG_CFOSC)
-	{
-	case NANO100_FLASH_CONFIG_E12M:
-		str += _T("   ") + _I(IDS_SELECT_EXTERNAL_12M_CLOCK);
-		break;
-	default:
-		;
-	}
-
-	BOOL bSecurityLock = ((uConfig0 & NANO100_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
-	if(!bSecurityLock)
-		str += _T("   ") + _I(IDS_DISABLE_SECURITY_LOCK);
-
-	return str;
-}
 
 void CDialogConfiguration_Nano103::OnRadioBor() 
 {

@@ -29,7 +29,6 @@ public:
 #ifndef _NO_CONFIGURATION_DLG
 	bool ConfigDlgSel(unsigned int *pConfig, unsigned int size);
 	bool ConfigSetting(unsigned int id, unsigned int *pConfig, unsigned int size);
-	void Test();
 #endif
 
 	void ShowDlgItem(int nID, int nCmdShow);
