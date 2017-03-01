@@ -41,6 +41,7 @@
 #define IDD_DIALOG_CONFIGURATION_M051   119
 #define IDS_SIZE_BYTES                  120
 #define IDS_PS_CHECKSUM_PX              121
+#define IDC_GROUP_INTERFACE             122
 #define IDS_NOT_SELECT_OPERATION        123
 #define IDS_PLS_SELECT_OPERATION        124
 #define IDS_NOT_SELECT_OPEATION_CONTINUE 125

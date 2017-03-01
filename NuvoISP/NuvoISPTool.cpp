@@ -69,28 +69,8 @@ BOOL CISPToolApp::InitInstance()
 	//CDlg_NUC4xx dlg = CDlg_NUC4xx();
 	//CNuvoISPDlg isp;
 	//isp.DoModal();
-
-	DlgInterfaceSel InterfaceDlg;
-	INT_PTR nResponse = InterfaceDlg.DoModal();
-
-	if (nResponse == IDOK)
-	{
-		unsigned int it = InterfaceDlg.m_Interface;
-		CString str = InterfaceDlg.m_ComNum;
-
-		//SetLangID(0x0404);
-		AfxSetResourceHandle(m_hInstance);
-
-		CNuvoISPDlg MainDlg;
-
-		MainDlg.SetInterface(it, str);
-		nResponse = MainDlg.DoModal();
-	}
-	else if (nResponse == IDCANCEL)
-	{
-		// TODO: 在此放置於使用 [取消] 來停止使用對話方塊時
-		// 處理的程式碼
-	}
+	CNuvoISPDlg MainDlg;
+	MainDlg.DoModal();
 
 	// 刪除上面所建立的殼層管理員。
 	if (pShellManager != NULL)

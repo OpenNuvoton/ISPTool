@@ -109,40 +109,40 @@ void CDialogMain::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
     int nDelta;
 
     switch (nSBCode) {
-    case SB_LINEDOWN:
-        if (m_nScrollPosY >= nMaxPos)
+        case SB_LINEDOWN:
+            if (m_nScrollPosY >= nMaxPos)
+                return;
+            nDelta = min(nMaxPos/100, nMaxPos - m_nScrollPosY);
+            if(nMaxPos/100 == 0)
+                nDelta = 1;
+            break;
+
+        case SB_LINEUP:
+            if (m_nScrollPosY <= 0)
+                return;
+            nDelta = -min(nMaxPos/100, m_nScrollPosY);
+            if(nMaxPos/100 == 0)
+                nDelta = -1;
+            break;
+
+        case SB_PAGEDOWN:
+            if (m_nScrollPosY >= nMaxPos)
+                return;
+            nDelta = min(nMaxPos/10, nMaxPos - m_nScrollPosY);
+            break;
+
+        case SB_THUMBPOSITION:
+            nDelta = (int)nPos - m_nScrollPosY;
+            break;
+
+        case SB_PAGEUP:
+            if (m_nScrollPosY <= 0)
+                return;
+            nDelta = -min(nMaxPos/10, m_nScrollPosY);
+            break;
+
+        default:
             return;
-        nDelta = min(nMaxPos/100, nMaxPos - m_nScrollPosY);
-        if(nMaxPos/100 == 0)
-            nDelta = 1;
-        break;
-
-    case SB_LINEUP:
-        if (m_nScrollPosY <= 0)
-            return;
-        nDelta = -min(nMaxPos/100, m_nScrollPosY);
-        if(nMaxPos/100 == 0)
-            nDelta = -1;
-        break;
-
-    case SB_PAGEDOWN:
-        if (m_nScrollPosY >= nMaxPos)
-            return;
-        nDelta = min(nMaxPos/10, nMaxPos - m_nScrollPosY);
-        break;
-
-    case SB_THUMBPOSITION:
-        nDelta = (int)nPos - m_nScrollPosY;
-        break;
-
-    case SB_PAGEUP:
-        if (m_nScrollPosY <= 0)
-            return;
-        nDelta = -min(nMaxPos/10, m_nScrollPosY);
-        break;
-
-    default:
-        return;
     }
     m_nScrollPosY += nDelta;
     SetScrollPos(SB_VERT, m_nScrollPosY, TRUE);
@@ -162,40 +162,40 @@ void CDialogMain::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
     int nDelta;
 
     switch (nSBCode) {
-    case SB_LINERIGHT:
-        if (m_nScrollPosX >= nMaxPos)
+        case SB_LINERIGHT:
+            if (m_nScrollPosX >= nMaxPos)
+                return;
+            nDelta = min(nMaxPos/100, nMaxPos - m_nScrollPosX);
+            if(nMaxPos/100 == 0)
+                nDelta = 1;
+            break;
+
+        case SB_LINELEFT:
+            if (m_nScrollPosX <= 0)
+                return;
+            nDelta = -min(nMaxPos/100, m_nScrollPosX);
+            if(nMaxPos/100 == 0)
+                nDelta = -1;
+            break;
+
+        case SB_PAGERIGHT:
+            if (m_nScrollPosX >= nMaxPos)
+                return;
+            nDelta = min(nMaxPos/10, nMaxPos - m_nScrollPosX);
+            break;
+
+        case SB_THUMBPOSITION:
+            nDelta = (int)nPos - m_nScrollPosX;
+            break;
+
+        case SB_PAGELEFT:
+            if (m_nScrollPosX <= 0)
+                return;
+            nDelta = -min(nMaxPos/10, m_nScrollPosX);
+            break;
+
+        default:
             return;
-        nDelta = min(nMaxPos/100, nMaxPos - m_nScrollPosX);
-        if(nMaxPos/100 == 0)
-            nDelta = 1;
-        break;
-
-    case SB_LINELEFT:
-        if (m_nScrollPosX <= 0)
-            return;
-        nDelta = -min(nMaxPos/100, m_nScrollPosX);
-        if(nMaxPos/100 == 0)
-            nDelta = -1;
-        break;
-
-    case SB_PAGERIGHT:
-        if (m_nScrollPosX >= nMaxPos)
-            return;
-        nDelta = min(nMaxPos/10, nMaxPos - m_nScrollPosX);
-        break;
-
-    case SB_THUMBPOSITION:
-        nDelta = (int)nPos - m_nScrollPosX;
-        break;
-
-    case SB_PAGELEFT:
-        if (m_nScrollPosX <= 0)
-            return;
-        nDelta = -min(nMaxPos/10, m_nScrollPosX);
-        break;
-
-    default:
-        return;
     }
 
     m_nScrollPosX += nDelta;
@@ -292,237 +292,323 @@ extern CPartNumID *psChipData;
 
 bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
 {
-	bool ret = false;
+    bool ret = false;
     CDialog *pConfigDlg = NULL;
     unsigned int *Config;
 
-	BOOL bIsDataFlashFixed = FALSE;
-	unsigned int uProgramMemorySize = 0;
-	unsigned int uDataFlashSize = 0;
+    BOOL bIsDataFlashFixed = FALSE;
+    unsigned int uProgramMemorySize = 0;
+    unsigned int uDataFlashSize = 0;
 
     if(psChipData) {
 
-		if(gsPidInfo.uPID == psChipData->uID)
-		{
-			bIsDataFlashFixed = gsPidInfo.uDataFlashSize;
-			uProgramMemorySize = gsPidInfo.uProgramMemorySize;
-			uDataFlashSize = gsPidInfo.uDataFlashSize;
-		}
+        if(gsPidInfo.uPID == psChipData->uID) {
+            bIsDataFlashFixed = gsPidInfo.uDataFlashSize;
+            uProgramMemorySize = gsPidInfo.uProgramMemorySize;
+            uDataFlashSize = gsPidInfo.uDataFlashSize;
+        }
 
         switch(psChipData->uProjectCode) {
-		case IDD_DIALOG_CONFIGURATION_NUC100:
+            case IDD_DIALOG_CONFIGURATION_NUC100:
 
-			if(uProgramMemorySize)
-				pConfigDlg = new CDialogConfiguration_NUC1xx(bIsDataFlashFixed, uProgramMemorySize, uDataFlashSize);	// "NUC100BN";
-			else
-				pConfigDlg = new CDialogConfiguration_NUC1xx;	// "NUC100BN";
+                if(uProgramMemorySize)
+                    pConfigDlg = new CDialogConfiguration_NUC1xx(bIsDataFlashFixed, uProgramMemorySize, uDataFlashSize);	// "NUC100BN";
+                else
+                    pConfigDlg = new CDialogConfiguration_NUC1xx;	// "NUC100BN";
 
-            Config = (((CDialogConfiguration_NUC1xx*)pConfigDlg)->m_ConfigValue.m_value);
-            break;
+                Config = (((CDialogConfiguration_NUC1xx*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
 
 
-        case IDD_DIALOG_CONFIGURATION_NUC102:
-            pConfigDlg = new CDialogConfiguration_NUC102;
-            Config = (((CDialogConfiguration_NUC102*)pConfigDlg)->m_ConfigValue.m_value);
-            break;
+            case IDD_DIALOG_CONFIGURATION_NUC102:
+                pConfigDlg = new CDialogConfiguration_NUC102;
+                Config = (((CDialogConfiguration_NUC102*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
 
-		case IDD_DIALOG_CONFIGURATION_NUC103:
-			if(uProgramMemorySize)
-				pConfigDlg = new CDialogConfiguration_NUC103(uProgramMemorySize, uDataFlashSize);
-			else
-				pConfigDlg = new CDialogConfiguration_NUC103;
+            case IDD_DIALOG_CONFIGURATION_NUC103:
+                if(uProgramMemorySize)
+                    pConfigDlg = new CDialogConfiguration_NUC103(uProgramMemorySize, uDataFlashSize);
+                else
+                    pConfigDlg = new CDialogConfiguration_NUC103;
 
-			Config = (((CDialogConfiguration_NUC103*)pConfigDlg)->m_ConfigValue.m_value);
-            break;
+                Config = (((CDialogConfiguration_NUC103*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
 
-		case IDD_DIALOG_CONFIGURATION_NUC200:
-			if(uProgramMemorySize)
-				pConfigDlg = new CDialogConfiguration_NUC2xx(bIsDataFlashFixed, uProgramMemorySize, uDataFlashSize);
-			else
-				pConfigDlg = new CDialogConfiguration_NUC2xx;
+            case IDD_DIALOG_CONFIGURATION_NUC200:
+                if(uProgramMemorySize)
+                    pConfigDlg = new CDialogConfiguration_NUC2xx(bIsDataFlashFixed, uProgramMemorySize, uDataFlashSize);
+                else
+                    pConfigDlg = new CDialogConfiguration_NUC2xx;
 
-            Config = (((CDialogConfiguration_NUC2xx*)pConfigDlg)->m_ConfigValue.m_value);
-            break;
+                Config = (((CDialogConfiguration_NUC2xx*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
 
-        case IDD_DIALOG_CONFIGURATION_NUC131:
-			if(uProgramMemorySize)
-				pConfigDlg = new CDialogConfiguration_NUC131(uProgramMemorySize, uDataFlashSize);
-			else
-				pConfigDlg = new CDialogConfiguration_NUC131;
+            case IDD_DIALOG_CONFIGURATION_NUC131:
+                if(uProgramMemorySize)
+                    pConfigDlg = new CDialogConfiguration_NUC131(uProgramMemorySize, uDataFlashSize);
+                else
+                    pConfigDlg = new CDialogConfiguration_NUC131;
 
-            Config = (((CDialogConfiguration_NUC131*)pConfigDlg)->m_ConfigValue.m_value);
-            break;
+                Config = (((CDialogConfiguration_NUC131*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
 
-        case IDD_DIALOG_CONFIGURATION_NANO100:
-			if(uProgramMemorySize)
-				pConfigDlg = new CDialogConfiguration_Nano100(uProgramMemorySize);
-			else
-				pConfigDlg = new CDialogConfiguration_Nano100;
+            case IDD_DIALOG_CONFIGURATION_NANO100:
+                if(uProgramMemorySize)
+                    pConfigDlg = new CDialogConfiguration_Nano100(uProgramMemorySize);
+                else
+                    pConfigDlg = new CDialogConfiguration_Nano100;
 
-            Config = (((CDialogConfiguration_Nano100*)pConfigDlg)->m_ConfigValue.m_value);
-            break;
+                Config = (((CDialogConfiguration_Nano100*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
 
-        case IDD_DIALOG_CONFIGURATION_NANO100BN:
-			if(uProgramMemorySize)
-				pConfigDlg = new CDialogConfiguration_Nano100BN(uProgramMemorySize);
-			else
-				pConfigDlg = new CDialogConfiguration_Nano100BN;
+            case IDD_DIALOG_CONFIGURATION_NANO100BN:
+                if(uProgramMemorySize)
+                    pConfigDlg = new CDialogConfiguration_Nano100BN(uProgramMemorySize);
+                else
+                    pConfigDlg = new CDialogConfiguration_Nano100BN;
 
-            Config = (((CDialogConfiguration_Nano100BN*)pConfigDlg)->m_ConfigValue.m_value);
-            break;
+                Config = (((CDialogConfiguration_Nano100BN*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
 
-        case IDD_DIALOG_CONFIGURATION_NANO112:
-			if(uProgramMemorySize)
-				pConfigDlg = new CDialogConfiguration_Nano112(uProgramMemorySize);
-			else
-				pConfigDlg = new CDialogConfiguration_Nano112;
+            case IDD_DIALOG_CONFIGURATION_NANO112:
+                if(uProgramMemorySize)
+                    pConfigDlg = new CDialogConfiguration_Nano112(uProgramMemorySize);
+                else
+                    pConfigDlg = new CDialogConfiguration_Nano112;
 
-            Config = (((CDialogConfiguration_Nano112*)pConfigDlg)->m_ConfigValue.m_value);
-            break;
+                Config = (((CDialogConfiguration_Nano112*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
 
-        case IDD_DIALOG_CONFIGURATION_NANO103:
-			if(uProgramMemorySize)
-				pConfigDlg = new CDialogConfiguration_Nano103(uProgramMemorySize);
-			else
-				pConfigDlg = new CDialogConfiguration_Nano103;
+            case IDD_DIALOG_CONFIGURATION_NANO103:
+                if(uProgramMemorySize)
+                    pConfigDlg = new CDialogConfiguration_Nano103(uProgramMemorySize);
+                else
+                    pConfigDlg = new CDialogConfiguration_Nano103;
 
-            Config = (((CDialogConfiguration_Nano103*)pConfigDlg)->m_ConfigValue.m_value);
-            break;
+                Config = (((CDialogConfiguration_Nano103*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
 
-		case IDD_DIALOG_CONFIGURATION_M051:
-            pConfigDlg = new CDialogConfiguration_M05x;
-            Config = (((CDialogConfiguration_M05x*)pConfigDlg)->m_ConfigValue.m_value);
-            break;
+            case IDD_DIALOG_CONFIGURATION_M051:
+                pConfigDlg = new CDialogConfiguration_M05x;
+                Config = (((CDialogConfiguration_M05x*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
 
-		case IDD_DIALOG_CONFIGURATION_M051CN:
-            pConfigDlg = new CDialogConfiguration_M05xCN;
-            Config = (((CDialogConfiguration_M05xCN*)pConfigDlg)->m_ConfigValue.m_value);
-            break;
+            case IDD_DIALOG_CONFIGURATION_M051CN:
+                pConfigDlg = new CDialogConfiguration_M05xCN;
+                Config = (((CDialogConfiguration_M05xCN*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
 
-        case IDD_DIALOG_CONFIGURATION_M058:
-            pConfigDlg = new CDialogConfiguration_M058;
-            Config = (((CDialogConfiguration_M058*)pConfigDlg)->m_ConfigValue.m_value);
-           break;
+            case IDD_DIALOG_CONFIGURATION_M058:
+                pConfigDlg = new CDialogConfiguration_M058;
+                Config = (((CDialogConfiguration_M058*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
 
-        case IDD_DIALOG_CONFIGURATION_MINI51:
-			if(uProgramMemorySize)
-				pConfigDlg = new CDialogConfiguration_Mini51(uProgramMemorySize);
-			else
-				pConfigDlg = new CDialogConfiguration_Mini51;
+            case IDD_DIALOG_CONFIGURATION_MINI51:
+                if(uProgramMemorySize)
+                    pConfigDlg = new CDialogConfiguration_Mini51(uProgramMemorySize);
+                else
+                    pConfigDlg = new CDialogConfiguration_Mini51;
 
-            Config = (((CDialogConfiguration_Mini51*)pConfigDlg)->m_ConfigValue.m_value);
-            break;
+                Config = (((CDialogConfiguration_Mini51*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
 
-        case IDD_DIALOG_CONFIGURATION_MINI51BN:
-			if(uProgramMemorySize)
-				pConfigDlg = new CDialogConfiguration_Mini51BN(uProgramMemorySize);
-			else
-				pConfigDlg = new CDialogConfiguration_Mini51BN;
+            case IDD_DIALOG_CONFIGURATION_MINI51BN:
+                if(uProgramMemorySize)
+                    pConfigDlg = new CDialogConfiguration_Mini51BN(uProgramMemorySize);
+                else
+                    pConfigDlg = new CDialogConfiguration_Mini51BN;
 
-            Config = (((CDialogConfiguration_Mini51BN*)pConfigDlg)->m_ConfigValue.m_value);
-            break;
+                Config = (((CDialogConfiguration_Mini51BN*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
 
-        case IDD_DIALOG_CONFIGURATION_MINI51CN:
-			if(uProgramMemorySize)
-				pConfigDlg = new CDialogConfiguration_Mini51CN(uProgramMemorySize, psChipData->uID);
-			else if((psChipData->uID & 0xFFFFFF00) == 0x00A05800)
-				pConfigDlg = new CDialogConfiguration_Mini51CN(32*1024, psChipData->uID);
-			else
-				pConfigDlg = new CDialogConfiguration_Mini51CN;
+            case IDD_DIALOG_CONFIGURATION_MINI51CN:
+                if(uProgramMemorySize)
+                    pConfigDlg = new CDialogConfiguration_Mini51CN(uProgramMemorySize, psChipData->uID);
+                else if((psChipData->uID & 0xFFFFFF00) == 0x00A05800)
+                    pConfigDlg = new CDialogConfiguration_Mini51CN(32*1024, psChipData->uID);
+                else
+                    pConfigDlg = new CDialogConfiguration_Mini51CN;
 
-            Config = (((CDialogConfiguration_Mini51CN*)pConfigDlg)->m_ConfigValue.m_value);
-            break;
+                Config = (((CDialogConfiguration_Mini51CN*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
 
-        case IDD_DIALOG_CONFIGURATION_MT500:
-			if(uProgramMemorySize)
-				pConfigDlg = new CDialogConfiguration_MT500(bIsDataFlashFixed, uProgramMemorySize, uDataFlashSize);
-			else
-				pConfigDlg = new CDialogConfiguration_MT500;
+            case IDD_DIALOG_CONFIGURATION_MT500:
+                if(uProgramMemorySize)
+                    pConfigDlg = new CDialogConfiguration_MT500(bIsDataFlashFixed, uProgramMemorySize, uDataFlashSize);
+                else
+                    pConfigDlg = new CDialogConfiguration_MT500;
 
-			Config = (((CDialogConfiguration_MT500*)pConfigDlg)->m_ConfigValue.m_value);
-            break;
+                Config = (((CDialogConfiguration_MT500*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
 
-        case IDD_DIALOG_CONFIGURATION_NUC400:
-			if(uProgramMemorySize)
-				pConfigDlg = new CDialogConfiguration_NUC4xx(uProgramMemorySize);
-			else
-				pConfigDlg = new CDialogConfiguration_NUC4xx;
+            case IDD_DIALOG_CONFIGURATION_NUC400:
+                if(uProgramMemorySize)
+                    pConfigDlg = new CDialogConfiguration_NUC4xx(uProgramMemorySize);
+                else
+                    pConfigDlg = new CDialogConfiguration_NUC4xx;
 
-			Config = (((CDialogConfiguration_NUC4xx*)pConfigDlg)->m_ConfigValue.m_value);
-            break;
+                Config = (((CDialogConfiguration_NUC4xx*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
 
-        case IDD_DIALOG_CONFIGURATION_M451:
-			if(uProgramMemorySize)
-				pConfigDlg = new CDialogConfiguration_M451(uProgramMemorySize);
-			else
-				pConfigDlg = new CDialogConfiguration_M451;
+            case IDD_DIALOG_CONFIGURATION_M451:
+                if(uProgramMemorySize)
+                    pConfigDlg = new CDialogConfiguration_M451(uProgramMemorySize);
+                else
+                    pConfigDlg = new CDialogConfiguration_M451;
 
-            Config = (((CDialogConfiguration_M451*)pConfigDlg)->m_ConfigValue.m_value);
-            break;
+                Config = (((CDialogConfiguration_M451*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
 
-         case IDD_DIALOG_CONFIGURATION_NM1120:
-            pConfigDlg = new CDialogConfiguration_NM1120;
-            Config = (((CDialogConfiguration_NM1120*)pConfigDlg)->m_ConfigValue.m_value);
-            break;
+            case IDD_DIALOG_CONFIGURATION_NM1120:
+                pConfigDlg = new CDialogConfiguration_NM1120;
+                Config = (((CDialogConfiguration_NM1120*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
 
-		case IDD_DIALOG_CONFIGURATION_N76E1T:
-			pConfigDlg = new CDialogConfiguration_N76E1T(psChipData->uID);
-            Config = (((CDialogConfiguration_N76E1T*)pConfigDlg)->m_ConfigValue.m_value);
-			break;
+            case IDD_DIALOG_CONFIGURATION_N76E1T:
+                pConfigDlg = new CDialogConfiguration_N76E1T(psChipData->uID);
+                Config = (((CDialogConfiguration_N76E1T*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
 
-		case IDD_DIALOG_CONFIGURATION_M0564:	// M0564, NUC121, NUC125, NUC126
-			if (uProgramMemorySize)
-				pConfigDlg = new CDialogConfiguration_M0564(psChipData->uID, uProgramMemorySize);
-			else
-				pConfigDlg = new CDialogConfiguration_M0564();
-			
-			Config = (((CDialogConfiguration_M0564*)pConfigDlg)->m_ConfigValue.m_value);
-			break;
+            case IDD_DIALOG_CONFIGURATION_M0564:	// M0564, NUC121, NUC125, NUC126
+                if (uProgramMemorySize)
+                    pConfigDlg = new CDialogConfiguration_M0564(psChipData->uID, uProgramMemorySize);
+                else
+                    pConfigDlg = new CDialogConfiguration_M0564();
 
-		case 0x505:	// "NUC505";
-		printf("NUC505 ");
-        default:
-			printf("or Unknow Configuration Dialog %X\n", psChipData->uProjectCode);
-            return false;
+                Config = (((CDialogConfiguration_M0564*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
+
+            case 0x505:	// "NUC505";
+                printf("NUC505 ");
+            default:
+                printf("or Unknow Configuration Dialog %X\n", psChipData->uProjectCode);
+                return false;
 
         }
 
     }
 
-	// Pass User Config to Configuration Dialog
-	memcpy(Config, pConfig, size);
-	
+    // Pass User Config to Configuration Dialog
+    memcpy(Config, pConfig, size);
+
     if(pConfigDlg != NULL) {
         if(pConfigDlg->DoModal() == IDOK) {
-			// Update User Config from Configuration Dialog
+            // Update User Config from Configuration Dialog
             memcpy(pConfig, Config, size);
-			ret = true;
+            ret = true;
         }
 
         delete pConfigDlg;
     }
 
-	return ret;
+    return ret;
 }
 
 /* called by DlgNuvoISP */
 bool CDialogMain::ConfigSetting(unsigned int id, unsigned int *pConfig, unsigned int size)
 {
-	if(QueryDataBase(id))
-	{
-		return ConfigDlgSel(pConfig, size);
-	}
+    if(QueryDataBase(id)) {
+        return ConfigDlgSel(pConfig, size);
+    }
 
-	return false;
+    return false;
 }
 
 #endif // #ifndef _NO_CONFIGURATION_DLG
 
-BOOL CDialogMain::OnInitDialog() 
- { 
-	CDialog::OnInitDialog();
-	m_bIsInitialized = true;
-	GetWindowRect(m_rect);
-	return TRUE;  // return TRUE unless you set the focus to a control
-	// EXCEPTION: OCX Property Pages should return FALSE
+BOOL CDialogMain::OnInitDialog()
+{
+    CDialog::OnInitDialog();
+    m_bIsInitialized = true;
+    GetWindowRect(m_rect);
+    return TRUE;  // return TRUE unless you set the focus to a control
+    // EXCEPTION: OCX Property Pages should return FALSE
 };
+
+
+UINT CDialogMain::ScanPCCom()
+{
+    m_SelComPort.ResetContent();
+    m_SelComPort.AddString(_T("Scan Port"));
+    UINT nComNum = 0;
+    HKEY hKEY;
+    LONG hResult = ::RegOpenKeyEx(HKEY_LOCAL_MACHINE, _T("HARDWARE\\DEVICEMAP\\SERIALCOMM"), 0, KEY_READ, &hKEY);
+
+    if(hResult != ERROR_SUCCESS) { //如果無法打開hKEY,則中止程式的執行
+        //AfxMessageBox("錯誤：無法打開有關註冊表項");
+        return  0 ;
+    }
+
+    TCHAR strInf[30];
+    DWORD type_1 = REG_SZ;
+    DWORD cbData_1 = 10;
+    DWORD aa = 30, num = 0, a1, a2, a3, a4, a5, a6, a7;
+
+    hResult = ::RegQueryInfoKey(hKEY, strInf, &a7, NULL, &a3, &a1, &a2, &num, &a4, &a5, &a6, NULL);
+
+    if(hResult != ERROR_SUCCESS) { //如果無法打開hKEY,則中止程式的執行
+        //AfxMessageBox("錯誤：無法打開有關註冊表項");
+        RegCloseKey(hKEY);
+        return   0;
+    }
+
+    BYTE portName[30];
+    CString csr;
+    for(DWORD i = 0 ; i < num ; i++) {
+        aa = 30 ;
+        cbData_1 = 30;
+        hResult = ::RegEnumValue(hKEY, i, strInf, &aa, NULL, &type_1, portName, &cbData_1);
+        if((hResult != ERROR_SUCCESS) && (hResult != ERROR_MORE_DATA)) { //如果無法打開hKEY,則中止程式的執行
+            //AfxMessageBox("錯誤：無法獲取有關註冊表項");
+            continue;
+        }
+        csr.Format(_T("%s"), portName);
+        m_SelComPort.AddString(csr);
+        nComNum++;
+
+    }
+    RegCloseKey(hKEY);
+    m_SelComPort.SetCurSel(0);
+    return nComNum;
+}
+
+void CDialogMain::InitComboBox()
+{
+    m_SelInterface.AddString(_T("USB"));
+    m_SelInterface.AddString(_T("UART"));
+
+    m_SelInterface.SetCurSel(0);
+    OnSelchangeInterface();
+
+    if(ScanPCCom())
+        m_SelComPort.SetCurSel(0);
+}
+
+void CDialogMain::OnSelchangeInterface()
+{
+    m_SelComPort.EnableWindow(m_SelInterface.GetCurSel() == 1);
+    if(m_SelInterface.GetCurSel() == 0)
+        EnableDlgItem(IDC_BUTTON_CONNECT, true);
+    else
+        OnComboChange();
+}
+
+void CDialogMain::OnComboChange()
+{
+    if(m_SelComPort.GetCurSel() == 0) {
+        int portcnt = ScanPCCom();
+        printf("Num Port = %d\n", portcnt);
+    }
+    EnableDlgItem(IDC_BUTTON_CONNECT, m_SelComPort.GetCurSel());
+}
+
+void CDialogMain::EnableInterface(bool bEnable)
+{
+    if(bEnable) {
+        m_SelInterface.EnableWindow(1);
+        OnSelchangeInterface();
+    } else {
+        m_SelInterface.EnableWindow(0);
+        m_SelComPort.EnableWindow(0);
+    }
+}

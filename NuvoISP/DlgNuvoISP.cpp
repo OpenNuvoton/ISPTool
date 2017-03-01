@@ -95,6 +95,8 @@ void CNuvoISPDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_TAB_DATA, m_TabData);
     DDX_Control(pDX, IDC_PROGRESS, m_Progress);
     DDX_Text(pDX, IDC_STATIC_STATUS, m_sStatus);
+    DDX_Control(pDX, IDC_COMBO_COM_PORT, m_SelComPort);
+    DDX_Control(pDX, IDC_COMBO_INTERFACE, m_SelInterface);
     //}}AFX_DATA_MAP
 }
 
@@ -117,6 +119,8 @@ BEGIN_MESSAGE_MAP(CNuvoISPDlg, CDialog)
     ON_WM_GETMINMAXINFO()
     ON_WM_MOUSEWHEEL()
     ON_WM_PAINT()
+    ON_CBN_SELCHANGE(IDC_COMBO_INTERFACE, OnSelchangeInterface)
+    ON_CBN_SELCHANGE(IDC_COMBO_COM_PORT, OnComboChange)
 END_MESSAGE_MAP()
 
 BOOL CNuvoISPDlg::OnInitDialog()
@@ -182,7 +186,9 @@ BOOL CNuvoISPDlg::OnInitDialog()
     m_Progress.SetRange(0, 100);
 
     m_tooltip.Create(this);
-	EnableDlgItem(IDC_BUTTON_START, m_bConnect);
+    EnableDlgItem(IDC_BUTTON_START, m_bConnect);
+	
+    InitComboBox();
 
     return TRUE;	// return TRUE  unless you set the focus to a control
 }
@@ -265,6 +271,9 @@ void CNuvoISPDlg::OnButtonConnect()
     if(m_fnThreadProcStatus == &CISPProc::Thread_Idle
             || m_fnThreadProcStatus == &CISPProc::Thread_Pause) {
         /* Connect */
+        m_SelComPort.GetWindowText(m_ComNum);
+        SetInterface(m_SelInterface.GetCurSel() + 1, m_ComNum);
+        EnableInterface(false);
         Set_ThreadAction(&CISPProc::Thread_CheckUSBConnect);
     } else if(m_fnThreadProcStatus != NULL) {
         /* Disconnect */
@@ -320,6 +329,7 @@ LRESULT CNuvoISPDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 			m_sStatus = _T("");
             switch(lParam) {
             case CONNECT_STATUS_NONE:
+				EnableInterface(true);
 				m_sConnect		= _T("Disconnected");
 
 				switch(m_eProcSts)
