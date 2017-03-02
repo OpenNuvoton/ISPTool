@@ -229,7 +229,7 @@ void CISPProc::Thread_ProgramFlash()
 		}
 
         if(m_bProgram_APROM) {
-            uAddr = 0;
+            uAddr = m_uAPROM_Addr;
             uSize = m_sFileInfo[0].st_size;
             pBuffer = vector_ptr(m_sFileInfo[0].vbuf);
 
@@ -248,7 +248,7 @@ void CISPProc::Thread_ProgramFlash()
                     break;
 
                 unsigned long uLen;
-                m_ISPLdDev.UpdateAPROM(uAddr, uSize, i,
+                m_ISPLdDev.UpdateAPROM(uAddr, uSize, uAddr + i,
                                        (const char*)(pBuffer + i),
                                        &uLen);
 

@@ -11,9 +11,9 @@
 #include "FlashInfo.h"
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+    #define new DEBUG_NEW
+    #undef THIS_FILE
+    static char THIS_FILE[] = __FILE__;
 #endif
 
 inline std::string size_str(unsigned int size)
@@ -102,7 +102,7 @@ void CNuvoISPDlg::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CNuvoISPDlg, CDialog)
     //{{AFX_MSG_MAP(CNuvoISPDlg)
-	ON_WM_SYSCOMMAND()
+    ON_WM_SYSCOMMAND()
     ON_BN_CLICKED(IDOK, OnOK)
     ON_BN_CLICKED(IDC_BUTTON_CONNECT, OnButtonConnect)
     ON_BN_CLICKED(IDC_BUTTON_APROM, OnButtonLoadFile)
@@ -155,11 +155,6 @@ BOOL CNuvoISPDlg::OnInitDialog()
     SetDlgItemText(IDC_STATIC_FILEINFO_APROM, _I(IDS_FILE_NOT_LOAD));
     SetDlgItemText(IDC_STATIC_FILEINFO_NVM, _I(IDS_FILE_NOT_LOAD));
 
-    SetDlgItemText(IDC_STATIC_PARTNO, _T(""));
-
-	SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, _T("0xFFFFFFFF"));
-    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, _T("0xFFFFFFFF"));
-
     // Set data view area
     // Btn Text --> Tab Text
     for(int i = 0; i < NUM_VIEW; i++) {
@@ -187,9 +182,10 @@ BOOL CNuvoISPDlg::OnInitDialog()
 
     m_tooltip.Create(this);
     EnableDlgItem(IDC_BUTTON_START, m_bConnect);
-	
-    InitComboBox();
 
+    InitComboBox();
+    SetDlgItemText(IDC_EDIT_FLASH_BASE_ADDRESS, _T("100000"));
+    Set_ThreadAction(&CISPProc::Thread_Idle);
     return TRUE;	// return TRUE  unless you set the focus to a control
 }
 
@@ -269,7 +265,7 @@ void CNuvoISPDlg::OnButtonConnect()
 {
     // TODO: Add your control notification handler code here
     if(m_fnThreadProcStatus == &CISPProc::Thread_Idle
-            || m_fnThreadProcStatus == &CISPProc::Thread_Pause) {
+       || m_fnThreadProcStatus == &CISPProc::Thread_Pause) {
         /* Connect */
         m_SelComPort.GetWindowText(m_ComNum);
         SetInterface(m_SelInterface.GetCurSel() + 1, m_ComNum);
@@ -277,7 +273,7 @@ void CNuvoISPDlg::OnButtonConnect()
         Set_ThreadAction(&CISPProc::Thread_CheckUSBConnect);
     } else if(m_fnThreadProcStatus != NULL) {
         /* Disconnect */
-		m_ISPLdDev.Close_Port();
+        m_ISPLdDev.Close_Port();
         Set_ThreadAction(&CISPProc::Thread_Idle);
     }
 }
@@ -288,33 +284,33 @@ HBRUSH CNuvoISPDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
     // TODO:  在此變更 DC 的任何屬性
     switch(pWnd->GetDlgCtrlID()) {
-    case IDC_STATIC_CONNECT:
-        if(m_bConnect) {
-            pDC->SetTextColor(RGB(0,128,0));	//DarkGreen
-        } else {
-            pDC->SetTextColor(RGB(255,0,0));	//Red
-        }
-        break;
-	case IDC_STATIC_CONFIG_VALUE_0:
-		if(!m_bConnect)
-			break;
-        if(m_CONFIG_User[0] == m_CONFIG[0]) {
-            pDC->SetTextColor(RGB(0,128,0));	//DarkGreen
-        } else {
-            pDC->SetTextColor(RGB(255,0,0));	//Red
-        }
-		break;
-	case IDC_STATIC_CONFIG_VALUE_1:
-		if(!m_bConnect)
-			break;
-        if(m_CONFIG_User[1] == m_CONFIG[1]) {
-            pDC->SetTextColor(RGB(0,128,0));	//DarkGreen
-        } else {
-            pDC->SetTextColor(RGB(255,0,0));	//Red
-        }
-		break;
-    default:
-        break;
+        case IDC_STATIC_CONNECT:
+            if(m_bConnect) {
+                pDC->SetTextColor(RGB(0,128,0));	//DarkGreen
+            } else {
+                pDC->SetTextColor(RGB(255,0,0));	//Red
+            }
+            break;
+        case IDC_STATIC_CONFIG_VALUE_0:
+            if(!m_bConnect)
+                break;
+            if(m_CONFIG_User[0] == m_CONFIG[0]) {
+                pDC->SetTextColor(RGB(0,128,0));	//DarkGreen
+            } else {
+                pDC->SetTextColor(RGB(255,0,0));	//Red
+            }
+            break;
+        case IDC_STATIC_CONFIG_VALUE_1:
+            if(!m_bConnect)
+                break;
+            if(m_CONFIG_User[1] == m_CONFIG[1]) {
+                pDC->SetTextColor(RGB(0,128,0));	//DarkGreen
+            } else {
+                pDC->SetTextColor(RGB(255,0,0));	//Red
+            }
+            break;
+        default:
+            break;
     }
     // TODO:  如果預設值並非想要的，則傳回不同的筆刷
     return hbr;
@@ -325,86 +321,91 @@ LRESULT CNuvoISPDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
     // TODO: Add your specialized code here and/or call the base class
     if(message == MSG_USER_EVENT) {
         if(wParam == MSG_UPDATE_CONNECT_STATUS) {
-			UpdateData(true);
-			m_sStatus = _T("");
+            UpdateData(true);
+            m_sStatus = _T("");
             switch(lParam) {
-            case CONNECT_STATUS_NONE:
-				EnableInterface(true);
-				m_sConnect		= _T("Disconnected");
+                case CONNECT_STATUS_NONE:
+                    EnableInterface(true);
+                    m_sConnect		= _T("Disconnected");
 
-				switch(m_eProcSts)
-				{
-					case EPS_OK:
-						m_sConnect = _I(IDS_DISCONNECTED);//"Disconnected"
-						break;
-					case EPS_ERR_OPENPORT:
-						m_sConnect = _T("Open Port Error");
-						break;
-					case EPS_ERR_CONNECT:
-						m_sConnect = _T("CMD_CONNECT Error");
-						break;
-					default:
-					break;
-				}
+                    switch(m_eProcSts) {
+                        case EPS_OK:
+                            m_sConnect = _I(IDS_DISCONNECTED);//"Disconnected"
+                            break;
+                        case EPS_ERR_OPENPORT:
+                            m_sConnect = _T("Open Port Error");
+                            break;
+                        case EPS_ERR_CONNECT:
+                            m_sConnect = _T("CMD_CONNECT Error");
+                            break;
+                        default:
+                            break;
+                    }
 
-				m_ButtonConnect.SetWindowText(_T("Connect"));
-                m_tooltip.RemoveAllTools();
-                SetDlgItemText(IDC_EDIT_PARTNO, _T(""));
-				SetDlgItemText(IDC_STATIC_PARTNO, _T(""));
-                SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, _T(""));
-                SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, _T(""));
-                m_ButtonConnect.SetWindowText(_I(IDS_CONNECT));
-                break;
-            case CONNECT_STATUS_USB:
-                m_sConnect		= _T("Waiting for device connection");
-                m_ButtonConnect.SetWindowText(_I(IDS_STOP_CHECK));
-                break;
-            case CONNECT_STATUS_CONNECTING:
-                m_sConnect		= _T("Getting Chip Information ...");
-                m_ButtonConnect.SetWindowText(_I(IDS_STOP_CHECK));
-                break;
-            case CONNECT_STATUS_OK:
-                m_sConnect		= _T("Connected");
+                    m_ButtonConnect.SetWindowText(_T("Connect"));
+                    m_tooltip.RemoveAllTools();
+                    SetDlgItemText(IDC_EDIT_PARTNO, _T(""));
+                    SetDlgItemText(IDC_STATIC_PARTNO, _T(""));
+                    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, _T(""));
+                    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, _T(""));
+                    m_ButtonConnect.SetWindowText(_I(IDS_CONNECT));
 
-                EnableProgramOption(TRUE);
+                    ShowDlgItem(IDC_CHECK_CONFIG, 1);
+                    ShowDlgItem(IDC_CHECK_ERASE, 1);
+                    EnableDlgItem(IDC_BUTTON_CONFIG, 1);
+                    ShowDlgItem(IDC_STATIC_APOFFSET, 0);
+                    ShowDlgItem(IDC_STATIC_FLASH_BASE_ADDRESS, 0);
+                    ShowDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS, 0);
+                    break;
+                case CONNECT_STATUS_USB:
+                    m_sConnect		= _T("Waiting for device connection");
+                    m_ButtonConnect.SetWindowText(_I(IDS_STOP_CHECK));
+                    break;
+                case CONNECT_STATUS_CONNECTING:
+                    m_sConnect		= _T("Getting Chip Information ...");
+                    m_ButtonConnect.SetWindowText(_I(IDS_STOP_CHECK));
+                    break;
+                case CONNECT_STATUS_OK:
+                    m_sConnect		= _T("Connected");
 
-                ShowChipInfo();
-				
-				switch(m_eProcSts)
-				{
-					case EPS_ERR_ERASE:
-						AfxMessageBox(_T("Erase failed"));
-						break;
-					case EPS_ERR_CONFIG:
-						//m_sStatus = _T("CONFIG NG");//"Disconnected"
-						AfxMessageBox(_T("Update CONFIG failed"));
-						break;
-					case EPS_ERR_APROM:
-						//m_sStatus = _T("APROM NG");
-						AfxMessageBox(_T("Update APROM failed"));
-						break;
-					case EPS_ERR_NVM:
-						//m_sStatus = _T("Data Flash NG");
-						AfxMessageBox(_T("Update Dataflash failed"));
-						break;
-					case EPS_ERR_SIZE:
-						AfxMessageBox(_T("File Size > Flash Size"));
-						break;
-					case EPS_PROG_DONE:
-						MessageBox(_I(IDS_PROGRAM_FLASH_OK));
-						break;
-					default:
-						m_sStatus = _T("");
-					break;
-				}
+                    EnableProgramOption(TRUE);
 
-                m_ButtonConnect.SetWindowText(_I(IDS_DISCONNECTED));
-                break;
-            default:
-                break;
+                    ShowChipInfo();
+
+                    switch(m_eProcSts) {
+                        case EPS_ERR_ERASE:
+                            AfxMessageBox(_T("Erase failed"));
+                            break;
+                        case EPS_ERR_CONFIG:
+                            //m_sStatus = _T("CONFIG NG");//"Disconnected"
+                            AfxMessageBox(_T("Update CONFIG failed"));
+                            break;
+                        case EPS_ERR_APROM:
+                            //m_sStatus = _T("APROM NG");
+                            AfxMessageBox(_T("Update APROM failed"));
+                            break;
+                        case EPS_ERR_NVM:
+                            //m_sStatus = _T("Data Flash NG");
+                            AfxMessageBox(_T("Update Dataflash failed"));
+                            break;
+                        case EPS_ERR_SIZE:
+                            AfxMessageBox(_T("File Size > Flash Size"));
+                            break;
+                        case EPS_PROG_DONE:
+                            MessageBox(_I(IDS_PROGRAM_FLASH_OK));
+                            break;
+                        default:
+                            m_sStatus = _T("");
+                            break;
+                    }
+
+                    m_ButtonConnect.SetWindowText(_I(IDS_DISCONNECTED));
+                    break;
+                default:
+                    break;
             }
             m_bConnect = (lParam == CONNECT_STATUS_OK);
-			EnableDlgItem(IDC_BUTTON_START, m_bConnect);
+            EnableDlgItem(IDC_BUTTON_START, m_bConnect);
 
             UpdateData(false);
         } else if(wParam == MSG_UPDATE_ERASE_STATUS) {
@@ -441,7 +442,6 @@ void CNuvoISPDlg::OnButtonStart()
     /* Lock ALL */
     EnableProgramOption(FALSE);
 
-#if 1
     /* Check thread status */
     CString strErr = _T("");
     LockGUI();
@@ -458,6 +458,36 @@ void CNuvoISPDlg::OnButtonStart()
                 strErr = _I(IDS_CAN_NOT_LOAD_NVM_PROGRAMMING);
         }
 
+
+        if(0x00550505 == m_ulDeviceID) {
+
+            m_uAPROM_Addr = 0x4000;
+            m_uAPROM_Size = 0x200000 - m_uAPROM_Addr;
+
+            if(1) {
+                TCHAR Addr[12];
+                TCHAR *pEnd;
+                GetDlgItemText(IDC_EDIT_SPI_BASE_ADDRESS, Addr, sizeof(Addr));
+                m_uNVM_Addr = ::_tcstoul(Addr, &pEnd, 16);
+                m_uNVM_Addr &= ~0xFF;
+
+                if(m_uNVM_Addr < m_uAPROM_Addr)
+                    m_uNVM_Addr = 0x100000;
+                else if(m_uNVM_Addr > 0x200000)
+                    m_uNVM_Addr = 0x100000;
+
+                m_uNVM_Size = 0x200000 - m_uNVM_Addr;
+
+                CString strAddr;
+                strAddr.Format(_T("%06X"), m_uNVM_Addr);
+                SetDlgItemText(IDC_EDIT_FLASH_BASE_ADDRESS, strAddr);
+            }
+
+        } else
+            m_uAPROM_Addr = 0x4000;
+
+
+
         if(strErr.IsEmpty()) {
             Set_ThreadAction(&CISPProc::Thread_ProgramFlash);
         }
@@ -471,7 +501,6 @@ void CNuvoISPDlg::OnButtonStart()
     }
 
     UnlockGUI();
-#endif
 }
 
 void CNuvoISPDlg::OnSelchangeTabData(NMHDR* pNMHDR, LRESULT* pResult)
@@ -498,7 +527,7 @@ void CNuvoISPDlg::OnDropFiles(HDROP hDropInfo)
 
     //Returns a count of the files dropped
     while((DragQueryFile(hDropInfo, 0xFFFFFFFF, NULL, 0) > 0)
-            && (m_fnThreadProcStatus != &CISPProc::Thread_ProgramFlash)) {
+          && (m_fnThreadProcStatus != &CISPProc::Thread_ProgramFlash)) {
         //Retrieves the position of the mouse pointer
         DragQueryPoint(hDropInfo, &point);
         //Retrieves the name of dropped file
@@ -555,7 +584,7 @@ void CNuvoISPDlg::EnableProgramOption(BOOL bEnable)
 
     EnableDlgItem(IDC_CHECK_CONFIG, bEnable);
     EnableDlgItem(IDC_BUTTON_CONFIG, bEnable);
-	
+
     EnableDlgItem(IDC_CHECK_ERASE, bEnable);
     EnableDlgItem(IDC_BUTTON_START, bEnable);
 }
@@ -602,6 +631,43 @@ void CNuvoISPDlg::OnPaint()
 
 void CNuvoISPDlg::ShowChipInfo()
 {
+    if(0x00550505 == m_ulDeviceID) {
+
+        SetDlgItemText(IDC_EDIT_PARTNO, _T("NUC505"));
+        SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, _T("NA"));
+        SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, _T("NA"));
+        m_bProgram_Config = 0;
+        m_bErase = 0;
+        ShowDlgItem(IDC_CHECK_CONFIG, 0);
+        ShowDlgItem(IDC_CHECK_ERASE, 0);
+        EnableDlgItem(IDC_BUTTON_CONFIG, 0);
+
+        ShowDlgItem(IDC_STATIC_APOFFSET, 1);
+        ShowDlgItem(IDC_STATIC_FLASH_BASE_ADDRESS, 1);
+        ShowDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS, 1);
+
+        std::ostringstream os;
+        os << "RAM:128K, SPI Flash:2M";
+
+        std::string cstr = os.str();
+        std::wstring wcstr(cstr.begin(), cstr.end());
+        CString str = wcstr.c_str();
+        CString tips;
+        tips.Format(_T("%s\n\n%s"), _I(IDS_CHIP_PART_INFO), str);
+        CRect rect;
+        GetDlgItem(IDC_STATIC_PARTNO)->GetWindowRect(rect);
+        m_tooltip.RemoveAllTools();
+        m_tooltip.AddTool(GetDlgItem(IDC_STATIC_PARTNO));
+        m_tooltip.UpdateTipText(tips, GetDlgItem(IDC_STATIC_PARTNO));
+        m_tooltip.ShowHelpTooltip(&rect.TopLeft(), tips);
+
+        CString info;
+        info.Format(_T("%s\nFW Ver: 0x%X"), wcstr.c_str(), int(m_ucFW_VER));
+        SetDlgItemText(IDC_STATIC_PARTNO, info);
+        return;
+    }
+
+
     CString strTmp = _T("");
 
     strTmp = GetPartNumber(m_ulDeviceID).c_str();
@@ -614,10 +680,10 @@ void CNuvoISPDlg::ShowChipInfo()
     SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, strTmp);
 
     if(UpdateSizeInfo(m_ulDeviceID, m_CONFIG[0], m_CONFIG[1],
-                &m_uNVM_Addr, &m_uAPROM_Size, &m_uNVM_Size)) {
+                      &m_uNVM_Addr, &m_uAPROM_Size, &m_uNVM_Size)) {
         std::ostringstream os;
         os << "APROM: " << size_str(m_uAPROM_Size) << ","
-            " Data: " << size_str(m_uNVM_Size);
+           " Data: " << size_str(m_uNVM_Size);
 
         std::string cstr = os.str();
         std::wstring wcstr(cstr.begin(), cstr.end());
@@ -635,18 +701,16 @@ void CNuvoISPDlg::ShowChipInfo()
         info.Format(_T("%s\nFW Ver: 0x%X"), wcstr.c_str(), int(m_ucFW_VER));
         SetDlgItemText(IDC_STATIC_PARTNO, info);
     }
-	Invalidate();
+    Invalidate();
 }
 
 
 void CNuvoISPDlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
-	if ((nID & 0xFFF0) == IDM_ABOUTBOX)
-	{
-		CAboutDlg dlgAbout(_T("http://www.nuvoton.com/NuMicro/"));
-		dlgAbout.DoModal();
-	}
-	else{
-		CDialog::OnSysCommand(nID, lParam);
-	}
+    if ((nID & 0xFFF0) == IDM_ABOUTBOX) {
+        CAboutDlg dlgAbout(_T("http://www.nuvoton.com/NuMicro/"));
+        dlgAbout.DoModal();
+    } else {
+        CDialog::OnSysCommand(nID, lParam);
+    }
 }

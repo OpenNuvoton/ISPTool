@@ -72,6 +72,7 @@ public:
     unsigned int m_CONFIG[2];
     unsigned int m_CONFIG_User[2];
 
+    unsigned int m_uAPROM_Addr;
     unsigned int m_uAPROM_Size;
     unsigned int m_uNVM_Addr;
     unsigned int m_uNVM_Size;
