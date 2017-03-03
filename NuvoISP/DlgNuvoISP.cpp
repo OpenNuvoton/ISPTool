@@ -458,35 +458,7 @@ void CNuvoISPDlg::OnButtonStart()
                 strErr = _I(IDS_CAN_NOT_LOAD_NVM_PROGRAMMING);
         }
 
-
-        if(0x00550505 == m_ulDeviceID) {
-
-            m_uAPROM_Addr = 0x4000;
-            m_uAPROM_Size = 0x200000 - m_uAPROM_Addr;
-
-            if(1) {
-                TCHAR Addr[12];
-                TCHAR *pEnd;
-                GetDlgItemText(IDC_EDIT_SPI_BASE_ADDRESS, Addr, sizeof(Addr));
-                m_uNVM_Addr = ::_tcstoul(Addr, &pEnd, 16);
-                m_uNVM_Addr &= ~0xFF;
-
-                if(m_uNVM_Addr < m_uAPROM_Addr)
-                    m_uNVM_Addr = 0x100000;
-                else if(m_uNVM_Addr > 0x200000)
-                    m_uNVM_Addr = 0x100000;
-
-                m_uNVM_Size = 0x200000 - m_uNVM_Addr;
-
-                CString strAddr;
-                strAddr.Format(_T("%06X"), m_uNVM_Addr);
-                SetDlgItemText(IDC_EDIT_FLASH_BASE_ADDRESS, strAddr);
-            }
-
-        } else
-            m_uAPROM_Addr = 0x4000;
-
-
+        UpdateAddrOffset();
 
         if(strErr.IsEmpty()) {
             Set_ThreadAction(&CISPProc::Thread_ProgramFlash);
@@ -664,9 +636,16 @@ void CNuvoISPDlg::ShowChipInfo()
         CString info;
         info.Format(_T("%s\nFW Ver: 0x%X"), wcstr.c_str(), int(m_ucFW_VER));
         SetDlgItemText(IDC_STATIC_PARTNO, info);
+        UpdateAddrOffset();
         return;
+    } else if((0x00002150 == m_ulDeviceID)
+              || (0x00002F50 == m_ulDeviceID)
+              || (0x00003650 == m_ulDeviceID)) {
+        // N76E885, N76E616 and N76E003
+        ShowDlgItem(IDC_STATIC_FLASH_BASE_ADDRESS, 1);
+        ShowDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS, 1);
+        UpdateAddrOffset();
     }
-
 
     CString strTmp = _T("");
 
@@ -704,7 +683,6 @@ void CNuvoISPDlg::ShowChipInfo()
     Invalidate();
 }
 
-
 void CNuvoISPDlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
     if ((nID & 0xFFF0) == IDM_ABOUTBOX) {
@@ -713,4 +691,44 @@ void CNuvoISPDlg::OnSysCommand(UINT nID, LPARAM lParam)
     } else {
         CDialog::OnSysCommand(nID, lParam);
     }
+}
+
+void CNuvoISPDlg::UpdateAddrOffset()
+{
+    m_uAPROM_Addr = 0;
+    CString strAddr;
+    GetDlgItemText(IDC_EDIT_FLASH_BASE_ADDRESS, strAddr);
+    unsigned int uAddr = ::_tcstoul(strAddr, 0, 16);
+
+    if(0x00550505 == m_ulDeviceID) {
+
+        m_uAPROM_Addr = 0x4000;
+        m_uAPROM_Size = 0x200000 - m_uAPROM_Addr;
+
+        if(1) {
+
+            m_uNVM_Addr = ::_tcstoul(strAddr, 0, 16);
+            m_uNVM_Addr &= ~0xFF;
+
+            if(uAddr < m_uAPROM_Addr)
+                uAddr = 0x100000;
+            else if(uAddr > 0x200000)
+                uAddr = 0x100000;
+
+            m_uNVM_Addr = uAddr;
+            m_uNVM_Size = 0x200000 - m_uNVM_Addr;
+        }
+    } else if((0x00002150 == m_ulDeviceID)
+              || (0x00002F50 == m_ulDeviceID)
+              || (0x00003650 == m_ulDeviceID)) {
+
+        if(uAddr >= 0x4800)
+            uAddr = 0x3800;
+
+        m_uNVM_Addr = uAddr;
+        m_uNVM_Size = 0x4800 - m_uNVM_Addr;
+    }
+
+    strAddr.Format(_T("%06X"), uAddr);
+    SetDlgItemText(IDC_EDIT_FLASH_BASE_ADDRESS, strAddr);
 }

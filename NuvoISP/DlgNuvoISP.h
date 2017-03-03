@@ -81,6 +81,7 @@ protected:
 public:
     FLASH_PID_INFO_BASE_T m_sPidInfoBase;
     afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+    void UpdateAddrOffset();
 };
 
 //{{AFX_INSERT_LOCATION}}
