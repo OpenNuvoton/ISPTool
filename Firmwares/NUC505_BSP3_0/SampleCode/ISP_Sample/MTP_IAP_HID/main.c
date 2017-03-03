@@ -108,7 +108,7 @@ int32_t main (void)
     SYS->LVMPADDR = 0x00004000;
     SYS->LVMPLEN = 0x10;
     SYS->RVMPLEN = 0x01;
-    SYS_ResetCPU();
+    SCB->AIRCR = (V6M_AIRCR_VECTKEY_DATA | V6M_AIRCR_SYSRESETREQ);
     __NOP();
     __NOP();
     
