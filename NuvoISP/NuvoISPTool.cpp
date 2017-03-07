@@ -61,14 +61,8 @@ BOOL CISPToolApp::InitInstance()
 	// 變更儲存設定值的登錄機碼
 	// TODO: 您應該適度修改此字串
 	// (例如，公司名稱或組織名稱)
-	SetRegistryKey(_T("本機 AppWizard 所產生的應用程式"));
+	SetRegistryKey(_T("NuvotonISP"));
 
-	//CISPToolDlg dlg;
-	//m_pMainWnd = &dlg;
-	//INT_PTR nResponse = dlg.DoModal();
-	//CDlg_NUC4xx dlg = CDlg_NUC4xx();
-	//CNuvoISPDlg isp;
-	//isp.DoModal();
 	CNuvoISPDlg MainDlg;
 	MainDlg.DoModal();
 

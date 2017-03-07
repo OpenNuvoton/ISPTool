@@ -19,35 +19,34 @@ ISPLdCMD::~ISPLdCMD() {
 
 bool ISPLdCMD::Open_Port(BOOL bErrorMsg)
 {
-	m_uUSB_PID = 0;
+    m_uUSB_PID = 0;
+    m_strDevPathName = _T("");
     ScopedMutex scopedLock(m_Mutex);
     if(m_bOpenPort)
         return true;
 
     switch(m_uInterface) {
-    case 1:
-        if (m_hidIO.OpenDevice(FALSE, 0x0416, 0x3F00)) {	// ISP FW >= 0x30
-			m_uUSB_PID = 0x3F00;
+        case 1:
+            if (m_hidIO.OpenDevice(FALSE, 0x0416, 0x3F00)) {	// ISP FW >= 0x30
+                m_uUSB_PID = 0x3F00;
+            } else if (m_hidIO.OpenDevice(FALSE, 0x0416, 0xA316)) {	// ISP FW < 0x30
+                m_uUSB_PID = 0xA316;
+            } else {
+                return false;
+            }
+            m_strDevPathName = m_hidIO.GetDevicePath().c_str();
             break;
-        } else if (m_hidIO.OpenDevice(FALSE, 0x0416, 0xA316)) {	// ISP FW < 0x30
-			m_uUSB_PID = 0xA316;
-			break;
-		} else
-		{
-			return false;
-		}
-        break;
 
-    case 2:
-        if (!m_comIO.OpenDevice(m_strComNum)) {
-    //        if(bErrorMsg)
-				//printf("No upload Device Found, Please Check the Link!\n");
+        case 2:
+            if (!m_comIO.OpenDevice(m_strComNum)) {
+                //        if(bErrorMsg)
+                //printf("No upload Device Found, Please Check the Link!\n");
+                return false;
+            }
+            break;
+
+        default:
             return false;
-        }
-        break;
-
-    default:
-        return false;
     }
 
     m_bOpenPort = TRUE;
@@ -56,21 +55,22 @@ bool ISPLdCMD::Open_Port(BOOL bErrorMsg)
 
 void ISPLdCMD::Close_Port()
 {
+    m_strDevPathName = _T("");
     ScopedMutex scopedLock(m_Mutex);
     if(!m_bOpenPort)
         return;
     m_bOpenPort = FALSE;
     switch(m_uInterface) {
-    case 1:
-        m_hidIO.CloseDevice();
-        break;
+        case 1:
+            m_hidIO.CloseDevice();
+            break;
 
-    case 2:
-        m_comIO.CloseDevice();
-        break;
+        case 2:
+            m_comIO.CloseDevice();
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 }
 
@@ -383,7 +383,6 @@ BOOL ISPLdCMD::CMD_Connect(DWORD dwMilliseconds)
 
 	return ret;
 }
-
 
 BOOL ISPLdCMD::CMD_Resend()
 {

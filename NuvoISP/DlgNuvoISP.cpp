@@ -10,6 +10,8 @@
 #include "PartNumID.h"
 #include "FlashInfo.h"
 
+#include <dbt.h>
+
 #ifdef _DEBUG
     #define new DEBUG_NEW
     #undef THIS_FILE
@@ -79,6 +81,7 @@ CNuvoISPDlg::~CNuvoISPDlg()
         delete pViewer[i];
         pViewer[i] = NULL;
     }
+    UnregisterNotification();
 }
 
 void CNuvoISPDlg::DoDataExchange(CDataExchange* pDX)
@@ -121,6 +124,8 @@ BEGIN_MESSAGE_MAP(CNuvoISPDlg, CDialog)
     ON_WM_PAINT()
     ON_CBN_SELCHANGE(IDC_COMBO_INTERFACE, OnSelchangeInterface)
     ON_CBN_SELCHANGE(IDC_COMBO_COM_PORT, OnComboChange)
+    //ON_WM_DEVICECHANGE()
+    ON_MESSAGE(WM_DEVICECHANGE, OnDeviceChange)
 END_MESSAGE_MAP()
 
 BOOL CNuvoISPDlg::OnInitDialog()
@@ -186,6 +191,7 @@ BOOL CNuvoISPDlg::OnInitDialog()
     InitComboBox();
     SetDlgItemText(IDC_EDIT_FLASH_BASE_ADDRESS, _T("100000"));
     Set_ThreadAction(&CISPProc::Thread_Idle);
+    RegisterNotification();
     return TRUE;	// return TRUE  unless you set the focus to a control
 }
 
@@ -731,4 +737,54 @@ void CNuvoISPDlg::UpdateAddrOffset()
 
     strAddr.Format(_T("%06X"), uAddr);
     SetDlgItemText(IDC_EDIT_FLASH_BASE_ADDRESS, strAddr);
+}
+
+void CNuvoISPDlg::RegisterNotification()
+{
+    DEV_BROADCAST_DEVICEINTERFACE devIF = {0};
+    GUID hidGuid;
+
+    HidD_GetHidGuid(&hidGuid);
+    devIF.dbcc_size = sizeof(devIF);
+    devIF.dbcc_devicetype = DBT_DEVTYP_DEVICEINTERFACE;
+    devIF.dbcc_classguid = hidGuid;
+
+    m_hNotifyDevNode = RegisterDeviceNotification(GetSafeHwnd(), &devIF, DEVICE_NOTIFY_WINDOW_HANDLE);
+}
+
+void CNuvoISPDlg::UnregisterNotification()
+{
+    if (m_hNotifyDevNode) {
+        UnregisterDeviceNotification(m_hNotifyDevNode);
+        m_hNotifyDevNode = NULL;
+    }
+}
+
+LRESULT CNuvoISPDlg::OnDeviceChange(WPARAM  nEventType, LPARAM  dwData )
+{
+    PDEV_BROADCAST_DEVICEINTERFACE pdbi = (PDEV_BROADCAST_DEVICEINTERFACE)dwData;
+    CString DevPathName = pdbi->dbcc_name;
+
+    switch(nEventType) {
+        case DBT_DEVICEARRIVAL:
+            // A device has been inserted and is now available.
+            //¡K
+            break;
+        case DBT_DEVICEREMOVECOMPLETE:
+            // Device has been removed.
+            //¡K
+            if(pdbi->dbcc_devicetype==DBT_DEVTYP_DEVICEINTERFACE) {
+                if(DevPathName.CompareNoCase(m_ISPLdDev.m_strDevPathName)==0) {
+                    m_tooltip.HideTooltip();
+                    m_tooltip.RemoveAllTools();
+                    m_ISPLdDev.Close_Port();
+                    Set_ThreadAction(&CISPProc::Thread_Idle);
+                }
+            }
+            break;
+        default:
+            break;
+    }
+
+    return TRUE;
 }

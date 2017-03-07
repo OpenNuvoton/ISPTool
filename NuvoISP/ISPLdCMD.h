@@ -94,6 +94,7 @@ public:
 					 
 	void Test();
 	void SetInterface(unsigned int it, CString str) {m_uInterface = it; m_strComNum = str;};
+	CString m_strDevPathName;
 };
 
 #endif

@@ -463,3 +463,11 @@ BOOL CHidIO::WriteFile(const char *pcBuffer, size_t szLen, DWORD *pdwLength, DWO
 
     return TRUE;
 }
+
+std::basic_string<TCHAR> CHidIO::GetDevicePath()
+{
+    if(m_sNames.size())
+        return m_sNames[0];
+    else
+        return _T("");
+}

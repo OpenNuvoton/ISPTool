@@ -74,6 +74,8 @@ protected:
     //}}AFX_MSG
     virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
     virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+    //afx_msg BOOL OnDeviceChange(UINT nEventType, DWORD dwData);
+    afx_msg LRESULT  OnDeviceChange(WPARAM  nEventType, LPARAM  dwData );
     DECLARE_MESSAGE_MAP()
 
     void ShowChipInfo();
@@ -82,6 +84,11 @@ public:
     FLASH_PID_INFO_BASE_T m_sPidInfoBase;
     afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
     void UpdateAddrOffset();
+
+private:
+    void RegisterNotification();
+    void UnregisterNotification();
+    HDEVNOTIFY m_hNotifyDevNode;
 };
 
 //{{AFX_INSERT_LOCATION}}

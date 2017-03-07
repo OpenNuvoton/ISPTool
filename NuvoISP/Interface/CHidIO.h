@@ -47,6 +47,8 @@ public:
     BOOL OpenDevice(BOOL bUseTwoHandle, USHORT usVID, USHORT usPID0, USHORT usPID1 = NULL, USHORT usPID2 = NULL);
     BOOL ReadFile(char *pcBuffer, size_t szMaxLen, DWORD *pdwLength, DWORD dwMilliseconds);
     BOOL WriteFile(const char *pcBuffer, size_t szLen, DWORD *pdwLength, DWORD dwMilliseconds);
+
+    std::basic_string<TCHAR> GetDevicePath();
 };
 
 
