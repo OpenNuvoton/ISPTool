@@ -77,9 +77,6 @@
     <ClCompile Include="Interface\CUartIO.cpp">
       <Filter>ISPTool\Interface</Filter>
     </ClCompile>
-    <ClCompile Include="DlgInterfaceSel.cpp">
-      <Filter>ISPTool</Filter>
-    </ClCompile>
     <ClCompile Include="DlgNuvoISP.cpp">
       <Filter>ISPTool\NuvoISP</Filter>
     </ClCompile>

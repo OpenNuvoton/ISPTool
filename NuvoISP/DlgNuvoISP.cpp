@@ -156,7 +156,7 @@ BOOL CNuvoISPDlg::OnInitDialog()
     UpdateData(FALSE);
 
     // Title
-    SetWindowText(_T("Nuvoton NuMicro ISP Programming Tool 2.01"));
+    SetWindowText(_T("Nuvoton NuMicro ISP Programming Tool 2.02"));
     SetDlgItemText(IDC_STATIC_FILEINFO_APROM, _I(IDS_FILE_NOT_LOAD));
     SetDlgItemText(IDC_STATIC_FILEINFO_NVM, _I(IDS_FILE_NOT_LOAD));
 

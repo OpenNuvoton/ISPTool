@@ -5,7 +5,6 @@
 #define IDM_ABOUTBOX                    0x0010
 #define IDD_ABOUTBOX                    100
 #define IDS_ABOUTBOX                    101
-#define IDD_DIALOG_INTERFACE            102
 #define IDC_BUTTON_GENERATE             102
 #define IDS_CANNOT_LOAD_CONFIG_SCRIPT   102
 #define IDR_MAINFRAME                   102

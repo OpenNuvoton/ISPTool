@@ -5,8 +5,6 @@
 #include "stdafx.h"
 #include "NuvoISPTool.h"
 #include "Lang.h"
-#include "DlgInterfaceSel.h"
-
 
 #include "DlgNuvoISP.h"
 

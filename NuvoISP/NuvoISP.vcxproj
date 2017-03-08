@@ -96,6 +96,8 @@
       <AdditionalLibraryDirectories>Interface\</AdditionalLibraryDirectories>
       <AdditionalDependencies>
       </AdditionalDependencies>
+      <LinkTimeCodeGeneration>
+      </LinkTimeCodeGeneration>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -149,7 +151,6 @@
     <ClCompile Include="ISPProc.cpp" />
     <ClCompile Include="DialogHex.cpp" />
     <ClCompile Include="DialogMain.cpp" />
-    <ClCompile Include="DlgInterfaceSel.cpp" />
     <ClCompile Include="DlgNuvoISP.cpp" />
     <ClCompile Include="fileinfo.cpp" />
     <ClCompile Include="HyperLink.cpp" />
