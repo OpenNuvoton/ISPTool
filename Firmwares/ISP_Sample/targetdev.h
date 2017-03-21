@@ -22,6 +22,9 @@ extern "C"
 #elif defined(TARGET_M0519)
 #include "M0519.h"
 
+#elif defined(TARGET_M0564)
+#include "M0564.h"
+	
 #elif defined(TARGET_MINI51)
 #include "Mini51Series.h"
 
@@ -52,11 +55,17 @@ extern "C"
 #elif defined(TARGET_NUC100)
 #include "NUC100Series.h"
 
+#elif defined(TARGET_NUC121)
+#include "NUC121.h"
+
 #elif defined(TARGET_NUC122)
 #include "NUC122.h"
 
 #elif defined(TARGET_NUC123)
 #include "NUC123.h"
+
+#elif defined(TARGET_NUC126)
+#include "NUC126.h"
 
 #elif defined(TARGET_NUC131)
 #include "NUC131.h"
@@ -70,13 +79,16 @@ extern "C"
 #elif defined(TARGET_NUC472_442)
 #include "NUC472_442.h"
 
+#elif defined(TARGET_M480)
+#include "M480.h"
+
+#else
+#error "Nuvoton MCU Peripheral Access Layer Header File is not included."
 #endif
 
 
 #include "bsp_name.h"
-
 #include "ISP_USER.h"
-#include "uart_transfer.h"
 
 #ifdef __cplusplus
 }

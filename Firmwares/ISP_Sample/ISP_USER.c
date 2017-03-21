@@ -174,15 +174,17 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
 
         goto out;
     } else if(lcmd == CMD_RESEND_PACKET) { //for APROM&Data flash only
+        uint32_t PageAddress;
         StartAddress -= LastDataLen;
         TotalLen += LastDataLen;
-        if((StartAddress & 0xFFE00) >= Config0)
+        PageAddress = StartAddress & (0x100000 - FMC_FLASH_PAGE_SIZE);
+        if(PageAddress >= Config0)
             goto out;
-        ReadData(StartAddress & 0xFFE00, StartAddress, (uint32_t*)aprom_buf);
-        FMC_Erase_User(StartAddress & 0xFFE00);
-        WriteData(StartAddress & 0xFFE00, StartAddress, (uint32_t*)aprom_buf);
+        ReadData(PageAddress, StartAddress, (uint32_t*)aprom_buf);
+        FMC_Erase_User(PageAddress);
+        WriteData(PageAddress, StartAddress, (uint32_t*)aprom_buf);
         if((StartAddress%FMC_FLASH_PAGE_SIZE) >= (FMC_FLASH_PAGE_SIZE-LastDataLen))
-            FMC_Erase_User((StartAddress & 0xFFE00)+FMC_FLASH_PAGE_SIZE);
+            FMC_Erase_User(PageAddress+FMC_FLASH_PAGE_SIZE);
         goto out;
 
     }

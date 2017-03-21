@@ -435,9 +435,9 @@
           <GroupName>User</GroupName>
           <Files>
             <File>
-              <FileName>main.c</FileName>
+              <FileName>main_uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\main.c</FilePath>
+              <FilePath>..\..\main_uart.c</FilePath>
             </File>
             <File>
               <FileName>FMC_USER.c</FileName>

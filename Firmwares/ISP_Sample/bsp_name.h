@@ -56,10 +56,12 @@
     #define PLLCON 										PLLCTL
 #elif defined(CLK_PLLCTL_PLL_SRC_HIRC) || defined(CLK_PLLCTL_PLL_SRC_HXT)
     #define PLLCON 										PLLCTL
+#elif defined(CLK_PLLCTL_144MHz_HXT)
+    #define PLLCON 										PLLCTL
 #endif
 
 
-#if defined(CLK_APBCLK0_UART0CKEN_Msk)
+#if defined(CLK_APBCLK0_UART0CKEN_Msk) || defined(CLK_APBCLK0_USBDCKEN_Msk)
     #define APBCLK 										APBCLK0
 #endif
 
@@ -140,6 +142,22 @@
     #define PWRCON_SETTING (CLK_PWRCON_XTL12M_EN_Msk | CLK_PWRCON_OSC22M_EN_Msk)
 #endif
 
+
+
+// Bit0
+#if defined(CLK_CLKSTATUS_HXT_STB_Msk)
+    // No Conflicts
+#elif defined(CLK_STATUS_HXTSTB_Msk)
+    #define CLK_CLKSTATUS_HXT_STB_Msk			CLK_STATUS_HXTSTB_Msk
+#elif defined(CLK_CLKSTATUS_XTL12M_STB_Msk)
+    #define CLK_CLKSTATUS_HXT_STB_Msk			CLK_CLKSTATUS_XTL12M_STB_Msk
+#elif defined(CLK_STATUS_XTLSTB_Msk)
+    #define CLK_CLKSTATUS_HXT_STB_Msk			CLK_STATUS_XTLSTB_Msk
+#else
+    # error "Fail to find external clock stable bit field definition."
+#endif
+
+
 // Bit4
 #if defined(CLK_CLKSTATUS_HIRC_STB_Msk)
     // No Conflicts
@@ -179,6 +197,23 @@
     #define CLK_CLKDIV_HCLK_N_Msk		CLK_CLKDIV0_HCLKDIV_Msk
 #endif
 
+#if defined(CLK_CLKDIV_USB_N_Msk)
+    // No Conflicts
+#elif defined(CLK_CLKDIV0_USB_N_Msk)
+    #define CLK_CLKDIV_USB_N_Msk		CLK_CLKDIV0_USB_N_Msk
+#elif defined(CLK_CLKDIV0_USBDIV_Msk)
+    #define CLK_CLKDIV_USB_N_Msk		CLK_CLKDIV0_USBDIV_Msk
+#endif
+
+#if defined(CLK_CLKDIV_USB)
+    // No Conflicts
+#elif defined(CLK_USB_CLK_DIVIDER)
+    #define CLK_CLKDIV_USB		CLK_USB_CLK_DIVIDER
+#elif defined(CLK_CLKDIV0_USB)
+    #define CLK_CLKDIV_USB		CLK_CLKDIV0_USB
+#endif
+
+
 #if defined(CLK_CLKDIV_HCLK)
     // No Conflicts
 #elif defined(CLK_HCLK_CLK_DIVIDER)
@@ -211,40 +246,18 @@
     #define CLK_CLKSEL1_UART_S_HIRC			CLK_CLKSEL1_UARTSEL_HIRC
 #endif
 
-/*---------------------------------------------------------------------------------------------------------*/
-/*  PLLCON (PLLCTL) constant definitions which can be found in CLK.h                                       */
-/*---------------------------------------------------------------------------------------------------------*/
-
-#if defined(CLK_PLLCON_72MHz_HIRC)
-    #define PLLCON_SETTING  		CLK_PLLCON_72MHz_HIRC
-    #define PLL_CLOCK       		72000000
-#elif defined(CLK_PLLCON_60MHz_HIRC)
-    #define PLLCON_SETTING  		CLK_PLLCON_60MHz_HIRC
-    #define PLL_CLOCK       		60000000
-#elif defined(CLK_PLLCON_50MHz_HIRC)
-    #define PLLCON_SETTING  		CLK_PLLCON_50MHz_HIRC
-    #define PLL_CLOCK       		50000000
-#elif defined(CLK_PLLCTL_50MHz_HIRC)
-    #define PLLCON_SETTING  		CLK_PLLCTL_50MHz_HIRC
-    #define PLL_CLOCK       		50000000
-#elif defined(CLK_PLLCTL_100MHz_HIRC)
-    #define PLLCON_SETTING  		CLK_PLLCTL_100MHz_HIRC
-    #define PLL_CLOCK       		100000000
-    #define HCLK_DIV 				2
-#elif defined(CLK_PLLCTL_42MHz_HIRC)
-    #define PLLCON_SETTING  		CLK_PLLCTL_42MHz_HIRC
-    #define PLL_CLOCK       		42000000
-#elif defined(CLK_PLLCTL_32MHz_HIRC)
-    #define PLLCON_SETTING  		CLK_PLLCTL_32MHz_HIRC
-    #define PLL_CLOCK       		32000000
-#elif defined(PLL_IN_12M_OUT_96M_HIRC)
-    #define PLLCON_SETTING  		PLL_IN_12M_OUT_96M_HIRC
-    #define PLL_CLOCK       		96000000
-    #define HCLK_DIV 				3
+// Bit2
+#ifdef CLK_AHBCLK_ISP_EN_Msk
+    // No Conflicts
+#elif defined(CLK_AHBCLK_ISPCKEN_Msk)
+    #define CLK_AHBCLK_ISP_EN_Msk				CLK_AHBCLK_ISPCKEN_Msk
 #endif
 
-#ifndef HCLK_DIV
-    #define HCLK_DIV 				1
+// Bit27
+#ifdef CLK_APBCLK_USBD_EN_Msk
+    // No Conflicts
+#elif defined(CLK_APBCLK0_USBDCKEN_Msk)
+    #define CLK_APBCLK_USBD_EN_Msk			CLK_APBCLK0_USBDCKEN_Msk
 #endif
 
 /*---------------------------------------------------------------------------------------------------------*/

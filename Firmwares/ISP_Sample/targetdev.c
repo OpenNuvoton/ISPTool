@@ -19,6 +19,25 @@ uint32_t GetApromSize()
             size *= 2;
     } while(1);
 }
+
+#elif defined(TARGET_M451)
+// Supports 40K/72K/128K/256K bytes application ROM (APROM)
+uint32_t GetApromSize()
+{
+    uint32_t data;
+    int result, i = 0;
+    unsigned int size[4] = {40*1024, 72*1024, 128*1024, 256*1024};
+
+    while(i != 4) {
+        result = FMC_Read_User(size[i], &data);
+        if(result < 0)
+            return size[i];
+        else
+            i++;
+    }
+    return 0;
+}
+
 #else
 // Mini51DE is equipped with 4K/8K/16K bytes APROM
 // Mini58DE is equipped with 32K bytes APROM
