@@ -447,14 +447,14 @@
               <FilePath>..\..\hid_transfer\Nano100BSeries\hid_transfer.c</FilePath>
             </File>
             <File>
-              <FileName>FMC_USER.c</FileName>
+              <FileName>fmc_user.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\FMC_USER.c</FilePath>
+              <FilePath>..\..\fmc_user.c</FilePath>
             </File>
             <File>
-              <FileName>ISP_USER.c</FileName>
+              <FileName>isp_user.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\ISP_USER.c</FilePath>
+              <FilePath>..\..\isp_user.c</FilePath>
             </File>
             <File>
               <FileName>targetdev.c</FileName>

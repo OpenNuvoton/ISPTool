@@ -1,9 +1,10 @@
 
 #include "targetdev.h"
-#include "ISP_USER.h"
+#include "isp_user.h"
 
+// Nano100A is equipped with 32K/64K/123K bytes APROM
 // Nano100B is equipped with 32K/64K/123K bytes APROM
-#if defined(TARGET_NANO100B)
+#if defined(TARGET_NANO100A) || defined(TARGET_NANO100B)
 uint32_t GetApromSize()
 {
     uint32_t size = 0x8000, data;
@@ -39,11 +40,28 @@ uint32_t GetApromSize()
 }
 
 #else
+// M0518 is equipped with 32K/64K bytes APROM
+// M0519 is equipped with 64K/128K bytes APROM
+// M051 is equipped with 8K/16K/32K/64K bytes APROM
+// M0564 is equipped with 256K/512K bytes APROM
+// M058S is equipped with 32K bytes APROM
 // Mini51DE is equipped with 4K/8K/16K bytes APROM
 // Mini58DE is equipped with 32K bytes APROM
-// Nano100A is equipped with 32K/64K bytes APROM
-// Nano103 is equipped with 32K/64K bytes APROM
+// Nano1x2 is equipped with 16K/32K bytes APROM
 // Nano103 is equipped with 256K/512K bytes APROM
+// NM1530 is equipped with 32K/64K/128K bytes APROM
+// NUC029FAE is equipped with 16K bytes APROM
+// NUC029xAN is equipped with 16K bytes APROM
+// NUC100 is equipped with 32K/64K/128K bytes APROM
+// NUC121 is equipped with 32K bytes APROM
+// NUC122 is equipped with 32K/64K bytes APROM
+// NUC123 is equipped with 32K/64K bytes APROM
+// NUC126 is equipped with 128K/256K bytes APROM
+// NUC131 is equipped with 32K/64K bytes APROM
+// NUC200 is equipped with 32K/64K/128K bytes APROM
+// NUC230_240 is equipped with 32K/64K/128K bytes APROM
+// NUC472_442 is equipped with 256K/512K bytes APROM
+
 uint32_t GetApromSize()
 {
     //the smallest of APROM size is 2K
@@ -60,12 +78,6 @@ uint32_t GetApromSize()
 }
 #endif
 
-#if defined(TARGET_NUC472_442)
-#define PAGE_SIZE			0x800
-#else
-#define PAGE_SIZE			0x200
-#endif
-
 // Data Flash is shared with APROM.
 // The size and start address are defined in CONFIG1.
 void GetDataFlashInfo(uint32_t *addr, uint32_t *size)
@@ -77,7 +89,7 @@ void GetDataFlashInfo(uint32_t *addr, uint32_t *size)
     FMC_Read_User(Config0, &uData);
     if((uData&0x01) == 0) { //DFEN enable
         FMC_Read_User(Config1, &uData);
-        if(uData > g_apromSize || uData & (PAGE_SIZE - 1))//avoid config1 value from error
+        if(uData > g_apromSize || uData & (FMC_FLASH_PAGE_SIZE - 1))//avoid config1 value from error
             uData = g_apromSize;
 
         *addr = uData;

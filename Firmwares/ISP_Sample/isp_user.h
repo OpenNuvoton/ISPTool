@@ -3,7 +3,7 @@
 
 #define FW_VERSION							0x31
 
-#include "FMC_USER.h"
+#include "fmc_user.h"
 
 #define CMD_UPDATE_APROM				0x000000A0
 #define CMD_UPDATE_CONFIG				0x000000A1
@@ -27,10 +27,6 @@
 
 #define	V6M_AIRCR_VECTKEY_DATA	0x05FA0000UL
 #define V6M_AIRCR_SYSRESETREQ		0x00000004UL
-
-#define DISCONNECTED						0
-#define CONNECTING							1
-#define CONNECTED								2
 
 extern void GetDataFlashInfo(uint32_t *addr, uint32_t *size);
 extern uint32_t GetApromSize(void);

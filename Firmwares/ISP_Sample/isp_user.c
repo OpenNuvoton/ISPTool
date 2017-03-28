@@ -1,5 +1,5 @@
 /******************************************************************************
- * @file     ISP_USER.c
+ * @file     isp_user.c
  * @brief    ISP Command source file
  * @version  0x31
  * @date     31, December, 2014
@@ -9,7 +9,7 @@
  ******************************************************************************/
 #include <stdio.h>
 #include "string.h"
-#include "ISP_USER.h"
+#include "isp_user.h"
 
 __align(4) uint8_t response_buff[64];
 __align(4) static uint8_t aprom_buf[FMC_FLASH_PAGE_SIZE];
@@ -43,33 +43,6 @@ static uint16_t CalCheckSum(uint32_t start, uint32_t len)
 
     return lcksum;
 
-}
-
-void EraseAP(unsigned int addr_start, unsigned int addr_end)
-{
-    unsigned int eraseLoop = addr_start;
-
-    for(; eraseLoop < addr_end; eraseLoop += FMC_FLASH_PAGE_SIZE ) {
-        FMC_Erase_User(eraseLoop);
-    }
-    return;
-}
-
-void UpdateConfig(unsigned int *data, unsigned int *res)
-{
-    FMC_ENABLE_CFG_UPDATE();
-
-    FMC_Erase_User(Config0);
-
-    FMC_Write_User(Config0, *data);
-    FMC_Write_User(Config1, *(data+1));
-
-    if(res) {
-        FMC_Read_User(Config0, res);
-        FMC_Read_User(Config1, res+1);
-    }
-
-    FMC_DISABLE_CFG_UPDATE();
 }
 
 int ParseCmd(unsigned char *buffer, uint8_t len)
@@ -129,8 +102,6 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
     } else if(lcmd == CMD_CONNECT) {
         g_packno = 1;
         goto out;
-    } else if(lcmd == CMD_DISCONNECT) {
-        return 0;
     } else if((lcmd == CMD_UPDATE_APROM) || (lcmd == CMD_ERASE_ALL)) {
 
         EraseAP(FMC_APROM_BASE, (g_apromSize < g_dataFlashAddr) ? g_apromSize : g_dataFlashAddr); // erase APROM // g_dataFlashAddr, g_apromSize
