@@ -1,8 +1,8 @@
 /**************************************************************************//**
  * @file     pwm.c
  * @version  V3.00
- * $Revision: 6 $
- * $Date: 16/08/23 4:01p $
+ * $Revision: 8 $
+ * $Date: 17/03/06 6:03p $
  * @brief    NUC121 series PWM driver source file
  *
  * @note
@@ -141,7 +141,11 @@ uint32_t PWM_ConfigOutputChannel(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u3
     PWM_SET_CNR(pwm, u32ChannelNum, --u16CNR);
 
     if (u32DutyCycle) {
-        PWM_SET_CMR(pwm, u32ChannelNum, u32DutyCycle * (u16CNR + 1) / 100);
+        if (u32DutyCycle >= 100)
+            PWM_SET_CMR(pwm, u32ChannelNum, u16CNR);
+        else
+            PWM_SET_CMR(pwm, u32ChannelNum, u32DutyCycle * (u16CNR + 1) / 100);
+
         (pwm)->WGCTL0 &= ~((PWM_WGCTL0_PRDPCTL0_Msk | PWM_WGCTL0_ZPCTL0_Msk) << (u32ChannelNum * 2));
         (pwm)->WGCTL0 |= (PWM_OUTPUT_LOW << (u32ChannelNum * 2 + PWM_WGCTL0_PRDPCTL0_Pos));
         (pwm)->WGCTL1 &= ~((PWM_WGCTL1_CMPDCTL0_Msk | PWM_WGCTL1_CMPUCTL0_Msk) << (u32ChannelNum * 2));

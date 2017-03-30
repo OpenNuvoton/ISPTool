@@ -33,7 +33,11 @@ const uint8_t HID_DeviceReportDescriptor[] = {
 const uint8_t gu8DeviceDescriptor[] = {
     LEN_DEVICE,     /* bLength */
     DESC_DEVICE,    /* bDescriptorType */
-    0x01, 0x02,     /* bcdUSB >= 0x0201 to support LPM */
+#ifdef SUPPORT_LPM
+    0x01, 0x02,     /* bcdUSB => 0x0201 to support LPM */
+#else    
+    0x10, 0x01,     /* bcdUSB */
+#endif    
     0x00,           /* bDeviceClass */
     0x00,           /* bDeviceSubClass */
     0x00,           /* bDeviceProtocol */

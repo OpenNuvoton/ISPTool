@@ -8,8 +8,13 @@
 #ifndef __USBD_H__
 #define __USBD_H__
 
-//#define SUPPORT_LPM     /*!< Define it to enable enable Linking Power Management(LPM) function.\
-LPM realted handler will raise after LMP event happen.          * /
+/*!<    Define it to enable Link Power Management(LPM) function.              
+        LPM related handler will raise after LPM event happen.                         
+        if bcdUSB >= 0x0201, USB version is equal or higher than 2.1,                 
+        OS(Windows) will issue "get BOS descriptor" request.                               
+        WIN8 ~ WIN10 will not recognize the device if device stalls the request.        
+        The device can be recognized on WIN7 even though the "get BOS request" been stalled.  */
+//#define SUPPORT_LPM
 
 /** @addtogroup Standard_Driver Standard Driver
   @{
@@ -377,13 +382,15 @@ extern const S_USBD_INFO_T gsInfo;
   *
   * @param    None
   *
-  * @return   The value of USB_ATTR[3:0].
-  *           Bit 0 indicates USB bus reset status.
-  *           Bit 1 indicates USB bus suspend status.
-  *           Bit 2 indicates USB bus resume status.
-  *           Bit 3 indicates USB bus time-out status.
+  * @return   The value of USB_ATTR[3:0] and USB_ATTR[13:12].
+  *           Bit  0 indicates USB bus reset status.
+  *           Bit  1 indicates USB bus suspend status.
+  *           Bit  2 indicates USB bus resume status.
+  *           Bit  3 indicates USB bus time-out status.
+  *           Bit 12 indicates USB bus LPM L1 suspend status.
+  *           Bit 13 indicates USB bus LPM L1 resume status.
   *
-  * @details  Return USB_ATTR[3:0] for USB bus events.
+  * @details  Return USB_ATTR[3:0] and USB_ATTR[13:12] for USB bus events.
   *
   * \hideinitializer
   */

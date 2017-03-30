@@ -1,8 +1,8 @@
 ;/**************************************************************************//**
 ; * @file     startup_NUC121.s
 ; * @version  V3.00
-; * $Revision: 4 $
-; * $Date: 16/06/24 10:28a $ 
+; * $Revision: 5 $
+; * $Date: 16/12/21 5:31p $ 
 ; * @brief    NUC121 Startup Source File
 ; *
 ; * @note
@@ -77,8 +77,8 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     Default_Handler 
                 DCD     I2C0_IRQHandler 
                 DCD     I2C1_IRQHandler 
-                DCD     Default_Handler 
-                DCD     Default_Handler
+                DCD     BPWM0_IRQHandler 
+                DCD     BPWM1_IRQHandler
                 DCD     USCI_IRQHandler 
                 DCD     USBD_IRQHandler  
                 DCD     Default_Handler  
@@ -173,6 +173,8 @@ Default_Handler PROC
                 EXPORT  SPI0_IRQHandler           [WEAK]
                 EXPORT  I2C0_IRQHandler           [WEAK]
                 EXPORT  I2C1_IRQHandler           [WEAK]
+                EXPORT  BPWM0_IRQHandler          [WEAK]
+                EXPORT  BPWM1_IRQHandler          [WEAK]
 				EXPORT  USCI_IRQHandler           [WEAK]
                 EXPORT  USBD_IRQHandler           [WEAK]
                 EXPORT  PWM_BRAKE_IRQHandler      [WEAK]
@@ -197,6 +199,8 @@ UART0_IRQHandler
 SPI0_IRQHandler
 I2C0_IRQHandler
 I2C1_IRQHandler
+BPWM0_IRQHandler
+BPWM1_IRQHandler
 USCI_IRQHandler
 USBD_IRQHandler
 PWM_BRAKE_IRQHandler

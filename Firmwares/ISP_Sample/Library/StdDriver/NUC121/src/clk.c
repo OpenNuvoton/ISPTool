@@ -299,7 +299,7 @@ void CLK_SetHCLK(uint32_t u32ClkSrc, uint32_t u32ClkDiv)
   * |\ref ADC_MODULE     |\ref CLK_CLKSEL1_ADCSEL_HXT           |\ref CLK_CLKDIV0_ADC(x) |
   * |\ref ADC_MODULE     |\ref CLK_CLKSEL1_ADCSEL_PLL           |\ref CLK_CLKDIV0_ADC(x) |
   * |\ref ADC_MODULE     |\ref CLK_CLKSEL1_ADCSEL_PCLK0         |\ref CLK_CLKDIV0_ADC(x) |
-  * |\ref ADC_MODULE     |\ref CLK_CLKSEL1_ADCSEL_HIRC_DIV2     |\ref CLK_CLKDIV0_ADC(x) |
+  * |\ref ADC_MODULE     |\ref CLK_CLKSEL1_ADCSEL_HIRC          |\ref CLK_CLKDIV0_ADC(x) |
   * |\ref TMR0_MODULE    |\ref CLK_CLKSEL1_TMR0SEL_HXT          | x                      |
   * |\ref TMR0_MODULE    |\ref CLK_CLKSEL1_TMR0SEL_LXT          | x                      |
   * |\ref TMR0_MODULE    |\ref CLK_CLKSEL1_TMR0SEL_PCLK0        | x                      |
@@ -343,13 +343,13 @@ void CLK_SetHCLK(uint32_t u32ClkSrc, uint32_t u32ClkDiv)
   * |\ref CLKO_MODULE    |\ref CLK_CLKSEL2_CLKOSEL_HIRC         | x                      |
   * |\ref CLKO_MODULE    |\ref CLK_CLKSEL2_CLKOSEL_SOF          | x                      |
   * |\ref WWDT_MODULE    |\ref CLK_CLKSEL2_WWDTSEL_HCLK_DIV2048 | x                      |
-  * |\ref WWDT_MODULE    |\ref CLK_CLKSEL2_WWDTSEL_LIRC          | x                      |
+  * |\ref WWDT_MODULE    |\ref CLK_CLKSEL2_WWDTSEL_LIRC         | x                      |
   * |\ref SPI0_MODULE    |\ref CLK_CLKSEL2_SPI0SEL_HXT          | x                      |
   * |\ref SPI0_MODULE    |\ref CLK_CLKSEL2_SPI0SEL_PLL          | x                      |
   * |\ref SPI0_MODULE    |\ref CLK_CLKSEL2_SPI0SEL_PCLK0        | x                      |
-  * |\ref SPI0_MODULE    |\ref CLK_CLKSEL2_SPI0SEL_HIRC_DIV2    | x                      |
-  * |\ref USBD_MODULE    |\ref CLK_CLKSEL3_USBDSEL_HIRC         | x                       |
-  * |\ref USBD_MODULE    |\ref CLK_CLKSEL3_USBDSEL_PLL          |\ref CLK_CLKDIV0_USB(x)  |
+  * |\ref SPI0_MODULE    |\ref CLK_CLKSEL2_SPI0SEL_HIRC         | x                      |
+  * |\ref USBD_MODULE    |\ref CLK_CLKSEL3_USBDSEL_HIRC         | x                      |
+  * |\ref USBD_MODULE    |\ref CLK_CLKSEL3_USBDSEL_PLL          |\ref CLK_CLKDIV0_USB(x) |
   */
 void CLK_SetModuleClock(uint32_t u32ModuleIdx, uint32_t u32ClkSrc, uint32_t u32ClkDiv)
 {

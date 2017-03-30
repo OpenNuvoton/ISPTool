@@ -1,12 +1,9 @@
 /**************************************************************************//**
  * @file     usbd.c
  * @version  V3.00
- * $Revision: 4 $
- * $Date: 16/08/23 4:01p $
  * @brief    NUC121 series USBD driver source file
  *
- * @note
- * Copyright (C) 2016 Nuvoton Technology Corp. All rights reserved.
+ * @copyright (C) 2016 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
 
 #include <string.h>

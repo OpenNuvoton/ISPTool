@@ -72,8 +72,8 @@ typedef enum IRQn {
     //RESERVE3                  = 17,
     I2C0_IRQn                 = 18,     /*!< I2C0 Interrupt                                       */
     I2C1_IRQn                 = 19,     /*!< I2C1 Interrupt                                       */
-    //RESERVE4                  = 20,
-    //RESERVE5                  = 21,
+    BPWM0_IRQn                = 20,     /*!< BPWM0 Interrupt                                      */
+    BPWM1_IRQn                = 21,     /*!< BPWM1 Interrupt                                      */
     USCI_IRQn                 = 22,     /*!< USCI0, USCI1 and USCI2 interrupt                     */
     USBD_IRQn                 = 23,     /*!< USB Device Interrupt                                 */
     //RESERVE6                  = 24,

@@ -1,8 +1,8 @@
 /**************************************************************************//**
  * @file     bpwm.c
  * @version  V3.00
- * $Revision: 9 $
- * $Date: 16/08/23 4:01p $
+ * $Revision: 11 $
+ * $Date: 17/03/06 6:03p $
  * @brief    NUC121 series BPWM driver source file
  *
  * @note
@@ -141,7 +141,11 @@ uint32_t BPWM_ConfigOutputChannel(BPWM_T *bpwm, uint32_t u32ChannelNum, uint32_t
     BPWM_SET_CNR(bpwm, u32ChannelNum, --u16CNR);
 
     if (u32DutyCycle) {
-        BPWM_SET_CMR(bpwm, u32ChannelNum, u32DutyCycle * (u16CNR + 1) / 100);
+        if (u32DutyCycle >= 100)
+            BPWM_SET_CMR(bpwm, u32ChannelNum, u16CNR);
+        else
+            BPWM_SET_CMR(bpwm, u32ChannelNum, u32DutyCycle * (u16CNR + 1) / 100);
+
         (bpwm)->WGCTL0 &= ~((BPWM_WGCTL0_PRDPCTL0_Msk | BPWM_WGCTL0_ZPCTL0_Msk) << (u32ChannelNum * 2));
         (bpwm)->WGCTL0 |= (BPWM_OUTPUT_LOW << (u32ChannelNum * 2 + BPWM_WGCTL0_PRDPCTL0_Pos));
         (bpwm)->WGCTL1 &= ~((BPWM_WGCTL1_CMPDCTL0_Msk | BPWM_WGCTL1_CMPUCTL0_Msk) << (u32ChannelNum * 2));

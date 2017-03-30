@@ -227,19 +227,6 @@ extern "C"
 */
 #define I2C_GET_WAKEUP_WR_STATUS(i2c) ( ((i2c)->WKSTS & I2C_WKSTS_WRSTSWK_Msk) == I2C_WKSTS_WRSTSWK_Msk ? 1:0  )
 
-/**
- *    @brief        To clear read/write status bit
- *
- *    @param[in]    i2c     Specify I2C port
- *
- *    @return       None
- *
- *    @details      If wake-up read/write bit is set, use this macro to clear it.
- *
- *    \hideinitializer
- */
-#define I2C_CLEAR_WAKEUP_WR_STATUS(i2c)  ((i2c)->WKSTS = I2C_WKSTS_WRSTSWK_Msk)
-
 void I2C_ClearTimeoutFlag(I2C_T *i2c);
 void I2C_Close(I2C_T *i2c);
 void I2C_Trigger(I2C_T *i2c, uint8_t u8Start, uint8_t u8Stop, uint8_t u8Si, uint8_t u8Ack);
