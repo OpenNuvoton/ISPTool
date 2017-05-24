@@ -1,8 +1,8 @@
 /**************************************************************************//**
  * @file     USCI_I2C.h
  * @version  V3.0
- * $Revision: 8 $
- * $Date: 16/10/25 4:25p $
+ * $Revision: 9 $
+ * $Date: 16/11/11 3:14p $
  * @brief    NUC126 series USCI I2C(UI2C) driver header file
  *
  * @note
@@ -293,7 +293,18 @@ void UI2C_EnableTimeout(UI2C_T *ui2c, uint32_t u32TimeoutCnt);
 void UI2C_DisableTimeout(UI2C_T *ui2c);
 void UI2C_EnableWakeup(UI2C_T *ui2c, uint8_t u8WakeupMode);
 void UI2C_DisableWakeup(UI2C_T *ui2c);
-
+uint8_t UI2C_WriteByte(UI2C_T *ui2c, uint8_t u8SlaveAddr, const uint8_t data);
+uint32_t UI2C_WriteMultiBytes(UI2C_T *ui2c, uint8_t u8SlaveAddr, const uint8_t *data, uint32_t u32wLen);
+uint8_t UI2C_WriteByteOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8DataAddr, const uint8_t data);
+uint32_t UI2C_WriteMultiBytesOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8DataAddr, const uint8_t *data, uint32_t u32wLen);
+uint8_t UI2C_WriteByteTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16DataAddr, const uint8_t data);
+uint32_t UI2C_WriteMultiBytesTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16DataAddr, const uint8_t *data, uint32_t u32wLen);
+uint8_t UI2C_ReadByte(UI2C_T *ui2c, uint8_t u8SlaveAddr);
+uint32_t UI2C_ReadMultiBytes(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t *rdata, uint32_t u32rLen);
+uint8_t UI2C_ReadByteOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8DataAddr);
+uint32_t UI2C_ReadMultiBytesOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8DataAddr, uint8_t *rdata, uint32_t u32rLen);
+uint8_t UI2C_ReadByteTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16DataAddr);
+uint32_t UI2C_ReadMultiBytesTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16DataAddr, uint8_t *rdata, uint32_t u32rLen);
 /*@}*/ /* end of group USCI_I2C_EXPORTED_FUNCTIONS */
 
 /*@}*/ /* end of group USCI_I2C_Driver */
