@@ -14,7 +14,7 @@ class CNumEdit : public CEdit
 {
 // Construction
 public:
-	CNumEdit(int nRadix = 16, int nMaxLength = 8, bool bInsertMode = false, bool bUseLowerCase = false);
+    CNumEdit(int nRadix = 16, int nMaxLength = 8, bool bInsertMode = false, bool bUseLowerCase = false);
 
 // Attributes
 public:
@@ -23,31 +23,31 @@ public:
 public:
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CNumEdit)
-	protected:
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-	//}}AFX_VIRTUAL
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CNumEdit)
+protected:
+    virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+    //}}AFX_VIRTUAL
 
 // Implementation
 public:
-	virtual ~CNumEdit();
+    virtual ~CNumEdit();
 
-	bool IsInsertMode() const;
-	void SetInsertMode(bool bInsertMode);
+    bool IsInsertMode() const;
+    void SetInsertMode(bool bInsertMode);
 
-	// Generated message map functions
+    // Generated message map functions
 protected:
-	int m_nRadix;
-	int m_nMaxLength;
-	bool m_bInsertMode;
-	bool m_bUseLowerCase;
+    int m_nRadix;
+    int m_nMaxLength;
+    bool m_bInsertMode;
+    bool m_bUseLowerCase;
 
-	//{{AFX_MSG(CNumEdit)
-	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
-	//}}AFX_MSG
+    //{{AFX_MSG(CNumEdit)
+    afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+    //}}AFX_MSG
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 };
 
 /////////////////////////////////////////////////////////////////////////////

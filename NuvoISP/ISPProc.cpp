@@ -12,33 +12,34 @@ static char THIS_FILE[] = __FILE__;
 template <class T>
 inline T *vector_ptr(std::vector<T> &v)
 {
-    if(v.size() > 0)
+    if (v.size() > 0) {
         return &v[0];
-    else
+    } else {
         return NULL;
+    }
 }
 
 template <class T>
 inline const T *vector_ptr(const std::vector<T> &v)
 {
-    if(v.size() > 0)
+    if (v.size() > 0) {
         return &v[0];
-    else
+    } else {
         return NULL;
+    }
 }
 
 
 CISPProc::CISPProc(HWND *pWnd)
-	: m_bProgram_APROM(0)
-	, m_bProgram_NVM(0)
-	, m_bProgram_Config(0)
-	, m_bErase(0)
+    : m_bProgram_APROM(0)
+    , m_bProgram_NVM(0)
+    , m_bProgram_Config(0)
+    , m_bErase(0)
 {
     MainHWND = pWnd;
     m_hThreadMutex = ::CreateMutex(NULL, FALSE, NULL);
     m_fnThreadProcStatus = &CISPProc::Thread_Pause;
     m_fnThreadProcStatus_backup = &CISPProc::Thread_Pause;
-
     DWORD dwThreadID;
     m_pAssistThread = thread_proxy(
                           this,
@@ -55,34 +56,33 @@ CISPProc::CISPProc(HWND *pWnd)
                           &dwThreadID
                           //LPDWORD lpThreadId                         // pointer to receive thread ID
                       );
-
-	m_CONFIG[0] = 0xFFFFFFFF;
-	m_CONFIG[1] = 0xFFFFFFFF;
-	m_CONFIG_User[0] = 0xFFFFFFFF;
-	m_CONFIG_User[1] = 0xFFFFFFFF;
-	m_pAssistThread->m_bAutoDelete = TRUE;
-	m_eProcSts = EPS_OK;
+    m_CONFIG[0] = 0xFFFFFFFF;
+    m_CONFIG[1] = 0xFFFFFFFF;
+    m_CONFIG_User[0] = 0xFFFFFFFF;
+    m_CONFIG_User[1] = 0xFFFFFFFF;
+    m_pAssistThread->m_bAutoDelete = TRUE;
+    m_eProcSts = EPS_OK;
 }
 
 CISPProc::~CISPProc()
 {
     Set_ThreadAction(NULL);
-	WaitForSingleObject(m_pAssistThread->m_hThread, 5000);
+    WaitForSingleObject(m_pAssistThread->m_hThread, 5000);
 }
 
 DWORD CISPProc::AssistThread(LPVOID pArg)
 {
-    while(1) {
+    while (1) {
         void (CISPProc::*fnThreadProcStatus)() = m_fnThreadProcStatus;
-
         {
-            if(fnThreadProcStatus != NULL) {
+            if (fnThreadProcStatus != NULL) {
                 (this->*fnThreadProcStatus)();
             } else {
                 break;
             }
         }
     }
+
     return 0;
 }
 
@@ -90,50 +90,55 @@ void CISPProc::Set_ThreadAction(void (CISPProc::*fnThreadProcStatus)())
 {
     LockGUI();
     m_fnThreadProcStatus_backup = m_fnThreadProcStatus;
-    if(m_fnThreadProcStatus != NULL) {
+
+    if (m_fnThreadProcStatus != NULL) {
         m_fnThreadProcStatus = fnThreadProcStatus;
     }
+
     UnlockGUI();
 }
 
 void CISPProc::Thread_Pause()
 {
-    while(m_fnThreadProcStatus == &CISPProc::Thread_Pause)
+    while (m_fnThreadProcStatus == &CISPProc::Thread_Pause) {
         Sleep(100);
+    }
 }
 
 void CISPProc::Thread_Idle()
 {
-    if(m_fnThreadProcStatus != &CISPProc::Thread_Idle)
+    if (m_fnThreadProcStatus != &CISPProc::Thread_Idle) {
         return;
+    }
 
     PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_CONNECT_STATUS, CONNECT_STATUS_NONE);
-
     m_ISPLdDev.Close_Port();
-	m_eProcSts = EPS_OK;
+    m_eProcSts = EPS_OK;
 
-    while(m_fnThreadProcStatus == &CISPProc::Thread_Idle)
+    while (m_fnThreadProcStatus == &CISPProc::Thread_Idle) {
         Sleep(100);
+    }
 }
 
 void CISPProc::Thread_CheckUSBConnect()
 {
-    if(m_fnThreadProcStatus != &CISPProc::Thread_CheckUSBConnect)
+    if (m_fnThreadProcStatus != &CISPProc::Thread_CheckUSBConnect) {
         return;
+    }
 
     PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_CONNECT_STATUS, CONNECT_STATUS_USB);
-
     m_ISPLdDev.Close_Port();
-
     DWORD dwWait = 0;
-    while(m_fnThreadProcStatus == &CISPProc::Thread_CheckUSBConnect) {
-        if(m_ISPLdDev.Open_Port(false)) {
+
+    while (m_fnThreadProcStatus == &CISPProc::Thread_CheckUSBConnect) {
+        if (m_ISPLdDev.Open_Port(false)) {
             m_eProcSts = EPS_ERR_CONNECT;
+
             try {
-                if(m_ISPLdDev.CMD_Connect(40)) {
+                if (m_ISPLdDev.CMD_Connect(40)) {
                     Set_ThreadAction(&CISPProc::Thread_CheckDeviceConnect);
                 }
-            } catch(...) {
+            } catch (...) {
                 Set_ThreadAction(&CISPProc::Thread_Idle);
             }
         } else {
@@ -145,177 +150,167 @@ void CISPProc::Thread_CheckUSBConnect()
 
 void CISPProc::Thread_CheckDeviceConnect()
 {
-    if(m_fnThreadProcStatus != &CISPProc::Thread_CheckDeviceConnect)
+    if (m_fnThreadProcStatus != &CISPProc::Thread_CheckDeviceConnect) {
         return;
+    }
 
     PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_CONNECT_STATUS, CONNECT_STATUS_CONNECTING);
 
     try {
-        while(m_fnThreadProcStatus == &CISPProc::Thread_CheckDeviceConnect) {
-            if(m_ISPLdDev.Check_USB_Link()) {
-
+        while (m_fnThreadProcStatus == &CISPProc::Thread_CheckDeviceConnect) {
+            if (m_ISPLdDev.Check_USB_Link()) {
                 // Re-Open COM Port to clear previous status
                 m_ISPLdDev.Close_Port();
                 m_ISPLdDev.Open_Port();
-
                 m_ISPLdDev.SyncPackno();
                 m_ucFW_VER = m_ISPLdDev.GetVersion();
                 //printf("GetVersion: %X\n", m_ucFW_VER);
-
                 m_ulDeviceID = m_ISPLdDev.GetDeviceID();
                 //printf("GetDeviceID: %X\n", m_ulDeviceID);
-
                 m_ISPLdDev.ReadConfig(m_CONFIG);
                 //printf("ReadConfig: %X, %X\n", m_CONFIG[0], m_CONFIG[1]);
                 memcpy(m_CONFIG_User, m_CONFIG, sizeof(m_CONFIG));
                 m_eProcSts = EPS_OK;
-
                 Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
-            } else
+            } else {
                 Set_ThreadAction(&CISPProc::Thread_CheckUSBConnect);
+            }
         }
-    } catch(...) {
-		Set_ThreadAction(&CISPProc::Thread_Idle);
+    } catch (...) {
+        Set_ThreadAction(&CISPProc::Thread_Idle);
     }
 }
 
 
 void CISPProc::Thread_CheckDisconnect()
 {
-    if(m_fnThreadProcStatus != &CISPProc::Thread_CheckDisconnect)
+    if (m_fnThreadProcStatus != &CISPProc::Thread_CheckDisconnect) {
         return;
+    }
 
     PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_CONNECT_STATUS, CONNECT_STATUS_OK);
 
-    while(m_fnThreadProcStatus == &CISPProc::Thread_CheckDisconnect)
+    while (m_fnThreadProcStatus == &CISPProc::Thread_CheckDisconnect) {
         Sleep(100);
+    }
 }
 
 void CISPProc::Thread_ProgramFlash()
 {
-    if(m_fnThreadProcStatus != &CISPProc::Thread_ProgramFlash)
+    if (m_fnThreadProcStatus != &CISPProc::Thread_ProgramFlash) {
         return;
+    }
 
     unsigned int uAddr, uSize;
     unsigned char *pBuffer;
-
-	m_eProcSts = EPS_OK;
+    m_eProcSts = EPS_OK;
 
     try {
+        if (m_bErase) {
+            if (m_ISPLdDev.EraseAll()) {
+                m_ISPLdDev.ReadConfig(m_CONFIG);
+            } else {
+                m_eProcSts = EPS_ERR_ERASE;
+                Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
+                return;
+            }
+        }
 
-		if(m_bErase) {
-			if(m_ISPLdDev.EraseAll())
-				m_ISPLdDev.ReadConfig(m_CONFIG);
-			else
-			{
-				m_eProcSts = EPS_ERR_ERASE;
-				Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
-				return;
-			}
-		}
+        if (m_bProgram_Config) {
+            m_ISPLdDev.UpdateConfig(m_CONFIG_User, m_CONFIG);
 
-		if(m_bProgram_Config) {
-			m_ISPLdDev.UpdateConfig(m_CONFIG_User, m_CONFIG);
-			if((m_CONFIG_User[0] != m_CONFIG[0]) || (m_CONFIG_User[1] != m_CONFIG[1]))
-			{
-				m_eProcSts = EPS_ERR_CONFIG;
-				Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
-				return;
-			}
-			
-			UpdateSizeInfo(m_ulDeviceID, m_CONFIG[0], m_CONFIG[1],
-					   &m_uNVM_Addr,
-					   &m_uAPROM_Size, &m_uNVM_Size);
-		}
+            if ((m_CONFIG_User[0] != m_CONFIG[0]) || (m_CONFIG_User[1] != m_CONFIG[1])) {
+                m_eProcSts = EPS_ERR_CONFIG;
+                Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
+                return;
+            }
 
-        if(m_bProgram_APROM) {
+            UpdateSizeInfo(m_ulDeviceID, m_CONFIG[0], m_CONFIG[1],
+                           &m_uNVM_Addr,
+                           &m_uAPROM_Size, &m_uNVM_Size);
+        }
+
+        if (m_bProgram_APROM) {
             uAddr = m_uAPROM_Addr;
             uSize = m_sFileInfo[0].st_size;
             pBuffer = vector_ptr(m_sFileInfo[0].vbuf);
 
-			if(m_uAPROM_Size < uSize)
-			{
-				m_eProcSts = EPS_ERR_SIZE;
-				Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
-				return;
-			}
+            if (m_uAPROM_Size < uSize) {
+                m_eProcSts = EPS_ERR_SIZE;
+                Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
+                return;
+            }
 
             PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_WRITE_STATUS, 0);
+            m_ISPLdDev.SyncPackno();
 
-			m_ISPLdDev.SyncPackno();
-            for(unsigned long i = 0; i < uSize; ) {
-                if(m_fnThreadProcStatus != &CISPProc::Thread_ProgramFlash)
+            for (unsigned long i = 0; i < uSize;) {
+                if (m_fnThreadProcStatus != &CISPProc::Thread_ProgramFlash) {
                     break;
+                }
 
                 unsigned long uLen;
                 m_ISPLdDev.UpdateAPROM(uAddr, uSize, uAddr + i,
-                                       (const char*)(pBuffer + i),
+                                       (const char *)(pBuffer + i),
                                        &uLen);
 
-				if(m_ISPLdDev.bResendFlag)
-				{
-					if(i == 0 || !m_ISPLdDev.CMD_Resend())
-					{
-						m_eProcSts = EPS_ERR_APROM;
-						Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
-						return;
-					}
-				}
+                if (m_ISPLdDev.bResendFlag) {
+                    if (i == 0 || !m_ISPLdDev.CMD_Resend()) {
+                        m_eProcSts = EPS_ERR_APROM;
+                        Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
+                        return;
+                    }
+                }
 
                 i += uLen;
-
                 PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_WRITE_STATUS, (i * 100) / uSize);
             }
         }
 
-        if(m_bProgram_NVM) {
+        if (m_bProgram_NVM) {
             uAddr = m_uNVM_Addr;
             uSize = m_sFileInfo[1].st_size;
             pBuffer = vector_ptr(m_sFileInfo[1].vbuf);
 
-			if(m_uNVM_Size < uSize)
-			{
-				m_eProcSts = EPS_ERR_SIZE;
-				Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
-				return;
-			}
+            if (m_uNVM_Size < uSize) {
+                m_eProcSts = EPS_ERR_SIZE;
+                Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
+                return;
+            }
 
             PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_WRITE_STATUS, 0);
+            m_ISPLdDev.SyncPackno();
 
-			m_ISPLdDev.SyncPackno();
-            for(unsigned long i = 0; i < uSize; ) {
-                if(m_fnThreadProcStatus != &CISPProc::Thread_ProgramFlash)
+            for (unsigned long i = 0; i < uSize;) {
+                if (m_fnThreadProcStatus != &CISPProc::Thread_ProgramFlash) {
                     break;
+                }
 
                 unsigned long uLen;
                 m_ISPLdDev.UpdateNVM(uAddr, uSize, uAddr + i,
-                                     (const char*)(pBuffer + i),
+                                     (const char *)(pBuffer + i),
                                      &uLen);
 
-				if(m_ISPLdDev.bResendFlag)
-				{
-					if(i == 0 || !m_ISPLdDev.CMD_Resend())
-					{
-						m_eProcSts = EPS_ERR_NVM;
-						Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
-						return;
-					}
-				}
+                if (m_ISPLdDev.bResendFlag) {
+                    if (i == 0 || !m_ISPLdDev.CMD_Resend()) {
+                        m_eProcSts = EPS_ERR_NVM;
+                        Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
+                        return;
+                    }
+                }
 
                 i += uLen;
-
                 PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_WRITE_STATUS, (i * 100) / uSize);
             }
         }
 
-
-        if(m_fnThreadProcStatus == &CISPProc::Thread_ProgramFlash) {
+        if (m_fnThreadProcStatus == &CISPProc::Thread_ProgramFlash) {
             m_eProcSts = EPS_PROG_DONE;
             Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
         }
-    } catch(...) {
-		MessageBox(*MainHWND, _T("Lost connection!!!"), NULL, MB_ICONSTOP);
-		Set_ThreadAction(&CISPProc::Thread_Idle);
+    } catch (...) {
+        MessageBox(*MainHWND, _T("Lost connection!!!"), NULL, MB_ICONSTOP);
+        Set_ThreadAction(&CISPProc::Thread_Idle);
     }
 }
 

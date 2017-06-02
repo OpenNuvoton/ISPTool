@@ -14,7 +14,7 @@ class CDialogMain : public CDialog
     DECLARE_DYNAMIC(CDialogMain)
 
 public:
-    CDialogMain(UINT nIDTemplate, CWnd* pParent = NULL ); // standard constructor
+    CDialogMain(UINT nIDTemplate, CWnd *pParent = NULL);  // standard constructor
     virtual ~CDialogMain();
 
 // Dialog Data
@@ -26,10 +26,10 @@ public:
     CRect m_rect;		//original dialog rect info
 
 
-    #ifndef _NO_CONFIGURATION_DLG
+#ifndef _NO_CONFIGURATION_DLG
     bool ConfigDlgSel(unsigned int *pConfig, unsigned int size);
     bool ConfigSetting(unsigned int id, unsigned int *pConfig, unsigned int size);
-    #endif
+#endif
 
     void ShowDlgItem(int nID, int nCmdShow);
     void EnableDlgItem(int nID, BOOL bEnable);
@@ -46,14 +46,14 @@ public:
     UINT ScanPCCom();
 
 protected:
-    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
 
     virtual BOOL OnInitDialog();
 
     afx_msg void OnSize(UINT nType, int cx, int cy);
-    afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-    afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-    afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
+    afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
+    afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
+    afx_msg void OnGetMinMaxInfo(MINMAXINFO *lpMMI);
     afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
     DECLARE_MESSAGE_MAP()
 };

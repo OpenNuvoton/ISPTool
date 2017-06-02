@@ -50,48 +50,48 @@
 #define BFT_BITMAP 0x4d42   // 'BM'
 #endif
 
-class CCeXDib  
+class CCeXDib
 {
 public:
-	CCeXDib();
-	virtual ~CCeXDib();
+    CCeXDib();
+    virtual ~CCeXDib();
 
-	HDIB Create(DWORD dwWidth, DWORD dwHeight, WORD wBitCount);
-	void Clone(CCeXDib* src);
-	void Draw(HDC hDC, DWORD dwX, DWORD dwY);
-	void Copy(HDC hDC, DWORD dwX, DWORD dwY);
-	LPBYTE GetBits();
-	void Clear(BYTE byVal = 0);
+    HDIB Create(DWORD dwWidth, DWORD dwHeight, WORD wBitCount);
+    void Clone(CCeXDib *src);
+    void Draw(HDC hDC, DWORD dwX, DWORD dwY);
+    void Copy(HDC hDC, DWORD dwX, DWORD dwY);
+    LPBYTE GetBits();
+    void Clear(BYTE byVal = 0);
 
-	void SetGrayPalette();
-	void SetPaletteIndex(BYTE byIdx, BYTE byR, BYTE byG, BYTE byB);
-	void SetPixelIndex(DWORD dwX, DWORD dwY, BYTE byI);
-	void BlendPalette(COLORREF crColor, DWORD dwPerc);
+    void SetGrayPalette();
+    void SetPaletteIndex(BYTE byIdx, BYTE byR, BYTE byG, BYTE byB);
+    void SetPixelIndex(DWORD dwX, DWORD dwY, BYTE byI);
+    void BlendPalette(COLORREF crColor, DWORD dwPerc);
 
-	WORD GetBitCount();
-	DWORD GetLineWidth();
-	DWORD GetWidth();
-	DWORD GetHeight();
-	WORD GetNumColors();
+    WORD GetBitCount();
+    DWORD GetLineWidth();
+    DWORD GetWidth();
+    DWORD GetHeight();
+    WORD GetNumColors();
 
-	BOOL WriteBMP(LPCTSTR bmpFileName);
+    BOOL WriteBMP(LPCTSTR bmpFileName);
 
 private:
-	void FreeResources();
+    void FreeResources();
 
-	DWORD GetPaletteSize();
-	DWORD GetSize();
+    DWORD GetPaletteSize();
+    DWORD GetSize();
 
-	RGBQUAD RGB2RGBQUAD(COLORREF cr);
+    RGBQUAD RGB2RGBQUAD(COLORREF cr);
 
-	HDIB				m_hDib;
+    HDIB				m_hDib;
     BITMAPINFOHEADER    m_bi;
-	DWORD				m_dwLineWidth;
-	WORD				m_wColors;
+    DWORD				m_dwLineWidth;
+    WORD				m_wColors;
 
-	HBITMAP				m_hBitmap;	// Handle to bitmap
-	HDC					m_hMemDC;	// Handle to memory DC
-	LPVOID				m_lpBits;	// Pointer to actual bitmap bits
+    HBITMAP				m_hBitmap;	// Handle to bitmap
+    HDC					m_hMemDC;	// Handle to memory DC
+    LPVOID				m_lpBits;	// Pointer to actual bitmap bits
 };
 
-#endif 
+#endif

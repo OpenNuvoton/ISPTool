@@ -29,13 +29,13 @@
 /////////////////////////////////////////////////////////////////////////////
 // CNuvoISPDlg dialog
 
-class CNuvoISPDlg:public CDialogMain, public CISPProc
+class CNuvoISPDlg: public CDialogMain, public CISPProc
 {
 // Construction
 public:
     enum { IDD = IDD_DIALOG_NUVOISP};
 
-    CNuvoISPDlg(UINT Template = CNuvoISPDlg::IDD, CWnd* pParent = NULL);	// standard constructor
+    CNuvoISPDlg(UINT Template = CNuvoISPDlg::IDD, CWnd *pParent = NULL);	// standard constructor
     virtual ~CNuvoISPDlg();
     CString	m_sConnect;
     CTabCtrl	m_TabData;
@@ -51,7 +51,7 @@ public:
     CButton	m_ButtonConnect;
     void OnButtonBinFile(int idx, TCHAR *szPath = NULL);
     CString	m_sStatus;
-    virtual BOOL PreTranslateMessage(MSG* pMsg);
+    virtual BOOL PreTranslateMessage(MSG *pMsg);
 
     void EnableProgramOption(BOOL bEnable);
 
@@ -62,27 +62,27 @@ protected:
     void OnOK() {};
     //afx_msg void OnClose();
     virtual BOOL OnInitDialog();
-	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
+    afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
     //virtual void OnCancel();
     afx_msg void OnButtonConnect();
     afx_msg void OnButtonLoadFile();
     afx_msg void OnButtonStart();
-    afx_msg void OnSelchangeTabData(NMHDR* pNMHDR, LRESULT* pResult);
+    afx_msg void OnSelchangeTabData(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnDropFiles(HDROP hDropInfo);
     afx_msg void OnButtonConfig();
     afx_msg void OnPaint();
     //}}AFX_MSG
-    virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+    virtual void DoDataExchange(CDataExchange *pDX);	// DDX/DDV support
     virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
     //afx_msg BOOL OnDeviceChange(UINT nEventType, DWORD dwData);
-    afx_msg LRESULT  OnDeviceChange(WPARAM  nEventType, LPARAM  dwData );
+    afx_msg LRESULT  OnDeviceChange(WPARAM  nEventType, LPARAM  dwData);
     DECLARE_MESSAGE_MAP()
 
     void ShowChipInfo();
 
 public:
     FLASH_PID_INFO_BASE_T m_sPidInfoBase;
-    afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+    afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
     void UpdateAddrOffset();
 
 private:

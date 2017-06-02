@@ -25,17 +25,17 @@
 /////////////////////////////////////////////////////////////////////////////
 // CISPProc dialog
 enum EProcSts {
-	EPS_OK = 0,
-	// Thread_CheckUSBConnect
-	EPS_ERR_OPENPORT = 1,
-	EPS_ERR_CONNECT = 2,
-	// Thread_ProgramFlash
-	EPS_ERR_ERASE = 8,
-	EPS_ERR_CONFIG = 3,
-	EPS_ERR_APROM = 4,
-	EPS_ERR_NVM = 5,
-	EPS_ERR_SIZE = 6,
-	EPS_PROG_DONE = 7,
+    EPS_OK = 0,
+    // Thread_CheckUSBConnect
+    EPS_ERR_OPENPORT = 1,
+    EPS_ERR_CONNECT = 2,
+    // Thread_ProgramFlash
+    EPS_ERR_ERASE = 8,
+    EPS_ERR_CONFIG = 3,
+    EPS_ERR_APROM = 4,
+    EPS_ERR_NVM = 5,
+    EPS_ERR_SIZE = 6,
+    EPS_PROG_DONE = 7,
 
 };	// m_eProcSts
 
@@ -47,7 +47,7 @@ public:
     virtual ~CISPProc();
     fileinfo m_sFileInfo[NUM_VIEW];
 protected:
-    HWND* MainHWND;
+    HWND *MainHWND;
     /* State machine */
     void Set_ThreadAction(void (CISPProc::*fnThreadProcStatus)());
     void Call_ThreadAction(void (CISPProc::*fnThreadProcStatus)());
@@ -84,11 +84,12 @@ public:
     BOOL	m_bErase;
 
     ISPLdCMD	m_ISPLdDev;
-    void SetInterface(unsigned int it, CString str) {
+    void SetInterface(unsigned int it, CString str)
+    {
         m_ISPLdDev.SetInterface(it, str);
     };
 
-	EProcSts m_eProcSts;
+    EProcSts m_eProcSts;
 };
 
 //{{AFX_INSERT_LOCATION}}

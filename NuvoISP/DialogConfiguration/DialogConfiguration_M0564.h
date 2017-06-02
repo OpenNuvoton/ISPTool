@@ -16,68 +16,68 @@ class CDialogConfiguration_M0564 : public CDialogResize
 {
 // Construction
 public:
-	CDialogConfiguration_M0564(unsigned int uPID = 0, unsigned int uProgramMemorySize = 256 * 1024,
-							  CWnd* pParent = NULL);   // standard constructor
+    CDialogConfiguration_M0564(unsigned int uPID = 0, unsigned int uProgramMemorySize = 256 * 1024,
+                               CWnd *pParent = NULL);   // standard constructor
 
 
-	CAppConfig::M0564_configs_t m_ConfigValue;
+    CAppConfig::M0564_configs_t m_ConfigValue;
 
 // Dialog Data
-	//{{AFX_DATA(CDialogConfiguration_NUC4xx)
-	enum { IDD = IDD_DIALOG_CONFIGURATION_M0564 };
-	CNumEdit	m_FlashBaseAddress;
-	CEdit	m_DataFlashSize;
-	int		m_nRadioClk;
-	int		m_nRadioBov;
-	int		m_nRadioBS;
-	CString	m_sConfigValue0;
-	CString	m_sConfigValue1;
-	CString	m_sFlashBaseAddress;
-	CString	m_sDataFlashSize;
-	BOOL	m_bCheckBrownOutDetect;
-	BOOL	m_bCheckBrownOutReset;
-	BOOL	m_bDataFlashEnable;
-	BOOL	m_bSecurityLock;
-	BOOL	m_bICELock;
-	BOOL	m_bWDTEnable;
-	BOOL	m_bWDTPowerDown;
-	int		m_nRadioGPG;
-	int		m_nRadioIO;
-	CSpinButtonCtrl	m_SpinDataFlashSize;
+    //{{AFX_DATA(CDialogConfiguration_NUC4xx)
+    enum { IDD = IDD_DIALOG_CONFIGURATION_M0564 };
+    CNumEdit	m_FlashBaseAddress;
+    CEdit	m_DataFlashSize;
+    int		m_nRadioClk;
+    int		m_nRadioBov;
+    int		m_nRadioBS;
+    CString	m_sConfigValue0;
+    CString	m_sConfigValue1;
+    CString	m_sFlashBaseAddress;
+    CString	m_sDataFlashSize;
+    BOOL	m_bCheckBrownOutDetect;
+    BOOL	m_bCheckBrownOutReset;
+    BOOL	m_bDataFlashEnable;
+    BOOL	m_bSecurityLock;
+    BOOL	m_bICELock;
+    BOOL	m_bWDTEnable;
+    BOOL	m_bWDTPowerDown;
+    int		m_nRadioGPG;
+    int		m_nRadioIO;
+    CSpinButtonCtrl	m_SpinDataFlashSize;
 
-	unsigned int	m_uProgramMemorySize;
-	unsigned int	m_uPID;
-	unsigned int	m_uPageSize;
+    unsigned int	m_uProgramMemorySize;
+    unsigned int	m_uPID;
+    unsigned int	m_uPageSize;
 
-	//}}AFX_DATA
+    //}}AFX_DATA
 
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+protected:
+    virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
+    //}}AFX_VIRTUAL
 
 // Implementation
 protected:
-	virtual void ConfigToGUI(int nEventID);
-	virtual void GUIToConfig(int nEventID);
-	void OnGUIEvent(int nEventID = 0);
+    virtual void ConfigToGUI(int nEventID);
+    virtual void GUIToConfig(int nEventID);
+    void OnGUIEvent(int nEventID = 0);
 
-	// Generated message map functions
-	//{{AFX_MSG(CDialogConfiguration_NUC4xx)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnRadioBov();
-	afx_msg void OnRadioClk();
-	afx_msg void OnRadioBs();
-	afx_msg void OnRadioGpf();
-	afx_msg void OnRadioIO();
-	afx_msg void OnCheckClick();
-	afx_msg void OnCheckClickWDTPD();
-	afx_msg void OnCheckClickWDT();
-	virtual afx_msg void OnChangeEditFlashBaseAddress();
-	virtual void OnOK();
-	virtual afx_msg void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Generated message map functions
+    //{{AFX_MSG(CDialogConfiguration_NUC4xx)
+    virtual BOOL OnInitDialog();
+    afx_msg void OnRadioBov();
+    afx_msg void OnRadioClk();
+    afx_msg void OnRadioBs();
+    afx_msg void OnRadioGpf();
+    afx_msg void OnRadioIO();
+    afx_msg void OnCheckClick();
+    afx_msg void OnCheckClickWDTPD();
+    afx_msg void OnCheckClickWDT();
+    virtual afx_msg void OnChangeEditFlashBaseAddress();
+    virtual void OnOK();
+    virtual afx_msg void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

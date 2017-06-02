@@ -9,19 +9,18 @@
 
 
 struct fileinfo {
-	//std::tstring& filename;
-	CString filename;
-	size_t st_size;
-	unsigned short usCheckSum;
-	std::vector<unsigned char>	vbuf;
-	fileinfo() :filename(_T("")), st_size(0), usCheckSum(0)
-	{
-
-	}
+    //std::tstring& filename;
+    CString filename;
+    size_t st_size;
+    unsigned short usCheckSum;
+    std::vector<unsigned char>	vbuf;
+    fileinfo() : filename(_T("")), st_size(0), usCheckSum(0)
+    {
+    }
 };
 
-size_t getFilesize(const std::tstring& filename);
-bool UpdateFileInfo(CString strFN, struct fileinfo* sfinfo);
+size_t getFilesize(const std::tstring &filename);
+bool UpdateFileInfo(CString strFN, struct fileinfo *sfinfo);
 
 size_t mfwrite(const void *ptr, size_t len, _TCHAR *_FileName);
 size_t mfread(void *ptr, size_t len, _TCHAR *_FileName);

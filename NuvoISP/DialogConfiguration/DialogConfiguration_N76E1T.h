@@ -29,59 +29,59 @@ class CDialogConfiguration_N76E1T : public CDialogResize
 {
 // Construction
 public:
-	CDialogConfiguration_N76E1T(unsigned int uProgramMemorySize = 18 * 1024,
-								CWnd* pParent = NULL);
+    CDialogConfiguration_N76E1T(unsigned int uProgramMemorySize = 18 * 1024,
+                                CWnd *pParent = NULL);
 
 
-	CAppConfig::N76E1T_configs_t m_ConfigValue;
+    CAppConfig::N76E1T_configs_t m_ConfigValue;
 
 // Dialog Data
-	//{{AFX_DATA(CDialogConfiguration_N76E1T)
-	enum { IDD = IDD_DIALOG_CONFIGURATION_N76E1T };
+    //{{AFX_DATA(CDialogConfiguration_N76E1T)
+    enum { IDD = IDD_DIALOG_CONFIGURATION_N76E1T };
 
-	int		m_nRadio_RPD;
-	int		m_nRadio_OCDPWM;
-	int		m_nRadio_CBS;
-	int		m_nRadio_LDSIZE;
-	int		m_nRadio_CBOV;
-	int		m_nRadio_WDTEN;
+    int		m_nRadio_RPD;
+    int		m_nRadio_OCDPWM;
+    int		m_nRadio_CBS;
+    int		m_nRadio_LDSIZE;
+    int		m_nRadio_CBOV;
+    int		m_nRadio_WDTEN;
 
-	CString	m_sConfigValue0;
-	CString	m_sConfigValue1;
-	CString	m_sConfigValue2;
-	CString	m_sConfigValue3;
-	CString	m_sConfigValue4;
+    CString	m_sConfigValue0;
+    CString	m_sConfigValue1;
+    CString	m_sConfigValue2;
+    CString	m_sConfigValue3;
+    CString	m_sConfigValue4;
 
-	BOOL	m_bSecurityLock;
-	BOOL	m_bOCDEnable;
-	BOOL	m_bCheckBrownOutEnable;
-	BOOL	m_bCheckBrownOutIAP;
-	BOOL	m_bCheckBrownOutReset;
+    BOOL	m_bSecurityLock;
+    BOOL	m_bOCDEnable;
+    BOOL	m_bCheckBrownOutEnable;
+    BOOL	m_bCheckBrownOutIAP;
+    BOOL	m_bCheckBrownOutReset;
 
-	unsigned int	m_uDID;
-	//}}AFX_DATA
+    unsigned int	m_uDID;
+    //}}AFX_DATA
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CDialogConfiguration_N76E1T)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+    // ClassWizard generated virtual function overrides
+    //{{AFX_VIRTUAL(CDialogConfiguration_N76E1T)
+protected:
+    virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
+    //}}AFX_VIRTUAL
 
 // Implementation
 protected:
-	void ConfigToGUI();
-	void GUIToConfig();
+    void ConfigToGUI();
+    void GUIToConfig();
 
-	// Generated message map functions
-	//{{AFX_MSG(CDialogConfiguration_N76E1T)
-	virtual BOOL OnInitDialog();
-	afx_msg void OnRadioClick();
-	afx_msg void OnCheckClick();
-	virtual void OnOK();
-	afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+    // Generated message map functions
+    //{{AFX_MSG(CDialogConfiguration_N76E1T)
+    virtual BOOL OnInitDialog();
+    afx_msg void OnRadioClick();
+    afx_msg void OnCheckClick();
+    virtual void OnOK();
+    afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

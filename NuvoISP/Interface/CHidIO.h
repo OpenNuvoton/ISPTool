@@ -32,7 +32,7 @@ protected:
     size_t m_szActiveDeviceIndex;
     std::vector<HANDLE> m_hReadHandle;
     std::vector<HANDLE> m_hWriteHandle;
-    std::vector<std::basic_string<TCHAR> > m_sNames;
+    std::vector<std::basic_string<TCHAR>> m_sNames;
     ShareArea<CHidShare> m_DeviceData;		/* Mutext for this object */
 public:
     HANDLE GetActiveHandle() const;

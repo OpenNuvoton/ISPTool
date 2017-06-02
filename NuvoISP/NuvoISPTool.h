@@ -5,7 +5,7 @@
 #pragma once
 
 #ifndef __AFXWIN_H__
-	#error "對 PCH 包含此檔案前先包含 'stdafx.h'"
+#error "對 PCH 包含此檔案前先包含 'stdafx.h'"
 #endif
 
 #include "resource.h"		// 主要符號
@@ -18,18 +18,18 @@
 class CISPToolApp : public CWinApp
 {
 protected:
-	HINSTANCE m_hLangResouce;
-	void SetLangID(LANGID langID);
+    HINSTANCE m_hLangResouce;
+    void SetLangID(LANGID langID);
 public:
-	CISPToolApp();
+    CISPToolApp();
 
 // 覆寫
 public:
-	virtual BOOL InitInstance();
+    virtual BOOL InitInstance();
 
 // 程式碼實作
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 };
 
 extern CISPToolApp theApp;

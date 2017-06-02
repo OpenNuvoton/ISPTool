@@ -114,19 +114,19 @@ typedef USHORT USAGE, *PUSAGE;
 // Keyboard/Keypad Page (0x07)
 //
 
-        // Error "keys"
+// Error "keys"
 #define HID_USAGE_KEYBOARD_NOEVENT     ((USAGE) 0x00)
 #define HID_USAGE_KEYBOARD_ROLLOVER    ((USAGE) 0x01)
 #define HID_USAGE_KEYBOARD_POSTFAIL    ((USAGE) 0x02)
 #define HID_USAGE_KEYBOARD_UNDEFINED   ((USAGE) 0x03)
 
-        // Letters
+// Letters
 #define HID_USAGE_KEYBOARD_aA          ((USAGE) 0x04)
 #define HID_USAGE_KEYBOARD_zZ          ((USAGE) 0x1D)
-        // Numbers
+// Numbers
 #define HID_USAGE_KEYBOARD_ONE         ((USAGE) 0x1E)
 #define HID_USAGE_KEYBOARD_ZERO        ((USAGE) 0x27)
-        // Modifier Keys
+// Modifier Keys
 #define HID_USAGE_KEYBOARD_LCTRL       ((USAGE) 0xE0)
 #define HID_USAGE_KEYBOARD_LSHFT       ((USAGE) 0xE1)
 #define HID_USAGE_KEYBOARD_LALT        ((USAGE) 0xE2)
@@ -138,7 +138,7 @@ typedef USHORT USAGE, *PUSAGE;
 #define HID_USAGE_KEYBOARD_SCROLL_LOCK ((USAGE) 0x47)
 #define HID_USAGE_KEYBOARD_NUM_LOCK    ((USAGE) 0x53)
 #define HID_USAGE_KEYBOARD_CAPS_LOCK   ((USAGE) 0x39)
-        // Funtion keys
+// Funtion keys
 #define HID_USAGE_KEYBOARD_F1          ((USAGE) 0x3A)
 #define HID_USAGE_KEYBOARD_F12         ((USAGE) 0x45)
 

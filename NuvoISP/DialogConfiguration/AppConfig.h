@@ -8,42 +8,38 @@
 class CAppConfig
 {
 public:
-	virtual ~CAppConfig();
+    virtual ~CAppConfig();
 
-	/* Global configurations */
- 	struct configs_t
-	{
-		unsigned int m_value[2];
-	};
+    /* Global configurations */
+    struct configs_t {
+        unsigned int m_value[2];
+    };
 
-	#define NUC1xx_configs_t configs_t
-	#define M451_configs_t configs_t
-	#define M05x_configs_t configs_t
-	#define M0564_configs_t configs_t
-	#define Nano100_configs_t configs_t
-	#define Mini51_configs_t configs_t
-	#define MT5xx_configs_t configs_t
-	#define AU91xx_configs_t configs_t
-	#define NUC029_configs_t configs_t
-	#define NM1120_configs_t configs_t
-	#define N76E1T_configs_t configs_t
+#define NUC1xx_configs_t configs_t
+#define M451_configs_t configs_t
+#define M05x_configs_t configs_t
+#define M0564_configs_t configs_t
+#define Nano100_configs_t configs_t
+#define Mini51_configs_t configs_t
+#define MT5xx_configs_t configs_t
+#define AU91xx_configs_t configs_t
+#define NUC029_configs_t configs_t
+#define NM1120_configs_t configs_t
+#define N76E1T_configs_t configs_t
 
-	/* NUC4xx configurations */
-	struct NUC4xx_configs_t
-	{
-		unsigned int m_value[4];
-	};
+    /* NUC4xx configurations */
+    struct NUC4xx_configs_t {
+        unsigned int m_value[4];
+    };
 
-	/* N572 configurations */
-	struct N572_configs_t
-	{
-		unsigned int m_value[5];
-	};
+    /* N572 configurations */
+    struct N572_configs_t {
+        unsigned int m_value[5];
+    };
 
-	struct TC8226_configs_t
-	{
-		unsigned int m_value[4];
-	};
+    struct TC8226_configs_t {
+        unsigned int m_value[4];
+    };
 };
 
 #endif // !defined(AFX_APPCONFIG_H__B96EEC5C_5D1E_4040_9CFB_1A234396F753__INCLUDED_)

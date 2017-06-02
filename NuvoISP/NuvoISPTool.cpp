@@ -16,7 +16,7 @@
 // CISPToolApp
 
 BEGIN_MESSAGE_MAP(CISPToolApp, CWinApp)
-	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
+    ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
 
@@ -24,8 +24,8 @@ END_MESSAGE_MAP()
 
 CISPToolApp::CISPToolApp()
 {
-	// TODO: 在此加入建構程式碼，
-	// 將所有重要的初始設定加入 InitInstance 中
+    // TODO: 在此加入建構程式碼，
+    // 將所有重要的初始設定加入 InitInstance 中
 }
 
 
@@ -38,74 +38,72 @@ CISPToolApp theApp;
 
 BOOL CISPToolApp::InitInstance()
 {
-	CWinApp::InitInstance();
+    CWinApp::InitInstance();
+    AfxInitRichEdit();
+    //AllocConsole();
+    //SetConsoleTitle(_T("[Clientside dumper]: Console"));
+    //freopen("CONOUT$", "w+t", stdout);
+    //freopen("CONOUT$", "w+t", stderr);
+    //freopen("CONIN$", "r+t", stdin);
+    // 建立殼層管理員，以防對話方塊包含
+    // 任何殼層樹狀檢視或殼層清單檢視控制項。
+    CShellManager *pShellManager = new CShellManager;
+    // 標準初始設定
+    // 如果您不使用這些功能並且想減少
+    // 最後完成的可執行檔大小，您可以
+    // 從下列程式碼移除不需要的初始化常式，
+    // 變更儲存設定值的登錄機碼
+    // TODO: 您應該適度修改此字串
+    // (例如，公司名稱或組織名稱)
+    SetRegistryKey(_T("NuvotonISP"));
+    CNuvoISPDlg MainDlg;
+    MainDlg.DoModal();
 
-	AfxInitRichEdit();
-	
-	//AllocConsole();
-	//SetConsoleTitle(_T("[Clientside dumper]: Console"));
-	//freopen("CONOUT$", "w+t", stdout);
-	//freopen("CONOUT$", "w+t", stderr);
-	//freopen("CONIN$", "r+t", stdin);	
+    // 刪除上面所建立的殼層管理員。
+    if (pShellManager != NULL) {
+        delete pShellManager;
+    }
 
-	// 建立殼層管理員，以防對話方塊包含
-	// 任何殼層樹狀檢視或殼層清單檢視控制項。
-	CShellManager *pShellManager = new CShellManager;
-
-	// 標準初始設定
-	// 如果您不使用這些功能並且想減少
-	// 最後完成的可執行檔大小，您可以
-	// 從下列程式碼移除不需要的初始化常式，
-	// 變更儲存設定值的登錄機碼
-	// TODO: 您應該適度修改此字串
-	// (例如，公司名稱或組織名稱)
-	SetRegistryKey(_T("NuvotonISP"));
-
-	CNuvoISPDlg MainDlg;
-	MainDlg.DoModal();
-
-	// 刪除上面所建立的殼層管理員。
-	if (pShellManager != NULL)
-	{
-		delete pShellManager;
-	}
-	//FreeConsole();
-	// 因為已經關閉對話方塊，傳回 FALSE，所以我們會結束應用程式，
-	// 而非提示開始應用程式的訊息。
-	return FALSE;
+    //FreeConsole();
+    // 因為已經關閉對話方塊，傳回 FALSE，所以我們會結束應用程式，
+    // 而非提示開始應用程式的訊息。
+    return FALSE;
 }
 
 void CISPToolApp::SetLangID(LANGID langID)
 {
-	//Free language dll;
-	if(m_hLangResouce != NULL)
-		FreeLibrary(m_hLangResouce);
-	m_hLangResouce = NULL;
+    //Free language dll;
+    if (m_hLangResouce != NULL) {
+        FreeLibrary(m_hLangResouce);
+    }
 
-	if(langID == 0)
-		langID = GetSystemDefaultLangID();
+    m_hLangResouce = NULL;
 
-	//File name for language dll;
-	TCHAR *pszLangFile = NULL;
+    if (langID == 0) {
+        langID = GetSystemDefaultLangID();
+    }
 
-	//Check the dll name 
-	size_t szLangCount;
-	const LANG_DEF_T *pLang = GetLangDefs(&szLangCount);
-	for(size_t i = 0; i < szLangCount; ++i)
-	{
-		if(pLang[i].m_langID == langID)
-		{
-			pszLangFile = pLang[i].m_pszLangFile;
-			break;
-		}
-	}
+    //File name for language dll;
+    TCHAR *pszLangFile = NULL;
+    //Check the dll name
+    size_t szLangCount;
+    const LANG_DEF_T *pLang = GetLangDefs(&szLangCount);
 
-	//Load the language dll
-	if(pszLangFile != NULL)
-		m_hLangResouce = ::LoadLibrary(pszLangFile);
+    for (size_t i = 0; i < szLangCount; ++i) {
+        if (pLang[i].m_langID == langID) {
+            pszLangFile = pLang[i].m_pszLangFile;
+            break;
+        }
+    }
 
-	if (m_hLangResouce != NULL)
-		AfxSetResourceHandle(m_hLangResouce); // get resources from the DLL 
-	else
-		AfxSetResourceHandle(m_hInstance); // get resources from the DLL 
+    //Load the language dll
+    if (pszLangFile != NULL) {
+        m_hLangResouce = ::LoadLibrary(pszLangFile);
+    }
+
+    if (m_hLangResouce != NULL) {
+        AfxSetResourceHandle(m_hLangResouce);    // get resources from the DLL
+    } else {
+        AfxSetResourceHandle(m_hInstance);    // get resources from the DLL
+    }
 }

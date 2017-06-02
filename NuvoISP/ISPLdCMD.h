@@ -15,37 +15,39 @@ protected:
     unsigned long m_uCmdIndex;
     USHORT	m_usCheckSum;
 
-	// Interface
-	ULONG			m_uInterface;
-	ULONG			m_uUSB_PID;		// for compatibility
-	CString			m_strComNum;
-	CHidIO			m_hidIO;
-	CUartIO			m_comIO;
+    // Interface
+    ULONG			m_uInterface;
+    ULONG			m_uUSB_PID;		// for compatibility
+    CString			m_strComNum;
+    CHidIO			m_hidIO;
+    CUartIO			m_comIO;
     BOOL			m_bOpenPort;
     CMutex2			m_Mutex;
 
 
-	BOOL ReadFile(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, BOOL bCheckIndex = TRUE);
-	BOOL WriteFile(unsigned long uCmd, const char *pcBuffer = NULL, DWORD dwLen = 0, DWORD dwMilliseconds = 20/*USBCMD_TIMEOUT*/);
+    BOOL ReadFile(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, BOOL bCheckIndex = TRUE);
+    BOOL WriteFile(unsigned long uCmd, const char *pcBuffer = NULL, DWORD dwLen = 0, DWORD dwMilliseconds = 20/*USBCMD_TIMEOUT*/);
 
 
 public:
 
-	BOOL bResendFlag;	// This flag is set by ReadFile
+    BOOL bResendFlag;	// This flag is set by ReadFile
     ISPLdCMD();
     virtual ~ISPLdCMD();
-	
+
     bool Check_USB_Link();
     bool Open_Port(BOOL bErrorMsg = FALSE);
     void Close_Port();
 
-    unsigned short Checksum(const unsigned char *buf, int len) {
+    unsigned short Checksum(const unsigned char *buf, int len)
+    {
         int i;
         unsigned short c;
 
-        for (c=0, i=0; i < len; i++) {
+        for (c = 0, i = 0; i < len; i++) {
             c += buf[i];
         }
+
         return (c);
     }
 
@@ -65,13 +67,13 @@ public:
         CMD_RUN_APROM		= 0x000000AB,
         CMD_RUN_LDROM		= 0x000000AC,
         CMD_RESET			= 0x000000AD,
-		CMD_CONNECT			= 0x000000AE,
-		CMD_UPDATE_DATAFLASH = 0x000000C3,
-		CMD_RESEND_PACKET   = 0x000000FF,
+        CMD_CONNECT			= 0x000000AE,
+        CMD_UPDATE_DATAFLASH = 0x000000C3,
+        CMD_RESEND_PACKET   = 0x000000FF,
     };
 
-	BOOL CMD_Connect(DWORD dwMilliseconds = 30);
-	BOOL CMD_Resend();
+    BOOL CMD_Connect(DWORD dwMilliseconds = 30);
+    BOOL CMD_Resend();
 
 
     void SyncPackno();
@@ -85,16 +87,20 @@ public:
                      const char *buffer,
                      unsigned long *update_len);
     void UpdateNVM(unsigned long start_addr,
-                     unsigned long total_len,
-                     unsigned long cur_addr,
-                     const char *buffer,
-                     unsigned long *update_len);
+                   unsigned long total_len,
+                   unsigned long cur_addr,
+                   const char *buffer,
+                   unsigned long *update_len);
 
-	BOOL EraseAll();
-					 
-	void Test();
-	void SetInterface(unsigned int it, CString str) {m_uInterface = it; m_strComNum = str;};
-	CString m_strDevPathName;
+    BOOL EraseAll();
+
+    void Test();
+    void SetInterface(unsigned int it, CString str)
+    {
+        m_uInterface = it;
+        m_strComNum = str;
+    };
+    CString m_strDevPathName;
 };
 
 #endif

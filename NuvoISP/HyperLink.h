@@ -5,7 +5,7 @@
 // when the user clicks on the link.
 //
 // Copyright Chris Maunder, 1997-1999 (cmaunder@mail.com)
-// Feel free to use and distribute. May not be sold for profit. 
+// Feel free to use and distribute. May not be sold for profit.
 
 // 2/29/00 -- P. Shaffer standard font mod.
 
@@ -33,9 +33,9 @@ public:
 public:
     void SetURL(CString strURL);
     CString GetURL() const;
-	void VisitURL();
+    void VisitURL();
 
-    void SetColours(COLORREF crLinkColour, COLORREF crVisitedColour, 
+    void SetColours(COLORREF crLinkColour, COLORREF crVisitedColour,
                     COLORREF crHoverColour = -1);
     COLORREF GetLinkColour() const;
     COLORREF GetVisitedColour() const;
@@ -56,12 +56,12 @@ public:
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CHyperLink)
-	public:
-    virtual BOOL PreTranslateMessage(MSG* pMsg);
-	virtual BOOL DestroyWindow();
-	protected:
+public:
+    virtual BOOL PreTranslateMessage(MSG *pMsg);
+    virtual BOOL DestroyWindow();
+protected:
     virtual void PreSubclassWindow();
-	//}}AFX_VIRTUAL
+    //}}AFX_VIRTUAL
 
 // Implementation
 protected:
@@ -89,13 +89,13 @@ protected:
     // Generated message map functions
 protected:
     //{{AFX_MSG(CHyperLink)
-    afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
-    afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
+    afx_msg HBRUSH CtlColor(CDC *pDC, UINT nCtlColor);
+    afx_msg BOOL OnSetCursor(CWnd *pWnd, UINT nHitTest, UINT message);
     afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-	afx_msg void OnTimer(UINT nIDEvent);
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-	//}}AFX_MSG
+    afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+    afx_msg void OnTimer(UINT nIDEvent);
+    afx_msg BOOL OnEraseBkgnd(CDC *pDC);
+    //}}AFX_MSG
     afx_msg void OnClicked();
     DECLARE_MESSAGE_MAP()
 };
