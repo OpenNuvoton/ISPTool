@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Resource.h"
-#include "Lang.h"
 #include "DlgNuvoISP.h"
 #include "About.h"
 
@@ -156,12 +155,12 @@ BOOL CNuvoISPDlg::OnInitDialog()
     //  when the application's main window is not a dialog
     SetIcon(m_hIcon, TRUE);			// Set big icon
     SetIcon(m_hIcon, FALSE);		// Set small icon
-    m_sConnect = _I(IDS_DISCONNECTED);//"Disconnected";
+    m_sConnect = _T("Disconnected");
     UpdateData(FALSE);
     // Title
     SetWindowText(_T("Nuvoton NuMicro ISP Programming Tool 2.02"));
-    SetDlgItemText(IDC_STATIC_FILEINFO_APROM, _I(IDS_FILE_NOT_LOAD));
-    SetDlgItemText(IDC_STATIC_FILEINFO_NVM, _I(IDS_FILE_NOT_LOAD));
+    SetDlgItemText(IDC_STATIC_FILEINFO_APROM, _T("File not load."));
+    SetDlgItemText(IDC_STATIC_FILEINFO_NVM, _T("File not load."));
 
     // Set data view area
     // Btn Text --> Tab Text
@@ -234,16 +233,16 @@ void CNuvoISPDlg::OnButtonBinFile(int idx, TCHAR *szPath)
                 CString str, strInfo;
 
                 if (sz >= 1024 * 1024 * 10)
-                    str.Format(_I(IDS_SIZE_M_BYTES),
+                    str.Format(_T("size: %.1fM Bytes"),
                                (float)(sz / 1024.0 / 1024.0));
                 else if (sz >= 1024 * 10)
-                    str.Format(_I(IDS_SIZE_K_BYTES),
+                    str.Format(_T("size: %.1fK Bytes"),
                                (float)(sz / 1024.0));
                 else
-                    str.Format(_I(IDS_SIZE_BYTES),
+                    str.Format(_T("size: %d Bytes"),
                                sz);
 
-                strInfo.Format(_I(IDS_PS_CHECKSUM_PX), str, m_sFileInfo[idx].usCheckSum);
+                strInfo.Format(_T("%s, checksum: %04x"), str, m_sFileInfo[idx].usCheckSum);
                 SetDlgItemText(m_CtrlID[idx].sizecksum, strInfo);
                 pViewer[idx]->SetHexData(&(m_sFileInfo[idx].vbuf));
                 m_TabData.SetCurSel(idx);
@@ -347,7 +346,7 @@ LRESULT CNuvoISPDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
                     switch (m_eProcSts) {
                         case EPS_OK:
-                            m_sConnect = _I(IDS_DISCONNECTED);//"Disconnected"
+                            m_sConnect = _T("Disconnected");
                             break;
 
                         case EPS_ERR_OPENPORT:
@@ -368,7 +367,6 @@ LRESULT CNuvoISPDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
                     SetDlgItemText(IDC_STATIC_PARTNO, _T(""));
                     SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, _T(""));
                     SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, _T(""));
-                    m_ButtonConnect.SetWindowText(_I(IDS_CONNECT));
                     ShowDlgItem(IDC_CHECK_CONFIG, 1);
                     ShowDlgItem(IDC_CHECK_ERASE, 1);
                     EnableDlgItem(IDC_BUTTON_CONFIG, 1);
@@ -379,12 +377,12 @@ LRESULT CNuvoISPDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
                 case CONNECT_STATUS_USB:
                     m_sConnect		= _T("Waiting for device connection");
-                    m_ButtonConnect.SetWindowText(_I(IDS_STOP_CHECK));
+                    m_ButtonConnect.SetWindowText(_T("Stop check"));
                     break;
 
                 case CONNECT_STATUS_CONNECTING:
                     m_sConnect		= _T("Getting Chip Information ...");
-                    m_ButtonConnect.SetWindowText(_I(IDS_STOP_CHECK));
+                    m_ButtonConnect.SetWindowText(_T("Stop check"));
                     break;
 
                 case CONNECT_STATUS_OK:
@@ -417,7 +415,7 @@ LRESULT CNuvoISPDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
                             break;
 
                         case EPS_PROG_DONE:
-                            MessageBox(_I(IDS_PROGRAM_FLASH_OK));
+                            MessageBox(_T("Programming flash, OK!"));
                             break;
 
                         default:
@@ -425,7 +423,7 @@ LRESULT CNuvoISPDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
                             break;
                     }
 
-                    m_ButtonConnect.SetWindowText(_I(IDS_DISCONNECTED));
+                    m_ButtonConnect.SetWindowText(_T("Disconnected"));
                     break;
 
                 default:
@@ -437,13 +435,13 @@ LRESULT CNuvoISPDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
             UpdateData(false);
         } else if (wParam == MSG_UPDATE_ERASE_STATUS) {
             CString sText;
-            sText.Format(_I(IDS_ERASE_PD), (int)lParam);
+            sText.Format(_T("Erase %d%%"), (int)lParam);
             m_sStatus = sText;
             m_Progress.SetPos((int)lParam);
             UpdateData(FALSE);
         } else if (wParam == MSG_UPDATE_WRITE_STATUS) {
             CString sText;
-            sText.Format(_I(IDS_PROGRAM_PD), (int)lParam);
+            sText.Format(_T("Program %d%%"), (int)lParam);
             m_sStatus = sText;
             m_Progress.SetPos((int)lParam);
             UpdateData(FALSE);
@@ -462,7 +460,7 @@ void CNuvoISPDlg::OnButtonStart()
 
     /* Check program operation */
     if (!(m_bProgram_APROM || m_bProgram_NVM || m_bProgram_Config || m_bErase)) {
-        MessageBox(_I(IDS_NOT_SELECT_OPERATION), NULL, MB_ICONSTOP);
+        MessageBox(_T("You did not select any operation."), NULL, MB_ICONSTOP);
         return;
     }
 
@@ -479,13 +477,13 @@ void CNuvoISPDlg::OnButtonStart()
         /* Check write size */
         if (strErr.IsEmpty() && m_bProgram_APROM) {
             if (m_sFileInfo[0].st_size == 0) {
-                strErr = _I(IDS_CAN_NOT_LOAD_APROM_PROGRAMMING);
+                strErr = _T("Can not load APROM file for programming!");
             }
         }
 
         if (strErr.IsEmpty() && m_bProgram_NVM) {
             if (m_sFileInfo[1].st_size == 0) {
-                strErr = _I(IDS_CAN_NOT_LOAD_NVM_PROGRAMMING);
+                strErr = _T("Can not load data flash file for programming!");
             }
         }
 
@@ -495,7 +493,7 @@ void CNuvoISPDlg::OnButtonStart()
             Set_ThreadAction(&CISPProc::Thread_ProgramFlash);
         }
     } else {
-        strErr = _I(IDS_WAIT_ICP_OP);
+        strErr = _T("Please wait for ISP operation.");
     }
 
     if (!strErr.IsEmpty()) {
@@ -646,7 +644,7 @@ void CNuvoISPDlg::ShowChipInfo()
         std::wstring wcstr(cstr.begin(), cstr.end());
         CString str = wcstr.c_str();
         CString tips;
-        tips.Format(_T("%s\n\n%s"), _I(IDS_CHIP_PART_INFO), str);
+        tips.Format(_T("Information of target chip,\n\n%s"), str);
         CRect rect;
         GetDlgItem(IDC_STATIC_PARTNO)->GetWindowRect(rect);
         m_tooltip.RemoveAllTools();
@@ -684,7 +682,7 @@ void CNuvoISPDlg::ShowChipInfo()
         std::wstring wcstr(cstr.begin(), cstr.end());
         CString str = wcstr.c_str();
         CString tips;
-        tips.Format(_T("%s\n\n%s"), _I(IDS_CHIP_PART_INFO), str);
+        tips.Format(_T("Information of target chip,\n\n%s"), str);
         CRect rect;
         GetDlgItem(IDC_STATIC_PARTNO)->GetWindowRect(rect);
         m_tooltip.RemoveAllTools();

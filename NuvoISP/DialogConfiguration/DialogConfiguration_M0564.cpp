@@ -5,7 +5,6 @@
 #include <deque>
 #include <string>
 #include <utility>
-#include "Lang.h"
 #include "ChipDefs.h"
 #include "NumEdit.h"
 #include "AppConfig.h"
@@ -126,7 +125,7 @@ BOOL CDialogConfiguration_M0564::OnInitDialog()
     m_uPageSize = M0564_FLASH_PAGE_SIZE;
 
     if (((m_uPID & 0x000FFF00) == 0x00012100) || ((m_uPID & 0x000FFF00) == 0x00012500)) {
-        GetDlgItem(IDC_RADIO_CLK_I22M)->SetWindowText(_I(IDS_SELECT_INTERNAL_48M_CLOCK));
+        GetDlgItem(IDC_RADIO_CLK_I22M)->SetWindowText(_T("Internal high speed RC oscillator divided by 2 (24MHz)"));
         m_uPageSize = NUMICRO_M0_FLASH_PAGE_SIZE;
     }
 

@@ -38,6 +38,7 @@ public:
     CString	m_sDataFlashSize;
     BOOL	m_bCheckBrownOutDetect;
     BOOL	m_bCheckBrownOutReset;
+    BOOL	m_bCheckBootLoader;
     BOOL	m_bClockFilterEnable;
     BOOL	m_bDataFlashEnable;
     BOOL	m_bLDWRProtectEnable;
@@ -66,7 +67,6 @@ protected:
     void ConfigToGUI(int nEventID);
     void GUIToConfig(int nEventID);
     void OnGUIEvent(int nEventID = 0);
-    unsigned int FMC_CRC8(unsigned int au32Data[], unsigned int i32Count);
 
     // Generated message map functions
     //{{AFX_MSG(CDialogConfiguration_NUC4xx)

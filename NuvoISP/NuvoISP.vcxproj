@@ -160,7 +160,6 @@
     </ClCompile>
     <ClCompile Include="Interface\CUartIO.cpp" />
     <ClCompile Include="ISPLdCMD.cpp" />
-    <ClCompile Include="Lang.cpp" />
     <ClCompile Include="NumEdit.cpp" />
     <ClCompile Include="NuvoISPTool.cpp" />
     <ClCompile Include="PPDrawManager.cpp" />

@@ -5,7 +5,6 @@
 #include <deque>
 #include <string>
 #include <utility>
-#include "Lang.h"
 #include "ChipDefs.h"
 #include "NumEdit.h"
 #include "AppConfig.h"

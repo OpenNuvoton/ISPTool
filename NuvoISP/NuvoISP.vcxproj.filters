@@ -155,9 +155,6 @@
     <ClCompile Include="HyperLink.cpp">
       <Filter>External</Filter>
     </ClCompile>
-    <ClCompile Include="Lang.cpp">
-      <Filter>External</Filter>
-    </ClCompile>
     <ClCompile Include="NuvoISPTool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

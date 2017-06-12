@@ -4,8 +4,6 @@
 
 #include "stdafx.h"
 #include "NuvoISPTool.h"
-#include "Lang.h"
-
 #include "DlgNuvoISP.h"
 
 #ifdef _DEBUG
@@ -68,42 +66,4 @@ BOOL CISPToolApp::InitInstance()
     // 因為已經關閉對話方塊，傳回 FALSE，所以我們會結束應用程式，
     // 而非提示開始應用程式的訊息。
     return FALSE;
-}
-
-void CISPToolApp::SetLangID(LANGID langID)
-{
-    //Free language dll;
-    if (m_hLangResouce != NULL) {
-        FreeLibrary(m_hLangResouce);
-    }
-
-    m_hLangResouce = NULL;
-
-    if (langID == 0) {
-        langID = GetSystemDefaultLangID();
-    }
-
-    //File name for language dll;
-    TCHAR *pszLangFile = NULL;
-    //Check the dll name
-    size_t szLangCount;
-    const LANG_DEF_T *pLang = GetLangDefs(&szLangCount);
-
-    for (size_t i = 0; i < szLangCount; ++i) {
-        if (pLang[i].m_langID == langID) {
-            pszLangFile = pLang[i].m_pszLangFile;
-            break;
-        }
-    }
-
-    //Load the language dll
-    if (pszLangFile != NULL) {
-        m_hLangResouce = ::LoadLibrary(pszLangFile);
-    }
-
-    if (m_hLangResouce != NULL) {
-        AfxSetResourceHandle(m_hLangResouce);    // get resources from the DLL
-    } else {
-        AfxSetResourceHandle(m_hInstance);    // get resources from the DLL
-    }
 }

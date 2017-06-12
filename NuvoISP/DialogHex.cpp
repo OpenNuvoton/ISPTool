@@ -2,7 +2,6 @@
 //
 
 #include "stdafx.h"
-#include "Lang.h"
 #include "Resource.h"
 #include "DialogHex.h"
 

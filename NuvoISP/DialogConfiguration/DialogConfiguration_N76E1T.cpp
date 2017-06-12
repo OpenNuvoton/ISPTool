@@ -5,7 +5,6 @@
 #include <deque>
 #include <string>
 #include <utility>
-#include "Lang.h"
 #include "ChipDefs.h"
 #include "NumEdit.h"
 #include "AppConfig.h"
@@ -169,21 +168,21 @@ BOOL CDialogConfiguration_N76E1T::OnInitDialog()
 
     switch (uDID) {
         case 0x2100:
-            GetDlgItem(IDC_GROUP_RPD)->SetWindowText(_I(IDS_RPD_P12));
-            GetDlgItem(IDC_RADIO_RPD_RESET)->SetWindowText(_I(IDS_RPD_P12_RESET));
-            GetDlgItem(IDC_RADIO_RPD_INPUT)->SetWindowText(_I(IDS_RPD_P12_INPUT));
+            GetDlgItem(IDC_GROUP_RPD)->SetWindowText(_T("P1.2/RST Pin Function"));
+            GetDlgItem(IDC_RADIO_RPD_RESET)->SetWindowText(_T("P1.2 as the external reset pin"));
+            GetDlgItem(IDC_RADIO_RPD_INPUT)->SetWindowText(_T("IDS_RPD_P12_INPUT"));
             break;
 
         case 0x2F00:
-            GetDlgItem(IDC_GROUP_RPD)->SetWindowText(_I(IDS_RPD_P36));
-            GetDlgItem(IDC_RADIO_RPD_RESET)->SetWindowText(_I(IDS_RPD_P36_RESET));
-            GetDlgItem(IDC_RADIO_RPD_INPUT)->SetWindowText(_I(IDS_RPD_P36_INPUT));
+            GetDlgItem(IDC_GROUP_RPD)->SetWindowText(_T("P3.6/RST Pin Function"));
+            GetDlgItem(IDC_RADIO_RPD_RESET)->SetWindowText(_T("P3.6 as the external reset pin"));
+            GetDlgItem(IDC_RADIO_RPD_INPUT)->SetWindowText(_T("P3.6 as the input-only pin"));
             break;
 
         case 0x3600:
-            GetDlgItem(IDC_GROUP_RPD)->SetWindowText(_I(IDS_RPD_P20));
-            GetDlgItem(IDC_RADIO_RPD_RESET)->SetWindowText(_I(IDS_RPD_P20_RESET));
-            GetDlgItem(IDC_RADIO_RPD_INPUT)->SetWindowText(_I(IDS_RPD_P20_INPUT));
+            GetDlgItem(IDC_GROUP_RPD)->SetWindowText(_T("P2.0/RST Pin Function"));
+            GetDlgItem(IDC_RADIO_RPD_RESET)->SetWindowText(_T("P2.0 as the external reset pin"));
+            GetDlgItem(IDC_RADIO_RPD_INPUT)->SetWindowText(_T("P2.0 as the input-only pin"));
             break;
     }
 
@@ -207,11 +206,11 @@ BOOL CDialogConfiguration_N76E1T::OnInitDialog()
     }
 
     if ((m_uDID & 0xFF) == 0x40) {
-        GetDlgItem(IDC_RADIO_LDSIZE_0K)->SetWindowText(_I(IDS_LD_0K_DF_10K));
-        GetDlgItem(IDC_RADIO_LDSIZE_1K)->SetWindowText(_I(IDS_LD_1K_DF_9K));
-        GetDlgItem(IDC_RADIO_LDSIZE_2K)->SetWindowText(_I(IDS_LD_2K_DF_8K));
-        GetDlgItem(IDC_RADIO_LDSIZE_3K)->SetWindowText(_I(IDS_LD_3K_DF_7K));
-        GetDlgItem(IDC_RADIO_LDSIZE_4K)->SetWindowText(_I(IDS_LD_4K_DF_6K));
+        GetDlgItem(IDC_RADIO_LDSIZE_0K)->SetWindowText(_T("No LDROM, DataFlash = 10KB."));
+        GetDlgItem(IDC_RADIO_LDSIZE_1K)->SetWindowText(_T("LDROM = 1KB, DataFlash = 9KB."));
+        GetDlgItem(IDC_RADIO_LDSIZE_2K)->SetWindowText(_T("LDROM = 2KB, DataFlash = 8KB."));
+        GetDlgItem(IDC_RADIO_LDSIZE_3K)->SetWindowText(_T("LDROM = 3KB, DataFlash = 7KB."));
+        GetDlgItem(IDC_RADIO_LDSIZE_4K)->SetWindowText(_T("LDROM = 4KB, DataFlash = 6KB."));
     }
 
     ConfigToGUI();
