@@ -167,6 +167,17 @@ static __INLINE void UART_MFP_Setting(void)
 
 }
 
+#elif defined(TARGET_M480)
+
+static __INLINE void UART_MFP_Setting(void)
+{
+    /* Set PD multi-function pins for UART0 RXD(PD.2) and TXD(PD.3) */
+    SYS->GPD_MFPL &= ~(SYS_GPD_MFPL_PD2MFP_Msk | SYS_GPD_MFPL_PD3MFP_Msk);
+    SYS->GPD_MFPL |= (SYS_GPD_MFPL_PD2MFP_UART0_RXD | SYS_GPD_MFPL_PD3MFP_UART0_TXD);
+}
+
+#else
+#error "UART Multiple Function Pin is not set correcly in uart_transfer.h"
 #endif
 
 

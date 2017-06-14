@@ -16,6 +16,8 @@ int FMC_Proc(unsigned int u32Cmd, unsigned int addr_start, unsigned int addr_end
 
         __ISB();
 
+        while (FMC->ISPTRG & 0x1) ;  /* Wait for ISP command done. */
+
         Reg = FMC->ISPCON;
 
         if(Reg & FMC_ISPCON_ISPFF_Msk) {
@@ -111,13 +113,19 @@ void EraseAP(unsigned int addr_start, unsigned int addr_end)
 
 void UpdateConfig(unsigned int *data, unsigned int *res)
 {
+    unsigned int u32Size = 8;
+#if defined(TARGET_M480)
+    u32Size = 16;
+#endif
+
     FMC_ENABLE_CFG_UPDATE();
 
     FMC_Proc(FMC_ISPCMD_PAGE_ERASE, Config0, Config0 + 8, 0);
-    FMC_Proc(FMC_ISPCMD_PROGRAM, Config0, Config0 + 8, data);
+
+    FMC_Proc(FMC_ISPCMD_PROGRAM, Config0, Config0 + u32Size, data);
 
     if(res)
-        FMC_Proc(FMC_ISPCMD_READ, Config0, Config0 + 8, res);
+        FMC_Proc(FMC_ISPCMD_READ, Config0, Config0 + u32Size, res);
 
     FMC_DISABLE_CFG_UPDATE();
 }

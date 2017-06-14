@@ -6,7 +6,12 @@
 /*  PLLCON (PLLCTL) constant definitions can be found in CLK.h                                             */
 /*---------------------------------------------------------------------------------------------------------*/
 
-#if defined(CLK_PLLCON_144MHz_HXT)
+#if defined(CLK_PLLCTL_192MHz_HXT)
+    #define PLLCON_SETTING  		CLK_PLLCTL_192MHz_HXT
+    #define PLL_CLOCK       		192000000
+    #define HCLK_DIV 						2
+    #define USBD_DIV 						4
+#elif defined(CLK_PLLCON_144MHz_HXT)
     #define PLLCON_SETTING  		CLK_PLLCON_144MHz_HXT
     #define PLL_CLOCK       		144000000
     #define HCLK_DIV 						2

@@ -244,6 +244,8 @@
     // No Conflicts
 #elif defined(CLK_CLKSEL1_UARTSEL_HIRC)
     #define CLK_CLKSEL1_UART_S_HIRC			CLK_CLKSEL1_UARTSEL_HIRC
+#elif defined(CLK_CLKSEL1_UART0SEL_HIRC)
+    #define CLK_CLKSEL1_UART_S_HIRC			CLK_CLKSEL1_UART0SEL_HIRC
 #endif
 
 // Bit2

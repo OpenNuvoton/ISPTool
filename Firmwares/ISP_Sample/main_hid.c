@@ -105,15 +105,30 @@ void SYS_Init(void)
     CLK->CLKSEL3 |= CLK_CLKSEL3_USBDSEL_PLL;
 #endif
 
+#if defined(SYS_USBPHY_USBROLE_Msk)
+    /* Select USBD */
+    SYS->USBPHY = (SYS->USBPHY & ~SYS_USBPHY_USBROLE_Msk) | SYS_USBPHY_USBEN_Msk | SYS_USBPHY_SBO_Msk;
+#endif
+
     /* Enable module clock */
     CLK->APBCLK |= CLK_APBCLK_USBD_EN_Msk;
 
 #ifdef CLK_AHBCLK_ISP_EN_Msk
     CLK->AHBCLK |= CLK_AHBCLK_ISP_EN_Msk;
 #endif
+
+#if defined(TARGET_M480)
+    /*---------------------------------------------------------------------------------------------------------*/
+    /* Init I/O Multi-function                                                                                 */
+    /*---------------------------------------------------------------------------------------------------------*/
+    SYS->GPA_MFPH &= ~(SYS_GPA_MFPH_PA12MFP_Msk|SYS_GPA_MFPH_PA13MFP_Msk|SYS_GPA_MFPH_PA14MFP_Msk|SYS_GPA_MFPH_PA15MFP_Msk);
+    SYS->GPF_MFPH |= (SYS_GPA_MFPH_PA12MFP_USB_VBUS|SYS_GPA_MFPH_PA13MFP_USB_D_N|SYS_GPA_MFPH_PA14MFP_USB_D_P|SYS_GPA_MFPH_PA15MFP_USB_OTG_ID);
+#endif
+
 }
 #endif
 
+void USBD_IRQHandler(void);
 /*---------------------------------------------------------------------------------------------------------*/
 /*  Main Function                                                                                          */
 /*---------------------------------------------------------------------------------------------------------*/
@@ -141,6 +156,23 @@ int32_t main(void)
         /* Start USB device */
         USBD_Start();
 
+#if defined(TARGET_M480)
+        /* Using polling mode and Removed Interrupt Table to reduce code size for M480 */ 
+        
+        /* DO NOT Enable USB device interrupt */
+        // NVIC_EnableIRQ(USBD_IRQn);
+
+        while (DetectPin == 0) {
+            // polling USBD interrupt flag
+            USBD_IRQHandler();
+            if(bUsbDataReady == TRUE) {
+                ParseCmd((uint8_t *)usb_rcvbuf, 64);
+                EP2_Handler();
+
+                bUsbDataReady = FALSE;
+            }
+        }
+#else
         /* Enable USB device interrupt */
         NVIC_EnableIRQ(USBD_IRQn);
 
@@ -153,7 +185,7 @@ int32_t main(void)
                 bUsbDataReady = FALSE;
             }
         }
-
+#endif
         goto _APROM;
     }
 
