@@ -79,8 +79,8 @@ public:
     void SyncPackno();
     unsigned char GetVersion();
     unsigned long GetDeviceID();
-    void ReadConfig(unsigned int config[2]);
-    void UpdateConfig(unsigned int config[2], unsigned int response[2]);
+    void ReadConfig(unsigned int config[]);
+    void UpdateConfig(unsigned int config[], unsigned int response[]);
     void UpdateAPROM(unsigned long start_addr,
                      unsigned long total_len,
                      unsigned long cur_addr,

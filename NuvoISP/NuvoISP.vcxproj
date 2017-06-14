@@ -147,6 +147,7 @@
     <ClCompile Include="DialogConfiguration\DialogConfiguration_NUC1xx.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_NUC2xx.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_NUC4xx.cpp" />
+    <ClCompile Include="DialogConfiguration\DialogConfiguration_TC8226.cpp" />
     <ClCompile Include="DialogConfiguration\DialogResize.cpp" />
     <ClCompile Include="ISPProc.cpp" />
     <ClCompile Include="DialogHex.cpp" />

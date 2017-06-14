@@ -158,9 +158,7 @@ BOOL CNuvoISPDlg::OnInitDialog()
     m_sConnect = _T("Disconnected");
     UpdateData(FALSE);
     // Title
-    SetWindowText(_T("Nuvoton NuMicro ISP Programming Tool 2.02"));
-    SetDlgItemText(IDC_STATIC_FILEINFO_APROM, _T("File not load."));
-    SetDlgItemText(IDC_STATIC_FILEINFO_NVM, _T("File not load."));
+    SetWindowText(_T("Nuvoton NuMicro ISP Programming Tool 2.03"));
 
     // Set data view area
     // Btn Text --> Tab Text
@@ -191,6 +189,7 @@ BOOL CNuvoISPDlg::OnInitDialog()
     SetDlgItemText(IDC_EDIT_FLASH_BASE_ADDRESS, _T("100000"));
     Set_ThreadAction(&CISPProc::Thread_Idle);
     RegisterNotification();
+    InitUILayout();
     return TRUE;	// return TRUE  unless you set the focus to a control
 }
 
@@ -323,6 +322,32 @@ HBRUSH CNuvoISPDlg::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 
             break;
 
+        case IDC_STATIC_CONFIG_VALUE_2:
+            if (!m_bConnect) {
+                break;
+            }
+
+            if (m_CONFIG_User[2] == m_CONFIG[2]) {
+                pDC->SetTextColor(RGB(0, 128, 0));	//DarkGreen
+            } else {
+                pDC->SetTextColor(RGB(255, 0, 0));	//Red
+            }
+
+            break;
+
+        case IDC_STATIC_CONFIG_VALUE_3:
+            if (!m_bConnect) {
+                break;
+            }
+
+            if (m_CONFIG_User[3] == m_CONFIG[3]) {
+                pDC->SetTextColor(RGB(0, 128, 0));	//DarkGreen
+            } else {
+                pDC->SetTextColor(RGB(255, 0, 0));	//Red
+            }
+
+            break;
+
         default:
             break;
     }
@@ -361,18 +386,7 @@ LRESULT CNuvoISPDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
                             break;
                     }
 
-                    m_ButtonConnect.SetWindowText(_T("Connect"));
-                    m_tooltip.RemoveAllTools();
-                    SetDlgItemText(IDC_EDIT_PARTNO, _T(""));
-                    SetDlgItemText(IDC_STATIC_PARTNO, _T(""));
-                    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, _T(""));
-                    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, _T(""));
-                    ShowDlgItem(IDC_CHECK_CONFIG, 1);
-                    ShowDlgItem(IDC_CHECK_ERASE, 1);
-                    EnableDlgItem(IDC_BUTTON_CONFIG, 1);
-                    ShowDlgItem(IDC_STATIC_APOFFSET, 0);
-                    ShowDlgItem(IDC_STATIC_FLASH_BASE_ADDRESS, 0);
-                    ShowDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS, 0);
+                    InitUILayout();
                     break;
 
                 case CONNECT_STATUS_USB:
@@ -572,12 +586,15 @@ void CNuvoISPDlg::OnButtonConfig()
         SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, strTmp);
         strTmp.Format(_T("0x%08X"), m_CONFIG_User[1]);
         SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, strTmp);
+        strTmp.Format(_T("0x%08X"), m_CONFIG_User[2]);
+        SetDlgItemText(IDC_STATIC_CONFIG_VALUE_2, strTmp);
+        strTmp.Format(_T("0x%08X"), m_CONFIG_User[3]);
+        SetDlgItemText(IDC_STATIC_CONFIG_VALUE_3, strTmp);
     }
 }
 
 void CNuvoISPDlg::EnableProgramOption(BOOL bEnable)
 {
-    /* WYLIWYP : What You Lock Is What You Program*/
     /* WYLIWYP : What You Lock Is What You Program*/
     EnableDlgItem(IDC_CHECK_APROM, bEnable);
     EnableDlgItem(IDC_BUTTON_APROM, bEnable);
@@ -663,6 +680,10 @@ void CNuvoISPDlg::ShowChipInfo()
         ShowDlgItem(IDC_STATIC_FLASH_BASE_ADDRESS, 1);
         ShowDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS, 1);
         UpdateAddrOffset();
+    } else if ((m_ulDeviceID & 0xFFFFF000) == 0x00D48000) {
+        SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0-3:"));
+        ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 1);
+        ShowDlgItem(IDC_STATIC_CONFIG_VALUE_3, 1);
     }
 
     CString strTmp = _T("");
@@ -672,6 +693,10 @@ void CNuvoISPDlg::ShowChipInfo()
     SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, strTmp);
     strTmp.Format(_T("0x%08X"), m_CONFIG_User[1]);
     SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, strTmp);
+    strTmp.Format(_T("0x%08X"), m_CONFIG_User[2]);
+    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_2, strTmp);
+    strTmp.Format(_T("0x%08X"), m_CONFIG_User[3]);
+    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_3, strTmp);
 
     if (UpdateSizeInfo(m_ulDeviceID, m_CONFIG[0], m_CONFIG[1],
                        &m_uNVM_Addr, &m_uAPROM_Size, &m_uNVM_Size)) {
@@ -700,7 +725,9 @@ void CNuvoISPDlg::ShowChipInfo()
 void CNuvoISPDlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
     if ((nID & 0xFFF0) == IDM_ABOUTBOX) {
-        CAboutDlg dlgAbout(_T("http://www.nuvoton.com/NuMicro/"));
+        CString sTitle;
+        GetWindowText(sTitle);
+        CAboutDlg dlgAbout(sTitle, _T("0614"));
         dlgAbout.DoModal();
     } else {
         CDialog::OnSysCommand(nID, lParam);
@@ -796,4 +823,25 @@ LRESULT CNuvoISPDlg::OnDeviceChange(WPARAM  nEventType, LPARAM  dwData)
     }
 
     return TRUE;
+}
+
+void CNuvoISPDlg::InitUILayout()
+{
+    m_ButtonConnect.SetWindowText(_T("Connect"));
+    m_tooltip.RemoveAllTools();
+    SetDlgItemText(IDC_EDIT_PARTNO, _T(""));
+    SetDlgItemText(IDC_STATIC_PARTNO, _T(""));
+    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, _T(""));
+    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, _T(""));
+    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_2, _T(""));
+    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_3, _T(""));
+    ShowDlgItem(IDC_CHECK_CONFIG, 1);
+    ShowDlgItem(IDC_CHECK_ERASE, 1);
+    EnableDlgItem(IDC_BUTTON_CONFIG, 1);
+    ShowDlgItem(IDC_STATIC_APOFFSET, 0);
+    ShowDlgItem(IDC_STATIC_FLASH_BASE_ADDRESS, 0);
+    ShowDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS, 0);
+    SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0,1:"));
+    ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 0);
+    ShowDlgItem(IDC_STATIC_CONFIG_VALUE_3, 0);
 }

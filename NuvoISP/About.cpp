@@ -11,9 +11,11 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CAboutDlg dialog used for App About
 
-CAboutDlg::CAboutDlg(const CString &sUpdateURL)
+CAboutDlg::CAboutDlg(const CString &sTitle, const CString &sDate)
     :	CDialog(CAboutDlg::IDD)
-    ,	m_sUpdateURL(sUpdateURL)
+    ,	m_sUpdateURL(_T("http://www.nuvoton.com/NuMicro/"))
+    ,	m_sTitle(sTitle)
+    ,	m_sDate(sDate)
 {
     //{{AFX_DATA_INIT(CAboutDlg)
     //}}AFX_DATA_INIT
@@ -46,6 +48,10 @@ BOOL CAboutDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
     // TODO: Add extra initialization here
+    CString sTitle = _T("About ") + m_sTitle;
+    CString sText = m_sTitle + _T(".") + m_sDate;
+    SetWindowText(sTitle);
+    SetDlgItemText(IDC_STATIC_MESSAGE, sText);
     m_LinkNuvoton.SetWindowText(m_sUpdateURL);
     m_LinkNuvoton.SetAutoSize(TRUE);
     m_LinkNuvoton.SetURL(m_sUpdateURL);

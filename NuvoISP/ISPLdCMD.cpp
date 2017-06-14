@@ -234,24 +234,24 @@ unsigned long ISPLdCMD::GetDeviceID()
     return uID;
 }
 
-void ISPLdCMD::ReadConfig(unsigned int config[2])
+void ISPLdCMD::ReadConfig(unsigned int config[])
 {
     WriteFile(
         CMD_READ_CONFIG,
         NULL,
         0,
         USBCMD_TIMEOUT);
-    ReadFile((char *)config, 8, USBCMD_TIMEOUT, TRUE);
+    ReadFile((char *)config, 16, USBCMD_TIMEOUT, TRUE);
 }
 
-void ISPLdCMD::UpdateConfig(unsigned int config[2], unsigned int response[2])
+void ISPLdCMD::UpdateConfig(unsigned int config[], unsigned int response[])
 {
     WriteFile(
         CMD_UPDATE_CONFIG,
         (const char *)config,
-        8,
+        16,
         USBCMD_TIMEOUT_LONG);
-    ReadFile((char *)response, 8, USBCMD_TIMEOUT_LONG, TRUE);
+    ReadFile((char *)response, 16, USBCMD_TIMEOUT_LONG, TRUE);
 }
 
 void ISPLdCMD::UpdateAPROM(unsigned long start_addr,

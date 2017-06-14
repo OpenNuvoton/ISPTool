@@ -322,6 +322,8 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 
 #include "DialogConfiguration_N76E1T.h"
 
+#include "DialogConfiguration_TC8226.h"
+
 extern CPartNumID *psChipData;
 
 bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
@@ -521,6 +523,16 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
                 }
 
                 Config = (((CDialogConfiguration_M0564 *)pConfigDlg)->m_ConfigValue.m_value);
+                break;
+
+            case IDD_DIALOG_CONFIGURATION_TC8226:
+                if (uProgramMemorySize) {
+                    pConfigDlg = new CDialogConfiguration_TC8226(uProgramMemorySize);
+                } else {
+                    pConfigDlg = new CDialogConfiguration_TC8226();
+                }
+
+                Config = (((CDialogConfiguration_TC8226 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
             case 0x505:	// "NUC505";

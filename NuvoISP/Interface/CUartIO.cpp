@@ -52,7 +52,7 @@ BOOL CUartIO::OpenDevice(CString strComNum)
         //printf("CreateFile OK - ");
         COMMTIMEOUTS CommTimeOuts ; //定義超時結構，並填寫該結構
         memset(&CommTimeOuts, 0, sizeof(CommTimeOuts));
-        CommTimeOuts.ReadTotalTimeoutConstant = 8000;//ms
+        CommTimeOuts.ReadTotalTimeoutConstant = 20000;//ms
         //printf("SetCommTimeouts - ");
         SetCommTimeouts(m_hCOMHandle, &CommTimeOuts) ;	//設置讀寫操作所允許的超時
         DCB dcb;                    //定義資料控制塊結構

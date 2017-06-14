@@ -9,7 +9,7 @@
 class CAboutDlg : public CDialog
 {
 public:
-    CAboutDlg(const CString &sUpdateURL);
+    CAboutDlg(const CString &sTitle, const CString &sDate);
 
 // Dialog Data
     //{{AFX_DATA(CAboutDlg)
@@ -27,6 +27,8 @@ protected:
 // Implementation
 protected:
     CString	m_sUpdateURL;
+    CString	m_sTitle;
+    CString	m_sDate;
     //{{AFX_MSG(CAboutDlg)
     virtual BOOL OnInitDialog();
     afx_msg void OnLinkNuvoton();

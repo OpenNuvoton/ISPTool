@@ -223,6 +223,12 @@ void CISPProc::Thread_ProgramFlash()
                 m_eProcSts = EPS_ERR_CONFIG;
                 Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
                 return;
+            } else if ((m_ulDeviceID & 0xFFFFF000) == 0x00D48000) {
+                if ((m_CONFIG_User[2] != m_CONFIG[2]) || (m_CONFIG_User[3] != m_CONFIG[3])) {
+                    m_eProcSts = EPS_ERR_CONFIG;
+                    Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
+                    return;
+                }
             }
 
             UpdateSizeInfo(m_ulDeviceID, m_CONFIG[0], m_CONFIG[1],

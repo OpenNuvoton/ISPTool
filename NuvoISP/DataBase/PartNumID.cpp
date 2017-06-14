@@ -2069,7 +2069,11 @@ std::string GetPartNumber(unsigned int uID)
     if (QueryDataBase(uID)) {
         return psChipData->szPartNumber;
     } else {
-        return "UnKnown";
+        CString cs = _T("");
+        cs.Format(_T("??? - 0x%08X"), uID);
+        CT2CA pszConvertedAnsiString(cs);
+        std::string strStd(pszConvertedAnsiString);
+        return strStd;
     }
 }
 
