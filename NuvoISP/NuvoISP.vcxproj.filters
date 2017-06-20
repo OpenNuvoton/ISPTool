@@ -125,6 +125,9 @@
     <ClCompile Include="DialogConfiguration\DialogConfiguration_NM1120.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
+    <ClCompile Include="DialogConfiguration\DialogConfiguration_NM1200.cpp">
+      <Filter>External\DialogConfiguration</Filter>
+    </ClCompile>
     <ClCompile Include="DialogConfiguration\DialogConfiguration_NUC1xx.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>

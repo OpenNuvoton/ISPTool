@@ -12,7 +12,7 @@ public:
 
     /* Global configurations */
     struct configs_t {
-        unsigned int m_value[2];
+        unsigned int m_value[4];
     };
 
 #define NUC1xx_configs_t configs_t
@@ -26,20 +26,9 @@ public:
 #define NUC029_configs_t configs_t
 #define NM1120_configs_t configs_t
 #define N76E1T_configs_t configs_t
+#define NUC4xx_configs_t configs_t
+#define TC8226_configs_t configs_t
 
-    /* NUC4xx configurations */
-    struct NUC4xx_configs_t {
-        unsigned int m_value[4];
-    };
-
-    /* N572 configurations */
-    struct N572_configs_t {
-        unsigned int m_value[5];
-    };
-
-    struct TC8226_configs_t {
-        unsigned int m_value[4];
-    };
 };
 
 #endif // !defined(AFX_APPCONFIG_H__B96EEC5C_5D1E_4040_9CFB_1A234396F753__INCLUDED_)
