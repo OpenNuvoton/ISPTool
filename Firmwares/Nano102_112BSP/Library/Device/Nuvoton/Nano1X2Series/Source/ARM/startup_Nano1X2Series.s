@@ -104,22 +104,22 @@ Reset_Handler   PROC
                 EXPORT  Reset_Handler             [WEAK]
                 IMPORT  __main
                 ; Unlock Register
-                LDR     R0, =0x50000100
-                LDR     R1, =0x59
-                STR     R1, [R0]
-                LDR     R1, =0x16
-                STR     R1, [R0]
-                LDR     R1, =0x88
-                STR     R1, [R0]
+                ;LDR     R0, =0x50000100
+                ;LDR     R1, =0x59
+                ;STR     R1, [R0]
+                ;LDR     R1, =0x16
+                ;STR     R1, [R0]
+                ;LDR     R1, =0x88
+                ;STR     R1, [R0]
 
                 ; Init POR
-                LDR     R2, =0x50000060
-                LDR     R1, =0x00005AA5
-                STR     R1, [R2]
+                ;LDR     R2, =0x50000060
+                ;LDR     R1, =0x00005AA5
+                ;STR     R1, [R2]
 
                 ; Lock register
-                MOVS    R1, #0
-                STR     R1, [R0]
+                ;MOVS    R1, #0
+                ;STR     R1, [R0]
 
                 LDR     R0, =__main
                 BX      R0

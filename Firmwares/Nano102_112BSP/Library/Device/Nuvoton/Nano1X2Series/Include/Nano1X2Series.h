@@ -8,7 +8,7 @@
  *           bits definitions and memory mapping for NuMicro Nano102/112 MCU.
  *
  * @note
- * Copyright (C) 2016 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2017 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 /**
    \mainpage NuMicro Nano102/112 Driver Reference Guide
@@ -47,7 +47,7 @@
    *
    * <b>Copyright Notice</b>
    *
-   * Copyright (C) 2013-2016 Nuvoton Technology Corp. All rights reserved.
+   * Copyright (C) 2013-2017 Nuvoton Technology Corp. All rights reserved.
    */
 #ifndef __NANO1X2SERIES_H__
 #define __NANO1X2SERIES_H__

@@ -31,8 +31,8 @@ extern "C"
 /*---------------------------------------------------------------------------------------------------------*/
 /*  Module Reset Control Resister constant definitions.                                                    */
 /*---------------------------------------------------------------------------------------------------------*/
-#define CHIP_RST  ((0x0<<24) | SYS_IPRST_CTL1_CPU_RST_Pos   ) /*!< CPU reset is one of the SYS_ResetModule parameter */
-#define CPU_RST   ((0x0<<24) | SYS_IPRST_CTL1_CHIP_RST_Pos  ) /*!< CHIP reset is one of the SYS_ResetModule parameter */
+#define CPU_RST   ((0x0<<24) | SYS_IPRST_CTL1_CPU_RST_Pos   ) /*!< CPU reset is one of the SYS_ResetModule parameter */
+#define CHIP_RST  ((0x0<<24) | SYS_IPRST_CTL1_CHIP_RST_Pos  ) /*!< CHIP reset is one of the SYS_ResetModule parameter */
 #define DMA_RST   ((0x0<<24) | SYS_IPRST_CTL1_DMA_RST_Pos   ) /*!< DMA reset is one of the SYS_ResetModule parameter */
 #define EBI_RST   ((0x0<<24) | SYS_IPRST_CTL1_EBI_RST_Pos   ) /*!< EBI reset is one of the SYS_ResetModule parameter */
 #define SC1_RST   ((0x4<<24) | SYS_IPRST_CTL2_SC1_RST_Pos   ) /*!< SmartCard1 reset is one of the SYS_ResetModule parameter */

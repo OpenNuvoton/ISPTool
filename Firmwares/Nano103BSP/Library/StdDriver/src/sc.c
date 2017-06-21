@@ -125,7 +125,12 @@ void SC_ResetReader(SC_T *sc)
     // Reset FIFO
     sc->ALTCTL |= (SC_ALTCTL_TXRST_Msk | SC_ALTCTL_RXRST_Msk);
     // Set Rx trigger level to 1 character, longest card detect debounce period, disable error retry (EMV ATR does not use error retry)
-    sc->CTL &= ~(SC_CTL_RXTRGLV_Msk | SC_CTL_CDDBSEL_Msk | SC_CTL_TXRTYEN_Msk | SC_CTL_RXRTYEN_Msk);
+    sc->CTL &= ~(SC_CTL_RXTRGLV_Msk | 
+                 SC_CTL_CDDBSEL_Msk | 
+                 SC_CTL_TXRTY_Msk | 
+                 SC_CTL_TXRTYEN_Msk |
+                 SC_CTL_RXRTY_Msk |
+                 SC_CTL_RXRTYEN_Msk);
     // Enable auto convention, and all three smartcard internal timers
     sc->CTL |= SC_CTL_AUTOCEN_Msk | SC_CTL_TMRSEL_Msk;
     // Disable Rx timeout
