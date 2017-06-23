@@ -23,43 +23,33 @@ public:
     CAppConfig::M451_configs_t m_ConfigValue;
 
 // Dialog Data
-    //{{AFX_DATA(CDialogConfiguration_NUC4xx)
+    //{{AFX_DATA(CDialogConfiguration_M451)
     enum { IDD = IDD_DIALOG_CONFIGURATION_M451 };
     CNumEdit	m_FlashBaseAddress;
-    CNumEdit	m_FlashWriteProtect;
     CEdit	m_DataFlashSize;
     int		m_nRadioClk;
     int		m_nRadioBov;
     int		m_nRadioBS;
     CString	m_sConfigValue0;
     CString	m_sConfigValue1;
-    CString	m_sFlashWriteProtect;
     CString	m_sFlashBaseAddress;
     CString	m_sDataFlashSize;
     BOOL	m_bCheckBrownOutDetect;
     BOOL	m_bCheckBrownOutReset;
     BOOL	m_bCheckBootLoader;
-    BOOL	m_bClockFilterEnable;
     BOOL	m_bDataFlashEnable;
-    BOOL	m_bLDWRProtectEnable;
     BOOL	m_bSecurityLock;
     BOOL	m_bWDTEnable;
     BOOL	m_bWDTPowerDown;
     int		m_nRadioGPG;
-    int		m_nRadioGPG32K;
-    int		m_nRadioRMIIEnable;
     int		m_nRadioIO;
     CSpinButtonCtrl	m_SpinDataFlashSize;
 
     unsigned int	m_uProgramMemorySize;
     //}}AFX_DATA
 
-
-// Overrides
-    // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CDialogConfiguration_NUC4xx)
 protected:
-    virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange *pDX);
     //}}AFX_VIRTUAL
 
 // Implementation
@@ -69,7 +59,7 @@ protected:
     void OnGUIEvent(int nEventID = 0);
 
     // Generated message map functions
-    //{{AFX_MSG(CDialogConfiguration_NUC4xx)
+    //{{AFX_MSG(CDialogConfiguration_M451)
     virtual BOOL OnInitDialog();
     afx_msg void OnRadioBov();
     afx_msg void OnRadioClk();
@@ -80,7 +70,6 @@ protected:
     afx_msg void OnCheckClickWDTPD();
     afx_msg void OnCheckClickWDT();
     afx_msg void OnChangeEditFlashBaseAddress();
-    afx_msg void OnChangeEditFlashWRProtect();
     virtual void OnOK();
     afx_msg void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);

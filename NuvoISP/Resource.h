@@ -126,8 +126,6 @@
 #define IDC_EDIT_FLASH_BASE_ADDRESS     1066
 #define IDC_CHECK_ERASE                 1067
 #define IDC_CHECK_CHZ_BPWM_Ctrl         1067
-#define IDC_EDIT_FLASH_WR_PROT          1067
-#define IDC_EDIT_FLASH_WR_PROTECT       1067
 #define IDC_EDIT_FLASH_INFO2            1068
 #define IDC_CHECK_CHZ_Even0_Ctrl        1068
 #define IDC_CHECK_LDROM_WR_PROTECT      1068

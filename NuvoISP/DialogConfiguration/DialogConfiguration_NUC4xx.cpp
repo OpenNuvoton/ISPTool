@@ -1,5 +1,4 @@
 // DialogConfiguration.cpp : implementation file
-//
 
 #include "stdafx.h"
 #include <deque>
@@ -19,8 +18,6 @@ static char THIS_FILE[] = __FILE__;
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_NUC4xx dialog
-
-
 CDialogConfiguration_NUC4xx::CDialogConfiguration_NUC4xx(unsigned int uProgramMemorySize,
         CWnd *pParent /*=NULL*/)
     : CDialogResize(CDialogConfiguration_NUC4xx::IDD, pParent)
@@ -36,9 +33,7 @@ CDialogConfiguration_NUC4xx::CDialogConfiguration_NUC4xx(unsigned int uProgramMe
     m_sConfigValue3 = _T("");
     m_bCheckBrownOutDetect = FALSE;
     m_bCheckBrownOutReset = FALSE;
-    m_bClockFilterEnable = FALSE;
     m_bDataFlashEnable = FALSE;
-    m_bLDWRProtectEnable = FALSE;
     m_bSecurityLock = FALSE;
     m_bWDTEnable = FALSE;
     m_bWDTPowerDown = FALSE;
@@ -46,19 +41,15 @@ CDialogConfiguration_NUC4xx::CDialogConfiguration_NUC4xx(unsigned int uProgramMe
     m_nRadioGPG32K = -1;
     m_nRadioRMIIEnable = -1;
     m_nRadioIO = -1;
-    //uConfig2_Test=-1;
     m_sFlashBaseAddress = _T("");
-    m_sFlashWriteProtect = _T("");
     //}}AFX_DATA_INIT
 }
-
 
 void CDialogConfiguration_NUC4xx::DoDataExchange(CDataExchange *pDX)
 {
     CDialogResize::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CDialogConfiguration_NUC4xx)
     DDX_Control(pDX, IDC_EDIT_FLASH_BASE_ADDRESS, m_FlashBaseAddress);
-    DDX_Control(pDX, IDC_EDIT_FLASH_WR_PROTECT, m_FlashWriteProtect);
     DDX_Control(pDX, IDC_EDIT_DATA_FLASH_SIZE, m_DataFlashSize);
     DDX_Control(pDX, IDC_SPIN_DATA_FLASH_SIZE, m_SpinDataFlashSize);
     DDX_Radio(pDX, IDC_RADIO_CLK_E12M, m_nRadioClk);
@@ -66,13 +57,9 @@ void CDialogConfiguration_NUC4xx::DoDataExchange(CDataExchange *pDX)
     DDX_Radio(pDX, IDC_RADIO_BS_LDROM, m_nRadioBS);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_0, m_sConfigValue0);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_1, m_sConfigValue1);
-    DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_2, m_sConfigValue2);		//CY 2013/6/6
-    DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_3, m_sConfigValue3);		//CY 2013/6/7
     DDX_Check(pDX, IDC_CHECK_BROWN_OUT_DETECT, m_bCheckBrownOutDetect);
     DDX_Check(pDX, IDC_CHECK_BROWN_OUT_RESET, m_bCheckBrownOutReset);
-    DDX_Check(pDX, IDC_CHECK_CLOCK_FILTER_ENABLE, m_bClockFilterEnable);
     DDX_Check(pDX, IDC_CHECK_DATA_FLASH_ENABLE, m_bDataFlashEnable);
-    DDX_Check(pDX, IDC_CHECK_LDROM_WR_PROTECT, m_bLDWRProtectEnable);
     DDX_Check(pDX, IDC_CHECK_SECURITY_LOCK, m_bSecurityLock);
     DDX_Check(pDX, IDC_CHECK_WDT_ENABLE, m_bWDTEnable);
     DDX_Check(pDX, IDC_CHECK_WDT_POWER_DOWN, m_bWDTPowerDown);
@@ -81,7 +68,6 @@ void CDialogConfiguration_NUC4xx::DoDataExchange(CDataExchange *pDX)
     DDX_Radio(pDX, IDC_RADIO_MII_MODE, m_nRadioRMIIEnable);
     DDX_Radio(pDX, IDC_RADIO_IO_TRI, m_nRadioIO);
     DDX_Text(pDX, IDC_EDIT_FLASH_BASE_ADDRESS, m_sFlashBaseAddress);
-    DDX_Text(pDX, IDC_EDIT_FLASH_WR_PROTECT, m_sFlashWriteProtect);
     DDX_Text(pDX, IDC_EDIT_DATA_FLASH_SIZE, m_sDataFlashSize);
     //}}AFX_DATA_MAP
 }
@@ -93,7 +79,6 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_NUC4xx, CDialog)
     ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnRadioBs)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnCheckClick)
     ON_EN_CHANGE(IDC_EDIT_FLASH_BASE_ADDRESS, OnChangeEditFlashBaseAddress)
-    ON_EN_CHANGE(IDC_EDIT_FLASH_WR_PROTECT, OnChangeEditFlashWRProtect)
     ON_BN_CLICKED(IDC_RADIO_BOV_38, OnRadioBov)
     ON_BN_CLICKED(IDC_RADIO_BOV_27, OnRadioBov)
     ON_BN_CLICKED(IDC_RADIO_BOV_22, OnRadioBov)
@@ -103,9 +88,7 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_NUC4xx, CDialog)
     ON_BN_CLICKED(IDC_RADIO_CLK_I22M, OnRadioClk)
     ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnRadioBs)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_CLOCK_FILTER_ENABLE, OnCheckClick)
     ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_LDROM_WR_PROTECT, OnCheckClick)
     ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnCheckClick)
     ON_BN_CLICKED(IDC_CHECK_WATCHDOG_ENABLE, OnCheckClick)
     ON_BN_CLICKED(IDC_CHECK_WDT_POWER_DOWN, OnCheckClickWDTPD)
@@ -135,28 +118,21 @@ END_MESSAGE_MAP()
 BOOL CDialogConfiguration_NUC4xx::OnInitDialog()
 {
     CDialog::OnInitDialog();
-    // TODO: Add extra initialization here
     UDACCEL pAccel[1];
     pAccel[0].nInc = 1;
     pAccel[0].nSec = 0;
     m_SpinDataFlashSize.SetAccel(1, pAccel);
-    au32Config[0] = m_ConfigValue.m_value[0];			//CY 2013/6/7
+    au32Config[0] = m_ConfigValue.m_value[0];
     au32Config[1] = m_ConfigValue.m_value[1];
-    //au32Config[2]=uConfig2_Test;
     au32Config[2] = m_ConfigValue.m_value[2];
-    //au32Config[3]=FMC_CRC8(au32Config,3);
     au32Config[3] = m_ConfigValue.m_value[3];
     ConfigToGUI(0);
     UpdateData(FALSE);
     m_bIsInitialized = true;
     GetWindowRect(m_rect);
     AdjustDPI();
-    return TRUE;  // return TRUE unless you set the focus to a control
-    // EXCEPTION: OCX Property Pages should return FALSE
+    return TRUE;
 }
-
-
-
 
 void CDialogConfiguration_NUC4xx::ConfigToGUI(int nEventID)
 {
@@ -168,21 +144,9 @@ void CDialogConfiguration_NUC4xx::ConfigToGUI(int nEventID)
             m_nRadioClk = 0;
             break;
 
-        case NUC4XX_FLASH_CONFIG_E32K:
-            m_nRadioClk = 1;
-            break;
-
-        case NUC4XX_FLASH_CONFIG_PLL:
-            m_nRadioClk = 2;
-            break;
-
-        case NUC4XX_FLASH_CONFIG_I10K:
-            m_nRadioClk = 3;
-            break;
-
         case NUC4XX_FLASH_CONFIG_I22M:
         default:
-            m_nRadioClk = 4;
+            m_nRadioClk = 1;
             break;
     }
 
@@ -237,9 +201,7 @@ void CDialogConfiguration_NUC4xx::ConfigToGUI(int nEventID)
 
     m_bCheckBrownOutDetect = ((uConfig0 & NUC4XX_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
     m_bCheckBrownOutReset = ((uConfig0 & NUC4XX_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
-    m_bClockFilterEnable = ((uConfig0 & NUC4XX_FLASH_CONFIG_CKF) == NUC4XX_FLASH_CONFIG_CKF ? TRUE : FALSE);
     m_bDataFlashEnable = ((uConfig0 & NUC4XX_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
-    m_bLDWRProtectEnable = ((uConfig0 & NUC4XX_FLASH_CONFIG_LDWPEN) == 0 ? TRUE : FALSE);
     m_bSecurityLock = ((uConfig0 & NUC4XX_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
     unsigned int uFlashBaseAddress = uConfig1;
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
@@ -248,19 +210,16 @@ void CDialogConfiguration_NUC4xx::ConfigToGUI(int nEventID)
     unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * NUC4XX_FLASH_PAGE_SIZE) : 0;
     m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uDataFlashSize : 0) / 1024.);
     m_SpinDataFlashSize.EnableWindow(m_bDataFlashEnable ? TRUE : FALSE);
-    //m_sFlashWriteProtect.Format(_T("%X"), uConfig2_Test);		//CY 2013/6/7
-    m_sFlashWriteProtect.Format(_T("%X"), m_ConfigValue.m_value[2]);		//CY 2013/6/7
     m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
     m_sConfigValue1.Format(_T("0x%08X"), uConfig1);
     m_sConfigValue2.Format(_T("0x%08X"), m_ConfigValue.m_value[2]);
-    //m_sConfigValue3.Format(_T("0x%08X"), au32Config[3]);
     m_sConfigValue3.Format(_T("0x%08X"), m_ConfigValue.m_value[3]);
 }
 
 void CDialogConfiguration_NUC4xx::GUIToConfig(int nEventID)
 {
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
-    unsigned int uConfig1, uConfig2;
+    unsigned int uConfig1;
     uConfig0 &= ~NUC4XX_FLASH_CONFIG_CFOSC;
 
     switch (m_nRadioClk) {
@@ -269,18 +228,6 @@ void CDialogConfiguration_NUC4xx::GUIToConfig(int nEventID)
             break;
 
         case 1:
-            uConfig0 |= NUC4XX_FLASH_CONFIG_E32K;
-            break;
-
-        case 2:
-            uConfig0 |= NUC4XX_FLASH_CONFIG_PLL;
-            break;
-
-        case 3:
-            uConfig0 |= NUC4XX_FLASH_CONFIG_I10K;
-            break;
-
-        case 4:
             uConfig0 |= NUC4XX_FLASH_CONFIG_CFOSC;	/* New spec! */
             break;
 
@@ -395,22 +342,10 @@ void CDialogConfiguration_NUC4xx::GUIToConfig(int nEventID)
         uConfig0 |= NUC4XX_FLASH_CONFIG_CBORST;
     }
 
-    if (m_bClockFilterEnable) {
-        uConfig0 |= NUC4XX_FLASH_CONFIG_CKF;
-    } else {
-        uConfig0 &= ~NUC4XX_FLASH_CONFIG_CKF;
-    }
-
     if (m_bDataFlashEnable) {
         uConfig0 &= ~NUC4XX_FLASH_CONFIG_DFEN;
     } else {
         uConfig0 |= NUC4XX_FLASH_CONFIG_DFEN;
-    }
-
-    if (m_bLDWRProtectEnable) {
-        uConfig0 &= ~NUC4XX_FLASH_CONFIG_LDWPEN;
-    } else {
-        uConfig0 |= NUC4XX_FLASH_CONFIG_LDWPEN;
     }
 
     if (m_bSecurityLock) {
@@ -423,23 +358,16 @@ void CDialogConfiguration_NUC4xx::GUIToConfig(int nEventID)
     TCHAR *pEnd;
     uConfig1 = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
     m_ConfigValue.m_value[1] = uConfig1;
-    uConfig2 = ::_tcstoul(m_sFlashWriteProtect, &pEnd, 16);
-    //uConfig2_Test = uConfig2;
-    m_ConfigValue.m_value[2] = uConfig2;
-    au32Config[0] = m_ConfigValue.m_value[0];		//CY 2013/6/7
+    au32Config[0] = m_ConfigValue.m_value[0];
     au32Config[1] = m_ConfigValue.m_value[1];
-    //au32Config[2]=uConfig2_Test;
     au32Config[2] = m_ConfigValue.m_value[2];
 }
 
-
-
 void CDialogConfiguration_NUC4xx::OnGUIEvent(int nEventID)
 {
-    // TODO: Add your control notification handler code here
     UpdateData(TRUE);
     GUIToConfig(nEventID);
-    au32Config[3] = FMC_CRC8(au32Config, 3);	//CY 2013/6/7
+    au32Config[3] = FMC_CRC8(au32Config, 3);
     m_ConfigValue.m_value[3] = au32Config[3];
     ConfigToGUI(nEventID);
     UpdateData(FALSE);
@@ -447,10 +375,9 @@ void CDialogConfiguration_NUC4xx::OnGUIEvent(int nEventID)
 
 void CDialogConfiguration_NUC4xx::OnRadioBov()
 {
-    //OnGUIEvent();
     UpdateData(TRUE);
     GUIToConfig(0);
-    au32Config[3] = FMC_CRC8(au32Config, 3);	//CY 2013/6/7
+    au32Config[3] = FMC_CRC8(au32Config, 3);
     m_ConfigValue.m_value[3] = au32Config[3];
     ConfigToGUI(0);
     UpdateData(FALSE);
@@ -458,54 +385,41 @@ void CDialogConfiguration_NUC4xx::OnRadioBov()
 
 void CDialogConfiguration_NUC4xx::OnRadioClk()
 {
-    // TODO: Add your control notification handler code here
-    //OnGUIEvent();
     OnRadioBov();
 }
 
 void CDialogConfiguration_NUC4xx::OnRadioBs()
 {
-    // TODO: Add your control notification handler code here
     OnGUIEvent();
 }
 
 void CDialogConfiguration_NUC4xx::OnRadioGpf()
 {
-    // TODO: Add your control notification handler code here
     OnGUIEvent();
 }
 
 void CDialogConfiguration_NUC4xx::OnRadioIO()
 {
-    // TODO: Add your control notification handler code here
     OnGUIEvent();
 }
 
 void CDialogConfiguration_NUC4xx::OnCheckClick()
 {
-    // TODO: Add your control notification handler code here
     OnGUIEvent();
 }
 
 void CDialogConfiguration_NUC4xx::OnCheckClickWDTPD()
 {
-    // TODO: Add your control notification handler code here
     OnGUIEvent(IDC_CHECK_WDT_POWER_DOWN);
 }
 
 void CDialogConfiguration_NUC4xx::OnCheckClickWDT()
 {
-    // TODO: Add your control notification handler code here
     OnGUIEvent(IDC_CHECK_WDT_ENABLE);
 }
 
 void CDialogConfiguration_NUC4xx::OnChangeEditFlashBaseAddress()
 {
-    // TODO: If this is a RICHEDIT control, the control will not
-    // send this notification unless you override the CDialog::OnInitDialog()
-    // function and call CRichEditCtrl().SetEventMask()
-    // with the ENM_CHANGE flag ORed into the mask.
-    // TODO: Add your control notification handler code here
     UpdateData(TRUE);
     TCHAR *pEnd;
     unsigned int uFlashBaseAddress = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
@@ -517,26 +431,11 @@ void CDialogConfiguration_NUC4xx::OnChangeEditFlashBaseAddress()
     UpdateData(FALSE);
 }
 
-void CDialogConfiguration_NUC4xx::OnChangeEditFlashWRProtect()
-{
-    // TODO: If this is a RICHEDIT control, the control will not
-    // send this notification unless you override the CDialog::OnInitDialog()
-    // function and call CRichEditCtrl().SetEventMask()
-    // with the ENM_CHANGE flag ORed into the mask.
-    // TODO: Add your control notification handler code here
-    UpdateData(TRUE);
-    TCHAR *pEnd;
-    unsigned int uConfig2 = ::_tcstoul(m_sFlashWriteProtect, &pEnd, 16);
-    m_sConfigValue2.Format(_T("0x%08X"), uConfig2);
-    UpdateData(FALSE);
-}
-
 void CDialogConfiguration_NUC4xx::OnOK()
 {
-    // TODO: Add extra validation here
     UpdateData(TRUE);
     GUIToConfig(0);
-    au32Config[3] = FMC_CRC8(au32Config, 3);	//CY 2013/6/7
+    au32Config[3] = FMC_CRC8(au32Config, 3);
     m_ConfigValue.m_value[3] = au32Config[3];
     CDialog::OnOK();
 }
@@ -573,7 +472,6 @@ unsigned int CDialogConfiguration_NUC4xx::FMC_CRC8(unsigned int au32Data[], unsi
 void CDialogConfiguration_NUC4xx::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)
 {
     LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
-    // TODO: Add your control notification handler code here
     UpdateData(TRUE);
     TCHAR *pEnd;
     unsigned int uFlashBaseAddress = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);

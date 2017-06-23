@@ -10,7 +10,7 @@
 #include "DialogResize.h"
 
 /////////////////////////////////////////////////////////////////////////////
-// CDialogConfiguration_NUC2xx dialog
+// CDialogConfiguration_NUC4xx dialog
 
 class CDialogConfiguration_NUC4xx : public CDialogResize
 {
@@ -26,7 +26,6 @@ public:
     //{{AFX_DATA(CDialogConfiguration_NUC4xx)
     enum { IDD = IDD_DIALOG_CONFIGURATION_NUC400 };
     CNumEdit	m_FlashBaseAddress;
-    CNumEdit	m_FlashWriteProtect;
     CEdit	m_DataFlashSize;
     int		m_nRadioClk;
     int		m_nRadioBov;
@@ -35,14 +34,11 @@ public:
     CString	m_sConfigValue1;
     CString	m_sConfigValue2;
     CString	m_sConfigValue3;
-    CString m_sFlashWriteProtect;
     CString	m_sFlashBaseAddress;
     CString	m_sDataFlashSize;
     BOOL	m_bCheckBrownOutDetect;
     BOOL	m_bCheckBrownOutReset;
-    BOOL	m_bClockFilterEnable;
     BOOL	m_bDataFlashEnable;
-    BOOL	m_bLDWRProtectEnable;
     BOOL	m_bSecurityLock;
     BOOL	m_bWDTEnable;
     BOOL	m_bWDTPowerDown;
@@ -53,9 +49,6 @@ public:
     CSpinButtonCtrl	m_SpinDataFlashSize;
 
     unsigned int	m_uProgramMemorySize;
-
-    //unsigned int uConfig2_Test;
-
     unsigned int au32Config[4];
     //}}AFX_DATA
 
@@ -86,7 +79,6 @@ protected:
     afx_msg void OnCheckClickWDTPD();
     afx_msg void OnCheckClickWDT();
     afx_msg void OnChangeEditFlashBaseAddress();
-    afx_msg void OnChangeEditFlashWRProtect();
     virtual void OnOK();
     afx_msg void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
