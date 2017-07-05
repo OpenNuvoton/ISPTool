@@ -580,6 +580,19 @@ BOOL CNuvoISPDlg::PreTranslateMessage(MSG *pMsg)
 
 void CNuvoISPDlg::OnButtonConfig()
 {
+#ifdef _DEBUG
+
+    if (m_fnThreadProcStatus == &CISPProc::Thread_Idle
+            || m_fnThreadProcStatus == &CISPProc::Thread_Pause) {
+        if (MessageBox(_T("Demo ALL Configuration Dialog in offline mode, contintue ?"), NULL, MB_ICONWARNING | MB_OKCANCEL) == IDOK) {
+            DemoConfigDlg();
+        }
+
+        return;
+    }
+
+#endif
+
     if (ConfigSetting(m_ulDeviceID, m_CONFIG_User, sizeof(m_CONFIG_User))) {
         CString strTmp = _T("");
         strTmp.Format(_T("0x%08X"), m_CONFIG_User[0]);

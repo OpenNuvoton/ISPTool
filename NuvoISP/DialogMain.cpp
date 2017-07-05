@@ -684,3 +684,49 @@ void CDialogMain::EnableInterface(bool bEnable)
         m_SelComPort.EnableWindow(0);
     }
 }
+
+UINT DialogTemplate[] = {
+    IDD_DIALOG_CONFIGURATION_M051,
+    IDD_DIALOG_CONFIGURATION_M051CN,
+    IDD_DIALOG_CONFIGURATION_M0564,	// M0564, NUC121, NUC125, NUC126
+    IDD_DIALOG_CONFIGURATION_M058,
+    IDD_DIALOG_CONFIGURATION_M451,
+    IDD_DIALOG_CONFIGURATION_MINI51,
+    IDD_DIALOG_CONFIGURATION_MINI51BN,
+    IDD_DIALOG_CONFIGURATION_MINI51CN,
+    IDD_DIALOG_CONFIGURATION_MT500,
+    IDD_DIALOG_CONFIGURATION_N76E1T,
+    IDD_DIALOG_CONFIGURATION_NANO100,
+    IDD_DIALOG_CONFIGURATION_NANO100BN,
+    IDD_DIALOG_CONFIGURATION_NANO103,
+    IDD_DIALOG_CONFIGURATION_NANO112,
+    IDD_DIALOG_CONFIGURATION_NM1120,
+    IDD_DIALOG_CONFIGURATION_NM1200,
+    IDD_DIALOG_CONFIGURATION_NUC100,
+    IDD_DIALOG_CONFIGURATION_NUC102,
+    IDD_DIALOG_CONFIGURATION_NUC103,
+    IDD_DIALOG_CONFIGURATION_NUC131,
+    IDD_DIALOG_CONFIGURATION_NUC200,
+    IDD_DIALOG_CONFIGURATION_NUC400,
+    IDD_DIALOG_CONFIGURATION_TC8226,
+};
+
+bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
+{
+    CPartNumID *psBackup = 	psChipData;
+    struct CPartNumID  Demo = {"NuMicro", 0x12345678, Template};
+    psChipData = &Demo;
+    unsigned int CFG[4] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
+
+    if (Template == 0) {
+        for (int i = 0; i < _countof(DialogTemplate); ++i) {
+            Demo.uProjectCode = DialogTemplate[i];
+            ConfigDlgSel(CFG, sizeof(CFG));
+        }
+    } else {
+        ConfigDlgSel(CFG, sizeof(CFG));
+    }
+
+    psChipData = psBackup;
+    return true;
+}

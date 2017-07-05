@@ -44,6 +44,7 @@ public:
     void InitComboBox();
     void EnableInterface(bool bEnable);
     UINT ScanPCCom();
+    bool DemoConfigDlg(UINT Template = 0);
 
 protected:
     virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
