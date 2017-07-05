@@ -146,9 +146,6 @@
 #define IDC_GROUP_BOOT_SELECT           1078
 #define IDC_GROUP_CONFIG_VALUE          1079
 #define IDC_RADIO_CLK_E12M              1080
-#define IDC_RADIO_CLK_E32K              1081
-#define IDC_RADIO_CLK_PLL               1082
-#define IDC_RADIO_CLK_I10K              1083
 #define IDC_RADIO_CLK_I22M              1084
 #define IDC_RADIO_BOV_45                1085
 #define IDC_RADIO_BOV_46                1085

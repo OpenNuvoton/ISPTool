@@ -79,9 +79,6 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_NUC1xx, CDialog)
     ON_BN_CLICKED(IDC_RADIO_BOV_38, OnRadioBov)
     ON_BN_CLICKED(IDC_RADIO_BOV_27, OnRadioBov)
     ON_BN_CLICKED(IDC_RADIO_BOV_22, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_CLK_E32K, OnRadioClk)
-    ON_BN_CLICKED(IDC_RADIO_CLK_PLL, OnRadioClk)
-    ON_BN_CLICKED(IDC_RADIO_CLK_I10K, OnRadioClk)
     ON_BN_CLICKED(IDC_RADIO_CLK_I22M, OnRadioClk)
     ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnRadioBs)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnCheckClick)
@@ -131,21 +128,9 @@ void CDialogConfiguration_NUC1xx::ConfigToGUI()
             m_nRadioClk = 0;
             break;
 
-        case NUC1XX_FLASH_CONFIG_E32K:
-            m_nRadioClk = 1;
-            break;
-
-        case NUC1XX_FLASH_CONFIG_PLL:
-            m_nRadioClk = 2;
-            break;
-
-        case NUC1XX_FLASH_CONFIG_I10K:
-            m_nRadioClk = 3;
-            break;
-
-        case NUC1XX_FLASH_CONFIG_I22M:
+        case NUC1XX_FLASH_CONFIG_CFOSC:
         default:
-            m_nRadioClk = 4;
+            m_nRadioClk = 1;
             break;
     }
 
@@ -204,18 +189,6 @@ void CDialogConfiguration_NUC1xx::GUIToConfig()
             break;
 
         case 1:
-            uConfig0 |= NUC1XX_FLASH_CONFIG_E32K;
-            break;
-
-        case 2:
-            uConfig0 |= NUC1XX_FLASH_CONFIG_PLL;
-            break;
-
-        case 3:
-            uConfig0 |= NUC1XX_FLASH_CONFIG_I10K;
-            break;
-
-        case 4:
             uConfig0 |= NUC1XX_FLASH_CONFIG_CFOSC;	/* New spec! */
             break;
 

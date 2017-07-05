@@ -74,9 +74,6 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_Nano100BN, CDialog)
     ON_BN_CLICKED(IDC_RADIO_BOV_38, OnRadioBov)
     ON_BN_CLICKED(IDC_RADIO_BOV_27, OnRadioBov)
     ON_BN_CLICKED(IDC_RADIO_BOV_22, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_CLK_E32K, OnRadioClk)
-    ON_BN_CLICKED(IDC_RADIO_CLK_PLL, OnRadioClk)
-    ON_BN_CLICKED(IDC_RADIO_CLK_I10K, OnRadioClk)
     ON_BN_CLICKED(IDC_RADIO_CLK_I22M, OnRadioClk)
     ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnRadioBs)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnCheckClick)
@@ -133,7 +130,7 @@ void CDialogConfiguration_Nano100BN::ConfigToGUI()
 
         case NANO100_FLASH_CONFIG_I12M:
         default:
-            m_nRadioClk = 4;
+            m_nRadioClk = 1;
             break;
     }
 
@@ -176,16 +173,7 @@ void CDialogConfiguration_Nano100BN::ConfigToGUI()
     }
 
     m_bClockFilterEnable = ((uConfig0 & NANO100_FLASH_CONFIG_CKF) == NANO100_FLASH_CONFIG_CKF ? TRUE : FALSE);
-    //if((uConfig0 & NANO100_FLASH_CONFIG_CBS_AP)==NANO100_FLASH_CONFIG_CBS_AP)		//2013 0521
-    //{
-    //	GetDlgItem(IDC_CHECK_DATA_FLASH_ENABLE)->EnableWindow(1);
     m_bDataFlashEnable = ((uConfig0 & NANO100_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
-    //}
-    //else
-    //{
-    //	GetDlgItem(IDC_CHECK_DATA_FLASH_ENABLE)->EnableWindow(0);
-    //	m_bDataFlashEnable=0;
-    //}
     m_bWDTEnable = ((uConfig0 & NANO100_FLASH_CONFIG_CWDTEN) == 0 ? TRUE : FALSE);;
     m_bSecurityLock = ((uConfig0 & NANO100_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
     unsigned int uFlashBaseAddress = uConfig1;
@@ -201,7 +189,6 @@ void CDialogConfiguration_Nano100BN::ConfigToGUI()
 
 void CDialogConfiguration_Nano100BN::GUIToConfig()
 {
-    //unsigned int uConfig0 = m_ConfigValue.m_value[0];
     unsigned int uConfig0 = 0xFFFFFFFF;
     unsigned int uConfig1;
     uConfig0 &= ~NANO100_FLASH_CONFIG_CFOSC;
@@ -211,7 +198,7 @@ void CDialogConfiguration_Nano100BN::GUIToConfig()
             uConfig0 |= NANO100_FLASH_CONFIG_E12M;
             break;
 
-        case 4:
+        case 1:
             uConfig0 |= NANO100_FLASH_CONFIG_I12M;	/* New spec! */
             break;
 
