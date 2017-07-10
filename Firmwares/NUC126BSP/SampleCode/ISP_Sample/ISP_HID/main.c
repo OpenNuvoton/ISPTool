@@ -15,6 +15,12 @@
 #define PLLCTL_SETTING  CLK_PLLCTL_144MHz_HXT
 #define PLL_CLOCK       144000000
 
+/* If crystal-less is enabled, system won't use any crystal as clock source
+   If using crystal-less, system will be 48MHz, otherwise, system is 72MHz
+*/
+#define CRYSTAL_LESS    1
+#define HIRC48_AUTO_TRIM    0x412   /* Use USB SOF to fine tune HIRC 48MHz */
+
 void SYS_Init(void)
 {
 
@@ -31,6 +37,7 @@ void SYS_Init(void)
     CLK->CLKSEL0 = (CLK->CLKSEL0 & ~CLK_CLKSEL0_HCLKSEL_Msk) | CLK_CLKSEL0_HCLKSEL_HIRC;
     CLK->CLKDIV0 = (CLK->CLKDIV0 & ~CLK_CLKDIV0_HCLKDIV_Msk) | CLK_CLKDIV0_HCLK(1);
 
+#ifndef CRYSTAL_LESS
     /* Enable HXT clock (external XTAL 12MHz) */
     CLK->PWRCTL |= CLK_PWRCTL_HXTEN_Msk;
 
@@ -49,12 +56,25 @@ void SYS_Init(void)
     CLK->CLKDIV0 &= ~CLK_CLKDIV0_USBDIV_Msk;
     CLK->CLKDIV0 |= CLK_CLKDIV0_USB(3);
 
-    /* Enable module clock */
-    CLK->APBCLK0 |= CLK_APBCLK0_USBDCKEN_Msk;
-
     PllClock        = PLL_CLOCK;            // PLL
     SystemCoreClock = PLL_CLOCK / 2;        // HCLK
     CyclesPerUs     = SystemCoreClock / 1000000;  // For SYS_SysTickDelay()
+#else
+    CLK->PWRCTL |= CLK_PWRCTL_HIRC48EN_Msk;
+    while(!(CLK->STATUS & CLK_STATUS_HIRC48STB_Msk));
+    CLK->CLKSEL0 = (CLK->CLKSEL0 & ~CLK_CLKSEL0_HCLKSEL_Msk) | CLK_CLKSEL0_HCLKSEL_HIRC48;
+
+    CLK->CLKSEL3 &= ~CLK_CLKSEL3_USBDSEL_Msk;
+    CLK->CLKDIV0 &= ~CLK_CLKDIV0_USBDIV_Msk;
+    CLK->CLKDIV0 |= CLK_CLKDIV0_USB(1);
+
+    SystemCoreClock = 48000000;        // HCLK
+    CyclesPerUs     = SystemCoreClock / 1000000;  // For SYS_SysTickDelay()
+#endif
+
+    /* Enable module clock */
+    CLK->APBCLK0 |= CLK_APBCLK0_USBDCKEN_Msk;
+
 }
 
 /*---------------------------------------------------------------------------------------------------------*/
@@ -87,11 +107,37 @@ int32_t main(void)
         /* Start USB device */
         USBD_Start();
 
+#ifdef CRYSTAL_LESS
+        /* Waiting for SOF before USB clock auto trim */
+        USBD->INTSTS = USBD_INTSTS_SOFIF_Msk;
+        while((USBD->INTSTS & USBD_INTSTS_SOFIF_Msk) == 0);
+
+        /* Enable USB clock trim function */
+        SYS->IRCTCTL1 = HIRC48_AUTO_TRIM;
+#endif
+
         /* Enable USB device interrupt */
         NVIC_EnableIRQ(USBD_IRQn);
 
 
         while (DetectPin == 0) {
+
+#ifdef CRYSTAL_LESS
+            /* Re-start auto trim when any error found */
+            if(SYS->IRCTISTS & (SYS_IRCTISTS_CLKERRIF1_Msk | SYS_IRCTISTS_TFAILIF1_Msk))
+            {
+                /* USB clock trim fail. Just retry */
+                SYS->IRCTCTL1 = 0;  /* Disable Auto Trim */
+                SYS->IRCTISTS = SYS_IRCTISTS_CLKERRIF1_Msk | SYS_IRCTISTS_TFAILIF1_Msk;
+
+                /* Waiting for SOF before USB clock auto trim */
+                USBD->INTSTS = USBD_INTSTS_SOFIF_Msk;
+                while((USBD->INTSTS & USBD_INTSTS_SOFIF_Msk) == 0);
+
+                SYS->IRCTCTL1 = HIRC48_AUTO_TRIM; /* Re-enable Auto Trim */
+            }
+#endif
+
             if(bUsbDataReady == TRUE) {
 
                 WDT->CTL &= ~(WDT_CTL_WDTEN_Msk | WDT_CTL_ICEDEBUG_Msk);
