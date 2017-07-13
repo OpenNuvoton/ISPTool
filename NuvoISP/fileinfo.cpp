@@ -96,15 +96,19 @@ bool UpdateFileInfo(CString strFN, struct fileinfo *sfinfo)
 
     if (fp) {
         std::fseek(fp, 0, SEEK_END);
-        int length = std::ftell(fp);
+        size_t length = std::ftell(fp);
         std::rewind(fp);
         sfinfo->filename = strFN;
         sfinfo->st_size = length;
         sfinfo->vbuf.resize(length);
-        size_t result = std::fread(&(sfinfo->vbuf[0]), 1, length, fp);
+        size_t result = 0;
         unsigned short cks = 0;
 
-        for (int i = 0; i < length; i++) {
+        if (length) {
+            result = std::fread(&(sfinfo->vbuf[0]), 1, length, fp);
+        }
+
+        for (size_t i = 0; i < length; i++) {
             cks += sfinfo->vbuf[i];
         }
 

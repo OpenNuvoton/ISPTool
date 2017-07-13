@@ -230,7 +230,9 @@ void CISPProc::Thread_ProgramFlash()
                     return;
                 }
             }
+        }
 
+        if ((m_bErase || m_bProgram_Config) && (m_bProgram_APROM || m_bProgram_NVM)) {
             UpdateSizeInfo(m_ulDeviceID, m_CONFIG[0], m_CONFIG[1],
                            &m_uNVM_Addr,
                            &m_uAPROM_Size, &m_uNVM_Size);

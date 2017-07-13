@@ -740,7 +740,7 @@ void CNuvoISPDlg::OnSysCommand(UINT nID, LPARAM lParam)
     if ((nID & 0xFFF0) == IDM_ABOUTBOX) {
         CString sTitle;
         GetWindowText(sTitle);
-        CAboutDlg dlgAbout(sTitle, _T("0621"));
+        CAboutDlg dlgAbout(sTitle, _T("0713"));
         dlgAbout.DoModal();
     } else {
         CDialog::OnSysCommand(nID, lParam);

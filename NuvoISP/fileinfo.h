@@ -3,10 +3,17 @@
 #define _FILE_INFO_H_
 
 #include <sys/stat.h>
-#include "tstring.h"
 #include <fstream>
 #include <vector>
 
+namespace std
+{
+#ifdef _UNICODE
+typedef wstring tstring;
+#else
+typedef string tstring;
+#endif
+}
 
 struct fileinfo {
     //std::tstring& filename;

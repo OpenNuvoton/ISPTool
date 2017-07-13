@@ -19,7 +19,7 @@ static char THIS_FILE[] = __FILE__;
 #define MSG_REFRESH_DATA			11
 /* DialogMain.h */
 #define MSG_REFRESH_DATA_EXT		21
-/* Nu_Link.h */
+
 template <class T>
 inline T *vector_ptr(std::vector<T> &v)
 {
@@ -79,35 +79,15 @@ END_MESSAGE_MAP()
 BOOL CDialogHex::OnInitDialog()
 {
     CDialog::OnInitDialog();
-    // TODO: Add extra initialization here
-    //m_ButtonRefresh.ShowWindow(!m_bEnableRefExt ? SW_SHOW : SW_HIDE);
-    //m_ButtonRefreshExt.ShowWindow(m_bEnableRefExt ? SW_SHOW : SW_HIDE);
-    //m_ButtonSaveAs.ShowWindow(m_bEnableSaveAs ? SW_SHOW : SW_HIDE);
-#if 0
 
-    if (m_Font1.CreateFont(11, 0, 0, 0, 0, FALSE, FALSE, 0, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH | FF_MODERN, _T("Courier New"))) {
-        m_REdit_DataView.SetFont(&m_Font1);
-    } else
-#endif
-        if (m_Font0.CreateFont(11, 0, 0, 0, 0, FALSE, FALSE, 0, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH | FF_MODERN, _T("Lucida Console"))) {
-            m_REdit_DataView.SetFont(&m_Font0);
-        } else if (m_Font2.CreateFont(11, 0, 0, 0, 0, FALSE, FALSE, 0, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH | FF_MODERN, _T("FixedSys"))) {
-            m_REdit_DataView.SetFont(&m_Font2);
-        }
+    if (m_Font0.CreateFont(11, 0, 0, 0, 0, FALSE, FALSE, 0, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH | FF_MODERN, _T("Lucida Console"))) {
+        m_REdit_DataView.SetFont(&m_Font0);
+    } else if (m_Font2.CreateFont(11, 0, 0, 0, 0, FALSE, FALSE, 0, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH | FF_MODERN, _T("FixedSys"))) {
+        m_REdit_DataView.SetFont(&m_Font2);
+    }
 
     m_nRadioUINT = 0;	//8 bits hex viewer
     UpdateData(FALSE);
-#if 0
-    /* For test only */
-    m_tmpdata_test.resize(rand() % 1200000);
-
-    for (int i = 0; i < m_tmpdata_test.size(); ++i) {
-        m_tmpdata_test[i] = rand();
-    }
-
-    m_pHexData = &m_tmpdata_test;
-    OnRadioUint();
-#endif
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -170,14 +150,10 @@ void CDialogHex::OnSize(UINT nType, int cx, int cy)
 
 void CDialogHex::OnOK()
 {
-    // TODO: Add extra validation here
-    //CDialog::OnOK();
 }
 
 void CDialogHex::OnCancel()
 {
-    // TODO: Add extra cleanup here
-    //CDialog::OnCancel();
 }
 
 void CDialogHex::SetHexData(const std::vector<unsigned char> *pHexData,
@@ -187,7 +163,6 @@ void CDialogHex::SetHexData(const std::vector<unsigned char> *pHexData,
     m_sAltInfo = sAltInfo;
     m_uStartByte = 0;
     OnRadioUint();
-    //UpdateRefData();
 }
 
 void CDialogHex::SetHexData(const std::vector<unsigned char> *pHexData,
@@ -198,7 +173,6 @@ void CDialogHex::SetHexData(const std::vector<unsigned char> *pHexData,
     m_sAltInfo = sAltInfo;
     m_uStartByte = uStartByte;
     OnRadioUint();
-    //UpdateRefData();
 }
 
 void CDialogHex::UpdateHexView(int nWidth)
@@ -215,7 +189,6 @@ void CDialogHex::UpdateHexView(int nWidth)
     int nBufSize_Line;
     int nBufSize_Total;
     int nWordWidth = nWidth * 2;
-#if 1
     /* Use nBytes_InLine to decide other parameters */
     nWords_InLine = nBytes_InLine / nWidth;
     nBytes_InLine = nWidth * nWords_InLine;
@@ -224,15 +197,6 @@ void CDialogHex::UpdateHexView(int nWidth)
     nBufSize_Line = 11/*Address*/
                     + (nWordWidth + 1/*Blank*/) * nWords_InLine + 1/*\r*/;
     nBufSize_Total = nBufSize_Line * nLines;
-#else
-    /* Use nMaxLineLength to decide other parameters */
-    nWords_InLine = (nMaxLineLength + 1) / (nWordWidth + 1);
-    nBytes_InLine =  nWidth * nWords_InLine;
-    nLines = (m_pHexData->size() + nBytes_InLine - 1) / nBytes_InLine;
-    nBufSize_Line = 11/*Address*/
-                    + (nWordWidth + 1/*Blank*/) * nWords_InLine + 1/*\r*/;
-    nBufSize_Total = nBufSize_Line * nLines;
-#endif
     std::vector<TCHAR> str;
     str.resize(nBufSize_Total + 1);
 
@@ -336,7 +300,6 @@ void CDialogHex::UpdateHexView(int nWidth)
     }
 
     m_REdit_DataView.SetWindowText(vector_ptr(str));
-    //m_Edit_DataView.SetWindowText(vector_ptr(str));
 }
 
 BOOL CDialogHex::EnableWindow(BOOL bEnable)

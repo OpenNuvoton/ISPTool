@@ -369,6 +369,16 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
                 Config = (((CDialogConfiguration_NUC103 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
+            case IDD_DIALOG_CONFIGURATION_NUC103BN:
+                if (uProgramMemorySize) {
+                    pConfigDlg = new CDialogConfiguration_NUC103BN(uProgramMemorySize, uDataFlashSize);
+                } else {
+                    pConfigDlg = new CDialogConfiguration_NUC103BN;
+                }
+
+                Config = (((CDialogConfiguration_NUC103BN *)pConfigDlg)->m_ConfigValue.m_value);
+                break;
+
             case IDD_DIALOG_CONFIGURATION_NUC200:
                 if (uProgramMemorySize) {
                     pConfigDlg = new CDialogConfiguration_NUC2xx(bIsDataFlashFixed, uProgramMemorySize, uDataFlashSize);
@@ -705,6 +715,7 @@ UINT DialogTemplate[] = {
     IDD_DIALOG_CONFIGURATION_NUC100,
     IDD_DIALOG_CONFIGURATION_NUC102,
     IDD_DIALOG_CONFIGURATION_NUC103,
+    IDD_DIALOG_CONFIGURATION_NUC103BN,
     IDD_DIALOG_CONFIGURATION_NUC131,
     IDD_DIALOG_CONFIGURATION_NUC200,
     IDD_DIALOG_CONFIGURATION_NUC400,
