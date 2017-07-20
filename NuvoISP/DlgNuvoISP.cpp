@@ -462,7 +462,7 @@ LRESULT CNuvoISPDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
         }
     }
 
-    return CDialog::WindowProc(message, wParam, lParam);
+    return CDialogMain::WindowProc(message, wParam, lParam);
 }
 
 void CNuvoISPDlg::OnButtonStart()
@@ -584,10 +584,7 @@ void CNuvoISPDlg::OnButtonConfig()
 
     if (m_fnThreadProcStatus == &CISPProc::Thread_Idle
             || m_fnThreadProcStatus == &CISPProc::Thread_Pause) {
-        if (MessageBox(_T("Demo ALL Configuration Dialog in offline mode, contintue ?"), NULL, MB_ICONWARNING | MB_OKCANCEL) == IDOK) {
-            DemoConfigDlg();
-        }
-
+        DemoConfigDlg();
         return;
     }
 
@@ -740,7 +737,7 @@ void CNuvoISPDlg::OnSysCommand(UINT nID, LPARAM lParam)
     if ((nID & 0xFFF0) == IDM_ABOUTBOX) {
         CString sTitle;
         GetWindowText(sTitle);
-        CAboutDlg dlgAbout(sTitle, _T("0713"));
+        CAboutDlg dlgAbout(sTitle, _T("0720"));
         dlgAbout.DoModal();
     } else {
         CDialog::OnSysCommand(nID, lParam);

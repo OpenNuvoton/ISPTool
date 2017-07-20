@@ -53,7 +53,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\DialogConfiguration\;$(SolutionDir)\DataBase\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\DialogConfiguration\;$(ProjectDir)\DataBase\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
@@ -83,7 +83,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\DialogConfiguration\;$(SolutionDir)\DataBase\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\DialogConfiguration\;$(ProjectDir)\DataBase\</AdditionalIncludeDirectories>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <DisableSpecificWarnings>4819</DisableSpecificWarnings>
@@ -126,9 +126,7 @@
     <ClCompile Include="DataBase\PartNumID.cpp" />
     <ClCompile Include="DialogConfiguration\AppConfig.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M0564.cpp" />
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_M058.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M05x.cpp" />
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_M05xCN.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M451.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_Mini51.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_Mini51BN.cpp" />

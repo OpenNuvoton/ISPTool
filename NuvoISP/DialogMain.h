@@ -47,6 +47,7 @@ public:
     bool DemoConfigDlg(UINT Template = 0);
 
 protected:
+    virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
     virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
 
     virtual BOOL OnInitDialog();

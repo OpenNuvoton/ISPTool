@@ -89,12 +89,6 @@
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M05x.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_M05xCN.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_M058.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M451.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>

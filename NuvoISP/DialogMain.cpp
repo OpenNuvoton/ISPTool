@@ -298,9 +298,7 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 #include "PartNumID.h"
 #include "FlashInfo.h"
 
-#include "DialogConfiguration_M058.h"
 #include "DialogConfiguration_M05x.h"
-#include "DialogConfiguration_M05xCN.h"
 #include "DialogConfiguration_M451.h"
 #include "DialogConfiguration_Mini51.h"
 #include "DialogConfiguration_Mini51BN.h"
@@ -439,19 +437,17 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
                 Config = (((CDialogConfiguration_Nano103 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
+            // M051AN, M051BN
             case IDD_DIALOG_CONFIGURATION_M051:
-                pConfigDlg = new CDialogConfiguration_M05x;
-                Config = (((CDialogConfiguration_M05x *)pConfigDlg)->m_ConfigValue.m_value);
+            case IDD_DIALOG_CONFIGURATION_M051BN:
+                pConfigDlg = new CDialogConfiguration_M05XBN(psChipData->uProjectCode == IDD_DIALOG_CONFIGURATION_M051BN);
+                Config = (((CDialogConfiguration_M05XBN *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
+            // M051DN, M051DE, M058SAN
             case IDD_DIALOG_CONFIGURATION_M051CN:
-                pConfigDlg = new CDialogConfiguration_M05xCN;
-                Config = (((CDialogConfiguration_M05xCN *)pConfigDlg)->m_ConfigValue.m_value);
-                break;
-
-            case IDD_DIALOG_CONFIGURATION_M058:
-                pConfigDlg = new CDialogConfiguration_M058;
-                Config = (((CDialogConfiguration_M058 *)pConfigDlg)->m_ConfigValue.m_value);
+                pConfigDlg = new CDialogConfiguration_M05X;
+                Config = (((CDialogConfiguration_M05X *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
             case IDD_DIALOG_CONFIGURATION_MINI51:
@@ -697,9 +693,9 @@ void CDialogMain::EnableInterface(bool bEnable)
 
 UINT DialogTemplate[] = {
     IDD_DIALOG_CONFIGURATION_M051,
+    IDD_DIALOG_CONFIGURATION_M051BN,
     IDD_DIALOG_CONFIGURATION_M051CN,
     IDD_DIALOG_CONFIGURATION_M0564,	// M0564, NUC121, NUC125, NUC126
-    IDD_DIALOG_CONFIGURATION_M058,
     IDD_DIALOG_CONFIGURATION_M451,
     IDD_DIALOG_CONFIGURATION_MINI51,
     IDD_DIALOG_CONFIGURATION_MINI51BN,
@@ -730,14 +726,45 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
     unsigned int CFG[4] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
 
     if (Template == 0) {
-        for (int i = 0; i < _countof(DialogTemplate); ++i) {
-            Demo.uProjectCode = DialogTemplate[i];
-            ConfigDlgSel(CFG, sizeof(CFG));
-        }
+        CMenu menu;
+        menu.CreatePopupMenu();
+
+        CMenu *subM051 = new CMenu;
+        subM051->CreatePopupMenu();
+        subM051->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M051, _T("M051AN"));
+        subM051->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M051BN, _T("M051BN"));
+        subM051->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M051CN, _T("M051DN/DE, M058SAN"));
+        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subM051->m_hMenu, _T("M051 Series"));
+
+        POINT point;
+        GetCursorPos(&point);
+        menu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this);
+        menu.DestroyMenu();
+        delete subM051;
     } else {
         ConfigDlgSel(CFG, sizeof(CFG));
     }
 
     psChipData = psBackup;
     return true;
+}
+
+LRESULT CDialogMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
+{
+    // TODO: Add your specialized code here and/or call the base class
+    if (message == WM_COMMAND) {
+        for (int i = 0; i < _countof(DialogTemplate); ++i) {
+            if (DialogTemplate[i] == wParam) {
+                CPartNumID *psBackup = 	psChipData;
+                struct CPartNumID  Demo = {"NuMicro", 0x12345678, wParam};
+                psChipData = &Demo;
+                unsigned int CFG[4] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
+                ConfigDlgSel(CFG, sizeof(CFG));
+                psChipData = psBackup;
+                break;
+            }
+        }
+    }
+
+    return CDialog::WindowProc(message, wParam, lParam);
 }
