@@ -22,6 +22,9 @@ void SYS_Init(void)
     /* Init System Clock                                                                                       */
     /*---------------------------------------------------------------------------------------------------------*/
 
+    /* Enable XT1_OUT (PF0) and XT1_IN (PF1) */
+    SYS->GPF_MFP |= SYS_GPF_MFP_PF0_XT1_OUT | SYS_GPF_MFP_PF1_XT1_IN;
+
     /* Enable Internal RC 22.1184 MHz clock */
     /* Enable external XTAL 12 MHz clock */
     CLK->PWRCON |= (CLK_PWRCON_OSC22M_EN_Msk | CLK_PWRCON_XTL12M_EN_Msk);
