@@ -31,9 +31,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="External\PPTooltip">
-      <UniqueIdentifier>{8bf539e9-6469-494a-b3d5-fb2507a6bc10}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -44,18 +41,6 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PPTooltip.h">
-      <Filter>External\PPTooltip</Filter>
-    </ClInclude>
-    <ClInclude Include="PPDrawManager.h">
-      <Filter>External\PPTooltip</Filter>
-    </ClInclude>
-    <ClInclude Include="PPHtmlDrawer.h">
-      <Filter>External\PPTooltip</Filter>
-    </ClInclude>
-    <ClInclude Include="CeXDib.h">
-      <Filter>External\PPTooltip</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -166,18 +151,6 @@
     </ClCompile>
     <ClCompile Include="About.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PPDrawManager.cpp">
-      <Filter>External\PPTooltip</Filter>
-    </ClCompile>
-    <ClCompile Include="PPHtmlDrawer.cpp">
-      <Filter>External\PPTooltip</Filter>
-    </ClCompile>
-    <ClCompile Include="PPTooltip.cpp">
-      <Filter>External\PPTooltip</Filter>
-    </ClCompile>
-    <ClCompile Include="CeXDib.cpp">
-      <Filter>External\PPTooltip</Filter>
     </ClCompile>
     <ClCompile Include="ISPLdCMD.cpp">
       <Filter>ISPTool\NuvoISP</Filter>

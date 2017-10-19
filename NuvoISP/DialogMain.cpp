@@ -728,14 +728,12 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
     if (Template == 0) {
         CMenu menu;
         menu.CreatePopupMenu();
-
         CMenu *subM051 = new CMenu;
         subM051->CreatePopupMenu();
         subM051->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M051, _T("M051AN"));
         subM051->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M051BN, _T("M051BN"));
         subM051->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M051CN, _T("M051DN/DE, M058SAN"));
         menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subM051->m_hMenu, _T("M051 Series"));
-
         POINT point;
         GetCursorPos(&point);
         menu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this);

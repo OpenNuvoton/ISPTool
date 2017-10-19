@@ -183,7 +183,6 @@ BOOL CNuvoISPDlg::OnInitDialog()
 
     pViewer[0]->ShowWindow(SW_SHOW);
     m_Progress.SetRange(0, 100);
-    m_tooltip.Create(this);
     EnableDlgItem(IDC_BUTTON_START, m_bConnect);
     InitComboBox();
     SetDlgItemText(IDC_EDIT_FLASH_BASE_ADDRESS, _T("100000"));
@@ -570,14 +569,6 @@ void CNuvoISPDlg::OnDropFiles(HDROP hDropInfo)
     CDialog::OnDropFiles(hDropInfo);
 }
 
-
-BOOL CNuvoISPDlg::PreTranslateMessage(MSG *pMsg)
-{
-    // TODO: Add your specialized code here and/or call the base class
-    m_tooltip.RelayEvent(pMsg);
-    return CDialogMain::PreTranslateMessage(pMsg);
-}
-
 void CNuvoISPDlg::OnButtonConfig()
 {
 #ifdef _DEBUG
@@ -670,14 +661,6 @@ void CNuvoISPDlg::ShowChipInfo()
         std::string cstr = os.str();
         std::wstring wcstr(cstr.begin(), cstr.end());
         CString str = wcstr.c_str();
-        CString tips;
-        tips.Format(_T("Information of target chip,\n\n%s"), str);
-        CRect rect;
-        GetDlgItem(IDC_STATIC_PARTNO)->GetWindowRect(rect);
-        m_tooltip.RemoveAllTools();
-        m_tooltip.AddTool(GetDlgItem(IDC_STATIC_PARTNO));
-        m_tooltip.UpdateTipText(tips, GetDlgItem(IDC_STATIC_PARTNO));
-        m_tooltip.ShowHelpTooltip(&rect.TopLeft(), tips);
         CString info;
         info.Format(_T("%s\nFW Ver: 0x%X"), wcstr.c_str(), int(m_ucFW_VER));
         SetDlgItemText(IDC_STATIC_PARTNO, info);
@@ -718,12 +701,6 @@ void CNuvoISPDlg::ShowChipInfo()
         CString str = wcstr.c_str();
         CString tips;
         tips.Format(_T("Information of target chip,\n\n%s"), str);
-        CRect rect;
-        GetDlgItem(IDC_STATIC_PARTNO)->GetWindowRect(rect);
-        m_tooltip.RemoveAllTools();
-        m_tooltip.AddTool(GetDlgItem(IDC_STATIC_PARTNO));
-        m_tooltip.UpdateTipText(tips, GetDlgItem(IDC_STATIC_PARTNO));
-        m_tooltip.ShowHelpTooltip(&rect.TopLeft(), tips);
         CString info;
         info.Format(_T("%s\nFW Ver: 0x%X"), wcstr.c_str(), int(m_ucFW_VER));
         SetDlgItemText(IDC_STATIC_PARTNO, info);
@@ -737,7 +714,7 @@ void CNuvoISPDlg::OnSysCommand(UINT nID, LPARAM lParam)
     if ((nID & 0xFFF0) == IDM_ABOUTBOX) {
         CString sTitle;
         GetWindowText(sTitle);
-        CAboutDlg dlgAbout(sTitle, _T("0720"));
+        CAboutDlg dlgAbout(sTitle, _T("0929"));
         dlgAbout.DoModal();
     } else {
         CDialog::OnSysCommand(nID, lParam);
@@ -819,8 +796,6 @@ LRESULT CNuvoISPDlg::OnDeviceChange(WPARAM  nEventType, LPARAM  dwData)
             //¡K
             if (pdbi->dbcc_devicetype == DBT_DEVTYP_DEVICEINTERFACE) {
                 if (DevPathName.CompareNoCase(m_ISPLdDev.m_strDevPathName) == 0) {
-                    m_tooltip.HideTooltip();
-                    m_tooltip.RemoveAllTools();
                     m_ISPLdDev.Close_Port();
                     Set_ThreadAction(&CISPProc::Thread_Idle);
                 }
@@ -838,7 +813,6 @@ LRESULT CNuvoISPDlg::OnDeviceChange(WPARAM  nEventType, LPARAM  dwData)
 void CNuvoISPDlg::InitUILayout()
 {
     m_ButtonConnect.SetWindowText(_T("Connect"));
-    m_tooltip.RemoveAllTools();
     SetDlgItemText(IDC_EDIT_PARTNO, _T(""));
     SetDlgItemText(IDC_STATIC_PARTNO, _T(""));
     SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, _T(""));

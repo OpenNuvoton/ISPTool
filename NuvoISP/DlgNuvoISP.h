@@ -8,22 +8,11 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-//#if (CMD_SECURITY)
-//#else
-//#endif // #if (CMD_SECURITY)
-
 #include "Resource.h"
 #include "DialogHex.h"
-//#include "..\DialogScrollable.h"
 #include "DialogMain.h"
 #include "ISPProc.h"
-
-//#include "..\PartNumID.h"
-
 #include "FlashInfo.h"	// Size & Addres of APROM, LDROM, SPROM
-#include "PPTooltip.h"
-
-#include "HyperLink.h"
 
 #define NUM_VIEW 2
 /////////////////////////////////////////////////////////////////////////////
@@ -41,7 +30,6 @@ public:
     CTabCtrl	m_TabData;
     CDialogHex *pViewer[NUM_VIEW];
     CProgressCtrl	m_Progress;
-    CPPToolTip m_tooltip;
 
     WINCTRLID m_CtrlID[NUM_VIEW];
     // virtual BOOL PreCreateWindow(CREATESTRUCT& cs)
@@ -51,7 +39,6 @@ public:
     CButton	m_ButtonConnect;
     void OnButtonBinFile(int idx, TCHAR *szPath = NULL);
     CString	m_sStatus;
-    virtual BOOL PreTranslateMessage(MSG *pMsg);
 
     void EnableProgramOption(BOOL bEnable);
 
