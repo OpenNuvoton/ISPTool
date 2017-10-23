@@ -34,7 +34,6 @@ CDialogConfiguration_M451::CDialogConfiguration_M451(unsigned int uProgramMemory
     m_sConfigValue1 = _T("");
     m_bCheckBrownOutDetect = FALSE;
     m_bCheckBrownOutReset = FALSE;
-    m_bCheckBootLoader = FALSE;
     m_bDataFlashEnable = FALSE;
     m_bSecurityLock = FALSE;
     m_bWDTEnable = FALSE;
@@ -60,7 +59,6 @@ void CDialogConfiguration_M451::DoDataExchange(CDataExchange *pDX)
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_1, m_sConfigValue1);
     DDX_Check(pDX, IDC_CHECK_BROWN_OUT_DETECT, m_bCheckBrownOutDetect);
     DDX_Check(pDX, IDC_CHECK_BROWN_OUT_RESET, m_bCheckBrownOutReset);
-    DDX_Check(pDX, IDC_CHECK_BOOT_LOADER, m_bCheckBootLoader);
     DDX_Check(pDX, IDC_CHECK_DATA_FLASH_ENABLE, m_bDataFlashEnable);
     DDX_Check(pDX, IDC_CHECK_SECURITY_LOCK, m_bSecurityLock);
     DDX_Check(pDX, IDC_CHECK_WDT_ENABLE, m_bWDTEnable);
@@ -85,7 +83,6 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_M451, CDialog)
     ON_BN_CLICKED(IDC_RADIO_CLK_I22M, OnRadioClk)
     ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnRadioBs)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_BOOT_LOADER, OnCheckClick)
     ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnCheckClick)
     ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnCheckClick)
     ON_BN_CLICKED(IDC_CHECK_WATCHDOG_ENABLE, OnCheckClick)
@@ -195,7 +192,6 @@ void CDialogConfiguration_M451::ConfigToGUI(int nEventID)
 
     m_bCheckBrownOutDetect = ((uConfig0 & M451_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
     m_bCheckBrownOutReset = ((uConfig0 & M451_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
-    m_bCheckBootLoader = ((uConfig0 & M451_FLASH_CONFIG_CBS_MK) == 0 ? TRUE : FALSE);
     m_bDataFlashEnable = ((uConfig0 & M451_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
     m_bSecurityLock = ((uConfig0 & M451_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
     unsigned int uFlashBaseAddress = uConfig1;
@@ -330,12 +326,6 @@ void CDialogConfiguration_M451::GUIToConfig(int nEventID)
         uConfig0 &= ~M451_FLASH_CONFIG_CBORST;
     } else {
         uConfig0 |= M451_FLASH_CONFIG_CBORST;
-    }
-
-    if (m_bCheckBootLoader) {
-        uConfig0 &= ~M451_FLASH_CONFIG_CBS_MK;
-    } else {
-        uConfig0 |= M451_FLASH_CONFIG_CBS_MK;
     }
 
     if (m_bDataFlashEnable) {

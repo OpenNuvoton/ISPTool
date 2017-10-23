@@ -42,6 +42,15 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DataBase\ChipDefs.h">
+      <Filter>External\DataBase</Filter>
+    </ClInclude>
+    <ClInclude Include="DataBase\FlashInfo.h">
+      <Filter>External\DataBase</Filter>
+    </ClInclude>
+    <ClInclude Include="DataBase\PartNumID.h">
+      <Filter>External\DataBase</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

@@ -36,7 +36,6 @@ public:
     CString	m_sDataFlashSize;
     BOOL	m_bCheckBrownOutDetect;
     BOOL	m_bCheckBrownOutReset;
-    BOOL	m_bCheckBootLoader;
     BOOL	m_bDataFlashEnable;
     BOOL	m_bSecurityLock;
     BOOL	m_bWDTEnable;

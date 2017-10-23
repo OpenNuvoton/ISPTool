@@ -43,6 +43,7 @@ public:
     BOOL	m_bSecurityLock;
     BOOL	m_bWDTEnable;
     BOOL	m_bWDTPowerDown;
+    int		m_nRadioGPF;
     CSpinButtonCtrl	m_SpinDataFlashSize;
 
     unsigned int	m_uProgramMemorySize;
@@ -76,6 +77,7 @@ protected:
     afx_msg void OnCheckClickDFVSEN();
     afx_msg void OnCheckClickDFEN();
     afx_msg void OnChangeEditFlashBaseAddress();
+    afx_msg void OnRadioGpf();
     virtual void OnOK();
     afx_msg void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);

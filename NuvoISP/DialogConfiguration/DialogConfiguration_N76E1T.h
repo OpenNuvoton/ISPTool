@@ -29,7 +29,7 @@ class CDialogConfiguration_N76E1T : public CDialogResize
 {
 // Construction
 public:
-    CDialogConfiguration_N76E1T(unsigned int uProgramMemorySize = 18 * 1024,
+    CDialogConfiguration_N76E1T(unsigned int uDID = 0x3650,
                                 CWnd *pParent = NULL);
 
 
@@ -59,6 +59,7 @@ public:
     BOOL	m_bCheckBrownOutReset;
 
     unsigned int	m_uDID;
+    unsigned int	m_uLevel;
     //}}AFX_DATA
 
 // Overrides

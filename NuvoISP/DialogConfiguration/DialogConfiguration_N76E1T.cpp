@@ -18,42 +18,43 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 /* CONFIG 0 */
-#define N76E1T_CONFIG_LOCK		0x02
-#define N76E1T_CONFIG_RPD		0x04
-#define N76E1T_CONFIG_OCDEN		0x10
-#define N76E1T_CONFIG_OCDPWM	0x20
-#define N76E1T_CONFIG_CBS		0x80
+#define N76E1T_CONFIG_LOCK			0x02
+#define N76E1T_CONFIG_RPD			0x04
+#define N76E1T_CONFIG_OCDEN			0x10
+#define N76E1T_CONFIG_OCDPWM		0x20
+#define N76E1T_CONFIG_CBS			0x80
 
 /* CONFIG 1 */
-#define N76E1T_CONFIG_LDSIZE	0x07
-#define N76E1T_CONFIG_LDSIZE_0K	0x07
-#define N76E1T_CONFIG_LDSIZE_1K	0x06
-#define N76E1T_CONFIG_LDSIZE_2K	0x05
-#define N76E1T_CONFIG_LDSIZE_3K	0x04
-#define N76E1T_CONFIG_LDSIZE_4K	0x03
+#define N76E1T_CONFIG_LDSIZE		0x07
+#define N76E1T_CONFIG_LDSIZE_0K		0x07
+#define N76E1T_CONFIG_LDSIZE_1K		0x06
+#define N76E1T_CONFIG_LDSIZE_2K		0x05
+#define N76E1T_CONFIG_LDSIZE_3K		0x04
+#define N76E1T_CONFIG_LDSIZE_4K		0x03
 
 /* CONFIG 2 */
-#define N76E1T_CONFIG_CBORST	0x04
-#define N76E1T_CONFIG_BOIAP		0x08
-#define N76E1T_CONFIG_CBOV		0x70
-#define N76E1T_CONFIG_CBOV_7	0x70
-#define N76E1T_CONFIG_CBOV_6	0x60
-#define N76E1T_CONFIG_CBOV_5	0x50
-#define N76E1T_CONFIG_CBOV_4	0x40
-#define N76E1T_CONFIG_CBOV_3	0x30
-#define N76E1T_CONFIG_CBOV_2	0x20
-#define N76E1T_CONFIG_CBOV_1	0x10
-#define N76E1T_CONFIG_CBOV_0	0x00
-#define N76E1T_CONFIG_CBODEN	0x80
+#define N76E1T_CONFIG_CBORST		0x04
+#define N76E1T_CONFIG_BOIAP			0x08
+#define N76E1T_CONFIG_CBOV_8_LEVEL	0x70
+#define N76E1T_CONFIG_CBOV_4_LEVEL	0x30
+#define N76E1T_CONFIG_CBOV_7		0x70
+#define N76E1T_CONFIG_CBOV_6		0x60
+#define N76E1T_CONFIG_CBOV_5		0x50
+#define N76E1T_CONFIG_CBOV_4		0x40
+#define N76E1T_CONFIG_CBOV_3		0x30
+#define N76E1T_CONFIG_CBOV_2		0x20
+#define N76E1T_CONFIG_CBOV_1		0x10
+#define N76E1T_CONFIG_CBOV_0		0x00
+#define N76E1T_CONFIG_CBODEN		0x80
 
 /* CONFIG 3 */
 //XTGS[1:0]
 
 /* CONFIG 4 */
-#define N76E1T_CONFIG_WDT		0xF0
-#define N76E1T_CONFIG_WDT_DIS	0xF0
-#define N76E1T_CONFIG_WDT_STOP	0x50
-#define N76E1T_CONFIG_WDT_RUN	0x70
+#define N76E1T_CONFIG_WDT			0xF0
+#define N76E1T_CONFIG_WDT_DIS		0xF0
+#define N76E1T_CONFIG_WDT_STOP		0x50
+#define N76E1T_CONFIG_WDT_RUN		0x70
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -94,7 +95,7 @@ void CDialogConfiguration_N76E1T::DoDataExchange(CDataExchange *pDX)
     DDX_Radio(pDX, IDC_RADIO_OCDPWM_TRI, m_nRadio_OCDPWM);
     DDX_Radio(pDX, IDC_RADIO_BS_APROM, m_nRadio_CBS);
     DDX_Radio(pDX, IDC_RADIO_LDSIZE_0K, m_nRadio_LDSIZE);
-    DDX_Radio(pDX, IDC_RADIO_BOV_17, m_nRadio_CBOV);
+    DDX_Radio(pDX, IDC_RADIO_BOV_7, m_nRadio_CBOV);
     DDX_Radio(pDX, IDC_RADIO_WDT_DISABLE, m_nRadio_WDTEN);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_0, m_sConfigValue0);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_1, m_sConfigValue1);
@@ -126,14 +127,14 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_N76E1T, CDialog)
     ON_BN_CLICKED(IDC_RADIO_LDSIZE_3K, OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_LDSIZE_4K, OnRadioClick)
 
-    ON_BN_CLICKED(IDC_RADIO_BOV_17, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_20, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_22, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_24, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_27, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_30, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_37, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_43, OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_7, OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_6, OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_5, OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_4, OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_3, OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_2, OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_1, OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_0, OnRadioClick)
 
     ON_BN_CLICKED(IDC_RADIO_WDT_DISABLE, OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_WDT_ENABLE_STOP, OnRadioClick)
@@ -164,53 +165,107 @@ BOOL CDialogConfiguration_N76E1T::OnInitDialog()
     //pAccel[0].nInc = 1;
     //pAccel[0].nSec = 0;
     //m_SpinDataFlashSize.SetAccel(1, pAccel);
-    unsigned int uDID = m_uDID & 0xFF00;
+    unsigned int uSID = m_uDID & 0xFF00;
 
-    switch (uDID) {
-        case 0x2100:
+    switch (uSID) {
+        case 0x2100: {
+            m_uLevel = N76E1T_CONFIG_CBOV_8_LEVEL;
             GetDlgItem(IDC_GROUP_RPD)->SetWindowText(_T("P1.2/RST Pin Function"));
             GetDlgItem(IDC_RADIO_RPD_RESET)->SetWindowText(_T("P1.2 as the external reset pin"));
-            GetDlgItem(IDC_RADIO_RPD_INPUT)->SetWindowText(_T("IDS_RPD_P12_INPUT"));
+            GetDlgItem(IDC_RADIO_RPD_INPUT)->SetWindowText(_T("P1.2 as the input-only pin"));
+            GetDlgItem(IDC_RADIO_BOV_7)->SetWindowText(_T("1.7V"));
+            GetDlgItem(IDC_RADIO_BOV_6)->SetWindowText(_T("2.0V"));
+            GetDlgItem(IDC_RADIO_BOV_5)->SetWindowText(_T("2.2V"));
+            GetDlgItem(IDC_RADIO_BOV_4)->SetWindowText(_T("2.4V"));
+            GetDlgItem(IDC_RADIO_BOV_3)->SetWindowText(_T("2.7V"));
+            GetDlgItem(IDC_RADIO_BOV_2)->SetWindowText(_T("3.0V"));
+            GetDlgItem(IDC_RADIO_BOV_1)->SetWindowText(_T("3.7V"));
+            GetDlgItem(IDC_RADIO_BOV_0)->SetWindowText(_T("4.3V"));
             break;
+        }
 
-        case 0x2F00:
+        case 0x2F00: {
+            m_uLevel = N76E1T_CONFIG_CBOV_4_LEVEL;
             GetDlgItem(IDC_GROUP_RPD)->SetWindowText(_T("P3.6/RST Pin Function"));
             GetDlgItem(IDC_RADIO_RPD_RESET)->SetWindowText(_T("P3.6 as the external reset pin"));
             GetDlgItem(IDC_RADIO_RPD_INPUT)->SetWindowText(_T("P3.6 as the input-only pin"));
+            GetDlgItem(IDC_GROUP_OCDPWM)->EnableWindow(FALSE);
+            GetDlgItem(IDC_RADIO_OCDPWM_TRI)->EnableWindow(FALSE);
+            GetDlgItem(IDC_RADIO_OCDPWM_CONTI)->EnableWindow(FALSE);
+            GetDlgItem(IDC_GROUP_OCDPWM)->SetWindowText(_T("None"));
+            GetDlgItem(IDC_RADIO_OCDPWM_TRI)->SetWindowText(_T("None"));
+            GetDlgItem(IDC_RADIO_OCDPWM_CONTI)->SetWindowText(_T("None"));
+            GetDlgItem(IDC_RADIO_BOV_7)->SetWindowText(_T("2.2V"));
+            GetDlgItem(IDC_RADIO_BOV_6)->SetWindowText(_T("2.7V"));
+            GetDlgItem(IDC_RADIO_BOV_5)->SetWindowText(_T("3.8V"));
+            GetDlgItem(IDC_RADIO_BOV_4)->SetWindowText(_T("4.3V"));
+            GetDlgItem(IDC_RADIO_BOV_3)->ShowWindow(SW_HIDE);
+            GetDlgItem(IDC_RADIO_BOV_2)->ShowWindow(SW_HIDE);
+            GetDlgItem(IDC_RADIO_BOV_1)->ShowWindow(SW_HIDE);
+            GetDlgItem(IDC_RADIO_BOV_0)->ShowWindow(SW_HIDE);
             break;
+        }
 
-        case 0x3600:
+        case 0x3600: {
+            m_uLevel = N76E1T_CONFIG_CBOV_4_LEVEL;
             GetDlgItem(IDC_GROUP_RPD)->SetWindowText(_T("P2.0/RST Pin Function"));
             GetDlgItem(IDC_RADIO_RPD_RESET)->SetWindowText(_T("P2.0 as the external reset pin"));
             GetDlgItem(IDC_RADIO_RPD_INPUT)->SetWindowText(_T("P2.0 as the input-only pin"));
+            GetDlgItem(IDC_RADIO_BOV_7)->SetWindowText(_T("2.2V"));
+            GetDlgItem(IDC_RADIO_BOV_6)->SetWindowText(_T("2.7V"));
+            GetDlgItem(IDC_RADIO_BOV_5)->SetWindowText(_T("3.7V"));
+            GetDlgItem(IDC_RADIO_BOV_4)->SetWindowText(_T("4.4V"));
+            GetDlgItem(IDC_RADIO_BOV_3)->ShowWindow(SW_HIDE);
+            GetDlgItem(IDC_RADIO_BOV_2)->ShowWindow(SW_HIDE);
+            GetDlgItem(IDC_RADIO_BOV_1)->ShowWindow(SW_HIDE);
+            GetDlgItem(IDC_RADIO_BOV_0)->ShowWindow(SW_HIDE);
             break;
+        }
+
+        case 0x3E00: {
+            m_uLevel = N76E1T_CONFIG_CBOV_8_LEVEL;
+            GetDlgItem(IDC_GROUP_RPD)->SetWindowText(_T("P2.1/RST Pin Function"));
+            GetDlgItem(IDC_RADIO_RPD_RESET)->SetWindowText(_T("P2.1 as the external reset pin"));
+            GetDlgItem(IDC_RADIO_RPD_INPUT)->SetWindowText(_T("P2.1 as the input-only pin"));
+            GetDlgItem(IDC_RADIO_BOV_7)->SetWindowText(_T("1.8V"));
+            GetDlgItem(IDC_RADIO_BOV_6)->SetWindowText(_T("1.8V"));
+            GetDlgItem(IDC_RADIO_BOV_5)->SetWindowText(_T("2.0V"));
+            GetDlgItem(IDC_RADIO_BOV_4)->SetWindowText(_T("2.4V"));
+            GetDlgItem(IDC_RADIO_BOV_3)->SetWindowText(_T("2.7V"));
+            GetDlgItem(IDC_RADIO_BOV_2)->SetWindowText(_T("3.0V"));
+            GetDlgItem(IDC_RADIO_BOV_1)->SetWindowText(_T("3.7V"));
+            GetDlgItem(IDC_RADIO_BOV_0)->SetWindowText(_T("4.4V"));
+            break;
+        }
     }
 
-    if (uDID != 0x2100) {
-        GetDlgItem(IDC_RADIO_BOV_17)->SetWindowText(_T("2.2V"));
-        GetDlgItem(IDC_RADIO_BOV_20)->SetWindowText(_T("2.7V"));
-        GetDlgItem(IDC_RADIO_BOV_22)->SetWindowText(_T("3.8V"));
-        GetDlgItem(IDC_RADIO_BOV_24)->SetWindowText(_T("4.3V"));
-        GetDlgItem(IDC_RADIO_BOV_27)->ShowWindow(SW_HIDE);
-        GetDlgItem(IDC_RADIO_BOV_30)->ShowWindow(SW_HIDE);
-        GetDlgItem(IDC_RADIO_BOV_37)->ShowWindow(SW_HIDE);
-        GetDlgItem(IDC_RADIO_BOV_43)->ShowWindow(SW_HIDE);
-    }
+    switch ((m_uDID >> 4) & 0x0F) {
+        case 4: {
+            GetDlgItem(IDC_RADIO_LDSIZE_0K)->SetWindowText(_T("No LDROM, DataFlash = 10KB."));
+            GetDlgItem(IDC_RADIO_LDSIZE_1K)->SetWindowText(_T("LDROM = 1KB, DataFlash = 9KB."));
+            GetDlgItem(IDC_RADIO_LDSIZE_2K)->SetWindowText(_T("LDROM = 2KB, DataFlash = 8KB."));
+            GetDlgItem(IDC_RADIO_LDSIZE_3K)->SetWindowText(_T("LDROM = 3KB, DataFlash = 7KB."));
+            GetDlgItem(IDC_RADIO_LDSIZE_4K)->SetWindowText(_T("LDROM = 4KB, DataFlash = 6KB."));
+            break;
+        }
 
-    if (uDID == 0x2F00) {
-        GetDlgItem(IDC_RADIO_OCDPWM_TRI)->EnableWindow(FALSE);
-        GetDlgItem(IDC_RADIO_OCDPWM_CONTI)->EnableWindow(FALSE);
-        GetDlgItem(IDC_GROUP_OCDPWM)->SetWindowText(_T("None"));
-        GetDlgItem(IDC_RADIO_OCDPWM_TRI)->SetWindowText(_T("None"));
-        GetDlgItem(IDC_RADIO_OCDPWM_CONTI)->SetWindowText(_T("None"));
-    }
+        case 5: {
+            GetDlgItem(IDC_RADIO_LDSIZE_0K)->SetWindowText(_T("No LDROM, APROM = 18KB."));
+            GetDlgItem(IDC_RADIO_LDSIZE_1K)->SetWindowText(_T("LDROM = 1KB, APROM = 17KB."));
+            GetDlgItem(IDC_RADIO_LDSIZE_2K)->SetWindowText(_T("LDROM = 2KB, APROM = 16KB."));
+            GetDlgItem(IDC_RADIO_LDSIZE_3K)->SetWindowText(_T("LDROM = 3KB, APROM = 15KB."));
+            GetDlgItem(IDC_RADIO_LDSIZE_4K)->SetWindowText(_T("LDROM = 4KB, APROM = 14KB."));
+            break;
+        }
 
-    if ((m_uDID & 0xFF) == 0x40) {
-        GetDlgItem(IDC_RADIO_LDSIZE_0K)->SetWindowText(_T("No LDROM, DataFlash = 10KB."));
-        GetDlgItem(IDC_RADIO_LDSIZE_1K)->SetWindowText(_T("LDROM = 1KB, DataFlash = 9KB."));
-        GetDlgItem(IDC_RADIO_LDSIZE_2K)->SetWindowText(_T("LDROM = 2KB, DataFlash = 8KB."));
-        GetDlgItem(IDC_RADIO_LDSIZE_3K)->SetWindowText(_T("LDROM = 3KB, DataFlash = 7KB."));
-        GetDlgItem(IDC_RADIO_LDSIZE_4K)->SetWindowText(_T("LDROM = 4KB, DataFlash = 6KB."));
+        case 6: {
+            GetDlgItem(IDC_RADIO_LDSIZE_0K)->SetWindowText(_T("No LDROM, APROM = 32KB."));
+            GetDlgItem(IDC_RADIO_LDSIZE_1K)->SetWindowText(_T("LDROM = 1KB, APROM = 31KB."));
+            GetDlgItem(IDC_RADIO_LDSIZE_2K)->SetWindowText(_T("LDROM = 2KB, APROM = 30KB."));
+            GetDlgItem(IDC_RADIO_LDSIZE_3K)->SetWindowText(_T("LDROM = 3KB, APROM = 29KB."));
+            GetDlgItem(IDC_RADIO_LDSIZE_4K)->SetWindowText(_T("LDROM = 4KB, APROM = 28KB."));
+            break;
+        }
     }
 
     ConfigToGUI();
@@ -257,45 +312,61 @@ void CDialogConfiguration_N76E1T::ConfigToGUI()
             break;
     }
 
-    if ((m_uDID & 0xFF00) != 0x2100) {
-        ucConfig2 |= 0x40;
-    }
-
     m_bCheckBrownOutReset = ((ucConfig2 & N76E1T_CONFIG_CBORST) != 0 ? TRUE : FALSE);
     m_bCheckBrownOutIAP = ((ucConfig2 & N76E1T_CONFIG_BOIAP) != 0 ? TRUE : FALSE);
 
-    switch (ucConfig2 & N76E1T_CONFIG_CBOV) {
-        case N76E1T_CONFIG_CBOV_7:
-            m_nRadio_CBOV = 0;
-            break;
+    if (m_uLevel == N76E1T_CONFIG_CBOV_8_LEVEL) {
+        switch (ucConfig2 & N76E1T_CONFIG_CBOV_8_LEVEL) {
+            case N76E1T_CONFIG_CBOV_7:
+                m_nRadio_CBOV = 0;
+                break;
 
-        case N76E1T_CONFIG_CBOV_6:
-            m_nRadio_CBOV = 1;
-            break;
+            case N76E1T_CONFIG_CBOV_6:
+                m_nRadio_CBOV = 1;
+                break;
 
-        case N76E1T_CONFIG_CBOV_5:
-            m_nRadio_CBOV = 2;
-            break;
+            case N76E1T_CONFIG_CBOV_5:
+                m_nRadio_CBOV = 2;
+                break;
 
-        case N76E1T_CONFIG_CBOV_4:
-            m_nRadio_CBOV = 3;
-            break;
+            case N76E1T_CONFIG_CBOV_4:
+                m_nRadio_CBOV = 3;
+                break;
 
-        case N76E1T_CONFIG_CBOV_3:
-            m_nRadio_CBOV = 4;
-            break;
+            case N76E1T_CONFIG_CBOV_3:
+                m_nRadio_CBOV = 4;
+                break;
 
-        case N76E1T_CONFIG_CBOV_2:
-            m_nRadio_CBOV = 5;
-            break;
+            case N76E1T_CONFIG_CBOV_2:
+                m_nRadio_CBOV = 5;
+                break;
 
-        case N76E1T_CONFIG_CBOV_1:
-            m_nRadio_CBOV = 6;
-            break;
+            case N76E1T_CONFIG_CBOV_1:
+                m_nRadio_CBOV = 6;
+                break;
 
-        default:
-            m_nRadio_CBOV = 7;
-            break;
+            default:
+                m_nRadio_CBOV = 7;
+                break;
+        }
+    } else {
+        switch (ucConfig2 & N76E1T_CONFIG_CBOV_4_LEVEL) {
+            case N76E1T_CONFIG_CBOV_3:
+                m_nRadio_CBOV = 0;
+                break;
+
+            case N76E1T_CONFIG_CBOV_2:
+                m_nRadio_CBOV = 1;
+                break;
+
+            case N76E1T_CONFIG_CBOV_1:
+                m_nRadio_CBOV = 2;
+                break;
+
+            default:
+                m_nRadio_CBOV = 3;
+                break;
+        }
     }
 
     m_bCheckBrownOutEnable = ((ucConfig2 & N76E1T_CONFIG_CBODEN) != 0 ? TRUE : FALSE);
@@ -376,41 +447,63 @@ void CDialogConfiguration_N76E1T::GUIToConfig()
     ucConfig1 |= 0xF8;
 
     /* CONFIG 2 */
-    switch (m_nRadio_CBOV) {
-        case 0:
-            ucConfig2 = N76E1T_CONFIG_CBOV_7;
-            break;
+    if (m_uLevel == N76E1T_CONFIG_CBOV_8_LEVEL) {
+        switch (m_nRadio_CBOV) {
+            case 0:
+                ucConfig2 = N76E1T_CONFIG_CBOV_7;
+                break;
 
-        case 1:
-            ucConfig2 = N76E1T_CONFIG_CBOV_6;
-            break;
+            case 1:
+                ucConfig2 = N76E1T_CONFIG_CBOV_6;
+                break;
 
-        case 2:
-            ucConfig2 = N76E1T_CONFIG_CBOV_5;
-            break;
+            case 2:
+                ucConfig2 = N76E1T_CONFIG_CBOV_5;
+                break;
 
-        case 3:
-            ucConfig2 = N76E1T_CONFIG_CBOV_4;
-            break;
+            case 3:
+                ucConfig2 = N76E1T_CONFIG_CBOV_4;
+                break;
 
-        case 4:
-            ucConfig2 = N76E1T_CONFIG_CBOV_3;
-            break;
+            case 4:
+                ucConfig2 = N76E1T_CONFIG_CBOV_3;
+                break;
 
-        case 5:
-            ucConfig2 = N76E1T_CONFIG_CBOV_2;
-            break;
+            case 5:
+                ucConfig2 = N76E1T_CONFIG_CBOV_2;
+                break;
 
-        case 6:
-            ucConfig2 = N76E1T_CONFIG_CBOV_1;
-            break;
+            case 6:
+                ucConfig2 = N76E1T_CONFIG_CBOV_1;
+                break;
 
-        default:
-            ucConfig2 = N76E1T_CONFIG_CBOV_0;
-            break;
+            default:
+                ucConfig2 = N76E1T_CONFIG_CBOV_0;
+                break;
+        }
+
+        ucConfig2 |= 0x8F;
+    } else {
+        switch (m_nRadio_CBOV) {
+            case 0:
+                ucConfig2 = N76E1T_CONFIG_CBOV_3;
+                break;
+
+            case 1:
+                ucConfig2 = N76E1T_CONFIG_CBOV_2;
+                break;
+
+            case 2:
+                ucConfig2 = N76E1T_CONFIG_CBOV_1;
+                break;
+
+            default:
+                ucConfig2 = N76E1T_CONFIG_CBOV_0;
+                break;
+        }
+
+        ucConfig2 |= 0xCF;
     }
-
-    ucConfig2 |= 0x8F;
 
     if (!m_bCheckBrownOutReset) {
         ucConfig2 &= ~N76E1T_CONFIG_CBORST;

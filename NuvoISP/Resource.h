@@ -614,6 +614,14 @@
 #define IDC_RADIO_PA8_IOINI             1423
 #define IDC_RADIO_PA8_LOW               1424
 #define IDC_CHECK_BOOT_LOADER           1425
+#define IDC_RADIO_BOV_0                 1470
+#define IDC_RADIO_BOV_1                 1471
+#define IDC_RADIO_BOV_2                 1472
+#define IDC_RADIO_BOV_3                 1473
+#define IDC_RADIO_BOV_4                 1474
+#define IDC_RADIO_BOV_5                 1475
+#define IDC_RADIO_BOV_6                 1476
+#define IDC_RADIO_BOV_7                 1477
 #define IDD_DIALOG_CONFIGURATION_NUC400 5084
 #define IDD_DIALOG_CONFIGURATION_MINI51CN 5085
 #define IDD_DIALOG_CONFIGURATION_NUC103BN 5086
@@ -652,9 +660,9 @@
 //
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        556
-#define _APS_NEXT_COMMAND_VALUE         32840
-#define _APS_NEXT_CONTROL_VALUE         1426
+#define _APS_NEXT_RESOURCE_VALUE        567
+#define _APS_NEXT_COMMAND_VALUE         32843
+#define _APS_NEXT_CONTROL_VALUE         1478
 #define _APS_NEXT_SYMED_VALUE           299
 #endif
 #endif

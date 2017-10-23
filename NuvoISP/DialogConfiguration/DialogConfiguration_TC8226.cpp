@@ -17,7 +17,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#define page_size TC8226_FLASH_PAGE_SIZE
+#define page_size NUMICRO_FLASH_PAGE_SIZE_4K
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_TC8226 dialog
@@ -159,6 +159,7 @@ void CDialogConfiguration_TC8226::ConfigToGUI(int nEventID)
     unsigned int uConfig1 = m_ConfigValue.m_value[1];
     unsigned int uConfig2 = m_ConfigValue.m_value[2];
     unsigned int uConfig3 = m_ConfigValue.m_value[3];
+    unsigned int uFlashBaseAddress = uConfig1;
 
     switch (uConfig0 & TC8226_FLASH_CONFIG_CBOV) {
         case TC8226_FLASH_CONFIG_CBOV_30:
@@ -236,13 +237,16 @@ void CDialogConfiguration_TC8226::ConfigToGUI(int nEventID)
     m_bSecurityLock = ((uConfig0 & TC8226_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
     m_bICELock = ((uConfig0 & TC8226_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
     m_bSpromLockCacheable = ((uConfig0 & TC8226_FLASH_CONFIG_SPLCAEN) == 0 ? FALSE : TRUE);
-    unsigned int uFlashBaseAddress = uConfig1;
+
+    if (m_bDataFlashEnable) {
+        uFlashBaseAddress = ((uFlashBaseAddress >= page_size) && (uFlashBaseAddress < m_uProgramMemorySize)) ? uFlashBaseAddress : (m_uProgramMemorySize - page_size);
+        uFlashBaseAddress = (uFlashBaseAddress & TC8226_FLASH_CONFIG_DFBA) / page_size * page_size;
+        uConfig1 = uFlashBaseAddress;
+    }
+
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
-    unsigned int uPageNum = uFlashBaseAddress / page_size;
-    unsigned int uLimitNum = m_uProgramMemorySize / page_size;
-    unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * page_size) : 0;
-    m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uDataFlashSize : 0) / 1024.);
-    m_SpinDataFlashSize.EnableWindow(m_bDataFlashEnable ? TRUE : FALSE);
+    m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable && (uFlashBaseAddress < m_uProgramMemorySize)) ? ((m_uProgramMemorySize - uFlashBaseAddress) / 1024.) : 0.);
+    m_SpinDataFlashSize.EnableWindow(m_bDataFlashEnable);
     m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
     m_sConfigValue1.Format(_T("0x%08X"), uConfig1);
     m_bSecurityBootLock = ((uConfig2 & TC8226_FLASH_CONFIG_SBLOCK) == 0x5A5A ? FALSE : TRUE);
@@ -599,11 +603,18 @@ void CDialogConfiguration_TC8226::OnChangeEditFlashBaseAddress()
     UpdateData(TRUE);
     TCHAR *pEnd;
     unsigned int uFlashBaseAddress = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
+
+    if (m_bDataFlashEnable) {
+        if (!((uFlashBaseAddress >= page_size) && (uFlashBaseAddress < m_uProgramMemorySize))) {
+            uFlashBaseAddress = m_uProgramMemorySize - page_size;
+        }
+
+        uFlashBaseAddress &= ~(page_size - 1);
+        m_sDataFlashSize.Format(_T("%.2fK"), (uFlashBaseAddress < m_uProgramMemorySize) ? ((m_uProgramMemorySize - uFlashBaseAddress) / 1024.) : 0.);
+    }
+
+    m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
     m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);
-    unsigned int uPageNum = uFlashBaseAddress / page_size;
-    unsigned int uLimitNum = m_uProgramMemorySize / page_size;
-    unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * page_size) : 0;
-    m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uDataFlashSize : 0) / 1024.);
     UpdateData(FALSE);
 }
 
@@ -625,20 +636,21 @@ void CDialogConfiguration_TC8226::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRE
     UpdateData(TRUE);
     TCHAR *pEnd;
     unsigned int uFlashBaseAddress = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
-    unsigned int uPageNum = uFlashBaseAddress / page_size; //APROM
-    unsigned int uLimitNum = m_uProgramMemorySize / page_size;
 
     if (pNMUpDown->iDelta == 1) {
-        uPageNum += 1;
-    } else if (pNMUpDown->iDelta == -1 && uPageNum > 0) {
-        uPageNum -= 1;
+        if ((uFlashBaseAddress + page_size) < m_uProgramMemorySize) {
+            uFlashBaseAddress += page_size;
+        }
+    } else if (pNMUpDown->iDelta == -1) {
+        if (!(uFlashBaseAddress <= page_size)) {
+            uFlashBaseAddress -= page_size;
+        }
     }
 
-    uFlashBaseAddress = 0 + min(uPageNum, uLimitNum) * page_size;
+    uFlashBaseAddress = (uFlashBaseAddress & TC8226_FLASH_CONFIG_DFBA) / page_size * page_size;
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
+    m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable && (uFlashBaseAddress < m_uProgramMemorySize)) ? ((m_uProgramMemorySize - uFlashBaseAddress) / 1024.) : 0.);
     m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);
-    unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * page_size) : 0;
-    m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uDataFlashSize : 0) / 1024.);
     UpdateData(FALSE);
     *pResult = 0;
 }

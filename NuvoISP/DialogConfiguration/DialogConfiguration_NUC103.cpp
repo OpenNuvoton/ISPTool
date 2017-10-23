@@ -42,6 +42,7 @@ CDialogConfiguration_NUC103::CDialogConfiguration_NUC103(unsigned int uProgramMe
     m_bSecurityLock = FALSE;
     m_bWDTEnable = FALSE;
     m_bWDTPowerDown = FALSE;
+    m_nRadioGPF = -1;
     m_sFlashBaseAddress = _T("");
     //}}AFX_DATA_INIT
 }
@@ -68,6 +69,7 @@ void CDialogConfiguration_NUC103::DoDataExchange(CDataExchange *pDX)
     DDX_Check(pDX, IDC_CHECK_WDT_ENABLE, m_bWDTEnable);
     DDX_Check(pDX, IDC_CHECK_WDT_POWER_DOWN, m_bWDTPowerDown);
     DDX_Text(pDX, IDC_EDIT_FLASH_BASE_ADDRESS, m_sFlashBaseAddress);
+    DDX_Radio(pDX, IDC_RADIO_GPF_GPIO, m_nRadioGPF);
     DDX_Text(pDX, IDC_EDIT_DATA_FLASH_SIZE, m_sDataFlashSize);
     //}}AFX_DATA_MAP
 }
@@ -94,6 +96,8 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_NUC103, CDialog)
     ON_BN_CLICKED(IDC_CHECK_WATCHDOG_ENABLE, OnCheckClick)
     ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnRadioBs)
     ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM, OnRadioBs)
+    ON_BN_CLICKED(IDC_RADIO_GPF_GPIO, OnRadioGpf)
+    ON_BN_CLICKED(IDC_RADIO_GPF_CRYSTAL, OnRadioGpf)
     ON_WM_SIZE()
     ON_WM_VSCROLL()
     ON_WM_HSCROLL()
@@ -187,6 +191,7 @@ void CDialogConfiguration_NUC103::ConfigToGUI(int nEventID)
         m_bWDTPowerDown = FALSE;
     }
 
+    m_nRadioGPF = ((uConfig0 & NUC1XX_FLASH_CONFIG_CGPFMFP) == 0 ? 0 : 1);
     m_bCheckBrownOutDetect = ((uConfig0 & NUC1XX_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
     m_bCheckBrownOutReset = ((uConfig0 & NUC1XX_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
     m_bClockFilterEnable = ((uConfig0 & NUC1XX_FLASH_CONFIG_CKF) == NUC1XX_FLASH_CONFIG_CKF ? TRUE : FALSE);
@@ -341,6 +346,11 @@ void CDialogConfiguration_NUC103::GUIToConfig(int nEventID)
     //	if(!m_bDataFlashEnable)
     //		uConfig0 |= NUC1XX_FLASH_CONFIG_DFVSEN;
     //}
+    if (m_nRadioGPF == 0) {
+        uConfig0 &= ~NUC1XX_FLASH_CONFIG_CGPFMFP;
+    } else {
+        uConfig0 |= NUC1XX_FLASH_CONFIG_CGPFMFP;
+    }
 
     if (m_bSecurityLock) {
         uConfig0 &= ~NUC1XX_FLASH_CONFIG_LOCK;
@@ -445,6 +455,12 @@ void CDialogConfiguration_NUC103::OnOK()
 }
 
 
+
+void CDialogConfiguration_NUC103::OnRadioGpf()
+{
+    // TODO: Add your control notification handler code here
+    OnGUIEvent(0);
+}
 
 void CDialogConfiguration_NUC103::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)
 {

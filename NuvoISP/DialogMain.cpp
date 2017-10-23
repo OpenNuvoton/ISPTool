@@ -701,7 +701,7 @@ UINT DialogTemplate[] = {
     IDD_DIALOG_CONFIGURATION_MINI51BN,
     IDD_DIALOG_CONFIGURATION_MINI51CN,
     IDD_DIALOG_CONFIGURATION_MT500,
-    IDD_DIALOG_CONFIGURATION_N76E1T,
+    // IDD_DIALOG_CONFIGURATION_N76E1T,
     IDD_DIALOG_CONFIGURATION_NANO100,
     IDD_DIALOG_CONFIGURATION_NANO100BN,
     IDD_DIALOG_CONFIGURATION_NANO103,
@@ -718,6 +718,15 @@ UINT DialogTemplate[] = {
     IDD_DIALOG_CONFIGURATION_TC8226,
 };
 
+struct CPartNumID g_TestPartNumIDs[] = {
+    // IDD_DIALOG_CONFIGURATION_N76E1T
+    /* 8051 1T Series */
+    {"N76E884", 0x00002140, IDD_DIALOG_CONFIGURATION_N76E1T},
+    {"N76E616", 0x00002F50, IDD_DIALOG_CONFIGURATION_N76E1T},
+    {"N76E003", 0x00003650, IDD_DIALOG_CONFIGURATION_N76E1T},
+    {"N76L151-TEST", 0x00003E60, IDD_DIALOG_CONFIGURATION_N76E1T},
+};
+
 bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
 {
     CPartNumID *psBackup = 	psChipData;
@@ -728,17 +737,36 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
     if (Template == 0) {
         CMenu menu;
         menu.CreatePopupMenu();
+        CMenu *sub8051 = new CMenu;
+        sub8051->CreatePopupMenu();
+        sub8051->AppendMenu(MF_STRING, 0x00002140, _T("N76E884"));
+        sub8051->AppendMenu(MF_STRING, 0x00002F50, _T("N76E616"));
+        sub8051->AppendMenu(MF_STRING, 0x00003650, _T("N76E003"));
+        sub8051->AppendMenu(MF_STRING, 0x00003E60, _T("N76L151-TEST"));
+        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)sub8051->m_hMenu, _T("8051 1T Series"));
+        menu.AppendMenu(MF_SEPARATOR);
         CMenu *subM051 = new CMenu;
         subM051->CreatePopupMenu();
-        subM051->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M051, _T("M051AN"));
-        subM051->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M051BN, _T("M051BN"));
-        subM051->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M051CN, _T("M051DN/DE, M058SAN"));
+        subM051->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M051, _T("M051AN Series"));
+        subM051->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M051BN, _T("M051BN Series"));
+        subM051->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M051CN, _T("M051DN/DE, M058SAN Series"));
         menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subM051->m_hMenu, _T("M051 Series"));
+        menu.AppendMenu(MF_SEPARATOR);
+        CMenu *subNUC1xx = new CMenu;
+        subNUC1xx->CreatePopupMenu();
+        subNUC1xx->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_NUC103, _T("NUC123AN Series"));
+        subNUC1xx->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_NUC103BN, _T("NUC123AE Series"));
+        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subNUC1xx->m_hMenu, _T("NUC100 Series"));
+        menu.AppendMenu(MF_SEPARATOR);
+        menu.AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M451, _T("M451 Series"));
+        menu.AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_TC8226, _T("M480 Series"));
         POINT point;
         GetCursorPos(&point);
         menu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this);
         menu.DestroyMenu();
+        delete sub8051;
         delete subM051;
+        delete subNUC1xx;
     } else {
         ConfigDlgSel(CFG, sizeof(CFG));
     }
@@ -759,7 +787,18 @@ LRESULT CDialogMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
                 unsigned int CFG[4] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
                 ConfigDlgSel(CFG, sizeof(CFG));
                 psChipData = psBackup;
-                break;
+                return 1;
+            }
+        }
+
+        for (int i = 0; i < _countof(g_TestPartNumIDs); ++i) {
+            if (g_TestPartNumIDs[i].uID == wParam) {
+                CPartNumID *psBackup = 	psChipData;
+                psChipData = &(g_TestPartNumIDs[i]);
+                unsigned int CFG[4] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
+                ConfigDlgSel(CFG, sizeof(CFG));
+                psChipData = psBackup;
+                return 1;
             }
         }
     }
