@@ -747,32 +747,102 @@ bool GetInfo(unsigned int uPID,
 #endif
 
 /* 8051 1T Series */
+
 #ifndef __NUVOTON__
-bool GetInfo_N76E1T(unsigned int uDID,
-                    unsigned int uConfig0,
-                    unsigned int uProgramMemorySize,
-                    unsigned int *puLDROM_Addr,
-                    unsigned int *puNVM_Addr,
-                    unsigned int *puLDROM_Size,
-                    unsigned int *puAPROM_Size,
-                    unsigned int *puNVM_Size)
+void *GetInfo_N76E1T(unsigned int uDID,
+                     FLASH_INFO_BY_DID_T *pInfo)
 {
+#ifdef USE_FLASH_DID_INFO_TABLE
+    static FLASH_INFO_BY_DID_T g_FlashDIDs[] = {
+        //FA8251 (N76E885)
+        { 18 * 1024, 0, 0x0100, 0x00002150, 0},
+        { 18 * 1024, 0, 0x0100, 0x00002140, 1},
+
+        //FA8261 (N76E616)
+        { 18 * 1024, 0, 0x0100, 0x00002F50, 0},
+
+        //FA8265 (N76E003)
+        { 18 * 1024, 0, 0x0300, 0x00003650, 0},
+        { 18 * 1024, 0, 0x0300, 0x00003640, 1},
+
+        //FA82xx (N76L151)
+        { 32 * 1024, 0, 0x1000, 0x00003E60, 0},
+        { 32 * 1024, 0, 0x0800, 0x00003E61, 0},
+
+        //ML51
+        {  8 * 1024, 0, 0x0400, 0x00004711, 0},
+        { 16 * 1024, 0, 0x0400, 0x00004721, 0},
+
+        { 16 * 1024, 0, 0x0400, 0x00004821, 0},
+        { 32 * 1024, 0, 0x0800, 0x00004832, 0},
+
+        { 32 * 1024, 0, 0x0800, 0x00004932, 0},
+        { 64 * 1024, 0, 0x1000, 0x00004944, 0},
+    };
+    size_t i;
+
+    for (i = 0; i < sizeof(g_FlashDIDs) / sizeof(g_FlashDIDs[0]); ++i) {
+        if (g_FlashDIDs[i].uDID == uDID) {
+            *pInfo = g_FlashDIDs[i];
+            break;
+        }
+    }
+
+    if (!(i < sizeof(g_FlashDIDs) / sizeof(g_FlashDIDs[0]))) {
+        return NULL;
+    }
+
+    return pInfo;
+#else
+    unsigned int uSID = (uDID & 0xFFFFFF00);
+    unsigned int uROMSEL = (uDID >> 4) & 0x0F;
+
+    //pInfo->uProgramMemorySize = (uROMSEL == 0x06)? 0x8000 : 0x4800;
+
+    if (uSID == 0x3E00) {
+        pInfo->uProgramMemorySize = 0x8000;
+        pInfo->uRAMSize = (uDID & 0x01) ? 0x0800 : 0x1000;
+    } else if (uSID == 0x3600) {
+        pInfo->uProgramMemorySize = 0x4800;
+        pInfo->uRAMSize = 0x300;
+    } else {
+        pInfo->uProgramMemorySize = 0x4800;
+        pInfo->uRAMSize = 0x100;
+    }
+
+    pInfo->uFlashType = (uROMSEL == 0x04) ? 1 : 0;
+    pInfo->uLDSize = 0;
+    return pInfo;
+#endif
+}
+
+bool GetInfo_N76E1T(//unsigned int uDID,
+    unsigned int uConfig0,
+    unsigned int uProgramMemorySize,
+    unsigned int uFlashType,
+    unsigned int *puLDROM_Addr,
+    unsigned int *puLDROM_Size,
+    unsigned int *puAPROM_Size,
+    unsigned int *puNVM_Size)
+{
+    unsigned int uLDROM_Size, uNVM_Size;
     unsigned int uLDSEL = (uConfig0 >> 8) & 0x07;
-    *puLDROM_Size = (0x07 - uLDSEL) * 1024;
+    uLDROM_Size = (0x07 - uLDSEL) * 1024;
 
-    if (*puLDROM_Size > 4096) {
-        *puLDROM_Size = 4096;
+    if (uLDROM_Size > 4096) {
+        uLDROM_Size = 4096;
     }
 
-    *puLDROM_Addr = uProgramMemorySize - *puLDROM_Size;
-    *puNVM_Size = 0;
+    uNVM_Size = 0;
 
-    if ((uDID & 0xFF) == 0x40) {
-        *puNVM_Size = 10 * 1024 - *puLDROM_Size;
+    if (uFlashType) {
+        uNVM_Size = 0x2800 - uLDROM_Size;
     }
 
-    *puAPROM_Size = *puLDROM_Addr - *puNVM_Size;
-    *puNVM_Addr = *puAPROM_Size;
+    *puLDROM_Addr = uProgramMemorySize - uLDROM_Size;
+    *puLDROM_Size = uLDROM_Size;
+    *puAPROM_Size = uProgramMemorySize - uLDROM_Size - uNVM_Size;
+    *puNVM_Size   = uNVM_Size;
     return true;
 }
 #endif

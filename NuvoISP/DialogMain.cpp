@@ -724,7 +724,7 @@ struct CPartNumID g_TestPartNumIDs[] = {
     {"N76E884", 0x00002140, IDD_DIALOG_CONFIGURATION_N76E1T},
     {"N76E616", 0x00002F50, IDD_DIALOG_CONFIGURATION_N76E1T},
     {"N76E003", 0x00003650, IDD_DIALOG_CONFIGURATION_N76E1T},
-    {"N76L151-TEST", 0x00003E60, IDD_DIALOG_CONFIGURATION_N76E1T},
+    {"N76L151", 0x00003E61, IDD_DIALOG_CONFIGURATION_N76E1T},
 };
 
 bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
@@ -742,7 +742,7 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
         sub8051->AppendMenu(MF_STRING, 0x00002140, _T("N76E884"));
         sub8051->AppendMenu(MF_STRING, 0x00002F50, _T("N76E616"));
         sub8051->AppendMenu(MF_STRING, 0x00003650, _T("N76E003"));
-        sub8051->AppendMenu(MF_STRING, 0x00003E60, _T("N76L151-TEST"));
+        sub8051->AppendMenu(MF_STRING, 0x00003E61, _T("N76L151"));
         menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)sub8051->m_hMenu, _T("8051 1T Series"));
         menu.AppendMenu(MF_SEPARATOR);
         CMenu *subM051 = new CMenu;

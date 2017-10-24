@@ -32,14 +32,27 @@ bool GetInfo(unsigned int uPID,
              unsigned int auSPROM_Size[3],
              unsigned int *puKPROM_Size);
 
-bool GetInfo_N76E1T(unsigned int uDID,
-                    unsigned int uConfig0,
-                    unsigned int uProgramMemorySize,
-                    unsigned int *puLDROM_Addr,
-                    unsigned int *puNVM_Addr,
-                    unsigned int *puLDROM_Size,
-                    unsigned int *puAPROM_Size,
-                    unsigned int *puNVM_Size);
+/* Get Flash Info by DID */
+typedef struct {
+    unsigned int uProgramMemorySize;
+    unsigned int uLDSize;
+    unsigned int uRAMSize;
+    unsigned int uDID;
+    unsigned int uFlashType;
+} FLASH_INFO_BY_DID_T;
+
+/* 8051 1T Series */
+void *GetInfo_N76E1T(unsigned int uDID,
+                     FLASH_INFO_BY_DID_T *pInfo);
+
+bool GetInfo_N76E1T(//unsigned int uDID,
+    unsigned int uConfig0,
+    unsigned int uProgramMemorySize,
+    unsigned int uFlashType,
+    unsigned int *puLDROM_Addr,
+    unsigned int *puLDROM_Size,
+    unsigned int *puAPROM_Size,
+    unsigned int *puNVM_Size);
 
 extern FLASH_PID_INFO_BASE_T gsPidInfo;
 
