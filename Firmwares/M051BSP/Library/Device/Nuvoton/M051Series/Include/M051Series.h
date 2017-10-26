@@ -14,7 +14,7 @@
   \mainpage Introduction
   *
   *
-  * This user manual describes the usage of M051DN/DE Series MCU device driver
+  * This user manual describes the usage of M051 Series MCU device driver
   *
   * <b>Disclaimer</b>
   *
@@ -28,48 +28,6 @@
   *
   * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
   */
-
-/**
-  * \page PG_REV Revision History
-  *
-  * <b>Revision 3.01.001</b>
-  * \li Fix TIMER_Delay wrong pre-scale setting bug of TIMER driver.
-  * \li Fix wrong P4.5 mode setting bug in main() of GPIO_INT sample code.
-  * \li Fix wrong I2C clock rate calculation bug in I2C_EEPROM, I2C_GCMode_Slave and I2C_GCMode_Master sample code.
-  * \li Fix UART RTS LEVEL TRIGGER active level definition bug in UART driver.
-  * \li Fix SYS_CLEAR_RST_SOURCE() implement bug in SYS driver.
-  * \li Fix SPI peripheral clock doesn't disable bug in SPI_Close( ) of SPI driver.
-  * \li Fix shift position bug in PWM_ConfigCaptureChannel() of PWM driver.
-  * \li Fix PWM output bug when setting PWM duty to 0 by PWM_ConfigOutputChannel() in PWM driver.
-  * \li Fix pin mask control bug of  GPIO_ENABLE_DOUT_MASK() and GPIO_DISABLE_DOUT_MASK() in GPIO driver.
-  * \li Fix IRQ doesn't disable bug after CHIP wakeup in I2C_Wakeup_Slave sample code
-  * \li Fix iar reset entry to Reset_Handler for all sample codes.
-  * \li Fix HIRC clock switching bug in CLK_SetCoreClock() of CLK driver.
-  * \li Fix FMC_Erase() disable ISP function bug when erase error in FMC driver.
-  * \li Fix delay time maybe not correct bug in CLK_SysTickDelay() of CLK driver.
-  * \li Fix CLK_EnableModuleClock() doesn't enable clock source bug when enable WWDT module.
-  * \li Fix clear RS-485 address byte detection flag bug to clear one flag in one time in RS485_HANDLE() in UART_RS485_Slave sample code.
-  * \li Fix clear RS-485 address byte detection flag bug  to clear one flag in one time in UART_RS485_CLEAR_ADDR_FLAG() of UART driver.
-  * \li Fix clear flag bug to clear one flag in one time in UART_ClearIntFlag() of UART driver.
-  * \li Fix ADC_IS_DATA_OVERRUN macro implement bug of ADC driver.
-  * \li Fix a bug on SPI_CLR_UNIT_TRANS_INT_FLAG( ) definition. Remove a redundant right parenthesis.
-  * \li Add UART_Wakeup sample code to show how to wakeup system by UART.
-  * \li Add SYS_IS_LVR_RST() to support LVR reset status in SYS driver.
-  * \li Add SPI_Loopback sample code for SPI0 simple data loopback demo.
-  * \li Add RX1, TX1, VARCLK registers to SPI_T to support M05xxBN in header file.
-  * \li Add Multi-Function constant definitions SYS_MFP_P02_TXD, SYS_MFP_P03_RXD, SYS_MFP_P30_RXD, SYS_MFP_P31_TXD, SYS_MFP_P32_nINT0, SYS_MFP_P33_nINT1.
-  * \li Add GC mode constant defintions for I2C_SetSlaveAddr() in I2C driver.
-  * \li Add FMC_MultiBoot_SwReset sample code to show how to boot to different application by VECMAP and software jump.
-  * \li Add CLK_GetPCLKFreq() function to CLK Driver to support getting PCLK clock frequency.
-  * \li Remove unsupported regsiter MCUIRQ from GCR_INT_T.
-  *  
-  * <b>Revision 3.00.002</b>
-  * \li Fix constant definitions of Timer 2 and Timer 3 in clk.h
-  * \li Fix SYS_Init() GPIO initial bug of \\SampleCode\\StdDriver\\ACMP\\main.c.
-  *
-  * <b>Revision 3.00.001</b>
-  * \li Initial release.
-*/
 
 #ifndef __M051Series_H__
 #define __M051Series_H__

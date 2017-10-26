@@ -1,8 +1,8 @@
 /**************************************************************************//**
  * @file     NUC200Series.h
  * @version  V3.0
- * $Revision: 74 $
- * $Date: 15/06/18 3:50p $
+ * $Revision: 75 $
+ * $Date: 17/05/26 10:58a $
  * @brief    NUC200 Series Peripheral Access Layer Header File
  *
  * @note
@@ -30,37 +30,6 @@
   *
   * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
   */
-
-/**
-  * \page PG_REV Revision History
-  *
-  * <b>Revision 3.00.002</b>
-  * \li Fix SC_SET_STOP_BIT_LEN define error.
-  * \li Fix all IAR samples to set entry point from __iar_program_start to Reset_Handler.
-  * \li Fix all samples that run faster than 50MHz. (NUC100 series only support up to 50MHz).
-  * \li Fix the wrong shift position for HCLK divider in main() of SYS sample code.
-  * \li Fix PLLCON_SETTING constant define from SYSCLK_PLLCON_50MHz_XTAL to CLK_PLLCON_50MHz_HXT.
-  * \li Fix UA_LIN_CTL[4] bit field name is "MUTE_EN" not "WAKE_EN" in UART LIN_CTL Bit Field Definitions. 
-  * \li Fix CLK_SetCoreClock() core lock range from "25~50MHz" to "25~72MHz".
-  * \li Fix CLK_SysTickDelay() bug, that COUNTFLAG(SysTick_CTRL[16]) may not be cleared after write SysTick_VAL.
-  * \li Fix UA_LIN_CTL[4] bit field name of UART driver. It is "MUTE_EN" not "WAKE_EN" in UA_LIN_CTL constants definitions.
-  * \li Fix API declare name from I2C_SetClockBusFreq() to I2C_SetBusClockFreq() in I2C driver.
-  * \li Fix SYS_IS_SYSTEM_RST() bug in SYS driver, it is "SYS_RSTSRC_RSTS_SYS_Msk" not "SYS_RSTSRC_RSTS_MCU_Msk".
-  * \li Fix definition bug of PDMA_IS_CH_BUSY().
-  * \li Fix clear Time-out flag method bug in I2C_ClearTimeoutFlag() of I2C driver.
-  * \li Remove unused PWRCON, FREQ_72MHZ constant definitions from clock driver.
-  * \li Add WWDT_MODULE definition for CLK_DisableModuleClock() and CLK_EnableModuleClock().
-  * \li Add SPI_SET_SS_LEVEL() macro definition. This macro allows user to set both SPI_SS pins.
-  * \li Add a lack macro, SYS_IS_LVR_RST() to SYS driver.
-  * \li Add UART FIFO size constants definitions to UART driver.
-  * \li Add CLK_PLLCON_25MHz_HXT, CLK_PLLCON_25MHz_HIRC, CLK_PLLCON_24MHz_HXT, and CLK_PLLCON_24MHz_HIRC constant definitions to CLK driver.
-  * \li Add FMC_MultiBoot_SwReset sample code to show how to boot to different AP.
-  * \li Modify time-out counter to a fix value and not to use SystemCoreClockUpdate() in CLK_WaitClockReady() to improve compatibility.
-  * \li Revise the following four macro definitions to avoid affecting another SPI_SS pin, SPI_SET_SS0_HIGH(), SPI_SET_SS1_HIGH(), SPI_SET_SS0_LOW() and SPI_SET_SS1_LOW().
-  *
-  * <b>Revision 3.00.001</b>
-  * \li First Release to support Nuvoton BSP v3.0
-*/
 
 #ifndef __NUC200Series_H__
 #define __NUC200Series_H__
@@ -9693,7 +9662,7 @@ typedef struct
 #define UART_ISR_HW_BUF_ERR_IF_Msk  (1ul << UART_ISR_HW_BUF_ERR_IF_Pos)     /*!< UART_T::ISR: HW BUF_ERR_IF Mask         */
 
 #define UART_ISR_HW_TOUT_IF_Pos     20                                      /*!< UART_T::ISR: HW TOUT_IF Position        */
-#define UART_ISR_HW_TOUT_IF_Msk     (1ul << UART_ISR_HW_TOUT_IFF_Pos)       /*!< UART_T::ISR: HW TOUT_IF Mask            */
+#define UART_ISR_HW_TOUT_IF_Msk     (1ul << UART_ISR_HW_TOUT_IF_Pos)        /*!< UART_T::ISR: HW TOUT_IF Mask            */
 
 #define UART_ISR_HW_MODEM_IF_Pos    19                                      /*!< UART_T::ISR: HW MODEM_IF Position       */
 #define UART_ISR_HW_MODEM_IF_Msk    (1ul << UART_ISR_HW_MODEM_IF_Pos)       /*!< UART_T::ISR: HW MODEM_IF Mask           */

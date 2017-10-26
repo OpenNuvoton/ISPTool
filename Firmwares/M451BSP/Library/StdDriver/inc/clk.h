@@ -2,7 +2,7 @@
  * @file     CLK.h
  * @version  V3.0
  * $Revision  1 $
- * $Date: 15/08/11 10:26a $
+ * $Date: 17/07/20 1:52p $
  * @brief    M451 Series CLK Header File
  *
  * @note
@@ -65,7 +65,7 @@ extern "C"
 /*  CLKSEL1 constant definitions.                                                                          */
 /*---------------------------------------------------------------------------------------------------------*/
 #define CLK_CLKSEL1_WDTSEL_LXT           (0x1UL<<CLK_CLKSEL1_WDTSEL_Pos)  /*!< Setting WDT clock source as LXT */
-#define CLK_CLKSEL1_WDTSEL_PCLK0_DIV2048 (0x2UL<<CLK_CLKSEL1_WDTSEL_Pos)  /*!< Setting WDT clock source as PCLK0/2048 */
+#define CLK_CLKSEL1_WDTSEL_HCLK_DIV2048  (0x2UL<<CLK_CLKSEL1_WDTSEL_Pos)  /*!< Setting WDT clock source as HCLK/2048 */
 #define CLK_CLKSEL1_WDTSEL_LIRC          (0x3UL<<CLK_CLKSEL1_WDTSEL_Pos)  /*!< Setting WDT clock source as LIRC */
 
 #define CLK_CLKSEL1_TMR0SEL_HXT          (0x0UL<<CLK_CLKSEL1_TMR0SEL_Pos) /*!< Setting Timer 0 clock source as HXT */
@@ -106,8 +106,8 @@ extern "C"
 #define CLK_CLKSEL1_CLKOSEL_HCLK         (0x2UL<<CLK_CLKSEL1_CLKOSEL_Pos) /*!< Setting CLKO clock source as HCLK */
 #define CLK_CLKSEL1_CLKOSEL_HIRC         (0x3UL<<CLK_CLKSEL1_CLKOSEL_Pos) /*!< Setting CLKO clock source as HIRC */
 
-#define CLK_CLKSEL1_WWDTSEL_PCLK0_DIV2048 (0x2UL<<CLK_CLKSEL1_WWDTSEL_Pos) /*!< Setting WWDT clock source as PCLK0/2048 */
-#define CLK_CLKSEL1_WWDTSEL_LIRC          (0x3UL<<CLK_CLKSEL1_WWDTSEL_Pos) /*!< Setting WWDT clock source as LIRC */
+#define CLK_CLKSEL1_WWDTSEL_HCLK_DIV2048 (0x2UL<<CLK_CLKSEL1_WWDTSEL_Pos) /*!< Setting WWDT clock source as HCLK/2048 */
+#define CLK_CLKSEL1_WWDTSEL_LIRC         (0x3UL<<CLK_CLKSEL1_WWDTSEL_Pos) /*!< Setting WWDT clock source as LIRC */
 
 
 /*---------------------------------------------------------------------------------------------------------*/
@@ -405,6 +405,47 @@ __STATIC_INLINE void CLK_SysTickDelay(uint32_t us)
     
     /* Disable SysTick counter */
     SysTick->CTRL = 0;
+}
+
+  * @brief      This function execute long delay function.
+  * @param[in]  us  Delay time. 
+  * @return     None
+  * @details    Use the SysTick to generate the long delay time and the UNIT is in us.
+  *             The SysTick clock source is from HCLK, i.e the same as system core clock.
+  *             User can use SystemCoreClockUpdate() to calculate CyclesPerUs automatically before using this function.
+  */
+
+__STATIC_INLINE void CLK_SysTickLongDelay(uint32_t us)
+{
+    uint32_t delay;
+        
+    /* It should <= 233016us for each delay loop */
+    delay = 233016UL;
+
+    do
+    {
+        if(us > delay)
+        {
+            us -= delay;
+        }
+        else
+        {
+            delay = us;
+            us = 0UL;
+        }        
+        
+        SysTick->LOAD = delay * CyclesPerUs;
+        SysTick->VAL  = (0x0UL);
+        SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
+
+        /* Waiting for down-count to zero */
+        while((SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) == 0UL);
+
+        /* Disable SysTick counter */
+        SysTick->CTRL = 0UL;
+    
+    }while(us > 0UL);
+    
 }
 
 

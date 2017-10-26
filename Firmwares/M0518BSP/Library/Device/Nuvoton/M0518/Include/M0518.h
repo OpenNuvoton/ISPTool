@@ -32,33 +32,6 @@
   */
 
 
-/**
-  * \page PG_REV Revision History
-  *
-  * <b>Revision 3.00.002</b>
-  * \li Fix PWM driver bug for output low when duty is 100%
-  * \li Fix BPWM driver bug for output low when duty is 100%
-  * \li Fix CLK driver bug in CLK_SetCoreClock():
-  * \li Fix CLK driver constant definitions error of (B)PWM0/1_MODULE clock source selection.
-  * \li Fix GPIO_ENABLE_DOUT_MASK() and GPIO_DISABLE_DOUT_MASK() bug of GPIO driver.
-  * \li Fix PWM driver bug of PWM_MASK_OUTPUT() to remove redundant parenthesis.
-  * \li Fix BPWM driver bug of BPWM_MASK_OUTPUT() to remove redundant parenthesis.
-  * \li Fix UART driver clear flag bug in UART_ClearIntFlag().
-  * \li Fix I2C driver module reset bug of I2C_Close().
-  * \li Fix clear RS-485 address byte detection flag bug in UART_RS485_CLEAR_ADDR_FLAG() of UART driver.
-  * \li Fix clear RS-485 address byte detection flag clear bug in RS485_HANDLE() of UART_RS485_Slave sample code.
-  * \li Fix UART RS485 RTS active level to high level active in RS485_9bitModeMaster() of UART RS485 Sample code.
-  * \li Fix NVIC_EnableIRQ() to NVIC_DisableIRQ() after CHIP wake-up in I2C_Wakeup_Slave sample code
-  * \li Add PWM_EnableLoadMode() and PWM_DisableLoadMode() functions to PWM driver
-  * \li Add PWM_SetBrakePinSource() function to PWM driver
-  * \li Add CLK_GetPCLKFreq() function to CLK driver
-  * \li Add new macro PWM_SET_DEADZONE_CLK_SRC() to PWM driver
-  * \li Add nonblocking printf implementation and use predefine compiler option to enable/disable it.
-  *
-  * <b>Revision 3.00.001</b>
-  * \li Updated to support new API
-*/
-
 
 
 #ifndef __M0518_H__

@@ -1,8 +1,8 @@
 /**************************************************************************//**
  * @file     GPIO.h
  * @version  V2.1
- * $Revision: 14 $
- * $Date: 15/05/20 2:07p $
+ * $Revision: 15 $
+ * $Date: 17/10/05 1:49p $
  * @brief    M051 Series General Purpose I/O Driver Header File
  *
  * @note
@@ -250,11 +250,23 @@ extern "C"
  * @brief       Set De-bounce Sampling Cycle Time
  *
  * @param[in]   u32ClkSrc   The de-bounce counter clock source. It could be GPIO_DBCLKSRC_HCLK or GPIO_DBCLKSRC_LIRC.
- * @param[in]   u32ClkSel   The de-bounce sampling cycle selection. It could be \n
- *                              GPIO_DBCLKSEL_1, GPIO_DBCLKSEL_2, GPIO_DBCLKSEL_4, GPIO_DBCLKSEL_8, \n
- *                              GPIO_DBCLKSEL_16, GPIO_DBCLKSEL_32, GPIO_DBCLKSEL_64, GPIO_DBCLKSEL_128, \n
- *                              GPIO_DBCLKSEL_256, GPIO_DBCLKSEL_512, GPIO_DBCLKSEL_1024, GPIO_DBCLKSEL_2048, \n
- *                              GPIO_DBCLKSEL_4096, GPIO_DBCLKSEL_8192, GPIO_DBCLKSEL_16384, GPIO_DBCLKSEL_32768.
+ * @param[in]   u32ClkSel   The de-bounce sampling cycle selection. It could be 
+ *                            - \ref GPIO_DBCLKSEL_1
+ *                            - \ref GPIO_DBCLKSEL_2
+ *                            - \ref GPIO_DBCLKSEL_4
+ *                            - \ref GPIO_DBCLKSEL_8
+ *                            - \ref GPIO_DBCLKSEL_16 
+ *                            - \ref GPIO_DBCLKSEL_32 
+ *                            - \ref GPIO_DBCLKSEL_64 
+ *                            - \ref GPIO_DBCLKSEL_128 
+ *                            - \ref GPIO_DBCLKSEL_256 
+ *                            - \ref GPIO_DBCLKSEL_512 
+ *                            - \ref GPIO_DBCLKSEL_1024 
+ *                            - \ref GPIO_DBCLKSEL_2048 
+ *                            - \ref GPIO_DBCLKSEL_4096 
+ *                            - \ref GPIO_DBCLKSEL_8192 
+ *                            - \ref GPIO_DBCLKSEL_16384 
+ *                            - \ref GPIO_DBCLKSEL_32768
  *
  * @return      None
  *

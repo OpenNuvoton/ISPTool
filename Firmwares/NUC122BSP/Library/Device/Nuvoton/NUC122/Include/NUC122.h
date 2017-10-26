@@ -29,28 +29,6 @@
   * Copyright (C) 2014~2015 Nuvoton Technology Corp. All rights reserved.
   */
 
-/**
-  * \page PG_REV Revision History
-  *
-  * <b>Revision 3.00.002</b>
-  * Fix the the reset vector handler to Reset_Handler of all sample codes.
-  * Fix maximum USB endpoint from 8 to 6 in USB driver, because of NUC122 USBD Endpoint number is 6 only.
-  * Fix UART transmit data bug in UART_TEST_HANDLE() of UART_TxRx_Function sample code.
-  * Fix FMC_Erase() ISPFF flag clear to avoid ISP disable when error in FMC driver.
-  * Remove APUEN enable or disable macro in FMC driver. NUC122AN doesn't support this function.
-  * Remove ISPATA, VECMAP, UID, UCID from FMC driver, because they are not supported in NUC122.
-  * Revise the following four macro definitions in SPI driver to avoid affecting another SPI_SS pin. SPI_SET_SS0_HIGH() SPI_SET_SS1_HIGH() SPI_SET_SS0_LOW() SPI_SET_SS1_LOW()
-  * Update USBD driver for better compatibility
-  * Add USBD_Billboard sample code to show the implementation of Billboard class.
-  * Add Hard_Fault_Sample to show how to implement hard fault handler.
-  * Add non-block printf supporting in retarget.c
-  * Add UART FIFO size constants definitions with UART driver.
-  * Add new function to control systick and select systick clock source, CLK_EnableSysTick() and CLK_DisableSysTick() in CLK driver.
-  * Add UART_Wakeup sample code to demonstrate how to wakeup system by UART
-  *
-  * <b>Revision 3.00.001</b>
-  * \li Updated to support new API
-*/
 
 #ifndef __NUC122_H__
 #define __NUC122_H__

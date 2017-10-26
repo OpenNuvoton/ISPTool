@@ -1,8 +1,8 @@
 /**************************************************************************//**
  * @file     clk.c
  * @version  V3.00
- * $Revision: 36 $
- * $Date: 15/11/02 9:03a $
+ * $Revision: 37 $
+ * $Date: 16/07/07 3:46p $
  * @brief    M451 series CLK driver source file
  *
  * @note
@@ -295,7 +295,7 @@ void CLK_SetHCLK(uint32_t u32ClkSrc, uint32_t u32ClkDiv)
   * |Module index        |Clock source                           |Divider                  |
   * | :----------------  | :-----------------------------------  | :---------------------- |
   * |\ref WDT_MODULE     |\ref CLK_CLKSEL1_WDTSEL_LXT            | x                       |
-  * |\ref WDT_MODULE     |\ref CLK_CLKSEL1_WDTSEL_PCLK0_DIV2048  | x                       |
+  * |\ref WDT_MODULE     |\ref CLK_CLKSEL1_WDTSEL_HCLK_DIV2048   | x                       |
   * |\ref WDT_MODULE     |\ref CLK_CLKSEL1_WDTSEL_LIRC           | x                       |
   * |\ref RTC_MODULE     |\ref CLK_CLKSEL3_RTCSEL_LXT            | x                       |
   * |\ref RTC_MODULE     |\ref CLK_CLKSEL3_RTCSEL_LIRC           | x                       |
@@ -367,7 +367,7 @@ void CLK_SetHCLK(uint32_t u32ClkSrc, uint32_t u32ClkDiv)
   * |\ref PWM0_MODULE    |\ref CLK_CLKSEL2_PWM0SEL_PCLK0         | x                       |
   * |\ref PWM1_MODULE    |\ref CLK_CLKSEL2_PWM1SEL_PLL           | x                       |
   * |\ref PWM1_MODULE    |\ref CLK_CLKSEL2_PWM1SEL_PCLK1         | x                       |
-  * |\ref WWDT_MODULE    |\ref CLK_CLKSEL1_WWDTSEL_PCLK0_DIV2048 | x                       |
+  * |\ref WWDT_MODULE    |\ref CLK_CLKSEL1_WWDTSEL_HCLK_DIV2048  | x                       |
   * |\ref WWDT_MODULE    |\ref CLK_CLKSEL1_WWDTSEL_LIRC          | x                       |
   */
 void CLK_SetModuleClock(uint32_t u32ModuleIdx, uint32_t u32ClkSrc, uint32_t u32ClkDiv)

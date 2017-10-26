@@ -1,16 +1,14 @@
 /**************************************************************************//**
  * @file     NUC123.h
  * @version  V3.0
- * $Revision: 79 $
- * $Date: 15/08/31 4:16p $
+ * $Revision: 85 $
+ * $Date: 17/05/26 10:49a $
  * @brief    NUC123 Series Peripheral Access Layer Header File
  *
  * @note
- * Copyright (C) 2014~2015 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2014~2016 Nuvoton Technology Corp. All rights reserved.
  *
  ******************************************************************************/
-
-
 
 /**
   \mainpage Introduction
@@ -28,67 +26,9 @@
   *
   * <b>Copyright Notice</b>
   *
-  * Copyright (C) 2014~2015 Nuvoton Technology Corp. All rights reserved.
+  * Copyright (C) 2014~2016 Nuvoton Technology Corp. All rights reserved.
   */
 
-/**
-  * \page PG_REV Revision History
-  *
-  * <b>Revision 3.00.002</b>
-  * \li Fix lost parentheses for PDMA_IS_CH_BUSY() of PDMA driver.
-  * \li Fix API declare name from I2C_SetClockBusFreq() to I2C_SetBusClockFreq() in I2C driver.
-  * \li Fix bug of PWM_ConfigOutputChannel() for duty is 0 in PWM driver.
-  * \li Fix clear flag bug to clear one flag in one time in UART_ClearIntFlag() in UART driver.
-  * \li Fix clear RS-485 address byte detection flag bug to clear one flag in one time in RS485_HANDLE() of UART_RS485_Slave sample code.
-  * \li Fix clear RS-485 address byte detection flag bug to clear one flag in one time in UART_RS485_CLEAR_ADDR_FLAG() of UART driver.
-  * \li Fix clear Time-out flag method bug in I2C_ClearTimeoutFlag() of I2C driver.
-  * \li Fix CLK_SysTickDelay() bug of CLK driver, COUNTFLAG(SysTick_CTRL[16]) may not be cleared after write SysTick_VAL.
-  * \li Fix CLKSEL0 setting bug in CLK_SetCoreClock() of CLK driver.
-  * \li Fix GPIO_ENABLE_DOUT_MASK() and GPIO_DISABLE_DOUT_MASK(). Their define are inversed in GPIO driver.
-  * \li Fix I2C_Close implementation error in I2C driver.
-  * \li Fix Multi-Function constant definitions error of PB.2, PB.5, PC.0, PC.3 in SYS driver.
-  * \li Fix PWM_EnableADCTrigger () and PWM_EnablePDMA() implementation error in PWM driver.
-  * \li Fix SYS_IS_SYSTEM_RST() bug, it is 'SYS_RSTSRC_RSTS_SYS_Msk' not 'SYS_RSTSRC_RSTS_MCU_Msk' in SYS driver.
-  * \li Fix UART RTS LEVEL TRIGGER active level definition bug in UART driver.
-  * \li Fix UART transmit data bug in UART_TEST_HANDLE() of UART_TxRx_Function sample code.
-  * \li Modify to support NUC123xxxAEx.
-  * \li modify HCLK clock setting bug in CLK_SetCoreClock() of CLK driver.
-  * \li Remove ADC_ADCHER_PRESEL_INT_TEMPERATURE_SENSO definetion;
-  * \li Remove an extra ')' for GPIO_ENABLE_DOUT_MASK().
-  * \li Replace USBD_SetStall() with USBD_SET_EP_STALL().
-  * \li Revise FMC_Erase()  ISPFF flag clear.
-  * \li Revise the following four macro definitions to avoid affecting another SPI_SS pin. SPI_SET_SS0_HIGH() SPI_SET_SS1_HIGH() SPI_SET_SS0_LOW() SPI_SET_SS1_LOW()
-  * \li Add 144MHz PLL setting (HXT source) definition to CLK driver.
-  * \li Add a lack macro, SYS_IS_LVR_RST().
-  * \li Add a lost ')' for GPIO_DISABLE_DOUT_MASK(). 
-  * \li Add constant define 'CLK_CLKSEL0_STCLK_S_HCLK' in CLKSEL0 constant definitions for CLK_EnableSysTick() function to select HCLK as sysTick clock source.
-  * \li Add default hard fault handler in retarget.c
-  * \li Add Hard_Fault_Sample sample code for hard fault handler demo.
-  * \li Add lacked 'PUBWEAK HardFault_Handler' to startup_NUC123.s
-  * \li Add new function to control systick and select systick clock source, CLK_EnableSysTick() and CLK_DisableSysTick() of CLK driver.
-  * \li Add new function to control systick and select systick clock source, CLK_EnableSysTick() and CLK_DisableSysTick().
-  * \li Add nonblocking printf implement and use predefine compiler option to enable/disable it in retarget.c
-  * \li Add one more zero packet when BULK IN trasnfer is end by max packet size packet at last packet in USBD_VCOM sample code.
-  * \li Add SPI_SET_SS_LEVEL() macro definition. This macro allows user to set both SPI_SS pins.
-  * \li Add SPI_SlaveDualIOMode sample code to demonstrate SPI dual IO mode.
-  * \li Add UART FIFO size constants definitions in UART driver.
-  * \li Add UART_Wakeup sample code to demonstrate UART wakeup function.
-  * \li Add USBD_Audio_HID_Transfer sample code to support HID Transfer + Audio composite device.
-  *
-  * <b>Revision 3.00.002</b>
-  * \li add USBD_Audio_HID_NAU8822
-  * \li USBD_Audio_HID_NAU8822, Fix length of "UNIT ID 5: Feature Unit"
-  * \li USBD_Audio_HID_NAU8822, Modify the MIC gain to maximum.
-  * \li USBD_Audio_HID_NAU8822, Modify to support keyboard and media key
-  * \li USBD_Audio_HID_NAU8822, Modify I/O configure to support NuEdu-NUC123
-  * \li USBD_VCOM, Modify for win8 certification
-  * \li Modify to support UAC+HID
-  * \li I2C, Modify PLL CLock to 72M
-  * \li Fix FMC_Erase
-  *
-  * <b>Revision 3.00.001</b>
-  * \li Updated to support new API
-*/
 
 #ifndef __NUC123_H__
 #define __NUC123_H__
@@ -189,7 +129,7 @@ typedef struct
 
 
 /**
- * @var ADC_T::ADDRx
+ * @var ADC_T::ADDR
  * Offset: 0x00-0x1C  ADC Data Register x
  * ---------------------------------------------------------------------------------------------------
  * |Bits    |Field     |Descriptions
@@ -269,7 +209,7 @@ typedef struct
  * |        |          |1 = Internal band-gap voltage.
  * |        |          |Note:
  * |        |          |When software selects the band-gap voltage as the analog input source of ADC channel 7, ADC clock rate needs to be limited to slower than 300 kHz.
- * @var ADC_T::ADCMPRx
+ * @var ADC_T::ADCMPR
  * Offset: 0x28-0x2C  ADC Compare Register x
  * ---------------------------------------------------------------------------------------------------
  * |Bits    |Field     |Descriptions
@@ -2183,7 +2123,7 @@ typedef struct
 
 
 /**
- * @var I2S_T::I2SCON
+ * @var I2S_T::CON
  * Offset: 0x00  I2S Control Register
  * ---------------------------------------------------------------------------------------------------
  * |Bits    |Field     |Descriptions
@@ -2271,7 +2211,7 @@ typedef struct
  * |        |          |and receive left channel data if RXLCH is set to 1.
  * |        |          |0 = Receive right channel data in Mono mode.
  * |        |          |1 = Receive left channel data in Mono mode.
- * @var I2S_T::I2SCLKDIV
+ * @var I2S_T::CLKDIV
  * Offset: 0x04  I2S Clock Divider Control Register
  * ---------------------------------------------------------------------------------------------------
  * |Bits    |Field     |Descriptions
@@ -2287,7 +2227,7 @@ typedef struct
  * |        |          |The I2S controller will generate bit clock in Master mode.
  * |        |          |The bit clock rate, F_BCLK, is determined by the following expression.
  * |        |          |F_BCLK = F_I2SCLK /(2x(BCLK_DIV + 1)) , where F_I2SCLK is the frequency of I2S peripheral clock.
- * @var I2S_T::I2SIE
+ * @var I2S_T::IE
  * Offset: 0x08  I2S Interrupt Enable Register
  * ---------------------------------------------------------------------------------------------------
  * |Bits    |Field     |Descriptions
@@ -2323,7 +2263,7 @@ typedef struct
  * |        |          |Interrupt occurs if this bit is set to 1 and left channel zero-cross event is detected.
  * |        |          |0 = Interrupt Disabled.
  * |        |          |1 = Interrupt Enabled.
- * @var I2S_T::I2SSTATUS
+ * @var I2S_T::STATUS
  * Offset: 0x0C  I2S Status Register
  * ---------------------------------------------------------------------------------------------------
  * |Bits    |Field     |Descriptions
@@ -2428,7 +2368,7 @@ typedef struct
  * |        |          |0001 = 1 word in transmit FIFO.
  * |        |          |....
  * |        |          |1000 = 8 words in transmit FIFO.
- * @var I2S_T::I2STXFIFO
+ * @var I2S_T::TXFIFO
  * Offset: 0x10  I2S Transmit FIFO Register
  * ---------------------------------------------------------------------------------------------------
  * |Bits    |Field     |Descriptions
@@ -2437,7 +2377,7 @@ typedef struct
  * |        |          |I2S contains 8 words (8x32 bits) data buffer for data transmit.
  * |        |          |Write data to this register to prepare data for transmission.
  * |        |          |The remaining word number is indicated by TX_LEVEL (I2SSTATUS[31:28]).
- * @var I2S_T::I2SRXFIFO
+ * @var I2S_T::RXFIFO
  * Offset: 0x14  I2S Receive FIFO Register
  * ---------------------------------------------------------------------------------------------------
  * |Bits    |Field     |Descriptions
@@ -2745,7 +2685,7 @@ typedef struct
  * |        |          |This bit indicates that PDMA has finished all transfers. This bit can be cleared to 0 by software writing '1'
  * |        |          |0 = Not finished.
  * |        |          |1 = Done.
- * @var PDMA_T::SBUF0_C
+ * @var PDMA_T::SBUF
  * Offset: 0x80  PDMA Channel x Shared Buffer FIFO x Register
  * ---------------------------------------------------------------------------------------------------
  * |Bits    |Field     |Descriptions
@@ -4740,8 +4680,8 @@ typedef struct
  * |        |          |Note: This bit is READ only.
  * |        |          |As the GO_BUSY bit is set to 1 by software, the LTRIG_FLAG will be cleared to 0 after 4 SPI peripheral clock periods plus 1 system clock period.
  * |        |          |In FIFO mode, this bit has no meaning.
- * @var SPI_T::RX0
- * Offset: 0x10  Data Receive Register 0
+ * @var SPI_T::RX
+ * Offset: 0x10/0x14  Data Receive Register 0/1
  * ---------------------------------------------------------------------------------------------------
  * |Bits    |Field     |Descriptions
  * | :----: | :----:   | :---- |
@@ -4750,32 +4690,8 @@ typedef struct
  * |        |          |If FIFO mode is disabled, the last received data can be accessed through software by reading this register.
  * |        |          |If the FIFO bit is set as 1 and the RX_EMPTY bit, SPI_CNTRL[24] or SPI_STATUS[24], is not set to 1, the receive
  * |        |          |FIFO buffer can be accessed through software by reading this register. This is a read-only register.
- * @var SPI_T::RX1
- * Offset: 0x14  Data Receive Register 1
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[31:0]  |RX        |Data Receive Register
- * |        |          |The data receive register holds the datum received from SPI data input pin.
- * |        |          |If FIFO mode is disabled, the last received data can be accessed through software by reading this register.
- * |        |          |If the FIFO bit is set as 1 and the RX_EMPTY bit, SPI_CNTRL[24] or SPI_STATUS[24], is not set to 1, the receive
- * |        |          |FIFO buffer can be accessed through software by reading this register. This is a read-only register.
- * @var SPI_T::TX0
- * Offset: 0x20  Data Transmit Register 0
- * ---------------------------------------------------------------------------------------------------
- * |Bits    |Field     |Descriptions
- * | :----: | :----:   | :---- |
- * |[31:0]  |TX        |Data Transmit Register
- * |        |          |The data transmit registers hold the data to be transmitted in the next transfer.
- * |        |          |The number of valid bits depends on the setting of transmit bit length field of the SPI_CNTRL register.
- * |        |          |For example, if TX_BIT_LEN is set to 0x08, the bits TX[7:0] will be transmitted in next transfer.
- * |        |          |If TX_BIT_LEN is set to 0x00, the SPI controller will perform a 32-bit transfer.
- * |        |          |Note 1: When the SPI controller is configured as a slave device and FIFO mode is disabled, if the SPI
- * |        |          |        controller attempts to transmit data to a master, the transmit data register should be updated
- * |        |          |        by software before setting the GO_BUSY bit to 1.
- * |        |          |Note 2: In Master mode, SPI controller will start to transfer after 5 peripheral clock cycles after user writes to this register.
- * @var SPI_T::TX1
- * Offset: 0x24  Data Transmit Register 1
+ * @var SPI_T::TX
+ * Offset: 0x20/0x24  Data Transmit Register 0/1
  * ---------------------------------------------------------------------------------------------------
  * |Bits    |Field     |Descriptions
  * | :----: | :----:   | :---- |
@@ -7604,7 +7520,7 @@ typedef struct
 #define UART_ISR_HW_BUF_ERR_IF_Msk  (1ul << UART_ISR_HW_BUF_ERR_IF_Pos)     /*!< UART_T::ISR: HW BUF_ERR_IF Mask         */
 
 #define UART_ISR_HW_TOUT_IF_Pos     20                                      /*!< UART_T::ISR: HW TOUT_IF Position        */
-#define UART_ISR_HW_TOUT_IF_Msk     (1ul << UART_ISR_HW_TOUT_IFF_Pos)       /*!< UART_T::ISR: HW TOUT_IF Mask            */
+#define UART_ISR_HW_TOUT_IF_Msk     (1ul << UART_ISR_HW_TOUT_IF_Pos)        /*!< UART_T::ISR: HW TOUT_IF Mask            */
 
 #define UART_ISR_HW_MODEM_IF_Pos    19                                      /*!< UART_T::ISR: HW MODEM_IF Position       */
 #define UART_ISR_HW_MODEM_IF_Msk    (1ul << UART_ISR_HW_MODEM_IF_Pos)       /*!< UART_T::ISR: HW MODEM_IF Mask           */
@@ -7714,7 +7630,7 @@ typedef struct
 
 
 /**
- * @var USBD_EP_T::BUFSEG0
+ * @var USBD_EP_T::BUFSEG
  * Offset: 0x500/0x510/0x520/0x530/0x540/0x550/0x560/0x570  Endpoint 0~7 Buffer Segmentation Register
  * ---------------------------------------------------------------------------------------------------
  * |Bits    |Field     |Descriptions
@@ -7723,7 +7639,7 @@ typedef struct
  * |        |          |It is used to indicate the offset address for each endpoint with the USB SRAM starting address The effective starting address of the endpoint is
  * |        |          |USB_SRAM address + { BUFSEG[8:3], 3'b000}
  * |        |          |Where the USB_SRAM address = USBD_BA+0x100h.
- * @var USBD_EP_T::MXPLD0
+ * @var USBD_EP_T::MXPLD
  * Offset: 0x504/0x514/0x524/0x534/0x544/0x554/0x564/0x574  Endpoint 0~7 Maximal Payload Register
  * ---------------------------------------------------------------------------------------------------
  * |Bits    |Field     |Descriptions
@@ -7738,7 +7654,7 @@ typedef struct
  * |        |          |For IN token, the value of MXPLD is indicated by the data length be transmitted to host
  * |        |          |For OUT token, the value of MXPLD is indicated the actual data length receiving from host.
  * |        |          |Note: Once MXPLD is written, the data packets will be transmitted/received immediately after IN/OUT token arrived.
- * @var USBD_EP_T::CFG0
+ * @var USBD_EP_T::CFG
  * Offset: 0x508/0x518/0x528/0x538/0x548/0x558/0x568/0x578  Endpoint 0~7 Configuration Register
  * ---------------------------------------------------------------------------------------------------
  * |Bits    |Field     |Descriptions
@@ -7762,21 +7678,21 @@ typedef struct
  * |[9]     |CSTALL    |Clear STALL Response
  * |        |          |0 = Disable the device to clear the STALL handshake in setup stage.
  * |        |          |1 = Clear the device to response STALL handshake in setup stage.
- * @var USBD_EP_T::CFGP0
+ * @var USBD_EP_T::CFGP
  * Offset: 0x50C/0x51C/0x52C/0x53C/0x54C/0x55C/0x56C/0x57C  Endpoint 0~7 Set Stall and Clear In/Out Ready Control Register
-    * ---------------------------------------------------------------------------------------------------
-    * |Bits    |Field     |Descriptions
-    * | :----: | :----:   | :---- |
-    * |[0]     |CLRRDY    |Clear Ready
-    * |        |          |When the USB_MXPLD register is set by user, it means that the endpoint is ready to transmit or receive data.
-    * |        |          |If the user wants to turn off this transaction before the transaction start, users can set this bit to 1 to turn it off and it will be cleared to 0 automatically.
-    * |        |          |For IN token, write '1' to clear the IN token had ready to transmit the data to USB.
-    * |        |          |For OUT token, write '1' to clear the OUT token had ready to receive the data from USB.
-    * |        |          |This bit is write 1 only and is always 0 when it is read back.
-    * |[1]     |SSTALL    |Set STALL
-    * |        |          |0 = Disable the device to response STALL.
-    * |        |          |1 = Set the device to respond STALL automatically.
-    */
+ * ---------------------------------------------------------------------------------------------------
+ * |Bits    |Field     |Descriptions
+ * | :----: | :----:   | :---- |
+ * |[0]     |CLRRDY    |Clear Ready
+ * |        |          |When the USB_MXPLD register is set by user, it means that the endpoint is ready to transmit or receive data.
+ * |        |          |If the user wants to turn off this transaction before the transaction start, users can set this bit to 1 to turn it off and it will be cleared to 0 automatically.
+ * |        |          |For IN token, write '1' to clear the IN token had ready to transmit the data to USB.
+ * |        |          |For OUT token, write '1' to clear the OUT token had ready to receive the data from USB.
+ * |        |          |This bit is write 1 only and is always 0 when it is read back.
+ * |[1]     |SSTALL    |Set STALL
+ * |        |          |0 = Disable the device to response STALL.
+ * |        |          |1 = Set the device to respond STALL automatically.
+ */
 
     __IO uint32_t BUFSEG;        /* Offset: 0x500/0x510/0x520/0x530/0x540/0x550/0x560/0x570  Endpoint 0~7 Buffer Segmentation Register */
     __IO uint32_t MXPLD;         /* Offset: 0x504/0x514/0x524/0x534/0x544/0x554/0x564/0x574  Endpoint 0~7 Maximal Payload Register */

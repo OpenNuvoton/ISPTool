@@ -31,14 +31,6 @@
   * Copyright (C) 2015 Nuvoton Technology Corp. All rights reserved.
   */
 
-/**
-  * \page PG_REV Revision History
-  *
-  *
-  * <b>Revision 3.00.001</b>
-  * \li First release to support M0519.
-*/
-
 #ifndef __M0519_H__
 #define __M0519_H__
 

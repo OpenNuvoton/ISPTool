@@ -1,8 +1,8 @@
 /**************************************************************************//**
  * @file     NUC230_240.h
  * @version  V3.0
- * $Revision: 39 $
- * $Date: 15/09/04 3:38p $
+ * $Revision: 40 $
+ * $Date: 17/05/26 11:08a $
  * @brief    NUC230_240 Series Peripheral Access Layer Header File
  *
  * @note
@@ -29,58 +29,6 @@
   *
   * Copyright (C) 2015 Nuvoton Technology Corp. All rights reserved.
   */
-
-/**
-  * \page PG_REV Revision History
-  *
-  * <b>Revision 3.01.001</b>
-  * \li Fixed the clock selection bug in SCUART_TxRx() sample code.
-  * \li Fixed the reset handler from __iar_program_start to Reset_Handler.
-  * \li Fixed the bug of clearing wrong enable bit in UART_SelectLINMode() of UART driver.
-  * \li Fixed CAN_STATUS_LEC_Msk from 0x03 to 0x07.
-  * \li Fixed SC_UACTL_UA_MODE_EN_Msk define error from (3ul << SC_UACTL_UA_MODE_EN_Pos) to (1ul << SC_UACTL_UA_MODE_EN_Pos).
-  * \li Fixed the wrong SC1 and SC2 clock source select shift position in MODULE constant definitions.
-  * \li Fixed the wrong definition bug of PS2_DISABLE_OVERRIDE() and PS2_ENABLE_OVERRIDE().
-  * \li Fixed the bug of PS2_Write() in PS2 driver.
-  * \li Removed ReadDID() function from FMC driver as It is no longer supported.
-  * \li Updated USB driver to improve reliability and compatibility.
-  * \li Added NuEdu sample code.
-  * \li Added INT 'MCUIRQ' and 'MCUIRQCR' bit field definitions.
-  * \li Added CLK_EnableSysTick() and CLK_DisableSysTick() to control SysTick and select SysTick clock source.
-  * \li Added SPI_FIFO_SIZE constant definition.
-  * \li Added USB device sample code.
-  * \li Improved USBD driver for adding more USB sample code.
-  *
-  * <b>Revision 3.00.002</b>
-  * \li Fixed the wrong baud rate returned by SCUART_SetLineConfig() in SCUART driver.
-  * \li Fixed SCUART_Open() of SCUART driver for wrong clock calculation and return value.
-  * \li Fixed SC_SET_STOP_BIT_LEN define error.
-  * \li Fixed the bug of ADC_IS_DATA_OVERRUN() that the input parameter is channel number but channel bit mask.
-  * \li Updated CAN clock setting in CAN_Open() of CAN driver to comply with different system clocks.
-  * \li Fixed the wrong return value bug of CLK_SetCoreClock() in CLK driver.
-  * \li Fixed CLK_SetModuleClock() error for PWM clock selection in CLK driver.
-  * \li Fixed the bug of CLK_SysTickDelay() that COUNTFLAG may not be cleared in CLK driver.
-  * \li Fixed the GPIO_ENABLE_DOUT_MASK() and GPIO_DISABLE_DOUT_MASK() implement inverse error in GPIO driver.
-  * \li Fixed the close wrong I2C bug of I2C_Close() in I2C driver.
-  * \li Fixed API declare name from I2C_SetClockBusFreq() to I2C_SetBusClockFreq() in I2C driver.
-  * \li Fixed the clear RS-485 address byte detection flag bug to clear one flag at one time in RS485_HANDLE() of UART driver.
-  * \li Added one more zero packet when BULK IN transfer is end by max packet size packet at last packet in VCOM sample code.
-  * \li Fixed UA_LIN_CTL[4] bit field name as 'MUTE_EN' not 'WAKE_EN' in UART LIN_CTL bit field definitions of header file.
-  * \li Fixed the wrong mask definition of SC_TRSR_TX_POINT_F_Msk and SC_TRSR_RX_POINT_F_Msk in header file.
-  * \li Fixed the wrong bit definition of WAKEUP_EN in USB_INTEN register of header file.
-  * \li Fixed the channel 0 trigger disabled bug when channel 1~3 trigger enabled in PWM_EnableADCTrigger() of PWM driver.
-  * \li Fixed the bug that channel 0 trigger will be disabled when channel 1~3 trigger are enabled in PWM_EnableADCTrigger() of PWM driver.
-  * \li Fixed SCUART_PARITY_NONE/SCUART_PARITY_EVEN/SCUART_PARITY_ODD definition bug in SCUART driver.
-  * \li Fixed four macro definitions of SPI driver to avoid affecting non-target SPI_SS pin including SPI_SET_SS0_HIGH() SPI_SET_SS1_HIGH() SPI_SET_SS0_LOW() SPI_SET_SS1_LOW().
-  * \li Fixed the clear flag bug to clear one flag at one time in UART_ClearIntFlag(). It should be '(uart)->FSR = UART_FSR_RS485_ADD_DETF_Msk' but '(uart)->FSR |= UART_FSR_RS485_ADD_DETF_Msk'.
-  * \li Fixed the clear wrong flag bug in UART_RS485_CLEAR_ADDR_FLAG().
-  * \li Fixed UA_LIN_CTL[4] bit field name as 'MUTE_EN' not 'WAKE_EN' in UA_LIN_CTL constants definitions in UART driver.
-  * \li Added SPI_SET_SS_LEVEL() macro definition in SPI driver to allow user to set both SPI_SS pins.
-  * \li Added a lack macro SYS_IS_LVR_RST() to SYS driver.
-  * 
-  * <b>Revision 3.00.001</b>
-  * \li Updated to support new API
-*/
 
 #ifndef __NUC230_240_H__
 #define __NUC230_240_H__
@@ -11071,7 +11019,7 @@ typedef struct
 #define UART_ISR_HW_BUF_ERR_IF_Msk  (1ul << UART_ISR_HW_BUF_ERR_IF_Pos)     /*!< UART_T::ISR: HW BUF_ERR_IF Mask         */
 
 #define UART_ISR_HW_TOUT_IF_Pos     20                                      /*!< UART_T::ISR: HW TOUT_IF Position        */
-#define UART_ISR_HW_TOUT_IF_Msk     (1ul << UART_ISR_HW_TOUT_IFF_Pos)       /*!< UART_T::ISR: HW TOUT_IF Mask            */
+#define UART_ISR_HW_TOUT_IF_Msk     (1ul << UART_ISR_HW_TOUT_IF_Pos)        /*!< UART_T::ISR: HW TOUT_IF Mask            */
 
 #define UART_ISR_HW_MODEM_IF_Pos    19                                      /*!< UART_T::ISR: HW MODEM_IF Position       */
 #define UART_ISR_HW_MODEM_IF_Msk    (1ul << UART_ISR_HW_MODEM_IF_Pos)       /*!< UART_T::ISR: HW MODEM_IF Mask           */

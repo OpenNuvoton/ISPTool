@@ -1,8 +1,8 @@
 /******************************************************************************
  * @file     M451Series.h
  * @version  V3.10
- * $Revision: 179 $
- * $Date: 15/09/04 3:45p $
+ * $Revision: 180 $
+ * $Date: 16/07/07 2:55p $
  * @brief    CMSIS Cortex-M4 Core Peripheral Access Layer Header File for M451 Series MCU
  *
  * @note
@@ -28,114 +28,6 @@
   *
   * Copyright (C) 2014~2015 Nuvoton Technology Corp. All rights reserved.
   */
-
-/**
-  * \page PG_REV Revision History
-  *
-  * <b>Revision 3.01.001</b>
-  * \li Added Nu-LB-M451, NuEdu and USB device sample code.
-  * \li Added a lacking macro SYS_IS_LVR_RST() to SYS driver.
-  * \li Added a sample code DAC_PDMA_ScatterGather_PWMTrigger to use PDMA scatter gather mode and trigger DAC by PWM.
-  * \li Added counter type constant definitions: PWM_UP_COUNTER, PWM_DOWN_COUNTER, and PWM_UP_DOWN_COUNTER.
-  * \li Added DAC_PDMA_PWMTrigger sample code to use PDMA and trigger DAC by PWM.
-  * \li Added a sample code EADC_PDMA_PWM_Trigger to trigger EADC with PWM and copy result by PDMA.
-  * \li Added a new function to control systick and select systick clock source CLK_EnableSysTick() and CLK_DisableSysTick() in CLK driver.
-  * \li Added 'NMIEN' and 'NMISTS' control registers to M451Series.h for NMI control.
-  * \li Added PDMA_ScatterGather_PingPongBuffer sample code to create ping-pong buffer with PDMA scatter gather mode.
-  * \li Added 'PE_DRVCTL' register of GPIO to M451Series.h for GPIO driving strength control.
-  * \li Added a sample code PWM_PDMA_Capture to transfer PWM capture data by PDMA.
-  * \li Added SCLIB_ActivateDelay API for initial SC with non-standard H/W design in SC driver
-  * \li Fixed the bug of EADC_IS_INT_FLAG_OV() that accesses the incorrect register.
-  * \li Fixed the bug of EADC_IS_SAMPLE_MODULE_OV() that accesses the incorrect register. 
-  * \li Fixed the bug of EADC_SetExtendSampleTime() for position shift error in EADC driver.
-  * \li Fixed the bug of EADC_SetTriggerDelayTime() for position shift error in EADC driver.
-  * \li Fixed the bug of PWM_ENABLE_OUTPUT_INVERTER () that output inverter function cannot be disabled.
-  * \li Fixed the bug of PWM_MASK_OUTPUT() in PWM driver that mask function cannot be disabled.
-  * \li Fixed CAN_STATUS_LEC_Msk from 0x03 to 0x07.
-  * \li Fixed the bug of CLK_SysTickDelay() that COUNTFLAG may not be cleared in CLK driver.
-  * \li Fixed CTL and PINCTL regsiter synchronize issue by waiting synchronized ready flag in SC driver.
-  * \li Fixed DAC_SetDelayTime() calculation error in DAC driver because the dac->TCTL only used 10 bits, not 14 bits.
-  * \li Fixed EADC_CMP_ADCMPIE_DISABLE definition error. 
-  * \li Fixed EADC_CMP_ADCMPIE_DISABLE definition error. 
-  * \li Fixed IAR entry point from __iar_program_start to Reset_Handler
-  * \li Fixed PWM_ConfigOutputChannel() return value bug in PWM driver.
-  * \li Fixed the bug of PWM_ConfigSyncPhase() that cannot configure synchronized source for channel2~5.
-  * \li Fixed SC_SET_STOP_BIT_LEN definition error.
-  * \li Fixed SCUART baudrate return error in SCUART_Open and SCUART_SetLineConfig API of SCUART driver.
-  * \li Fixed SCUART_PARITY_NONE/SCUART_PARITY_EVEN/SCUART_PARITY_ODD definition bug in SCUART driver.
-  * \li Fixed u32DataWidth setting error by sc->UARTCTL in SCUART_SetLineConfig API of SCUART driver.
-  * \li Fixed SMBD_Enable constant value definition error in I2C driver.
-  * \li Fixed the problem that MSC device detection is aborted due to REQUEST_SENSE command not ready.
-  * \li Fixed UART clock setting bug in UART_Open(), UART_SetLine_Config() and UART_SelectIrDAMode() of UART driver.
-  * \li Improved compatibility of USBH driver for pen driver.
-  * \li Improved EADC_ConfigSampleModule() to support rising and falling trigger at the same time.
-  * \li Improved EBI_SRAM sample code to add PDMA data transfer with EBI.
-  * \li Improved SC driver to support more than one SC port.
-  * \li Improved USBH driver to support composite HID devices
-  * \li Improved USBD driver to support more USB device sample code.
-  * \li Modified I2C_STOP() from #define to inline and add waiting STO bit clear to 0 . This modified is safe for next START coming soon.
-  * \li Removed CRC clock enabled in CRC_Open(). User should enable CRC clock in system initialization before any CRC operation.
-  * \li Removed FMC_ReadDID() in FMC driver. This function was no longer supported.
-  * \li Removed I2C_CTL_STA_STO_SI and I2C_CTL_STA_STO_SI_AA definitions to avoid STOP and START write to control bit at the same time.
-  *
-  * <b>Revision 3.00.005</b>
-  * \li Fixed EADC_CTL_DMOF_STRAIGHT_BINARY and EADC_CTL_DMOF_TWOS_COMPLEMENT definition error in EADC driver.
-  * \li Fixed EADC_FALLING_EDGE_TRIGGER definition error in EADC driver.
-  * \li Fixed EADC_RISING_EDGE_TRIGGER definition error in EADC driver.
-  * \li Fixed UART transmit data bug in UART_TEST_HANDLE() of UART_TxRxFunction sample code.
-  * \li Fixed the data missing bug when BULK IN transfer is end by max packet size packet at last packet in USBD_VCOM sample code.
-  * \li Fixed program user configuration area without erase in USBD_MassStorage_DataFlash sample code.
-  * \li Fixed the bug of switching HCLK to HIRC before enabling PLL in CLK_SetCoreClock() of CLK driver.
-  * \li Fixed isochronous transfer bugs of USB Host library.
-  * \li Fixed Clear Modem Status Interrupt flag bug in UART_ClearIntFlag() of UART driver.
-  * \li Fixed the time-out flag clear bug in I2C_ClearTimeoutFlag() of I2C driver.
-  * \li Replaced PERIOD0~5 with PERIOD[6] in PWM_T, and modified PERIOD bit field constant definition in M451Series.h.
-  * \li Replaced CMPDAT0~5 with CMPDAT0[6] in PWM_T, and modified CMPDAT bit field constant definition in M451Series.h.
-  * \li Replaced CNT0~5 with CNT[6] in PWM_T, and modified CNT bit field constant definition in M451Series.h.
-  * \li Replaced PBUF0~5 with PBUF[6] in PWM_T, and modified PBUF bit field constant definition in M451Series.h.
-  * \li Replaced CMPBUF0~5 with CMPBUF[6] in PWM_T, and modified CMPBUF bit field constant definition in M451Series.h.
-  * \li Replaced CURSCAT0~CURSCAT11 with CURSCAT[12] in PDMA_T of M451Series.h.
-  * \li Modified CLK_WaitClockReady() time-out to about 300 ms in CLK driver.
-  * \li Updated USB USBD_MassStorage_DataFlash sample code and USB Driver to pass USB-IF MSC test. (The MassStorage size must be greater than 64 KB; otherwise, Command Set test will fail in MSC test).
-  * \li Replaced old HID library file (open source) with Nuvoton HID library in USB Host library. 
-  * \li Added USBH_Audio_Class and USBH_UAC_HID sample code for USB Host to support UAC + HID device.
-  *
-  * <b>Revision 3.00.004</b>
-  * \li Fixed the time-out from 5 ms to 300 ms in CLK_WaitClockReady() of CLK driver.
-  * \li Fixed the bug of UART_ClearIntFlag() in UART driver to only clear one flag at one time.
-  * \li Fixed the missing parameter, UART clock source LXT, for CLK_SetModuleClock() in UART driver.
-  * \li Fixed the bug of clearing data and CTS wake-up flag to clear one flag at one time in UART1_IRQHandler() of UART_Wakeup sample code.
-  * \li Fixed the bug of RS485_HANDLE() in the UART_RS485_Slave sample code to only clear one flag at one time.
-  * \li Fixed the bug of clearing auto baud rate detect finished and time-out flag to clear one flag at one time in AutoBaudRate_RxTest() of UART_AutoBaudRate_Slave sample code.
-  * \li Fixed NVIC_EnableIRQ() to NVIC_DisableIRQ() after chip wake-up in I2C_Wakeup_Slave sample code.
-  * \li Fixed multi-function setting error of SC CD pin in USBD_CCID sample code.
-  * \li Fixed PD.7 (Headphone output control pin) output mode configuration in WAU8822_Setup() of USBD_Audio_NAU8822 sample code.
-  * \li Fixed wrong CLK_WaitClockReady parameter in I2C_GCMode_Slave sample code.
-  * \li Fixed UART data transfer bug of USBD_VCOM sample code.
-  * \li Updated CLK driver to avoid HIRC force enabled in CLK_SetHCLK() and CLK_SetCoreClock().
-  * \li Updated USBD driver to pass USB-IF MSC test.
-  * \li Updated USBD_MassStorage_DataFlash sample code to pass USB-IF MSC test.
-  * \li Updated driver of VCOM for win8 certification in USBD_VCOM sample code.
-  * \li Added HID Media key supporting in USBD_Audio_HID_NAU8822 sample code.
-  * \li Added new sample code USBH_UAC_HID of USB Host to support UAC + HID device.
-  * \li Added new sample code USBH_Audio_Class to support USB audio class device (UAC).
-  *
-  * <b>Revision 3.00.003</b>
-  * \li Added USBD_Audio_HID_NAU8822 sample code.
-  *
-  * <b>Revision 3.00.002</b>
-  * \li Fixed serial number code in device descriptor.
-  * \li Fixed EBI_Open API did not perform u32CSActiveLevel parameters to set CS pin polar.
-  * \li Fixed SMBus bus time-out and Clock Lo time-out API.
-  * \li Fixed I2C0,1 IP reset of SYS_IPRST1.
-  * \li Fixed include path of CMSIS.
-  * \li Fixed SPI_CLR_UNIT_TRANS_INT_FLAG( ) definition.
-  * \li Fixed USBD_INT_WAKEUP definition.
-  * \li Modified USBD driver to support USB remote wake-up function.
-  *
-  * <b>Revision 3.00.001</b>
-  * \li Initial Release.
-*/
 
 #ifndef __M451SERIES_H__
 #define __M451SERIES_H__
@@ -2270,7 +2162,7 @@ typedef struct
  * |[1:0]   |WDTSEL    |Watchdog Timer Clock Source Selection (Write Protect)
  * |        |          |00 = Reserved.
  * |        |          |01 = Clock source from external 32.768 kHz low-speed crystal clock.
- * |        |          |10 = Clock source from PCLK0/2048 clock.
+ * |        |          |10 = Clock source from HCLK/2048 clock.
  * |        |          |11 = Clock source from internal 10 kHz low-speed oscillator clock.
  * |[10:8]  |TMR0SEL   |TIMER0 Clock Source Selection
  * |        |          |000 = Clock source from external 4~24 MHz high-speed crystal clock.
@@ -2315,7 +2207,7 @@ typedef struct
  * |        |          |10 = Clock source from HCLK.
  * |        |          |11 = Clock source from internal 22.1184 MHz high-speed oscillator clock.
  * |[31:30] |WWDTSEL   |Window Watchdog Timer Clock Source Selection
- * |        |          |10 = Clock source from PCLK0/2048 clock.
+ * |        |          |10 = Clock source from HCLK/2048 clock.
  * |        |          |11 = Clock source from internal 10 kHz low-speed oscillator clock.
  * |        |          |Others = Reserved.
  * @var CLK_T::CLKSEL2

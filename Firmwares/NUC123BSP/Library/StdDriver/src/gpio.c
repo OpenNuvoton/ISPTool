@@ -1,8 +1,8 @@
 /**************************************************************************//**
  * @file     gpio.c
  * @version  V3.00
- * $Revision: 7 $
- * $Date: 15/07/02 11:21a $
+ * $Revision: 8 $
+ * $Date: 16/06/08 9:58a $
  * @brief    NUC123 series GPIO driver source file
  *
  * @note
@@ -34,10 +34,10 @@
  *                          It could be BIT0 ~ BIT5 and BIT8 ~ BIT11 for PD GPIO port. \n
  *                          It could be BIT0 ~ BIT3 for PF GPIO port.
  * @param[in]   u32Mode     Operation mode. It could be : 
-  *                         - \ref GPIO_MODE_INPUT, 
- *                          - \ref GPIO_MODE_OUTPUT, 
- *                          - \ref GPIO_MODE_OPEN_DRAIN,
- *                          - \ref GPIO_MODE_QUASI
+  *                         - \ref GPIO_PMD_INPUT, 
+ *                          - \ref GPIO_PMD_OUTPUT, 
+ *                          - \ref GPIO_PMD_OPEN_DRAIN,
+ *                          - \ref GPIO_PMD_QUASI
  *
  * @return      None
  *

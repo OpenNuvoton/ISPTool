@@ -14,7 +14,7 @@
   \mainpage Introduction
   *
   *
-  * This user manual describes the usage of M051DN/DE Series MCU device driver
+  * This user manual describes the usage of M058S Series MCU device driver
   *
   * <b>Disclaimer</b>
   *
@@ -29,20 +29,6 @@
   * Copyright (C) 2015 Nuvoton Technology Corp. All rights reserved.
   */
 
-/**
-  * \page PG_REV Revision History
-  *
-  * <b>Revision 3.00.002</b>
-  * \li Fix UART, I2C, SYS definition error in header file.
-  * \li Fix reset entry pointer setting of IAR projects.
-  * \li Add VECMAP relative API to FMC driver.
-  * \li Add MCUIRQ control register to GCR_INT_T of header file.
-  * \li Add CAPIC control register to PWM_T of header file.
-  * \li Add ISPSTA control register to FMC_T of header file.
-  *
-  * <b>Revision 3.00.001</b>
-  * \li Initial release.
-*/
 
 #ifndef __M058S_H__
 #define __M058S_H__

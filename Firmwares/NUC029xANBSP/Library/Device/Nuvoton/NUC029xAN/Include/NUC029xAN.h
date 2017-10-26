@@ -29,18 +29,6 @@
   * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
   */
 
-/**
-  * \page PG_DIR Directory Structure
-  * The BSP directory structure is shown in following figure.
-  *
-  * \image html dir.jpg "BSP Directory Structure"
-  *
-  * \page PG_REV Revision History
-  *
-  *
-  * <b>Revision 3.00.001</b>
-  * \li Initial release.
-*/
 
 #ifndef __NUC029xAN_H__
 #define __NUC029xAN_H__

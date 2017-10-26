@@ -1,8 +1,8 @@
 ;/******************************************************************************
 ; * @file     startup_NUC400Series.s
 ; * @version  V0.10
-; * $Revision: 3 $
-; * $Date: 14/12/24 10:20a $ 
+; * $Revision: 4 $
+; * $Date: 17/05/05 3:49p $ 
 ; * @brief    CMSIS Cortex-M4 Core Device Startup File for NUC451 Series MCU
 ; *
 ; * @note
@@ -50,9 +50,9 @@ __vector_table_0x1c
         DCD     BOD_IRQHandler            ; 0: Brown Out detection
         DCD     IRC_IRQHandler            ; 1: Internal RC
         DCD     PWRWU_IRQHandler          ; 2: Power Down Wake Up 
-        DCD     Default_Handler		      ; 3: Reserved.
-        DCD     CLKFAIL_IRQHandler		  ;	4: Reserved.
-        DCD     Default_Handler		      ;	5: Reserved.
+        DCD     RAMPE_IRQHandler          ; 3: RAM parity error
+        DCD     CLKFAIL_IRQHandler        ; 4: Reserved.
+        DCD     Default_Handler           ; 5: Reserved.
         DCD     RTC_IRQHandler            ; 6: Real Time Clock 
         DCD     TAMPER_IRQHandler         ; 7: Tamper detection
         DCD     WDT_IRQHandler            ; 8: Watchdog timer
@@ -177,14 +177,14 @@ SP_is_PSP
 SP_Read_Ready
                 LDR     R1, [R13, #24]         ; Get previous PC
                 LDRH    R3, [R1]              ; Get instruction
-				LDR    R2, =0xBEAB           ; The sepcial BKPT instruction
+        LDR    R2, =0xBEAB           ; The sepcial BKPT instruction
                 CMP     R3, R2                ; Test if the instruction at previous PC is BKPT
-				BNE    HardFault_Handler_Ret ; Not BKPT
+        BNE    HardFault_Handler_Ret ; Not BKPT
 
                 ADDS    R1, #4                ; Skip BKPT and next line
                 STR     R1, [R13, #24]         ; Save previous PC
 
-				BX     LR
+        BX     LR
 HardFault_Handler_Ret
 
 #else

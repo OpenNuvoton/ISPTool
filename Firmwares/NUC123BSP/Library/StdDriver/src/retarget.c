@@ -1,8 +1,8 @@
 /**************************************************************************//**
  * @file     retarget.c
  * @version  V3.00
- * $Revision: 11 $
- * $Date: 15/11/02 10:00a $
+ * $Revision: 13 $
+ * $Date: 16/06/13 7:50p $
  * @brief    NUC123 Series Debug Port and Semihost Setting Source File
  *
  * @note
@@ -59,7 +59,7 @@ static void stackDump(uint32_t stack[])
  * @return      None
  * @details     Replace while(1) at the end of this function with chip reset if WDT is not enabled for end product
  */
-void Hard_Fault_Handler(uint32_t stack[])
+__weak void Hard_Fault_Handler(uint32_t stack[])
 {
     printf("In Hard Fault Handler\n");
 
@@ -233,6 +233,8 @@ void HardFault_Handler (void)
  */
 __asm int32_t HardFault_Handler(void)
 {
+    IMPORT  Hard_Fault_Handler
+      
     MOV     R0, LR
     LSLS    R0, #29               //; Check bit 2
     BMI     SP_is_PSP             //; previous stack is PSP
@@ -307,7 +309,7 @@ SH_End
 #endif
 
 
-#else
+#else // Non-semihost
 
 # if defined(__ICCARM__)
 
@@ -362,6 +364,8 @@ void HardFault_Handler(void)
  */
 __asm int32_t HardFault_Handler(void)
 {
+    IMPORT  Hard_Fault_Handler
+    
     MOVS    r0, #4  
     MOV     r1, LR
     TST     r0, r1          //; check LR bit 2                 
