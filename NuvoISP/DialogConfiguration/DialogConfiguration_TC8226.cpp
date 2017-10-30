@@ -61,14 +61,14 @@ void CDialogConfiguration_TC8226::DoDataExchange(CDataExchange *pDX)
     DDX_Radio(pDX, IDC_RADIO_BOR_30, m_nRadioBov);
     DDX_Radio(pDX, IDC_RADIO_BS_LDROM, m_nRadioBS);
     DDX_Radio(pDX, IDC_RADIO_SPIM_SEL0, m_nRadioSPIM);
-    DDX_Radio(pDX, IDC_RADIO_UART1_SEL0, m_nRadioUART);
+//	DDX_Radio(pDX, IDC_RADIO_UART1_SEL0, m_nRadioUART);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_0, m_sConfigValue0);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_1, m_sConfigValue1);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_2, m_sConfigValue2);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_3, m_sConfigValue3);
     DDX_Check(pDX, IDC_CHECK_BROWN_OUT_DETECT, m_bCheckBrownOutDetect);
     DDX_Check(pDX, IDC_CHECK_BROWN_OUT_RESET, m_bCheckBrownOutReset);
-    DDX_Check(pDX, IDC_CHECK_BOOT_LOADER, m_bCheckBootLoader);
+//	DDX_Check(pDX, IDC_CHECK_BOOT_LOADER, m_bCheckBootLoader);
     DDX_Check(pDX, IDC_CHECK_DATA_FLASH_ENABLE, m_bDataFlashEnable);
     DDX_Check(pDX, IDC_CHECK_SECURITY_LOCK, m_bSecurityLock);
     DDX_Check(pDX, IDC_CHECK_ICE_LOCK, m_bICELock);
@@ -78,7 +78,7 @@ void CDialogConfiguration_TC8226::DoDataExchange(CDataExchange *pDX)
     DDX_Radio(pDX, IDC_RADIO_IO_TRI, m_nRadioIO);
     DDX_Text(pDX, IDC_EDIT_FLASH_BASE_ADDRESS, m_sFlashBaseAddress);
     DDX_Text(pDX, IDC_EDIT_DATA_FLASH_SIZE, m_sDataFlashSize);
-    DDX_Check(pDX, IDC_CHECK_SECURITYBOOT_LOCK, m_bSecurityBootLock);
+//	DDX_Check(pDX, IDC_CHECK_SECURITYBOOT_LOCK, m_bSecurityBootLock);
     DDX_Check(pDX, IDC_SPROM_LOCK_CACHEABLE, m_bSpromLockCacheable);
     //}}AFX_DATA_MAP
 }
@@ -87,7 +87,7 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_TC8226, CDialog)
     //{{AFX_MSG_MAP(CDialogConfiguration_TC8226)
     ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnRadioBs)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnCheckClick)
-    ON_EN_CHANGE(IDC_EDIT_FLASH_BASE_ADDRESS, OnChangeEditFlashBaseAddress)
+    ON_EN_KILLFOCUS(IDC_EDIT_FLASH_BASE_ADDRESS, OnChangeEditFlashBaseAddress)
     ON_BN_CLICKED(IDC_RADIO_BOR_30, OnRadioClk)
     ON_BN_CLICKED(IDC_RADIO_BOR_28, OnRadioClk)
     ON_BN_CLICKED(IDC_RADIO_BOR_26, OnRadioClk)
@@ -232,7 +232,7 @@ void CDialogConfiguration_TC8226::ConfigToGUI(int nEventID)
 
     m_bCheckBrownOutDetect = ((uConfig0 & TC8226_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
     m_bCheckBrownOutReset = ((uConfig0 & TC8226_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
-    m_bCheckBootLoader = ((uConfig0 & TC8226_FLASH_CONFIG_BOOTLOADER) == 0 ? TRUE : FALSE);
+    m_bCheckBootLoader = FALSE;//((uConfig0 & TC8226_FLASH_CONFIG_BOOTLOADER) == 0 ? TRUE : FALSE);
     m_bDataFlashEnable = ((uConfig0 & TC8226_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
     m_bSecurityLock = ((uConfig0 & TC8226_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
     m_bICELock = ((uConfig0 & TC8226_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
@@ -249,7 +249,7 @@ void CDialogConfiguration_TC8226::ConfigToGUI(int nEventID)
     m_SpinDataFlashSize.EnableWindow(m_bDataFlashEnable);
     m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
     m_sConfigValue1.Format(_T("0x%08X"), uConfig1);
-    m_bSecurityBootLock = ((uConfig2 & TC8226_FLASH_CONFIG_SBLOCK) == 0x5A5A ? FALSE : TRUE);
+    m_bSecurityBootLock = FALSE;//((uConfig2 & TC8226_FLASH_CONFIG_SBLOCK) == 0x5A5A ? FALSE : TRUE);
 
     switch (uConfig3 & TC8226_FLASH_CONFIG_SPIM) {
         case TC8226_FLASH_CONFIG_SPIM_SEL0:
@@ -273,28 +273,19 @@ void CDialogConfiguration_TC8226::ConfigToGUI(int nEventID)
             break;
     }
 
-    switch (uConfig3 & TC8226_FLASH_CONFIG_UART1) {
-        case TC8226_FLASH_CONFIG_UART1_SEL0:
-            m_nRadioUART = 0;
-            break;
-
-        case TC8226_FLASH_CONFIG_UART1_SEL1:
-            m_nRadioUART = 1;
-            break;
-
-        case TC8226_FLASH_CONFIG_UART1_SEL2:
-            m_nRadioUART = 2;
-            break;
-
-        case TC8226_FLASH_CONFIG_UART1_SEL3:
-            m_nRadioUART = 3;
-            break;
-
-        default:
-            m_nRadioUART = 3;
-            break;
-    }
-
+    //switch(uConfig3 & TC8226_FLASH_CONFIG_UART1)
+    //{
+    //case TC8226_FLASH_CONFIG_UART1_SEL0:
+    //	m_nRadioUART = 0; break;
+    //case TC8226_FLASH_CONFIG_UART1_SEL1:
+    //	m_nRadioUART = 1; break;
+    //case TC8226_FLASH_CONFIG_UART1_SEL2:
+    //	m_nRadioUART = 2; break;
+    //case TC8226_FLASH_CONFIG_UART1_SEL3:
+    //	m_nRadioUART = 3; break;
+    //default:
+    //	m_nRadioUART = 3; break;
+    //}
     m_sConfigValue2.Format(_T("0x%08X"), uConfig2);
     m_sConfigValue3.Format(_T("0x%08X"), uConfig3);
 }
@@ -490,30 +481,21 @@ void CDialogConfiguration_TC8226::GUIToConfig(int nEventID)
             uConfig3 |= (m_ConfigValue.m_value[3] & TC8226_FLASH_CONFIG_SPIM);
     }
 
-    uConfig3 &= ~TC8226_FLASH_CONFIG_UART1;
-
-    switch (m_nRadioUART) {
-        case 0:
-            uConfig3 |= TC8226_FLASH_CONFIG_UART1_SEL0;
-            break;
-
-        case 1:
-            uConfig3 |= TC8226_FLASH_CONFIG_UART1_SEL1;
-            break;
-
-        case 2:
-            uConfig3 |= TC8226_FLASH_CONFIG_UART1_SEL2;
-            break;
-
-        case 3:
-            uConfig3 |= TC8226_FLASH_CONFIG_UART1_SEL3;
-            break;
-
-        default:
-            /* Keep old value */
-            uConfig3 |= (m_ConfigValue.m_value[3] & TC8226_FLASH_CONFIG_UART1);
-    }
-
+    //uConfig3 &= ~TC8226_FLASH_CONFIG_UART1;
+    //switch(m_nRadioUART)
+    //{
+    //case 0:
+    //	uConfig3 |= TC8226_FLASH_CONFIG_UART1_SEL0; break;
+    //case 1:
+    //	uConfig3 |= TC8226_FLASH_CONFIG_UART1_SEL1; break;
+    //case 2:
+    //	uConfig3 |= TC8226_FLASH_CONFIG_UART1_SEL2; break;
+    //case 3:
+    //	uConfig3 |= TC8226_FLASH_CONFIG_UART1_SEL3; break;
+    //default:
+    //	/* Keep old value */
+    //	uConfig3 |= (m_ConfigValue.m_value[3] & TC8226_FLASH_CONFIG_UART1);
+    //}
     m_ConfigValue.m_value[2] = uConfig2;
     m_ConfigValue.m_value[3] = uConfig3;
 }

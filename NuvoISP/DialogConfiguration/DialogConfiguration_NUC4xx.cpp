@@ -141,7 +141,7 @@ void CDialogConfiguration_NUC4xx::ConfigToGUI(int nEventID)
             m_nRadioClk = 0;
             break;
 
-        case NUC4XX_FLASH_CONFIG_I22M:
+        case NUC4XX_FLASH_CONFIG_CFOSC:
         default:
             m_nRadioClk = 1;
             break;

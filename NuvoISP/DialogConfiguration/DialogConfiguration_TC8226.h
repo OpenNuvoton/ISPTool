@@ -24,7 +24,7 @@ public:
 
 // Dialog Data
     //{{AFX_DATA(CDialogConfiguration_TC8226)
-    enum { IDD = IDD_DIALOG_CONFIGURATION_TC8226 };
+    enum { IDD = IDD_DIALOG_CONFIGURATION_TC8226_WO_MKROM };
     CNumEdit	m_FlashBaseAddress;
     CEdit	m_DataFlashSize;
     int		m_nRadioBov;
