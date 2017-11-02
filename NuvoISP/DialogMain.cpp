@@ -320,8 +320,9 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 #include "DialogConfiguration_M0564.h"
 
 #include "DialogConfiguration_N76E1T.h"
-
 #include "DialogConfiguration_TC8226.h"
+
+#include "DialogConfiguration_M2351.h"
 
 extern CPartNumID *psChipData;
 
@@ -552,6 +553,11 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
                 Config = (((CDialogConfiguration_TC8226 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
+            case IDD_DIALOG_CONFIGURATION_M2351:
+                pConfigDlg = new CDialogConfiguration_M2351;
+                Config = (((CDialogConfiguration_M2351 *)pConfigDlg)->m_uConfigValue);
+                break;
+
             case 0x505:	// "NUC505";
                 printf("NUC505 ");
 
@@ -716,6 +722,7 @@ UINT DialogTemplate[] = {
     IDD_DIALOG_CONFIGURATION_NUC200,
     IDD_DIALOG_CONFIGURATION_NUC400,
     IDD_DIALOG_CONFIGURATION_TC8226,
+    IDD_DIALOG_CONFIGURATION_M2351,
 };
 
 struct CPartNumID g_TestPartNumIDs[] = {
@@ -760,6 +767,7 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
         menu.AppendMenu(MF_SEPARATOR);
         menu.AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M451, _T("M451 Series"));
         menu.AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_TC8226, _T("M480 Series"));
+        menu.AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M2351, _T("M2351 Series"));
         POINT point;
         GetCursorPos(&point);
         menu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this);

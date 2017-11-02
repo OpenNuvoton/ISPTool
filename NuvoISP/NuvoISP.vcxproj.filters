@@ -51,6 +51,9 @@
     <ClInclude Include="DataBase\PartNumID.h">
       <Filter>External\DataBase</Filter>
     </ClInclude>
+    <ClInclude Include="DialogConfiguration\DialogConfiguration_M2351.h">
+      <Filter>External\DialogConfiguration</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -168,6 +171,9 @@
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
     <ClCompile Include="DialogConfiguration\DialogConfiguration_TC8226.cpp">
+      <Filter>External\DialogConfiguration</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogConfiguration\DialogConfiguration_M2351.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
   </ItemGroup>
