@@ -38,8 +38,6 @@ extern "C"
 #define FMC_APROM_END           0x00010000UL    /*!< APROM End Address           */
 #define FMC_LDROM_BASE          0x00100000UL    /*!< LDROM Base Address          */
 #define FMC_LDROM_END           0x00101200UL    /*!< LDROM End Address           */
-#define FMC_SPROM_BASE          0x00200000UL    /*!< SPROM Base Address          */
-#define FMC_SPROM_END           0x00200200UL    /*!< SPROM End Address           */
 #define FMC_CONFIG_BASE         0x00300000UL    /*!< User Configuration Address  */
 #define FMC_KPROM_BASE          0x00301000UL    /*!< Security ROM base address   */
 
@@ -47,7 +45,6 @@ extern "C"
 #define FMC_PAGE_ADDR_MASK      0xFFFFFE00UL    /*!< Flash page address mask     */
 
 #define FMC_LDROM_SIZE          0x1200          /*!< LDROM Size (4.5 Kbytes)     */
-#define FMC_SPROM_SIZE          0x200           /*!< SPROM Size (0.5 Kbytes)     */
 
 
 /*---------------------------------------------------------------------------------------------------------*/
@@ -92,8 +89,6 @@ extern "C"
 #define FMC_DISABLE_CFG_UPDATE()    (FMC->ISPCTL &= ~FMC_ISPCTL_CFGUEN_Msk)     /*!< Disable User Config update */
 #define FMC_ENABLE_LD_UPDATE()      (FMC->ISPCTL |=  FMC_ISPCTL_LDUEN_Msk)      /*!< Enable LDROM update        */
 #define FMC_DISABLE_LD_UPDATE()     (FMC->ISPCTL &= ~FMC_ISPCTL_LDUEN_Msk)      /*!< Disable LDROM update       */
-#define FMC_ENABLE_SP_UPDATE()      (FMC->ISPCTL |=  FMC_ISPCTL_SPUEN_Msk)      /*!< Enable SPROM update        */
-#define FMC_DISABLE_SP_UPDATE()     (FMC->ISPCTL &= ~FMC_ISPCTL_SPUEN_Msk)      /*!< Disable SPROM update       */
 #define FMC_DISABLE_ISP()           (FMC->ISPCTL &= ~FMC_ISPCTL_ISPEN_Msk)      /*!< Disable ISP function       */
 #define FMC_ENABLE_ISP()            (FMC->ISPCTL |=  FMC_ISPCTL_ISPEN_Msk)      /*!< Enable ISP function        */
 #define FMC_GET_FAIL_FLAG()         ((FMC->ISPCTL & FMC_ISPCTL_ISPFF_Msk) ? 1 : 0)  /*!< Get ISP fail flag  */
@@ -105,7 +100,6 @@ extern "C"
 
 extern void FMC_Close(void);
 extern int32_t FMC_Erase(uint32_t u32PageAddr);
-extern int32_t FMC_Erase_SPROM(void);
 extern int32_t FMC_GetBootSource(void);
 extern void FMC_Open(void);
 extern uint32_t FMC_Read(uint32_t u32Addr);
@@ -121,7 +115,7 @@ extern int32_t  FMC_ReadConfig(uint32_t *u32Config, uint32_t u32Count);
 extern int32_t  FMC_WriteConfig(uint32_t *u32Config, uint32_t u32Count);
 extern int32_t  FMC_GetChkSum(uint32_t u32Addr, uint32_t u32Count, uint32_t *u32ChkSum);
 extern uint32_t FMC_CheckAllOne(uint32_t u32addr, uint32_t u32count);
-extern int32_t  FMC_SKey_Setup(uint32_t key[3], uint32_t kpmax, uint32_t kemax, int lock_CONFIG, int lock_SPROM);
+extern int32_t  FMC_SKey_Setup(uint32_t key[3], uint32_t kpmax, uint32_t kemax, int lock_CONFIG);
 extern int32_t  FMC_SKey_Compare(uint32_t key[3]);
 
 

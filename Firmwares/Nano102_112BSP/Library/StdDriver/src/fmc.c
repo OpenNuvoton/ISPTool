@@ -12,7 +12,7 @@
 //* Includes ------------------------------------------------------------------*/
 #include <stdio.h>
 
-#include "Nano1x2Series.h"
+#include "Nano1X2Series.h"
 
 
 /** @addtogroup NANO1X2_Device_Driver NANO102/112 Device Driver

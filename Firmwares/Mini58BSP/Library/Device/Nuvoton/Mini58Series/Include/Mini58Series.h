@@ -8,7 +8,7 @@
  *           bits definitions and memory mapping for NuMicro Mini58 series MCU.
  *
  * @note
- * Copyright (C) 2015-2016 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2017 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 /**
    \mainpage NuMicro Mini58 Driver Reference Guide
@@ -47,7 +47,7 @@
    *
    * <b>Copyright Notice</b>
    *
-   * Copyright (C) 2015-2016 Nuvoton Technology Corp. All rights reserved.
+   * Copyright (C) 2015-2017 Nuvoton Technology Corp. All rights reserved.
    */
 
 #ifndef __MINI58SERIES_H__

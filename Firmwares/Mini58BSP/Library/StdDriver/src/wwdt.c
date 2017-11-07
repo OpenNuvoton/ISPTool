@@ -8,7 +8,7 @@
  * @note
  * Copyright (C) 2015 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
-#include "mini58Series.h"
+#include "Mini58Series.h"
 
 /** @addtogroup Mini58_Device_Driver Mini58 Device Driver
   @{

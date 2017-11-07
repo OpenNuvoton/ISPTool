@@ -131,7 +131,7 @@ uint32_t CAN_GetCANBitRate(CAN_T  *tCAN)
     u8Tseg2 = (tCAN->BTIME & CAN_BTIME_TSEG2_Msk) >> CAN_BTIME_TSEG2_Pos;
     u32Bpr  = (tCAN->BTIME & CAN_BTIME_BRP_Msk) | (tCAN->BRPE << 6);
 
-    return (SystemCoreClock/(u32Bpr+1)/(u8Tseg1 + u8Tseg2 + 3));
+    return (CLK_GetPCLKFreq()/(u32Bpr+1)/(u8Tseg1 + u8Tseg2 + 3));
 }
 
 /**
@@ -446,7 +446,7 @@ uint32_t CAN_SetBaudRate(CAN_T *tCAN, uint32_t u32BaudRate)
 
     SystemCoreClockUpdate();
 
-    clock_freq = SystemCoreClock;
+    clock_freq = CLK_GetPCLKFreq();
 
     if(u32BaudRate >= 1000000)
         u32BaudRate = 1000000;

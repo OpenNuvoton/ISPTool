@@ -82,7 +82,7 @@ void SC_Close(SC_T *sc)
   *                 - \ref SC_PIN_STATE_HIGH
   *                 - \ref SC_PIN_STATE_LOW
   *                 - \ref SC_PIN_STATE_IGNORE, no card detect pin, always assumes card present
-  * @param[in] u32PWR Power on polarity, select the PWR pin state which could set smartcard VCC to high level. Could be
+  * @param[in] u32PWR Power off polarity, select the PWR pin state which could set smartcard VCC to high level. Could be
   *                 - \ref SC_PIN_STATE_HIGH
   *                 - \ref SC_PIN_STATE_LOW
   * @return None

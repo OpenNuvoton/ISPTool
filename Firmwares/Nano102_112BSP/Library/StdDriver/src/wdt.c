@@ -8,7 +8,7 @@
  * @note
  * Copyright (C) 2013~2014 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
-#include "Nano1x2Series.h"
+#include "Nano1X2Series.h"
 
 /** @addtogroup NANO1X2_Device_Driver NANO102/112 Device Driver
   @{

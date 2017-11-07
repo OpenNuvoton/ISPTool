@@ -316,6 +316,8 @@ void UART_SelectRS485Mode(UART_T* uart, uint32_t u32Mode, uint32_t u32Addr)
  *    @param[in]    u32WriteBytes   The byte number of data.
  *
  *    @return   u32Count: transfer byte count
+ *    @note     This function returns when the TX FIFO is full. So the transfer byte count(u32Count) maybe less than u32WriteBytes.
+ *              Application should check the return value for the actual amount of data written to UART FIFO.
  */
 uint32_t UART_Write(UART_T* uart,uint8_t *pu8TxBuf, uint32_t u32WriteBytes)
 {

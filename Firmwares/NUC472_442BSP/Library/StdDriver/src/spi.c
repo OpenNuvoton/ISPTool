@@ -142,7 +142,7 @@ uint32_t SPI_SetBusClock(SPI_T *spi, uint32_t u32BusClock)
         else
             u32ClkSrc = CLK_GetPLLClockFreq();
     } else if(spi == SPI2) {
-        if((CLK->CLKSEL1 & CLK_CLKSEL1_SPI1SEL_Msk) == CLK_CLKSEL1_SPI2SEL_PCLK)
+        if((CLK->CLKSEL1 & CLK_CLKSEL1_SPI2SEL_Msk) == CLK_CLKSEL1_SPI2SEL_PCLK)
             u32ClkSrc = CLK_GetPCLKFreq();
         else
             u32ClkSrc = CLK_GetPLLClockFreq();

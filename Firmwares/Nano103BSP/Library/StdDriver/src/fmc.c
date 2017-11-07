@@ -62,30 +62,6 @@ int32_t FMC_Erase(uint32_t u32PageAddr)
     return 0;
 }
 
-
-/**
-  * @brief Execute FMC_ISPCMD_PAGE_ERASE command to erase SPROM. The page size is 512 bytes.
-  * @return   SPROM page erase success or not.
-  * @retval   0  Success
-  * @retval   -1  Erase failed
-  */
-int32_t FMC_Erase_SPROM(void)
-{
-    FMC->ISPCMD = FMC_ISPCMD_PAGE_ERASE;
-    FMC->ISPADDR = FMC_SPROM_BASE;
-    FMC->ISPDAT = 0x0055AA03;
-    FMC->ISPTRG = FMC_ISPTRG_ISPGO_Msk;
-
-    while (FMC->ISPTRG & FMC_ISPTRG_ISPGO_Msk) ;
-
-    if (FMC->ISPCTL & FMC_ISPCTL_ISPFF_Msk) {
-        FMC->ISPCTL |= FMC_ISPCTL_ISPFF_Msk;
-        return -1;
-    }
-    return 0;
-}
-
-
 /**
   * @brief Get the current boot source.
   * @return The current boot source.
@@ -370,18 +346,16 @@ uint32_t  FMC_CheckAllOne(uint32_t u32Addr, uint32_t u32Count)
   * @param[in] kpmax    Maximum unmatched power-on counting number.
   * @param[in] kemax    Maximum unmatched counting number.
   * @param[in] lock_CONFIG   1: Security key lock CONFIG to write-protect. 0: Don't lock CONFIG.
-  * @param[in] lock_SPROM    1: Security key lock SPROM to write-protect. 0: Don't lock SPROM.
   * @retval   0     Success.
   * @retval   -1    Key has been setup, It's not allowed to setup key again.
   * @retval   -2    Failed to erase flash.
   * @retval   -3    Failed to program key.
   * @retval   -4    Key lock function failed.
   * @retval   -5    CONFIG lock function failed.
-  * @retval   -6    SPROM lock function failed.
   * @retval   -7    KPMAX function failed.
   * @retval   -8    KEMAX function failed.
   */
-int32_t  FMC_SKey_Setup(uint32_t key[3], uint32_t kpmax, uint32_t kemax, int lock_CONFIG, int lock_SPROM)
+int32_t  FMC_SKey_Setup(uint32_t key[3], uint32_t kpmax, uint32_t kemax, int lock_CONFIG)
 {
     uint32_t  lock_ctrl = 0;
 
@@ -396,9 +370,6 @@ int32_t  FMC_SKey_Setup(uint32_t key[3], uint32_t kpmax, uint32_t kemax, int loc
 
     if (!lock_CONFIG)
         lock_ctrl |= 0x1;
-
-    if (!lock_SPROM)
-        lock_ctrl |= 0x2;
 
     FMC_Write(FMC_KPROM_BASE, key[0]);
     FMC_Write(FMC_KPROM_BASE+0x4, key[1]);
@@ -418,12 +389,6 @@ int32_t  FMC_SKey_Setup(uint32_t key[3], uint32_t kpmax, uint32_t kemax, int loc
             (!lock_CONFIG && (FMC->KEYSTS & FMC_KEYSTS_CFGFLAG_Msk))) {
         printf("CONFIG lock failed!\n");
         return -5;
-    }
-
-    if ((lock_SPROM && !(FMC->KEYSTS & FMC_KEYSTS_SPFLAG_Msk)) ||
-            (!lock_SPROM && (FMC->KEYSTS & FMC_KEYSTS_SPFLAG_Msk))) {
-        printf("SPROM lock failed!\n");
-        return -6;
     }
 
     if (((FMC->KPCNT & FMC_KPCNT_KPMAX_Msk) >> FMC_KPCNT_KPMAX_Pos) != kpmax) {
