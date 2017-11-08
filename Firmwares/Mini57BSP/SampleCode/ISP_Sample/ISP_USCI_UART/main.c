@@ -23,8 +23,9 @@ void SYS_Init(void)
     /* Waiting for Internal RC clock ready */
     while(!(CLK->STATUS & CLK_STATUS_HIRCSTB_Msk));
 
-    CLK->CLKSEL0 &= (~CLK_CLKSEL0_HCLKSEL_Msk);
-    CLK->CLKSEL0 |= CLK_HCLK_SRC_HIRC;
+    //CLK->CLKSEL0 &= (~CLK_CLKSEL0_HCLKSEL_Msk);
+    //CLK->CLKSEL0 |= CLK_HCLK_SRC_HIRC;
+    CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLKSEL_Msk)) | CLK_HCLK_SRC_HIRC;
     CLK->CLKDIV &= ~CLK_CLKDIV_HCLKDIV_Msk;
     CLK->CLKDIV |= CLK_CLKDIV_HCLK(1);
     SystemCoreClock = __HIRC / 1;        		// HCLK

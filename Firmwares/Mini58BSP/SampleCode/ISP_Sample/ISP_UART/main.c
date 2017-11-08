@@ -40,8 +40,9 @@ void SYS_Init(void)
     CLK->PLLCTL = PLLCTL_SETTING;
     while(!(CLK->STATUS & CLK_STATUS_PLLSTB_Msk));
     CLK->CLKDIV = (CLK->CLKDIV & ~CLK_CLKDIV_HCLKDIV_Msk ) | CLK_CLKDIV_HCLK(2);
-    CLK->CLKSEL0 &= (~CLK_CLKSEL0_HCLKSEL_Msk);
-    CLK->CLKSEL0 |= CLK_CLKSEL0_HCLKSEL_PLL;
+    //CLK->CLKSEL0 &= (~CLK_CLKSEL0_HCLKSEL_Msk);
+    //CLK->CLKSEL0 |= CLK_CLKSEL0_HCLKSEL_PLL;
+    CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLKSEL_Msk)) | CLK_CLKSEL0_HCLKSEL_PLL;
 
     /* Update System Core Clock */
     PllClock        = PLL_CLOCK;            // PLL
@@ -68,11 +69,6 @@ void SYS_Init(void)
     /* Lock protected registers */
 //  SYS_LockReg();
 }
-
-
-
-
-
 
 /*---------------------------------------------------------------------------------------------------------*/
 /* MAIN function                                                                                           */

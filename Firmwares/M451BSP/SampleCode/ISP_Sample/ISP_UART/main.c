@@ -44,8 +44,9 @@ void SYS_Init(void)
     while(!(CLK->STATUS & CLK_STATUS_HIRCSTB_Msk));
 
     /* Select HCLK clock source as HIRC and and HCLK clock divider as 1 */
-    CLK->CLKSEL0 &= ~CLK_CLKSEL0_HCLKSEL_Msk;
-    CLK->CLKSEL0 |= CLK_CLKSEL0_HCLKSEL_HIRC;
+    //CLK->CLKSEL0 &= ~CLK_CLKSEL0_HCLKSEL_Msk;
+    //CLK->CLKSEL0 |= CLK_CLKSEL0_HCLKSEL_HIRC;
+    CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLKSEL_Msk) | CLK_CLKSEL0_HCLKSEL_HIRC;
     CLK->CLKDIV0 &= ~CLK_CLKDIV0_HCLKDIV_Msk;
     CLK->CLKDIV0 |= CLK_CLKDIV0_HCLK(1);
 
@@ -55,8 +56,9 @@ void SYS_Init(void)
     /* Set core clock as PLL_CLOCK from PLL */
     CLK->PLLCTL = PLLCTL_SETTING;
     while(!(CLK->STATUS & CLK_STATUS_PLLSTB_Msk));
-    CLK->CLKSEL0 &= (~CLK_CLKSEL0_HCLKSEL_Msk);
-    CLK->CLKSEL0 |= CLK_CLKSEL0_HCLKSEL_PLL;
+    //CLK->CLKSEL0 &= (~CLK_CLKSEL0_HCLKSEL_Msk);
+    //CLK->CLKSEL0 |= CLK_CLKSEL0_HCLKSEL_PLL;
+    CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLKSEL_Msk) | CLK_CLKSEL0_HCLKSEL_PLL;
 
     /* Update System Core Clock */
     PllClock        = PLL_CLOCK;            // PLL
