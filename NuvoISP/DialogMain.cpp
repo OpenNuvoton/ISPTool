@@ -305,7 +305,6 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 #include "DialogConfiguration_Mini51CN.h"
 #include "DialogConfiguration_MT500.h"
 #include "DialogConfiguration_Nano100.h"
-#include "DialogConfiguration_Nano100BN.h"
 #include "DialogConfiguration_Nano103.h"
 #include "DialogConfiguration_Nano112.h"
 #include "DialogConfiguration_NM1120.h"
@@ -400,22 +399,22 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
 
             case IDD_DIALOG_CONFIGURATION_NANO100:
                 if (uProgramMemorySize) {
+                    pConfigDlg = new CDialogConfiguration_Nano100AN(uProgramMemorySize);
+                } else {
+                    pConfigDlg = new CDialogConfiguration_Nano100AN;
+                }
+
+                Config = (((CDialogConfiguration_Nano100AN *)pConfigDlg)->m_ConfigValue.m_value);
+                break;
+
+            case IDD_DIALOG_CONFIGURATION_NANO100BN:
+                if (uProgramMemorySize) {
                     pConfigDlg = new CDialogConfiguration_Nano100(uProgramMemorySize);
                 } else {
                     pConfigDlg = new CDialogConfiguration_Nano100;
                 }
 
                 Config = (((CDialogConfiguration_Nano100 *)pConfigDlg)->m_ConfigValue.m_value);
-                break;
-
-            case IDD_DIALOG_CONFIGURATION_NANO100BN:
-                if (uProgramMemorySize) {
-                    pConfigDlg = new CDialogConfiguration_Nano100BN(uProgramMemorySize);
-                } else {
-                    pConfigDlg = new CDialogConfiguration_Nano100BN;
-                }
-
-                Config = (((CDialogConfiguration_Nano100BN *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
             case IDD_DIALOG_CONFIGURATION_NANO112:
@@ -759,6 +758,14 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
         subM051->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M051CN, _T("M051DN/DE, M058SAN Series"));
         menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subM051->m_hMenu, _T("M051 Series"));
         menu.AppendMenu(MF_SEPARATOR);
+        CMenu *subNano = new CMenu;
+        subNano->CreatePopupMenu();
+        subNano->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_NANO100, _T("NANO100A Series"));
+        subNano->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_NANO100BN, _T("NANO100B Series"));
+        subNano->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_NANO112, _T("NANO1X2 Series"));
+        subNano->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_NANO103, _T("NANO103 Series"));
+        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subNano->m_hMenu, _T("NANO Series"));
+        menu.AppendMenu(MF_SEPARATOR);
         CMenu *subNUC1xx = new CMenu;
         subNUC1xx->CreatePopupMenu();
         subNUC1xx->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_NUC103, _T("NUC123AN Series"));
@@ -774,6 +781,7 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
         menu.DestroyMenu();
         delete sub8051;
         delete subM051;
+        delete subNano;
         delete subNUC1xx;
     } else {
         ConfigDlgSel(CFG, sizeof(CFG));

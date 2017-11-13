@@ -19,7 +19,6 @@ public:
     CDialogConfiguration_Nano103(unsigned int uProgramMemorySize = 64 * 1024,
                                  CWnd *pParent = NULL);   // standard constructor
 
-
     CAppConfig::Nano100_configs_t m_ConfigValue;
 
 // Dialog Data
@@ -30,7 +29,6 @@ public:
     int		m_nRadioClk;
     int		m_nRadioBor;
     int		m_nRadioBS;
-    int		m_nRadioHXT;
     CString	m_sConfigValue0;
     CString	m_sConfigValue1;
     CString	m_sFlashBaseAddress;
@@ -45,7 +43,6 @@ public:
     unsigned int	m_uProgramMemorySize;
     //}}AFX_DATA
 
-
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CDialogConfiguration_Nano103)
@@ -58,17 +55,12 @@ protected:
     void ConfigToGUI();
     void GUIToConfig();
 
-
     // Generated message map functions
     //{{AFX_MSG(CDialogConfiguration_Nano103)
     virtual BOOL OnInitDialog();
-    afx_msg void OnRadioBov();
-    afx_msg void OnRadioBs();
-    afx_msg void OnCheckClick();
+    afx_msg void OnButtonClick();
     afx_msg void OnChangeEditFlashBaseAddress();
     virtual void OnOK();
-    afx_msg void OnRadioBor();
-    afx_msg void OnRadioHxt();
     afx_msg void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
     //}}AFX_MSG

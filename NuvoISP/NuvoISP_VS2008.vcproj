@@ -238,10 +238,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\dialogconfiguration\DialogConfiguration_Nano100BN.h"
-				>
-			</File>
-			<File
 				RelativePath=".\dialogconfiguration\DialogConfiguration_Nano103.h"
 				>
 			</File>
@@ -379,10 +375,6 @@
 				RelativePath=".\ISPTool.rc"
 				>
 			</File>
-			<File
-				RelativePath=".\res\ISPTool.rc2"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Source Files"
@@ -443,10 +435,6 @@
 			</File>
 			<File
 				RelativePath=".\dialogconfiguration\DialogConfiguration_Nano100.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\dialogconfiguration\DialogConfiguration_Nano100BN.cpp"
 				>
 			</File>
 			<File

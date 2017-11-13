@@ -16,9 +16,8 @@ class CDialogConfiguration_Nano100 : public CDialogResize
 {
 // Construction
 public:
-    CDialogConfiguration_Nano100(unsigned int uProgramMemorySize = 64 * 1024,
+    CDialogConfiguration_Nano100(unsigned int uProgramMemorySize = 123 * 1024,
                                  CWnd *pParent = NULL);   // standard constructor
-
 
     CAppConfig::Nano100_configs_t m_ConfigValue;
 
@@ -37,11 +36,11 @@ public:
     BOOL	m_bClockFilterEnable;
     BOOL	m_bDataFlashEnable;
     BOOL	m_bSecurityLock;
+    BOOL	m_bWDTEnable;
     CSpinButtonCtrl	m_SpinDataFlashSize;
 
     unsigned int	m_uProgramMemorySize;
     //}}AFX_DATA
-
 
 // Overrides
     // ClassWizard generated virtual function overrides
@@ -55,17 +54,12 @@ protected:
     void ConfigToGUI();
     void GUIToConfig();
 
-
     // Generated message map functions
     //{{AFX_MSG(CDialogConfiguration_Nano100)
     virtual BOOL OnInitDialog();
-    afx_msg void OnRadioBov();
-    afx_msg void OnRadioClk();
-    afx_msg void OnRadioBs();
-    afx_msg void OnCheckClick();
+    afx_msg void OnButtonClick();
     afx_msg void OnChangeEditFlashBaseAddress();
     virtual void OnOK();
-    afx_msg void OnRadioBor();
     afx_msg void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
     //}}AFX_MSG
@@ -74,5 +68,19 @@ protected:
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+/////////////////////////////////////////////////////////////////////////////
+// CDialogConfiguration_Nano100AN dialog
+
+class CDialogConfiguration_Nano100AN : public CDialogConfiguration_Nano100
+{
+// Construction
+public:
+    CDialogConfiguration_Nano100AN(unsigned int uProgramMemorySize = 64 * 1024,
+                                   CWnd *pParent = NULL);   // standard constructor
+
+protected:
+    virtual BOOL OnInitDialog();
+};
 
 #endif // !defined(AFX_DIALOGCONFIGURATION_NANO100_H__E0CD7A09_C5DC_481E_A871_03B422A615F8__INCLUDED_)

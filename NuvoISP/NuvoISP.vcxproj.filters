@@ -104,9 +104,6 @@
     <ClCompile Include="DialogConfiguration\DialogConfiguration_Nano100.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_Nano100BN.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
     <ClCompile Include="DialogConfiguration\DialogConfiguration_Nano103.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>

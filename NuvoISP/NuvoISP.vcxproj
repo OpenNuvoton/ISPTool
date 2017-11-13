@@ -134,7 +134,6 @@
     <ClCompile Include="DialogConfiguration\DialogConfiguration_MT500.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_N76E1T.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_Nano100.cpp" />
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_Nano100BN.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_Nano103.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_Nano112.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_NM1120.cpp" />

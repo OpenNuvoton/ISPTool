@@ -20,7 +20,6 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_Nano103 dialog
 
-
 CDialogConfiguration_Nano103::CDialogConfiguration_Nano103(unsigned int uProgramMemorySize,
         CWnd *pParent /*=NULL*/)
     : CDialogResize(CDialogConfiguration_Nano103::IDD, pParent)
@@ -37,7 +36,6 @@ CDialogConfiguration_Nano103::CDialogConfiguration_Nano103(unsigned int uProgram
     //}}AFX_DATA_INIT
 }
 
-
 void CDialogConfiguration_Nano103::DoDataExchange(CDataExchange *pDX)
 {
     CDialogResize::DoDataExchange(pDX);
@@ -46,7 +44,6 @@ void CDialogConfiguration_Nano103::DoDataExchange(CDataExchange *pDX)
     DDX_Control(pDX, IDC_EDIT_DATA_FLASH_SIZE, m_DataFlashSize);
     DDX_Control(pDX, IDC_SPIN_DATA_FLASH_SIZE, m_SpinDataFlashSize);
     DDX_Radio(pDX, IDC_RADIO_BOR_31, m_nRadioBor);
-    DDX_Radio(pDX, IDC_RADIO_HXT_H32, m_nRadioHXT);
     DDX_Radio(pDX, IDC_RADIO_BS_LDROM, m_nRadioBS);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_0, m_sConfigValue0);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_1, m_sConfigValue1);
@@ -60,39 +57,32 @@ void CDialogConfiguration_Nano103::DoDataExchange(CDataExchange *pDX)
     //}}AFX_DATA_MAP
 }
 
-
 BEGIN_MESSAGE_MAP(CDialogConfiguration_Nano103, CDialog)
     //{{AFX_MSG_MAP(CDialogConfiguration_Nano103)
-    ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnRadioBs)
+    ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnButtonClick)
     ON_EN_CHANGE(IDC_EDIT_FLASH_BASE_ADDRESS, OnChangeEditFlashBaseAddress)
-    ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_CLOCK_STOP_DETECT, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_MASS_ERASE, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnCheckClick)
-    ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnCheckClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_31, OnRadioBor)
-    ON_BN_CLICKED(IDC_RADIO_BOR_30, OnRadioBor)
-    ON_BN_CLICKED(IDC_RADIO_BOR_29, OnRadioBor)
-    ON_BN_CLICKED(IDC_RADIO_BOR_28, OnRadioBor)
-    ON_BN_CLICKED(IDC_RADIO_BOR_27, OnRadioBor)
-    ON_BN_CLICKED(IDC_RADIO_BOR_26, OnRadioBor)
-    ON_BN_CLICKED(IDC_RADIO_BOR_25, OnRadioBor)
-    ON_BN_CLICKED(IDC_RADIO_BOR_24, OnRadioBor)
-    ON_BN_CLICKED(IDC_RADIO_BOR_23, OnRadioBor)
-    ON_BN_CLICKED(IDC_RADIO_BOR_22, OnRadioBor)
-    ON_BN_CLICKED(IDC_RADIO_BOR_21, OnRadioBor)
-    ON_BN_CLICKED(IDC_RADIO_BOR_20, OnRadioBor)
-    ON_BN_CLICKED(IDC_RADIO_BOR_19, OnRadioBor)
-    ON_BN_CLICKED(IDC_RADIO_BOR_18, OnRadioBor)
-    ON_BN_CLICKED(IDC_RADIO_HXT_H32, OnRadioHxt)
-    ON_BN_CLICKED(IDC_RADIO_HXT_H24, OnRadioHxt)
-    ON_BN_CLICKED(IDC_RADIO_HXT_H16, OnRadioHxt)
-    ON_BN_CLICKED(IDC_RADIO_HXT_H12, OnRadioHxt)
-    ON_BN_CLICKED(IDC_RADIO_HXT_H8, OnRadioHxt)
-    ON_BN_CLICKED(IDC_RADIO_HXT_4, OnRadioHxt)
+    ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_CLOCK_STOP_DETECT, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_MASS_ERASE, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOR_31, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOR_30, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOR_29, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOR_28, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOR_27, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOR_26, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOR_25, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOR_24, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOR_23, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOR_22, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOR_21, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOR_20, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOR_19, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOR_18, OnButtonClick)
     ON_WM_SIZE()
     ON_WM_VSCROLL()
     ON_WM_HSCROLL()
@@ -122,7 +112,6 @@ BOOL CDialogConfiguration_Nano103::OnInitDialog()
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
 }
-
 
 void CDialogConfiguration_Nano103::ConfigToGUI()
 {
@@ -208,36 +197,6 @@ void CDialogConfiguration_Nano103::ConfigToGUI()
         default:
             m_nRadioBS = 3;
             break;
-    }
-
-    switch (uConfig0 & NANO103_FLASH_CONFIG_HXT_GAIN) {
-        case NANO103_FLASH_CONFIG_HXT_H32:
-            m_nRadioHXT = 0;
-            break;
-
-        case NANO103_FLASH_CONFIG_HXT_H24:
-            m_nRadioHXT = 1;
-            break;
-
-        case NANO103_FLASH_CONFIG_HXT_H16:
-            m_nRadioHXT = 2;
-            break;
-
-        case NANO103_FLASH_CONFIG_HXT_H12:
-            m_nRadioHXT = 3;
-            break;
-
-        case NANO103_FLASH_CONFIG_HXT_H8:
-            m_nRadioHXT = 4;
-            break;
-
-        case NANO103_FLASH_CONFIG_HXT_4:
-            m_nRadioHXT = 5;
-            break;
-
-        default:
-            /* Keep old value */
-            uConfig0 |= (m_ConfigValue.m_value[0] & NANO103_FLASH_CONFIG_HXT_GAIN);
     }
 
     m_bDataFlashEnable = ((uConfig0 & NANO100_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
@@ -349,39 +308,6 @@ void CDialogConfiguration_Nano103::GUIToConfig()
             uConfig0 |= (m_ConfigValue.m_value[0] & NANO103_FLASH_CONFIG_CBORST);
     }
 
-    uConfig0 &= ~NANO103_FLASH_CONFIG_HXT_GAIN;
-
-    switch (m_nRadioHXT) {
-        case 0:
-            uConfig0 |= NANO103_FLASH_CONFIG_HXT_H32;
-            break;
-
-        case 1:
-            uConfig0 |= NANO103_FLASH_CONFIG_HXT_H24;
-            break;
-
-        case 2:
-            uConfig0 |= NANO103_FLASH_CONFIG_HXT_H16;
-            break;
-
-        case 3:
-            uConfig0 |= NANO103_FLASH_CONFIG_HXT_H12;
-            break;
-
-        case 4:
-            uConfig0 |= NANO103_FLASH_CONFIG_HXT_H8;
-            break;
-
-        case 5:
-            uConfig0 |= NANO103_FLASH_CONFIG_HXT_4;
-            break;
-
-        //case -1: break;
-        default:
-            /* Keep old value */
-            uConfig0 |= (m_ConfigValue.m_value[0] & NANO103_FLASH_CONFIG_HXT_GAIN);
-    }
-
     if (m_bCheckBrownOutDetect) {
         uConfig0 &= ~NANO103_FLASH_CONFIG_CBODEN;
     } else {
@@ -418,26 +344,13 @@ void CDialogConfiguration_Nano103::GUIToConfig()
     m_ConfigValue.m_value[1] = uConfig1;
 }
 
-
-void CDialogConfiguration_Nano103::OnRadioBov()
+void CDialogConfiguration_Nano103::OnButtonClick()
 {
     // TODO: Add your control notification handler code here
     UpdateData(TRUE);
     GUIToConfig();
     ConfigToGUI();
     UpdateData(FALSE);
-}
-
-void CDialogConfiguration_Nano103::OnRadioBs()
-{
-    // TODO: Add your control notification handler code here
-    OnRadioBov();
-}
-
-void CDialogConfiguration_Nano103::OnCheckClick()
-{
-    // TODO: Add your control notification handler code here
-    OnRadioBov();
 }
 
 void CDialogConfiguration_Nano103::OnChangeEditFlashBaseAddress()
@@ -464,20 +377,6 @@ void CDialogConfiguration_Nano103::OnOK()
     UpdateData(TRUE);
     GUIToConfig();
     CDialog::OnOK();
-}
-
-
-
-void CDialogConfiguration_Nano103::OnRadioBor()
-{
-    // TODO: Add your control notification handler code here
-    OnRadioBov();
-}
-
-void CDialogConfiguration_Nano103::OnRadioHxt()
-{
-    // TODO: Add your control notification handler code here
-    OnRadioBov();
 }
 
 void CDialogConfiguration_Nano103::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)
