@@ -45,7 +45,7 @@ BOOL CISPToolApp::InitInstance()
     //freopen("CONIN$", "r+t", stdin);
     // 建立殼層管理員，以防對話方塊包含
     // 任何殼層樹狀檢視或殼層清單檢視控制項。
-    CShellManager *pShellManager = new CShellManager;
+    //CShellManager *pShellManager = new CShellManager;
     // 標準初始設定
     // 如果您不使用這些功能並且想減少
     // 最後完成的可執行檔大小，您可以
@@ -58,9 +58,9 @@ BOOL CISPToolApp::InitInstance()
     MainDlg.DoModal();
 
     // 刪除上面所建立的殼層管理員。
-    if (pShellManager != NULL) {
-        delete pShellManager;
-    }
+    //if (pShellManager != NULL) {
+    //    delete pShellManager;
+    //}
 
     //FreeConsole();
     // 因為已經關閉對話方塊，傳回 FALSE，所以我們會結束應用程式，
