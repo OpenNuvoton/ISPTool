@@ -48,7 +48,6 @@ public:
     unsigned int	m_uDataFlashSize;
     //}}AFX_DATA
 
-
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CDialogConfiguration_NUC1xx)
@@ -61,14 +60,10 @@ protected:
     void ConfigToGUI();
     void GUIToConfig();
 
-
     // Generated message map functions
     //{{AFX_MSG(CDialogConfiguration_NUC1xx)
     virtual BOOL OnInitDialog();
-    afx_msg void OnRadioBov();
-    afx_msg void OnRadioClk();
-    afx_msg void OnRadioBs();
-    afx_msg void OnCheckClick();
+    afx_msg void OnButtonClick();
     afx_msg void OnChangeEditFlashBaseAddress();
     virtual void OnOK();
     afx_msg void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult);

@@ -20,7 +20,6 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_Mini51BN dialog
 
-
 CDialogConfiguration_Mini51BN::CDialogConfiguration_Mini51BN(unsigned int uProgramMemorySize,
         CWnd *pParent /*=NULL*/)
     : CDialogResize(CDialogConfiguration_Mini51BN::IDD, pParent)
@@ -38,7 +37,6 @@ CDialogConfiguration_Mini51BN::CDialogConfiguration_Mini51BN(unsigned int uProgr
     m_bCheckBrownOutReset = FALSE;
     //}}AFX_DATA_INIT
 }
-
 
 void CDialogConfiguration_Mini51BN::DoDataExchange(CDataExchange *pDX)
 {
@@ -61,21 +59,20 @@ void CDialogConfiguration_Mini51BN::DoDataExchange(CDataExchange *pDX)
     //}}AFX_DATA_MAP
 }
 
-
 BEGIN_MESSAGE_MAP(CDialogConfiguration_Mini51BN, CDialog)
     //{{AFX_MSG_MAP(CDialogConfiguration_Mini51BN)
-    ON_BN_CLICKED(IDC_RADIO_BOV_DISABLE, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_CHECK_CLOCK_FILTER_ENABLE, OnCheckClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_DISABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_CLOCK_FILTER_ENABLE, OnButtonClick)
     ON_EN_CHANGE(IDC_EDIT_FLASH_BASE_ADDRESS, OnChangeEditFlashBaseAddress)
-    ON_BN_CLICKED(IDC_RADIO_BOV_38, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_BOV_27, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnCheckClick)
-    ON_BN_CLICKED(IDC_RADIO_IO_TRI, OnRadioIO)
-    ON_BN_CLICKED(IDC_RADIO_IO_BI, OnRadioIO)
+    ON_BN_CLICKED(IDC_RADIO_BOV_38, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_27, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_IO_TRI, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_IO_BI, OnButtonClick)
     ON_WM_SIZE()
     ON_WM_VSCROLL()
     ON_WM_HSCROLL()
@@ -104,9 +101,6 @@ BOOL CDialogConfiguration_Mini51BN::OnInitDialog()
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
 }
-
-
-
 
 void CDialogConfiguration_Mini51BN::ConfigToGUI()
 {
@@ -216,32 +210,13 @@ void CDialogConfiguration_Mini51BN::GUIToConfig()
     m_ConfigValue.m_value[1] = uConfig1;
 }
 
-
-void CDialogConfiguration_Mini51BN::OnRadioBov()
+void CDialogConfiguration_Mini51BN::OnButtonClick()
 {
     // TODO: Add your control notification handler code here
     UpdateData(TRUE);
     GUIToConfig();
     ConfigToGUI();
     UpdateData(FALSE);
-}
-
-void CDialogConfiguration_Mini51BN::OnRadioIO()
-{
-    // TODO: Add your control notification handler code here
-    OnRadioBov();
-}
-
-void CDialogConfiguration_Mini51BN::OnRadioBs()
-{
-    // TODO: Add your control notification handler code here
-    OnRadioBov();
-}
-
-void CDialogConfiguration_Mini51BN::OnCheckClick()
-{
-    // TODO: Add your control notification handler code here
-    OnRadioBov();
 }
 
 void CDialogConfiguration_Mini51BN::OnChangeEditFlashBaseAddress()
@@ -269,8 +244,6 @@ void CDialogConfiguration_Mini51BN::OnOK()
     GUIToConfig();
     CDialog::OnOK();
 }
-
-
 
 void CDialogConfiguration_Mini51BN::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)
 {

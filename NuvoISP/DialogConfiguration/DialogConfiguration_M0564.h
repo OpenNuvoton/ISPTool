@@ -19,7 +19,6 @@ public:
     CDialogConfiguration_M0564(unsigned int uPID = 0, unsigned int uProgramMemorySize = 256 * 1024,
                                CWnd *pParent = NULL);   // standard constructor
 
-
     CAppConfig::M0564_configs_t m_ConfigValue;
 
 // Dialog Data
@@ -64,14 +63,8 @@ protected:
     // Generated message map functions
     //{{AFX_MSG(CDialogConfiguration_NUC4xx)
     virtual BOOL OnInitDialog();
-    afx_msg void OnRadioBov();
-    afx_msg void OnRadioClk();
-    afx_msg void OnRadioBs();
-    afx_msg void OnRadioGpf();
-    afx_msg void OnRadioIO();
-    afx_msg void OnCheckClick();
+    afx_msg void OnButtonClick();
     afx_msg void OnCheckClickWDTPD();
-    afx_msg void OnCheckClickWDT();
     virtual afx_msg void OnChangeEditFlashBaseAddress();
     virtual void OnOK();
     virtual afx_msg void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult);

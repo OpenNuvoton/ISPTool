@@ -20,7 +20,6 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_NM1200 dialog
 
-
 CDialogConfiguration_NM1200::CDialogConfiguration_NM1200(unsigned int uProgramMemorySize,
         CWnd *pParent /*=NULL*/)
     : CDialogResize(CDialogConfiguration_NM1200::IDD, pParent)
@@ -37,7 +36,6 @@ CDialogConfiguration_NM1200::CDialogConfiguration_NM1200(unsigned int uProgramMe
     m_bCheckBrownOutReset = FALSE;
     //}}AFX_DATA_INIT
 }
-
 
 void CDialogConfiguration_NM1200::DoDataExchange(CDataExchange *pDX)
 {
@@ -62,29 +60,29 @@ void CDialogConfiguration_NM1200::DoDataExchange(CDataExchange *pDX)
 
 BEGIN_MESSAGE_MAP(CDialogConfiguration_NM1200, CDialog)
     //{{AFX_MSG_MAP(CDialogConfiguration_NM1200)
-    ON_BN_CLICKED(IDC_RADIO_BOV_DISABLE, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnRadioBs)
+    ON_BN_CLICKED(IDC_RADIO_BOV_DISABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnButtonClick)
     ON_EN_CHANGE(IDC_EDIT_FLASH_BASE_ADDRESS, OnChangeEditFlashBaseAddress)
-    ON_BN_CLICKED(IDC_RADIO_BOV_43, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_BOV_37, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_BOV_30, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_BOV_27, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_BOV_24, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_BOV_22, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_BOV_20, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_BOV_17, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnCheckClick)
-    ON_BN_CLICKED(IDC_RADIO_IO_TRI, OnRadioIO)
-    ON_BN_CLICKED(IDC_RADIO_IO_BI, OnRadioIO)
-    ON_BN_CLICKED(IDC_RADIO_RC_22M, OnRadioRC)
-    ON_BN_CLICKED(IDC_RADIO_RC_24M, OnRadioRC)
-    ON_BN_CLICKED(IDC_RADIO_RC_44M, OnRadioRC)
-    ON_BN_CLICKED(IDC_RADIO_RC_48M, OnRadioRC)
-    ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM, OnRadioBs)
+    ON_BN_CLICKED(IDC_RADIO_BOV_43, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_37, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_30, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_27, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_24, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_22, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_20, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_17, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_IO_TRI, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_IO_BI, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_RC_22M, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_RC_24M, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_RC_44M, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_RC_48M, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM, OnButtonClick)
     ON_WM_SIZE()
     ON_WM_VSCROLL()
     ON_WM_HSCROLL()
@@ -113,9 +111,6 @@ BOOL CDialogConfiguration_NM1200::OnInitDialog()
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
 }
-
-
-
 
 void CDialogConfiguration_NM1200::ConfigToGUI()
 {
@@ -374,38 +369,13 @@ void CDialogConfiguration_NM1200::GUIToConfig()
     m_ConfigValue.m_value[1] = uConfig1;
 }
 
-
-void CDialogConfiguration_NM1200::OnRadioBov()
+void CDialogConfiguration_NM1200::OnButtonClick()
 {
     // TODO: Add your control notification handler code here
     UpdateData(TRUE);
     GUIToConfig();
     ConfigToGUI();
     UpdateData(FALSE);
-}
-
-void CDialogConfiguration_NM1200::OnRadioRC()
-{
-    // TODO: Add your control notification handler code here
-    OnRadioBov();
-}
-
-void CDialogConfiguration_NM1200::OnRadioIO()
-{
-    // TODO: Add your control notification handler code here
-    OnRadioBov();
-}
-
-void CDialogConfiguration_NM1200::OnRadioBs()
-{
-    // TODO: Add your control notification handler code here
-    OnRadioBov();
-}
-
-void CDialogConfiguration_NM1200::OnCheckClick()
-{
-    // TODO: Add your control notification handler code here
-    OnRadioBov();
 }
 
 void CDialogConfiguration_NM1200::OnChangeEditFlashBaseAddress()

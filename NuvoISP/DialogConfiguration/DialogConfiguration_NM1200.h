@@ -42,7 +42,6 @@ public:
     unsigned int	m_uProgramMemorySize;
     //}}AFX_DATA
 
-
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CDialogConfiguration_NM1200)
@@ -55,16 +54,11 @@ protected:
     void ConfigToGUI();
     void GUIToConfig();
 
-
     // Generated message map functions
     //{{AFX_MSG(CDialogConfiguration_NM1200)
     virtual BOOL OnInitDialog();
-    afx_msg void OnRadioBov();
-    afx_msg void OnRadioBs();
-    afx_msg void OnCheckClick();
+    afx_msg void OnButtonClick();
     afx_msg void OnChangeEditFlashBaseAddress();
-    afx_msg void OnRadioIO();
-    afx_msg void OnRadioRC();
     virtual void OnOK();
     afx_msg void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);

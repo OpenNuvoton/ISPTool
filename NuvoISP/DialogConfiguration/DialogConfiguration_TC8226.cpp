@@ -22,7 +22,6 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_TC8226 dialog
 
-
 CDialogConfiguration_TC8226::CDialogConfiguration_TC8226(unsigned int uProgramMemorySize,
         CWnd *pParent /*=NULL*/)
     : CDialogResize(CDialogConfiguration_TC8226::IDD, pParent)
@@ -49,7 +48,6 @@ CDialogConfiguration_TC8226::CDialogConfiguration_TC8226(unsigned int uProgramMe
     m_sFlashBaseAddress = _T("");
     //}}AFX_DATA_INIT
 }
-
 
 void CDialogConfiguration_TC8226::DoDataExchange(CDataExchange *pDX)
 {
@@ -85,42 +83,42 @@ void CDialogConfiguration_TC8226::DoDataExchange(CDataExchange *pDX)
 
 BEGIN_MESSAGE_MAP(CDialogConfiguration_TC8226, CDialog)
     //{{AFX_MSG_MAP(CDialogConfiguration_TC8226)
-    ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnCheckClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnButtonClick)
     ON_EN_KILLFOCUS(IDC_EDIT_FLASH_BASE_ADDRESS, OnChangeEditFlashBaseAddress)
-    ON_BN_CLICKED(IDC_RADIO_BOR_30, OnRadioClk)
-    ON_BN_CLICKED(IDC_RADIO_BOR_28, OnRadioClk)
-    ON_BN_CLICKED(IDC_RADIO_BOR_26, OnRadioClk)
-    ON_BN_CLICKED(IDC_RADIO_BOR_24, OnRadioClk)
-    ON_BN_CLICKED(IDC_RADIO_BOR_22, OnRadioClk)
-    ON_BN_CLICKED(IDC_RADIO_BOR_20, OnRadioClk)
-    ON_BN_CLICKED(IDC_RADIO_BOR_18, OnRadioClk)
-    ON_BN_CLICKED(IDC_RADIO_BOR_16, OnRadioClk)
-    ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_BOOT_LOADER, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_SECURITYBOOT_LOCK, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_ICE_LOCK, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_WATCHDOG_ENABLE, OnCheckClick)
-    ON_BN_CLICKED(IDC_SPROM_LOCK_CACHEABLE, OnCheckClick)
+    ON_BN_CLICKED(IDC_RADIO_BOR_30, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOR_28, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOR_26, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOR_24, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOR_22, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOR_20, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOR_18, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOR_16, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_BOOT_LOADER, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_SECURITYBOOT_LOCK, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_ICE_LOCK, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_WATCHDOG_ENABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_SPROM_LOCK_CACHEABLE, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_WDT_POWER_DOWN, OnCheckClickWDTPD)
-    ON_BN_CLICKED(IDC_CHECK_WDT_ENABLE, OnCheckClickWDT)
-    ON_BN_CLICKED(IDC_RADIO_GPF_GPIO, OnRadioGpf)
-    ON_BN_CLICKED(IDC_RADIO_GPF_CRYSTAL, OnRadioGpf)
-    ON_BN_CLICKED(IDC_RADIO_IO_TRI, OnRadioIO)
-    ON_BN_CLICKED(IDC_RADIO_IO_BI, OnRadioIO)
-    ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_RADIO_SPIM_SEL0, OnRadioSpim)
-    ON_BN_CLICKED(IDC_RADIO_SPIM_SEL1, OnRadioSpim)
-    ON_BN_CLICKED(IDC_RADIO_SPIM_SEL2, OnRadioSpim)
-    ON_BN_CLICKED(IDC_RADIO_SPIM_SEL3, OnRadioSpim)
-    ON_BN_CLICKED(IDC_RADIO_UART1_SEL0, OnRadioUart)
-    ON_BN_CLICKED(IDC_RADIO_UART1_SEL1, OnRadioUart)
-    ON_BN_CLICKED(IDC_RADIO_UART1_SEL2, OnRadioUart)
-    ON_BN_CLICKED(IDC_RADIO_UART1_SEL3, OnRadioUart)
+    ON_BN_CLICKED(IDC_CHECK_WDT_ENABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_GPF_GPIO, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_GPF_CRYSTAL, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_IO_TRI, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_IO_BI, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_SPIM_SEL0, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_SPIM_SEL1, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_SPIM_SEL2, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_SPIM_SEL3, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_UART1_SEL0, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_UART1_SEL1, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_UART1_SEL2, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_UART1_SEL3, OnButtonClick)
     ON_WM_SIZE()
     ON_WM_VSCROLL()
     ON_WM_HSCROLL()
@@ -149,9 +147,6 @@ BOOL CDialogConfiguration_TC8226::OnInitDialog()
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
 }
-
-
-
 
 void CDialogConfiguration_TC8226::ConfigToGUI(int nEventID)
 {
@@ -500,8 +495,6 @@ void CDialogConfiguration_TC8226::GUIToConfig(int nEventID)
     m_ConfigValue.m_value[3] = uConfig3;
 }
 
-
-
 void CDialogConfiguration_TC8226::OnGUIEvent(int nEventID)
 {
     // TODO: Add your control notification handler code here
@@ -511,53 +504,7 @@ void CDialogConfiguration_TC8226::OnGUIEvent(int nEventID)
     UpdateData(FALSE);
 }
 
-void CDialogConfiguration_TC8226::OnRadioBov()
-{
-    //OnGUIEvent();
-    UpdateData(TRUE);
-    GUIToConfig(0);
-    ConfigToGUI(0);
-    UpdateData(FALSE);
-}
-
-void CDialogConfiguration_TC8226::OnRadioClk()
-{
-    // TODO: Add your control notification handler code here
-    //OnGUIEvent();
-    OnRadioBov();
-}
-
-void CDialogConfiguration_TC8226::OnRadioBs()
-{
-    // TODO: Add your control notification handler code here
-    OnGUIEvent();
-}
-
-void CDialogConfiguration_TC8226::OnRadioSpim()
-{
-    // TODO: Add your control notification handler code here
-    OnGUIEvent();
-}
-
-void CDialogConfiguration_TC8226::OnRadioUart()
-{
-    // TODO: Add your control notification handler code here
-    OnGUIEvent();
-}
-
-void CDialogConfiguration_TC8226::OnRadioGpf()
-{
-    // TODO: Add your control notification handler code here
-    OnGUIEvent();
-}
-
-void CDialogConfiguration_TC8226::OnRadioIO()
-{
-    // TODO: Add your control notification handler code here
-    OnGUIEvent();
-}
-
-void CDialogConfiguration_TC8226::OnCheckClick()
+void CDialogConfiguration_TC8226::OnButtonClick()
 {
     // TODO: Add your control notification handler code here
     OnGUIEvent();
@@ -567,12 +514,6 @@ void CDialogConfiguration_TC8226::OnCheckClickWDTPD()
 {
     // TODO: Add your control notification handler code here
     OnGUIEvent(IDC_CHECK_WDT_POWER_DOWN);
-}
-
-void CDialogConfiguration_TC8226::OnCheckClickWDT()
-{
-    // TODO: Add your control notification handler code here
-    OnGUIEvent(IDC_CHECK_WDT_ENABLE);
 }
 
 void CDialogConfiguration_TC8226::OnChangeEditFlashBaseAddress()
@@ -600,7 +541,6 @@ void CDialogConfiguration_TC8226::OnChangeEditFlashBaseAddress()
     UpdateData(FALSE);
 }
 
-
 void CDialogConfiguration_TC8226::OnOK()
 {
     // TODO: Add extra validation here
@@ -608,8 +548,6 @@ void CDialogConfiguration_TC8226::OnOK()
     GUIToConfig(0);
     CDialog::OnOK();
 }
-
-
 
 void CDialogConfiguration_TC8226::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)
 {

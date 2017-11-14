@@ -74,32 +74,32 @@ void CDialogConfiguration_NUC4xx::DoDataExchange(CDataExchange *pDX)
 
 BEGIN_MESSAGE_MAP(CDialogConfiguration_NUC4xx, CDialog)
     //{{AFX_MSG_MAP(CDialogConfiguration_NUC4xx)
-    ON_BN_CLICKED(IDC_RADIO_BOV_45, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_CLK_E12M, OnRadioClk)
-    ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnCheckClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_45, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_CLK_E12M, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnButtonClick)
     ON_EN_CHANGE(IDC_EDIT_FLASH_BASE_ADDRESS, OnChangeEditFlashBaseAddress)
-    ON_BN_CLICKED(IDC_RADIO_BOV_38, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_BOV_27, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_BOV_22, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_CLK_I22M, OnRadioClk)
-    ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_WATCHDOG_ENABLE, OnCheckClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_38, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_27, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_22, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_CLK_I22M, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_WATCHDOG_ENABLE, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_WDT_POWER_DOWN, OnCheckClickWDTPD)
-    ON_BN_CLICKED(IDC_CHECK_WDT_ENABLE, OnCheckClickWDT)
-    ON_BN_CLICKED(IDC_RADIO_GPF_GPIO, OnRadioGpf)
-    ON_BN_CLICKED(IDC_RADIO_GPG2_GPIO, OnRadioGpf)
-    ON_BN_CLICKED(IDC_RADIO_MII_MODE, OnRadioGpf)
-    ON_BN_CLICKED(IDC_RADIO_RMII_MODE, OnRadioGpf)
-    ON_BN_CLICKED(IDC_RADIO_GPF_CRYSTAL, OnRadioGpf)
-    ON_BN_CLICKED(IDC_RADIO_GPG2_32K, OnRadioGpf)
-    ON_BN_CLICKED(IDC_RADIO_IO_TRI, OnRadioIO)
-    ON_BN_CLICKED(IDC_RADIO_IO_BI, OnRadioIO)
-    ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM, OnRadioBs)
+    ON_BN_CLICKED(IDC_CHECK_WDT_ENABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_GPF_GPIO, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_GPG2_GPIO, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_MII_MODE, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_RMII_MODE, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_GPF_CRYSTAL, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_GPG2_32K, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_IO_TRI, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_IO_BI, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM, OnButtonClick)
     ON_WM_SIZE()
     ON_WM_VSCROLL()
     ON_WM_HSCROLL()
@@ -370,37 +370,7 @@ void CDialogConfiguration_NUC4xx::OnGUIEvent(int nEventID)
     UpdateData(FALSE);
 }
 
-void CDialogConfiguration_NUC4xx::OnRadioBov()
-{
-    UpdateData(TRUE);
-    GUIToConfig(0);
-    au32Config[3] = FMC_CRC8(au32Config, 3);
-    m_ConfigValue.m_value[3] = au32Config[3];
-    ConfigToGUI(0);
-    UpdateData(FALSE);
-}
-
-void CDialogConfiguration_NUC4xx::OnRadioClk()
-{
-    OnRadioBov();
-}
-
-void CDialogConfiguration_NUC4xx::OnRadioBs()
-{
-    OnGUIEvent();
-}
-
-void CDialogConfiguration_NUC4xx::OnRadioGpf()
-{
-    OnGUIEvent();
-}
-
-void CDialogConfiguration_NUC4xx::OnRadioIO()
-{
-    OnGUIEvent();
-}
-
-void CDialogConfiguration_NUC4xx::OnCheckClick()
+void CDialogConfiguration_NUC4xx::OnButtonClick()
 {
     OnGUIEvent();
 }
@@ -408,11 +378,6 @@ void CDialogConfiguration_NUC4xx::OnCheckClick()
 void CDialogConfiguration_NUC4xx::OnCheckClickWDTPD()
 {
     OnGUIEvent(IDC_CHECK_WDT_POWER_DOWN);
-}
-
-void CDialogConfiguration_NUC4xx::OnCheckClickWDT()
-{
-    OnGUIEvent(IDC_CHECK_WDT_ENABLE);
 }
 
 void CDialogConfiguration_NUC4xx::OnChangeEditFlashBaseAddress()
@@ -436,7 +401,6 @@ void CDialogConfiguration_NUC4xx::OnOK()
     m_ConfigValue.m_value[3] = au32Config[3];
     CDialog::OnOK();
 }
-
 
 unsigned int CDialogConfiguration_NUC4xx::FMC_CRC8(unsigned int au32Data[], unsigned int i32Count)
 {

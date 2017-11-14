@@ -21,7 +21,6 @@ public:
                                 unsigned int uDataFlashSize = 0,
                                 CWnd *pParent = NULL);   // standard constructor
 
-
     CAppConfig::NUC1xx_configs_t m_ConfigValue;
 
 // Dialog Data
@@ -53,7 +52,6 @@ public:
     unsigned int	m_uDataFlashSize;
     //}}AFX_DATA
 
-
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CDialogConfiguration_NUC2xx)
@@ -67,19 +65,11 @@ protected:
     void GUIToConfig(int nEventID);
     void OnGUIEvent(int nEventID = 0);
 
-
     // Generated message map functions
     //{{AFX_MSG(CDialogConfiguration_NUC2xx)
     virtual BOOL OnInitDialog();
-    afx_msg void OnRadioBov();
-    afx_msg void OnRadioClk();
-    afx_msg void OnRadioBs();
-    afx_msg void OnRadioGpf();
-    afx_msg void OnRadioIO();
-    afx_msg void OnCheckClick();
+    afx_msg void OnButtonClick();
     afx_msg void OnCheckClickWDTPD();
-    afx_msg void OnCheckClickWDT();
-    //afx_msg void OnChangeEditFlashBaseAddress();
     afx_msg void OnKillfocusEditFlashBaseAddress();
     virtual void OnOK();
     afx_msg void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult);

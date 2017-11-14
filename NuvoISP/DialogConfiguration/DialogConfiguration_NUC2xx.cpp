@@ -20,7 +20,6 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_NUC2xx dialog
 
-
 CDialogConfiguration_NUC2xx::CDialogConfiguration_NUC2xx(BOOL bIsDataFlashFixed,
         unsigned int uProgramMemorySize,
         unsigned int uDataFlashSize,
@@ -48,7 +47,6 @@ CDialogConfiguration_NUC2xx::CDialogConfiguration_NUC2xx(BOOL bIsDataFlashFixed,
     m_sFlashBaseAddress = _T("");
     //}}AFX_DATA_INIT
 }
-
 
 void CDialogConfiguration_NUC2xx::DoDataExchange(CDataExchange *pDX)
 {
@@ -79,30 +77,29 @@ void CDialogConfiguration_NUC2xx::DoDataExchange(CDataExchange *pDX)
 
 BEGIN_MESSAGE_MAP(CDialogConfiguration_NUC2xx, CDialog)
     //{{AFX_MSG_MAP(CDialogConfiguration_NUC2xx)
-    ON_BN_CLICKED(IDC_RADIO_BOV_45, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_CLK_E12M, OnRadioClk)
-    ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnCheckClick)
-    //ON_EN_CHANGE(IDC_EDIT_FLASH_BASE_ADDRESS, OnChangeEditFlashBaseAddress)
+    ON_BN_CLICKED(IDC_RADIO_BOV_45, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_CLK_E12M, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnButtonClick)
     ON_EN_KILLFOCUS(IDC_EDIT_FLASH_BASE_ADDRESS, OnKillfocusEditFlashBaseAddress)
-    ON_BN_CLICKED(IDC_RADIO_BOV_38, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_BOV_27, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_BOV_22, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_CLK_I22M, OnRadioClk)
-    ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_CLOCK_FILTER_ENABLE, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_WATCHDOG_ENABLE, OnCheckClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_38, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_27, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_22, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_CLK_I22M, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_CLOCK_FILTER_ENABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_WATCHDOG_ENABLE, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_WDT_POWER_DOWN, OnCheckClickWDTPD)
-    ON_BN_CLICKED(IDC_CHECK_WDT_ENABLE, OnCheckClickWDT)
-    ON_BN_CLICKED(IDC_RADIO_GPF_GPIO, OnRadioGpf)
-    ON_BN_CLICKED(IDC_RADIO_GPF_CRYSTAL, OnRadioGpf)
-    ON_BN_CLICKED(IDC_RADIO_IO_TRI, OnRadioIO)
-    ON_BN_CLICKED(IDC_RADIO_IO_BI, OnRadioIO)
-    ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM, OnRadioBs)
+    ON_BN_CLICKED(IDC_CHECK_WDT_ENABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_GPF_GPIO, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_GPF_CRYSTAL, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_IO_TRI, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_IO_BI, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM, OnButtonClick)
     ON_WM_SIZE()
     ON_WM_VSCROLL()
     ON_WM_HSCROLL()
@@ -131,9 +128,6 @@ BOOL CDialogConfiguration_NUC2xx::OnInitDialog()
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
 }
-
-
-
 
 void CDialogConfiguration_NUC2xx::ConfigToGUI(int nEventID)
 {
@@ -171,7 +165,6 @@ void CDialogConfiguration_NUC2xx::ConfigToGUI(int nEventID)
             break;
     }
 
-    //m_nRadioBS = ((uConfig0 & NUC1XX_FLASH_CONFIG_CBS) == 0 ? 0 : 1);
     switch (uConfig0 & NUC1XX_FLASH_CONFIG_CBS2) {
         case NUC1XX_FLASH_CONFIG_CBS_LD:
             m_nRadioBS = 0;
@@ -276,10 +269,6 @@ void CDialogConfiguration_NUC2xx::GUIToConfig(int nEventID)
             uConfig0 |= (m_ConfigValue.m_value[0] & NUC1XX_FLASH_CONFIG_CBOV);
     }
 
-    //if(m_nRadioBS == 0)
-    //	uConfig0 &= ~NUC1XX_FLASH_CONFIG_CBS;
-    //else
-    //	uConfig0 |= NUC1XX_FLASH_CONFIG_CBS;
     uConfig0 &= ~NUC1XX_FLASH_CONFIG_CBS2;
 
     switch (m_nRadioBS) {
@@ -375,8 +364,6 @@ void CDialogConfiguration_NUC2xx::GUIToConfig(int nEventID)
     m_ConfigValue.m_value[1] = uConfig1;
 }
 
-
-
 void CDialogConfiguration_NUC2xx::OnGUIEvent(int nEventID)
 {
     // TODO: Add your control notification handler code here
@@ -386,43 +373,8 @@ void CDialogConfiguration_NUC2xx::OnGUIEvent(int nEventID)
     UpdateData(FALSE);
 }
 
-void CDialogConfiguration_NUC2xx::OnRadioBov()
+void CDialogConfiguration_NUC2xx::OnButtonClick()
 {
-    //OnGUIEvent();
-    UpdateData(TRUE);
-    GUIToConfig(0);
-    ConfigToGUI(0);
-    UpdateData(FALSE);
-}
-
-void CDialogConfiguration_NUC2xx::OnRadioClk()
-{
-    // TODO: Add your control notification handler code here
-    //OnGUIEvent();
-    OnRadioBov();
-}
-
-void CDialogConfiguration_NUC2xx::OnRadioBs()
-{
-    // TODO: Add your control notification handler code here
-    OnGUIEvent();
-}
-
-void CDialogConfiguration_NUC2xx::OnRadioGpf()
-{
-    // TODO: Add your control notification handler code here
-    OnGUIEvent();
-}
-
-void CDialogConfiguration_NUC2xx::OnRadioIO()
-{
-    // TODO: Add your control notification handler code here
-    OnGUIEvent();
-}
-
-void CDialogConfiguration_NUC2xx::OnCheckClick()
-{
-    // TODO: Add your control notification handler code here
     OnGUIEvent();
 }
 
@@ -430,12 +382,6 @@ void CDialogConfiguration_NUC2xx::OnCheckClickWDTPD()
 {
     // TODO: Add your control notification handler code here
     OnGUIEvent(IDC_CHECK_WDT_POWER_DOWN);
-}
-
-void CDialogConfiguration_NUC2xx::OnCheckClickWDT()
-{
-    // TODO: Add your control notification handler code here
-    OnGUIEvent(IDC_CHECK_WDT_ENABLE);
 }
 
 //void CDialogConfiguration_NUC2xx::OnChangeEditFlashBaseAddress()
@@ -471,8 +417,6 @@ void CDialogConfiguration_NUC2xx::OnOK()
     GUIToConfig(0);
     CDialog::OnOK();
 }
-
-
 
 void CDialogConfiguration_NUC2xx::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)
 {

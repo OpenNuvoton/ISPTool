@@ -20,7 +20,6 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_M0564 dialog
 
-
 CDialogConfiguration_M0564::CDialogConfiguration_M0564(unsigned int uPID, unsigned int uProgramMemorySize,
         CWnd *pParent /*=NULL*/)
     : CDialogResize(CDialogConfiguration_M0564::IDD, pParent)
@@ -45,7 +44,6 @@ CDialogConfiguration_M0564::CDialogConfiguration_M0564(unsigned int uPID, unsign
     m_sFlashBaseAddress = _T("");
     //}}AFX_DATA_INIT
 }
-
 
 void CDialogConfiguration_M0564::DoDataExchange(CDataExchange *pDX)
 {
@@ -75,30 +73,30 @@ void CDialogConfiguration_M0564::DoDataExchange(CDataExchange *pDX)
 
 BEGIN_MESSAGE_MAP(CDialogConfiguration_M0564, CDialog)
     //{{AFX_MSG_MAP(CDialogConfiguration_M0564)
-    ON_BN_CLICKED(IDC_RADIO_BOV_45, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_CLK_E12M, OnRadioClk)
-    ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnCheckClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_45, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_CLK_E12M, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnButtonClick)
     ON_EN_CHANGE(IDC_EDIT_FLASH_BASE_ADDRESS, OnChangeEditFlashBaseAddress)
-    ON_BN_CLICKED(IDC_RADIO_BOV_38, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_BOV_27, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_BOV_22, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_CLK_I22M, OnRadioClk)
-    ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_CLOCK_FILTER_ENABLE, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_ICE_LOCK, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_WATCHDOG_ENABLE, OnCheckClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_38, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_27, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_22, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_CLK_I22M, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_CLOCK_FILTER_ENABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_ICE_LOCK, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_WATCHDOG_ENABLE, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_WDT_POWER_DOWN, OnCheckClickWDTPD)
-    ON_BN_CLICKED(IDC_CHECK_WDT_ENABLE, OnCheckClickWDT)
-    ON_BN_CLICKED(IDC_RADIO_GPF_GPIO, OnRadioGpf)
-    ON_BN_CLICKED(IDC_RADIO_GPF_CRYSTAL, OnRadioGpf)
-    ON_BN_CLICKED(IDC_RADIO_IO_TRI, OnRadioIO)
-    ON_BN_CLICKED(IDC_RADIO_IO_BI, OnRadioIO)
-    ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM, OnRadioBs)
+    ON_BN_CLICKED(IDC_CHECK_WDT_ENABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_GPF_GPIO, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_GPF_CRYSTAL, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_IO_TRI, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_IO_BI, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM, OnButtonClick)
     ON_WM_SIZE()
     ON_WM_VSCROLL()
     ON_WM_HSCROLL()
@@ -134,9 +132,6 @@ BOOL CDialogConfiguration_M0564::OnInitDialog()
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
 }
-
-
-
 
 void CDialogConfiguration_M0564::ConfigToGUI(int nEventID)
 {
@@ -367,8 +362,6 @@ void CDialogConfiguration_M0564::GUIToConfig(int nEventID)
     m_ConfigValue.m_value[1] = uConfig1;
 }
 
-
-
 void CDialogConfiguration_M0564::OnGUIEvent(int nEventID)
 {
     // TODO: Add your control notification handler code here
@@ -378,41 +371,7 @@ void CDialogConfiguration_M0564::OnGUIEvent(int nEventID)
     UpdateData(FALSE);
 }
 
-void CDialogConfiguration_M0564::OnRadioBov()
-{
-    //OnGUIEvent();
-    UpdateData(TRUE);
-    GUIToConfig(0);
-    ConfigToGUI(0);
-    UpdateData(FALSE);
-}
-
-void CDialogConfiguration_M0564::OnRadioClk()
-{
-    // TODO: Add your control notification handler code here
-    //OnGUIEvent();
-    OnRadioBov();
-}
-
-void CDialogConfiguration_M0564::OnRadioBs()
-{
-    // TODO: Add your control notification handler code here
-    OnGUIEvent();
-}
-
-void CDialogConfiguration_M0564::OnRadioGpf()
-{
-    // TODO: Add your control notification handler code here
-    OnGUIEvent();
-}
-
-void CDialogConfiguration_M0564::OnRadioIO()
-{
-    // TODO: Add your control notification handler code here
-    OnGUIEvent();
-}
-
-void CDialogConfiguration_M0564::OnCheckClick()
+void CDialogConfiguration_M0564::OnButtonClick()
 {
     // TODO: Add your control notification handler code here
     OnGUIEvent();
@@ -422,12 +381,6 @@ void CDialogConfiguration_M0564::OnCheckClickWDTPD()
 {
     // TODO: Add your control notification handler code here
     OnGUIEvent(IDC_CHECK_WDT_POWER_DOWN);
-}
-
-void CDialogConfiguration_M0564::OnCheckClickWDT()
-{
-    // TODO: Add your control notification handler code here
-    OnGUIEvent(IDC_CHECK_WDT_ENABLE);
 }
 
 void CDialogConfiguration_M0564::OnChangeEditFlashBaseAddress()
@@ -448,7 +401,6 @@ void CDialogConfiguration_M0564::OnChangeEditFlashBaseAddress()
     UpdateData(FALSE);
 }
 
-
 void CDialogConfiguration_M0564::OnOK()
 {
     // TODO: Add extra validation here
@@ -456,8 +408,6 @@ void CDialogConfiguration_M0564::OnOK()
     GUIToConfig(0);
     CDialog::OnOK();
 }
-
-
 
 void CDialogConfiguration_M0564::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)
 {

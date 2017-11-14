@@ -84,36 +84,32 @@ void CDialogConfiguration_MT500::DoDataExchange(CDataExchange *pDX)
     //}}AFX_DATA_MAP
 }
 
-
 BEGIN_MESSAGE_MAP(CDialogConfiguration_MT500, CDialog)
     //{{AFX_MSG_MAP(CDialogConfiguration_MT500)
-    ON_BN_CLICKED(IDC_RADIO_BOV_45, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_CLK_E12M, OnRadioClk)
-    ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnCheckClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_45, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_CLK_E12M, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnButtonClick)
     ON_EN_CHANGE(IDC_EDIT_FLASH_BASE_ADDRESS, OnChangeEditFlashBaseAddress)
-    ON_BN_CLICKED(IDC_RADIO_BOV_38, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_BOV_27, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_BOV_22, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_CLK_I22M, OnRadioClk)
-    ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_CLOCK_FILTER_ENABLE, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnCheckClick)
-
+    ON_BN_CLICKED(IDC_RADIO_BOV_38, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_27, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_22, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_CLK_I22M, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_CLOCK_FILTER_ENABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_WDT_POWER_DOWN, OnCheckClickWDTPD)
-    ON_BN_CLICKED(IDC_CHECK_WDT_ENABLE, OnCheckClickWDT)
-
-    ON_BN_CLICKED(IDC_CHECK_CHZ_BPWM_Ctrl, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_CHZ_Odd1_Ctrl, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_CHZ_Even1_Ctrl, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_CHZ_Odd0_Ctrl, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_CHZ_Even0_Ctrl, OnCheckClick)
-
-    ON_BN_CLICKED(IDC_CHECK_WATCHDOG_ENABLE, OnCheckClick)
-    ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM, OnRadioBs)
+    ON_BN_CLICKED(IDC_CHECK_WDT_ENABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_CHZ_BPWM_Ctrl, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_CHZ_Odd1_Ctrl, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_CHZ_Even1_Ctrl, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_CHZ_Odd0_Ctrl, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_CHZ_Even0_Ctrl, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_WATCHDOG_ENABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM, OnButtonClick)
     ON_WM_SIZE()
     ON_WM_VSCROLL()
     ON_WM_HSCROLL()
@@ -274,10 +270,6 @@ void CDialogConfiguration_MT500::GUIToConfig(int nEventID)
             uConfig0 |= (m_ConfigValue.m_value[0] & NUC1XX_FLASH_CONFIG_CBOV);
     }
 
-    //if(m_nRadioBS == 0)
-    //	uConfig0 &= ~NUC1XX_FLASH_CONFIG_CBS;
-    //else
-    //	uConfig0 |= NUC1XX_FLASH_CONFIG_CBS;
     uConfig0 &= ~NUC1XX_FLASH_CONFIG_CBS2;
 
     switch (m_nRadioBS) {
@@ -384,8 +376,6 @@ void CDialogConfiguration_MT500::GUIToConfig(int nEventID)
         uConfig0 &= ~MT5XX_FLASH_CONFIG_CHZ_Event0;
     }
 
-    //Removed if(m_bWatchDogEnable)
-    //uConfig0 |= NUC1XX_FLASH_CONFIG_CWDTEN;  ?????
     m_ConfigValue.m_value[0] = uConfig0;
     TCHAR *pEnd;
     uConfig1 = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
@@ -400,43 +390,17 @@ void CDialogConfiguration_MT500::OnGUIEvent(int nEventID)
     ConfigToGUI(nEventID);
     UpdateData(FALSE);
 }
-void CDialogConfiguration_MT500::OnRadioBov()
-{
-    // TODO: Add your control notification handler code here
-    UpdateData(TRUE);
-    GUIToConfig(0);
-    ConfigToGUI(0);
-    UpdateData(FALSE);
-}
 
-void CDialogConfiguration_MT500::OnRadioClk()
+void CDialogConfiguration_MT500::OnButtonClick()
 {
     // TODO: Add your control notification handler code here
-    OnRadioBov();
-}
-
-void CDialogConfiguration_MT500::OnRadioBs()
-{
-    // TODO: Add your control notification handler code here
-    OnRadioBov();
-}
-
-void CDialogConfiguration_MT500::OnCheckClick()
-{
-    // TODO: Add your control notification handler code here
-    OnRadioBov();
+    OnGUIEvent();
 }
 
 void CDialogConfiguration_MT500::OnCheckClickWDTPD()
 {
     // TODO: Add your control notification handler code here
     OnGUIEvent(IDC_CHECK_WDT_POWER_DOWN);
-}
-
-void CDialogConfiguration_MT500::OnCheckClickWDT()
-{
-    // TODO: Add your control notification handler code here
-    OnGUIEvent(IDC_CHECK_WDT_ENABLE);
 }
 
 void CDialogConfiguration_MT500::OnChangeEditFlashBaseAddress()

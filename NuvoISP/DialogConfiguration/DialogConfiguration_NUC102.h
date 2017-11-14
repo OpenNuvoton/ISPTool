@@ -18,7 +18,6 @@ class CDialogConfiguration_NUC102 : public CDialogResize
 public:
     CDialogConfiguration_NUC102(CWnd *pParent = NULL);   // standard constructor
 
-
     CAppConfig::NUC1xx_configs_t m_ConfigValue;
 
 // Dialog Data
@@ -38,7 +37,6 @@ public:
     CString	m_sFlashBaseAddress;
     //}}AFX_DATA
 
-
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CDialogConfiguration_NUC102)
@@ -51,14 +49,10 @@ protected:
     void ConfigToGUI();
     void GUIToConfig();
 
-
     // Generated message map functions
     //{{AFX_MSG(CDialogConfiguration_NUC102)
     virtual BOOL OnInitDialog();
-    afx_msg void OnRadioBov();
-    afx_msg void OnRadioClk();
-    afx_msg void OnRadioBs();
-    afx_msg void OnCheckClick();
+    afx_msg void OnButtonClick();
     afx_msg void OnChangeEditFlashBaseAddress();
     virtual void OnOK();
     //}}AFX_MSG

@@ -19,7 +19,6 @@ public:
     CDialogConfiguration_Mini51BN(unsigned int uProgramMemorySize = 16 * 1024,
                                   CWnd *pParent = NULL);   // standard constructor
 
-
     CAppConfig::Mini51_configs_t m_ConfigValue;
 
 // Dialog Data
@@ -43,7 +42,6 @@ public:
     unsigned int	m_uProgramMemorySize;
     //}}AFX_DATA
 
-
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CDialogConfiguration_Mini51BN)
@@ -56,15 +54,11 @@ protected:
     void ConfigToGUI();
     void GUIToConfig();
 
-
     // Generated message map functions
     //{{AFX_MSG(CDialogConfiguration_Mini51BN)
     virtual BOOL OnInitDialog();
-    afx_msg void OnRadioBov();
-    afx_msg void OnRadioBs();
-    afx_msg void OnCheckClick();
+    afx_msg void OnButtonClick();
     afx_msg void OnChangeEditFlashBaseAddress();
-    afx_msg void OnRadioIO();
     virtual void OnOK();
     afx_msg void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);

@@ -18,7 +18,6 @@ public:
                                unsigned int uDataFlashSize = 0,
                                CWnd *pParent = NULL);   // standard constructor
 
-
     CAppConfig::MT5xx_configs_t m_ConfigValue;
 
 // Dialog Data
@@ -53,7 +52,6 @@ public:
     unsigned int	m_uDataFlashSize;
     //}}AFX_DATA
 
-
 // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CDialogConfiguration_MT500)
@@ -65,18 +63,13 @@ protected:
 protected:
     void ConfigToGUI(int);
     void GUIToConfig(int);
-
+    void OnGUIEvent(int nEventID = 0);
 
     // Generated message map functions
     //{{AFX_MSG(CDialogConfiguration_MT500)
     virtual BOOL OnInitDialog();
-    afx_msg void OnRadioBov();
-    afx_msg void OnRadioClk();
-    afx_msg void OnRadioBs();
-    afx_msg void OnCheckClick();
-    afx_msg void OnGUIEvent(int);
+    afx_msg void OnButtonClick();
     afx_msg void OnCheckClickWDTPD();
-    afx_msg void OnCheckClickWDT();
     afx_msg void OnChangeEditFlashBaseAddress();
     virtual void OnOK();
     afx_msg void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult);
