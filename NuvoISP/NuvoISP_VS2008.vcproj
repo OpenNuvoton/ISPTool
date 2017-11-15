@@ -4,6 +4,7 @@
 	Version="9.00"
 	Name="NuvoISP_VS2008"
 	ProjectGUID="{397D4EE3-90A8-4A41-AE5E-1F8D68E9FFDC}"
+	RootNamespace="NuvoISP_VS2008"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="0"
 	>
@@ -459,14 +460,6 @@
 			</File>
 			<File
 				RelativePath=".\dialogconfiguration\DialogConfiguration_NUC103.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\dialogconfiguration\DialogConfiguration_NUC103BN.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\dialogconfiguration\DialogConfiguration_NUC131.cpp"
 				>
 			</File>
 			<File

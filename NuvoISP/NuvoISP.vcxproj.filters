@@ -131,12 +131,6 @@
     <ClCompile Include="DialogConfiguration\DialogConfiguration_NUC103.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_NUC103BN.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_NUC131.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
     <ClCompile Include="DialogConfiguration\DialogResize.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>

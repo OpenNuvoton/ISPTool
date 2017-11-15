@@ -20,10 +20,11 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_NUC103 dialog
 
-CDialogConfiguration_NUC103::CDialogConfiguration_NUC103(unsigned int uProgramMemorySize,
+CDialogConfiguration_NUC103::CDialogConfiguration_NUC103(UINT nIDTemplate,
+        unsigned int uProgramMemorySize,
         unsigned int uDataFlashSize,
         CWnd *pParent /*=NULL*/)
-    : CDialogResize(CDialogConfiguration_NUC103::IDD, pParent)
+    : CDialogResize(nIDTemplate, pParent)
     , m_uProgramMemorySize(uProgramMemorySize)
     , m_uDataFlashSize(uDataFlashSize)
 {
@@ -41,6 +42,7 @@ CDialogConfiguration_NUC103::CDialogConfiguration_NUC103(unsigned int uProgramMe
     m_bSecurityLock = FALSE;
     m_bWDTEnable = FALSE;
     m_bWDTPowerDown = FALSE;
+    m_nRadioIO = -1;
     m_nRadioGPF = -1;
     m_sFlashBaseAddress = _T("");
     //}}AFX_DATA_INIT
@@ -67,6 +69,7 @@ void CDialogConfiguration_NUC103::DoDataExchange(CDataExchange *pDX)
     DDX_Check(pDX, IDC_CHECK_WDT_ENABLE, m_bWDTEnable);
     DDX_Check(pDX, IDC_CHECK_WDT_POWER_DOWN, m_bWDTPowerDown);
     DDX_Text(pDX, IDC_EDIT_FLASH_BASE_ADDRESS, m_sFlashBaseAddress);
+    DDX_Radio(pDX, IDC_RADIO_IO_TRI, m_nRadioIO);
     DDX_Radio(pDX, IDC_RADIO_GPF_GPIO, m_nRadioGPF);
     DDX_Text(pDX, IDC_EDIT_DATA_FLASH_SIZE, m_sDataFlashSize);
     //}}AFX_DATA_MAP
@@ -94,6 +97,8 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_NUC103, CDialog)
     ON_BN_CLICKED(IDC_CHECK_WATCHDOG_ENABLE, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_IO_TRI, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_IO_BI, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_GPF_GPIO, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_GPF_CRYSTAL, OnButtonClick)
     ON_WM_SIZE()
@@ -187,6 +192,7 @@ void CDialogConfiguration_NUC103::ConfigToGUI(int nEventID)
     }
 
     m_nRadioGPF = ((uConfig0 & NUC1XX_FLASH_CONFIG_CGPFMFP) == 0 ? 0 : 1);
+    m_nRadioIO = ((uConfig0 & NUC1XX_FLASH_CONFIG_CIOINI) == 0 ? 0 : 1);
     m_bCheckBrownOutDetect = ((uConfig0 & NUC1XX_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
     m_bCheckBrownOutReset = ((uConfig0 & NUC1XX_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
     m_bClockFilterEnable = ((uConfig0 & NUC1XX_FLASH_CONFIG_CKF) == NUC1XX_FLASH_CONFIG_CKF ? TRUE : FALSE);
@@ -337,6 +343,12 @@ void CDialogConfiguration_NUC103::GUIToConfig(int nEventID)
         uConfig0 |= NUC1XX_FLASH_CONFIG_CGPFMFP;
     }
 
+    if (m_nRadioIO == 0) {
+        uConfig0 &= ~NUC1XX_FLASH_CONFIG_CIOINI;
+    } else {
+        uConfig0 |= NUC1XX_FLASH_CONFIG_CIOINI;
+    }
+
     if (m_bSecurityLock) {
         uConfig0 &= ~NUC1XX_FLASH_CONFIG_LOCK;
     } else {
@@ -440,4 +452,76 @@ void CDialogConfiguration_NUC103::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar 
     }
 
     CDialogResize::OnVScroll(nSBCode, nPos, pScrollBar);
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// CDialogConfiguration_NUC123AN
+/////////////////////////////////////////////////////////////////////////////
+CDialogConfiguration_NUC123AN::CDialogConfiguration_NUC123AN(unsigned int uProgramMemorySize,
+        unsigned int uDataFlashSize,
+        CWnd *pParent /*=NULL*/)
+    : CDialogConfiguration_NUC103(IDD_DIALOG_CONFIGURATION_NUC103, uProgramMemorySize, uDataFlashSize, pParent)
+{
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// CDialogConfiguration_NUC123AE
+/////////////////////////////////////////////////////////////////////////////
+CDialogConfiguration_NUC123AE::CDialogConfiguration_NUC123AE(unsigned int uProgramMemorySize,
+        unsigned int uDataFlashSize,
+        CWnd *pParent /*=NULL*/)
+    : CDialogConfiguration_NUC103(IDD_DIALOG_CONFIGURATION_NUC103BN, uProgramMemorySize, uDataFlashSize, pParent)
+{
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// CDialogConfiguration_NUC131
+/////////////////////////////////////////////////////////////////////////////
+CDialogConfiguration_NUC131::CDialogConfiguration_NUC131(unsigned int uProgramMemorySize,
+        unsigned int uDataFlashSize,
+        CWnd *pParent /*=NULL*/)
+
+    : CDialogConfiguration_NUC103(IDD_DIALOG_CONFIGURATION_NUC103BN, uProgramMemorySize, uDataFlashSize, pParent)
+{
+}
+
+void CDialogConfiguration_NUC131::GUIToConfig(int nEventID)
+{
+    CDialogConfiguration_NUC103::GUIToConfig(nEventID);
+    unsigned int uConfig0 = m_ConfigValue.m_value[0];
+
+    ///* Watchdog Hardware Enable
+    //   Watchdog Clock Power Down Enable */
+    if (m_bWDTPowerDown) {
+        uConfig0 &= ~NUC1XX_FLASH_CONFIG_CWDTPDEN;
+    } else {
+        uConfig0 |= NUC1XX_FLASH_CONFIG_CWDTPDEN;
+    }
+
+    if (m_bWDTEnable) {
+        uConfig0 &= ~NUC1XX_FLASH_CONFIG_CWDTEN;
+
+        if (!m_bWDTPowerDown) {
+            uConfig0 &= ~NUC1XX_FLASH_CONFIG_CWDTEN_BIT1;
+            uConfig0 &= ~NUC1XX_FLASH_CONFIG_CWDTEN_BIT0;
+        }
+    } else {
+        uConfig0 |= NUC1XX_FLASH_CONFIG_CWDTEN;
+    }
+
+    if (nEventID == IDC_CHECK_WDT_POWER_DOWN) {
+        if (m_bWDTPowerDown) {
+            uConfig0 &= ~NUC1XX_FLASH_CONFIG_CWDTEN;
+            uConfig0 |= NUC1XX_FLASH_CONFIG_CWDTEN_BIT1;
+            uConfig0 |= NUC1XX_FLASH_CONFIG_CWDTEN_BIT0;
+        }
+    } else {
+        if (!m_bWDTEnable) {
+            uConfig0 |= NUC1XX_FLASH_CONFIG_CWDTPDEN;
+            uConfig0 |= NUC1XX_FLASH_CONFIG_CWDTEN_BIT1;
+            uConfig0 |= NUC1XX_FLASH_CONFIG_CWDTEN_BIT0;
+        }
+    }
+
+    m_ConfigValue.m_value[0] = uConfig0;
 }

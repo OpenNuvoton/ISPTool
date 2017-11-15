@@ -311,8 +311,6 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 #include "DialogConfiguration_NM1200.h"
 #include "DialogConfiguration_NUC102.h"
 #include "DialogConfiguration_NUC103.h"
-#include "DialogConfiguration_NUC103BN.h"
-#include "DialogConfiguration_NUC131.h"
 #include "DialogConfiguration_NUC1xx.h"
 #include "DialogConfiguration_NUC2xx.h"
 #include "DialogConfiguration_NUC4xx.h"
@@ -359,22 +357,22 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
 
             case IDD_DIALOG_CONFIGURATION_NUC103:
                 if (uProgramMemorySize) {
-                    pConfigDlg = new CDialogConfiguration_NUC103(uProgramMemorySize, uDataFlashSize);
+                    pConfigDlg = new CDialogConfiguration_NUC123AN(uProgramMemorySize, uDataFlashSize);
                 } else {
-                    pConfigDlg = new CDialogConfiguration_NUC103;
+                    pConfigDlg = new CDialogConfiguration_NUC123AN;
                 }
 
-                Config = (((CDialogConfiguration_NUC103 *)pConfigDlg)->m_ConfigValue.m_value);
+                Config = (((CDialogConfiguration_NUC123AN *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
             case IDD_DIALOG_CONFIGURATION_NUC103BN:
                 if (uProgramMemorySize) {
-                    pConfigDlg = new CDialogConfiguration_NUC103BN(uProgramMemorySize, uDataFlashSize);
+                    pConfigDlg = new CDialogConfiguration_NUC123AE(uProgramMemorySize, uDataFlashSize);
                 } else {
-                    pConfigDlg = new CDialogConfiguration_NUC103BN;
+                    pConfigDlg = new CDialogConfiguration_NUC123AE;
                 }
 
-                Config = (((CDialogConfiguration_NUC103BN *)pConfigDlg)->m_ConfigValue.m_value);
+                Config = (((CDialogConfiguration_NUC123AE *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
             case IDD_DIALOG_CONFIGURATION_NUC200:
@@ -770,6 +768,7 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
         subNUC1xx->CreatePopupMenu();
         subNUC1xx->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_NUC103, _T("NUC123AN Series"));
         subNUC1xx->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_NUC103BN, _T("NUC123AE Series"));
+        subNUC1xx->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_NUC131, _T("NUC131 Series"));
         menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subNUC1xx->m_hMenu, _T("NUC100 Series"));
         menu.AppendMenu(MF_SEPARATOR);
         menu.AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M451, _T("M451 Series"));

@@ -140,8 +140,6 @@
     <ClCompile Include="DialogConfiguration\DialogConfiguration_NM1200.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_NUC102.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_NUC103.cpp" />
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_NUC103BN.cpp" />
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_NUC131.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_NUC1xx.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_NUC2xx.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_NUC4xx.cpp" />

@@ -1,6 +1,6 @@
 #pragma once
 
-#define _STR_DATE_	_T("1113")
+#define _STR_DATE_	_T("1115")
 
 struct CPartNumID;
 
