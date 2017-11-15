@@ -129,7 +129,6 @@
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M2351.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M451.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_Mini51.cpp" />
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_Mini51BN.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_Mini51CN.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_MT500.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_N76E1T.cpp" />

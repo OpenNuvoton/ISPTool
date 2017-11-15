@@ -92,9 +92,6 @@
     <ClCompile Include="DialogConfiguration\DialogConfiguration_Mini51.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_Mini51BN.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
     <ClCompile Include="DialogConfiguration\DialogConfiguration_Mini51CN.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>

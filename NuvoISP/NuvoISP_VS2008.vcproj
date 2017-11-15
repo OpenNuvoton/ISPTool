@@ -219,10 +219,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\dialogconfiguration\DialogConfiguration_Mini51BN.h"
-				>
-			</File>
-			<File
 				RelativePath=".\dialogconfiguration\DialogConfiguration_Mini51CN.h"
 				>
 			</File>
@@ -260,14 +256,6 @@
 			</File>
 			<File
 				RelativePath=".\dialogconfiguration\DialogConfiguration_NUC103.h"
-				>
-			</File>
-			<File
-				RelativePath=".\dialogconfiguration\DialogConfiguration_NUC103BN.h"
-				>
-			</File>
-			<File
-				RelativePath=".\dialogconfiguration\DialogConfiguration_NUC131.h"
 				>
 			</File>
 			<File
@@ -416,10 +404,6 @@
 			</File>
 			<File
 				RelativePath=".\dialogconfiguration\DialogConfiguration_Mini51.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\dialogconfiguration\DialogConfiguration_Mini51BN.cpp"
 				>
 			</File>
 			<File

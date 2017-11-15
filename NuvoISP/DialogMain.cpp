@@ -301,7 +301,6 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 #include "DialogConfiguration_M05x.h"
 #include "DialogConfiguration_M451.h"
 #include "DialogConfiguration_Mini51.h"
-#include "DialogConfiguration_Mini51BN.h"
 #include "DialogConfiguration_Mini51CN.h"
 #include "DialogConfiguration_MT500.h"
 #include "DialogConfiguration_Nano100.h"
@@ -456,16 +455,6 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
                 }
 
                 Config = (((CDialogConfiguration_Mini51 *)pConfigDlg)->m_ConfigValue.m_value);
-                break;
-
-            case IDD_DIALOG_CONFIGURATION_MINI51BN:
-                if (uProgramMemorySize) {
-                    pConfigDlg = new CDialogConfiguration_Mini51BN(uProgramMemorySize);
-                } else {
-                    pConfigDlg = new CDialogConfiguration_Mini51BN;
-                }
-
-                Config = (((CDialogConfiguration_Mini51BN *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
             case IDD_DIALOG_CONFIGURATION_MINI51CN:
@@ -701,7 +690,6 @@ UINT DialogTemplate[] = {
     IDD_DIALOG_CONFIGURATION_M0564,	// M0564, NUC121, NUC125, NUC126
     IDD_DIALOG_CONFIGURATION_M451,
     IDD_DIALOG_CONFIGURATION_MINI51,
-    IDD_DIALOG_CONFIGURATION_MINI51BN,
     IDD_DIALOG_CONFIGURATION_MINI51CN,
     IDD_DIALOG_CONFIGURATION_MT500,
     // IDD_DIALOG_CONFIGURATION_N76E1T,
