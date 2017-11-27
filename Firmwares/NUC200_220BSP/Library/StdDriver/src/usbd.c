@@ -506,6 +506,8 @@ void USBD_PrepareCtrlIn(uint8_t *pu8Buf, uint32_t u32Size)
   */
 void USBD_CtrlIn(void)
 {
+    static uint8_t u8ZeroFlag = 0;
+
     DBG_PRINTF("Ctrl In Ack. residue %d\n", g_usbd_CtrlInSize);
     if(g_usbd_CtrlInSize)
     {
@@ -523,14 +525,16 @@ void USBD_CtrlIn(void)
             // Data size <= MXPLD
             USBD_MemCopy((uint8_t *)USBD_BUF_BASE + USBD_GET_EP_BUF_ADDR(EP0), (uint8_t *)g_usbd_CtrlInPointer, g_usbd_CtrlInSize);
             USBD_SET_PAYLOAD_LEN(EP0, g_usbd_CtrlInSize);
+            if(g_usbd_CtrlInSize == g_usbd_CtrlMaxPktSize)
+                u8ZeroFlag = 1;
             g_usbd_CtrlInPointer = 0;
             g_usbd_CtrlInSize = 0;
         }
     }
-    else
+    else // No more data for IN token
     {
         // In ACK for Set address
-        if((g_usbd_SetupPacket[0] == 0) && (g_usbd_SetupPacket[1] == 5))
+        if((g_usbd_SetupPacket[0] == REQ_STANDARD) && (g_usbd_SetupPacket[1] == SET_ADDRESS))
         {
             if((USBD_GET_ADDR() != g_usbd_UsbAddr) && (USBD_GET_ADDR() == 0))
             {
@@ -538,10 +542,14 @@ void USBD_CtrlIn(void)
             }
         }
 
-        // No more data for IN token
-        //USBD_SET_PAYLOAD_LEN(EP0, 0);
-        USBD_PrepareCtrlOut(0, 0);
-        DBG_PRINTF("Ctrl In done. Prepare OUT 0\n");
+        /* For the case of data size is integral times maximum packet size */
+        if(u8ZeroFlag)
+        {
+            USBD_SET_PAYLOAD_LEN(EP0, 0);
+            u8ZeroFlag = 0;
+        }
+
+        DBG_PRINTF("Ctrl In done.\n");
     }
 }
 
