@@ -1,6 +1,7 @@
 #pragma once
 
 #include "resource.h"
+#include "DialogConfiguration.h"
 
 class CDialogResize : public CDialog
 {

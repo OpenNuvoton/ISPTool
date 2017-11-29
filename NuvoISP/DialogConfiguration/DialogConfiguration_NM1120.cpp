@@ -48,7 +48,7 @@ void CDialogConfiguration_NM1120::DoDataExchange(CDataExchange *pDX)
     DDX_Control(pDX, IDC_EDIT_FLASH_BASE_ADDRESS, m_FlashBaseAddress);
     DDX_Control(pDX, IDC_EDIT_DATA_FLASH_SIZE, m_DataFlashSize);
     DDX_Control(pDX, IDC_SPIN_DATA_FLASH_SIZE, m_SpinDataFlashSize);
-    DDX_Radio(pDX, IDC_RADIO_BOV_20, m_nRadioBov);
+    DDX_Radio(pDX, IDC_RADIO_BOV_0, m_nRadioBov);
     DDX_Radio(pDX, IDC_RADIO_BS_LDROM, m_nRadioBS);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_0, m_sConfigValue0);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_1, m_sConfigValue1);
@@ -73,14 +73,16 @@ void CDialogConfiguration_NM1120::DoDataExchange(CDataExchange *pDX)
 BEGIN_MESSAGE_MAP(CDialogConfiguration_NM1120, CDialog)
     //{{AFX_MSG_MAP(CDialogConfiguration_NM1120)
     ON_EN_CHANGE(IDC_EDIT_FLASH_BASE_ADDRESS, OnChangeEditFlashBaseAddress)
-    ON_BN_CLICKED(IDC_RADIO_BOV_43, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_40, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_37, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_30, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_27, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_24, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_22, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_20, OnButtonClick)
+
+    ON_BN_CLICKED(IDC_RADIO_BOV_0, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_1, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_2, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_3, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_4, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_5, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_6, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_7, OnButtonClick)
+
     ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnButtonClick)

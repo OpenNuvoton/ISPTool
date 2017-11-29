@@ -47,7 +47,7 @@ void CDialogConfiguration_Nano100::DoDataExchange(CDataExchange *pDX)
     DDX_Control(pDX, IDC_EDIT_DATA_FLASH_SIZE, m_DataFlashSize);
     DDX_Control(pDX, IDC_SPIN_DATA_FLASH_SIZE, m_SpinDataFlashSize);
     DDX_Radio(pDX, IDC_RADIO_CLK_E12M, m_nRadioClk);
-    DDX_Radio(pDX, IDC_RADIO_BOR_DISABLE, m_nRadioBor);
+    DDX_Radio(pDX, IDC_RADIO_BOV_DISABLE, m_nRadioBor);
     DDX_Radio(pDX, IDC_RADIO_BS_LDROM, m_nRadioBS);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_0, m_sConfigValue0);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_1, m_sConfigValue1);
@@ -62,27 +62,24 @@ void CDialogConfiguration_Nano100::DoDataExchange(CDataExchange *pDX)
 
 BEGIN_MESSAGE_MAP(CDialogConfiguration_Nano100, CDialog)
     //{{AFX_MSG_MAP(CDialogConfiguration_Nano100)
-    ON_BN_CLICKED(IDC_RADIO_BOV_45, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_CLK_E12M, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnButtonClick)
     ON_EN_CHANGE(IDC_EDIT_FLASH_BASE_ADDRESS, OnChangeEditFlashBaseAddress)
-    ON_BN_CLICKED(IDC_RADIO_BOR_DISABLE, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_38, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_27, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_22, OnButtonClick)
+
+    ON_BN_CLICKED(IDC_RADIO_BOV_DISABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_0, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_1, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_2, OnButtonClick)
+
     ON_BN_CLICKED(IDC_RADIO_CLK_I22M, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_CLOCK_FILTER_ENABLE, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnButtonClick)
-    ON_BN_CLICKED(IDC_CHECK_WATCHDOG_ENABLE, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_25, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_20, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_17, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_WDT_ENABLE, OnButtonClick)
     ON_WM_SIZE()
     ON_WM_VSCROLL()

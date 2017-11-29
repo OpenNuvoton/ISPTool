@@ -436,15 +436,19 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
 
             // M051AN, M051BN
             case IDD_DIALOG_CONFIGURATION_M051:
+                pConfigDlg = new CDialogConfiguration_M05XAN();
+                Config = (((CDialogConfiguration_M05XAN *)pConfigDlg)->m_ConfigValue.m_value);
+                break;
+
             case IDD_DIALOG_CONFIGURATION_M051BN:
-                pConfigDlg = new CDialogConfiguration_M05XBN(psChipData->uProjectCode == IDD_DIALOG_CONFIGURATION_M051BN);
+                pConfigDlg = new CDialogConfiguration_M05XBN();
                 Config = (((CDialogConfiguration_M05XBN *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
             // M051DN, M051DE, M058SAN
             case IDD_DIALOG_CONFIGURATION_M051CN:
-                pConfigDlg = new CDialogConfiguration_M05X;
-                Config = (((CDialogConfiguration_M05X *)pConfigDlg)->m_ConfigValue.m_value);
+                pConfigDlg = new CDialogConfiguration_M05XDN;
+                Config = (((CDialogConfiguration_M05XDN *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
             case IDD_DIALOG_CONFIGURATION_MINI51:

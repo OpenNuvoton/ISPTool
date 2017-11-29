@@ -17,41 +17,54 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
-// CDialogConfiguration_M05X dialog
+// CDialogConfiguration_M05x dialog
 
-
-CDialogConfiguration_M05X::CDialogConfiguration_M05X(UINT nIDTemplate, CWnd *pParent /*=NULL*/)
+CDialogConfiguration_M05x::CDialogConfiguration_M05x(UINT nIDTemplate, CWnd *pParent /*=NULL*/)
     : CDialogResize(nIDTemplate, pParent)
 {
+    //{{AFX_DATA_INIT(CDialogConfiguration_M05x)
+    m_nRadioClk = -1;
+    m_nRadioBov = -1;
+    m_nRadioBS = -1;
+    m_sConfigValue0 = _T("");
+    m_bCheckBrownOutDetect = FALSE;
+    m_bCheckBrownOutReset = FALSE;
+    m_bClockFilterEnable = FALSE;
+    m_bSecurityLock = FALSE;
+    //}}AFX_DATA_INIT
 }
 
-void CDialogConfiguration_M05X::DoDataExchange(CDataExchange *pDX)
+void CDialogConfiguration_M05x::DoDataExchange(CDataExchange *pDX)
 {
     CDialogResize::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(CDialogConfiguration_M05x)
+    DDX_Radio(pDX, IDC_RADIO_CLK_E12M, m_nRadioClk);
+    DDX_Radio(pDX, IDC_RADIO_BOV_0, m_nRadioBov);
+    DDX_Radio(pDX, IDC_RADIO_BS_LDROM, m_nRadioBS);
+    DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_0, m_sConfigValue0);
+    DDX_Check(pDX, IDC_CHECK_BROWN_OUT_DETECT, m_bCheckBrownOutDetect);
+    DDX_Check(pDX, IDC_CHECK_BROWN_OUT_RESET, m_bCheckBrownOutReset);
+    DDX_Check(pDX, IDC_CHECK_CLOCK_FILTER_ENABLE, m_bClockFilterEnable);
+    DDX_Check(pDX, IDC_CHECK_SECURITY_LOCK, m_bSecurityLock);
+    //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(CDialogConfiguration_M05X, CDialog)
-    //{{AFX_MSG_MAP(CDialogConfiguration_M05X)
-    ON_BN_CLICKED(IDC_RADIO_BOV_45, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_CLK_E12M, OnRadioClk)
-    ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_WDT_ENABLE, OnCheckClickWDT)
-    ON_BN_CLICKED(IDC_CHECK_WDT_POWER_DOWN, OnCheckClickWDTPD)
-    ON_BN_CLICKED(IDC_RADIO_BOV_38, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_BOV_27, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_BOV_22, OnRadioBov)
-    ON_BN_CLICKED(IDC_RADIO_CLK_I22M, OnRadioClk)
-    ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_CLOCK_FILTER_ENABLE, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_WATCHDOG_ENABLE, OnCheckClick)
-    ON_BN_CLICKED(IDC_RADIO_IO_TRI, OnRadioIO)
-    ON_BN_CLICKED(IDC_RADIO_IO_BI, OnRadioIO)
-    ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnRadioBs)
-    ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM, OnRadioBs)
+BEGIN_MESSAGE_MAP(CDialogConfiguration_M05x, CDialog)
+    //{{AFX_MSG_MAP(CDialogConfiguration_M05x)
+    ON_BN_CLICKED(IDC_RADIO_BOV_0, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_1, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_2, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_3, OnButtonClick)
+
+    ON_BN_CLICKED(IDC_RADIO_CLK_E12M, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_CLK_I22M, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_CLOCK_FILTER_ENABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnButtonClick)
     ON_WM_SIZE()
     ON_WM_VSCROLL()
     ON_WM_HSCROLL()
@@ -61,13 +74,13 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_M05X, CDialog)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// CDialogConfiguration_M05X message handlers
+// CDialogConfiguration_M05x message handlers
 
-BOOL CDialogConfiguration_M05X::OnInitDialog()
+BOOL CDialogConfiguration_M05x::OnInitDialog()
 {
     CDialog::OnInitDialog();
-    // TODO: Add extra initialization here
-    ConfigToGUI(0);
+    ConfigToGUI();
+    UpdateData(FALSE);
     m_bIsInitialized = true;
     GetWindowRect(m_rect);
     AdjustDPI();
@@ -75,261 +88,404 @@ BOOL CDialogConfiguration_M05X::OnInitDialog()
     // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CDialogConfiguration_M05X::ConfigToGUI(int nEventID)
+void CDialogConfiguration_M05x::ConfigToGUI(int nEventID)
 {
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
 
-    /* Clock Source Selection */
-    if ((uConfig0 & M05X_FLASH_CONFIG_CFOSC) == M05X_FLASH_CONFIG_E12M) {
-        ((CButton *)GetDlgItem(IDC_RADIO_CLK_E12M))->SetCheck(TRUE);
-    } else if ((uConfig0 & M05X_FLASH_CONFIG_CFOSC) == M05X_FLASH_CONFIG_CFOSC) {
-        ((CButton *)GetDlgItem(IDC_RADIO_CLK_I22M))->SetCheck(TRUE);
-    }
-
-    /* Brown Out Voltage */
-    switch (uConfig0 & M05X_FLASH_CONFIG_CBOV) {
-        case M05X_FLASH_CONFIG_CBOV_22:
-            ((CButton *)GetDlgItem(IDC_RADIO_BOV_22))->SetCheck(TRUE);
+    switch (uConfig0 & M05X_FLASH_CONFIG_CFOSC) {
+        case M05X_FLASH_CONFIG_E12M:
+            m_nRadioClk = 0;
             break;
 
-        case M05X_FLASH_CONFIG_CBOV_26:
-            ((CButton *)GetDlgItem(IDC_RADIO_BOV_27))->SetCheck(TRUE);
+        case M05X_FLASH_CONFIG_CFOSC:
+        default:
+            m_nRadioClk = 1;
+            break;
+    }
+
+    switch (uConfig0 & M05X_FLASH_CONFIG_CBOV) {
+        case M05X_FLASH_CONFIG_CBOV_45:
+            m_nRadioBov = 0;
             break;
 
         case M05X_FLASH_CONFIG_CBOV_38:
-            ((CButton *)GetDlgItem(IDC_RADIO_BOV_38))->SetCheck(TRUE);
+            m_nRadioBov = 1;
             break;
 
-        case M05X_FLASH_CONFIG_CBOV_45:
-            ((CButton *)GetDlgItem(IDC_RADIO_BOV_45))->SetCheck(TRUE);
-            break;
-    }
-
-    /* Boot Select */
-    switch (uConfig0 & M05X_FLASH_CONFIG_CBS2) {
-        case M05X_FLASH_CONFIG_CBS_LD_AP:
-            CheckDlgButton(IDC_RADIO_BS_LDROM_APROM, TRUE);
+        case M05X_FLASH_CONFIG_CBOV_26:
+            m_nRadioBov = 2;
             break;
 
-        case M05X_FLASH_CONFIG_CBS_LD:
-            CheckDlgButton(IDC_RADIO_BS_LDROM, TRUE);
-            break;
-
-        case M05X_FLASH_CONFIG_CBS_AP_LD:
-            CheckDlgButton(IDC_RADIO_BS_APROM_LDROM, TRUE);
-            break;
-
-        case M05X_FLASH_CONFIG_CBS_AP:
-            CheckDlgButton(IDC_RADIO_BS_APROM, TRUE);
+        case M05X_FLASH_CONFIG_CBOV_22:
+        default:
+            m_nRadioBov = 3;
             break;
     }
 
-    /* Brown Out Detector Enable */
-    if (uConfig0 & M05X_FLASH_CONFIG_CBODEN) {
-        ((CButton *)GetDlgItem(IDC_CHECK_BROWN_OUT_DETECT))->SetCheck(FALSE);
-    } else {
-        ((CButton *)GetDlgItem(IDC_CHECK_BROWN_OUT_DETECT))->SetCheck(TRUE);
-    }
-
-    /* Brown Out Reset Enable */
-    if (uConfig0 & M05X_FLASH_CONFIG_CBORST) {
-        ((CButton *)GetDlgItem(IDC_CHECK_BROWN_OUT_RESET))->SetCheck(FALSE);
-    } else {
-        ((CButton *)GetDlgItem(IDC_CHECK_BROWN_OUT_RESET))->SetCheck(TRUE);
-    }
-
-    /* Security Lock */
-    if (uConfig0 & M05X_FLASH_CONFIG_LOCK) {
-        ((CButton *)GetDlgItem(IDC_CHECK_SECURITY_LOCK))->SetCheck(FALSE);
-    } else {
-        ((CButton *)GetDlgItem(IDC_CHECK_SECURITY_LOCK))->SetCheck(TRUE);
-    }
-
-    /* Watchdog Enable */
-    if (uConfig0 & M05X_FLASH_CONFIG_CWDTEN) {
-        CheckDlgButton(IDC_CHECK_WDT_ENABLE, FALSE);
-    } else {
-        CheckDlgButton(IDC_CHECK_WDT_ENABLE, TRUE);
-    }
-
-    /* Watchdog Clock Power Down Enable */
-    if (uConfig0 & M05X_FLASH_CONFIG_CWDTPDEN) {
-        CheckDlgButton(IDC_CHECK_WDT_POWER_DOWN, FALSE);
-    } else {
-        CheckDlgButton(IDC_CHECK_WDT_POWER_DOWN, TRUE);
-    }
-
-    /* I/O Initial State Select */
-    if (uConfig0 & M05X_FLASH_CONFIG_CIOINI) {
-        CheckDlgButton(IDC_RADIO_IO_BI, TRUE);
-    } else {
-        CheckDlgButton(IDC_RADIO_IO_TRI, TRUE);
-    }
-
-    /* Config0 Value */
-    CString str;
-    str.Format(_T("0x%08X"), uConfig0);
-    ((CEdit *)GetDlgItem(IDC_STATIC_CONFIG_VALUE_0))->SetWindowText(str);
+    m_nRadioBS = ((uConfig0 & M05X_FLASH_CONFIG_CBS) == 0 ? 0 : 1);
+    m_bCheckBrownOutDetect = ((uConfig0 & M05X_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
+    m_bCheckBrownOutReset = ((uConfig0 & M05X_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
+    m_bClockFilterEnable = ((uConfig0 & M05X_FLASH_CONFIG_CKF) == M05X_FLASH_CONFIG_CKF ? TRUE : FALSE);
+    m_bSecurityLock = ((uConfig0 & M05X_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    m_sConfigValue0.Format(_T("0x%08X"), m_ConfigValue.m_value[0]);
 }
 
-void CDialogConfiguration_M05X::GUIToConfig(int nEventID)
+void CDialogConfiguration_M05x::GUIToConfig(int nEventID)
 {
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
-    /* Clock Source Selection */
     uConfig0 &= ~M05X_FLASH_CONFIG_CFOSC;
 
-    if (IsDlgButtonChecked(IDC_RADIO_CLK_E12M)) {
-        uConfig0 |= M05X_FLASH_CONFIG_E12M;
-    } else if (IsDlgButtonChecked(IDC_RADIO_CLK_I22M)) {
-        uConfig0 |= M05X_FLASH_CONFIG_CFOSC;
+    switch (m_nRadioClk) {
+        case 0:
+            uConfig0 |= M05X_FLASH_CONFIG_E12M;
+            break;
+
+        case 1:
+            uConfig0 |= M05X_FLASH_CONFIG_CFOSC;	/* New spec! */
+            break;
+
+        default:
+            /* Keep old value */
+            uConfig0 |= (m_ConfigValue.m_value[0] & M05X_FLASH_CONFIG_CFOSC);
     }
 
-    /* Brown Out Voltage */
     uConfig0 &= ~M05X_FLASH_CONFIG_CBOV;
 
-    if (IsDlgButtonChecked(IDC_RADIO_BOV_45)) {
-        uConfig0 |= M05X_FLASH_CONFIG_CBOV_45;
-    } else if (IsDlgButtonChecked(IDC_RADIO_BOV_38)) {
-        uConfig0 |= M05X_FLASH_CONFIG_CBOV_38;
-    } else if (IsDlgButtonChecked(IDC_RADIO_BOV_27)) {
-        uConfig0 |= M05X_FLASH_CONFIG_CBOV_26;
-    } else if (IsDlgButtonChecked(IDC_RADIO_BOV_22)) {
-        uConfig0 |= M05X_FLASH_CONFIG_CBOV_22;
+    switch (m_nRadioBov) {
+        case 0:
+            uConfig0 |= M05X_FLASH_CONFIG_CBOV_45;
+            break;
+
+        case 1:
+            uConfig0 |= M05X_FLASH_CONFIG_CBOV_38;
+            break;
+
+        case 2:
+            uConfig0 |= M05X_FLASH_CONFIG_CBOV_26;
+            break;
+
+        case 3:
+            uConfig0 |= M05X_FLASH_CONFIG_CBOV_22;
+            break;
+
+        default:
+            /* Keep old value */
+            uConfig0 |= (m_ConfigValue.m_value[0] & M05X_FLASH_CONFIG_CBOV);
     }
 
-    /* Boot Select */
-    uConfig0 &= ~M05X_FLASH_CONFIG_CBS2;
-
-    if (IsDlgButtonChecked(IDC_RADIO_BS_LDROM)) {
-        uConfig0 |= M05X_FLASH_CONFIG_CBS_LD;
-    } else if (IsDlgButtonChecked(IDC_RADIO_BS_APROM)) {
-        uConfig0 |= M05X_FLASH_CONFIG_CBS_AP;
-    } else if (IsDlgButtonChecked(IDC_RADIO_BS_LDROM_APROM)) {
-        uConfig0 |= M05X_FLASH_CONFIG_CBS_LD_AP;
-    } else if (IsDlgButtonChecked(IDC_RADIO_BS_APROM_LDROM)) {
-        uConfig0 |= M05X_FLASH_CONFIG_CBS_AP_LD;
+    if (m_nRadioBS == 0) {
+        uConfig0 &= ~M05X_FLASH_CONFIG_CBS;
+    } else {
+        uConfig0 |= M05X_FLASH_CONFIG_CBS;
     }
 
-    /* Brown Out Detector Enable */
-    if (IsDlgButtonChecked(IDC_CHECK_BROWN_OUT_DETECT)) {
+    if (m_bCheckBrownOutDetect) {
         uConfig0 &= ~M05X_FLASH_CONFIG_CBODEN;
     } else {
         uConfig0 |= M05X_FLASH_CONFIG_CBODEN;
     }
 
-    /* Brown Out Reset Enable */
-    if (IsDlgButtonChecked(IDC_CHECK_BROWN_OUT_RESET)) {
+    if (m_bCheckBrownOutReset) {
         uConfig0 &= ~M05X_FLASH_CONFIG_CBORST;
     } else {
         uConfig0 |= M05X_FLASH_CONFIG_CBORST;
     }
 
-    /* Security Lock */
-    if (IsDlgButtonChecked(IDC_CHECK_SECURITY_LOCK)) {
+    if (m_bClockFilterEnable) {
+        uConfig0 |= M05X_FLASH_CONFIG_CKF;
+    } else {
+        uConfig0 &= ~M05X_FLASH_CONFIG_CKF;
+    }
+
+    if (m_bSecurityLock) {
         uConfig0 &= ~M05X_FLASH_CONFIG_LOCK;
     } else {
         uConfig0 |= M05X_FLASH_CONFIG_LOCK;
     }
 
-    /* Watchdog Enable */
-    /* Watchdog Clock Power Down Enable */
-    if (GetDlgItem(IDC_CHECK_WDT_ENABLE) != NULL) {
-        if (IsDlgButtonChecked(IDC_CHECK_WDT_ENABLE)) {
-            if (IsDlgButtonChecked(IDC_CHECK_WDT_POWER_DOWN)) {
-                uConfig0 &= ~M05X_FLASH_CONFIG_CWDTEN;
-                uConfig0 &= ~M05X_FLASH_CONFIG_CWDTPDEN;
-            } else {
-                uConfig0 &= ~M05X_FLASH_CONFIG_CWDTEN;
-                uConfig0 |= M05X_FLASH_CONFIG_CWDTPDEN;
-            }
-        } else {
-            if ((nEventID == IDC_CHECK_WDT_POWER_DOWN) && (IsDlgButtonChecked(IDC_CHECK_WDT_POWER_DOWN))) {
-                uConfig0 &= ~M05X_FLASH_CONFIG_CWDTEN;
-                uConfig0 &= ~M05X_FLASH_CONFIG_CWDTPDEN;
-            } else {
-                uConfig0 |= M05X_FLASH_CONFIG_CWDTEN;
-                uConfig0 |= M05X_FLASH_CONFIG_CWDTPDEN;
-            }
-        }
-    }
-
-    /* I/O Initial State Select */
-    if (IsDlgButtonChecked(IDC_RADIO_IO_BI)) {
-        uConfig0 |= M05X_FLASH_CONFIG_CIOINI;
-    } else if (IsDlgButtonChecked(IDC_RADIO_IO_TRI)) {
-        uConfig0 &= ~M05X_FLASH_CONFIG_CIOINI;
-    }
-
+    uConfig0 |= M05X_FLASH_CONFIG_CWDTEN;
     m_ConfigValue.m_value[0] = uConfig0;
-}
+    }
 
-void CDialogConfiguration_M05X::OnGUIEvent(int nEventID)
+void CDialogConfiguration_M05x::OnButtonClick()
 {
     // TODO: Add your control notification handler code here
-    GUIToConfig(nEventID);
-    ConfigToGUI(nEventID);
+    UpdateData(TRUE);
+    GUIToConfig();
+    ConfigToGUI();
+    UpdateData(FALSE);
 }
 
-void CDialogConfiguration_M05X::OnRadioBov()
+void CDialogConfiguration_M05x::OnOK()
 {
-    OnGUIEvent();
-}
-
-void CDialogConfiguration_M05X::OnRadioClk()
-{
-    // TODO: Add your control notification handler code here
-    OnGUIEvent();
-}
-
-void CDialogConfiguration_M05X::OnRadioBs()
-{
-    // TODO: Add your control notification handler code here
-    OnGUIEvent();
-}
-
-void CDialogConfiguration_M05X::OnRadioIO()
-{
-    // TODO: Add your control notification handler code here
-    OnGUIEvent();
-}
-
-void CDialogConfiguration_M05X::OnCheckClick()
-{
-    // TODO: Add your control notification handler code here
-    OnGUIEvent();
-}
-
-
-void CDialogConfiguration_M05X::OnCheckClickWDTPD()
-{
-    // TODO: Add your control notification handler code here
-    OnGUIEvent(IDC_CHECK_WDT_POWER_DOWN);
-}
-
-void CDialogConfiguration_M05X::OnCheckClickWDT()
-{
-    // TODO: Add your control notification handler code here
-    OnGUIEvent(IDC_CHECK_WDT_ENABLE);
-}
-
-void CDialogConfiguration_M05X::OnOK()
-{
-    GUIToConfig(0);
+    // TODO: Add extra validation here
+    UpdateData(TRUE);
+    GUIToConfig();
     CDialog::OnOK();
 }
 
-CDialogConfiguration_M05XBN::CDialogConfiguration_M05XBN(bool bIsM05xBN, UINT nIDTemplate, CWnd *pParent /*=NULL*/)
-    : CDialogConfiguration_M05X(nIDTemplate, pParent)
-    , m_bIsM05xBN(bIsM05xBN)
+/////////////////////////////////////////////////////////////////////////////
+// CDialogConfiguration_M05XAN
+/////////////////////////////////////////////////////////////////////////////
+
+CDialogConfiguration_M05XAN::CDialogConfiguration_M05XAN(CWnd *pParent /*=NULL*/)
+    : CDialogConfiguration_M05x(IDD_DIALOG_CONFIGURATION_M051, pParent)
+{
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// CDialogConfiguration_M05XBN
+/////////////////////////////////////////////////////////////////////////////
+CDialogConfiguration_M05XBN::CDialogConfiguration_M05XBN(CWnd *pParent /*=NULL*/)
+    : CDialogConfiguration_M05x(IDD_DIALOG_CONFIGURATION_M051, pParent)
 {
 }
 
 BOOL CDialogConfiguration_M05XBN::OnInitDialog()
 {
-    if (m_bIsM05xBN) {
-        SetDlgItemText(IDC_RADIO_BOV_45, _T("4.4V"));
-        SetDlgItemText(IDC_RADIO_BOV_38, _T("3.7V"));
+    GetDlgItem(IDC_RADIO_BOV_1)->SetWindowText(_T("3.7V"));
+    GetDlgItem(IDC_RADIO_BOV_0)->SetWindowText(_T("4.4V"));
+    return CDialogConfiguration_M05x::OnInitDialog();
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// CDialogConfiguration_M05XDN
+/////////////////////////////////////////////////////////////////////////////
+
+CDialogConfiguration_M05XDN::CDialogConfiguration_M05XDN(UINT nIDTemplate, CWnd *pParent /*=NULL*/)
+    : CDialogConfiguration_M05x(nIDTemplate, pParent)
+{
+    m_nRadioIO = -1;
+    m_bWDTEnable = FALSE;
+    m_bWDTPowerDown = FALSE;
+}
+
+void CDialogConfiguration_M05XDN::DoDataExchange(CDataExchange *pDX)
+{
+    CDialogConfiguration_M05x::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(CDialogConfiguration_M05XDN)
+    DDX_Radio(pDX, IDC_RADIO_IO_TRI, m_nRadioIO);
+    DDX_Check(pDX, IDC_CHECK_WDT_ENABLE, m_bWDTEnable);
+    DDX_Check(pDX, IDC_CHECK_WDT_POWER_DOWN, m_bWDTPowerDown);
+    //}}AFX_DATA_MAP
+}
+
+BEGIN_MESSAGE_MAP(CDialogConfiguration_M05XDN, CDialogConfiguration_M05x)
+    //{{AFX_MSG_MAP(CDialogConfiguration_M05XDN)
+    ON_BN_CLICKED(IDC_CHECK_WDT_ENABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_WDT_POWER_DOWN, OnCheckClickWDTPD)
+    ON_BN_CLICKED(IDC_RADIO_IO_TRI, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_IO_BI, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM, OnButtonClick)
+    //}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+void CDialogConfiguration_M05XDN::OnCheckClickWDTPD()
+{
+    UpdateData(TRUE);
+    GUIToConfig(IDC_CHECK_WDT_POWER_DOWN);
+    ConfigToGUI(IDC_CHECK_WDT_POWER_DOWN);
+    UpdateData(FALSE);
+}
+
+void CDialogConfiguration_M05XDN::ConfigToGUI(int nEventID)
+{
+    CDialogConfiguration_M05x::ConfigToGUI(nEventID);
+    unsigned int uConfig0 = m_ConfigValue.m_value[0];
+
+    switch (uConfig0 & M05X_FLASH_CONFIG_CBS2) {
+        case M05X_FLASH_CONFIG_CBS_LD:
+            m_nRadioBS = 0;
+            break;
+
+        case M05X_FLASH_CONFIG_CBS_AP:
+            m_nRadioBS = 1;
+            break;
+
+        case M05X_FLASH_CONFIG_CBS_LD_AP:
+            m_nRadioBS = 2;
+            break;
+
+        case M05X_FLASH_CONFIG_CBS_AP_LD:
+        default:
+            m_nRadioBS = 3;
+            break;
     }
 
-    return CDialogConfiguration_M05X::OnInitDialog();
+    m_nRadioIO = ((uConfig0 & M05X_FLASH_CONFIG_CIOINI) == 0 ? 0 : 1);
+    m_bWDTPowerDown = ((uConfig0 & M05X_FLASH_CONFIG_CWDTPDEN) == 0 ? TRUE : FALSE);
+    m_bWDTEnable = ((uConfig0 & M05X_FLASH_CONFIG_CWDTEN) == 0 ? TRUE : FALSE);;
+
+    if (!m_bWDTEnable) {
+        m_bWDTPowerDown = FALSE;
+    }
+}
+
+void CDialogConfiguration_M05XDN::GUIToConfig(int nEventID)
+{
+    unsigned int uConfig0 = m_ConfigValue.m_value[0];
+    uConfig0 &= ~M05X_FLASH_CONFIG_CFOSC;
+
+    switch (m_nRadioClk) {
+        case 0:
+        uConfig0 |= M05X_FLASH_CONFIG_E12M;
+            break;
+
+        case 1:
+            uConfig0 |= M05X_FLASH_CONFIG_CFOSC;	/* New spec! */
+            break;
+
+        default:
+            /* Keep old value */
+            uConfig0 |= (m_ConfigValue.m_value[0] & M05X_FLASH_CONFIG_CFOSC);
+    }
+
+    uConfig0 &= ~M05X_FLASH_CONFIG_CBOV;
+
+    switch (m_nRadioBov) {
+        case 0:
+        uConfig0 |= M05X_FLASH_CONFIG_CBOV_45;
+            break;
+
+        case 1:
+        uConfig0 |= M05X_FLASH_CONFIG_CBOV_38;
+            break;
+
+        case 2:
+        uConfig0 |= M05X_FLASH_CONFIG_CBOV_26;
+            break;
+
+        case 3:
+        uConfig0 |= M05X_FLASH_CONFIG_CBOV_22;
+            break;
+
+        default:
+            /* Keep old value */
+            uConfig0 |= (m_ConfigValue.m_value[0] & M05X_FLASH_CONFIG_CBOV);
+    }
+
+    uConfig0 &= ~M05X_FLASH_CONFIG_CBS2;
+
+    switch (m_nRadioBS) {
+        case 0:
+        uConfig0 |= M05X_FLASH_CONFIG_CBS_LD;
+            break;
+
+        case 1:
+        uConfig0 |= M05X_FLASH_CONFIG_CBS_AP;
+            break;
+
+        case 2:
+        uConfig0 |= M05X_FLASH_CONFIG_CBS_LD_AP;
+            break;
+
+        case 3:
+            uConfig0 |= M05X_FLASH_CONFIG_CBS_AP_LD;
+            break;
+
+        default:
+            /* Keep old value */
+            uConfig0 |= (m_ConfigValue.m_value[0] & M05X_FLASH_CONFIG_CBS2);
+    }
+
+    if (m_nRadioIO == 0) {
+        uConfig0 &= ~M05X_FLASH_CONFIG_CIOINI;
+    } else {
+        uConfig0 |= M05X_FLASH_CONFIG_CIOINI;
+    }
+
+    if (m_bWDTPowerDown) {
+                uConfig0 &= ~M05X_FLASH_CONFIG_CWDTPDEN;
+            } else {
+                uConfig0 |= M05X_FLASH_CONFIG_CWDTPDEN;
+            }
+
+    if (m_bWDTEnable) {
+                uConfig0 &= ~M05X_FLASH_CONFIG_CWDTEN;
+            } else {
+                uConfig0 |= M05X_FLASH_CONFIG_CWDTEN;
+    }
+
+    if (nEventID == IDC_CHECK_WDT_POWER_DOWN) {
+        if (m_bWDTPowerDown) {
+            uConfig0 &= ~M05X_FLASH_CONFIG_CWDTEN;
+    }
+    } else {
+        if (!m_bWDTEnable) {
+            uConfig0 |= M05X_FLASH_CONFIG_CWDTPDEN;
+}
+}
+
+    if (m_bCheckBrownOutDetect) {
+        uConfig0 &= ~M05X_FLASH_CONFIG_CBODEN;
+    } else {
+        uConfig0 |= M05X_FLASH_CONFIG_CBODEN;
+}
+
+    if (m_bCheckBrownOutReset) {
+        uConfig0 &= ~M05X_FLASH_CONFIG_CBORST;
+    } else {
+        uConfig0 |= M05X_FLASH_CONFIG_CBORST;
+}
+
+    if (m_bClockFilterEnable) {
+        uConfig0 |= M05X_FLASH_CONFIG_CKF;
+    } else {
+        uConfig0 &= ~M05X_FLASH_CONFIG_CKF;
+}
+
+    if (m_bSecurityLock) {
+        uConfig0 &= ~M05X_FLASH_CONFIG_LOCK;
+    } else {
+        uConfig0 |= M05X_FLASH_CONFIG_LOCK;
+}
+
+    m_ConfigValue.m_value[0] = uConfig0;
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// CDialogConfiguration_M058SAN
+/////////////////////////////////////////////////////////////////////////////
+
+CDialogConfiguration_M058SAN::CDialogConfiguration_M058SAN(CWnd *pParent /*=NULL*/)
+    : CDialogConfiguration_M05XDN(IDD_DIALOG_CONFIGURATION_M058, pParent)
+{
+    m_nRadioGP7 = -1;
+}
+
+void CDialogConfiguration_M058SAN::DoDataExchange(CDataExchange *pDX)
+{
+    CDialogConfiguration_M05XDN::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(CDialogConfiguration_M05XDN)
+    DDX_Radio(pDX, IDC_RADIO_GPF_GPIO, m_nRadioGP7);
+    //}}AFX_DATA_MAP
+}
+
+BEGIN_MESSAGE_MAP(CDialogConfiguration_M058SAN, CDialogConfiguration_M05XDN)
+    //{{AFX_MSG_MAP(CDialogConfiguration_M05XDN)
+    ON_BN_CLICKED(IDC_RADIO_GPF_GPIO, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_GPF_CRYSTAL, OnButtonClick)
+    //}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+void CDialogConfiguration_M058SAN::ConfigToGUI(int nEventID)
+{
+    unsigned int uConfig0 = m_ConfigValue.m_value[0];
+    m_nRadioGP7 = ((uConfig0 & M05X_FLASH_CONFIG_CGP7MFP) == 0 ? 0 : 1);
+    CDialogConfiguration_M05XDN::ConfigToGUI(nEventID);
+}
+
+void CDialogConfiguration_M058SAN::GUIToConfig(int nEventID)
+{
+    unsigned int uConfig0 = m_ConfigValue.m_value[0];
+
+    if (m_nRadioGP7 == 0) {
+        uConfig0 &= ~M05X_FLASH_CONFIG_CGP7MFP;
+    } else {
+        uConfig0 |= M05X_FLASH_CONFIG_CGP7MFP;
+    }
+
+    m_ConfigValue.m_value[0] = uConfig0;
+    CDialogConfiguration_M05XDN::GUIToConfig(nEventID);
 }

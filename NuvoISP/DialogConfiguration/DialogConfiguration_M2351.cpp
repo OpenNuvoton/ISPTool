@@ -46,7 +46,7 @@ void CDialogConfiguration_M2351::DoDataExchange(CDataExchange *pDX)
 {
     CDialogResize::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CDialogConfiguration_M2351)
-    DDX_Radio(pDX, IDC_RADIO_BOR_30, m_nRadioBov);
+    DDX_Radio(pDX, IDC_RADIO_BOV_0, m_nRadioBov);
     DDX_Radio(pDX, IDC_RADIO_BS_APROM_LDROM, m_nRadioBS);
     DDX_Radio(pDX, IDC_RADIO_GPF_CRYSTAL, m_nRadioGPG);
     DDX_Radio(pDX, IDC_RADIO_IO_TRI, m_nRadioIO);
@@ -63,14 +63,15 @@ void CDialogConfiguration_M2351::DoDataExchange(CDataExchange *pDX)
 
 BEGIN_MESSAGE_MAP(CDialogConfiguration_M2351, CDialog)
     //{{AFX_MSG_MAP(CDialogConfiguration_M2351)
-    ON_BN_CLICKED(IDC_RADIO_BOR_30, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_28, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_26, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_24, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_22, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_20, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_18, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_16, OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_0, OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_1, OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_2, OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_3, OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_4, OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_5, OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_6, OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_7, OnRadioClick)
+
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnCheckClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnCheckClick)
     ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM, OnRadioClick)

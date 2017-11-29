@@ -43,7 +43,7 @@ void CDialogConfiguration_Nano103::DoDataExchange(CDataExchange *pDX)
     DDX_Control(pDX, IDC_EDIT_FLASH_BASE_ADDRESS, m_FlashBaseAddress);
     DDX_Control(pDX, IDC_EDIT_DATA_FLASH_SIZE, m_DataFlashSize);
     DDX_Control(pDX, IDC_SPIN_DATA_FLASH_SIZE, m_SpinDataFlashSize);
-    DDX_Radio(pDX, IDC_RADIO_BOR_31, m_nRadioBor);
+    DDX_Radio(pDX, IDC_RADIO_BOV_0, m_nRadioBor);
     DDX_Radio(pDX, IDC_RADIO_BS_LDROM, m_nRadioBS);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_0, m_sConfigValue0);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_1, m_sConfigValue1);
@@ -69,20 +69,22 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_Nano103, CDialog)
     ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_31, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_30, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_29, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_28, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_27, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_26, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_25, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_24, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_23, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_22, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_21, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_20, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_19, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_BOR_18, OnButtonClick)
+
+    ON_BN_CLICKED(IDC_RADIO_BOV_0, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_1, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_2, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_3, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_4, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_5, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_6, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_7, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_8, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_9, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_A, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_B, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_C, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_D, OnButtonClick)
+
     ON_WM_SIZE()
     ON_WM_VSCROLL()
     ON_WM_HSCROLL()
