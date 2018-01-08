@@ -320,6 +320,8 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 
 #include "DialogConfiguration_M2351.h"
 
+#include "DialogConfiguration_I94000.h"
+
 extern CPartNumID *psChipData;
 
 bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
@@ -548,6 +550,11 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
                 Config = (((CDialogConfiguration_M2351 *)pConfigDlg)->m_uConfigValue);
                 break;
 
+            case IDD_DIALOG_CONFIGURATION_I94000:
+                pConfigDlg = new CDialogConfiguration_I94000;
+                Config = (((CDialogConfiguration_I94000 *)pConfigDlg)->m_ConfigValue.m_value);
+                break;
+
             case 0x505:	// "NUC505";
                 printf("NUC505 ");
 
@@ -712,6 +719,7 @@ UINT DialogTemplate[] = {
     IDD_DIALOG_CONFIGURATION_NUC400,
     IDD_DIALOG_CONFIGURATION_TC8226,
     IDD_DIALOG_CONFIGURATION_M2351,
+    IDD_DIALOG_CONFIGURATION_I94000,
 };
 
 struct CPartNumID g_TestPartNumIDs[] = {

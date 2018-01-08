@@ -21,16 +21,16 @@ void *GetInfo(unsigned int uPID,
 bool GetInfo(unsigned int uPID,
              unsigned int uConfig0,
              unsigned int uConfig1,
-             unsigned int *puLDROM_Addr,
-             unsigned int *puAPROM_Addr,
              unsigned int *puNVM_Addr,
-             unsigned int auSPROM_Addr[3],
-             unsigned int *puKPROM_Addr,
-             unsigned int *puLDROM_Size,
              unsigned int *puAPROM_Size,
-             unsigned int *puNVM_Size,
-             unsigned int auSPROM_Size[3],
-             unsigned int *puKPROM_Size);
+             unsigned int *puNVM_Size);
+
+bool GetInfo2(unsigned int uPID,
+              unsigned int uConfig0,
+              unsigned int uConfig1,
+              unsigned int *puNVM_Addr,
+              unsigned int *puAPROM_Size,
+              unsigned int *puNVM_Size);
 
 /* Get Flash Info by DID */
 typedef struct {

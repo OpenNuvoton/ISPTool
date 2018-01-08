@@ -1822,6 +1822,20 @@ struct CPartNumID g_PartNumIDs[] = {
     {"NUC126VG4AE", 0x00C05231, IDD_DIALOG_CONFIGURATION_M0564},
     {"NUC126KG4AE", 0x00C05230, IDD_DIALOG_CONFIGURATION_M0564},
 
+    /* I94000 */
+    {"I94124", 0x1d0105ba, IDD_DIALOG_CONFIGURATION_I94000},
+    {"I94123", 0x1d0105b8, IDD_DIALOG_CONFIGURATION_I94000},
+    {"I94121", 0x1d0105b6, IDD_DIALOG_CONFIGURATION_I94000},
+    {"I94120", 0x1d0105b5, IDD_DIALOG_CONFIGURATION_I94000},
+    {"I94114", 0x1d01059a, IDD_DIALOG_CONFIGURATION_I94000},
+    {"I94113", 0x1d010598, IDD_DIALOG_CONFIGURATION_I94000},
+    {"I94111", 0x1d010596, IDD_DIALOG_CONFIGURATION_I94000},
+    {"I94110", 0x1d010595, IDD_DIALOG_CONFIGURATION_I94000},
+    {"I94134", 0x1d01058a, IDD_DIALOG_CONFIGURATION_I94000},
+    {"I94133", 0x1d010588, IDD_DIALOG_CONFIGURATION_I94000},
+    {"I94131", 0x1d010586, IDD_DIALOG_CONFIGURATION_I94000},
+    {"I94130", 0x1d010585, IDD_DIALOG_CONFIGURATION_I94000},
+
     /* NUC4xx series*/
     {"NUC472HI8AE", 0x00047201, IDD_DIALOG_CONFIGURATION_NUC400},
     {"NUC472HH8AE", 0x00047202, IDD_DIALOG_CONFIGURATION_NUC400},
@@ -2106,21 +2120,12 @@ bool UpdateSizeInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfi
                     unsigned int *puNVM_Addr,
                     unsigned int *puAPROM_Size, unsigned int *puNVM_Size)
 {
-    // don't care
-    unsigned int uAPROM_Addr;
     unsigned int uLDROM_Addr;
-    unsigned int auSPROM_Addr[3];
-    unsigned int uKPROM_Addr;
     unsigned int uLDROM_Size;
-    unsigned int auSPROM_Size[3];
-    unsigned int uKPROM_Size;
 
-    if (GetInfo(uID, uConfig0, uConfig1, &uLDROM_Addr, &uAPROM_Addr,
-                puNVM_Addr,
-                auSPROM_Addr, &uKPROM_Addr,
-                &uLDROM_Size,
-                puAPROM_Size, puNVM_Size,
-                auSPROM_Size, &uKPROM_Size)) {
+    if (GetInfo(uID, uConfig0, uConfig1, puNVM_Addr, puAPROM_Size, puNVM_Size)) {
+        return true;
+    } else if (GetInfo2(uID, uConfig0, uConfig1, puNVM_Addr, puAPROM_Size, puNVM_Size)) {
         return true;
     } else {
         // internal ref. to Flash_N76E1T.h

@@ -164,6 +164,9 @@
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M2351.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
+    <ClCompile Include="DialogConfiguration\DialogConfiguration_I94000.cpp">
+      <Filter>External\DialogConfiguration</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\k-cm-memory.ico">
