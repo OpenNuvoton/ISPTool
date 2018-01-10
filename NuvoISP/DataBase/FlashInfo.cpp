@@ -6,6 +6,8 @@
 #define USE_FLASH_DID_INFO_TABLE
 #endif
 
+
+
 FLASH_PID_INFO_BASE_T gsPidInfo;
 #ifndef __NUVOTON__
 void *GetInfo(unsigned int uPID,
@@ -209,14 +211,14 @@ void *GetInfo(unsigned int uPID,
         { 256 * 1024,   0 * 1024,  20 * 1024,    0x00040000,   4 * 1024,    0x00C56404}, //M0564LG4AE
         { 128 * 1024,   0 * 1024,  20 * 1024,    0x00020000,   4 * 1024,    0x00C56413}, //M0564SE4AE
         { 256 * 1024,   0 * 1024,  20 * 1024,    0x00040000,   4 * 1024,    0x00C56412}, //M0564SG4AE
-        { 256 * 1024,   0 * 1024,  20 * 1024,    0x00020000,   4 * 1024,    0x00C56431}, //M0564VG4AE
+        { 256 * 1024,   0 * 1024,  20 * 1024,    0x00040000,   4 * 1024,    0x00C56431}, //M0564VG4AE
         { 256 * 1024,   0 * 1024,  20 * 1024,    0x00040000,   4 * 1024,    0x00C56440}, //M0564KG4AE
         { 128 * 1024,   0 * 1024,  20 * 1024,    0x00020000,   4 * 1024,    0x00C05206}, //NUC126NE4AE
         { 128 * 1024,   0 * 1024,  20 * 1024,    0x00020000,   4 * 1024,    0x00C05205}, //NUC126LE4AE
         { 256 * 1024,   0 * 1024,  20 * 1024,    0x00040000,   4 * 1024,    0x00C05204}, //NUC126LG4AE
         { 128 * 1024,   0 * 1024,  20 * 1024,    0x00020000,   4 * 1024,    0x00C05213}, //NUC126SE4AE
         { 256 * 1024,   0 * 1024,  20 * 1024,    0x00040000,   4 * 1024,    0x00C05212}, //NUC126SG4AE
-        { 256 * 1024,   0 * 1024,  20 * 1024,    0x00020000,   4 * 1024,    0x00C05231}, //NUC126VG4AE
+        { 256 * 1024,   0 * 1024,  20 * 1024,    0x00040000,   4 * 1024,    0x00C05231}, //NUC126VG4AE
         { 256 * 1024,   0 * 1024,  20 * 1024,    0x00040000,   4 * 1024,    0x00C05230}, //NUC126KG4AE
         {  32 * 1024,   4 * 1024,   8 * 1024,    0x0001F000,   4 * 1024,    0x00020007}, //NUC200LC2AN
         {  64 * 1024,   4 * 1024,   8 * 1024,    0x0001F000,   4 * 1024,    0x00020004}, //NUC200LD2AN
@@ -371,7 +373,7 @@ void *GetInfo(unsigned int uPID,
         {   8 * 1024,   0 * 1024,   2 * 1024,    0x00002000,   2 * 1024,    0x00605204}, //NM1200TAAE
         {   8 * 1024,   0 * 1024,   2 * 1024,    0x00002000,   2 * 1024,    0x00605207}, //NM1100XAAE
         {   8 * 1024,   0 * 1024,   2 * 1024,    0x00002000,   2 * 1024,    0x00605208}, //NM1100FAAE
-        {  36 * 1024,   0 * 1024,   8 * 1024,    0x00009000,   4 * 1024,    0x00032003}, //NM1320LC2AE
+        {  32 * 1024,   4 * 1024,   8 * 1024,    0x0001F000,   4 * 1024,    0x00032003}, //NM1320LC2AE
         {  32 * 1024,   4 * 1024,   4 * 1024,    0x0001F000,   4 * 1024,    0x30005810}, //NM1330LC1AE
         {  64 * 1024,   4 * 1024,   4 * 1024,    0x0001F000,   4 * 1024,    0x30005A10}, //NM1330LD2AE
         { 128 * 1024,   0 * 1024,  16 * 1024,    0x00020000,   8 * 1024,    0x00353030}, //NM1530VE3AE
@@ -499,59 +501,59 @@ void *GetInfo(unsigned int uPID,
         { 128 * 1024,   0 * 1024,  32 * 1024,    0x00020000,   4 * 1024,    0x00E45200}, //M452ELE6AE
         {  64 * 1024,   0 * 1024,  32 * 1024,    0x00010000,   4 * 1024,    0x00E45201}, //M452ELD6AE
 
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48140}, //M481KIDAE
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D48141}, //M481KGAAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48110}, //M481SIDAE
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D48111}, //M481SGAAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48100}, //M481LIDAE
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D48101}, //M481LGAAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D481E0}, //M481ZIDAE
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D481E1}, //M481ZGAAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48250}, //M482JIDAE
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D48251}, //M482JGAAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48240}, //M482KIDAE
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D48241}, //M482KGAAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48230}, //M482VIDAE
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D48231}, //M482VGAAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48210}, //M482SIDAE
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D48211}, //M482SGAAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48200}, //M482LIDAE
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D48201}, //M482LGAAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48350}, //M483JIDAE
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D48351}, //M483JGAAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48340}, //M483KIDAE
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D48341}, //M483KGAAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48330}, //M483VIDAE
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D48331}, //M483VGAAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48310}, //M483SIDAE
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D48311}, //M483SGAAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48300}, //M483LIDAE
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D48301}, //M483LGAAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48440}, //M484KIDAE
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D48441}, //M484KGAAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48410}, //M484SIDAE
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D48411}, //M484SGAAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48412}, //M484SIDAE2U
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D48413}, //M484SGAAE2U
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48550}, //M485JIDAE
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D48551}, //M485JGAAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48540}, //M485KIDAE
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D48541}, //M485KGAAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48530}, //M485VIDAE
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D48531}, //M485VGAAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48580}, //M485OIDAE
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D48581}, //M485OGAAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48510}, //M485SIDAE
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D48511}, //M485SGAAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48650}, //M486JIDAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48640}, //M486KIDAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48750}, //M487JIDAE
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D48751}, //M487JGAAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48740}, //M487KIDAE
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D48741}, //M487KGAAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D48710}, //M487SIDAE
-        { 256 * 1024,   0 * 1024,  96 * 1024,    0x0003FFFF,   4 * 1024,    0x00D48711}, //M487SGAAE
-        { 512 * 1024,   0 * 1024, 160 * 1024,    0x0007FFFF,   4 * 1024,    0x00D480FF}, //M480TEST
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48140}, //M481KIDAE
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D48141}, //M481KGAAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48110}, //M481SIDAE
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D48111}, //M481SGAAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48100}, //M481LIDAE
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D48101}, //M481LGAAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D481E0}, //M481ZIDAE
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D481E1}, //M481ZGAAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48250}, //M482JIDAE
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D48251}, //M482JGAAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48240}, //M482KIDAE
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D48241}, //M482KGAAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48230}, //M482VIDAE
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D48231}, //M482VGAAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48210}, //M482SIDAE
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D48211}, //M482SGAAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48200}, //M482LIDAE
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D48201}, //M482LGAAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48350}, //M483JIDAE
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D48351}, //M483JGAAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48340}, //M483KIDAE
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D48341}, //M483KGAAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48330}, //M483VIDAE
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D48331}, //M483VGAAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48310}, //M483SIDAE
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D48311}, //M483SGAAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48300}, //M483LIDAE
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D48301}, //M483LGAAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48440}, //M484KIDAE
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D48441}, //M484KGAAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48410}, //M484SIDAE
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D48411}, //M484SGAAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48412}, //M484SIDAE2U
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D48413}, //M484SGAAE2U
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48550}, //M485JIDAE
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D48551}, //M485JGAAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48540}, //M485KIDAE
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D48541}, //M485KGAAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48530}, //M485VIDAE
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D48531}, //M485VGAAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48580}, //M485OIDAE
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D48581}, //M485OGAAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48510}, //M485SIDAE
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D48511}, //M485SGAAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48650}, //M486JIDAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48640}, //M486KIDAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48750}, //M487JIDAE
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D48751}, //M487JGAAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48740}, //M487KIDAE
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D48741}, //M487KGAAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48710}, //M487SIDAE
+        { 256 * 1024,   0 * 1024,  96 * 1024,    0x00040000,   4 * 1024,    0x00D48711}, //M487SGAAE
+        { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D480FF}, //M480TEST
     };
     unsigned int i;
 
@@ -639,25 +641,85 @@ bool GetInfo(unsigned int uPID,
             if ((uConfig0 & NUC1XX_FLASH_CONFIG_DFVSEN) == 0) {
                 flashInfo.uProgramMemorySize += flashInfo.uDataFlashSize;
                 flashInfo.uDataFlashSize = 0;
-            }
-        }
 
-        if (flashInfo.uDataFlashSize == 0
-                && (uConfig0 & NUC1XX_FLASH_CONFIG_DFEN) == 0) {
-            *puNVM_Addr = (uConfig1 & 0x000FFE00UL);
-            *puAPROM_Size = (flashInfo.uProgramMemorySize > *puNVM_Addr)
-                            ? *puNVM_Addr : flashInfo.uProgramMemorySize;
-            *puNVM_Size = flashInfo.uProgramMemorySize - *puAPROM_Size;
+                if ((uConfig0 & NUC1XX_FLASH_CONFIG_DFEN) == 0) {
+                    *puNVM_Addr = (uConfig1 & 0x000FFE00UL);
+                    *puAPROM_Size = (flashInfo.uProgramMemorySize > *puNVM_Addr)
+                                    ? *puNVM_Addr : flashInfo.uProgramMemorySize;
+                    *puNVM_Size = flashInfo.uProgramMemorySize - *puAPROM_Size;
+                } else {
+                    *puAPROM_Size = flashInfo.uProgramMemorySize;
+                    *puNVM_Addr = flashInfo.uProgramMemorySize;
+                    *puNVM_Size = 0;
+                }
+            } else {
+                *puNVM_Addr = 0x1F000;
+                *puAPROM_Size = flashInfo.uProgramMemorySize;
+                *puNVM_Size = 0x1000;
+            }
         } else {
-            *puAPROM_Size = flashInfo.uProgramMemorySize;
-            *puNVM_Addr = flashInfo.uDataFlashStartAddress;
-            *puNVM_Size = flashInfo.uDataFlashSize;
+            if (flashInfo.uDataFlashSize == 0
+                    && (uConfig0 & NUC1XX_FLASH_CONFIG_DFEN) == 0) {
+                *puNVM_Addr = (uConfig1 & 0x000FFE00UL);
+                *puAPROM_Size = (flashInfo.uProgramMemorySize > *puNVM_Addr)
+                                ? *puNVM_Addr : flashInfo.uProgramMemorySize;
+                *puNVM_Size = flashInfo.uProgramMemorySize - *puAPROM_Size;
+            } else {
+                *puAPROM_Size = flashInfo.uProgramMemorySize;
+                *puNVM_Addr = flashInfo.uDataFlashStartAddress;
+                *puNVM_Size = flashInfo.uDataFlashSize;
+            }
         }
     }
 
     return true;
 }
 #endif
+
+/* Calculate APROM and NVM size of NuMicro */
+bool GetInfo_NuMicro(//unsigned int uDID,
+    unsigned int uConfig0,
+    unsigned int uConfig1,
+    unsigned int uProgramMemorySize,
+    unsigned int uFlashType,
+    unsigned int *puNVM_Addr,
+    unsigned int *puAPROM_Size,
+    unsigned int *puNVM_Size)
+{
+    bool bShare;
+    unsigned int uType = uFlashType & 0xFF;
+    unsigned int uAPROM_Size, uNVM_Size;
+    bShare = (uType == 0) ? true : false;
+
+    if ((uType == 2) && ((uConfig0 & NUC1XX_FLASH_CONFIG_DFVSEN) == 0)) {
+        uProgramMemorySize += 0x1000;
+        bShare = true;
+    }
+
+    if (bShare) {
+        if ((uConfig0 & NUC1XX_FLASH_CONFIG_DFEN) == 0) {
+            unsigned int uNVM_Addr, uPage_Size;
+            uPage_Size = ((uFlashType & 0x0000FF00) >>  8) + 9;
+            uNVM_Addr = uConfig1 & 0x000FFFFF;	// Needed?
+            uNVM_Addr &= ~((1 << uPage_Size) - 1);
+            uAPROM_Size = (uProgramMemorySize > uNVM_Addr) ? uNVM_Addr : uProgramMemorySize;
+            uNVM_Size = uProgramMemorySize - uAPROM_Size;
+        } else {
+            uAPROM_Size = uProgramMemorySize;
+            uNVM_Size = 0;
+        }
+
+        *puNVM_Addr = uAPROM_Size;
+    } else {
+        uAPROM_Size = uProgramMemorySize;
+        uNVM_Size = 0x1000;
+        *puNVM_Addr = 0x1F000;
+    }
+
+    *puAPROM_Size = uAPROM_Size;
+    *puNVM_Size = uNVM_Size;
+    return true;
+}
 
 /* 8051 1T Series */
 
@@ -759,51 +821,6 @@ bool GetInfo_N76E1T(//unsigned int uDID,
     return true;
 }
 #endif
-
-/* Calculate APROM and NVM size of NuMicro */
-bool GetInfo_NuMicro(//unsigned int uDID,
-    unsigned int uConfig0,
-    unsigned int uConfig1,
-    unsigned int uProgramMemorySize,
-    unsigned int uFlashType,
-    unsigned int *puNVM_Addr,
-    unsigned int *puAPROM_Size,
-    unsigned int *puNVM_Size)
-{
-    bool bShare;
-    unsigned int uType = uFlashType & 0xFF;
-    unsigned int uAPROM_Size, uNVM_Size;
-    bShare = (uType == 0) ? true : false;
-
-    if ((uType == 2) && ((uConfig0 & NUC1XX_FLASH_CONFIG_DFVSEN) == 0)) {
-        uProgramMemorySize += 0x1000;
-        bShare = true;
-    }
-
-    if (bShare) {
-        if ((uConfig0 & NUC1XX_FLASH_CONFIG_DFEN) == 0) {
-            unsigned int uNVM_Addr, uPage_Size;
-            uPage_Size = ((uFlashType & 0x0000FF00) >>  8) + 9;
-            uNVM_Addr = uConfig1 & 0x000FFFFF;	// Needed?
-            uNVM_Addr &= ~((1 << uPage_Size) - 1);
-            uAPROM_Size = (uProgramMemorySize > uNVM_Addr) ? uNVM_Addr : uProgramMemorySize;
-            uNVM_Size = uProgramMemorySize - uAPROM_Size;
-        } else {
-            uAPROM_Size = uProgramMemorySize;
-            uNVM_Size = 0;
-        }
-
-        *puNVM_Addr = uAPROM_Size;
-    } else {
-        uAPROM_Size = uProgramMemorySize;
-        uNVM_Size = 0x1000;
-        *puNVM_Addr = 0x1F000;
-    }
-
-    *puAPROM_Size = uAPROM_Size;
-    *puNVM_Size = uNVM_Size;
-    return true;
-}
 
 bool GetInfo2(unsigned int uPID,
               unsigned int uConfig0,
