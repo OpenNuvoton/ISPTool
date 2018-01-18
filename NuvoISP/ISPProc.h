@@ -82,6 +82,7 @@ public:
     BOOL	m_bProgram_NVM;
     BOOL	m_bProgram_Config;
     BOOL	m_bErase;
+    BOOL	m_bRunAPROM;
 
     ISPLdCMD	m_ISPLdDev;
     void SetInterface(unsigned int it, CString str)

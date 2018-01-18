@@ -99,6 +99,7 @@ void CNuvoISPDlg::DoDataExchange(CDataExchange *pDX)
     DDX_Check(pDX, IDC_CHECK_NVM, m_bProgram_NVM);
     DDX_Check(pDX, IDC_CHECK_CONFIG, m_bProgram_Config);
     DDX_Check(pDX, IDC_CHECK_ERASE, m_bErase);
+    DDX_Check(pDX, IDC_CHECK_RUN_APROM, m_bRunAPROM);
     DDX_Control(pDX, IDC_TAB_DATA, m_TabData);
     DDX_Control(pDX, IDC_PROGRESS, m_Progress);
     DDX_Text(pDX, IDC_STATIC_STATUS, m_sStatus);
@@ -472,7 +473,7 @@ void CNuvoISPDlg::OnButtonStart()
     /* Try to reload file if necessary */
 
     /* Check program operation */
-    if (!(m_bProgram_APROM || m_bProgram_NVM || m_bProgram_Config || m_bErase)) {
+    if (!(m_bProgram_APROM || m_bProgram_NVM || m_bProgram_Config || m_bErase || m_bRunAPROM)) {
         MessageBox(_T("You did not select any operation."), NULL, MB_ICONSTOP);
         return;
     }
@@ -604,6 +605,7 @@ void CNuvoISPDlg::EnableProgramOption(BOOL bEnable)
     EnableDlgItem(IDC_CHECK_CONFIG, bEnable);
     EnableDlgItem(IDC_BUTTON_CONFIG, bEnable);
     EnableDlgItem(IDC_CHECK_ERASE, bEnable);
+    EnableDlgItem(IDC_CHECK_RUN_APROM, bEnable);
     EnableDlgItem(IDC_BUTTON_START, bEnable);
 }
 
@@ -828,4 +830,5 @@ void CNuvoISPDlg::InitUILayout()
     SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0,1:"));
     ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 0);
     ShowDlgItem(IDC_STATIC_CONFIG_VALUE_3, 0);
+    EnableProgramOption(TRUE);
 }

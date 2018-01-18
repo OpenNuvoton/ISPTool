@@ -56,14 +56,9 @@ public:
         CMD_UPDATE_APROM	= 0x000000A0,
         CMD_SYNC_PACKNO		= 0x000000A4,
         CMD_UPDATE_CONFIG   = 0x000000A1,
-        CMD_UPDATE_WOERASE	= 0x000000C2,
-        CMD_READ_CHECKSUM 	= 0x000000C8,
-        CMD_WRITE_CHECKSUM	= 0x000000C9,
         CMD_ERASE_ALL 	    = 0x000000A3,
         CMD_READ_CONFIG     = 0x000000A2,
-        CMD_APROM_SIZE      = 0x000000AA,
         CMD_GET_DEVICEID    = 0x000000B1,
-        CMD_GET_FLASH_DID	= 0x000000B2,
         CMD_RUN_APROM		= 0x000000AB,
         CMD_RUN_LDROM		= 0x000000AC,
         CMD_RESET			= 0x000000AD,
@@ -93,6 +88,9 @@ public:
                    unsigned long *update_len);
 
     BOOL EraseAll();
+
+    BOOL RunAPROM();
+    BOOL RunLDROM();
 
     void Test();
     void SetInterface(unsigned int it, CString str)

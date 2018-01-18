@@ -400,3 +400,13 @@ BOOL ISPLdCMD::CMD_Resend()
 
     return ret;
 }
+
+BOOL ISPLdCMD::RunAPROM()
+{
+    return WriteFile(CMD_RUN_APROM, NULL, 0, USBCMD_TIMEOUT_LONG);
+}
+
+BOOL ISPLdCMD::RunLDROM()
+{
+    return WriteFile(CMD_RUN_LDROM, NULL, 0, USBCMD_TIMEOUT_LONG);
+}

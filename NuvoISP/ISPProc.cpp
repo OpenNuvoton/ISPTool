@@ -312,6 +312,13 @@ void CISPProc::Thread_ProgramFlash()
             }
         }
 
+        if (m_bRunAPROM) {
+            m_ISPLdDev.RunAPROM();
+            m_eProcSts = EPS_OK;
+            Set_ThreadAction(&CISPProc::Thread_Idle);
+            return;
+        }
+
         if (m_fnThreadProcStatus == &CISPProc::Thread_ProgramFlash) {
             m_eProcSts = EPS_PROG_DONE;
             Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
