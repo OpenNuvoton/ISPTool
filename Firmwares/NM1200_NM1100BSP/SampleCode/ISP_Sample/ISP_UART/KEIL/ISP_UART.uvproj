@@ -13,11 +13,11 @@
       <pCCUsed>5060528::V5.06 update 5 (build 528)::ARMCC</pCCUsed>
       <TargetOption>
         <TargetCommonOption>
-          <Device>Mini55LDE</Device>
+          <Device>NM1200LBAE</Device>
           <Vendor>Nuvoton</Vendor>
           <Cpu>IRAM(0x20000000-0x200007FF) IROM(0-0x45FF) CLOCK(50000000) CPUTYPE("Cortex-M0")</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
-          <StartupFile>"Startup\Nuvoton\Mini51\startup_MINI51.s" ("Nuvoton Mini51 Startup Code")</StartupFile>
+          <StartupFile>undefined</StartupFile>
           <FlashDriverDll></FlashDriverDll>
           <DeviceId>0</DeviceId>
           <RegisterFile></RegisterFile>
@@ -46,7 +46,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\obj\</OutputDirectory>
-          <OutputName>Mini55_ISP_UART0_P12_P13</OutputName>
+          <OutputName>NM1200_NM1100_ISP_UART0_P12_P13</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -361,7 +361,7 @@
             <wLevel>2</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
-            <uC99>0</uC99>
+            <uC99>1</uC99>
             <useXO>0</useXO>
             <v6Lang>1</v6Lang>
             <v6LangP>1</v6LangP>
@@ -374,7 +374,7 @@
               <MiscControls></MiscControls>
               <Define>DEBUG_ENABLE_SEMIHOST</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\..\..\Library\CMSIS\Include;..\..\..\..\Library\Device\Nuvoton\Mini55Series\Include;..\..\..\..\Library\StdDriver\inc</IncludePath>
+              <IncludePath>..\..\..\..\Library\CMSIS\Include;..\..\..\..\Library\Device\Nuvoton\NM1200_NM1100\Include;..\..\..\..\Library\StdDriver\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -408,7 +408,7 @@
             <ScatterFile></ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
-            <Misc>--map --first='startup_Mini55Series.o(RESET)' --datacompressor=off --info=inline --entry Reset_Handler</Misc>
+            <Misc>--map --first='startup_NM1200_NM1100.o(RESET)' --datacompressor=off --info=inline --entry Reset_Handler</Misc>
             <LinkerInputFile></LinkerInputFile>
             <DisabledWarnings></DisabledWarnings>
           </LDads>
@@ -419,14 +419,14 @@
           <GroupName>CMSIS</GroupName>
           <Files>
             <File>
-              <FileName>system_Mini55Series.c</FileName>
+              <FileName>system_NM1200_NM1100.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\Library\Device\Nuvoton\Mini55Series\Source\system_Mini55Series.c</FilePath>
+              <FilePath>..\..\..\..\Library\Device\Nuvoton\NM1200_NM1100\Source\system_NM1200_NM1100.c</FilePath>
             </File>
             <File>
-              <FileName>startup_Mini55Series.s</FileName>
+              <FileName>startup_NM1200_NM1100.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\..\..\..\Library\Device\Nuvoton\Mini55Series\Source\ARM\startup_Mini55Series.s</FilePath>
+              <FilePath>..\..\..\..\Library\Device\Nuvoton\NM1200_NM1100\Source\ARM\startup_NM1200_NM1100.s</FilePath>
             </File>
           </Files>
         </Group>
@@ -452,14 +452,14 @@
               <FilePath>..\ISP_USER.c</FilePath>
             </File>
             <File>
-              <FileName>uart_transfer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\uart_transfer.c</FilePath>
-            </File>
-            <File>
               <FileName>targetdev.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\targetdev.c</FilePath>
+            </File>
+            <File>
+              <FileName>uart_transfer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\uart_transfer.c</FilePath>
             </File>
           </Files>
         </Group>

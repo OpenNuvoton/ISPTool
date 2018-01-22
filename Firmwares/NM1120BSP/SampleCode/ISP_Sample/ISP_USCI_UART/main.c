@@ -9,7 +9,7 @@
  *
  ******************************************************************************/
 #include <stdio.h>
-#include "Mini57Series.h"
+#include "targetdev.h"
 #include "usci_uart_transfer.h"
 #include "isp_user.h"
 
