@@ -4,7 +4,7 @@
 #define FW_VERSION					0x31
 
 #include "FMC_USER.h"
-
+#include <string.h>
 //#define SUPPORT_WRITECKSUM
 
 #define CMD_UPDATE_APROM			0x000000A0

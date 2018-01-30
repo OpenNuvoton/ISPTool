@@ -6,7 +6,7 @@
  * Copyright (C) 2014~2015 Nuvoton Technology Corp. All rights reserved.
  ******************************************************************************/
 /*!<Includes */
-#include "targetdev.h"
+#include "M451Series.h"
 #include "hid_transfer.h"
 
 /*!<USB HID Report Descriptor */
@@ -17,13 +17,13 @@ const uint8_t HID_DeviceReportDescriptor[] =
     0xA1, 0x01, // COLLECTION (Application)
     0x15, 0x00, //     LOGICAL_MINIMUM (0)
     0x25, 0xFF, //     LOGICAL_MAXIMUM (255)
-    0x19, 0x00, // USAGE_MINIMUM (0x00)
-    0x29, 0xFF, // USAGE_MAXIMUM (0xFF)
+    0x19, 0x00, //     USAGE_MINIMUM (0x00)
+    0x29, 0xFF, //     USAGE_MAXIMUM (0xFF)
     0x95, 0x40, //     REPORT_COUNT (8)
     0x75, 0x08, //     REPORT_SIZE (8)
     0x81, 0x02, //     INPUT (Data,Var,Abs)
-    0x19, 0x00, // USAGE_MINIMUM (0x00)
-    0x29, 0xFF, // USAGE_MAXIMUM (0xFF)
+    0x19, 0x00, //     USAGE_MINIMUM (0x00)
+    0x29, 0xFF, //     USAGE_MAXIMUM (0xFF)
     0x91, 0x02, //   OUTPUT (Data,Var,Abs)
     0xC0        // END_COLLECTION
 };
@@ -140,7 +140,7 @@ const uint8_t gu8StringSerial[26] =
 {
     26,             // bLength
     DESC_STRING,    // bDescriptorType
-    'A', 0, '0', 0, '2', 0, '0', 0, '1', 0, '4', 0, '0', 0, '9', 0, '0', 0, '3', 0, '0', 0, '4', 0
+    'A', 0, '0', 0, '2', 0, '0', 0, '1', 0, '5', 0, '0', 0, '8', 0, '1', 0, '3', 0, '0', 0, '2', 0
 };
 
 const uint8_t *gpu8UsbString[4] =

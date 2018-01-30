@@ -8,7 +8,8 @@
 
 /*!<Includes */
 #include <stdio.h>
-#include "targetdev.h"
+#include <string.h>
+#include "M451Series.h"
 #include "hid_transfer.h"
 
 uint8_t volatile g_u8EP2Ready = 0;
@@ -36,6 +37,13 @@ void USBD_IRQHandler(void)
             /* USB Un-plug */
             USBD_DISABLE_USB();
         }
+    }
+
+//------------------------------------------------------------------
+    if(u32IntSts & USBD_INTSTS_WAKEUP)
+    {
+        /* Clear event flag */
+        USBD_CLR_INT_FLAG(USBD_INTSTS_WAKEUP);
     }
 
 //------------------------------------------------------------------
@@ -94,7 +102,7 @@ void USBD_IRQHandler(void)
             USBD_CLR_INT_FLAG(USBD_INTSTS_EP1);
 
             // control OUT
-            // USBD_CtrlOut();
+            USBD_CtrlOut();
         }
 
         if(u32IntSts & USBD_INTSTS_EP2)
@@ -112,10 +120,31 @@ void USBD_IRQHandler(void)
             // Interrupt OUT
             EP3_Handler();
         }
-    }
 
-    /* clear unknown event */
-    USBD_CLR_INT_FLAG(u32IntSts);
+        if(u32IntSts & USBD_INTSTS_EP4)
+        {
+            /* Clear event flag */
+            USBD_CLR_INT_FLAG(USBD_INTSTS_EP4);
+        }
+
+        if(u32IntSts & USBD_INTSTS_EP5)
+        {
+            /* Clear event flag */
+            USBD_CLR_INT_FLAG(USBD_INTSTS_EP5);
+        }
+
+        if(u32IntSts & USBD_INTSTS_EP6)
+        {
+            /* Clear event flag */
+            USBD_CLR_INT_FLAG(USBD_INTSTS_EP6);
+        }
+
+        if(u32IntSts & USBD_INTSTS_EP7)
+        {
+            /* Clear event flag */
+            USBD_CLR_INT_FLAG(USBD_INTSTS_EP7);
+        }
+    }
 }
 
 extern __align(4) uint8_t response_buff[64];
@@ -185,22 +214,63 @@ void HID_ClassRequest(void)
 
     if(buf[0] & 0x80)    /* request data transfer direction */
     {
-        USBD_SetStall(0);
+        // Device to host
+        switch(buf[1])
+        {
+            case GET_REPORT:
+//             {
+//                 break;
+//             }
+            case GET_IDLE:
+//             {
+//                 break;
+//             }
+            case GET_PROTOCOL:
+//            {
+//                break;
+//            }
+            default:
+            {
+                /* Setup error, stall the device */
+                USBD_SetStall(0);
+                break;
+            }
+        }
     }
     else
     {
         // Host to device
-        if (buf[1] == SET_IDLE)
+        switch(buf[1])
         {
-            /* Status stage */
-            USBD_SET_DATA1(EP0);
-            USBD_SET_PAYLOAD_LEN(EP0, 0);
-        }
-        else
-        {
-            // Stall
-            /* Setup error, stall the device */
-            USBD_SetStall(0);
+            case SET_REPORT:
+            {
+                if(buf[3] == 3)
+                {
+                    /* Request Type = Feature */
+                    USBD_SET_DATA1(EP1);
+                    USBD_SET_PAYLOAD_LEN(EP1, 0);
+                }
+                break;
+            }
+            case SET_IDLE:
+            {
+                /* Status stage */
+                USBD_SET_DATA1(EP0);
+                USBD_SET_PAYLOAD_LEN(EP0, 0);
+                break;
+            }
+            case SET_PROTOCOL:
+//             {
+//                 break;
+//             }
+            default:
+            {
+                // Stall
+                /* Setup error, stall the device */
+                USBD_SetStall(0);
+                break;
+            }
         }
     }
 }
+

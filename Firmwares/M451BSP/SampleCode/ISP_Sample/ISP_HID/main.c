@@ -50,6 +50,7 @@ void SYS_Init(void)
     SYS->USBPHY = SYS_USBPHY_LDO33EN_Msk;
 }
 
+void USBD_IRQHandler(void);
 /*---------------------------------------------------------------------------------------------------------*/
 /*  Main Function                                                                                          */
 /*---------------------------------------------------------------------------------------------------------*/
@@ -57,9 +58,6 @@ int32_t main(void)
 {
     /* Unlock write-protected registers */
     SYS_UnlockReg();
-
-    WDT->CTL &= ~(WDT_CTL_WDTEN_Msk | WDT_CTL_ICEDEBUG_Msk);
-    WDT->CTL |= (WDT_CTL_RSTCNT_Msk | WDT_TIMEOUT_2POW18);
 
     /* Init system and multi-function I/O */
     SYS_Init();
@@ -80,11 +78,14 @@ int32_t main(void)
         /* Start USB device */
         USBD_Start();
 
-        /* Enable USB device interrupt */
-        NVIC_EnableIRQ(USBD_IRQn);
+        /* DO NOT Enable USB device interrupt */
+        // NVIC_EnableIRQ(USBD_IRQn);
     }
 		
     while(DetectPin == 0) {
+        // polling USBD interrupt flag
+        USBD_IRQHandler();
+
         if(bUsbDataReady == TRUE) {
             WDT->CTL &= ~(WDT_CTL_WDTEN_Msk | WDT_CTL_ICEDEBUG_Msk);
             WDT->CTL |= (WDT_CTL_RSTCNT_Msk | WDT_TIMEOUT_2POW18);
