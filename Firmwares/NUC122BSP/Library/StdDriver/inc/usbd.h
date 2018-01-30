@@ -50,7 +50,7 @@ extern const S_USBD_INFO_T gsInfo;
 
 
 
-#define USBD_MAX_EP     8
+#define USBD_MAX_EP     6
 
 #define EP0     0       /*!< Endpoint 0 */
 #define EP1     1       /*!< Endpoint 1 */
@@ -58,8 +58,6 @@ extern const S_USBD_INFO_T gsInfo;
 #define EP3     3       /*!< Endpoint 3 */
 #define EP4     4       /*!< Endpoint 4 */
 #define EP5     5       /*!< Endpoint 5 */
-#define EP6     6       /*!< Endpoint 6 */
-#define EP7     7       /*!< Endpoint 7 */
 
 
 /*!<USB Request Type */
@@ -141,8 +139,6 @@ extern const S_USBD_INFO_T gsInfo;
 #define USBD_INTSTS_EP3         0x00080000                  /*!< USB Endpoint 3 Event */
 #define USBD_INTSTS_EP4         0x00100000                  /*!< USB Endpoint 4 Event */
 #define USBD_INTSTS_EP5         0x00200000                  /*!< USB Endpoint 5 Event */
-#define USBD_INTSTS_EP6         0x00400000                  /*!< USB Endpoint 6 Event */
-#define USBD_INTSTS_EP7         0x00800000                  /*!< USB Endpoint 7 Event */
 
 #define USBD_STATE_USBRST       USBD_ATTR_USBRST_Msk        /*!< USB Bus Reset */
 #define USBD_STATE_SUSPEND      USBD_ATTR_SUSPEND_Msk       /*!< USB Bus Suspend */

@@ -39,14 +39,24 @@
 uint32_t I2C_Open(I2C_T *i2c, uint32_t u32BusClock)
 {
     uint32_t u32Div;
+    uint32_t u32Pclk;
+	
+    if(i2c == I2C1) 
+    {
+        u32Pclk = CLK_GetPCLK1Freq();
+    } 
+    else
+    {
+        u32Pclk = CLK_GetPCLK0Freq();
+    }
 
-    u32Div = (uint32_t)(((SystemCoreClock * 10) / (u32BusClock * 4) + 5) / 10 - 1); /* Compute proper divider for I2C clock */
+    u32Div = (uint32_t)(((u32Pclk * 10u) / (u32BusClock * 4u) + 5u) / 10u - 1u); /* Compute proper divider for I2C clock */
     i2c->CLKDIV = u32Div;
 
     /* Enable I2C */
     i2c->CTL |= I2C_CTL_I2CEN_Msk;
 
-    return (SystemCoreClock / ((u32Div + 1) << 2));
+    return (u32Pclk / ((u32Div + 1u) << 2u));
 }
 
 /**
@@ -63,12 +73,12 @@ uint32_t I2C_Open(I2C_T *i2c, uint32_t u32BusClock)
 void I2C_Close(I2C_T *i2c)
 {
     /* Reset I2C Controller */
-    if((uint32_t)i2c == I2C0_BASE)
+    if(i2c == I2C0)
     {
         SYS->IPRST1 |= SYS_IPRST1_I2C0RST_Msk;
         SYS->IPRST1 &= ~SYS_IPRST1_I2C0RST_Msk;
     }
-    else if((uint32_t)i2c == I2C1_BASE)
+    else if(i2c == I2C1)
     {
         SYS->IPRST1 |= SYS_IPRST1_I2C1RST_Msk;
         SYS->IPRST1 &= ~SYS_IPRST1_I2C1RST_Msk;
@@ -165,8 +175,18 @@ void I2C_EnableInt(I2C_T *i2c)
 uint32_t I2C_GetBusClockFreq(I2C_T *i2c)
 {
     uint32_t u32Divider = i2c->CLKDIV;
+    uint32_t u32Pclk;
 
-    return (SystemCoreClock / ((u32Divider + 1) << 2));
+    if(i2c == I2C1)
+    {
+        u32Pclk = CLK_GetPCLK1Freq();    
+    }
+    else
+    {
+        u32Pclk = CLK_GetPCLK0Freq();
+    }
+
+    return (u32Pclk / ((u32Divider + 1u) << 2u));
 }
 
 /**
@@ -182,11 +202,21 @@ uint32_t I2C_GetBusClockFreq(I2C_T *i2c)
 uint32_t I2C_SetBusClockFreq(I2C_T *i2c, uint32_t u32BusClock)
 {
     uint32_t u32Div;
+    uint32_t u32Pclk;
 
-    u32Div = (uint32_t)(((SystemCoreClock * 10) / (u32BusClock * 4) + 5) / 10 - 1); /* Compute proper divider for I2C clock */
+    if(i2c == I2C1) 
+    {
+        u32Pclk = CLK_GetPCLK1Freq();
+    } 
+    else
+    {
+        u32Pclk = CLK_GetPCLK0Freq();
+    }
+    
+    u32Div = (uint32_t)(((u32Pclk * 10u) / (u32BusClock * 4u) + 5u) / 10u - 1u); /* Compute proper divider for I2C clock */
     i2c->CLKDIV = u32Div;
 
-    return (SystemCoreClock / ((u32Div + 1) << 2));
+    return (u32Pclk / ((u32Div + 1u) << 2u));
 }
 
 /**

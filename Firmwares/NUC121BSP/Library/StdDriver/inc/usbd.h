@@ -122,8 +122,6 @@ extern const S_USBD_INFO_T gsInfo;
 #define USBD_WAKEUP_EN          USBD_INTEN_WKEN_Msk         /*!< USB Wake-up Enable */
 #define USBD_DRVSE0             USBD_SE0_SE0_Msk            /*!< Drive SE0 */
 
-#define USBD_L1RESUME           USBD_ATTR_L1RESUME_Msk
-#define USBD_L1SUSPEND          USBD_ATTR_L1SUSPEND_Msk
 #define USBD_LPMACK             USBD_ATTR_LPMACK_Msk        /*!< LPM Enable */
 #define USBD_BYTEM              USBD_ATTR_BYTEM_Msk
 #define USBD_DPPU_EN            USBD_ATTR_DPPUEN_Msk        /*!< USB D+ Pull-up Enable */
@@ -153,10 +151,13 @@ extern const S_USBD_INFO_T gsInfo;
 #define USBD_INTSTS_EP6         USBD_INTSTS_EPEVT6_Msk      /*!< USB Endpoint 6 Event */
 #define USBD_INTSTS_EP7         USBD_INTSTS_EPEVT7_Msk      /*!< USB Endpoint 7 Event */
 
-#define USBD_STATE_USBRST       USBD_ATTR_USBRST_Msk        /*!< USB Bus Reset */
-#define USBD_STATE_SUSPEND      USBD_ATTR_SUSPEND_Msk       /*!< USB Bus Suspend */
-#define USBD_STATE_RESUME       USBD_ATTR_RESUME_Msk        /*!< USB Bus Resume */
-#define USBD_STATE_TIMEOUT      USBD_ATTR_TOUT_Msk          /*!< USB Bus Timeout */
+#define USBD_STATE_USBRST       USBD_ATTR_USBRST_Msk        /*!< USB Bus Reset      */
+#define USBD_STATE_SUSPEND      USBD_ATTR_SUSPEND_Msk       /*!< USB Bus Suspend    */
+#define USBD_STATE_RESUME       USBD_ATTR_RESUME_Msk        /*!< USB Bus Resume     */
+#define USBD_STATE_TIMEOUT      USBD_ATTR_TOUT_Msk          /*!< USB Bus Timeout    */
+#define USBD_STATE_L1RESUME     USBD_ATTR_L1RESUME_Msk      /*!< USB Bus L1RESUME   */
+#define USBD_STATE_L1SUSPEND    USBD_ATTR_L1SUSPEND_Msk     /*!< USB BUS L1SUSPEND  */
+
 
 #define USBD_1SOF_1INT          (0ul << USBD_ATTR_SOFITH_Pos) /*!<every   1SOF trigger one SOF interrupt*/
 #define USBD_2SOF_1INT          (1ul << USBD_ATTR_SOFITH_Pos) /*!<every   2SOF trigger one SOF interrupt*/

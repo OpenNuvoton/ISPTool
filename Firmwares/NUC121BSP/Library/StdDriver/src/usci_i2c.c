@@ -802,7 +802,7 @@ uint8_t UI2C_WriteByteTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16Dat
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_ACKIF_Msk);          /* Clear ACK INT Flag */
 
             if (u32txLen == 0) {
-                UI2C_SET_DATA(ui2c, (uint8_t)(u16DataAddr & 0xFF00) >> 8);  /* Write Hi byte data address to UI2C_TXDAT */
+                UI2C_SET_DATA(ui2c, (uint8_t)((u16DataAddr & 0xFF00) >> 8));  /* Write Hi byte data address to UI2C_TXDAT */
                 u32txLen++;
             } else if (u32txLen == 1) {
                 UI2C_SET_DATA(ui2c, (uint8_t)(u16DataAddr & 0xFF));         /* Write Lo byte data address to UI2C_TXDAT */
@@ -875,7 +875,7 @@ uint32_t UI2C_WriteMultiBytesTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_ACKIF_Msk);          /* Clear ACK INT Flag */
 
             if (eEvent == MASTER_SEND_ADDRESS) {
-                UI2C_SET_DATA(ui2c, (uint8_t)(u16DataAddr & 0xFF00) >> 8);  /* Write Hi byte data address to UI2C_TXDAT */
+                UI2C_SET_DATA(ui2c, (uint8_t)((u16DataAddr & 0xFF00) >> 8));  /* Write Hi byte data address to UI2C_TXDAT */
                 eEvent = MASTER_SEND_H_WR_ADDRESS;
             } else if (eEvent == MASTER_SEND_H_WR_ADDRESS) {
                 UI2C_SET_DATA(ui2c, (uint8_t)(u16DataAddr & 0xFF));         /* Write Lo byte data address to UI2C_TXDAT */
@@ -1274,7 +1274,7 @@ uint8_t UI2C_ReadByteTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16Data
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_ACKIF_Msk);      /* Clear ACK INT Flag */
 
             if (eEvent == MASTER_SEND_ADDRESS) {
-                UI2C_SET_DATA(ui2c, (uint8_t)(u16DataAddr & 0xFF00) >> 8);  /* Write Hi byte address of register */
+                UI2C_SET_DATA(ui2c, (uint8_t)((u16DataAddr & 0xFF00) >> 8));  /* Write Hi byte address of register */
                 eEvent = MASTER_SEND_H_WR_ADDRESS;
             } else if (eEvent == MASTER_SEND_H_WR_ADDRESS) {
                 UI2C_SET_DATA(ui2c, (uint8_t)(u16DataAddr & 0xFF));       /* Write Lo byte address of register */
@@ -1365,7 +1365,7 @@ uint32_t UI2C_ReadMultiBytesTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t 
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_ACKIF_Msk);      /* Clear ACK INT Flag */
 
             if (eEvent == MASTER_SEND_ADDRESS) {
-                UI2C_SET_DATA(ui2c, (uint8_t)(u16DataAddr & 0xFF00) >> 8);  /* Write Hi byte address of register */
+                UI2C_SET_DATA(ui2c, (uint8_t)((u16DataAddr & 0xFF00) >> 8));  /* Write Hi byte address of register */
                 eEvent = MASTER_SEND_H_WR_ADDRESS;
             } else if (eEvent == MASTER_SEND_H_WR_ADDRESS) {
                 UI2C_SET_DATA(ui2c, (uint8_t)(u16DataAddr & 0xFF));       /* Write Lo byte address of register */

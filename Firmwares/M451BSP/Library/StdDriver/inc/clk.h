@@ -407,6 +407,7 @@ __STATIC_INLINE void CLK_SysTickDelay(uint32_t us)
     SysTick->CTRL = 0;
 }
 
+/**
   * @brief      This function execute long delay function.
   * @param[in]  us  Delay time. 
   * @return     None

@@ -835,7 +835,7 @@ uint32_t SPII2S_Open(SPI_T *i2s, uint32_t u32MasterSlave, uint32_t u32SampleRate
 
         /* Calculate the bit clock rate */
         u32BitRate = u32SampleRate * ((u32WordWidth >> SPI_I2SCTL_WDWIDTH_Pos) + 1) * 16;
-        u32Divider = ((u32SrcClk / u32BitRate) >> 1) - 1;
+        u32Divider = (((((u32SrcClk * 10) / u32BitRate) >> 1) + 5) / 10) - 1; /* Round to the nearest integer */
         /* Set BCLKDIV setting */
         i2s->I2SCLK = (i2s->I2SCLK & ~SPI_I2SCLK_BCLKDIV_Msk) | (u32Divider << SPI_I2SCLK_BCLKDIV_Pos);
 

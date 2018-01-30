@@ -48,7 +48,7 @@ extern "C"
 
 #define TIMER_TRG_TO_BPWM               (TIMER_CTL_TRGBPWM_Msk)             /*!< Timer trigger BPWM */
 #define TIMER_TRG_TO_PWM                (TIMER_CTL_TRGPWM_Msk)              /*!< Timer trigger PWM */
-#define TIMER_TRG_TO_EADC               (TIMER_CTL_TRGEADC_Msk)             /*!< Timer trigger EADC */
+#define TIMER_TRG_TO_ADC               (TIMER_CTL_TRGADC_Msk)             /*!< Timer trigger ADC */
 #define TIMER_TRG_TO_PDMA               (TIMER_CTL_TRGPDMA_Msk)             /*!< Timer trigger PDMA */
 
 /*@}*/ /* end of group TIMER_EXPORTED_CONSTANTS */

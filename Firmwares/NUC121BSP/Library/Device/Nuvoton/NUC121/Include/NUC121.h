@@ -9018,12 +9018,6 @@ typedef struct {
      * |        |          |1 = Timer interrupt trigger PWM Enabled.
      * |        |          |Note: If TRGSSEL (TIMERx_CTL[18]) = 0, time-out interrupt signal will trigger PWM.
      * |        |          |If TRGSSEL (TIMERx_CTL[18]) = 1, capture interrupt signal will trigger PWM.
-     * |[20]    |TRGDAC    |Trigger DAC Enable Bit
-     * |        |          |If this bit is set to 1, timer time-out interrupt or capture interrupt can trigger DAC.
-     * |        |          |0 = Timer interrupt trigger DAC Disabled.
-     * |        |          |1 = Timer interrupt trigger DAC Enabled.
-     * |        |          |Note: If TRGSSEL (TIMERx_CTL[18]) = 0, time-out interrupt signal will trigger DAC.
-     * |        |          |If TRGSSEL (TIMERx_CTL[18]) = 1, capture interrupt signal will trigger DAC.
      * |[21]    |TRGADC    |Trigger ADC Enable Bit
      * |        |          |If this bit is set to 1, timer time-out interrupt or capture interrupt can trigger ADC.
      * |        |          |0 = Timer interrupt trigger ADC Disabled.
@@ -9192,9 +9186,6 @@ typedef struct {
 
 #define TIMER_CTL_TRGPWM_Pos             (19)                                              /*!< TIMER_T::CTL: TRGPWM Position          */
 #define TIMER_CTL_TRGPWM_Msk             (0x1ul << TIMER_CTL_TRGPWM_Pos)                   /*!< TIMER_T::CTL: TRGPWM Mask              */
-
-#define TIMER_CTL_TRGDAC_Pos             (20)                                              /*!< TIMER_T::CTL: TRGDAC Position          */
-#define TIMER_CTL_TRGDAC_Msk             (0x1ul << TIMER_CTL_TRGDAC_Pos)                   /*!< TIMER_T::CTL: TRGDAC Mask              */
 
 #define TIMER_CTL_TRGADC_Pos             (21)                                              /*!< TIMER_T::CTL: TRGADC Position          */
 #define TIMER_CTL_TRGADC_Msk             (0x1ul << TIMER_CTL_TRGADC_Pos)                   /*!< TIMER_T::CTL: TRGADC Mask              */
