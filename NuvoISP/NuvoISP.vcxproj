@@ -124,6 +124,7 @@
     <ClCompile Include="DataBase\FlashInfo.cpp" />
     <ClCompile Include="DataBase\PartNumID.cpp" />
     <ClCompile Include="DialogConfiguration\AppConfig.cpp" />
+    <ClCompile Include="DialogConfiguration\DialogConfiguration_AU9100.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_I94000.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M0564.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M05x.cpp" />

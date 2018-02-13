@@ -322,6 +322,8 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 
 #include "DialogConfiguration_I94000.h"
 
+#include "DialogConfiguration_AU9100.h"
+
 extern CPartNumID *psChipData;
 
 bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
@@ -555,6 +557,11 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
                 Config = (((CDialogConfiguration_I94000 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
+            case IDD_DIALOG_CONFIGURATION_AU9100:
+                pConfigDlg = new CDialogConfiguration_AU9100;
+                Config = (((CDialogConfiguration_AU9100 *)pConfigDlg)->m_ConfigValue.m_value);
+                break;
+
             case 0x505:	// "NUC505";
                 printf("NUC505 ");
 
@@ -720,6 +727,7 @@ UINT DialogTemplate[] = {
     IDD_DIALOG_CONFIGURATION_TC8226,
     IDD_DIALOG_CONFIGURATION_M2351,
     IDD_DIALOG_CONFIGURATION_I94000,
+    IDD_DIALOG_CONFIGURATION_AU9100,
 };
 
 struct CPartNumID g_TestPartNumIDs[] = {
@@ -796,6 +804,13 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
         subM234->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M2351, _T("M2351 Series"));
         menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subM234->m_hMenu, _T("M23 and M4"));
         menu.AppendMenu(MF_SEPARATOR);
+        // NuVoice Series
+        CMenu *subVoice = new CMenu;
+        subVoice->CreatePopupMenu();
+        subVoice->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_AU9100, _T("AU9100 Series"));
+        subVoice->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_I94000, _T("I94000 Series"));
+        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subVoice->m_hMenu, _T("NuVoice"));
+        menu.AppendMenu(MF_SEPARATOR);
         // Others Series
         CMenu *subOthers = new CMenu;
         subOthers->CreatePopupMenu();
@@ -813,6 +828,7 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
         delete subNano;
         delete subNUC1xx;
         delete subM234;
+        delete subVoice;
         delete subOthers;
     } else {
         ConfigDlgSel(CFG, sizeof(CFG));
