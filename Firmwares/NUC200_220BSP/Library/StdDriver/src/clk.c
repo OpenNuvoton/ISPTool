@@ -253,7 +253,7 @@ void CLK_SetHCLK(uint32_t u32ClkSrc, uint32_t u32ClkDiv)
 
     /* Disable HIRC if HIRC is disabled before switching HCLK source */
     if(u32HIRCSTB == 0)
-        CLK->PWRCON &= ~CLK_CLKSTATUS_OSC22M_STB_Msk;
+        CLK->PWRCON &= ~CLK_PWRCON_OSC22M_EN_Msk;
 }
 
 /**
@@ -645,7 +645,7 @@ lexit:
     if(u32PllClkSrc == CLK_PLLCON_PLL_SRC_HXT)
         CLK->PLLCON = 0xC22E; /* 48MHz */
     else
-        CLK->PLLCON = 0xD66F; /* 48.06498462MHz */
+        CLK->PLLCON = 0x8D66F; /* 48.06498462MHz */
 
     CLK_WaitClockReady(CLK_CLKSTATUS_PLL_STB_Msk);
     return CLK_GetPLLClockFreq();
