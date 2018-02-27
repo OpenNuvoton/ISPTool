@@ -170,6 +170,9 @@
     <ClCompile Include="DialogConfiguration\DialogConfiguration_AU9100.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
+    <ClCompile Include="DataBase\NuVoiceInfo.cpp">
+      <Filter>External\DataBase</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\k-cm-memory.ico">

@@ -122,6 +122,7 @@
   <ItemGroup>
     <ClCompile Include="About.cpp" />
     <ClCompile Include="DataBase\FlashInfo.cpp" />
+    <ClCompile Include="DataBase\NuVoiceInfo.cpp" />
     <ClCompile Include="DataBase\PartNumID.cpp" />
     <ClCompile Include="DialogConfiguration\AppConfig.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_AU9100.cpp" />

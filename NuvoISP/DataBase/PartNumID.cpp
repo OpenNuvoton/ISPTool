@@ -2103,10 +2103,14 @@ bool QueryDataBase(unsigned int uID)
     return false;
 }
 
+#include "NuVoiceInfo.h"
+// call by CNuvoISPDlg::ShowChipInfo()
 std::string GetPartNumber(unsigned int uID)
 {
     if (QueryDataBase(uID)) {
         return psChipData->szPartNumber;
+    } else if (GetInfo_NuVoice(uID)) {
+        return gNuVoiceChip.sChipName;
     } else {
         CString cs = _T("");
         cs.Format(_T("??? - 0x%08X"), uID);
@@ -2116,18 +2120,27 @@ std::string GetPartNumber(unsigned int uID)
     }
 }
 
+// call by CNuvoISPDlg::ShowChipInfo(): Show Chip Info. after connection
+// call by CISPProc::Thread_ProgramFlash(): Update Size Info. if CONFIG is changed
 bool UpdateSizeInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfig1,
                     unsigned int *puNVM_Addr,
                     unsigned int *puAPROM_Size, unsigned int *puNVM_Size)
 {
-    unsigned int uLDROM_Addr;
-    unsigned int uLDROM_Size;
-
-    if (GetInfo(uID, uConfig0, uConfig1, puNVM_Addr, puAPROM_Size, puNVM_Size)) {
-        return true;
-    } else if (GetInfo2(uID, uConfig0, uConfig1, puNVM_Addr, puAPROM_Size, puNVM_Size)) {
+    if (GetInfo2(uID, uConfig0, uConfig1, puNVM_Addr, puAPROM_Size, puNVM_Size)) {
         return true;
     } else {
+        // NuVoice Chip Series (ISDXXX, I9XXX, N57XXX ...)
+        DWORD pConfig[4];
+        pConfig[0] = uConfig0;
+        pConfig[1] = uConfig1;
+
+        if (GetInfo_NuVoice(uID, pConfig, 2)) {
+            *puNVM_Addr = gNuVoiceChip.dwDataFlashAddress;
+            *puNVM_Size = gNuVoiceChip.dwDataFlashSize;
+            *puAPROM_Size = gNuVoiceChip.dwAPROMSize;
+            return true;
+        }
+
         // internal ref. to Flash_N76E1T.h
         FLASH_INFO_BY_DID_T fInfo, *pInfo = &fInfo;
 
@@ -2135,6 +2148,8 @@ bool UpdateSizeInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfi
             return false;
         }
 
+        unsigned int uLDROM_Addr;
+        unsigned int uLDROM_Size;
         GetInfo_N76E1T(//uDID,
             uConfig0,
             pInfo->uProgramMemorySize,

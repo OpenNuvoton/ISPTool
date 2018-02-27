@@ -511,6 +511,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DataBase\NuVoiceInfo.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\NuvoISPTool.cpp"
 				>
 			</File>

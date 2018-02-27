@@ -12,6 +12,8 @@
 #include <string>
 #include <sstream>
 
+#include "NuVoiceInfo.h"
+
 struct CPartNumID {
     char szPartNumber[32];
     unsigned int uID;
