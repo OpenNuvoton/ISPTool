@@ -258,15 +258,23 @@ void CISPProc::Thread_ProgramFlash()
                 }
 
                 unsigned long uLen;
-                m_ISPLdDev.UpdateAPROM(uAddr, uSize, uAddr + i,
-                                       (const char *)(pBuffer + i),
-                                       &uLen);
+                unsigned int uRetry = 10;
 
-                if (m_ISPLdDev.bResendFlag) {
-                    if (i == 0 || !m_ISPLdDev.CMD_Resend()) {
-                        m_eProcSts = EPS_ERR_APROM;
-                        Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
-                        return;
+                while (uRetry) {
+                    m_ISPLdDev.UpdateAPROM(uAddr, uSize, uAddr + i,
+                                           (const char *)(pBuffer + i),
+                                           &uLen);
+
+                    if (m_ISPLdDev.bResendFlag) {
+                        uRetry--;
+
+                        if (uRetry == 0 || i == 0 || !m_ISPLdDev.CMD_Resend()) {
+                            m_eProcSts = EPS_ERR_APROM;
+                            Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
+                            return;
+                        }
+                    } else {
+                        break;
                     }
                 }
 
@@ -295,15 +303,23 @@ void CISPProc::Thread_ProgramFlash()
                 }
 
                 unsigned long uLen;
-                m_ISPLdDev.UpdateNVM(uAddr, uSize, uAddr + i,
-                                     (const char *)(pBuffer + i),
-                                     &uLen);
+                unsigned int uRetry = 10;
 
-                if (m_ISPLdDev.bResendFlag) {
-                    if (i == 0 || !m_ISPLdDev.CMD_Resend()) {
-                        m_eProcSts = EPS_ERR_NVM;
-                        Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
-                        return;
+                while (uRetry) {
+                    m_ISPLdDev.UpdateNVM(uAddr, uSize, uAddr + i,
+                                         (const char *)(pBuffer + i),
+                                         &uLen);
+
+                    if (m_ISPLdDev.bResendFlag) {
+                        uRetry--;
+
+                        if (uRetry == 0 || i == 0 || !m_ISPLdDev.CMD_Resend()) {
+                            m_eProcSts = EPS_ERR_NVM;
+                            Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
+                            return;
+                        }
+                    } else {
+                        break;
                     }
                 }
 
