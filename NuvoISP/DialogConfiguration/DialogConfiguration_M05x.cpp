@@ -205,7 +205,7 @@ void CDialogConfiguration_M05x::GUIToConfig(int nEventID)
 
     uConfig0 |= M05X_FLASH_CONFIG_CWDTEN;
     m_ConfigValue.m_value[0] = uConfig0;
-    }
+}
 
 void CDialogConfiguration_M05x::OnButtonClick()
 {
@@ -329,7 +329,7 @@ void CDialogConfiguration_M05XDN::GUIToConfig(int nEventID)
 
     switch (m_nRadioClk) {
         case 0:
-        uConfig0 |= M05X_FLASH_CONFIG_E12M;
+            uConfig0 |= M05X_FLASH_CONFIG_E12M;
             break;
 
         case 1:
@@ -345,19 +345,19 @@ void CDialogConfiguration_M05XDN::GUIToConfig(int nEventID)
 
     switch (m_nRadioBov) {
         case 0:
-        uConfig0 |= M05X_FLASH_CONFIG_CBOV_45;
+            uConfig0 |= M05X_FLASH_CONFIG_CBOV_45;
             break;
 
         case 1:
-        uConfig0 |= M05X_FLASH_CONFIG_CBOV_38;
+            uConfig0 |= M05X_FLASH_CONFIG_CBOV_38;
             break;
 
         case 2:
-        uConfig0 |= M05X_FLASH_CONFIG_CBOV_26;
+            uConfig0 |= M05X_FLASH_CONFIG_CBOV_26;
             break;
 
         case 3:
-        uConfig0 |= M05X_FLASH_CONFIG_CBOV_22;
+            uConfig0 |= M05X_FLASH_CONFIG_CBOV_22;
             break;
 
         default:
@@ -369,15 +369,15 @@ void CDialogConfiguration_M05XDN::GUIToConfig(int nEventID)
 
     switch (m_nRadioBS) {
         case 0:
-        uConfig0 |= M05X_FLASH_CONFIG_CBS_LD;
+            uConfig0 |= M05X_FLASH_CONFIG_CBS_LD;
             break;
 
         case 1:
-        uConfig0 |= M05X_FLASH_CONFIG_CBS_AP;
+            uConfig0 |= M05X_FLASH_CONFIG_CBS_AP;
             break;
 
         case 2:
-        uConfig0 |= M05X_FLASH_CONFIG_CBS_LD_AP;
+            uConfig0 |= M05X_FLASH_CONFIG_CBS_LD_AP;
             break;
 
         case 3:
@@ -396,50 +396,50 @@ void CDialogConfiguration_M05XDN::GUIToConfig(int nEventID)
     }
 
     if (m_bWDTPowerDown) {
-                uConfig0 &= ~M05X_FLASH_CONFIG_CWDTPDEN;
-            } else {
-                uConfig0 |= M05X_FLASH_CONFIG_CWDTPDEN;
-            }
+        uConfig0 &= ~M05X_FLASH_CONFIG_CWDTPDEN;
+    } else {
+        uConfig0 |= M05X_FLASH_CONFIG_CWDTPDEN;
+    }
 
     if (m_bWDTEnable) {
-                uConfig0 &= ~M05X_FLASH_CONFIG_CWDTEN;
-            } else {
-                uConfig0 |= M05X_FLASH_CONFIG_CWDTEN;
+        uConfig0 &= ~M05X_FLASH_CONFIG_CWDTEN;
+    } else {
+        uConfig0 |= M05X_FLASH_CONFIG_CWDTEN;
     }
 
     if (nEventID == IDC_CHECK_WDT_POWER_DOWN) {
         if (m_bWDTPowerDown) {
             uConfig0 &= ~M05X_FLASH_CONFIG_CWDTEN;
-    }
+        }
     } else {
         if (!m_bWDTEnable) {
             uConfig0 |= M05X_FLASH_CONFIG_CWDTPDEN;
-}
-}
+        }
+    }
 
     if (m_bCheckBrownOutDetect) {
         uConfig0 &= ~M05X_FLASH_CONFIG_CBODEN;
     } else {
         uConfig0 |= M05X_FLASH_CONFIG_CBODEN;
-}
+    }
 
     if (m_bCheckBrownOutReset) {
         uConfig0 &= ~M05X_FLASH_CONFIG_CBORST;
     } else {
         uConfig0 |= M05X_FLASH_CONFIG_CBORST;
-}
+    }
 
     if (m_bClockFilterEnable) {
         uConfig0 |= M05X_FLASH_CONFIG_CKF;
     } else {
         uConfig0 &= ~M05X_FLASH_CONFIG_CKF;
-}
+    }
 
     if (m_bSecurityLock) {
         uConfig0 &= ~M05X_FLASH_CONFIG_LOCK;
     } else {
         uConfig0 |= M05X_FLASH_CONFIG_LOCK;
-}
+    }
 
     m_ConfigValue.m_value[0] = uConfig0;
 }

@@ -9,7 +9,7 @@
 class CAboutDlg : public CDialog
 {
 public:
-    CAboutDlg(const CString &sTitle, const CString &sDate);
+    CAboutDlg(const CString &sTitle);
 
 // Dialog Data
     //{{AFX_DATA(CAboutDlg)

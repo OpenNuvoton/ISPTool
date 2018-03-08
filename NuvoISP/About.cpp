@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "HyperLink.h"
-
+#include <sstream>	// for std::ostringstream
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -11,14 +11,16 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CAboutDlg dialog used for App About
 
-CAboutDlg::CAboutDlg(const CString &sTitle, const CString &sDate)
+CAboutDlg::CAboutDlg(const CString &sTitle)
     :	CDialog(CAboutDlg::IDD)
     ,	m_sUpdateURL(_T("http://www.nuvoton.com/NuMicro/"))
     ,	m_sTitle(sTitle)
-    ,	m_sDate(sDate)
 {
-    //{{AFX_DATA_INIT(CAboutDlg)
-    //}}AFX_DATA_INIT
+    std::ostringstream os;
+    os << "Build: " << __DATE__ << " @ " << __TIME__;
+    std::string cstr = os.str();
+    std::wstring wcstr(cstr.begin(), cstr.end());
+    m_sDate = wcstr.c_str();
 }
 
 void CAboutDlg::DoDataExchange(CDataExchange *pDX)
@@ -39,17 +41,15 @@ END_MESSAGE_MAP()
 
 void CAboutDlg::OnLinkNuvoton()
 {
-    // TODO: Add your control notification handler code here
     m_LinkNuvoton.VisitURL();
 }
-
 
 BOOL CAboutDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
-    // TODO: Add extra initialization here
     CString sTitle = _T("About ") + m_sTitle;
-    CString sText = m_sTitle + _T(".") + m_sDate;
+    CString sText;
+    sText.Format(_T("%s\n\n%s"), m_sTitle, m_sDate);
     SetWindowText(sTitle);
     SetDlgItemText(IDC_STATIC_MESSAGE, sText);
     m_LinkNuvoton.SetWindowText(m_sUpdateURL);
@@ -61,6 +61,5 @@ BOOL CAboutDlg::OnInitDialog()
 
 void CAboutDlg::OnLinkNuvotonM0()
 {
-    // TODO: Add your control notification handler code here
     m_LinkNuvotonM0.VisitURL();
 }

@@ -6,8 +6,6 @@
 #include "resource.h"
 #include <cstring>
 
-// CDialogScrollable dialog
-
 IMPLEMENT_DYNAMIC(CDialogMain, CDialog)
 
 CDialogMain::CDialogMain(UINT nIDTemplate, CWnd *pParent /*=NULL*/)
@@ -39,7 +37,6 @@ void CDialogMain::DoDataExchange(CDataExchange *pDX)
 
 void CDialogMain::OnSize(UINT nType, int cx, int cy)
 {
-    // TODO: Add your message handler code here.
     CDialog::OnSize(nType, cx, cy);
     int nScrollMaxX;
     int nScrollMaxY;
@@ -99,7 +96,6 @@ void CDialogMain::OnSize(UINT nType, int cx, int cy)
 
 void CDialogMain::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
 {
-    // TODO: Add your message handler code here and/or call default
     CDialog::OnVScroll(nSBCode, nPos, pScrollBar);
     SCROLLINFO scrollinfo;
     GetScrollInfo(SB_VERT, &scrollinfo);
@@ -165,7 +161,6 @@ void CDialogMain::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
 
 void CDialogMain::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
 {
-    // TODO: Add your message handler code here and/or call default
     CDialog::OnHScroll(nSBCode, nPos, pScrollBar);
     SCROLLINFO scrollinfo;
     GetScrollInfo(SB_HORZ, &scrollinfo);
@@ -231,7 +226,6 @@ void CDialogMain::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
 
 void CDialogMain::OnGetMinMaxInfo(MINMAXINFO *lpMMI)
 {
-    // TODO: Add your message handler code here and/or call default
     CDialog::OnGetMinMaxInfo(lpMMI);
 
     if (m_bIsInitialized) {
@@ -243,7 +237,6 @@ void CDialogMain::OnGetMinMaxInfo(MINMAXINFO *lpMMI)
 }
 BOOL CDialogMain::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
-    // TODO: Add your message handler code here and/or call default
     CDialog::OnMouseWheel(nFlags, zDelta, pt);
 
     if (m_bShowScrollBar) {
@@ -314,15 +307,12 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 #include "DialogConfiguration_NUC2xx.h"
 #include "DialogConfiguration_NUC4xx.h"
 #include "DialogConfiguration_M0564.h"
-
 #include "DialogConfiguration_N76E1T.h"
 #include "DialogConfiguration_TC8226.h"
-
 #include "DialogConfiguration_M2351.h"
-
 #include "DialogConfiguration_I94000.h"
-
 #include "DialogConfiguration_AU9100.h"
+#include "DialogConfiguration_N570.h"
 
 extern CPartNumID *psChipData;
 
@@ -562,6 +552,11 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size)
                 Config = (((CDialogConfiguration_AU9100 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
+            case IDD_DIALOG_CONFIGURATION_N570:
+                pConfigDlg = new CDialogConfiguration_N570;
+                Config = (((CDialogConfiguration_N570 *)pConfigDlg)->m_ConfigValue.m_value);
+                break;
+
             case 0x505:	// "NUC505";
                 printf("NUC505 ");
 
@@ -728,6 +723,7 @@ UINT DialogTemplate[] = {
     IDD_DIALOG_CONFIGURATION_M2351,
     IDD_DIALOG_CONFIGURATION_I94000,
     IDD_DIALOG_CONFIGURATION_AU9100,
+    IDD_DIALOG_CONFIGURATION_N570,
 };
 
 struct CPartNumID g_TestPartNumIDs[] = {
@@ -809,6 +805,7 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
         subVoice->CreatePopupMenu();
         subVoice->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_AU9100, _T("AU9100 Series"));
         subVoice->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_I94000, _T("I94000 Series"));
+        subVoice->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_N570, _T("I91000 Series"));
         menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subVoice->m_hMenu, _T("NuVoice"));
         menu.AppendMenu(MF_SEPARATOR);
         // Others Series

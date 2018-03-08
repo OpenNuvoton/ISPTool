@@ -423,6 +423,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DialogConfiguration\DialogConfiguration_N570.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\dialogconfiguration\DialogConfiguration_N76E1T.cpp"
 				>
 			</File>
