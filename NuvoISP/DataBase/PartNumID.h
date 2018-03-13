@@ -20,8 +20,18 @@ struct CPartNumID {
     unsigned int uProjectCode;
 };
 
-bool QueryDataBase(unsigned int uID);
+struct CChipConfigInfo {
+    unsigned int uID;
+    unsigned int uSeriesCode;
+    unsigned int uProgramMemorySize;
+    unsigned int uDataFlashSize;
+    char szPartNumber[100];
+};
+
+extern CChipConfigInfo gsChipCfgInfo;
+bool GetChipConfigInfo(unsigned int uID);
 std::string GetPartNumber(unsigned int uID);
+
 bool UpdateSizeInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfig1,
                     unsigned int *puAPROM_Size,
                     unsigned int *puNVM_Addr, unsigned int *puNVM_Size);

@@ -8,7 +8,6 @@
 
 
 
-FLASH_PID_INFO_BASE_T gsPidInfo;
 #ifndef __NUVOTON__
 void *GetInfo(unsigned int uPID,
               FLASH_PID_INFO_BASE_T *pInfo)
@@ -574,106 +573,6 @@ void *GetInfo(unsigned int uPID,
 #endif
 }
 
-bool GetInfo(unsigned int uPID,
-             unsigned int uConfig0,
-             unsigned int uConfig1,
-             unsigned int *puNVM_Addr,
-             unsigned int *puAPROM_Size,
-             unsigned int *puNVM_Size)
-{
-    FLASH_PID_INFO_BASE_T flashInfo;
-    memset(&gsPidInfo, 0, sizeof(FLASH_PID_INFO_BASE_T));
-
-    if (GetInfo(uPID, &flashInfo) == NULL) {
-        return false;
-    }
-
-    memcpy(&gsPidInfo, &flashInfo, sizeof(FLASH_PID_INFO_BASE_T));
-
-    if ((uPID & 0xFFFFFF00) == 0x00044200
-            || (uPID & 0xFFFFFF00) == 0x00047200
-            || (uPID & 0xFFFFF000) == 0x00845000
-            || (uPID & 0xFFFFF000) == 0x00945000
-            || (uPID & 0xFFFFF000) == 0x00E45000) { //NUC400/M451/M452E
-        if (flashInfo.uDataFlashSize == 0
-                && (uConfig0 & NUC4XX_FLASH_CONFIG_DFEN) == 0) {
-            *puNVM_Addr = (uConfig1 & 0x000FF800UL);
-            *puAPROM_Size = (flashInfo.uProgramMemorySize > *puNVM_Addr)
-                            ? *puNVM_Addr : flashInfo.uProgramMemorySize;
-            *puNVM_Size = flashInfo.uProgramMemorySize - *puAPROM_Size;
-        } else {
-            *puAPROM_Size = flashInfo.uProgramMemorySize;
-            *puNVM_Addr = flashInfo.uDataFlashStartAddress;
-            *puNVM_Size = flashInfo.uDataFlashSize;
-        }
-    } else if ((uPID & 0xFFFFF000) == 0x00D48000) { //M481
-        if (flashInfo.uDataFlashSize == 0
-                && (uConfig0 & NUC4XX_FLASH_CONFIG_DFEN) == 0) {
-            *puNVM_Addr = (uConfig1 & 0x000FF000UL);
-            *puAPROM_Size = (flashInfo.uProgramMemorySize > *puNVM_Addr)
-                            ? *puNVM_Addr : flashInfo.uProgramMemorySize;
-            *puNVM_Size = flashInfo.uProgramMemorySize - *puAPROM_Size;
-        } else {
-            *puAPROM_Size = flashInfo.uProgramMemorySize;
-            *puNVM_Addr = flashInfo.uDataFlashStartAddress;
-            *puNVM_Size = flashInfo.uDataFlashSize;
-        }
-    } else if ((uPID & 0xFFFFFF00) == 0x00C56400
-               || (uPID & 0xFFFFFF00) == 0x00C05200) { //M0564/NUC126
-        if (flashInfo.uDataFlashSize == 0
-                && (uConfig0 & NUC1XX_FLASH_CONFIG_DFEN) == 0) {
-            *puNVM_Addr = (uConfig1 & 0x000FF800UL);
-            *puAPROM_Size = (flashInfo.uProgramMemorySize > *puNVM_Addr)
-                            ? *puNVM_Addr : flashInfo.uProgramMemorySize;
-            *puNVM_Size = flashInfo.uProgramMemorySize - *puAPROM_Size;
-        } else {
-            *puAPROM_Size = flashInfo.uProgramMemorySize;
-            *puNVM_Addr = flashInfo.uDataFlashStartAddress;
-            *puNVM_Size = flashInfo.uDataFlashSize;
-        }
-    } else {
-        //DataFlash
-        if ((uPID & 0xFFFFFF00) == 0x10012300
-                || (uPID & 0xFFFFFF00) == 0x00012300
-                || (uPID & 0xFFFFFF00) == 0x10013100
-                || (uPID & 0xFFFFFF00) == 0x10051800
-                || (uPID & 0xFFFFFF00) == 0x00032000) { //NUC123/NUC131/M0518/NM1320
-            if ((uConfig0 & NUC1XX_FLASH_CONFIG_DFVSEN) == 0) {
-                flashInfo.uProgramMemorySize += flashInfo.uDataFlashSize;
-                flashInfo.uDataFlashSize = 0;
-
-                if ((uConfig0 & NUC1XX_FLASH_CONFIG_DFEN) == 0) {
-                    *puNVM_Addr = (uConfig1 & 0x000FFE00UL);
-                    *puAPROM_Size = (flashInfo.uProgramMemorySize > *puNVM_Addr)
-                                    ? *puNVM_Addr : flashInfo.uProgramMemorySize;
-                    *puNVM_Size = flashInfo.uProgramMemorySize - *puAPROM_Size;
-                } else {
-                    *puAPROM_Size = flashInfo.uProgramMemorySize;
-                    *puNVM_Addr = flashInfo.uProgramMemorySize;
-                    *puNVM_Size = 0;
-                }
-            } else {
-                *puNVM_Addr = 0x1F000;
-                *puAPROM_Size = flashInfo.uProgramMemorySize;
-                *puNVM_Size = 0x1000;
-            }
-        } else {
-            if (flashInfo.uDataFlashSize == 0
-                    && (uConfig0 & NUC1XX_FLASH_CONFIG_DFEN) == 0) {
-                *puNVM_Addr = (uConfig1 & 0x000FFE00UL);
-                *puAPROM_Size = (flashInfo.uProgramMemorySize > *puNVM_Addr)
-                                ? *puNVM_Addr : flashInfo.uProgramMemorySize;
-                *puNVM_Size = flashInfo.uProgramMemorySize - *puAPROM_Size;
-            } else {
-                *puAPROM_Size = flashInfo.uProgramMemorySize;
-                *puNVM_Addr = flashInfo.uDataFlashStartAddress;
-                *puNVM_Size = flashInfo.uDataFlashSize;
-            }
-        }
-    }
-
-    return true;
-}
 #endif
 
 /* Calculate APROM and NVM size of NuMicro */
@@ -833,19 +732,7 @@ bool GetInfo2(unsigned int uPID,
     unsigned int uProgramMemorySize = 0;
     unsigned int uFlashType = 0;
 
-    if ((uPID & 0xFFFFFF00) == 0x1D010500) {
-        unsigned int N1 = (uPID & 0xF0) >> 4;
-
-        if (N1 == 8) {
-            uProgramMemorySize = 128 * 1024;
-        } else if (N1 == 9) {
-            uProgramMemorySize = 256 * 1024;
-        } else if (N1 == 0x0B) {
-            uProgramMemorySize = 512 * 1024;
-        } else {
-            return false;
-        }
-    } else if (GetInfo(uPID, &flashInfo) != NULL) {
+    if (GetInfo(uPID, &flashInfo) != NULL) {
         uProgramMemorySize = flashInfo.uProgramMemorySize;
 
         // DataFlash Type 2

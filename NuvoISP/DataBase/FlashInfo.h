@@ -18,13 +18,6 @@ typedef struct {
 void *GetInfo(unsigned int uPID,
               FLASH_PID_INFO_BASE_T *pInfo);
 
-bool GetInfo(unsigned int uPID,
-             unsigned int uConfig0,
-             unsigned int uConfig1,
-             unsigned int *puNVM_Addr,
-             unsigned int *puAPROM_Size,
-             unsigned int *puNVM_Size);
-
 bool GetInfo2(unsigned int uPID,
               unsigned int uConfig0,
               unsigned int uConfig1,
@@ -53,8 +46,6 @@ bool GetInfo_N76E1T(//unsigned int uDID,
     unsigned int *puLDROM_Size,
     unsigned int *puAPROM_Size,
     unsigned int *puNVM_Size);
-
-extern FLASH_PID_INFO_BASE_T gsPidInfo;
 
 #endif
 

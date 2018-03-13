@@ -14,8 +14,6 @@ static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
 #endif
 
-CPartNumID *psChipData = NULL;
-
 ///* Get Flash Info by PID */
 //typedef struct
 //{
@@ -1822,20 +1820,6 @@ struct CPartNumID g_PartNumIDs[] = {
     {"NUC126VG4AE", 0x00C05231, IDD_DIALOG_CONFIGURATION_M0564},
     {"NUC126KG4AE", 0x00C05230, IDD_DIALOG_CONFIGURATION_M0564},
 
-    /* I94000 */
-    {"I94124", 0x1d0105ba, IDD_DIALOG_CONFIGURATION_I94000},
-    {"I94123", 0x1d0105b8, IDD_DIALOG_CONFIGURATION_I94000},
-    {"I94121", 0x1d0105b6, IDD_DIALOG_CONFIGURATION_I94000},
-    {"I94120", 0x1d0105b5, IDD_DIALOG_CONFIGURATION_I94000},
-    {"I94114", 0x1d01059a, IDD_DIALOG_CONFIGURATION_I94000},
-    {"I94113", 0x1d010598, IDD_DIALOG_CONFIGURATION_I94000},
-    {"I94111", 0x1d010596, IDD_DIALOG_CONFIGURATION_I94000},
-    {"I94110", 0x1d010595, IDD_DIALOG_CONFIGURATION_I94000},
-    {"I94134", 0x1d01058a, IDD_DIALOG_CONFIGURATION_I94000},
-    {"I94133", 0x1d010588, IDD_DIALOG_CONFIGURATION_I94000},
-    {"I94131", 0x1d010586, IDD_DIALOG_CONFIGURATION_I94000},
-    {"I94130", 0x1d010585, IDD_DIALOG_CONFIGURATION_I94000},
-
     /* NUC4xx series*/
     {"NUC472HI8AE", 0x00047201, IDD_DIALOG_CONFIGURATION_NUC400},
     {"NUC472HH8AE", 0x00047202, IDD_DIALOG_CONFIGURATION_NUC400},
@@ -2089,37 +2073,6 @@ struct CPartNumID g_PartNumIDs[] = {
     {"M487SGAAE", 0x00D48711, IDD_DIALOG_CONFIGURATION_TC8226},
 };
 
-bool QueryDataBase(unsigned int uID)
-{
-    psChipData = NULL;
-
-    for (int i = 0; i < _countof(g_PartNumIDs); ++i) {
-        if (g_PartNumIDs[i].uID == uID) {
-            psChipData = &(g_PartNumIDs[i]);
-            return true;
-        }
-    }
-
-    return false;
-}
-
-#include "NuVoiceInfo.h"
-// call by CNuvoISPDlg::ShowChipInfo()
-std::string GetPartNumber(unsigned int uID)
-{
-    if (QueryDataBase(uID)) {
-        return psChipData->szPartNumber;
-    } else if (GetInfo_NuVoice(uID)) {
-        return gNuVoiceChip.sChipName;
-    } else {
-        CString cs = _T("");
-        cs.Format(_T("??? - 0x%08X"), uID);
-        CT2CA pszConvertedAnsiString(cs);
-        std::string strStd(pszConvertedAnsiString);
-        return strStd;
-    }
-}
-
 // call by CNuvoISPDlg::ShowChipInfo(): Show Chip Info. after connection
 // call by CISPProc::Thread_ProgramFlash(): Update Size Info. if CONFIG is changed
 bool UpdateSizeInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfig1,
@@ -2134,7 +2087,7 @@ bool UpdateSizeInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfi
         pConfig[0] = uConfig0;
         pConfig[1] = uConfig1;
 
-        if (GetInfo_NuVoice(uID, pConfig, 2)) {
+        if (GetInfo_NuVoice(uID, pConfig)) {
             *puNVM_Addr = gNuVoiceChip.dwDataFlashAddress;
             *puNVM_Size = gNuVoiceChip.dwDataFlashSize;
             *puAPROM_Size = gNuVoiceChip.dwAPROMSize;
@@ -2161,4 +2114,60 @@ bool UpdateSizeInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfi
         *puNVM_Addr	= *puAPROM_Size;
         return true;
     }
+}
+
+#include "NuVoiceInfo.h"
+CChipConfigInfo gsChipCfgInfo;
+bool GetChipConfigInfo(unsigned int uID)
+{
+    if (gsChipCfgInfo.uID == uID) {
+        return true;
+    } else {
+        char pName[] = "Unknown Chip";
+        memset(&gsChipCfgInfo, 0, sizeof(gsChipCfgInfo));
+        memcpy(gsChipCfgInfo.szPartNumber, pName, sizeof(pName));
+    }
+
+    for (int i = 0; i < _countof(g_PartNumIDs); ++i) {
+        if (g_PartNumIDs[i].uID == uID) {
+            gsChipCfgInfo.uID = uID;
+            gsChipCfgInfo.uSeriesCode = g_PartNumIDs[i].uProjectCode;
+            memcpy(gsChipCfgInfo.szPartNumber, g_PartNumIDs[i].szPartNumber, 32);
+        }
+    }
+
+    FLASH_PID_INFO_BASE_T flashInfo;
+
+    if (GetInfo(uID, &flashInfo) != NULL) {
+        gsChipCfgInfo.uID = uID;
+        gsChipCfgInfo.uProgramMemorySize = flashInfo.uProgramMemorySize;
+        gsChipCfgInfo.uDataFlashSize =	flashInfo.uDataFlashSize;
+        return true;
+    }
+
+    if (GetInfo_NuVoice(uID)) {
+        gsChipCfgInfo.uID = uID;
+        gsChipCfgInfo.uSeriesCode = gNuVoiceChip.dwSeriesEnum;
+        memcpy(gsChipCfgInfo.szPartNumber, gNuVoiceChip.sChipName, 100);
+
+        if (gsChipCfgInfo.uSeriesCode == ISD_9160_SERIES) {
+            gsChipCfgInfo.uProgramMemorySize = gNuVoiceChip.dwAPROMSize + gNuVoiceChip.dwDataFlashSize + gNuVoiceChip.dwLDROMSize - 4096;
+        } else if (gsChipCfgInfo.uSeriesCode == ISD_91300_SERIES) {
+            gsChipCfgInfo.uProgramMemorySize = gNuVoiceChip.dwAPROMSize + gNuVoiceChip.dwDataFlashSize + gNuVoiceChip.dwLDROMSize - 4096;
+        } else {
+            gsChipCfgInfo.uProgramMemorySize = gNuVoiceChip.dwAPROMSize + gNuVoiceChip.dwDataFlashSize;
+        }
+
+        return true;
+    }
+
+    return false;
+}
+
+#include "NuVoiceInfo.h"
+// call by CNuvoISPDlg::ShowChipInfo()
+std::string GetPartNumber(unsigned int uID)
+{
+    GetChipConfigInfo(uID);
+    return gsChipCfgInfo.szPartNumber;
 }

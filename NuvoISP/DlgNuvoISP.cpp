@@ -706,6 +706,10 @@ void CNuvoISPDlg::ShowChipInfo()
         CString info;
         info.Format(_T("%s\nFW Ver: 0x%X"), wcstr.c_str(), int(m_ucFW_VER));
         SetDlgItemText(IDC_STATIC_PARTNO, info);
+    } else {
+        CString tips;
+        tips.Format(_T("PDID: 0x%X, FW Ver: 0x%X"), m_ulDeviceID, int(m_ucFW_VER));
+        SetDlgItemText(IDC_STATIC_PARTNO, tips);
     }
 
     Invalidate();

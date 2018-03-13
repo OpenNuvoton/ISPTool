@@ -8,6 +8,6 @@
 /* NuVoice Series */
 #include "IGetChipInformation.h"
 extern struct sChipInfo gNuVoiceChip;
-bool GetInfo_NuVoice(DWORD dwChipID, DWORD *pConfig = NULL, DWORD dwConfigNum = 2);
+bool GetInfo_NuVoice(DWORD dwChipID, DWORD *pConfig = NULL);
 
 #endif

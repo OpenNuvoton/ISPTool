@@ -4,8 +4,9 @@
 struct sChipInfo gNuVoiceChip;
 
 
-bool GetInfo_NuVoice(DWORD dwChipID, DWORD *pConfig, DWORD dwConfigNum)
+bool GetInfo_NuVoice(DWORD dwChipID, DWORD *pConfig)
 {
+    bool ret = false;
     memset(&gNuVoiceChip, 0, sizeof(sChipInfo));
     HMODULE hDll = ::LoadLibrary(_T("GetChipInformation.dll"));
 
@@ -16,16 +17,18 @@ bool GetInfo_NuVoice(DWORD dwChipID, DWORD *pConfig, DWORD dwConfigNum)
             I_ChipInfoManager *pChipInfoManager = NULL;
 
             if (pCreateChipInfoManager(&pChipInfoManager) == TRUE) {
-                if (pChipInfoManager->GetChipInfoByID(dwChipID, gNuVoiceChip, pConfig, dwConfigNum) == TRUE) {
-                    return true;
+                eChipInfoError err = pChipInfoManager->GetChipInfo(dwChipID, gNuVoiceChip, pConfig);
+
+                if (err == ECE_NO_ERROR) {
+                    ret = true;
                 }
 
-                pChipInfoManager->Release();
+                pChipInfoManager->ReleaseDLL();
             }
         }
 
         FreeLibrary(hDll);
     }
 
-    return false;
+    return ret;
 }
