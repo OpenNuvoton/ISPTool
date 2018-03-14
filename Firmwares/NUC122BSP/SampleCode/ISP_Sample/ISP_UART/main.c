@@ -30,7 +30,7 @@ void SYS_Init(void)
     /* Switch HCLK clock source to Internal RC and HCLK source divide 1 */
     //CLK->CLKSEL0 &= ~CLK_CLKSEL0_HCLK_S_Msk;
     //CLK->CLKSEL0 |= CLK_CLKSEL0_HCLK_S_HIRC;
-    CLK->CLKSEL0 = (CLK->CLKSEL0 & & (~CLK_CLKSEL0_HCLK_S_Msk)) | CLK_CLKSEL0_HCLK_S_HIRC;
+    CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLK_S_Msk)) | CLK_CLKSEL0_HCLK_S_HIRC;
     CLK->CLKDIV &= ~CLK_CLKDIV_HCLK_N_Msk;
     CLK->CLKDIV |= CLK_CLKDIV_HCLK(1);
 
@@ -39,7 +39,7 @@ void SYS_Init(void)
     while(!(CLK->CLKSTATUS & CLK_CLKSTATUS_PLL_STB_Msk));
     //CLK->CLKSEL0 &= (~CLK_CLKSEL0_HCLK_S_Msk);
     //CLK->CLKSEL0 |= CLK_CLKSEL0_HCLK_S_PLL;
-    CLK->CLKSEL0 = (CLK->CLKSEL0 & & (~CLK_CLKSEL0_HCLK_S_Msk)) | CLK_CLKSEL0_HCLK_S_PLL;
+    CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLK_S_Msk)) | CLK_CLKSEL0_HCLK_S_PLL;
 
     /* Update System Core Clock */
     /* User can use SystemCoreClockUpdate() to calculate PllClock, SystemCoreClock and CycylesPerUs automatically. */
