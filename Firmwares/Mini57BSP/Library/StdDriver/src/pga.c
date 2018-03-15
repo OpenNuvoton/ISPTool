@@ -1,8 +1,8 @@
 /**************************************************************************//**
  * @file     pga.c
  * @version  V1.00
- * $Revision: 1 $
- * $Date: 17/04/19 7:48p $
+ * $Revision: 2 $
+ * $Date: 17/05/04 5:18p $
  * @brief    Mini57 Series PGA driver source file
  *
  * @note
@@ -35,13 +35,12 @@
   *             - \ref PGA_GAIN_9
   *             - \ref PGA_GAIN_11
   *             - \ref PGA_GAIN_13
-  * @param[in]  u32OutputMask is PGA output channels mask. Including :
-  *             - \ref PGA_CTL_PGAOUTEN_Msk
+  * @param[in]  u32OutputMask is PGA output channels mask. 0 to disable output channel; 1 to enable output channel.
   * @return  None
   */
 void PGA_Open(PGA_T *pga, uint32_t u32Gain, uint32_t u32OutputMask)
 {
-    if ((u32OutputMask & PGA_CTL_PGAOUTEN_Msk) == 0)
+    if (u32OutputMask == 0)
     {
         if ((SYS->GPC_MFP & SYS_GPC_MFP_PC3MFP_Msk) == SYS_GPC_MFP_PC3_PGA_O)
         {

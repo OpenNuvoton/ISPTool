@@ -1,8 +1,8 @@
 /**************************************************************************//**
  * @file     gpio.h
  * @version  V3.00
- * $Revision: 1 $
- * $Date: 17/04/19 7:48p $
+ * $Revision: 2 $
+ * $Date: 17/05/19 11:48a $
  * @brief    Mini57 Series series GPIO driver header file
  *
  * @note
@@ -339,7 +339,7 @@ extern "C"
  *
  * @details     Disable the Pull-up resistor function of specified GPIO pin.
  */
-#define GPIO_DISABLE_PULL_UP(port, u32PinMask)   ((port)->PHEN &= ~u32PinMask)
+#define GPIO_DISABLE_PULL_UP(port, u32PinMask)   ((port)->PHEN |= u32PinMask)
 
 /**
  * @brief       Enable Pin Pull-up resistor Function
@@ -355,7 +355,7 @@ extern "C"
  *
  * @details     Enable the Pull-up resistor function of specified GPIO pin.
  */
-#define GPIO_ENABLE_PULL_UP(port, u32PinMask)   ((port)->PHEN |= u32PinMask)
+#define GPIO_ENABLE_PULL_UP(port, u32PinMask)   ((port)->PHEN &= ~u32PinMask)
 
 
 /**
