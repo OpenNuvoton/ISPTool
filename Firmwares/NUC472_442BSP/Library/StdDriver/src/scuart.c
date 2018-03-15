@@ -70,9 +70,12 @@ static uint32_t SCUART_GetClock(SC_T *sc)
     else
         u32Clk = __HIRC;
 
-    if(u32Num < 4) {
+    if(u32Num < 4)
+    {
         u32Clk /= (((CLK->CLKDIV1 >> (8 * u32Num)) & CLK_CLKDIV1_SC0DIV_Msk) + 1);
-    } else {
+    }
+    else
+    {
         u32Clk /= (((CLK->CLKDIV2 >> (8 * (u32Num - 4))) & CLK_CLKDIV2_SC4DIV_Msk) + 1);
     }
 
@@ -89,7 +92,7 @@ static uint32_t SCUART_GetClock(SC_T *sc)
   * @details This function configures character width to 8 bits, 1 stop bit, and no parity.
   *          And can use \ref SCUART_SetLineConfig function to update these settings
   *          The baudrate clock source comes from SC_CLK/SC_DIV, where SC_CLK is controlled
-  *          by SCxSEL in CLKSEL3 register, SC_DIV is controlled by SCxDIV in 
+  *          by SCxSEL in CLKSEL3 register, SC_DIV is controlled by SCxDIV in
   *          CLKDIV1 and CLKDIV2 register. Since the baudrate divider is
   *          12-bit wide and must be larger than 4, (clock source / baudrate) must be
   *          larger or equal to 5 and smaller or equal to 4096. Otherwise this function
@@ -121,8 +124,10 @@ uint32_t SCUART_Read(SC_T* sc, uint8_t *pu8RxBuf, uint32_t u32ReadBytes)
 {
     uint32_t u32Count;
 
-    for(u32Count = 0; u32Count < u32ReadBytes; u32Count++) {
-        if(SCUART_GET_RX_EMPTY(sc)) { // no data available
+    for(u32Count = 0; u32Count < u32ReadBytes; u32Count++)
+    {
+        if(SCUART_GET_RX_EMPTY(sc))   // no data available
+        {
             break;
         }
         pu8RxBuf[u32Count] = SCUART_READ(sc);    // get data from FIFO
@@ -149,7 +154,7 @@ uint32_t SCUART_Read(SC_T* sc, uint8_t *pu8RxBuf, uint32_t u32ReadBytes)
   *                 - \ref SCUART_STOP_BIT_2
   * @return Actual baudrate of smartcard
   * @details The baudrate clock source comes from SC_CLK/SC_DIV, where SC_CLK is controlled
-  *          by SCxSEL in CLKSEL3 register, SC_DIV is controlled by SCxDIV in 
+  *          by SCxSEL in CLKSEL3 register, SC_DIV is controlled by SCxDIV in
   *          CLKDIV1 and CLKDIV2 register. Since the baudrate divider is
   *          12-bit wide and must be larger than 4, (clock source / baudrate) must be
   *          larger or equal to 5 and smaller or equal to 4096. Otherwise this function
@@ -160,9 +165,12 @@ uint32_t SCUART_SetLineConfig(SC_T* sc, uint32_t u32Baudrate, uint32_t u32DataWi
 
     uint32_t u32Clk = SCUART_GetClock(sc), u32Div;
 
-    if(u32Baudrate == 0) {  // keep original baudrate setting
+    if(u32Baudrate == 0)    // keep original baudrate setting
+    {
         u32Div = sc->ETUCTL & SC_ETUCTL_ETURDIV_Msk;
-    } else {
+    }
+    else
+    {
         // Calculate divider for target baudrate
         u32Div = (u32Clk + (u32Baudrate >> 1) - 1)/ u32Baudrate - 1;
         sc->ETUCTL = u32Div;
@@ -202,7 +210,8 @@ void SCUART_Write(SC_T* sc,uint8_t *pu8TxBuf, uint32_t u32WriteBytes)
 {
     uint32_t u32Count;
 
-    for(u32Count = 0; u32Count != u32WriteBytes; u32Count++) {
+    for(u32Count = 0; u32Count != u32WriteBytes; u32Count++)
+    {
         while(SCUART_GET_TX_FULL(sc));  // Wait 'til FIFO not full
         sc->DAT = pu8TxBuf[u32Count];    // Write 1 byte to FIFO
     }

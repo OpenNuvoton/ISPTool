@@ -88,7 +88,8 @@ void SYS_LockReg(void)
   */
 void SYS_UnlockReg(void)
 {
-    while(SYS->REGLCTL != SYS_REGLCTL_REGLCTL_Msk) {
+    while(SYS->REGLCTL != SYS_REGLCTL_REGLCTL_Msk)
+    {
         SYS->REGLCTL = 0x59;
         SYS->REGLCTL = 0x16;
         SYS->REGLCTL = 0x88;

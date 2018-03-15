@@ -34,12 +34,14 @@ uint32_t SysGet_PLLClockFreq(void)
     if (u32PllReg & CLK_PLLCTL_PD)
         return 0;    /* PLL is in power down mode */
 
-    if (u32PllReg & CLK_PLLCTL_PLL_SRC_HIRC) {
+    if (u32PllReg & CLK_PLLCTL_PLL_SRC_HIRC)
+    {
         if(CLK->PLLCTL & CLK_PWRCTL_HIRC_FSEL_Msk)
             u32PLLSrc =__HIRC16M;
         else
             u32PLLSrc =__HIRC12M;
-    } else
+    }
+    else
         u32PLLSrc = __HXT;
 
     u32SRC_N = (u32PllReg & CLK_PLLCTL_PLL_SRC_N_Msk) >> CLK_PLLCTL_PLL_SRC_N_Pos;
@@ -63,15 +65,24 @@ uint32_t SysGet_HCLKFreq(void)
 
     u32ClkSel = CLK->CLKSEL0 & CLK_CLKSEL0_HCLK_S_Msk;
 
-    if (u32ClkSel == CLK_CLKSEL0_HCLK_S_HXT) {  /* external HXT crystal clock */
+    if (u32ClkSel == CLK_CLKSEL0_HCLK_S_HXT)    /* external HXT crystal clock */
+    {
         u32Freqout = __HXT;
-    } else if(u32ClkSel == CLK_CLKSEL0_HCLK_S_LXT) {    /* external LXT crystal clock */
+    }
+    else if(u32ClkSel == CLK_CLKSEL0_HCLK_S_LXT)        /* external LXT crystal clock */
+    {
         u32Freqout = __LXT;
-    } else if(u32ClkSel == CLK_CLKSEL0_HCLK_S_PLL) {    /* PLL clock */
+    }
+    else if(u32ClkSel == CLK_CLKSEL0_HCLK_S_PLL)        /* PLL clock */
+    {
         u32Freqout = SysGet_PLLClockFreq();
-    } else if(u32ClkSel == CLK_CLKSEL0_HCLK_S_LIRC) { /* internal LIRC oscillator clock */
+    }
+    else if(u32ClkSel == CLK_CLKSEL0_HCLK_S_LIRC)     /* internal LIRC oscillator clock */
+    {
         u32Freqout = __LIRC;
-    } else {                                /* internal HIRC oscillator clock */
+    }
+    else                                    /* internal HIRC oscillator clock */
+    {
         if((CLK->PWRCTL & CLK_PWRCTL_HIRC_FSEL_Msk) == CLK_PWRCTL_HIRC_FSEL_Msk)
             u32Freqout = __HIRC16M;
         else

@@ -32,7 +32,7 @@ void SYS_Init(void)
     /* Update System Core Clock */
     /* User can use SystemCoreClockUpdate() to calculate PllClock, SystemCoreClock and CycylesPerUs automatically. */
 //    SystemCoreClockUpdate();
-    SystemCoreClock = 32000000;  	// HCLK
+    SystemCoreClock = 32000000;     // HCLK
     CyclesPerUs     = 32;
 
     /* Select IP clock source */
@@ -58,9 +58,10 @@ int32_t main (void)
     FMC->ISPCON |= FMC_ISPCON_ISPEN_Msk;
 
     g_apromSize = GetApromSize();
-    GetDataFlashInfo(&g_dataFlashAddr , &g_dataFlashSize);
+    GetDataFlashInfo(&g_dataFlashAddr, &g_dataFlashSize);
 
-    if (DetectPin == 0) {
+    if (DetectPin == 0)
+    {
         USBD_Open(&gsInfo, HID_ClassRequest, NULL);
 
         /* Endpoint configuration */
@@ -69,8 +70,10 @@ int32_t main (void)
         USBD_Start();
 
 
-        while (DetectPin == 0) {
-            if(bUsbDataReady == TRUE) {
+        while (DetectPin == 0)
+        {
+            if(bUsbDataReady == TRUE)
+            {
                 WDT->CTL &= ~(WDT_CTL_WTE_Msk);
                 WDT->CTL |= (WDT_TIMEOUT_2POW18 | WDT_CTL_WTR_Msk);
                 ParseCmd((uint8_t *)usb_rcvbuf, EP3_MAX_PKT_SIZE);
@@ -79,7 +82,9 @@ int32_t main (void)
                 bUsbDataReady = FALSE;
             }
         }
-    } else {
+    }
+    else
+    {
 
         SysTick->LOAD = 300000 * CyclesPerUs;
         SysTick->VAL  = (0x00);

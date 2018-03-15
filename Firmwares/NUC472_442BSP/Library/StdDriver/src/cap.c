@@ -202,7 +202,8 @@ void CAP_Stop(uint32_t u32FrameComplete)
 {
     if(u32FrameComplete==FALSE)
         ICAP->CTL &= ~CAP_CTL_CAPEN;
-    else {
+    else
+    {
         ICAP->CTL |= CAP_CTL_SHUTTER_Msk;
         while(CAP_IS_STOPPED());
     }

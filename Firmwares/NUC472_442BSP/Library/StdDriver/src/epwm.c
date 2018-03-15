@@ -43,7 +43,8 @@ uint32_t EPWM_ConfigOutputChannel (EPWM_T *pwm,
 
     u32PWM_CLock = SystemCoreClock;
 
-    for(; u8Divider < 17; u8Divider <<= 1) {  // clk divider could only be 1, 2, 4, 16
+    for(; u8Divider < 17; u8Divider <<= 1)    // clk divider could only be 1, 2, 4, 16
+    {
         // clk divider not support 8
         if (u8Divider == 8)
             continue;
@@ -55,7 +56,8 @@ uint32_t EPWM_ConfigOutputChannel (EPWM_T *pwm,
 
         // CNR = 0xFFFF + 1, get a prescaler that CNR value is below 0xFFFF
 
-        if(i <= 0x10000) {
+        if(i <= 0x10000)
+        {
             if(i == 1)
                 u16CNR = 1;     // Too fast, and PWM cannot generate expected frequency...
             else

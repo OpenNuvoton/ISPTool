@@ -27,7 +27,8 @@ int FMC_Write_User(unsigned int u32Addr, unsigned int u32Data)
 
     Reg = FMC->ISPCTL;
 
-    if(Reg & FMC_ISPCTL_ISPFF_Msk) {
+    if(Reg & FMC_ISPCTL_ISPFF_Msk)
+    {
         FMC->ISPCTL = Reg;
         return -1;
     }
@@ -60,7 +61,8 @@ int FMC_Read_User(unsigned int u32Addr, unsigned int * data)
 
     Reg = FMC->ISPCTL;
 
-    if(Reg & FMC_ISPCTL_ISPFF_Msk) {
+    if(Reg & FMC_ISPCTL_ISPFF_Msk)
+    {
         FMC->ISPCTL = Reg;
         return -1;
     }
@@ -93,7 +95,8 @@ int FMC_Erase_User(unsigned int u32Addr)
 
     Reg = FMC->ISPCTL;
 
-    if(Reg & FMC_ISPCTL_ISPFF_Msk) {
+    if(Reg & FMC_ISPCTL_ISPFF_Msk)
+    {
         FMC->ISPCTL = Reg;
         return -1;
     }
@@ -105,7 +108,8 @@ void ReadData(unsigned int addr_start, unsigned int addr_end, unsigned int* data
 {
     unsigned int rLoop;
 
-    for ( rLoop = addr_start; rLoop < addr_end; rLoop += 4 ) {
+    for ( rLoop = addr_start; rLoop < addr_end; rLoop += 4 )
+    {
         FMC_Read_User(rLoop, data);
         data++;
     }
@@ -117,7 +121,8 @@ void WriteData(unsigned int addr_start, unsigned int addr_end, unsigned int *dat
 {
     unsigned int wLoop;
 
-    for ( wLoop = addr_start; wLoop < addr_end; wLoop+=4 ) {
+    for ( wLoop = addr_start; wLoop < addr_end; wLoop+=4 )
+    {
         FMC_Write_User(wLoop, *data);
         data++;
     }

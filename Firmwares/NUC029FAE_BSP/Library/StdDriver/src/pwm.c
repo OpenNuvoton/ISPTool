@@ -42,7 +42,8 @@ uint32_t PWM_ConfigOutputChannel (PWM_T *pwm,
     uint8_t  u8Divider = 1, u8Prescale = 0xFF;
     uint16_t u16CNR = 0xFFFF;
 
-    for(; u8Divider < 17; u8Divider <<= 1) {  // clk divider could only be 1, 2, 4, 8, 16
+    for(; u8Divider < 17; u8Divider <<= 1)    // clk divider could only be 1, 2, 4, 8, 16
+    {
         i = (SystemCoreClock / u32Frequency) / u8Divider;
         // If target value is larger than CNR * prescale, need to use a larger divider
         if(i > (0x10000 * 0x100))
@@ -57,7 +58,8 @@ uint32_t PWM_ConfigOutputChannel (PWM_T *pwm,
 
         i /= u8Prescale;
 
-        if(i <= 0x10000) {
+        if(i <= 0x10000)
+        {
             if(i == 1)
                 u16CNR = 1;     // Too fast, and PWM cannot generate expected frequency...
             else
@@ -107,8 +109,10 @@ uint32_t PWM_ConfigOutputChannel (PWM_T *pwm,
 void PWM_Start (PWM_T *pwm, uint32_t u32ChannelMask)
 {
     uint32_t u32Mask = 0, i;
-    for(i = 0; i < PWM_CHANNEL_NUM; i ++) {
-        if(u32ChannelMask & (1 << i)) {
+    for(i = 0; i < PWM_CHANNEL_NUM; i ++)
+    {
+        if(u32ChannelMask & (1 << i))
+        {
             u32Mask |= (PWM_PCR_CH0EN_Msk << (i * 4));
         }
     }
@@ -126,8 +130,10 @@ void PWM_Start (PWM_T *pwm, uint32_t u32ChannelMask)
 void PWM_Stop (PWM_T *pwm, uint32_t u32ChannelMask)
 {
     uint32_t i;
-    for(i = 0; i < PWM_CHANNEL_NUM; i ++) {
-        if(u32ChannelMask & (1 << i)) {
+    for(i = 0; i < PWM_CHANNEL_NUM; i ++)
+    {
+        if(u32ChannelMask & (1 << i))
+        {
             PWM->CNR[i] = 0;
         }
     }
@@ -144,8 +150,10 @@ void PWM_Stop (PWM_T *pwm, uint32_t u32ChannelMask)
 void PWM_ForceStop (PWM_T *pwm, uint32_t u32ChannelMask)
 {
     uint32_t u32Mask = 0, i;
-    for(i = 0; i < PWM_CHANNEL_NUM; i ++) {
-        if(u32ChannelMask & (1 << i)) {
+    for(i = 0; i < PWM_CHANNEL_NUM; i ++)
+    {
+        if(u32ChannelMask & (1 << i))
+        {
             u32Mask |= (PWM_PCR_CH0EN_Msk << (i * 4));
         }
     }
@@ -166,12 +174,15 @@ void PWM_ForceStop (PWM_T *pwm, uint32_t u32ChannelMask)
  */
 void PWM_EnableADCTrigger (PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u32Condition)
 {
-    if(u32ChannelNum < 4) {
+    if(u32ChannelNum < 4)
+    {
         PWM->TRGCON0 = (PWM->TRGCON0 & ~((PWM_TRIGGER_ADC_CNTR_IS_0 |
                                           PWM_TRIGGER_ADC_CNTR_IS_CMR_D |
                                           PWM_TRIGGER_ADC_CNTR_IS_CNR |
                                           PWM_TRIGGER_ADC_CNTR_IS_CMR_U ) << (8 * u32ChannelNum))) | (u32Condition << (8 * u32ChannelNum));
-    } else {
+    }
+    else
+    {
         PWM->TRGCON1 = (PWM->TRGCON1 & ~((PWM_TRIGGER_ADC_CNTR_IS_0 |
                                           PWM_TRIGGER_ADC_CNTR_IS_CMR_D |
                                           PWM_TRIGGER_ADC_CNTR_IS_CNR |
@@ -188,12 +199,15 @@ void PWM_EnableADCTrigger (PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u32Condi
  */
 void PWM_DisableADCTrigger (PWM_T *pwm, uint32_t u32ChannelNum)
 {
-    if(u32ChannelNum < 4) {
+    if(u32ChannelNum < 4)
+    {
         PWM->TRGCON0 = (PWM->TRGCON0 & ~((PWM_TRIGGER_ADC_CNTR_IS_0 |
                                           PWM_TRIGGER_ADC_CNTR_IS_CMR_D |
                                           PWM_TRIGGER_ADC_CNTR_IS_CNR |
                                           PWM_TRIGGER_ADC_CNTR_IS_CMR_U ) << (8 * u32ChannelNum)));
-    } else {
+    }
+    else
+    {
         PWM->TRGCON1 = (PWM->TRGCON1 & ~((PWM_TRIGGER_ADC_CNTR_IS_0 |
                                           PWM_TRIGGER_ADC_CNTR_IS_CMR_D |
                                           PWM_TRIGGER_ADC_CNTR_IS_CNR |
@@ -214,9 +228,12 @@ void PWM_DisableADCTrigger (PWM_T *pwm, uint32_t u32ChannelNum)
  */
 void PWM_ClearADCTriggerFlag (PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u32Condition)
 {
-    if(u32ChannelNum < 4) {
+    if(u32ChannelNum < 4)
+    {
         PWM->TRGSTS0 |= (u32Condition << (8 * u32ChannelNum));
-    } else {
+    }
+    else
+    {
         PWM->TRGSTS1 |= (u32Condition << (8 * (u32ChannelNum - 4)));
     }
 }
@@ -235,9 +252,12 @@ uint32_t PWM_GetADCTriggerFlag (PWM_T *pwm, uint32_t u32ChannelNum)
 {
     uint32_t u32Ret;
 
-    if(u32ChannelNum < 4) {
+    if(u32ChannelNum < 4)
+    {
         u32Ret = PWM->TRGSTS0 >> (8 * u32ChannelNum);
-    } else {
+    }
+    else
+    {
         u32Ret = PWM->TRGSTS1 >> (8 * (u32ChannelNum - 4 ));
     }
 

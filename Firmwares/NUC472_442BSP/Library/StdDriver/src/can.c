@@ -102,15 +102,18 @@ void CAN_WaitMsg(CAN_T *tCAN)
 {
     tCAN->STATUS = 0x0;         /* clr status */
 
-    while (1) {
-        if(tCAN->IF[1].MCON & CAN_IF_MCON_NEWDAT_Msk) { /* check new data */
+    while (1)
+    {
+        if(tCAN->IF[1].MCON & CAN_IF_MCON_NEWDAT_Msk)   /* check new data */
+        {
             DEBUG_PRINTF("New Data IN\n");
             break;
         }
         if(tCAN->STATUS & CAN_STATUS_RXOK_Msk)
             DEBUG_PRINTF("Rx OK\n");
 
-        if(tCAN->STATUS & CAN_STATUS_LEC_Msk) {
+        if(tCAN->STATUS & CAN_STATUS_LEC_Msk)
+        {
             DEBUG_PRINTF("Error\n");
         }
     }
@@ -200,11 +203,14 @@ int32_t CAN_BasicSendMsg(CAN_T *tCAN, STR_CANMSG_T* pCanMsg)
 
     tCAN->IF[0].CMASK = CAN_IF_CMASK_WRRD_Msk;
 
-    if (pCanMsg->IdType == CAN_STD_ID) {
+    if (pCanMsg->IdType == CAN_STD_ID)
+    {
         /* standard ID*/
         tCAN->IF[0].ARB1 = 0;
         tCAN->IF[0].ARB2 =  (((pCanMsg->Id)&0x7FF)<<2) ;
-    } else {
+    }
+    else
+    {
         /* extended ID*/
         tCAN->IF[0].ARB1 = (pCanMsg->Id)&0xFFFF;
         tCAN->IF[0].ARB2 = ((pCanMsg->Id)&0x1FFF0000)>>16  | CAN_IF_ARB2_XTD_Msk;
@@ -224,18 +230,21 @@ int32_t CAN_BasicSendMsg(CAN_T *tCAN, STR_CANMSG_T* pCanMsg)
 
     /* request transmission*/
     tCAN->IF[0].CREQ &= (~CAN_IF_CREQ_BUSY_Msk);
-    if(tCAN->IF[0].CREQ & CAN_IF_CREQ_BUSY_Msk) {
+    if(tCAN->IF[0].CREQ & CAN_IF_CREQ_BUSY_Msk)
+    {
         DEBUG_PRINTF("Cannot clear busy for sending ...\n");
         return FALSE;
     }
 
     tCAN->IF[0].CREQ |= CAN_IF_CREQ_BUSY_Msk;                          // sending
 
-    for ( i=0; i<0xFFFFF; i++) {
+    for ( i=0; i<0xFFFFF; i++)
+    {
         if((tCAN->IF[0].CREQ & CAN_IF_CREQ_BUSY_Msk) == 0) break;
     }
 
-    if ( i >= 0xFFFFF ) {
+    if ( i >= 0xFFFFF )
+    {
         DEBUG_PRINTF("Cannot send out...\n");
         return FALSE;
     }
@@ -256,7 +265,8 @@ int32_t CAN_BasicSendMsg(CAN_T *tCAN, STR_CANMSG_T* pCanMsg)
   */
 int32_t CAN_BasicReceiveMsg(CAN_T *tCAN, STR_CANMSG_T* pCanMsg)
 {
-    if((tCAN->IF[1].MCON & CAN_IF_MCON_NEWDAT_Msk) == 0) { /* In basic mode, receive data always save in IF2 */
+    if((tCAN->IF[1].MCON & CAN_IF_MCON_NEWDAT_Msk) == 0)   /* In basic mode, receive data always save in IF2 */
+    {
         return FALSE;
     }
 
@@ -267,12 +277,15 @@ int32_t CAN_BasicReceiveMsg(CAN_T *tCAN, STR_CANMSG_T* pCanMsg)
                         | CAN_IF_CMASK_DATAA_Msk
                         | CAN_IF_CMASK_DATAB_Msk;
 
-    if((tCAN->IF[1].ARB2 & CAN_IF_ARB2_XTD_Msk) == 0) {
+    if((tCAN->IF[1].ARB2 & CAN_IF_ARB2_XTD_Msk) == 0)
+    {
         /* standard ID*/
         pCanMsg->IdType = CAN_STD_ID;
         pCanMsg->Id = (tCAN->IF[1].ARB2 >> 2) & 0x07FF;
 
-    } else {
+    }
+    else
+    {
         /* extended ID*/
         pCanMsg->IdType = CAN_EXT_ID;
         pCanMsg->Id  = (tCAN->IF[1].ARB2 & 0x1FFF)<<16;
@@ -315,17 +328,21 @@ int32_t CAN_SetRxMsgObj(CAN_T  *tCAN, uint8_t u8MsgObj, uint8_t u8idType, uint32
 {
     uint8_t u8MsgIfNum=0;
 
-    if ((u8MsgIfNum = GetFreeIF(tCAN)) == 2) {                      /* Check Free Interface for configure */
+    if ((u8MsgIfNum = GetFreeIF(tCAN)) == 2)                        /* Check Free Interface for configure */
+    {
         return FALSE;
     }
     /* Command Setting */
     tCAN->IF[u8MsgIfNum].CMASK = CAN_IF_CMASK_WRRD_Msk | CAN_IF_CMASK_MASK_Msk | CAN_IF_CMASK_ARB_Msk |
                                  CAN_IF_CMASK_CONTROL_Msk | CAN_IF_CMASK_DATAA_Msk | CAN_IF_CMASK_DATAB_Msk;
 
-    if (u8idType == CAN_STD_ID) { /* According STD/EXT ID format,Configure Mask and Arbitration register */
+    if (u8idType == CAN_STD_ID)   /* According STD/EXT ID format,Configure Mask and Arbitration register */
+    {
         tCAN->IF[u8MsgIfNum].ARB1 = 0;
         tCAN->IF[u8MsgIfNum].ARB2 = CAN_IF_ARB2_MSGVAL_Msk | (u32id & 0x7FF)<< 2;
-    } else {
+    }
+    else
+    {
         tCAN->IF[u8MsgIfNum].ARB1 = u32id & 0xFFFF;
         tCAN->IF[u8MsgIfNum].ARB2 = CAN_IF_ARB2_MSGVAL_Msk | CAN_IF_ARB2_XTD_Msk | (u32id & 0x1FFF0000)>>16;
     }
@@ -362,7 +379,8 @@ int32_t CAN_SetRxMsgObj(CAN_T  *tCAN, uint8_t u8MsgObj, uint8_t u8idType, uint32
   */
 int32_t CAN_ReadMsgObj(CAN_T *tCAN, uint8_t u8MsgObj, uint8_t u8Release, STR_CANMSG_T* pCanMsg)
 {
-    if (!CAN_IsNewDataReceived(tCAN, u8MsgObj)) {
+    if (!CAN_IsNewDataReceived(tCAN, u8MsgObj))
+    {
         return FALSE;
     }
 
@@ -379,15 +397,19 @@ int32_t CAN_ReadMsgObj(CAN_T *tCAN, uint8_t u8MsgObj, uint8_t u8Release, STR_CAN
 
     tCAN->IF[1].CREQ = 1 + u8MsgObj;
 
-    while (tCAN->IF[1].CREQ & CAN_IF_CREQ_BUSY_Msk) {
+    while (tCAN->IF[1].CREQ & CAN_IF_CREQ_BUSY_Msk)
+    {
         /*Wait*/
     }
 
-    if ((tCAN->IF[1].ARB2 & CAN_IF_ARB2_XTD_Msk) == 0) {
+    if ((tCAN->IF[1].ARB2 & CAN_IF_ARB2_XTD_Msk) == 0)
+    {
         /* standard ID*/
         pCanMsg->IdType = CAN_STD_ID;
         pCanMsg->Id     = (tCAN->IF[1].ARB2 & CAN_IF_ARB2_ID_Msk) >> 2;
-    } else {
+    }
+    else
+    {
         /* extended ID*/
         pCanMsg->IdType = CAN_EXT_ID;
         pCanMsg->Id  = (((tCAN->IF[1].ARB2) & 0x1FFF)<<16) | tCAN->IF[1].ARB1;
@@ -414,7 +436,8 @@ static int can_update_spt(int sampl_pt, int tseg, int *tseg1, int *tseg2)
     if (*tseg2 > TSEG2_MAX)
         *tseg2 = TSEG2_MAX;
     *tseg1 = tseg - *tseg2;
-    if (*tseg1 > TSEG1_MAX) {
+    if (*tseg1 > TSEG1_MAX)
+    {
         *tseg1 = TSEG1_MAX;
         *tseg2 = tseg - *tseg1;
     }
@@ -460,7 +483,8 @@ uint32_t CAN_SetBaudRate(CAN_T *tCAN, uint32_t u32BaudRate)
         sampl_pt = 875;
 
     /* tseg even = round down, odd = round up */
-    for (tseg = (TSEG1_MAX + TSEG2_MAX) * 2 + 1; tseg >= (TSEG1_MIN + TSEG2_MIN) * 2; tseg--) {
+    for (tseg = (TSEG1_MAX + TSEG2_MAX) * 2 + 1; tseg >= (TSEG1_MIN + TSEG2_MIN) * 2; tseg--)
+    {
         tsegall = 1 + tseg / 2;
         /* Compute all possible tseg choices (tseg=tseg1+tseg2) */
         brp = clock_freq / (tsegall * u32BaudRate) + tseg % 2;
@@ -479,7 +503,8 @@ uint32_t CAN_SetBaudRate(CAN_T *tCAN, uint32_t u32BaudRate)
         if (error > best_error)
             continue;
         best_error = error;
-        if (error == 0) {
+        if (error == 0)
+        {
             spt = can_update_spt(sampl_pt, tseg / 2, &tseg1, &tseg2);
             error = sampl_pt - spt;
             if (error < 0)
@@ -570,7 +595,8 @@ int32_t CAN_SetTxMsg(CAN_T *tCAN, uint32_t u32MsgNum , STR_CANMSG_T* pCanMsg)
     uint8_t u8MsgIfNum=0;
     uint32_t i=0;
 
-    while((u8MsgIfNum = GetFreeIF(tCAN)) == 2) {
+    while((u8MsgIfNum = GetFreeIF(tCAN)) == 2)
+    {
         i++;
         if(i > 0x10000000)
             return FALSE;
@@ -580,11 +606,14 @@ int32_t CAN_SetTxMsg(CAN_T *tCAN, uint32_t u32MsgNum , STR_CANMSG_T* pCanMsg)
     tCAN->IF[u8MsgIfNum].CMASK = 0xF3;  /*CAN_CMASK_WRRD_Msk | CAN_CMASK_MASK_Msk | CAN_CMASK_ARB_Msk
                                            | CAN_CMASK_CONTROL_Msk | CAN_CMASK_DATAA_Msk  | CAN_CMASK_DATAB_Msk ; */
 
-    if (pCanMsg->IdType == CAN_STD_ID) {
+    if (pCanMsg->IdType == CAN_STD_ID)
+    {
         /* standard ID*/
         tCAN->IF[u8MsgIfNum].ARB1 = 0;
         tCAN->IF[u8MsgIfNum].ARB2 =  (((pCanMsg->Id)&0x7FF)<<2) | CAN_IF_ARB2_DIR_Msk | CAN_IF_ARB2_MSGVAL_Msk;
-    } else {
+    }
+    else
+    {
         /* extended ID*/
         tCAN->IF[u8MsgIfNum].ARB1 = (pCanMsg->Id)&0xFFFF;
         tCAN->IF[u8MsgIfNum].ARB2 = ((pCanMsg->Id)&0x1FFF0000)>>16 | CAN_IF_ARB2_DIR_Msk
@@ -678,7 +707,8 @@ int32_t CAN_SetRxMsg(CAN_T *tCAN, uint32_t u32MsgNum , uint32_t u32IDType, uint3
 {
     uint32_t u32TimeOutCount = 0;
 
-    while(CAN_SetRxMsgObj(tCAN, u32MsgNum, u32IDType, u32ID, TRUE) == FALSE) {
+    while(CAN_SetRxMsgObj(tCAN, u32MsgNum, u32IDType, u32ID, TRUE) == FALSE)
+    {
         u32TimeOutCount++;
 
         if(u32TimeOutCount >= 0x10000000) return FALSE;
@@ -706,14 +736,16 @@ int32_t CAN_SetMultiRxMsg(CAN_T *tCAN, uint32_t u32MsgNum , uint32_t u32MsgCount
     uint32_t u32TimeOutCount;
     uint32_t u32EOB_Flag = 0;
 
-    for(i= 1; i < u32MsgCount; i++) {
+    for(i= 1; i < u32MsgCount; i++)
+    {
         u32TimeOutCount = 0;
 
         u32MsgNum += (i - 1);
 
         if(i == u32MsgCount) u32EOB_Flag = 1;
 
-        while(CAN_SetRxMsgObj(tCAN, u32MsgNum, u32IDType, u32ID, u32EOB_Flag) == FALSE) {
+        while(CAN_SetRxMsgObj(tCAN, u32MsgNum, u32IDType, u32ID, u32EOB_Flag) == FALSE)
+        {
             u32TimeOutCount++;
 
             if(u32TimeOutCount >= 0x10000000) return FALSE;
@@ -735,9 +767,12 @@ int32_t CAN_SetMultiRxMsg(CAN_T *tCAN, uint32_t u32MsgNum , uint32_t u32MsgCount
   */
 int32_t CAN_Transmit(CAN_T *tCAN, uint32_t u32MsgNum , STR_CANMSG_T* pCanMsg)
 {
-    if((tCAN->CON & CAN_CON_TEST_Msk) && (tCAN->TEST & CAN_TEST_BASIC_Msk)) {
+    if((tCAN->CON & CAN_CON_TEST_Msk) && (tCAN->TEST & CAN_TEST_BASIC_Msk))
+    {
         return (CAN_BasicSendMsg(tCAN, pCanMsg));
-    } else {
+    }
+    else
+    {
         if(CAN_SetTxMsg(tCAN, u32MsgNum, pCanMsg) == FALSE)
             return FALSE;
         CAN_TriggerTxMsg(tCAN, u32MsgNum);
@@ -758,9 +793,12 @@ int32_t CAN_Transmit(CAN_T *tCAN, uint32_t u32MsgNum , STR_CANMSG_T* pCanMsg)
   */
 int32_t CAN_Receive(CAN_T *tCAN, uint32_t u32MsgNum , STR_CANMSG_T* pCanMsg)
 {
-    if((tCAN->CON & CAN_CON_TEST_Msk) && (tCAN->TEST & CAN_TEST_BASIC_Msk)) {
+    if((tCAN->CON & CAN_CON_TEST_Msk) && (tCAN->TEST & CAN_TEST_BASIC_Msk))
+    {
         return (CAN_BasicReceiveMsg(tCAN, pCanMsg));
-    } else {
+    }
+    else
+    {
         return CAN_ReadMsgObj(tCAN, u32MsgNum, TRUE, pCanMsg);
     }
 }
@@ -778,11 +816,15 @@ void CAN_CLR_INT_PENDING_BIT(CAN_T *tCAN, uint8_t u32MsgNum)
     uint32_t u32MsgIfNum = 0;
     uint32_t u32IFBusyCount = 0;
 
-    while(u32IFBusyCount < 0x10000000) {
-        if((tCAN->IF[0].CREQ & CAN_IF_CREQ_BUSY_Msk) == 0) {
+    while(u32IFBusyCount < 0x10000000)
+    {
+        if((tCAN->IF[0].CREQ & CAN_IF_CREQ_BUSY_Msk) == 0)
+        {
             u32MsgIfNum = 0;
             break;
-        } else if((tCAN->IF[1].CREQ  & CAN_IF_CREQ_BUSY_Msk) == 0) {
+        }
+        else if((tCAN->IF[1].CREQ  & CAN_IF_CREQ_BUSY_Msk) == 0)
+        {
             u32MsgIfNum = 1;
             break;
         }

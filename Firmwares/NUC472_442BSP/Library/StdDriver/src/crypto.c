@@ -146,7 +146,8 @@ void AES_SetKey(uint32_t u32Channel, uint32_t au32Keys[], uint32_t u32KeySize)
     key_reg_addr = (uint32_t)&CRPT->AES0_KEY0 + (u32Channel * 0x3CUL);
     wcnt = 4UL + u32KeySize*2UL;
 
-    for (i = 0U; i < wcnt; i++) {
+    for (i = 0U; i < wcnt; i++)
+    {
         outpw(key_reg_addr, au32Keys[i]);
         key_reg_addr += 4UL;
     }
@@ -164,7 +165,8 @@ void AES_SetInitVect(uint32_t u32Channel, uint32_t au32IV[])
 
     key_reg_addr = (uint32_t)&CRPT->AES0_IV0 + (u32Channel * 0x3CUL);
 
-    for (i = 0U; i < 4U; i++) {
+    for (i = 0U; i < 4U; i++)
+    {
         outpw(key_reg_addr, au32IV[i]);
         key_reg_addr += 4UL;
     }
@@ -222,10 +224,12 @@ void TDES_Open(uint32_t u32Channel, uint32_t u32EncDec, int32_t Is3DES, int32_t 
     g_TDES_CTL[u32Channel] = (u32Channel << CRPT_TDES_CTL_CHANNEL_Pos) |
                              (u32EncDec << CRPT_TDES_CTL_ENCRPT_Pos) |
                              u32OpMode | (u32SwapType << CRPT_TDES_CTL_BLKSWAP_Pos);
-    if (Is3DES) {
+    if (Is3DES)
+    {
         g_TDES_CTL[u32Channel] |= CRPT_TDES_CTL_TMODE_Msk;
     }
-    if (Is3Key) {
+    if (Is3Key)
+    {
         g_TDES_CTL[u32Channel] |= CRPT_TDES_CTL_3KEYS_Msk;
     }
 }
@@ -257,7 +261,8 @@ void TDES_SetKey(uint32_t u32Channel, uint32_t au32Keys[3][2])
 
     reg_addr = (uint32_t)&CRPT->TDES0_KEY1H + (0x40UL * u32Channel);
 
-    for (i = 0U; i < 3U; i++) {
+    for (i = 0U; i < 3U; i++)
+    {
         outpw(reg_addr, au32Keys[i][0]);   /* TDESn_KEYxH */
         reg_addr += 4UL;
         outpw(reg_addr, au32Keys[i][1]);   /* TDESn_KEYxL */

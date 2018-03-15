@@ -36,7 +36,8 @@ static uint32_t I2S_GetSourceClockFreq(I2S_T *i2s)
     // get I2S selection clock source
     u32ClkSrcSel = CLK->CLKSEL2 & CLK_CLKSEL2_I2S_S_Msk;
 
-    switch (u32ClkSrcSel) {
+    switch (u32ClkSrcSel)
+    {
     case CLK_CLKSEL2_I2S_S_HXT:
         u32Freq = __HXT;
         break;

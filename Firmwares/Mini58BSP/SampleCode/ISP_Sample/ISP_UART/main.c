@@ -24,14 +24,15 @@ void SYS_Init(void)
     /*---------------------------------------------------------------------------------------------------------*/
 
     /* Unlock protected registers */
-    while(SYS->REGLCTL != 1) {
+    while(SYS->REGLCTL != 1)
+    {
         SYS->REGLCTL = 0x59;
         SYS->REGLCTL = 0x16;
         SYS->REGLCTL = 0x88;
     }
 
     /* Enable HIRC */
-    CLK->PWRCTL = (CLK_PWRCTL_HIRCEN_Msk | CLK_PWRCTL_XTLEN_Msk);	
+    CLK->PWRCTL = (CLK_PWRCTL_HIRCEN_Msk | CLK_PWRCTL_XTLEN_Msk);
 
     /* Waiting for clock ready */
     while(!(CLK->STATUS & CLK_STATUS_HIRCSTB_Msk));
@@ -50,7 +51,7 @@ void SYS_Init(void)
     CyclesPerUs     = PLL_CLOCK / 1000000;  // For CLK_SysTickDelay()
 
     /* Enable UART clock */
-    CLK->APBCLK = CLK_APBCLK_UART0CKEN_Msk;	
+    CLK->APBCLK = CLK_APBCLK_UART0CKEN_Msk;
 
     /* Select UART Clock source from external 12 MHz or 32 KHz crystal clock */
 //    CLK->CLKSEL1 &= ~CLK_CLKSEL1_UARTSEL_Msk;
@@ -91,19 +92,24 @@ int main(void)
     FMC->ISPCTL |= FMC_ISPCTL_ISPEN_Msk;
 
     g_apromSize = GetApromSize();
-    GetDataFlashInfo(&g_dataFlashAddr , &g_dataFlashSize);
+    GetDataFlashInfo(&g_dataFlashAddr, &g_dataFlashSize);
 
     SysTick->LOAD = 300000 * CyclesPerUs;
     SysTick->VAL   =  (0x00);
     SysTick->CTRL = SysTick->CTRL | SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;//using cpu clock
 
-    while(1) {
-        if((bufhead >= 4) || (bUartDataReady == TRUE)) {
+    while(1)
+    {
+        if((bufhead >= 4) || (bUartDataReady == TRUE))
+        {
             uint32_t lcmd;
             lcmd = inpw(uart_rcvbuf);
-            if(lcmd == CMD_CONNECT) {
+            if(lcmd == CMD_CONNECT)
+            {
                 goto _ISP;
-            } else {
+            }
+            else
+            {
                 bUartDataReady = FALSE;
                 bufhead = 0;
             }
@@ -116,8 +122,10 @@ int main(void)
 
 
 _ISP:
-    while(1) {
-        if(bUartDataReady == TRUE) {
+    while(1)
+    {
+        if(bUartDataReady == TRUE)
+        {
             bUartDataReady = FALSE;
             ParseCmd(uart_rcvbuf, 64);
             PutString();

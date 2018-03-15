@@ -77,9 +77,12 @@ void ADC_EnableHWTrigger(ADC_T *adc,
                          uint32_t u32Param)
 {
     ADC->ADCR &= ~(ADC_TRIGGER_BY_PWM | ADC_RISING_EDGE_TRIGGER | ADC_ADCR_TRGEN_Msk);
-    if(u32Source == ADC_TRIGGER_BY_EXT_PIN) {
+    if(u32Source == ADC_TRIGGER_BY_EXT_PIN)
+    {
         ADC->ADCR |= u32Source | u32Param | ADC_ADCR_TRGEN_Msk;
-    } else {
+    }
+    else
+    {
         ADC->ADTDCR = (ADC->ADTDCR & ~ADC_ADTDCR_PTDT_Msk) | u32Param;
         ADC->ADCR |= u32Source | ADC_ADCR_TRGEN_Msk;
     }

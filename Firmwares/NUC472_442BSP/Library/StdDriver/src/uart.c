@@ -41,7 +41,8 @@
  */
 void UART_ClearIntFlag(UART_T* uart , uint32_t u32InterruptFlag)
 {
-    if(u32InterruptFlag & UART_INTSTS_RLSINT_Msk) { /* clear Receive Line Status Interrupt */
+    if(u32InterruptFlag & UART_INTSTS_RLSINT_Msk)   /* clear Receive Line Status Interrupt */
+    {
         uart->FIFOSTS |= UART_FIFOSTS_BIF_Msk | UART_FIFOSTS_FEF_Msk | UART_FIFOSTS_PEF_Msk;
         uart->FIFOSTS |= UART_FIFOSTS_ADDRDETF_Msk;
     }
@@ -49,7 +50,8 @@ void UART_ClearIntFlag(UART_T* uart , uint32_t u32InterruptFlag)
     if(u32InterruptFlag & UART_INTSTS_MODEMINT_Msk)  /* clear Modem Interrupt */
         uart->MODEMSTS |= UART_MODEMSTS_CTSDETF_Msk;
 
-    if(u32InterruptFlag & UART_INTSTS_BUFERRINT_Msk) { /* clear Buffer Error Interrupt */
+    if(u32InterruptFlag & UART_INTSTS_BUFERRINT_Msk)   /* clear Buffer Error Interrupt */
+    {
         uart->FIFOSTS |= UART_FIFOSTS_RXOVIF_Msk | UART_FIFOSTS_TXOVIF_Msk;
     }
 
@@ -171,7 +173,8 @@ void UART_Open(UART_T* uart, uint32_t u32baudrate)
 
     u32Clk = (u32ClkTbl[u8UartClkSrcSel]) / (((CLK->CLKDIV0 & CLK_CLKDIV0_UARTDIV_Msk) >> CLK_CLKDIV0_UARTDIV_Pos) + 1);
 
-    if(u32baudrate != 0) {
+    if(u32baudrate != 0)
+    {
         u32Baud_Div = UART_BAUD_MODE2_DIVIDER(u32Clk, u32baudrate);
 
         if(u32Baud_Div > 0xFFFF)
@@ -196,8 +199,10 @@ uint32_t UART_Read(UART_T* uart, uint8_t *pu8RxBuf, uint32_t u32ReadBytes)
 {
     uint32_t  u32Count;
 
-    for(u32Count=0; u32Count < u32ReadBytes; u32Count++) {
-        if(uart->FIFOSTS & UART_FIFOSTS_RXEMPTY_Msk) { /* Check RX empty => failed */
+    for(u32Count=0; u32Count < u32ReadBytes; u32Count++)
+    {
+        if(uart->FIFOSTS & UART_FIFOSTS_RXEMPTY_Msk)   /* Check RX empty => failed */
+        {
             return u32Count;
         }
         pu8RxBuf[u32Count] = uart->DAT;    /* Get Data from UART RX  */
@@ -233,7 +238,8 @@ void UART_SetLine_Config(UART_T* uart, uint32_t u32baudrate, uint32_t u32data_wi
 
     u32Clk = (u32ClkTbl[u8UartClkSrcSel]) / (((CLK->CLKDIV0 & CLK_CLKDIV0_UARTDIV_Msk) >> CLK_CLKDIV0_UARTDIV_Pos) + 1);
 
-    if(u32baudrate != 0) {
+    if(u32baudrate != 0)
+    {
         u32Baud_Div = UART_BAUD_MODE2_DIVIDER(u32Clk, u32baudrate);
 
         if(u32Baud_Div > 0xFFFF)
@@ -323,8 +329,10 @@ uint32_t UART_Write(UART_T* uart,uint8_t *pu8TxBuf, uint32_t u32WriteBytes)
 {
     uint32_t  u32Count;
 
-    for(u32Count=0; u32Count != u32WriteBytes; u32Count++) {
-        if(uart->FIFOSTS & UART_FIFOSTS_TXFULL_Msk) { /* Wait Tx empty and Time-out manner */
+    for(u32Count=0; u32Count != u32WriteBytes; u32Count++)
+    {
+        if(uart->FIFOSTS & UART_FIFOSTS_TXFULL_Msk)   /* Wait Tx empty and Time-out manner */
+        {
             return u32Count;
         }
         uart->DAT = pu8TxBuf[u32Count];    /* Send UART Data from buffer */

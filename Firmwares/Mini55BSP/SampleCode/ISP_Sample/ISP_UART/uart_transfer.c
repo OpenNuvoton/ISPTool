@@ -34,15 +34,19 @@ void UART_N_IRQHandler(void)
     /*----- Determine interrupt source -----*/
     uint32_t u32IntSrc = UART_N->INTSTS;
 
-    if(u32IntSrc & 0x11) { //RDA FIFO interrupt & RDA timeout interrupt
-        while(((UART_N->FIFOSTS & UART_FIFOSTS_RXEMPTY_Msk) == 0) && (bufhead < MAX_PKT_SIZE))	//RX fifo not empty
+    if(u32IntSrc & 0x11)   //RDA FIFO interrupt & RDA timeout interrupt
+    {
+        while(((UART_N->FIFOSTS & UART_FIFOSTS_RXEMPTY_Msk) == 0) && (bufhead < MAX_PKT_SIZE))  //RX fifo not empty
             uart_rcvbuf[bufhead++] = UART_N->DAT;
     }
 
-    if(bufhead == MAX_PKT_SIZE) {
+    if(bufhead == MAX_PKT_SIZE)
+    {
         bUartDataReady = TRUE;
         bufhead = 0;
-    } else if(u32IntSrc & 0x10) {
+    }
+    else if(u32IntSrc & 0x10)
+    {
         bufhead = 0;
     }
 }
@@ -52,7 +56,8 @@ void PutString(void)
 {
     uint32_t i;
 
-    for(i = 0; i < MAX_PKT_SIZE; i++) {
+    for(i = 0; i < MAX_PKT_SIZE; i++)
+    {
         while ((UART_N->FIFOSTS & UART_FIFOSTS_TXFULL_Msk));
         UART_N->DAT = response_buff[i];
     }
@@ -64,7 +69,7 @@ uint32_t UART_IS_CONNECT(void)
     if((bufhead >= 4) || (bUartDataReady == TRUE)) {
         uint32_t lcmd;
         lcmd = inpw(uart_rcvbuf);
-        if(lcmd == 0x000000AE) {	// CMD_CONNECT
+        if(lcmd == 0x000000AE) {    // CMD_CONNECT
             return 1;
         } else {
             bUartDataReady = 0;
@@ -101,8 +106,8 @@ void UART_Init()
     NVIC_EnableIRQ(UART_N_IRQn);
 
     UART_N->INTEN = (UART_INTEN_TOCNTEN_Msk | UART_INTEN_RXTOIEN_Msk | UART_INTEN_RDAIEN_Msk);
-		
-#else		
+
+#else
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init UART                                                                                               */
     /*---------------------------------------------------------------------------------------------------------*/
@@ -111,8 +116,8 @@ void UART_Init()
     // 22118400 / 115200 = 192. Using mode 2 to calculate baudrate, 192 - 2 = 190 = 0xBE
     UART0->BAUD = UART_BAUD_BAUDM1_Msk | UART_BAUD_BAUDM0_Msk | (0xBE);
 
-// 	 SYS->IPRST1 = SYS_IPRST1_UART0RST_Msk;
-// 	 SYS->IPRST1 &= ~SYS_IPRST1_UART0RST_Msk;
+//   SYS->IPRST1 = SYS_IPRST1_UART0RST_Msk;
+//   SYS->IPRST1 &= ~SYS_IPRST1_UART0RST_Msk;
 
     // Set UART to 8 bit character length, 1 stop bit, and no parity
     UART0->LINE = UART_LINE_WLS_Msk;
@@ -120,7 +125,7 @@ void UART_Init()
     outpw(&UART0->TOUT, 0x40);
 
     outpw(&UART0->INTEN, 0x811);
-    NVIC_EnableIRQ(UART0_IRQn);		
-#endif		
+    NVIC_EnableIRQ(UART0_IRQn);
+#endif
 }
 

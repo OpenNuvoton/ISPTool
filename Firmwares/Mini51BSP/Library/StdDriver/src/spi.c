@@ -53,12 +53,14 @@ uint32_t SPI_Open(SPI_T *spi,
     u32Div = 0xffff;
     spi->SSR |= SPI_SSR_SS_LTRIG_Msk;
 
-    if(u32BusClock !=0 ) {
+    if(u32BusClock !=0 )
+    {
         u32Div = (((u32Pclk / u32BusClock) + 1) >> 1) - 1;
         if(u32Div > 0xFFFF)
             u32Div = 0xFFFF;
         spi->DIVIDER = (spi->DIVIDER & ~0xffff) | u32Div;
-    } else
+    }
+    else
         spi->DIVIDER = 0;
 
     return ( u32Pclk / ((u32Div+1)*2) );
@@ -132,11 +134,13 @@ uint32_t SPI_SetBusClock(SPI_T *spi, uint32_t u32BusClock)
     if(u32BusClock > u32ClkSrc)
         u32BusClock = u32ClkSrc;
 
-    if(u32BusClock != 0 ) {
+    if(u32BusClock != 0 )
+    {
         u32Div = (((u32ClkSrc / u32BusClock) + 1) >> 1) - 1;
         if(u32Div > SPI_DIVIDER_DIVIDER_Msk)
             u32Div = SPI_DIVIDER_DIVIDER_Msk;
-    } else
+    }
+    else
         return 0;
 
     spi->DIVIDER = (spi->DIVIDER & ~SPI_DIVIDER_DIVIDER_Msk) | u32Div;

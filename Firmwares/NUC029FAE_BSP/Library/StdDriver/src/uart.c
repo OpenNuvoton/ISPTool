@@ -36,7 +36,8 @@
 void UART_ClearIntFlag(UART_T* uart , uint32_t u32InterruptFlag)
 {
 
-    if(u32InterruptFlag & UART_ISR_RLS_INT_Msk) { /* clear Receive Line Status Interrupt */
+    if(u32InterruptFlag & UART_ISR_RLS_INT_Msk)   /* clear Receive Line Status Interrupt */
+    {
         uart->FSR |= UART_FSR_BIF_Msk | UART_FSR_FEF_Msk | UART_FSR_FEF_Msk;
         uart->FSR |= UART_FSR_RS485_ADD_DETF_Msk;
     }
@@ -44,7 +45,8 @@ void UART_ClearIntFlag(UART_T* uart , uint32_t u32InterruptFlag)
     if(u32InterruptFlag & UART_ISR_MODEM_INT_Msk)  /* clear Modem Interrupt */
         uart->MSR |= UART_MSR_DCTSF_Msk;
 
-    if(u32InterruptFlag & UART_ISR_BUF_ERR_INT_Msk) { /* clear Buffer Error Interrupt */
+    if(u32InterruptFlag & UART_ISR_BUF_ERR_INT_Msk)   /* clear Buffer Error Interrupt */
+    {
         uart->FSR |= UART_FSR_RX_OVER_IF_Msk | UART_FSR_TX_OVER_IF_Msk;
     }
 
@@ -160,7 +162,8 @@ void UART_Open(UART_T* uart, uint32_t u32baudrate)
     uart->LCR = UART_WORD_LEN_8 | UART_PARITY_NONE | UART_STOP_BIT_1;
     uart->FCR = UART_FCR_RFITL_1BYTE | UART_FCR_RTS_TRI_LEV_1BYTE;
 
-    if(u32baudrate != 0) {
+    if(u32baudrate != 0)
+    {
         u32Baud_Div = UART_BAUD_MODE2_DIVIDER(u32ClkTbl[u8UartClkSrcSel], u32baudrate);
 
         if(u32Baud_Div > 0xFFFF)
@@ -185,10 +188,12 @@ uint32_t UART_Read(UART_T* uart, uint8_t *pu8RxBuf, uint32_t u32ReadBytes)
 {
     uint32_t  u32Count, u32delayno;
 
-    for(u32Count=0; u32Count < u32ReadBytes; u32Count++) {
+    for(u32Count=0; u32Count < u32ReadBytes; u32Count++)
+    {
         u32delayno = 0;
 
-        while(uart->FSR & UART_FSR_RX_EMPTY_Msk) { /* Check RX empty => failed */
+        while(uart->FSR & UART_FSR_RX_EMPTY_Msk)   /* Check RX empty => failed */
+        {
             u32delayno++;
             if( u32delayno >= 0x40000000 )
                 return FALSE;
@@ -220,7 +225,8 @@ void UART_SetLine_Config(UART_T* uart, uint32_t u32baudrate, uint32_t u32data_wi
     uint32_t u32Baud_Div = 0;
     u8UartClkSrcSel = (CLK->CLKSEL1 & CLK_CLKSEL1_UART_S_Msk) >> CLK_CLKSEL1_UART_S_Pos;
 
-    if(u32baudrate != 0) {
+    if(u32baudrate != 0)
+    {
         u32Baud_Div = UART_BAUD_MODE2_DIVIDER(u32ClkTbl[u8UartClkSrcSel], u32baudrate);
 
         if(u32Baud_Div > 0xFFFF)
@@ -298,9 +304,11 @@ uint32_t UART_Write(UART_T* uart,uint8_t *pu8TxBuf, uint32_t u32WriteBytes)
 {
     uint32_t  u32Count, u32delayno;
 
-    for(u32Count=0; u32Count != u32WriteBytes; u32Count++) {
+    for(u32Count=0; u32Count != u32WriteBytes; u32Count++)
+    {
         u32delayno = 0;
-        while((uart->FSR & UART_FSR_TE_FLAG_Msk) == 0) { /* Wait Tx empty and Time-out manner */
+        while((uart->FSR & UART_FSR_TE_FLAG_Msk) == 0)   /* Wait Tx empty and Time-out manner */
+        {
             u32delayno++;
             if( u32delayno >= 0x40000000 )
                 return FALSE;

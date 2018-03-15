@@ -69,15 +69,24 @@ uint32_t SysGet_HCLKFreq(void)
 
     u32ClkSel = CLK->CLKSEL0 & CLK_CLKSEL0_HCLK_S_Msk;
 
-    if (u32ClkSel == CLK_CLKSEL0_HCLK_S_HXT) {  /* external HXT crystal clock */
+    if (u32ClkSel == CLK_CLKSEL0_HCLK_S_HXT)    /* external HXT crystal clock */
+    {
         u32Freqout = __HXT;
-    } else if(u32ClkSel == CLK_CLKSEL0_HCLK_S_LXT) {    /* external LXT crystal clock */
+    }
+    else if(u32ClkSel == CLK_CLKSEL0_HCLK_S_LXT)        /* external LXT crystal clock */
+    {
         u32Freqout = __LXT;
-    } else if(u32ClkSel == CLK_CLKSEL0_HCLK_S_PLL) {    /* PLL clock */
+    }
+    else if(u32ClkSel == CLK_CLKSEL0_HCLK_S_PLL)        /* PLL clock */
+    {
         u32Freqout = SysGet_PLLClockFreq();
-    } else if(u32ClkSel == CLK_CLKSEL0_HCLK_S_LIRC) { /* internal LIRC oscillator clock */
+    }
+    else if(u32ClkSel == CLK_CLKSEL0_HCLK_S_LIRC)     /* internal LIRC oscillator clock */
+    {
         u32Freqout = __LIRC;
-    } else {                                /* internal HIRC oscillator clock */
+    }
+    else                                    /* internal HIRC oscillator clock */
+    {
         u32Freqout = __HIRC12M;
     }
     u32AHBDivider = (CLK->CLKDIV0 & CLK_CLKDIV0_HCLK_N_Msk) + 1 ;

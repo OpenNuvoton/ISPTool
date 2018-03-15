@@ -36,7 +36,8 @@
 void UART_ClearIntFlag(UART_T* uart , uint32_t u32InterruptFlag)
 {
 
-    if(u32InterruptFlag & UART_INTSTS_RLSINT_Msk) { /* clear Receive Line Status Interrupt */
+    if(u32InterruptFlag & UART_INTSTS_RLSINT_Msk)   /* clear Receive Line Status Interrupt */
+    {
         uart->FIFOSTS = UART_FIFOSTS_BIF_Msk | UART_FIFOSTS_FEF_Msk | UART_FIFOSTS_FEF_Msk;
         uart->FIFOSTS = UART_FIFOSTS_ADDRDETF_Msk;
     }
@@ -44,7 +45,8 @@ void UART_ClearIntFlag(UART_T* uart , uint32_t u32InterruptFlag)
     if(u32InterruptFlag & UART_INTSTS_MODEMINT_Msk)  /* clear Modem Interrupt */
         uart->MODEMSTS = UART_MODEMSTS_CTSDETF_Msk;
 
-    if(u32InterruptFlag & UART_INTSTS_BUFERRINT_Msk) { /* clear Buffer Error Interrupt */
+    if(u32InterruptFlag & UART_INTSTS_BUFERRINT_Msk)   /* clear Buffer Error Interrupt */
+    {
         uart->FIFOSTS = UART_FIFOSTS_RXOVIF_Msk | UART_FIFOSTS_TXOVIF_Msk;
     }
 
@@ -171,7 +173,8 @@ void UART_Open(UART_T* uart, uint32_t u32baudrate)
     u32ClkDiv = ( (CLK->CLKDIV & CLK_CLKDIV_UARTDIV_Msk) >> CLK_CLKDIV_UARTDIV_Pos );
     u32Clk = u32Clk/(u32ClkDiv + 1);
 
-    if(u32baudrate != 0) {
+    if(u32baudrate != 0)
+    {
         u32Baud_Div = UART_BAUD_MODE2_DIVIDER(u32Clk, u32baudrate);
 
         if(u32Baud_Div > 0xFFFF)
@@ -196,10 +199,12 @@ uint32_t UART_Read(UART_T* uart, uint8_t *pu8RxBuf, uint32_t u32ReadBytes)
 {
     uint32_t  u32Count, u32delayno;
 
-    for(u32Count=0; u32Count < u32ReadBytes; u32Count++) {
+    for(u32Count=0; u32Count < u32ReadBytes; u32Count++)
+    {
         u32delayno = 0;
 
-        while(uart->FIFOSTS & UART_FIFOSTS_RXEMPTY_Msk) { /* Check RX empty => failed */
+        while(uart->FIFOSTS & UART_FIFOSTS_RXEMPTY_Msk)   /* Check RX empty => failed */
+        {
             u32delayno++;
             if( u32delayno >= 0x40000000 )
                 return FALSE;
@@ -243,7 +248,8 @@ void UART_SetLine_Config(UART_T* uart, uint32_t u32baudrate, uint32_t u32data_wi
     u32ClkDiv = ( (CLK->CLKDIV & CLK_CLKDIV_UARTDIV_Msk) >> CLK_CLKDIV_UARTDIV_Pos );
     u32Clk = u32Clk/(u32ClkDiv + 1);
 
-    if(u32baudrate != 0) {
+    if(u32baudrate != 0)
+    {
         u32Baud_Div = UART_BAUD_MODE2_DIVIDER(u32Clk, u32baudrate);
 
         if(u32Baud_Div > 0xFFFF)
@@ -337,9 +343,11 @@ uint32_t UART_Write(UART_T* uart,uint8_t *pu8TxBuf, uint32_t u32WriteBytes)
 {
     uint32_t  u32Count, u32delayno;
 
-    for(u32Count=0; u32Count != u32WriteBytes; u32Count++) {
+    for(u32Count=0; u32Count != u32WriteBytes; u32Count++)
+    {
         u32delayno = 0;
-        while((uart->FIFOSTS & UART_FIFOSTS_TXEMPTYF_Msk) == 0) { /* Wait Tx empty and Time-out manner */
+        while((uart->FIFOSTS & UART_FIFOSTS_TXEMPTYF_Msk) == 0)   /* Wait Tx empty and Time-out manner */
+        {
             u32delayno++;
             if( u32delayno >= 0x40000000 )
                 return FALSE;

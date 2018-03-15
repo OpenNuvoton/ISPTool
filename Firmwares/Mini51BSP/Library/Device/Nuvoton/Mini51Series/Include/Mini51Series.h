@@ -77,7 +77,8 @@ extern "C" {
 /**
  * @details  Interrupt Number Definition. The maximum of 32 Specific Interrupts are possible.
  */
-typedef enum IRQn {
+typedef enum IRQn
+{
     /******  Cortex-M0 Processor Exceptions Numbers *****************************************/
 
     NonMaskableInt_IRQn   = -14,    /*!< 2 Non Maskable Interrupt                           */
@@ -152,7 +153,8 @@ typedef enum IRQn {
 @{ */
 
 
-typedef struct {
+typedef struct
+{
 
     /**
      * @var ACMP_T::CMPCR
@@ -284,7 +286,8 @@ typedef struct {
 @{ */
 
 
-typedef struct {
+typedef struct
+{
     /**
      * @var ADC_T::ADDR
      * Offset: 0x00  ADC Data Register
@@ -601,7 +604,8 @@ typedef struct {
 @{ */
 
 
-typedef struct {
+typedef struct
+{
 
     /**
      * @var CLK_T::PWRCON
@@ -1010,7 +1014,8 @@ typedef struct {
 @{ */
 
 
-typedef struct {
+typedef struct
+{
 
     /**
      * @var FMC_T::ISPCON
@@ -1191,7 +1196,8 @@ typedef struct {
 @{ */
 
 
-typedef struct {
+typedef struct
+{
 
     /**
      * @var GCR_T::PDID
@@ -1786,7 +1792,8 @@ typedef struct {
 @{ */
 
 
-typedef struct {
+typedef struct
+{
 
     /**
      * @var GPIO_T::PMD
@@ -2078,7 +2085,8 @@ typedef struct {
 /**
   * @brief GPIO debounce register map
   */
-typedef struct {
+typedef struct
+{
     /**
      * @var GPIO_DBNCECON_T::DBNCECON
      * Offset: 0x180  Interrupt De-bounce Control
@@ -2191,7 +2199,8 @@ typedef struct {
 @{ */
 
 
-typedef struct {
+typedef struct
+{
 
     /**
      * @var I2C_T::I2CON
@@ -2512,7 +2521,8 @@ typedef struct {
 
 
 
-typedef struct {
+typedef struct
+{
 
     /**
      * @var INT_T::SRC0
@@ -2738,7 +2748,8 @@ typedef struct {
 @{ */
 
 
-typedef struct {
+typedef struct
+{
 
     /**
      * @var PWM_T::PPR
@@ -4189,7 +4200,8 @@ typedef struct {
 @{ */
 
 
-typedef struct {
+typedef struct
+{
 
     /**
      * @var SPI_T::CNTRL
@@ -4646,7 +4658,8 @@ typedef struct {
 @{ */
 
 
-typedef struct {
+typedef struct
+{
 
     /**
      * @var TIMER_T::TCSR
@@ -4914,7 +4927,8 @@ typedef struct {
 @{ */
 
 
-typedef struct {
+typedef struct
+{
 
     /**
      * @var UART_T::RBR
@@ -5302,7 +5316,8 @@ typedef struct {
      * |        |          |11 = RS-485 function mode.
      */
 
-    union {
+    union
+    {
         __I  uint32_t RBR;           /* Offset: 0x00  UART Receive Buffer Register                                       */
         __O  uint32_t THR;           /* Offset: 0x00  UART Transmit Holding Register                                     */
     };
@@ -5546,7 +5561,8 @@ typedef struct {
 @{ */
 
 
-typedef struct {
+typedef struct
+{
 
     /**
      * @var WDT_T::WTCR

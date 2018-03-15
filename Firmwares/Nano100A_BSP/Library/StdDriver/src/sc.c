@@ -96,17 +96,23 @@ void SC_Open(SC_T *sc, uint32_t u32CD, uint32_t u32PWR)
     else
         u32Intf = 1;
 
-    if(u32CD != SC_PIN_STATE_IGNORE) {
+    if(u32CD != SC_PIN_STATE_IGNORE)
+    {
         u32Reg = u32CD ? 0: SC_PINCSR_CD_LEV_Msk;
         u32CardStateIgnore[u32Intf] = 0;
-    } else {
+    }
+    else
+    {
         u32CardStateIgnore[u32Intf] = 1;
     }
     // Nano100AN does not have power inverse control bit
-    if(u32PWR == SC_PIN_STATE_LOW) {
+    if(u32PWR == SC_PIN_STATE_LOW)
+    {
         u32Reg |= SC_PINCSR_POW_EN_Msk;
         u32CardPwrPolarity[u32Intf] = 0;
-    } else {
+    }
+    else
+    {
         u32CardPwrPolarity[u32Intf] = 1;
     }
     sc->PINCSR = u32Reg;
@@ -225,13 +231,18 @@ void SC_StartTimer(SC_T *sc, uint32_t u32TimerNum, uint32_t u32Mode, uint32_t u3
 {
     uint32_t reg = u32Mode | (SC_TMR0_CNT_Msk & (u32ETUCount - 1));
 
-    if(u32TimerNum == 0) {
+    if(u32TimerNum == 0)
+    {
         sc->TMR0 = reg;
         sc->ALTCTL |= SC_ALTCTL_TMR0_SEN_Msk;
-    } else if(u32TimerNum == 1) {
+    }
+    else if(u32TimerNum == 1)
+    {
         sc->TMR1 = reg;
         sc->ALTCTL |= SC_ALTCTL_TMR1_SEN_Msk;
-    } else {   // timer 2
+    }
+    else       // timer 2
+    {
         sc->TMR2 = reg;
         sc->ALTCTL |= SC_ALTCTL_TMR2_SEN_Msk;
     }

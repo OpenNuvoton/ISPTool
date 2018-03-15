@@ -65,9 +65,12 @@ void DAC_Open(DAC_T *dac, uint32_t u32Ch, uint32_t u32TrgSrc)
   */
 void DAC_Close(DAC_T *dac, uint32_t u32Ch)
 {
-    if(u32Ch == 0) {
+    if(u32Ch == 0)
+    {
         DAC->CTL0 &= ~DAC_CTL_DACEN_Msk;
-    } else {
+    }
+    else
+    {
         DAC->CTL1 &= ~DAC_CTL_DACEN_Msk;
     }
 

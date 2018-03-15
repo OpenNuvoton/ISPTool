@@ -34,15 +34,19 @@ void UART_T_IRQHandler(void)
     /*----- Determine interrupt source -----*/
     uint32_t u32IntSrc = UART_T->INTSTS;
 
-    if(u32IntSrc & 0x11) { //RDA FIFO interrupt & RDA timeout interrupt
-        while(((UART_T->FIFOSTS & UART_FIFOSTS_RXEMPTY_Msk) == 0) && (bufhead < MAX_PKT_SIZE))	//RX fifo not empty
+    if(u32IntSrc & 0x11)   //RDA FIFO interrupt & RDA timeout interrupt
+    {
+        while(((UART_T->FIFOSTS & UART_FIFOSTS_RXEMPTY_Msk) == 0) && (bufhead < MAX_PKT_SIZE))  //RX fifo not empty
             uart_rcvbuf[bufhead++] = UART_T->DAT;
     }
 
-    if(bufhead == MAX_PKT_SIZE) {
+    if(bufhead == MAX_PKT_SIZE)
+    {
         bUartDataReady = TRUE;
         bufhead = 0;
-    } else if(u32IntSrc & 0x10) {
+    }
+    else if(u32IntSrc & 0x10)
+    {
         bufhead = 0;
     }
 }
@@ -52,7 +56,8 @@ void PutString(void)
 {
     uint32_t i;
 
-    for(i = 0; i < MAX_PKT_SIZE; i++) {
+    for(i = 0; i < MAX_PKT_SIZE; i++)
+    {
         while ((UART_T->FIFOSTS & UART_FIFOSTS_TXFULL_Msk));
         UART_T->DAT = response_buff[i];
     }
@@ -64,7 +69,7 @@ uint32_t UART_IS_CONNECT(void)
     if((bufhead >= 4) || (bUartDataReady == TRUE)) {
         uint32_t lcmd;
         lcmd = inpw(uart_rcvbuf);
-        if(lcmd == 0x000000AE) {	// CMD_CONNECT
+        if(lcmd == 0x000000AE) {    // CMD_CONNECT
             return 1;
         } else {
             bUartDataReady = 0;
@@ -94,7 +99,7 @@ void UART_Init()
     NVIC_EnableIRQ(UART_T_IRQn);
 
     UART_T->INTEN = (UART_INTEN_TOCNTEN_Msk | UART_INTEN_RXTOIEN_Msk | UART_INTEN_RDAIEN_Msk);
-		
-		
+
+
 }
 

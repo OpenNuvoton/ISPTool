@@ -43,8 +43,10 @@ uint32_t PWM_ConfigOutputChannel (PWM_T *pwm,
     uint8_t  u8Divider = 1, u8Prescale = 0xFF;
     uint16_t u16CNR = 0xFFFF;
 
-    if (pwm == PWM0) {
-        if (u32ChannelNum < 2) {
+    if (pwm == PWM0)
+    {
+        if (u32ChannelNum < 2)
+        {
             if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM0CH01SEL_Msk) == 0)
                 u32PWM_CLock = __HXT;
             else if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM0CH01SEL_Msk) == 1)
@@ -55,7 +57,9 @@ uint32_t PWM_ConfigOutputChannel (PWM_T *pwm,
                 u32PWM_CLock = __HIRC;
             else if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM0CH01SEL_Msk) == 4)
                 u32PWM_CLock = __LIRC;
-        } else if (u32ChannelNum < 4) {
+        }
+        else if (u32ChannelNum < 4)
+        {
             if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM0CH23SEL_Msk) == (0 << CLK_CLKSEL2_PWM0CH23SEL_Pos))
                 u32PWM_CLock = __HXT;
             else if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM0CH23SEL_Msk) == (1 << CLK_CLKSEL2_PWM0CH23SEL_Pos))
@@ -66,7 +70,9 @@ uint32_t PWM_ConfigOutputChannel (PWM_T *pwm,
                 u32PWM_CLock = __HIRC;
             else if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM0CH23SEL_Msk) == (4 << CLK_CLKSEL2_PWM0CH23SEL_Pos))
                 u32PWM_CLock = __LIRC;
-        } else if (u32ChannelNum < 6) {
+        }
+        else if (u32ChannelNum < 6)
+        {
             if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM0CH45SEL_Msk) == (0 << CLK_CLKSEL2_PWM0CH45SEL_Pos))
                 u32PWM_CLock = __HXT;
             else if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM0CH45SEL_Msk) == (1 << CLK_CLKSEL2_PWM0CH45SEL_Pos))
@@ -78,8 +84,11 @@ uint32_t PWM_ConfigOutputChannel (PWM_T *pwm,
             else if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM0CH45SEL_Msk) == (4 << CLK_CLKSEL2_PWM0CH45SEL_Pos))
                 u32PWM_CLock = __LIRC;
         }
-    } else if (pwm == PWM1) {
-        if (u32ChannelNum < 2) {
+    }
+    else if (pwm == PWM1)
+    {
+        if (u32ChannelNum < 2)
+        {
             if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM1CH01SEL_Msk) == (0 << CLK_CLKSEL2_PWM1CH01SEL_Pos))
                 u32PWM_CLock = __HXT;
             else if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM1CH01SEL_Msk) == (1 << CLK_CLKSEL2_PWM1CH01SEL_Pos))
@@ -90,7 +99,9 @@ uint32_t PWM_ConfigOutputChannel (PWM_T *pwm,
                 u32PWM_CLock = __HIRC;
             else if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM1CH01SEL_Msk) == (4 << CLK_CLKSEL2_PWM1CH01SEL_Pos))
                 u32PWM_CLock = __LIRC;
-        } else if (u32ChannelNum < 4) {
+        }
+        else if (u32ChannelNum < 4)
+        {
             if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM1CH23SEL_Msk) == (0 << CLK_CLKSEL2_PWM1CH23SEL_Pos))
                 u32PWM_CLock = __HXT;
             else if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM1CH23SEL_Msk) == (1 << CLK_CLKSEL2_PWM1CH23SEL_Pos))
@@ -101,7 +112,9 @@ uint32_t PWM_ConfigOutputChannel (PWM_T *pwm,
                 u32PWM_CLock = __HIRC;
             else if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM1CH23SEL_Msk) == (4 << CLK_CLKSEL2_PWM1CH23SEL_Pos))
                 u32PWM_CLock = __LIRC;
-        } else if (u32ChannelNum < 6) {
+        }
+        else if (u32ChannelNum < 6)
+        {
             if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM1CH45SEL_Msk) == (0 << CLK_CLKSEL2_PWM1CH45SEL_Pos))
                 u32PWM_CLock = __HXT;
             else if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM1CH45SEL_Msk) == (1 << CLK_CLKSEL2_PWM1CH45SEL_Pos))
@@ -115,7 +128,8 @@ uint32_t PWM_ConfigOutputChannel (PWM_T *pwm,
         }
     }
 
-    for(; u8Divider < 17; u8Divider <<= 1) {  // clk divider could only be 1, 2, 4, 8, 16
+    for(; u8Divider < 17; u8Divider <<= 1)    // clk divider could only be 1, 2, 4, 8, 16
+    {
         i = (u32PWM_CLock / u32Frequency) / u8Divider;
         // If target value is larger than CNR * prescale, need to use a larger divider
         if(i > (0x10000 * 0x100))
@@ -130,7 +144,8 @@ uint32_t PWM_ConfigOutputChannel (PWM_T *pwm,
 
         i /= u8Prescale;
 
-        if(i <= 0x10000) {
+        if(i <= 0x10000)
+        {
             if(i == 1)
                 u16CNR = 1;     // Too fast, and PWM cannot generate expected frequency...
             else
@@ -190,8 +205,10 @@ uint32_t PWM_ConfigCaptureChannel (PWM_T *pwm,
     uint8_t  u8Divider = 1, u8Prescale = 0xFF;
     uint16_t u16CNR = 0xFFFF;
 
-    if (pwm == PWM0) {
-        if (u32ChannelNum < 2) {
+    if (pwm == PWM0)
+    {
+        if (u32ChannelNum < 2)
+        {
             if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM0CH01SEL_Msk) == 0)
                 u32PWM_CLock = __HXT;
             else if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM0CH01SEL_Msk) == 1)
@@ -202,7 +219,9 @@ uint32_t PWM_ConfigCaptureChannel (PWM_T *pwm,
                 u32PWM_CLock = __HIRC;
             else if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM0CH01SEL_Msk) == 4)
                 u32PWM_CLock = __LIRC;
-        } else if (u32ChannelNum < 4) {
+        }
+        else if (u32ChannelNum < 4)
+        {
             if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM0CH23SEL_Msk) == (0 << CLK_CLKSEL2_PWM0CH23SEL_Pos))
                 u32PWM_CLock = __HXT;
             else if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM0CH23SEL_Msk) == (1 << CLK_CLKSEL2_PWM0CH23SEL_Pos))
@@ -213,7 +232,9 @@ uint32_t PWM_ConfigCaptureChannel (PWM_T *pwm,
                 u32PWM_CLock = __HIRC;
             else if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM0CH23SEL_Msk) == (4 << CLK_CLKSEL2_PWM0CH23SEL_Pos))
                 u32PWM_CLock = __LIRC;
-        } else if (u32ChannelNum < 6) {
+        }
+        else if (u32ChannelNum < 6)
+        {
             if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM0CH45SEL_Msk) == (0 << CLK_CLKSEL2_PWM0CH45SEL_Pos))
                 u32PWM_CLock = __HXT;
             else if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM0CH45SEL_Msk) == (1 << CLK_CLKSEL2_PWM0CH45SEL_Pos))
@@ -225,8 +246,11 @@ uint32_t PWM_ConfigCaptureChannel (PWM_T *pwm,
             else if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM0CH45SEL_Msk) == (4 << CLK_CLKSEL2_PWM0CH45SEL_Pos))
                 u32PWM_CLock = __LIRC;
         }
-    } else if (pwm == PWM1) {
-        if (u32ChannelNum < 2) {
+    }
+    else if (pwm == PWM1)
+    {
+        if (u32ChannelNum < 2)
+        {
             if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM1CH01SEL_Msk) == (0 << CLK_CLKSEL2_PWM1CH01SEL_Pos))
                 u32PWM_CLock = __HXT;
             else if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM1CH01SEL_Msk) == (1 << CLK_CLKSEL2_PWM1CH01SEL_Pos))
@@ -237,7 +261,9 @@ uint32_t PWM_ConfigCaptureChannel (PWM_T *pwm,
                 u32PWM_CLock = __HIRC;
             else if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM1CH01SEL_Msk) == (4 << CLK_CLKSEL2_PWM1CH01SEL_Pos))
                 u32PWM_CLock = __LIRC;
-        } else if (u32ChannelNum < 4) {
+        }
+        else if (u32ChannelNum < 4)
+        {
             if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM1CH23SEL_Msk) == (0 << CLK_CLKSEL2_PWM1CH23SEL_Pos))
                 u32PWM_CLock = __HXT;
             else if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM1CH23SEL_Msk) == (1 << CLK_CLKSEL2_PWM1CH23SEL_Pos))
@@ -248,7 +274,9 @@ uint32_t PWM_ConfigCaptureChannel (PWM_T *pwm,
                 u32PWM_CLock = __HIRC;
             else if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM1CH23SEL_Msk) == (4 << CLK_CLKSEL2_PWM1CH23SEL_Pos))
                 u32PWM_CLock = __LIRC;
-        } else if (u32ChannelNum < 6) {
+        }
+        else if (u32ChannelNum < 6)
+        {
             if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM1CH45SEL_Msk) == (0 << CLK_CLKSEL2_PWM1CH45SEL_Pos))
                 u32PWM_CLock = __HXT;
             else if ((CLK->CLKSEL2 & CLK_CLKSEL2_PWM1CH45SEL_Msk) == (1 << CLK_CLKSEL2_PWM1CH45SEL_Pos))
@@ -262,7 +290,8 @@ uint32_t PWM_ConfigCaptureChannel (PWM_T *pwm,
         }
     }
 
-    for(; u8Divider < 17; u8Divider <<= 1) {  // clk divider could only be 1, 2, 4, 8, 16
+    for(; u8Divider < 17; u8Divider <<= 1)    // clk divider could only be 1, 2, 4, 8, 16
+    {
         i = ((u32PWM_CLock / u8Divider) * u32UnitTimeNsec) / 1000000000;
 
         // If target value is larger than 0xFF, need to use a larger divider
@@ -327,8 +356,10 @@ void PWM_Start (PWM_T *pwm, uint32_t u32ChannelMask)
 void PWM_Stop (PWM_T *pwm, uint32_t u32ChannelMask)
 {
     uint32_t i;
-    for(i = 0; i < PWM_CHANNEL_NUM; i ++) {
-        if(u32ChannelMask & (1 << i)) {
+    for(i = 0; i < PWM_CHANNEL_NUM; i ++)
+    {
+        if(u32ChannelMask & (1 << i))
+        {
             *(__IO uint32_t *) (&pwm->CNTEN + 1 * i) = 0;
         }
     }

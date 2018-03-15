@@ -60,16 +60,23 @@ uint32_t SPI_Open(SPI_T *spi, uint32_t u32MasterSlave, uint32_t u32SPIMode,  uin
 void SPI_Close(SPI_T *spi)
 {
     /* Reset SPI */
-    if((uint32_t)spi == SPI0_BASE) {
+    if((uint32_t)spi == SPI0_BASE)
+    {
         SYS->IPRST1 |= SYS_IPRST1_SPI0RST_Msk;
         SYS->IPRST1 &= ~SYS_IPRST1_SPI0RST_Msk;
-    } else if((uint32_t)spi == SPI1_BASE) {
+    }
+    else if((uint32_t)spi == SPI1_BASE)
+    {
         SYS->IPRST1 |= SYS_IPRST1_SPI1RST_Msk;
         SYS->IPRST1 &= ~SYS_IPRST1_SPI1RST_Msk;
-    } else if((uint32_t)spi == SPI2_BASE) {
+    }
+    else if((uint32_t)spi == SPI2_BASE)
+    {
         SYS->IPRST1 |= SYS_IPRST1_SPI2RST_Msk;
         SYS->IPRST1 &= ~SYS_IPRST1_SPI2RST_Msk;
-    } else {
+    }
+    else
+    {
         SYS->IPRST1 |= SYS_IPRST1_SPI3RST_Msk;
         SYS->IPRST1 &= ~SYS_IPRST1_SPI3RST_Msk;
     }
@@ -131,22 +138,29 @@ uint32_t SPI_SetBusClock(SPI_T *spi, uint32_t u32BusClock)
 {
     uint32_t u32ClkSrc, u32Div = 0;
 
-    if(spi == SPI0) {
+    if(spi == SPI0)
+    {
         if((CLK->CLKSEL1 & CLK_CLKSEL1_SPI0SEL_Msk) == CLK_CLKSEL1_SPI0SEL_PCLK)
             u32ClkSrc = CLK_GetPCLKFreq();
         else
             u32ClkSrc = CLK_GetPLLClockFreq();
-    } else if(spi == SPI1) {
+    }
+    else if(spi == SPI1)
+    {
         if((CLK->CLKSEL1 & CLK_CLKSEL1_SPI1SEL_Msk) == CLK_CLKSEL1_SPI1SEL_PCLK)
             u32ClkSrc = CLK_GetPCLKFreq();
         else
             u32ClkSrc = CLK_GetPLLClockFreq();
-    } else if(spi == SPI2) {
+    }
+    else if(spi == SPI2)
+    {
         if((CLK->CLKSEL1 & CLK_CLKSEL1_SPI2SEL_Msk) == CLK_CLKSEL1_SPI2SEL_PCLK)
             u32ClkSrc = CLK_GetPCLKFreq();
         else
             u32ClkSrc = CLK_GetPLLClockFreq();
-    } else {
+    }
+    else
+    {
         if((CLK->CLKSEL1 & CLK_CLKSEL1_SPI3SEL_Msk) == CLK_CLKSEL1_SPI3SEL_PCLK)
             u32ClkSrc = CLK_GetPCLKFreq();
         else
@@ -156,11 +170,13 @@ uint32_t SPI_SetBusClock(SPI_T *spi, uint32_t u32BusClock)
     if(u32BusClock > u32ClkSrc)
         u32BusClock = u32ClkSrc;
 
-    if(u32BusClock != 0 ) {
+    if(u32BusClock != 0 )
+    {
         u32Div = (u32ClkSrc / u32BusClock) - 1;
         if(u32Div > SPI_CLKDIV_DIVIDER_Msk)
             u32Div = SPI_CLKDIV_DIVIDER_Msk;
-    } else
+    }
+    else
         return 0;
 
     spi->CLKDIV = (spi->CLKDIV & ~SPI_CLKDIV_DIVIDER_Msk) | u32Div;
@@ -192,22 +208,29 @@ uint32_t SPI_GetBusClock(SPI_T *spi)
     uint32_t u32Div;
     uint32_t u32ClkSrc;
 
-    if(spi == SPI0) {
+    if(spi == SPI0)
+    {
         if((CLK->CLKSEL1 & CLK_CLKSEL1_SPI0SEL_Msk) == CLK_CLKSEL1_SPI0SEL_PCLK)
             u32ClkSrc = CLK_GetPCLKFreq();
         else
             u32ClkSrc = CLK_GetPLLClockFreq();
-    } else if(spi == SPI1) {
+    }
+    else if(spi == SPI1)
+    {
         if((CLK->CLKSEL1 & CLK_CLKSEL1_SPI1SEL_Msk) == CLK_CLKSEL1_SPI1SEL_PCLK)
             u32ClkSrc = CLK_GetPCLKFreq();
         else
             u32ClkSrc = CLK_GetPLLClockFreq();
-    } else if(spi == SPI2) {
+    }
+    else if(spi == SPI2)
+    {
         if((CLK->CLKSEL1 & CLK_CLKSEL1_SPI2SEL_Msk) == CLK_CLKSEL1_SPI2SEL_PCLK)
             u32ClkSrc = CLK_GetPCLKFreq();
         else
             u32ClkSrc = CLK_GetPLLClockFreq();
-    } else {
+    }
+    else
+    {
         if((CLK->CLKSEL1 & CLK_CLKSEL1_SPI3SEL_Msk) == CLK_CLKSEL1_SPI3SEL_PCLK)
             u32ClkSrc = CLK_GetPCLKFreq();
         else

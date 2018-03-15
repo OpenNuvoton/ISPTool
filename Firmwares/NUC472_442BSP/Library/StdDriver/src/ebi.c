@@ -68,7 +68,8 @@ void EBI_Open(uint32_t u32Bank, uint32_t u32DataWidth, uint32_t u32TimingClass, 
         EBI->TCTL[u32Bank] &= ~EBI_TCTL_SEPEN_Msk;
 
     /* Setup active level of chip select */
-    switch(u32Bank) {
+    switch(u32Bank)
+    {
     case EBI_BANK0:
         if(u32CSActiveLevel)
             EBI->CTL |= (0x1ul << EBI_CTL_CSPOLINV_Pos);
@@ -102,7 +103,8 @@ void EBI_Open(uint32_t u32Bank, uint32_t u32DataWidth, uint32_t u32TimingClass, 
     EBI->TCTL[u32Bank] &= ~0x0F0FF7FF;
 
     /* Setup EBI timing */
-    switch(u32TimingClass) {
+    switch(u32TimingClass)
+    {
     case EBI_TIMING_FASTEST:
         EBI->CTL = (EBI->CTL & ~EBI_CTL_MCLKDIV_Msk) | (  EBI_MCLKDIV_1 << 8);
         break;
@@ -187,7 +189,8 @@ void EBI_SetBusTiming(uint32_t u32Bank, uint32_t u32TimingConfig, uint32_t u32Mc
   */
 void EBI_EnableCrypto(uint32_t u32Bank, uint32_t *u32Key)
 {
-    switch(u32Bank) {
+    switch(u32Bank)
+    {
     case EBI_BANK0:
         EBI->CTL |= (0x1ul << EBI_CTL_CRYPTOEN_Pos);
         break;
@@ -220,7 +223,8 @@ void EBI_EnableCrypto(uint32_t u32Bank, uint32_t *u32Key)
   */
 void EBI_DisbleCrypto(uint32_t u32Bank)
 {
-    switch(u32Bank) {
+    switch(u32Bank)
+    {
     case EBI_BANK0:
         EBI->CTL &= ~(0x1ul << EBI_CTL_CRYPTOEN_Pos);
         break;

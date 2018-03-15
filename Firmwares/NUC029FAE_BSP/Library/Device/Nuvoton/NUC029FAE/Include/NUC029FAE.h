@@ -78,7 +78,8 @@ extern "C" {
 /**
  * @details  Interrupt Number Definition. The maximum of 32 Specific Interrupts are possible.
  */
-typedef enum IRQn {
+typedef enum IRQn
+{
     /******  Cortex-M0 Processor Exceptions Numbers *****************************************/
 
     NonMaskableInt_IRQn   = -14,    /*!< 2 Non Maskable Interrupt                           */
@@ -150,7 +151,8 @@ typedef enum IRQn {
   Memory Mapped Structure for ACMP Controller
   @{
  */
-typedef struct {
+typedef struct
+{
     __IO uint32_t  CMPCR[2];      /*!< Offset: 0x0000, 0x0004   Comparator Control 0 & 1                 */
     __IO uint32_t  CMPSR;         /*!< Offset: 0x0008   Comparator Status Register                      */
     __IO uint32_t  CMPRVCR;       /*!< Offset: 0x000C   Comparator Reference Voltage Control Register   */
@@ -206,7 +208,8 @@ typedef struct {
   Memory Mapped Structure for CLK Controller
   @{
  */
-typedef struct {
+typedef struct
+{
     /**
      * PWRCON
      * ===================================================================================================
@@ -644,7 +647,8 @@ typedef struct {
   Memory Mapped Structure for ADC Controller
   @{
  */
-typedef struct {
+typedef struct
+{
     __IO uint32_t  ADDR;           /*!< Offset: 0x0000   A/D Data Register                    */
     uint32_t  RESERVED0[7];   /*!< Offset: 0x0004 ~ 0x001C   Reserved                    */
     __IO uint32_t  ADCR;           /*!< Offset: 0x0020   A/D Control Register                 */
@@ -749,7 +753,8 @@ typedef struct {
   Memory Mapped Structure for FMC Controller
   @{
  */
-typedef struct {
+typedef struct
+{
     /**
      * ISPCON
      * ===================================================================================================
@@ -928,7 +933,8 @@ typedef struct {
   @{
  */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t  PMD;                        /*!< Offset: 0x0000   GPIO Port Bit Mode Control                         */
     __IO uint32_t  OFFD;                       /*!< Offset: 0x0004   GPIO Port Bit Off Digital Enable                   */
     __IO uint32_t  DOUT;                       /*!< Offset: 0x0008   GPIO Port Data Output                              */
@@ -941,7 +947,8 @@ typedef struct {
 } GPIO_T;
 
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t  DBNCECON;             /*!< Offset: 0x0000   GPIO De-bounce Cycle Control Register              */
 } GPIO_DBNCECON_T;
 /// @cond HIDDEN_SYMBOLS
@@ -1016,7 +1023,8 @@ typedef struct {
 #define GPIO_DBNCECON_DBCLKSEL_Msk  (0xFul << GPIO_DBNCECON_DBCLKSEL_Pos)       /*!< GPIO DBNCECON: DBCLKSEL Mask       */
 /// @endcond /* HIDDEN_SYMBOLS */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t  GP_BIT0;      /*!< Offset: 0x0000   Px.0 Data Output Value                         */
     __IO uint32_t  GP_BIT1;      /*!< Offset: 0x0004   Px.1 Data Output Value                         */
     __IO uint32_t  GP_BIT2;      /*!< Offset: 0x0008   Px.2 Data Output Value                         */
@@ -1037,7 +1045,8 @@ typedef struct {
   @{
  */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t  I2CON;            /*!< Offset: 0x0000  I2C Control Register                     */
     __IO uint32_t  I2CADDR0;         /*!< Offset: 0x0004  I2C Slave Address Register 0             */
     __IO uint32_t  I2CDAT;           /*!< Offset: 0x0008  I2C Data Register                        */
@@ -1151,7 +1160,8 @@ typedef struct {
   @{
  */
 
-typedef struct {
+typedef struct
+{
     __I  uint32_t IRQSRC[32]; /*!< Offset: 0x0000 ~ 0x007C   Interrupt Source Identity Registers            */
     __IO uint32_t NMICNO;     /*!< Offset: 0x0080            NMI Source Interrupt Select Control Register   */
     __IO uint32_t MCUIRQ;     /*!< Offset: 0x0084            MCU IRQ Number Identity Register               */
@@ -1166,7 +1176,8 @@ typedef struct {
   @{
  */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t  PPR;                  /*!< Offset: 0x0000   PWM Pre-scale Register                */
     __IO uint32_t  CSR;                  /*!< Offset: 0x0004   PWM Clock Select Register             */
     __IO uint32_t  PCR;                  /*!< Offset: 0x0008   PWM Control Register                  */
@@ -1815,7 +1826,8 @@ typedef struct {
   @{
  */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t CNTRL;          /*!< Offset: 0x0000  SPI Control and Status Register           */
     __IO uint32_t DIVIDER;        /*!< Offset: 0x0004  SPI Clock Divider Register                */
     __IO uint32_t SSR;            /*!< Offset: 0x0008  SPI Slave Select Register                 */
@@ -1989,7 +2001,8 @@ typedef struct {
   Memory Mapped Structure for SYS Controller
   @{
  */
-typedef struct {
+typedef struct
+{
     /**
      * PDID
      * ===================================================================================================
@@ -2751,7 +2764,8 @@ typedef struct {
   @{
  */
 
-typedef struct {
+typedef struct
+{
     __IO uint32_t  TCSR;       /*!< Offset: 0x0000   Timer Control and Status Register          */
     __IO uint32_t  TCMPR;      /*!< Offset: 0x0004   Timer Compare Register                     */
     __IO uint32_t  TISR;       /*!< Offset: 0x0008   Timer Interrupt Status Register            */
@@ -2858,8 +2872,10 @@ typedef struct {
   Memory Mapped Structure for UART Controller
   @{
  */
-typedef struct {
-    union {
+typedef struct
+{
+    union
+    {
         __I   uint32_t  RBR;         /*!< Offset: 0x0000   UART Receive Buffer Register               */
         __O   uint32_t  THR;         /*!< Offset: 0x0000   UART Transmit Holding Register             */
     };
@@ -3113,7 +3129,8 @@ typedef struct {
 /**
   * @brief WDT register map
   */
-typedef struct {
+typedef struct
+{
     __IO uint32_t  WTCR;          /*!< Offset: 0x0000   Watchdog Timer Control Register   */
 } WDT_T;
 /// @cond HIDDEN_SYMBOLS

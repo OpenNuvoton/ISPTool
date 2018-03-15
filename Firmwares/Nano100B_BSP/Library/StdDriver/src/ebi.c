@@ -53,7 +53,8 @@ void EBI_Open(uint32_t u32Bank, uint32_t u32DataWidth, uint32_t u32TimingClass, 
         EBI->EBICON |= EBI_EBICON_ExtBW16_Msk;
 
     EBI->EBICON &= ~(EBI_EBICON_ExttALE_Msk | EBI_EBICON_MCLKDIV_Msk);
-    switch (u32TimingClass) {
+    switch (u32TimingClass)
+    {
     case EBI_TIMING_FASTEST:
         EBI->EBICON |= (0 << EBI_EBICON_ExttALE_Pos);
         EBI->EBICON |= (EBI_MCLKDIV_1 << EBI_EBICON_MCLKDIV_Pos);

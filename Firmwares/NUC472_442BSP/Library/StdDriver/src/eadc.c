@@ -190,10 +190,13 @@ void EADC_SetTriggerDelayTime(EADC_T *eadc, \
   */
 void EADC_SetExtendSampleTime(EADC_T *eadc, uint32_t u32ModuleNum, uint32_t u32ExtendSampleTime)
 {
-    if (u32ModuleNum < EADC1_SAMPLE_MODULE0) {
+    if (u32ModuleNum < EADC1_SAMPLE_MODULE0)
+    {
         eadc->EXTSMPT &= ~EADC_EXTSMPT_EXTSMPT0_Msk;
         eadc->EXTSMPT |= u32ExtendSampleTime;
-    } else {
+    }
+    else
+    {
         eadc->EXTSMPT &= ~EADC_EXTSMPT_EXTSMPT1_Msk;
         eadc->EXTSMPT |= (u32ExtendSampleTime << EADC_EXTSMPT_EXTSMPT1_Pos);
     }

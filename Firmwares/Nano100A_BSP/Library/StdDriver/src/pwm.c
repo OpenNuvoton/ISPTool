@@ -50,7 +50,8 @@ uint32_t PWM_ConfigOutputChannel (PWM_T *pwm,
     else
         u32ClkSrc = (CLK->CLKSEL2 & (CLK_CLKSEL2_PWM1_CH01_S_Msk << (u32ChannelNum & 2))) >> (CLK_CLKSEL2_PWM1_CH01_S_Pos + (u32ChannelNum & 2));
 
-    switch (u32ClkSrc) {
+    switch (u32ClkSrc)
+    {
     case 0:
         u32PWM_Clock = __HXT;
         break;
@@ -65,7 +66,8 @@ uint32_t PWM_ConfigOutputChannel (PWM_T *pwm,
         break;
     }
 
-    for(; u8Divider < 17; u8Divider <<= 1) {  // clk divider could only be 1, 2, 4, 8, 16
+    for(; u8Divider < 17; u8Divider <<= 1)    // clk divider could only be 1, 2, 4, 8, 16
+    {
         i = (u32PWM_Clock / u32Frequency) / u8Divider;
         // If target value is larger than CNR * prescale, need to use a larger divider
         if(i > (0x10000 * 0x100))
@@ -80,7 +82,8 @@ uint32_t PWM_ConfigOutputChannel (PWM_T *pwm,
 
         i /= u8Prescale;
 
-        if(i <= 0x10000) {
+        if(i <= 0x10000)
+        {
             if(i == 1)
                 u16CNR = 1;     // Too fast, and PWM cannot generate expected frequency...
             else
@@ -114,7 +117,8 @@ uint32_t PWM_ConfigOutputChannel (PWM_T *pwm,
     while((pwm->INTSTS & (PWM_INTSTS_Duty0Syncflag_Msk << u32ChannelNum)) == (PWM_INTSTS_Duty0Syncflag_Msk << u32ChannelNum));
     if(u32DutyCycle == 0)
         *(__IO uint32_t *) (&pwm->DUTY0 + 3 * u32ChannelNum) &= ~PWM_DUTY0_CM_Msk;
-    else {
+    else
+    {
         *(__IO uint32_t *) (&pwm->DUTY0 + 3 * u32ChannelNum) &= ~PWM_DUTY0_CM_Msk;
         *(__IO uint32_t *) (&pwm->DUTY0 + 3 * u32ChannelNum) |= ((u32DutyCycle * (u16CNR + 1) / 100 - 1) << PWM_DUTY0_CM_Pos);
     }
@@ -150,7 +154,8 @@ uint32_t PWM_ConfigCaptureChannel (PWM_T *pwm,
     else
         u32ClkSrc = (CLK->CLKSEL2 & (CLK_CLKSEL2_PWM1_CH01_S_Msk << (u32ChannelNum & 2))) >> (CLK_CLKSEL2_PWM1_CH01_S_Pos + (u32ChannelNum & 2));
 
-    switch (u32ClkSrc) {
+    switch (u32ClkSrc)
+    {
     case 0:
         u32PWM_Clock = __HXT;
         break;
@@ -165,7 +170,8 @@ uint32_t PWM_ConfigCaptureChannel (PWM_T *pwm,
         break;
     }
 
-    for(; u8Divider < 17; u8Divider <<= 1) {  // clk divider could only be 1, 2, 4, 8, 16
+    for(; u8Divider < 17; u8Divider <<= 1)    // clk divider could only be 1, 2, 4, 8, 16
+    {
         i = ((long long)(u32PWM_Clock / u8Divider) * u32UnitTimeNsec) / 1000000000;
 
         // If target value is larger than 0xFF, need to use a larger divider
@@ -222,7 +228,8 @@ void PWM_Start (PWM_T *pwm, uint32_t u32ChannelMask)
     uint8_t i;
     uint32_t u32Mask = 0;
 
-    for (i = 0; i < PWM_CHANNEL_NUM; i++) {
+    for (i = 0; i < PWM_CHANNEL_NUM; i++)
+    {
         if ( u32ChannelMask  & (1 << i))
             u32Mask |= (PWM_CTL_CH0EN_Msk << (i * 8));
     }
@@ -240,8 +247,10 @@ void PWM_Start (PWM_T *pwm, uint32_t u32ChannelMask)
 void PWM_Stop (PWM_T *pwm, uint32_t u32ChannelMask)
 {
     uint32_t i;
-    for(i = 0; i < PWM_CHANNEL_NUM; i ++) {
-        if(u32ChannelMask & (1 << i)) {
+    for(i = 0; i < PWM_CHANNEL_NUM; i ++)
+    {
+        if(u32ChannelMask & (1 << i))
+        {
             *(__IO uint32_t *) (&pwm->DUTY0 + 3 * i) &= ~PWM_DUTY0_CN_Msk;
         }
     }
@@ -258,7 +267,8 @@ void PWM_Stop (PWM_T *pwm, uint32_t u32ChannelMask)
 void PWM_ForceStop (PWM_T *pwm, uint32_t u32ChannelMask)
 {
     uint32_t i;
-    for (i = 0; i < PWM_CHANNEL_NUM; i++) {
+    for (i = 0; i < PWM_CHANNEL_NUM; i++)
+    {
         if ( u32ChannelMask  & (1 << i))
             pwm->CTL &= ~(PWM_CTL_CH0EN_Msk << (i * 8));
     }
@@ -276,8 +286,10 @@ void PWM_EnableCapture (PWM_T *pwm, uint32_t u32ChannelMask)
     uint8_t i;
     uint32_t u32Mask = 0;
 
-    for (i = 0; i < PWM_CHANNEL_NUM; i++) {
-        if ( u32ChannelMask  & (1 << i)) {
+    for (i = 0; i < PWM_CHANNEL_NUM; i++)
+    {
+        if ( u32ChannelMask  & (1 << i))
+        {
             u32Mask |= ((PWM_CAPCTL_CAPCH0EN_Msk | PWM_CAPCTL_CAPCH0PADEN_Msk) << (i * 8));
         }
     }
@@ -298,8 +310,10 @@ void PWM_DisableCapture (PWM_T *pwm, uint32_t u32ChannelMask)
     uint32_t u32CTLMask = 0;
     uint32_t u32CAPCTLMask = 0;
 
-    for (i = 0; i < PWM_CHANNEL_NUM; i++) {
-        if ( u32ChannelMask  & (1 << i)) {
+    for (i = 0; i < PWM_CHANNEL_NUM; i++)
+    {
+        if ( u32ChannelMask  & (1 << i))
+        {
             u32CTLMask |= (PWM_CTL_CH0EN_Msk << (i * 8));
             u32CAPCTLMask |= ((PWM_CAPCTL_CAPCH0EN_Msk | PWM_CAPCTL_CAPCH0PADEN_Msk) << (i * 8));
         }

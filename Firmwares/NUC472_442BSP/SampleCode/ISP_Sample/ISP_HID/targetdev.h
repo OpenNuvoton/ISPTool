@@ -3,4 +3,4 @@
 #include "hid_transfer.h"
 #include "ISP_USER.h"
 
-#define DetectPin   				PB15
+#define DetectPin                   PB15

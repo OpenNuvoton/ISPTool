@@ -185,14 +185,16 @@ void CLK_SetModuleClock(uint32_t u32ModuleIdx, uint32_t u32ClkSrc, uint32_t u32C
 {
     uint32_t u32tmp=0,u32sel=0,u32div=0;
 
-    if(MODULE_CLKSEL_Msk(u32ModuleIdx)!=MODULE_NoMsk) {
+    if(MODULE_CLKSEL_Msk(u32ModuleIdx)!=MODULE_NoMsk)
+    {
         u32sel = (uint32_t)&CLK->CLKSEL0+((MODULE_CLKSEL(u32ModuleIdx))*4);
         u32tmp = *(volatile uint32_t *)(u32sel);
         u32tmp = ( u32tmp & ~(MODULE_CLKSEL_Msk(u32ModuleIdx)<<MODULE_CLKSEL_Pos(u32ModuleIdx)) ) | u32ClkSrc;
         *(volatile uint32_t *)(u32sel) = u32tmp;
     }
 
-    if(MODULE_CLKDIV_Msk(u32ModuleIdx)!=MODULE_NoMsk) {
+    if(MODULE_CLKDIV_Msk(u32ModuleIdx)!=MODULE_NoMsk)
+    {
         u32div =(uint32_t)&CLK->CLKDIV+((MODULE_CLKDIV(u32ModuleIdx))*4);
         u32tmp = *(volatile uint32_t *)(u32div);
         u32tmp = ( u32tmp & ~(MODULE_CLKDIV_Msk(u32ModuleIdx)<<MODULE_CLKDIV_Pos(u32ModuleIdx)) ) | u32ClkDiv;
@@ -322,7 +324,8 @@ uint32_t CLK_WaitClockReady(uint32_t u32ClkMask)
 
     i32TimeOutCnt = __HSI / 200; /* About 5ms */
 
-    while((CLK->CLKSTATUS & u32ClkMask) != u32ClkMask) {
+    while((CLK->CLKSTATUS & u32ClkMask) != u32ClkMask)
+    {
         if(i32TimeOutCnt-- <= 0)
             return 0;
     }

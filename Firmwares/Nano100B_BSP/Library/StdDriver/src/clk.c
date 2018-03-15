@@ -179,7 +179,8 @@ uint32_t CLK_SetCoreClock(uint32_t u32Hclk)
     /* Read HIRC clock source stable flag */
     u32HIRCSTB = CLK->CLKSTATUS & CLK_CLKSTATUS_HIRC_STB_Msk;
 
-    if(u32Hclk==__HIRC12M) {
+    if(u32Hclk==__HIRC12M)
+    {
         CLK_EnableXtalRC(CLK_PWRCTL_HIRC_EN_Msk);
         CLK_SetHCLK(CLK_CLKSEL0_HCLK_S_HIRC,CLK_HCLK_CLK_DIVIDER(1));
         return SystemCoreClock;
@@ -190,7 +191,8 @@ uint32_t CLK_SetCoreClock(uint32_t u32Hclk)
 
     if(CLK->PWRCTL & CLK_PWRCTL_HXT_EN)
         CLK_EnablePLL(CLK_PLLCTL_PLL_SRC_HXT,u32Hclk*2);
-    else {
+    else
+    {
         CLK_EnablePLL(CLK_PLLCTL_PLL_SRC_HIRC,u32Hclk*2);
 
         /* Read HIRC clock source stable flag */
@@ -337,14 +339,16 @@ void CLK_SetModuleClock(uint32_t u32ModuleIdx, uint32_t u32ClkSrc, uint32_t u32C
 {
     uint32_t u32tmp=0,u32sel=0,u32div=0;
 
-    if(MODULE_CLKDIV_Msk(u32ModuleIdx)!=MODULE_NoMsk) {
+    if(MODULE_CLKDIV_Msk(u32ModuleIdx)!=MODULE_NoMsk)
+    {
         u32div =(uint32_t)&CLK->CLKDIV0+((MODULE_CLKDIV(u32ModuleIdx))*4);
         u32tmp = *(volatile uint32_t *)(u32div);
         u32tmp = ( u32tmp & ~(MODULE_CLKDIV_Msk(u32ModuleIdx)<<MODULE_CLKDIV_Pos(u32ModuleIdx)) ) | u32ClkDiv;
         *(volatile uint32_t *)(u32div) = u32tmp;
     }
 
-    if(MODULE_CLKSEL_Msk(u32ModuleIdx)!=MODULE_NoMsk) {
+    if(MODULE_CLKSEL_Msk(u32ModuleIdx)!=MODULE_NoMsk)
+    {
         u32sel = (uint32_t)&CLK->CLKSEL0+((MODULE_CLKSEL(u32ModuleIdx))*4);
         u32tmp = *(volatile uint32_t *)(u32sel);
         u32tmp = ( u32tmp & ~(MODULE_CLKSEL_Msk(u32ModuleIdx)<<MODULE_CLKSEL_Pos(u32ModuleIdx)) ) | u32ClkSrc;
@@ -493,11 +497,14 @@ uint32_t CLK_EnablePLL(uint32_t u32PllClkSrc, uint32_t u32PllFreq)
     else if(u32PllFreq > FREQ_120MHZ)
         u32PllFreq=FREQ_120MHZ;
 
-    if(u32PllClkSrc!=CLK_PLLCTL_PLL_SRC_HIRC) {
+    if(u32PllClkSrc!=CLK_PLLCTL_PLL_SRC_HIRC)
+    {
         /* PLL source clock from HXT */
         u32Register = (0x0UL<<CLK_PLLCTL_PLL_SRC_Pos);
         u32ClkSrc = __HXT;
-    } else {
+    }
+    else
+    {
         /* PLL source clock from HIRC */
         u32Register = (0x1UL<<CLK_PLLCTL_PLL_SRC_Pos);
         u32ClkSrc =__HIRC12M;
@@ -505,12 +512,14 @@ uint32_t CLK_EnablePLL(uint32_t u32PllClkSrc, uint32_t u32PllFreq)
 
     u32NF = u32PllFreq / 1000000;
     u32NR = u32ClkSrc / 1000000;
-    if(u32ClkSrc%12==0) {
+    if(u32ClkSrc%12==0)
+    {
         u32NF=(u32NF/3)*4;
         u32NR=(u32NR/3)*4;
     }
 
-    while( u32NR>16 || u32NF>(0x3F+32) ) {
+    while( u32NR>16 || u32NF>(0x3F+32) )
+    {
         u32NR = u32NR>>1;
         u32NF = u32NF>>1;
     }
@@ -572,7 +581,8 @@ void CLK_EnableSysTick(uint32_t u32ClkSrc, uint32_t u32Count)
     SysTick->CTRL=0;
     if( u32ClkSrc== CLK_CLKSEL0_STCLKSEL_HCLK )    /* Set System Tick clock source */
         SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk;
-    else {
+    else
+    {
         SysTick->CTRL &= ~SysTick_CTRL_CLKSOURCE_Msk;
     }
     SysTick->LOAD  = u32Count;                /* Set System Tick reload value */
@@ -610,7 +620,8 @@ uint32_t CLK_WaitClockReady(uint32_t u32ClkMask)
 
     i32TimeOutCnt = __HSI / 200; /* About 5ms */
 
-    while((CLK->CLKSTATUS & u32ClkMask) != u32ClkMask) {
+    while((CLK->CLKSTATUS & u32ClkMask) != u32ClkMask)
+    {
         if(i32TimeOutCnt-- <= 0)
             return 0;
     }

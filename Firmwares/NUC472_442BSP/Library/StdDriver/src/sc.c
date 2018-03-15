@@ -114,10 +114,13 @@ void SC_Open(SC_T *sc, uint32_t u32CD, uint32_t u32PWR)
     else
         u32Intf = 5;
 
-    if(u32CD != SC_PIN_STATE_IGNORE) {
+    if(u32CD != SC_PIN_STATE_IGNORE)
+    {
         u32Reg = u32CD ? 0: SC_CTL_CDLV_Msk;
         u32CardStateIgnore[u32Intf] = 0;
-    } else {
+    }
+    else
+    {
         u32CardStateIgnore[u32Intf] = 1;
     }
     sc->PINCTL = u32PWR ? 0 : SC_PINCTL_PWRINV_Msk;
@@ -247,13 +250,18 @@ void SC_StartTimer(SC_T *sc, uint32_t u32TimerNum, uint32_t u32Mode, uint32_t u3
 {
     uint32_t reg = u32Mode | (SC_TMRCTL0_CNT_Msk & (u32ETUCount - 1));
 
-    if(u32TimerNum == 0) {
+    if(u32TimerNum == 0)
+    {
         sc->TMRCTL0 = reg;
         sc->ALTCTL |= SC_ALTCTL_CNTEN0_Msk;
-    } else if(u32TimerNum == 1) {
+    }
+    else if(u32TimerNum == 1)
+    {
         sc->TMRCTL1 = reg;
         sc->ALTCTL |= SC_ALTCTL_CNTEN1_Msk;
-    } else {   // timer 2
+    }
+    else       // timer 2
+    {
         sc->TMRCTL2 = reg;
         sc->ALTCTL |= SC_ALTCTL_CNTEN2_Msk;
     }

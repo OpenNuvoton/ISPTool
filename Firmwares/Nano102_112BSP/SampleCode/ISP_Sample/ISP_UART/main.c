@@ -29,7 +29,7 @@ void SYS_Init(void)
 
     /* Enable HIRC */
     CLK->PWRCTL |= CLK_PWRCTL_HIRC_EN_Msk | CLK_PWRCTL_HXT_EN_Msk;
-	
+
     /* Waiting for HIRC clock ready */
     CLK_WaitClockReady(CLK_PWRCTL_HIRC_EN_Msk);
 
@@ -70,19 +70,24 @@ int main(void)
     FMC->ISPCON |= FMC_ISPCON_ISPEN_Msk;
 
     g_apromSize = GetApromSize();
-    GetDataFlashInfo(&g_dataFlashAddr , &g_dataFlashSize);
+    GetDataFlashInfo(&g_dataFlashAddr, &g_dataFlashSize);
 
     SysTick->LOAD = 300000 * CyclesPerUs;
     SysTick->VAL   =  (0x00);
     SysTick->CTRL = SysTick->CTRL | SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;//using cpu clock
 
-    while(1) {
-        if((bufhead >= 4) || (bUartDataReady == TRUE)) {
+    while(1)
+    {
+        if((bufhead >= 4) || (bUartDataReady == TRUE))
+        {
             uint32_t lcmd;
             lcmd = inpw(uart_rcvbuf);
-            if(lcmd == CMD_CONNECT) {
+            if(lcmd == CMD_CONNECT)
+            {
                 goto _ISP;
-            } else {
+            }
+            else
+            {
                 bUartDataReady = FALSE;
                 bufhead = 0;
             }
@@ -95,8 +100,10 @@ int main(void)
 
 
 _ISP:
-    while(1) {
-        if(bUartDataReady == TRUE) {
+    while(1)
+    {
+        if(bUartDataReady == TRUE)
+        {
             bUartDataReady = FALSE;
             ParseCmd(uart_rcvbuf, 64);
             PutString();

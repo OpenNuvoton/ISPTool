@@ -88,10 +88,11 @@ int32_t main (void)
     FMC->ISPCTL |= FMC_ISPCTL_ISPEN_Msk;
 
     g_apromSize = GetApromSize();
-    GetDataFlashInfo(&g_dataFlashAddr , &g_dataFlashSize);
+    GetDataFlashInfo(&g_dataFlashAddr, &g_dataFlashSize);
 //  printf("g_apromSize = %X, g_dataFlashAddr = %X, g_dataFlashSize = %X,\n", g_apromSize, g_dataFlashAddr, g_dataFlashSize);
 
-    while (DetectPin == 0) {
+    while (DetectPin == 0)
+    {
 
         USBD_Open(&gsInfo, HID_ClassRequest, NULL);
         USBD_SetVendorRequest(HID_VendorRequest);
@@ -105,8 +106,10 @@ int32_t main (void)
         /* Start transaction */
         USBD_Start();
 
-        while (DetectPin == 0) {
-            if(bUsbDataReady == TRUE) {
+        while (DetectPin == 0)
+        {
+            if(bUsbDataReady == TRUE)
+            {
                 WDT->CTL &= ~(WDT_CTL_WDTEN_Msk);
                 WDT->CTL |= (WDT_TIMEOUT_2POW18 | WDT_ALTCTL_RSTDSEL_Pos);
                 ParseCmd((uint8_t *)usb_rcvbuf, EPA_MAX_PKT_SIZE);

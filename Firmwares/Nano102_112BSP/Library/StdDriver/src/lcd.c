@@ -63,44 +63,81 @@ void LCD_SetPixel(uint32_t u32Com, uint32_t u32Seg, uint32_t u32OnFlag)
     int32_t memnum = u32Seg / 4;
     int32_t seg_shift = 8*(u32Seg-(4*memnum));
 
-    if(u32OnFlag) {
-        if(memnum==0) {
+    if(u32OnFlag)
+    {
+        if(memnum==0)
+        {
             LCD->MEM_0 |= (1<<u32Com)<<seg_shift;
-        } else if(memnum==1) {
+        }
+        else if(memnum==1)
+        {
             LCD->MEM_1 |= (1<<u32Com)<<seg_shift;
-        } else if(memnum==2) {
+        }
+        else if(memnum==2)
+        {
             LCD->MEM_2 |= (1<<u32Com)<<seg_shift;
-        } else if(memnum==3) {
+        }
+        else if(memnum==3)
+        {
             LCD->MEM_3 |= (1<<u32Com)<<seg_shift;
-        } else if(memnum==4) {
+        }
+        else if(memnum==4)
+        {
             LCD->MEM_4 |= (1<<u32Com)<<seg_shift;
-        } else if(memnum==5) {
+        }
+        else if(memnum==5)
+        {
             LCD->MEM_5 |= (1<<u32Com)<<seg_shift;
-        } else if(memnum==6) {
+        }
+        else if(memnum==6)
+        {
             LCD->MEM_6 |= (1<<u32Com)<<seg_shift;
-        } else if(memnum==7) {
+        }
+        else if(memnum==7)
+        {
             LCD->MEM_7 |= (1<<u32Com)<<seg_shift;
-        } else if(memnum==8) {
+        }
+        else if(memnum==8)
+        {
             LCD->MEM_8 |= (1<<u32Com)<<seg_shift;
         }
-    } else {
-        if(memnum==0) {
+    }
+    else
+    {
+        if(memnum==0)
+        {
             LCD->MEM_0 &= ~((1<<u32Com)<<seg_shift);
-        } else if(memnum==1) {
+        }
+        else if(memnum==1)
+        {
             LCD->MEM_1 &= ~((1<<u32Com)<<seg_shift);
-        } else if(memnum==2) {
+        }
+        else if(memnum==2)
+        {
             LCD->MEM_2 &= ~((1<<u32Com)<<seg_shift);
-        } else if(memnum==3) {
+        }
+        else if(memnum==3)
+        {
             LCD->MEM_3 &= ~((1<<u32Com)<<seg_shift);
-        } else if(memnum==4) {
+        }
+        else if(memnum==4)
+        {
             LCD->MEM_4 &= ~((1<<u32Com)<<seg_shift);
-        } else if(memnum==5) {
+        }
+        else if(memnum==5)
+        {
             LCD->MEM_5 &= ~((1<<u32Com)<<seg_shift);
-        } else if(memnum==6) {
+        }
+        else if(memnum==6)
+        {
             LCD->MEM_6 &= ~((1<<u32Com)<<seg_shift);
-        } else if(memnum==7) {
+        }
+        else if(memnum==7)
+        {
             LCD->MEM_7 &= ~((1<<u32Com)<<seg_shift);
-        } else if(memnum==8) {
+        }
+        else if(memnum==8)
+        {
             LCD->MEM_8 &= ~((1<<u32Com)<<seg_shift);
         }
     }
@@ -129,9 +166,12 @@ void LCD_SetAllPixels(uint32_t u32OnOff)
 {
     uint32_t u32SetValue;
 
-    if(u32OnOff) {
+    if(u32OnOff)
+    {
         u32SetValue = 0xFFFFFFFF;
-    } else {
+    }
+    else
+    {
         u32SetValue = 0x00000000;
     }
 
@@ -175,22 +215,30 @@ uint32_t LCD_EnableFrameCounter(uint32_t u32Count)
 
     if(u32Count == 0) return 0;
 
-    if(u32Count > 0x3F) { // top value max. 63 = 0x3F
+    if(u32Count > 0x3F)   // top value max. 63 = 0x3F
+    {
         div = u32Count/64;
 
-        if(div > 3) {
+        if(div > 3)
+        {
             div = 8;
             LCD->FCR = LCD->FCR & ~LCD_FCR_PRESCL_Msk | LCD_FCPRESC_DIV8;
-        } else if(div > 1) {
+        }
+        else if(div > 1)
+        {
             div = 4;
             LCD->FCR = LCD->FCR & ~LCD_FCR_PRESCL_Msk | LCD_FCPRESC_DIV4;
-        } else {
+        }
+        else
+        {
             div = 2;
             LCD->FCR = LCD->FCR & ~LCD_FCR_PRESCL_Msk | LCD_FCPRESC_DIV2;
         }
 
         u32Count = (u32Count+(div/2))/div;
-    } else {
+    }
+    else
+    {
         div = 1;
         LCD->FCR = LCD->FCR & ~LCD_FCR_PRESCL_Msk | LCD_FCPRESC_DIV1;
     }
@@ -253,7 +301,8 @@ uint32_t LCD_Open(uint32_t u32DrivingType, uint32_t u32ComNum, uint32_t u32BiasL
 
     LCD->DISPCTL &= ~LCD_DISPCTL_Ext_C_Msk;
 
-    switch(u32DrivingType) {
+    switch(u32DrivingType)
+    {
     case LCD_C_TYPE:
     case LCD_EXTERNAL_C_TYPE:
 
@@ -332,8 +381,10 @@ uint32_t LCD_EnableBlink(uint32_t u32ms)
 
     framecount = (uint32_t) (u32ms / (1000/g_LCDFrameRate)) ;
 
-    if(framecount > 0x3F) {
-        for(div=2; div<=8; div*=2) {
+    if(framecount > 0x3F)
+    {
+        for(div=2; div<=8; div*=2)
+        {
             framecount = (uint32_t) (u32ms / (1000/(g_LCDFrameRate/div)) );
 
             if( framecount <= 0x40 )
@@ -343,7 +394,9 @@ uint32_t LCD_EnableBlink(uint32_t u32ms)
         else if(div==4) prescale = LCD_FCPRESC_DIV4;
         else if(div==8) prescale = LCD_FCPRESC_DIV8;
         else return 0;
-    } else if(framecount == 0) {
+    }
+    else if(framecount == 0)
+    {
         framecount = 1;
     }
 
@@ -389,11 +442,13 @@ void LCD_DisableBlink(void)
  */
 void LCD_EnableInt(uint32_t IntSrc)
 {
-    if((IntSrc & LCD_FRAMECOUNT_INT) == LCD_FRAMECOUNT_INT ) {
+    if((IntSrc & LCD_FRAMECOUNT_INT) == LCD_FRAMECOUNT_INT )
+    {
         LCD->FCR |= LCD_FCR_FCEN_Msk;
     }
 
-    if((IntSrc & LCD_POWERDOWN_INT) == LCD_POWERDOWN_INT ) {
+    if((IntSrc & LCD_POWERDOWN_INT) == LCD_POWERDOWN_INT )
+    {
         LCD->CTL |= LCD_CTL_PDINT_EN_Msk;
     }
 
@@ -409,12 +464,14 @@ void LCD_EnableInt(uint32_t IntSrc)
  */
 void LCD_DisableInt(uint32_t IntSrc)
 {
-    if((IntSrc & LCD_FRAMECOUNT_INT) == LCD_FRAMECOUNT_INT ) {
+    if((IntSrc & LCD_FRAMECOUNT_INT) == LCD_FRAMECOUNT_INT )
+    {
         LCD->FCR &= ~LCD_FCR_FCEN_Msk;
         LCD->FCSTS = LCD_FCSTS_FCSTS_Msk;
     }
 
-    if((IntSrc & LCD_POWERDOWN_INT) == LCD_POWERDOWN_INT ) {
+    if((IntSrc & LCD_POWERDOWN_INT) == LCD_POWERDOWN_INT )
+    {
         LCD->CTL &= ~LCD_CTL_PDINT_EN_Msk;
         LCD->FCSTS = LCD_FCSTS_PDSTS_Msk;
     }

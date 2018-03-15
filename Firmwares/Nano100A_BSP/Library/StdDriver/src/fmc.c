@@ -55,7 +55,8 @@ int32_t FMC_Erase(uint32_t u32PageAddr)
 
     while (FMC->ISPTRG & FMC_ISPTRG_ISPGO_Msk) ;
 
-    if (FMC->ISPCON & FMC_ISPCON_ISPFF_Msk) {
+    if (FMC->ISPCON & FMC_ISPCON_ISPFF_Msk)
+    {
         FMC->ISPCON |= FMC_ISPCON_ISPFF_Msk;
         return -1;
     }

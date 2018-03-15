@@ -97,10 +97,13 @@ void ADC_EnableHWTrigger(ADC_T *adc,
                          uint32_t u32Param)
 {
     ADC->CTL &= ~(ADC_TRIGGER_BY_PWM | ADC_RISING_EDGE_TRIGGER | ADC_CTL_HWTRGEN_Msk);
-    if(u32Source == ADC_TRIGGER_BY_EXT_PIN) {
+    if(u32Source == ADC_TRIGGER_BY_EXT_PIN)
+    {
         ADC->CTL &= ~(ADC_CTL_HWTRGSEL_Msk | ADC_CTL_HWTRGCOND_Msk);
         ADC->CTL |= u32Source | u32Param | ADC_CTL_HWTRGEN_Msk;
-    } else {
+    }
+    else
+    {
         ADC->CTL &= ~(ADC_CTL_HWTRGSEL_Msk | ADC_CTL_PWMTRGDLY_Msk);
         ADC->CTL |= u32Source | (u32Param << ADC_CTL_PWMTRGDLY_Pos) | ADC_CTL_HWTRGEN_Msk;
     }

@@ -106,7 +106,8 @@
 */
 
 /** Tx/Rx buffer descriptor structure */
-typedef struct {
+typedef struct
+{
     uint32_t u32Status1;   ///< Status word 1
     uint32_t u32Data;      ///< Pointer to data buffer
     uint32_t u32Status2;   ///< Status word 2
@@ -116,7 +117,8 @@ typedef struct {
 } EMAC_DESCRIPTOR_T;
 
 /** Tx/Rx buffer structure */
-typedef struct {
+typedef struct
+{
     uint8_t au8Buf[1520];
 } EMAC_FRAME_T;
 
@@ -199,13 +201,16 @@ static void EMAC_PhyInit(void)
     EMAC_MdioWrite(PHY_CNTL_REG, EMAC_PHY_ADDR, PHY_CNTL_RESET_PHY);
 
     // Wait until reset complete
-    while (1) {
+    while (1)
+    {
         reg = EMAC_MdioRead(PHY_CNTL_REG, EMAC_PHY_ADDR) ;
         if ((reg & PHY_CNTL_RESET_PHY)==0)
             break;
     }
-    while(!(EMAC_MdioRead(PHY_STATUS_REG, EMAC_PHY_ADDR) & PHY_STATUS_LINK_VALID)) {
-        if(i++ > 80000) {     // Cable not connected
+    while(!(EMAC_MdioRead(PHY_STATUS_REG, EMAC_PHY_ADDR) & PHY_STATUS_LINK_VALID))
+    {
+        if(i++ > 80000)       // Cable not connected
+        {
             printf("Unplugged..\n");
             EMAC->CTL &= ~EMAC_CTL_OPMODE_Msk;
             EMAC->CTL &= ~EMAC_CTL_FUDUP_Msk;
@@ -229,19 +234,26 @@ static void EMAC_PhyInit(void)
 
     // Check link partner capability
     reg = EMAC_MdioRead(PHY_ANLPA_REG, EMAC_PHY_ADDR) ;
-    if (reg & PHY_ANLPA_DR100_TX_FULL) {
+    if (reg & PHY_ANLPA_DR100_TX_FULL)
+    {
         printf("100F\n");
         EMAC->CTL |= EMAC_CTL_OPMODE_Msk;
         EMAC->CTL |= EMAC_CTL_FUDUP_Msk;
-    } else if (reg & PHY_ANLPA_DR100_TX_HALF) {
+    }
+    else if (reg & PHY_ANLPA_DR100_TX_HALF)
+    {
         printf("100H\n");
         EMAC->CTL |= EMAC_CTL_OPMODE_Msk;
         EMAC->CTL &= ~EMAC_CTL_FUDUP_Msk;
-    } else if (reg & PHY_ANLPA_DR10_TX_FULL) {
+    }
+    else if (reg & PHY_ANLPA_DR10_TX_FULL)
+    {
         printf("10F\n");
         EMAC->CTL &= ~EMAC_CTL_OPMODE_Msk;
         EMAC->CTL |= EMAC_CTL_FUDUP_Msk;
-    } else {
+    }
+    else
+    {
         printf("10H\n");
         EMAC->CTL &= ~EMAC_CTL_OPMODE_Msk;
         EMAC->CTL &= ~EMAC_CTL_FUDUP_Msk;
@@ -261,7 +273,8 @@ static void EMAC_TxDescInit(void)
     EMAC->TXDSA = (uint32_t)&tx_desc[0];
     u32NextTxDesc = u32CurrentTxDesc = (uint32_t)&tx_desc[0];
 
-    for(i = 0; i < EMAC_TX_DESC_SIZE; i++) {
+    for(i = 0; i < EMAC_TX_DESC_SIZE; i++)
+    {
 
         if(s_u32EnableTs)
             tx_desc[i].u32Status1 = EMAC_TXFD_PADEN | EMAC_TXFD_CRCAPP | EMAC_TXFD_INTEN;
@@ -293,7 +306,8 @@ static void EMAC_RxDescInit(void)
     EMAC->RXDSA = (uint32_t)&rx_desc[0];
     u32CurrentRxDesc = (uint32_t)&rx_desc[0];
 
-    for(i=0; i < EMAC_RX_DESC_SIZE; i++) {
+    for(i=0; i < EMAC_RX_DESC_SIZE; i++)
+    {
         rx_desc[i].u32Status1 = EMAC_DESC_OWN_EMAC;
         rx_desc[i].u32Data = (uint32_t)((uint32_t)&rx_buf[i]);
         rx_desc[i].u32Backup1 = rx_desc[i].u32Data;
@@ -464,10 +478,13 @@ uint32_t EMAC_RecvPkt(uint8_t *pu8Data, uint32_t *pu32Size)
     reg = EMAC->INTSTS;
     EMAC->INTSTS = reg & 0xFFFF;  // Clear all RX related interrupt status
 
-    if (reg & EMAC_INTSTS_RXBEIF_Msk) {
+    if (reg & EMAC_INTSTS_RXBEIF_Msk)
+    {
         // Bus error occurred, this is usually a bad sign about software bug and will occur again...
         printf("RX bus error\n");
-    } else {
+    }
+    else
+    {
 
         // Get Rx Frame Descriptor
         desc = (EMAC_DESCRIPTOR_T *)u32CurrentRxDesc;
@@ -475,17 +492,21 @@ uint32_t EMAC_RecvPkt(uint8_t *pu8Data, uint32_t *pu32Size)
         // If we reach last recv Rx descriptor, leave the loop
         //if(EMAC->CRXDSA == (uint32_t)desc)
         //    return(0);
-        if ((desc->u32Status1 & EMAC_DESC_OWN_EMAC) != EMAC_DESC_OWN_EMAC) { // ownership=CPU
+        if ((desc->u32Status1 & EMAC_DESC_OWN_EMAC) != EMAC_DESC_OWN_EMAC)   // ownership=CPU
+        {
 
             status = desc->u32Status1 >> 16;
 
             // If Rx frame is good, process received frame
-            if(status & EMAC_RXFD_RXGD) {
+            if(status & EMAC_RXFD_RXGD)
+            {
                 // lower 16 bit in descriptor status1 stores the Rx packet length
                 *pu32Size = desc->u32Status1 & 0xffff;
                 memcpy(pu8Data, (uint8_t *)desc->u32Backup1, *pu32Size);
                 u32Count = 1;
-            } else {
+            }
+            else
+            {
                 // Save Error status if necessary
                 if (status & EMAC_RXFD_RP);
                 if (status & EMAC_RXFD_ALIE);
@@ -520,10 +541,13 @@ uint32_t EMAC_RecvPktTS(uint8_t *pu8Data, uint32_t *pu32Size, uint32_t *pu32Sec,
     reg = EMAC->INTSTS;
     EMAC->INTSTS = reg & 0xFFFF; // Clear all Rx related interrupt status
 
-    if (reg & EMAC_INTSTS_RXBEIF_Msk) {
+    if (reg & EMAC_INTSTS_RXBEIF_Msk)
+    {
         // Bus error occurred, this is usually a bad sign about software bug and will occur again...
         printf("RX bus error\n");
-    } else {
+    }
+    else
+    {
 
         // Get Rx Frame Descriptor
         desc = (EMAC_DESCRIPTOR_T *)u32CurrentRxDesc;
@@ -531,12 +555,14 @@ uint32_t EMAC_RecvPktTS(uint8_t *pu8Data, uint32_t *pu32Size, uint32_t *pu32Sec,
         // If we reach last recv Rx descriptor, leave the loop
         if(EMAC->CRXDSA == (uint32_t)desc)
             return(0);
-        if ((desc->u32Status1 | EMAC_DESC_OWN_EMAC) != EMAC_DESC_OWN_EMAC) { // ownership=CPU
+        if ((desc->u32Status1 | EMAC_DESC_OWN_EMAC) != EMAC_DESC_OWN_EMAC)   // ownership=CPU
+        {
 
             status = desc->u32Status1 >> 16;
 
             // If Rx frame is good, process received frame
-            if(status & EMAC_RXFD_RXGD) {
+            if(status & EMAC_RXFD_RXGD)
+            {
                 // lower 16 bit in descriptor status1 stores the Rx packet length
                 *pu32Size = desc->u32Status1 & 0xffff;
                 memcpy(pu8Data, (uint8_t *)desc->u32Backup1, *pu32Size);
@@ -545,7 +571,9 @@ uint32_t EMAC_RecvPktTS(uint8_t *pu8Data, uint32_t *pu32Size, uint32_t *pu32Sec,
                 *pu32Nsec = EMAC_Subsec2Nsec(desc->u32Data); // Sub nano second store in DATA field
 
                 u32Count = 1;
-            } else {
+            }
+            else
+            {
                 // Save Error status if necessary
                 if (status & EMAC_RXFD_RP);
                 if (status & EMAC_RXFD_ALIE);
@@ -648,23 +676,30 @@ uint32_t EMAC_SendPktDone(void)
     EMAC->INTSTS = reg & (0xFFFF0000 & ~EMAC_INTSTS_TSALMIF_Msk);
 
 
-    if (reg & EMAC_INTSTS_TXBEIF_Msk) {
+    if (reg & EMAC_INTSTS_TXBEIF_Msk)
+    {
         // Bus error occurred, this is usually a bad sign about software bug and will occur again...
         printf("TX bus error\n");
-    } else {
+    }
+    else
+    {
         // Process the descriptor(s).
         last_tx_desc = EMAC->CTXDSA ;
         // Get our first descriptor to process
         desc = (EMAC_DESCRIPTOR_T *) u32CurrentTxDesc;
-        do {
+        do
+        {
             // Descriptor ownership is still EMAC, so this packet haven't been send.
             if(desc->u32Status1 & EMAC_DESC_OWN_EMAC)
                 break;
             // Get Tx status stored in descriptor
             status = desc->u32Status2 >> 16;
-            if (status & EMAC_TXFD_TXCP) {
+            if (status & EMAC_TXFD_TXCP)
+            {
                 u32Count++;
-            } else {
+            }
+            else
+            {
                 // Do nothing here on error.
                 if (status & EMAC_TXFD_TXABT);
                 if (status & EMAC_TXFD_DEF);
@@ -681,7 +716,8 @@ uint32_t EMAC_SendPktDone(void)
             desc->u32Next = desc->u32Backup2;
             // go to next descriptor in link
             desc = (EMAC_DESCRIPTOR_T *)desc->u32Next;
-        } while (last_tx_desc != (uint32_t)desc);    // If we reach last sent Tx descriptor, leave the loop
+        }
+        while (last_tx_desc != (uint32_t)desc);      // If we reach last sent Tx descriptor, leave the loop
         // Save last processed Tx descriptor
         u32CurrentTxDesc = (uint32_t)desc;
     }
@@ -710,10 +746,13 @@ uint32_t EMAC_SendPktDoneTS(uint32_t *pu32Sec, uint32_t *pu32Nsec)
     EMAC->INTSTS = reg & (0xFFFF0000 & ~EMAC_INTSTS_TSALMIF_Msk);
 
 
-    if (reg & EMAC_INTSTS_TXBEIF_Msk) {
+    if (reg & EMAC_INTSTS_TXBEIF_Msk)
+    {
         // Bus error occurred, this is usually a bad sign about software bug and will occur again...
         printf("TX bus error\n");
-    } else {
+    }
+    else
+    {
         // Process the descriptor.
         // Get our first descriptor to process
         desc = (EMAC_DESCRIPTOR_T *) u32CurrentTxDesc;
@@ -723,11 +762,14 @@ uint32_t EMAC_SendPktDoneTS(uint32_t *pu32Sec, uint32_t *pu32Nsec)
             return(0);
         // Get Tx status stored in descriptor
         status = desc->u32Status2 >> 16;
-        if (status & EMAC_TXFD_TXCP) {
+        if (status & EMAC_TXFD_TXCP)
+        {
             u32Count = 1;
             *pu32Sec = desc->u32Next; // second stores in descriptor's NEXT field
             *pu32Nsec = EMAC_Subsec2Nsec(desc->u32Data); // Sub nano second store in DATA field
-        } else {
+        }
+        else
+        {
             // Do nothing here on error.
             if (status & EMAC_TXFD_TXABT);
             if (status & EMAC_TXFD_DEF);

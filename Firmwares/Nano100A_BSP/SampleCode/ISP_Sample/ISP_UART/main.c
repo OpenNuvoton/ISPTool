@@ -7,7 +7,7 @@
  *
  * @note
  * Copyright (C) 2016-2017 Nuvoton Technology Corp. All rights reserved.
- ******************************************************************************/ 
+ ******************************************************************************/
 #include <stdio.h>
 #include "targetdev.h"
 
@@ -46,8 +46,8 @@ void SYS_Init(void)
     /* Update System Core Clock */
     /* User can use SystemCoreClockUpdate() to calculate PllClock, SystemCoreClock and CycylesPerUs automatically. */
 //    SystemCoreClockUpdate();
-    SystemCoreClock = 32000000;  	// HCLK
-    CyclesPerUs     = 32; 				// For SYS_SysTickDelay()
+    SystemCoreClock = 32000000;     // HCLK
+    CyclesPerUs     = 32;               // For SYS_SysTickDelay()
 
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */
@@ -81,19 +81,24 @@ int main(void)
     FMC->ISPCON |= FMC_ISPCON_ISPEN_Msk;
 
     g_apromSize = GetApromSize();
-    GetDataFlashInfo(&g_dataFlashAddr , &g_dataFlashSize);
+    GetDataFlashInfo(&g_dataFlashAddr, &g_dataFlashSize);
 
     SysTick->LOAD = 300000 * CyclesPerUs;
     SysTick->VAL   =  (0x00);
     SysTick->CTRL = SysTick->CTRL | SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;//using cpu clock
 
-    while(1) {
-        if((bufhead >= 4) || (bUartDataReady == TRUE)) {
+    while(1)
+    {
+        if((bufhead >= 4) || (bUartDataReady == TRUE))
+        {
             uint32_t lcmd;
             lcmd = inpw(uart_rcvbuf);
-            if(lcmd == CMD_CONNECT) {
+            if(lcmd == CMD_CONNECT)
+            {
                 goto _ISP;
-            } else {
+            }
+            else
+            {
                 bUartDataReady = FALSE;
                 bufhead = 0;
             }
@@ -106,8 +111,10 @@ int main(void)
 
 
 _ISP:
-    while(1) {
-        if(bUartDataReady == TRUE) {
+    while(1)
+    {
+        if(bUartDataReady == TRUE)
+        {
             bUartDataReady = FALSE;
             ParseCmd(uart_rcvbuf, 64);
             PutString();

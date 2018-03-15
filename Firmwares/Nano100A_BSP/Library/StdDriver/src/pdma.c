@@ -69,7 +69,8 @@ void PDMA_SetTransferCnt(uint32_t u32Ch, uint32_t u32Width, uint32_t u32TransCou
     PDMA_T *pdma;
     pdma = (PDMA_T *)((uint32_t) PDMA1_BASE + (0x100 * (u32Ch-1)));
     pdma->CSR = (pdma->CSR & ~PDMA_CSR_APB_TWS_Msk) | u32Width;
-    switch (u32Width) {
+    switch (u32Width)
+    {
     case PDMA_WIDTH_32:
         pdma->BCR = (u32TransCount << 2);
         break;
@@ -127,7 +128,8 @@ void PDMA_SetTransferMode(uint32_t u32Ch, uint32_t u32Peripheral, uint32_t u32Sc
     PDMA_T *pdma;
     pdma = (PDMA_T *)((uint32_t) PDMA1_BASE + (0x100 * (u32Ch-1)));
 
-    switch (u32Ch) {
+    switch (u32Ch)
+    {
     case 1:
         PDMAGCR->DSSR0 = (PDMAGCR->DSSR0 & ~DMA_GCR_DSSR0_CH1_SEL_Msk) | (u32Peripheral << DMA_GCR_DSSR0_CH1_SEL_Pos);
         break;

@@ -34,15 +34,19 @@ void UART_T_IRQHandler(void)
     /*----- Determine interrupt source -----*/
     uint32_t u32IntSrc = UART_T->ISR;
 
-    if(u32IntSrc & 0x11) { //RDA FIFO interrupt & RDA timeout interrupt
-        while(((UART_T->FSR & UART_FSR_RX_EMPTY_Msk) == 0) && (bufhead < MAX_PKT_SIZE))	//RX fifo not empty
+    if(u32IntSrc & 0x11)   //RDA FIFO interrupt & RDA timeout interrupt
+    {
+        while(((UART_T->FSR & UART_FSR_RX_EMPTY_Msk) == 0) && (bufhead < MAX_PKT_SIZE)) //RX fifo not empty
             uart_rcvbuf[bufhead++] = UART_T->RBR;
     }
 
-    if(bufhead == MAX_PKT_SIZE) {
+    if(bufhead == MAX_PKT_SIZE)
+    {
         bUartDataReady = TRUE;
         bufhead = 0;
-    } else if(u32IntSrc & 0x10) {
+    }
+    else if(u32IntSrc & 0x10)
+    {
         bufhead = 0;
     }
 }
@@ -52,7 +56,8 @@ void PutString(void)
 {
     uint32_t i;
 
-    for(i = 0; i < MAX_PKT_SIZE; i++) {
+    for(i = 0; i < MAX_PKT_SIZE; i++)
+    {
         while ((UART_T->FSR & UART_FSR_TX_FULL_Msk));
         UART_T->THR = response_buff[i];
     }
@@ -77,7 +82,7 @@ void UART_Init()
     NVIC_EnableIRQ(UART_T_IRQn);
 
     UART_T->IER = (UART_IER_TIME_OUT_EN_Msk | UART_IER_RTO_IEN_Msk | UART_IER_RDA_IEN_Msk);
-		
-		
+
+
 }
 

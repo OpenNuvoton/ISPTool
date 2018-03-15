@@ -53,7 +53,8 @@ int32_t FMC_Erase(uint32_t u32PageAddr)
 
     while (FMC->ISPTRG & FMC_ISPTRG_ISPGO_Msk) ;
 
-    if (FMC->ISPCTL & FMC_ISPCTL_ISPFF_Msk) {
+    if (FMC->ISPCTL & FMC_ISPCTL_ISPFF_Msk)
+    {
         FMC->ISPCTL |= FMC_ISPCTL_ISPFF_Msk;
         return -1;
     }
@@ -277,7 +278,8 @@ int32_t FMC_GetCRC32Sum(uint32_t addr, uint32_t count, uint32_t *chksum)
 
     while (FMC->ISPTRG & FMC_ISPTRG_ISPGO_Msk) ;
 
-    if (FMC->ISPCTL & FMC_ISPCTL_ISPFF_Msk) {
+    if (FMC->ISPCTL & FMC_ISPCTL_ISPFF_Msk)
+    {
         FMC->ISPCTL |= FMC_ISPCTL_ISPFF_Msk;
         return -1;
     }
@@ -288,7 +290,8 @@ int32_t FMC_GetCRC32Sum(uint32_t addr, uint32_t count, uint32_t *chksum)
 
     while (FMC->ISPTRG & FMC_ISPTRG_ISPGO_Msk) ;
 
-    if (FMC->ISPCTL & FMC_ISPCTL_ISPFF_Msk) {
+    if (FMC->ISPCTL & FMC_ISPCTL_ISPFF_Msk)
+    {
         FMC->ISPCTL |= FMC_ISPCTL_ISPFF_Msk;
         return -1;
     }

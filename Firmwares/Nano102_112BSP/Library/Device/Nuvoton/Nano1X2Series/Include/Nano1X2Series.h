@@ -77,7 +77,8 @@ extern "C" {
 /**
  * @details  Interrupt Number Definition. The maximum of 32 Specific Interrupts are possible.
  */
-typedef enum IRQn {
+typedef enum IRQn
+{
     /******  Cortex-M0 Processor Exceptions Numbers *****************************************/
 
     NonMaskableInt_IRQn   = -14,    /*!< 2 Non Maskable Interrupt                           */
@@ -155,7 +156,8 @@ typedef enum IRQn {
     Memory Mapped Structure for ACMP Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -376,7 +378,8 @@ typedef struct {
     Memory Mapped Structure for ADC Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -900,7 +903,8 @@ typedef struct {
     Memory Mapped Structure for CLK Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -1715,7 +1719,8 @@ typedef struct {
 @{ */
 
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -1912,7 +1917,8 @@ typedef struct {
 } DMA_CRC_T;
 
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -2054,7 +2060,8 @@ typedef struct {
 } DMA_GCR_T;
 
 
-typedef struct {
+typedef struct
+{
     /**
      * CSR
      * ===================================================================================================
@@ -2461,7 +2468,8 @@ typedef struct {
     Memory Mapped Structure for FMC Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -2669,7 +2677,8 @@ typedef struct {
     Memory Mapped Structure for SYS Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -4065,7 +4074,8 @@ typedef struct {
     Memory Mapped Structure for GPIO Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
     /**
      * PMD
@@ -4641,7 +4651,8 @@ typedef struct {
 } GPIO_T;
 
 
-typedef struct {
+typedef struct
+{
     /**
      * DBNCECON
      * ===================================================================================================
@@ -4879,7 +4890,8 @@ typedef struct {
     Memory Mapped Structure for I2C Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -5229,7 +5241,8 @@ typedef struct {
     Memory Mapped Structure for LCD Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -5721,7 +5734,8 @@ typedef struct {
     Memory Mapped Structure for PWM Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -7057,7 +7071,8 @@ typedef struct {
     Memory Mapped Structure for RTC Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -7528,10 +7543,12 @@ typedef struct {
     Memory Mapped Structure for SC Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
-    union {
+    union
+    {
         /**
          * RBR
          * ===================================================================================================
@@ -8443,7 +8460,8 @@ typedef struct {
     Memory Mapped Structure for SPI Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -9009,7 +9027,8 @@ typedef struct {
     Memory Mapped Structure for TMR Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -9460,10 +9479,12 @@ typedef struct {
     Memory Mapped Structure for UART Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
-    union {
+    union
+    {
 
         /**
          * RBR
@@ -10284,7 +10305,8 @@ typedef struct {
     Memory Mapped Structure for WDT Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -10419,7 +10441,8 @@ typedef struct {
     Memory Mapped Structure for WWDT Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**

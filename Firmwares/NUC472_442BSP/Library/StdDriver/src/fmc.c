@@ -53,7 +53,8 @@ int32_t FMC_Erase(uint32_t u32PageAddr)
 
     while (FMC->ISPTRG & FMC_ISPTRG_ISPGO_Msk) ;
 
-    if (FMC->ISPCTL & FMC_ISPCTL_ISPFF_Msk) {
+    if (FMC->ISPCTL & FMC_ISPCTL_ISPFF_Msk)
+    {
         FMC->ISPCTL |= FMC_ISPCTL_ISPFF_Msk;
         return -1;
     }
@@ -268,13 +269,18 @@ uint32_t FMC_CRC8(uint32_t au32Data[], int i32Count)
     uint8_t     i, u8Cnt, u8InData;
     uint8_t     au8CRC[4] = { 0xff, 0xff, 0xff, 0xff };
 
-    for (i32ByteIdx = 0; i32ByteIdx < 4; i32ByteIdx++) {
-        for (u8Cnt = 0; u8Cnt < i32Count; u8Cnt++) {
-            for (i = 0x80; i != 0; i /= 2) {
-                if ((au8CRC[i32ByteIdx] & 0x80)!=0) {
+    for (i32ByteIdx = 0; i32ByteIdx < 4; i32ByteIdx++)
+    {
+        for (u8Cnt = 0; u8Cnt < i32Count; u8Cnt++)
+        {
+            for (i = 0x80; i != 0; i /= 2)
+            {
+                if ((au8CRC[i32ByteIdx] & 0x80)!=0)
+                {
                     au8CRC[i32ByteIdx] *= 2;
                     au8CRC[i32ByteIdx] ^= 7;
-                } else
+                }
+                else
                     au8CRC[i32ByteIdx] *= 2;
 
                 u8InData = (au32Data[u8Cnt] >> (i32ByteIdx * 8)) & 0xff;
@@ -300,7 +306,8 @@ int32_t FMC_ReadConfig(uint32_t *u32Config, uint32_t u32Count)
 {
     int         i;
 
-    for (i = 0; i < u32Count; i++) {
+    for (i = 0; i < u32Count; i++)
+    {
         u32Config[i] = FMC_Read(FMC_CONFIG_BASE + i*4);
     }
 
@@ -330,11 +337,13 @@ int32_t FMC_WriteConfig(uint32_t *u32Config, uint32_t u32Count)
 
     u32CRC = FMC_CRC8(u32Config, 3);
 
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++)
+    {
         FMC_Write(FMC_CONFIG_BASE + i * 4, (i < 3) ? u32Config[i] : u32CRC);
     }
 
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++)
+    {
         u32Data = FMC_Read(FMC_CONFIG_BASE + i * 4);
 
         if (u32Data != ((i < 3) ? u32Config[i] : u32CRC))

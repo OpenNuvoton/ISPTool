@@ -118,14 +118,16 @@ uint32_t SPI_SetBusClock(SPI_T *spi, uint32_t u32BusClock)
 
     if((CLK->CLKSEL1 & CLK_CLKSEL1_SPI_S_Msk) == CLK_CLKSEL1_SPI_S_HCLK)
         u32ClkSrc = CLK_GetHCLKFreq();
-    else {
+    else
+    {
         if((CLK->PWRCON & CLK_PWRCON_XTLCLK_EN_Msk) == CLK_PWRCON_HXT)
             u32ClkSrc = CLK_GetHXTFreq();
         else
             u32ClkSrc = CLK_GetLXTFreq();
     }
 
-    if(u32BusClock != 0 ) {
+    if(u32BusClock != 0 )
+    {
         u32Div = (u32ClkSrc / (2*u32BusClock)) - 1;
         if(u32Div > SPI_DIVIDER_DIVIDER_Msk)
             u32Div = SPI_DIVIDER_DIVIDER_Msk;
@@ -174,7 +176,8 @@ uint32_t SPI_GetBusClock(SPI_T *spi)
 
     if((CLK->CLKSEL1 & CLK_CLKSEL1_SPI_S_Msk) == CLK_CLKSEL1_SPI_S_HCLK)
         u32ClkSrc = CLK_GetHCLKFreq();
-    else {
+    else
+    {
         if((CLK->PWRCON & CLK_PWRCON_XTLCLK_EN_Msk) == CLK_PWRCON_HXT)
             u32ClkSrc = CLK_GetHXTFreq();
         else

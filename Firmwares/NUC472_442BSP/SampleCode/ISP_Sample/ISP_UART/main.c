@@ -87,20 +87,25 @@ int32_t main (void)
     FMC->ISPCTL |= FMC_ISPCTL_ISPEN_Msk;
 
     g_apromSize = GetApromSize();
-    GetDataFlashInfo(&g_dataFlashAddr , &g_dataFlashSize);
+    GetDataFlashInfo(&g_dataFlashAddr, &g_dataFlashSize);
 //  printf("g_apromSize = %X, g_dataFlashAddr = %X, g_dataFlashSize = %X,\n", g_apromSize, g_dataFlashAddr, g_dataFlashSize);
 
     SysTick->LOAD = 300000 * CyclesPerUs;
     SysTick->VAL   =  (0x00);
     SysTick->CTRL = SysTick->CTRL | SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;//using cpu clock
 
-    while(1) {
-        if((bufhead >= 4) || (bUartDataReady == TRUE)) {
+    while(1)
+    {
+        if((bufhead >= 4) || (bUartDataReady == TRUE))
+        {
             uint32_t lcmd;
             lcmd = inpw(uart_rcvbuf);
-            if(lcmd == CMD_CONNECT) {
+            if(lcmd == CMD_CONNECT)
+            {
                 break;
-            } else {
+            }
+            else
+            {
                 bUartDataReady = FALSE;
                 bufhead = 0;
             }
@@ -111,8 +116,10 @@ int32_t main (void)
             goto _APROM;
     }
 
-    while(1) {
-        if (bUartDataReady == TRUE) {
+    while(1)
+    {
+        if (bUartDataReady == TRUE)
+        {
             WDT->CTL &= ~(WDT_CTL_WDTEN_Msk);
             WDT->CTL |= (WDT_TIMEOUT_2POW18 | WDT_ALTCTL_RSTDSEL_Pos);
             bUartDataReady = FALSE;

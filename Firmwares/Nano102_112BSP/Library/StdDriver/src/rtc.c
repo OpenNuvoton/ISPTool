@@ -62,7 +62,8 @@ void RTC_32KCalibration(int32_t i32FrequencyX10000)
     u64Compensate = (uint64_t)(0x2710000000000);
     u64Compensate = (uint64_t)(u64Compensate / (uint64_t)i32FrequencyX10000);
 
-    if(u64Compensate >= 0x400000) {
+    if(u64Compensate >= 0x400000)
+    {
         u64Compensate = 0x3FFFFF;
     }
 
@@ -102,7 +103,8 @@ void RTC_Open (S_RTC_TIME_DATA_T *sPt)
 
     RTC->INIR = RTC_INIT_KEY;
 
-    if(RTC->INIR != 0x1) {
+    if(RTC->INIR != 0x1)
+    {
         RTC->INIR = RTC_INIT_KEY;
 
         while(RTC->INIR != 0x1);
@@ -114,7 +116,8 @@ void RTC_Open (S_RTC_TIME_DATA_T *sPt)
     /*-----------------------------------------------------------------------------------------------------*/
     /* Second, set RTC 24/12 hour setting                                                                  */
     /*-----------------------------------------------------------------------------------------------------*/
-    if (sPt->u32TimeScale == RTC_CLOCK_12) {
+    if (sPt->u32TimeScale == RTC_CLOCK_12)
+    {
         RTC->AER = RTC_WRITE_KEY;
         while(!(RTC->AER & RTC_AER_ENF_Msk)) RTC->AER = RTC_WRITE_KEY;
         RTC->TSSR &= ~RTC_TSSR_24H_12H_Msk;
@@ -124,7 +127,9 @@ void RTC_Open (S_RTC_TIME_DATA_T *sPt)
         /*-------------------------------------------------------------------------------------------------*/
         if (sPt->u32AmPm == RTC_PM)
             sPt->u32Hour += 20;
-    } else {
+    }
+    else
+    {
         RTC->AER = RTC_WRITE_KEY;
         while(!(RTC->AER & RTC_AER_ENF_Msk)) RTC->AER = RTC_WRITE_KEY;
         RTC->TSSR |= RTC_TSSR_24H_12H_Msk;
@@ -215,15 +220,19 @@ void RTC_GetDateAndTime(S_RTC_TIME_DATA_T *sPt)
     u32Tmp = (g_u32hiDay * 10);                /* Compute 0~31 day */
     sPt->u32Day   =  u32Tmp  + g_u32loDay;
 
-    if (sPt->u32TimeScale == RTC_CLOCK_12) { /* Compute12/24 hour */
+    if (sPt->u32TimeScale == RTC_CLOCK_12)   /* Compute12/24 hour */
+    {
         u32Tmp = (g_u32hiHour * 10);
         u32Tmp+= g_u32loHour;
         sPt->u32Hour = u32Tmp;                 /* AM: 1~12. PM: 21~32. */
 
-        if (sPt->u32Hour >= 21) {
+        if (sPt->u32Hour >= 21)
+        {
             sPt->u32AmPm = RTC_PM;
             sPt->u32Hour -= 20;
-        } else {
+        }
+        else
+        {
             sPt->u32AmPm = RTC_AM;
         }
 
@@ -235,7 +244,9 @@ void RTC_GetDateAndTime(S_RTC_TIME_DATA_T *sPt)
         u32Tmp+= g_u32loSec;
         sPt->u32Second = u32Tmp;
 
-    } else {
+    }
+    else
+    {
         u32Tmp  = (g_u32hiHour * 10);
         u32Tmp += g_u32loHour;
         sPt->u32Hour = u32Tmp;
@@ -308,15 +319,19 @@ void RTC_GetAlarmDateAndTime(S_RTC_TIME_DATA_T *sPt)
     u32Tmp = (g_u32hiDay * 10);                                        /* Compute 0~31 day */
     sPt->u32Day = u32Tmp + g_u32loDay;
 
-    if (sPt->u32TimeScale == RTC_CLOCK_12) {                /* Compute12/24 hour */
+    if (sPt->u32TimeScale == RTC_CLOCK_12)                  /* Compute12/24 hour */
+    {
         u32Tmp  = (g_u32hiHour * 10);
         u32Tmp += g_u32loHour;
         sPt->u32Hour = u32Tmp;                                        /* AM: 1~12. PM: 21~32. */
 
-        if (sPt->u32Hour >= 21) {
+        if (sPt->u32Hour >= 21)
+        {
             sPt->u32AmPm  = RTC_PM;
             sPt->u32Hour -= 20;
-        } else {
+        }
+        else
+        {
             sPt->u32AmPm = RTC_AM;
         }
 
@@ -328,7 +343,9 @@ void RTC_GetAlarmDateAndTime(S_RTC_TIME_DATA_T *sPt)
         u32Tmp += g_u32loSec;
         sPt->u32Second = u32Tmp;
 
-    } else {
+    }
+    else
+    {
         u32Tmp  = (g_u32hiHour * 10);
         u32Tmp +=  g_u32loHour;
         sPt->u32Hour = u32Tmp;
@@ -375,7 +392,8 @@ void RTC_SetDateAndTime(S_RTC_TIME_DATA_T *sPt)
     RTC->AER = RTC_WRITE_KEY;
     while(!(RTC->AER & RTC_AER_ENF_Msk)) RTC->AER = RTC_WRITE_KEY;
 
-    if (sPt->u32TimeScale == RTC_CLOCK_12) {
+    if (sPt->u32TimeScale == RTC_CLOCK_12)
+    {
         RTC->TSSR &= ~RTC_TSSR_24H_12H_Msk;
 
         /*-----------------------------------------------------------------------------------------*/
@@ -383,7 +401,9 @@ void RTC_SetDateAndTime(S_RTC_TIME_DATA_T *sPt)
         /*-----------------------------------------------------------------------------------------*/
         if (sPt->u32AmPm == RTC_PM)
             sPt->u32Hour += 20;
-    } else {
+    }
+    else
+    {
         RTC->TSSR |= RTC_TSSR_24H_12H_Msk;
     }
 
@@ -444,7 +464,8 @@ void RTC_SetAlarmDateAndTime(S_RTC_TIME_DATA_T *sPt)
     RTC->AER = RTC_WRITE_KEY;
     while(!(RTC->AER & RTC_AER_ENF_Msk)) RTC->AER = RTC_WRITE_KEY;
 
-    if (sPt->u32TimeScale == RTC_CLOCK_12) {
+    if (sPt->u32TimeScale == RTC_CLOCK_12)
+    {
         RTC->TSSR &= ~RTC_TSSR_24H_12H_Msk;
 
         /*-----------------------------------------------------------------------------------------*/
@@ -452,7 +473,9 @@ void RTC_SetAlarmDateAndTime(S_RTC_TIME_DATA_T *sPt)
         /*-----------------------------------------------------------------------------------------*/
         if (sPt->u32AmPm == RTC_PM)
             sPt->u32Hour += 20;
-    } else {
+    }
+    else
+    {
         RTC->TSSR |= RTC_TSSR_24H_12H_Msk;
     }
 
@@ -544,12 +567,15 @@ void RTC_SetTime(uint32_t u32Hour, uint32_t u32Minute, uint32_t u32Second, uint3
     RTC->AER = RTC_WRITE_KEY;
     while(!(RTC->AER & RTC_AER_ENF_Msk)) RTC->AER = RTC_WRITE_KEY;
 
-    if (u32TimeMode == RTC_CLOCK_12) {
+    if (u32TimeMode == RTC_CLOCK_12)
+    {
         RTC->TSSR &= ~RTC_TSSR_24H_12H_Msk;
 
         if (u32AmPm == RTC_PM)    /* important, range of 12-hour PM mode is 21 upto 32 */
             u32Hour += 20;
-    } else if(u32TimeMode == RTC_CLOCK_24) {
+    }
+    else if(u32TimeMode == RTC_CLOCK_24)
+    {
         RTC->TSSR |= RTC_TSSR_24H_12H_Msk;
     }
 
@@ -620,12 +646,15 @@ void RTC_SetAlarmTime(uint32_t u32Hour, uint32_t u32Minute, uint32_t u32Second, 
     RTC->AER = RTC_WRITE_KEY;
     while(!(RTC->AER & RTC_AER_ENF_Msk));
 
-    if (u32TimeMode == RTC_CLOCK_12) {
+    if (u32TimeMode == RTC_CLOCK_12)
+    {
         RTC->TSSR &= ~RTC_TSSR_24H_12H_Msk;
 
         if (u32AmPm == RTC_PM)    /* important, range of 12-hour PM mode is 21 up to 32 */
             u32Hour += 20;
-    } else if(u32TimeMode == RTC_CLOCK_24) {
+    }
+    else if(u32TimeMode == RTC_CLOCK_24)
+    {
         RTC->TSSR |= RTC_TSSR_24H_12H_Msk;
     }
 
@@ -762,17 +791,20 @@ void RTC_DisableInt(uint32_t u32IntFlagMask)
     RTC->AER = RTC_WRITE_KEY;
     while(!(RTC->AER & RTC_AER_ENF_Msk)) RTC->AER = RTC_WRITE_KEY;
 
-    if(u32IntFlagMask & RTC_RIER_TIER_Msk) {
+    if(u32IntFlagMask & RTC_RIER_TIER_Msk)
+    {
         RTC->RIER &= ~RTC_RIER_TIER_Msk;
         RTC->RIIR = RTC_RIIR_TIF_Msk;
     }
 
-    if(u32IntFlagMask & RTC_RIER_AIER_Msk) {
+    if(u32IntFlagMask & RTC_RIER_AIER_Msk)
+    {
         RTC->RIER &= ~RTC_RIER_AIER_Msk;
         RTC->RIIR = RTC_RIIR_AIF_Msk;
     }
 
-    if(u32IntFlagMask & RTC_RIER_SNOOPIER_Msk) {
+    if(u32IntFlagMask & RTC_RIER_SNOOPIER_Msk)
+    {
         RTC->RIER &= ~RTC_RIER_SNOOPIER_Msk;
         RTC->RIIR = RTC_RIIR_SNOOPIF_Msk;
     }
