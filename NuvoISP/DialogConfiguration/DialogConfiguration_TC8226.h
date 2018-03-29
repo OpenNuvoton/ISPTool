@@ -23,7 +23,7 @@ public:
 
 // Dialog Data
     //{{AFX_DATA(CDialogConfiguration_TC8226)
-    enum { IDD = IDD_DIALOG_CONFIGURATION_TC8226_WO_MKROM };
+    enum { IDD = IDD_DIALOG_CONFIGURATION_TC8226 };
     CNumEdit	m_FlashBaseAddress;
     CEdit	m_DataFlashSize;
     int		m_nRadioBov;
@@ -71,7 +71,7 @@ protected:
     virtual BOOL OnInitDialog();
     afx_msg void OnButtonClick();
     afx_msg void OnCheckClickWDTPD();
-    afx_msg void OnChangeEditFlashBaseAddress();
+    afx_msg void OnKillfocusEditFlashBaseAddress();
     virtual void OnOK();
     afx_msg void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);

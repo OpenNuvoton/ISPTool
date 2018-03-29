@@ -68,6 +68,12 @@ protected:
     DECLARE_MESSAGE_MAP()
 };
 
+class CDialogConfiguration_Mini58 : public CDialogConfiguration_Mini51CN
+{
+public:
+    CDialogConfiguration_Mini58(unsigned int uProgramMemorySize = 32 * 1024, unsigned int uPID = 0x00A05800, CWnd *pParent = NULL);   // standard constructor
+};
+
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 

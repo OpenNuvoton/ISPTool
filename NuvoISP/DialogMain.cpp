@@ -446,6 +446,11 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 Config = (((CDialogConfiguration_M05XDN *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
+            case IDD_DIALOG_CONFIGURATION_M058:
+                pConfigDlg = new CDialogConfiguration_M058SAN;
+                Config = (((CDialogConfiguration_M058SAN *)pConfigDlg)->m_ConfigValue.m_value);
+                break;
+
             case IDD_DIALOG_CONFIGURATION_MINI51:
                 if (uProgramMemorySize) {
                     pConfigDlg = new CDialogConfiguration_Mini51(uProgramMemorySize);
@@ -741,6 +746,7 @@ UINT DialogTemplate[] = {
     IDD_DIALOG_CONFIGURATION_M051,
     IDD_DIALOG_CONFIGURATION_M051BN,
     IDD_DIALOG_CONFIGURATION_M051CN,
+    IDD_DIALOG_CONFIGURATION_M058,
     IDD_DIALOG_CONFIGURATION_M0564,	// M0564, NUC121, NUC125, NUC126
     IDD_DIALOG_CONFIGURATION_M451,
     IDD_DIALOG_CONFIGURATION_MINI51,
@@ -798,7 +804,8 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
         subM051->CreatePopupMenu();
         subM051->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M051, _T("M051AN Series"));
         subM051->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M051BN, _T("M051BN Series"));
-        subM051->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M051CN, _T("M051DN/DE, M058SAN Series"));
+        subM051->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M051CN, _T("M051DN/DE Series"));
+        subM051->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M058, _T("M058SAN Series"));
         menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subM051->m_hMenu, _T("M051 Series"));
         menu.AppendMenu(MF_SEPARATOR);
         // Mini Series

@@ -89,7 +89,7 @@ BOOL CDialogConfiguration_AU9100::OnInitDialog()
     CDialog::OnInitDialog();
     unsigned int uPID = m_uPID & 0xFF00FF00;
 
-    if (uPID == 0x1d000400) {	//I9200
+    if ((uPID == 0x1d000400)	|| (uPID == 0x1d000600)) {	//I9200
         m_uPageSize = NUMICRO_M0_FLASH_PAGE_SIZE;
         m_bLDROM_EN = 1;
         GetDlgItem(IDC_CHECK_LDROM_EN)->ShowWindow(SW_HIDE);

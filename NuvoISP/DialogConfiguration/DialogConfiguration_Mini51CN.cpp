@@ -389,3 +389,12 @@ void CDialogConfiguration_Mini51CN::OnVScroll(UINT nSBCode, UINT nPos, CScrollBa
 
     CDialogResize::OnVScroll(nSBCode, nPos, pScrollBar);
 }
+/////////////////////////////////////////////////////////////////////////////
+// CDialogConfiguration_Mini58
+/////////////////////////////////////////////////////////////////////////////
+
+CDialogConfiguration_Mini58::CDialogConfiguration_Mini58(unsigned int uProgramMemorySize, unsigned int uPID, CWnd *pParent /*=NULL*/)
+    : CDialogConfiguration_Mini51CN(uProgramMemorySize, uPID, pParent)
+{
+}
+
