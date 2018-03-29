@@ -138,7 +138,8 @@ extern "C"
 */
 
 
-typedef struct USBD_CMD_STRUCT {
+typedef struct USBD_CMD_STRUCT
+{
     uint8_t  bmRequestType;
     uint8_t  bRequest;
     uint16_t wValue;
@@ -150,7 +151,8 @@ typedef struct USBD_CMD_STRUCT {
 
 
 
-typedef struct s_usbd_info {
+typedef struct s_usbd_info
+{
     uint8_t *gu8DevDesc;            /*!< Device descriptor */
     uint8_t *gu8ConfigDesc;         /*!< Config descriptor */
     uint8_t **gu8StringDesc;        /*!< Pointer for USB String Descriptor pointers */
@@ -245,10 +247,13 @@ static __INLINE void USBD_ResetDMA(void)
   */
 static __INLINE void USBD_SetEpBufAddr(uint32_t u32Ep, uint32_t u32Base, uint32_t u32Len)
 {
-    if (u32Ep == CEP) {
+    if (u32Ep == CEP)
+    {
         USBD->CEPBUFSTART = u32Base;
         USBD->CEPBUFEND   = u32Base + u32Len - 1;
-    } else {
+    }
+    else
+    {
         USBD->EP[u32Ep].EPBUFSTART = u32Base;
         USBD->EP[u32Ep].EPBUFEND = u32Base + u32Len - 1;
     }
@@ -276,7 +281,7 @@ static __INLINE void USBD_ConfigEp(uint32_t u32Ep, uint32_t u32EpNum, uint32_t u
 
 /**
   * @brief       Set USB endpoint stall state
-  * @param[in]   u32Ep  The USB endpoint ID. 
+  * @param[in]   u32Ep  The USB endpoint ID.
   * @return      None
   * @details     Set USB endpoint stall state for the specified endpoint ID. Endpoint will respond STALL token automatically.
   */
@@ -284,7 +289,8 @@ static __INLINE void USBD_SetEpStall(uint32_t u32Ep)
 {
     if (u32Ep == CEP)
         USBD_SET_CEP_STATE(USB_CEPCTL_STALL);
-    else {
+    else
+    {
         USBD->EP[u32Ep].EPRSPCTL = USBD->EP[u32Ep].EPRSPCTL & 0xf7 | USB_EP_RSPCTL_HALT;
     }
 }
@@ -303,8 +309,10 @@ static __INLINE void USBD_SetStall(uint32_t u32EpNum)
 
     if (u32EpNum == 0)
         USBD_SET_CEP_STATE(USB_CEPCTL_STALL);
-    else {
-        for (i=0; i<USBD_MAX_EP; i++) {
+    else
+    {
+        for (i=0; i<USBD_MAX_EP; i++)
+        {
             if (((USBD->EP[i].EPCFG & 0xf0) >> 4) == u32EpNum)
             {
                 USBD->EP[i].EPRSPCTL = USBD->EP[i].EPRSPCTL & 0xf7 | USB_EP_RSPCTL_HALT;
@@ -315,7 +323,7 @@ static __INLINE void USBD_SetStall(uint32_t u32EpNum)
 
 /**
   * @brief       Clear USB endpoint stall state
-  * @param[in]   u32Ep  The USB endpoint ID. 
+  * @param[in]   u32Ep  The USB endpoint ID.
   * @return      None
   * @details     Clear USB endpoint stall state for the specified endpoint ID. Endpoint will respond ACK/NAK token.
   */
@@ -336,7 +344,8 @@ static __INLINE void USBD_ClearStall(uint32_t u32EpNum)
 {
     int i;
 
-    for (i=0; i<USBD_MAX_EP; i++) {
+    for (i=0; i<USBD_MAX_EP; i++)
+    {
         if (((USBD->EP[i].EPCFG & 0xf0) >> 4) == u32EpNum)
         {
             USBD->EP[i].EPRSPCTL = USB_EP_RSPCTL_TOGGLE;
@@ -369,7 +378,8 @@ static __INLINE uint32_t USBD_GetStall(uint32_t u32EpNum)
 {
     int i;
 
-    for (i=0; i<USBD_MAX_EP; i++) {
+    for (i=0; i<USBD_MAX_EP; i++)
+    {
         if (((USBD->EP[i].EPCFG & 0xf0) >> 4) == u32EpNum)
         {
             return (USBD->EP[i].EPRSPCTL & USB_EP_RSPCTL_HALT);

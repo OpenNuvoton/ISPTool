@@ -44,10 +44,14 @@ uint32_t TIMER_Open(TIMER_T *timer, uint32_t u32Mode, uint32_t u32Freq)
     uint32_t u32Cmpr = 0, u32Prescale = 0;
 
     // Fastest possible timer working freq is u32Clk / 2. While cmpr = 2, pre-scale = 0
-    if(u32Freq > (u32Clk / 2)) {
+    if(u32Freq > (u32Clk / 2))
+    {
         u32Cmpr = 2;
-    } else {
-        if(u32Clk > 0xFFFFFF) { // For Nano103, only needs to consider 36MHz at most
+    }
+    else
+    {
+        if(u32Clk > 0xFFFFFF)   // For Nano103, only needs to consider 36MHz at most
+        {
             u32Prescale = 1;
             u32Clk >>= 1;
         }
@@ -89,13 +93,17 @@ void TIMER_Delay(TIMER_T *timer, uint32_t u32Usec)
     // Clear current timer configuration
     timer->CTL = 0;
 
-    if(u32Clk == 10000) {         // min delay is 100us if timer clock source is LIRC 10k
+    if(u32Clk == 10000)           // min delay is 100us if timer clock source is LIRC 10k
+    {
         u32Usec = ((u32Usec + 99) / 100) * 100;
-    } else {    // 10 usec every step
+    }
+    else        // 10 usec every step
+    {
         u32Usec = ((u32Usec + 9) / 10) * 10;
     }
 
-    if(u32Clk > 0xFFFFFF) { // For Nano103, only needs to consider 32MHz at most
+    if(u32Clk > 0xFFFFFF)   // For Nano103, only needs to consider 32MHz at most
+    {
         u32Prescale = 1;
         u32Clk >>= 1;
     }
@@ -109,7 +117,8 @@ void TIMER_Delay(TIMER_T *timer, uint32_t u32Usec)
 
     // When system clock is faster than timer clock, it is possible timer active bit cannot set in time while we check it.
     // And the while loop below return immediately, so put a tiny delay here allowing timer start counting and raise active flag.
-    for(; delay > 0; delay--) {
+    for(; delay > 0; delay--)
+    {
         __NOP();
     }
 
@@ -188,28 +197,39 @@ uint32_t TIMER_GetModuleClock(TIMER_T *timer)
     uint32_t u32Src, u32Div;
     const uint32_t au32Clk[] = {__HXT, __LXT, __LIRC, 0};   // we don't know actual clock if external pin is clock source, set to 0 here
 
-    if(timer == TIMER0) {
+    if(timer == TIMER0)
+    {
         u32Src = (CLK->CLKSEL1 & CLK_CLKSEL1_TMR0SEL_Msk) >> CLK_CLKSEL1_TMR0SEL_Pos;
         u32Div = (CLK->CLKDIV1 & CLK_CLKDIV1_TMR0DIV_Msk) >> CLK_CLKDIV1_TMR0DIV_Pos;
-    } else if(timer == TIMER1) {
+    }
+    else if(timer == TIMER1)
+    {
         u32Src = (CLK->CLKSEL1 & CLK_CLKSEL1_TMR1SEL_Msk) >> CLK_CLKSEL1_TMR1SEL_Pos;
         u32Div = (CLK->CLKDIV1 & CLK_CLKDIV1_TMR1DIV_Msk) >> CLK_CLKDIV1_TMR1DIV_Pos;
-    } else if(timer == TIMER2) {
+    }
+    else if(timer == TIMER2)
+    {
         u32Src = (CLK->CLKSEL2 & CLK_CLKSEL2_TMR2SEL_Msk) >> CLK_CLKSEL2_TMR2SEL_Pos;
         u32Div = (CLK->CLKDIV1 & CLK_CLKDIV1_TMR2DIV_Msk) >> CLK_CLKDIV1_TMR2DIV_Pos;
-    } else {// Timer 3
+    }
+    else    // Timer 3
+    {
         u32Src = (CLK->CLKSEL2 & CLK_CLKSEL2_TMR3SEL_Msk) >> CLK_CLKSEL2_TMR3SEL_Pos;
         u32Div = (CLK->CLKDIV1 & CLK_CLKDIV1_TMR3DIV_Msk) >> CLK_CLKDIV1_TMR3DIV_Pos;
     }
     u32Div++;
     if(u32Src < 4)
         return au32Clk[u32Src] / u32Div;
-    else if(u32Src == 4) {
+    else if(u32Src == 4)
+    {
         /* HIRC Source Selection */
-        if(CLK->CLKSEL0 & CLK_CLKSEL0_HIRCSEL_Msk) {
+        if(CLK->CLKSEL0 & CLK_CLKSEL0_HIRCSEL_Msk)
+        {
             /* Clock source from HIRC1 (36MHz) */
             return __HIRC36M / u32Div;
-        } else {
+        }
+        else
+        {
             /* Clock source from HIRC0 (12MHz) */
             if(CLK->PWRCTL & CLK_PWRCTL_HIRC0FSEL_Msk)
                 return __HIRC16M / u32Div;
@@ -217,10 +237,13 @@ uint32_t TIMER_GetModuleClock(TIMER_T *timer)
                 return __HIRC12M / u32Div;
         }
 
-    } else if(u32Src == 5) { // MIRC
+    }
+    else if(u32Src == 5)     // MIRC
+    {
         return __MIRC / u32Div;
 
-    } else  // HCLK
+    }
+    else    // HCLK
         return CLK_GetHCLKFreq() / u32Div;
 
 }

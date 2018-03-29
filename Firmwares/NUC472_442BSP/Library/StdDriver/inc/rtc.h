@@ -76,7 +76,8 @@ extern "C"
 /**
   * @brief  RTC define Time Data Struct
   */
-typedef struct {
+typedef struct
+{
     uint32_t u32Year;          /*!<  Year value */
     uint32_t u32Month;         /*!<  Month value */
     uint32_t u32Day;           /*!<  Day value */
@@ -105,7 +106,7 @@ typedef struct {
  *  @param[in]    u32RegNum    The spare register number(0~23)
  *
  *  @return   Spare register content.
- * \hideinitializer 
+ * \hideinitializer
  */
 #define RTC_READ_SPARE_REGISTER(u32RegNum)    (RTC->SPR[u32RegNum])
 
@@ -116,7 +117,7 @@ typedef struct {
  *  @param[in]    u32RegValue  The spare register value
  *
  *  @return   None
- * \hideinitializer 
+ * \hideinitializer
  */
 #define RTC_WRITE_SPARE_REGISTER(u32RegNum, u32RegValue)    (RTC->SPR[u32RegNum] = u32RegValue)
 
@@ -127,7 +128,7 @@ typedef struct {
  *
  *  @return   0 = This year is not a leap year. \n
  *            1 = This year is a leap year.
- * \hideinitializer 
+ * \hideinitializer
  */
 #define RTC_IS_LEAP_YEAR    ((RTC->LEAPYEAR & (RTC_LEAPYEAR_LEAPYEAR_Msk))?1:0)
 
@@ -137,7 +138,7 @@ typedef struct {
  *  @param    None
  *
  *  @return   None
- * \hideinitializer 
+ * \hideinitializer
  */
 #define RTC_CLEAR_ALARM_INT_FLAG    (RTC->INTSTS = RTC_INTSTS_ALMIF_Msk)
 
@@ -147,7 +148,7 @@ typedef struct {
  *  @param    None
  *
  *  @return    None
- * \hideinitializer 
+ * \hideinitializer
  */
 #define RTC_CLEAR_TICK_INT_FLAG    (RTC->INTSTS = RTC_INTSTS_TICKIF_Msk)
 
@@ -157,7 +158,7 @@ typedef struct {
  *  @param[in]    u32PinNum    tamper detect pin number. [ \ref RTC_TAMPER_0 / \ref RTC_TAMPER_1]
  *
  *  @return   None
- * \hideinitializer 
+ * \hideinitializer
  */
 #define RTC_CLEAR_TAMPER_FLAG(u32PinNum)    (RTC->TAMPSTS = (1 << u32PinNum))
 
@@ -167,7 +168,7 @@ typedef struct {
  *  @param    None
  *
  *  @return   Alarm interrupt status
- * \hideinitializer 
+ * \hideinitializer
  */
 #define RTC_GET_ALARM_INT_FLAG    ((RTC->INTSTS & RTC_INTSTS_ALMIF_Msk) >> RTC_INTSTS_ALMIF_Pos)
 
@@ -177,7 +178,7 @@ typedef struct {
  *  @param    None
  *
  *  @return   Alarm interrupt status
- * \hideinitializer 
+ * \hideinitializer
  */
 #define RTC_GET_TICK_INT_FLAG    ((RTC->INTSTS & RTC_INTSTS_TICKIF_Msk) >> RTC_INTSTS_TICKIF_Pos)
 
@@ -187,7 +188,7 @@ typedef struct {
  *  @param[in]    u32PinNum    tamper detect pin number. [ \ref RTC_TAMPER_0 / \ref RTC_TAMPER_1]
  *
  *  @return   Tamper detect pin status
- * \hideinitializer 
+ * \hideinitializer
  */
 #define RTC_GET_TAMPER_FLAG(u32PinNum)    ( (RTC->TAMPSTS & (1 << u32PinNum)) >> u32PinNum)
 

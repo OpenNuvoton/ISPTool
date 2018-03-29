@@ -114,7 +114,8 @@ void PDMA_SetTransferAddr(uint32_t u32Ch, uint32_t u32SrcAddr, uint32_t u32SrcCt
  */
 void PDMA_SetTransferMode(uint32_t u32Ch, uint32_t u32Peripheral, uint32_t u32ScatterEn, uint32_t u32DescAddr)
 {
-    switch (u32Ch) {
+    switch (u32Ch)
+    {
     case 1:
         PDMAGCR->REQSEL0 = (PDMAGCR->REQSEL0 & ~DMA_GCR_REQSEL0_REQSRC1_Msk) | (u32Peripheral << DMA_GCR_REQSEL0_REQSRC1_Pos);
         break;

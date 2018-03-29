@@ -77,7 +77,8 @@ extern "C" {
 /**
  * @details  Interrupt Number Definition. The maximum of 32 Specific Interrupts are possible.
  */
-typedef enum IRQn {
+typedef enum IRQn
+{
     /******  Cortex-M0 Processor Exceptions Numbers *****************************************/
 
     NonMaskableInt_IRQn   = -14,    /*!< 2 Non Maskable Interrupt                           */
@@ -157,7 +158,8 @@ typedef enum IRQn {
     Memory Mapped Structure for INT Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -560,7 +562,8 @@ typedef struct {
     Memory Mapped Structure for SYS Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -697,6 +700,17 @@ typedef struct {
      * |[31]    |SC1RST    |SmartCard1 Controller Reset
      * |        |          |0 = SmartCard module normal operation.
      * |        |          |1 = SmartCard module reset.
+     * @var SYS_T::MISCCTL
+     * Offset: 0x0C  Miscellaneous Control Resister
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[6]     |POR33DIS  |POR 33 Disable
+     * |        |          |0 = POR33 is enable in normal operation.
+     * |        |          |1 = POR33 is disable in normal operation.
+     * |[7]     |POR18DIS  |POR 18 Disable
+     * |        |          |0 = POR18 is enable in normal operation.
+     * |        |          |1 = POR18 is disable in normal operation.
      * @var SYS_T::TEMPCTL
      * Offset: 0x20  Temperature Sensor Control Register
      * ---------------------------------------------------------------------------------------------------
@@ -1536,7 +1550,11 @@ typedef struct {
     __IO uint32_t IPRST1;                /*!< [0x0008] Peripheral Reset Control Resister1                               */
     __IO uint32_t IPRST2;                /*!< [0x000c] Peripheral Reset Control Resister2                               */
     /// @cond HIDDEN_SYMBOLS
-    __I  uint32_t RESERVE0[4];
+    __I  uint32_t RESERVE[1];
+    /// @endcond //HIDDEN_SYMBOLS
+    __IO uint32_t MISCCTL;               /*!< [0x0014] Miscellaneous Control Resister                                   */
+    /// @cond HIDDEN_SYMBOLS
+    __I  uint32_t RESERVE0[2];
     /// @endcond //HIDDEN_SYMBOLS
     __IO uint32_t TEMPCTL;               /*!< [0x0020] Temperature Sensor Control Register                              */
     /// @cond HIDDEN_SYMBOLS
@@ -1694,6 +1712,12 @@ typedef struct {
 
 #define SYS_IPRST2_SC1RST_Pos            (31)                                              /*!< SYS_T::IPRST2: SC1RST Position         */
 #define SYS_IPRST2_SC1RST_Msk            (0x1ul << SYS_IPRST2_SC1RST_Pos)                  /*!< SYS_T::IPRST2: SC1RST Mask             */
+
+#define SYS_MISCCTL_POR33DIS_Pos         (6)                                               /*!< SYS_T::MISCCTL: POR33DIS Position      */
+#define SYS_MISCCTL_POR33DIS_Msk         (0x1ul << SYS_MISCCTL_POR33DIS_Pos)               /*!< SYS_T::MISCCTL: POR33DIS Mask          */
+
+#define SYS_MISCCTL_POR18DIS_Pos         (7)                                               /*!< SYS_T::MISCCTL: POR18DIS Position      */
+#define SYS_MISCCTL_POR18DIS_Msk         (0x1ul << SYS_MISCCTL_POR18DIS_Pos)               /*!< SYS_T::MISCCTL: POR18DIS Mask          */
 
 #define SYS_TEMPCTL_VTEMPEN_Pos          (0)                                               /*!< SYS_T::TEMPCTL: VTEMPEN Position       */
 #define SYS_TEMPCTL_VTEMPEN_Msk          (0x1ul << SYS_TEMPCTL_VTEMPEN_Pos)                /*!< SYS_T::TEMPCTL: VTEMPEN Mask           */
@@ -2092,7 +2116,8 @@ typedef struct {
     Memory Mapped Structure for CLK Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -2930,7 +2955,8 @@ typedef struct {
     Memory Mapped Structure for FMC Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -3345,7 +3371,8 @@ typedef struct {
     Memory Mapped Structure for GPIO Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -6123,7 +6150,8 @@ typedef struct {
 
 } GPIO_T;
 
-typedef struct {
+typedef struct
+{
 
     /**
      * @var GP_DB_T::DBCTL
@@ -6807,7 +6835,8 @@ typedef struct {
     Memory Mapped Structure for DMA Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -6986,7 +7015,8 @@ typedef struct {
 
 
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -7161,7 +7191,8 @@ typedef struct {
 
 
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -7467,7 +7498,8 @@ typedef struct {
     Memory Mapped Structure for TMR Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -7841,7 +7873,8 @@ typedef struct {
     Memory Mapped Structure for PWM Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -9534,7 +9567,8 @@ typedef struct {
     Memory Mapped Structure for WDT Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -9666,7 +9700,8 @@ typedef struct {
     Memory Mapped Structure for WWDT Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -9774,7 +9809,8 @@ typedef struct {
     Memory Mapped Structure for RTC Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -10073,10 +10109,20 @@ typedef struct {
      * |        |          |LQFP64:PB.13/LQFP48:PA.9/QFN32:PB.8 function and I/O status are controlled by OPMODE[1:0] and DOUT after CTLSEL it set to 1
      * |        |          |I/O pin state keeps previous state after system power is turned off.
      * |        |          |Note:CTLSEL (this bit) will automatically be set by hardware to 1 when system power is off and RTC Active Status = 1.
+     * @var RTC_T::MISCCTL
+     * Offset: 0x1F0  Miscellaneous Control Register
+     * ---------------------------------------------------------------------------------------------------
+     * |Bits    |Field     |Descriptions
+     * | :----: | :----:   | :---- |
+     * |[13:12] |GAINSEL   |LXT Gain Selection
+     * |        |          |00 = Gain 0.
+     * |        |          |01 = Gain 1.
+     * |        |          |10 = Gain 2.
+     * |        |          |11 = Gain 3.
      */
     __IO uint32_t INIT;                  /*!< [0x0000] RTC Initiation Register                                          */
     __IO uint32_t RWEN;                  /*!< [0x0004] RTC Access Enable Register                                       */
-    __IO uint32_t FREQADJ;                   /*!< [0x0008] RTC Frequency Compensation Register                              */
+    __IO uint32_t FREQADJ;               /*!< [0x0008] RTC Frequency Compensation Register                              */
     __IO uint32_t TIME;                  /*!< [0x000c] RTC Time Loading Register                                        */
     __IO uint32_t CAL;                   /*!< [0x0010] RTC Calendar Loading Register                                    */
     __IO uint32_t CLKFMT;                /*!< [0x0014] RTC Time Scale Selection Register                                */
@@ -10090,7 +10136,7 @@ typedef struct {
     __IO uint32_t TAMSK;                 /*!< [0x0034] RTC Time Alarm Mask Register                                     */
     __IO uint32_t CAMSK;                 /*!< [0x0038] RTC Calendar Alarm Mask Register                                 */
     __IO uint32_t SPRCTL;                /*!< [0x003c] RTC Spare Functional Control Register                            */
-    __IO uint32_t SPR[5];                  /*!< [0x0040] ~ [0x0050] RTC Spare Register 0 ~ 4                            */
+    __IO uint32_t SPR[5];                /*!< [0x0040] ~ [0x0050] RTC Spare Register 0 ~ 4                              */
     /// @cond HIDDEN_SYMBOLS
     __I  uint32_t RESERVE0[43];
     /// @endcond //HIDDEN_SYMBOLS
@@ -10098,7 +10144,10 @@ typedef struct {
     __IO uint32_t LXTOCTL;               /*!< [0x0104] X32KO Pin Control Register                                       */
     __IO uint32_t LXTICTL;               /*!< [0x0108] X32KI Pin Control Register                                       */
     __IO uint32_t TAMPCTL;               /*!< [0x010c] TAMPER Pin Control Register                                      */
-
+    /// @cond HIDDEN_SYMBOLS
+    __I  uint32_t RESERVE1[56];
+    /// @endcond //HIDDEN_SYMBOLS
+    __IO uint32_t MISCCTL;               /*!< [0x01F0] Miscellaneous Control Register                                   */
 } RTC_T;
 
 /**
@@ -10319,6 +10368,9 @@ typedef struct {
 #define RTC_TAMPCTL_CTLSEL_Pos           (3)                                               /*!< RTC_T::TAMPCTL: CTLSEL Position        */
 #define RTC_TAMPCTL_CTLSEL_Msk           (0x1ul << RTC_TAMPCTL_CTLSEL_Pos)                 /*!< RTC_T::TAMPCTL: CTLSEL Mask            */
 
+#define RTC_MISCCTL_GAINSEL_Pos          (12)                                              /*!< RTC_T::MISCCTL: GAINSEL Position       */
+#define RTC_MISCCTL_GAINSEL_Msk          (0x3ul << RTC_MISCCTL_GAINSEL_Pos)                /*!< RTC_T::MISCCTL: GAINSEL Mask           */
+
 /**@}*/ /* RTC_CONST */
 /**@}*/ /* end of RTC register group */
 
@@ -10329,7 +10381,8 @@ typedef struct {
     Memory Mapped Structure for UART Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -11190,7 +11243,8 @@ typedef struct {
     Memory Mapped Structure for SC Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -12057,7 +12111,8 @@ typedef struct {
     Memory Mapped Structure for I2C Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -12394,7 +12449,8 @@ typedef struct {
     Memory Mapped Structure for SPI Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -12973,7 +13029,8 @@ typedef struct {
     Memory Mapped Structure for ADC Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**
@@ -13549,7 +13606,8 @@ typedef struct {
     Memory Mapped Structure for ACMP Controller
 @{ */
 
-typedef struct {
+typedef struct
+{
 
 
     /**

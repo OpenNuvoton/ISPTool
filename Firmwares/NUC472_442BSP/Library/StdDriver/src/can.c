@@ -590,7 +590,7 @@ uint32_t CAN_Open(CAN_T *tCAN, uint32_t u32BaudRate, uint32_t u32Mode)
   *           TRUE : Config message object success.
   *
   */
-int32_t CAN_SetTxMsg(CAN_T *tCAN, uint32_t u32MsgNum , STR_CANMSG_T* pCanMsg)
+int32_t CAN_SetTxMsg(CAN_T *tCAN, uint32_t u32MsgNum, STR_CANMSG_T* pCanMsg)
 {
     uint8_t u8MsgIfNum=0;
     uint32_t i=0;
@@ -703,7 +703,7 @@ void CAN_DisableInt(CAN_T *tCAN, uint32_t u32Mask)
   *           TRUE : Configure a receive message object success.
   *
   */
-int32_t CAN_SetRxMsg(CAN_T *tCAN, uint32_t u32MsgNum , uint32_t u32IDType, uint32_t u32ID)
+int32_t CAN_SetRxMsg(CAN_T *tCAN, uint32_t u32MsgNum, uint32_t u32IDType, uint32_t u32ID)
 {
     uint32_t u32TimeOutCount = 0;
 
@@ -730,7 +730,7 @@ int32_t CAN_SetRxMsg(CAN_T *tCAN, uint32_t u32MsgNum , uint32_t u32IDType, uint3
   *           TRUE : Configure receive message objects success.
   *
   */
-int32_t CAN_SetMultiRxMsg(CAN_T *tCAN, uint32_t u32MsgNum , uint32_t u32MsgCount, uint32_t u32IDType, uint32_t u32ID)
+int32_t CAN_SetMultiRxMsg(CAN_T *tCAN, uint32_t u32MsgNum, uint32_t u32MsgCount, uint32_t u32IDType, uint32_t u32ID)
 {
     uint32_t i = 0;
     uint32_t u32TimeOutCount;
@@ -765,7 +765,7 @@ int32_t CAN_SetMultiRxMsg(CAN_T *tCAN, uint32_t u32MsgNum , uint32_t u32MsgCount
   * @return   FALSE: When operation in basic mode: Transmit message time out, or when operation in normal mode: No useful interface. \n
   *           TRUE : Transmit Message success.
   */
-int32_t CAN_Transmit(CAN_T *tCAN, uint32_t u32MsgNum , STR_CANMSG_T* pCanMsg)
+int32_t CAN_Transmit(CAN_T *tCAN, uint32_t u32MsgNum, STR_CANMSG_T* pCanMsg)
 {
     if((tCAN->CON & CAN_CON_TEST_Msk) && (tCAN->TEST & CAN_TEST_BASIC_Msk))
     {
@@ -791,7 +791,7 @@ int32_t CAN_Transmit(CAN_T *tCAN, uint32_t u32MsgNum , STR_CANMSG_T* pCanMsg)
   * @return   FALSE: No any message received. \n
   *           TRUE : Receive Message success.
   */
-int32_t CAN_Receive(CAN_T *tCAN, uint32_t u32MsgNum , STR_CANMSG_T* pCanMsg)
+int32_t CAN_Receive(CAN_T *tCAN, uint32_t u32MsgNum, STR_CANMSG_T* pCanMsg)
 {
     if((tCAN->CON & CAN_CON_TEST_Msk) && (tCAN->TEST & CAN_TEST_BASIC_Msk))
     {

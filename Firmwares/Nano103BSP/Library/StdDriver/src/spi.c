@@ -65,22 +65,29 @@ uint32_t SPI_Open(SPI_T *spi,
 void SPI_Close(SPI_T *spi)
 {
     /* Reset SPI */
-    if((uint32_t)spi == SPI0_BASE && (CLK->APBCLK & CLK_APBCLK_SPI0CKEN_Msk)) {
+    if((uint32_t)spi == SPI0_BASE && (CLK->APBCLK & CLK_APBCLK_SPI0CKEN_Msk))
+    {
         CLK->APBCLK &= ~CLK_APBCLK_SPI0CKEN_Msk;
         SYS->IPRST2 |= SYS_IPRST2_SPI0RST_Msk;
         SYS->IPRST2 &= ~SYS_IPRST2_SPI0RST_Msk;
         CLK->APBCLK |=  CLK_APBCLK_SPI0CKEN_Msk;
-    } else if((uint32_t)spi == SPI1_BASE && (CLK->APBCLK & CLK_APBCLK_SPI1CKEN_Msk))  {
+    }
+    else if((uint32_t)spi == SPI1_BASE && (CLK->APBCLK & CLK_APBCLK_SPI1CKEN_Msk))
+    {
         CLK->APBCLK &= ~CLK_APBCLK_SPI1CKEN_Msk;
         SYS->IPRST2 |= SYS_IPRST2_SPI1RST_Msk;
         SYS->IPRST2 &= ~SYS_IPRST2_SPI1RST_Msk;
         CLK->APBCLK |=  CLK_APBCLK_SPI1CKEN_Msk;
-    } else if((uint32_t)spi == SPI2_BASE && (CLK->APBCLK & CLK_APBCLK_SPI2CKEN_Msk))  {
+    }
+    else if((uint32_t)spi == SPI2_BASE && (CLK->APBCLK & CLK_APBCLK_SPI2CKEN_Msk))
+    {
         CLK->APBCLK &= ~CLK_APBCLK_SPI2CKEN_Msk;
         SYS->IPRST2 |= SYS_IPRST2_SPI2RST_Msk;
         SYS->IPRST2 &= ~SYS_IPRST2_SPI2RST_Msk;
         CLK->APBCLK |=  CLK_APBCLK_SPI2CKEN_Msk;
-    } else if((uint32_t)spi == SPI3_BASE && (CLK->APBCLK & CLK_APBCLK_SPI3CKEN_Msk))  {
+    }
+    else if((uint32_t)spi == SPI3_BASE && (CLK->APBCLK & CLK_APBCLK_SPI3CKEN_Msk))
+    {
         CLK->APBCLK &= ~CLK_APBCLK_SPI3CKEN_Msk;
         SYS->IPRST2 |= SYS_IPRST2_SPI3RST_Msk;
         SYS->IPRST2 &= ~SYS_IPRST2_SPI3RST_Msk;
@@ -144,68 +151,83 @@ uint32_t SPI_SetBusClock(SPI_T *spi, uint32_t u32BusClock)
 {
     uint32_t u32ClkSrc, u32Div = 0;
 
-    if(spi == SPI0) {
+    if(spi == SPI0)
+    {
         if((CLK->CLKSEL1 & CLK_CLKSEL1_SPI0SEL_Msk) == CLK_CLKSEL1_SPI0SEL_HCLK)
             u32ClkSrc = CLK_GetHCLKFreq();
         else if((CLK->CLKSEL1 & CLK_CLKSEL1_SPI0SEL_Msk) == CLK_CLKSEL1_SPI0SEL_PLL)
             u32ClkSrc = CLK_GetPLLClockFreq();
         else if((CLK->CLKSEL1 & CLK_CLKSEL1_SPI0SEL_Msk) == CLK_CLKSEL1_SPI0SEL_HXT)
             u32ClkSrc = __HXT;
-        else { //CLK_CLKSEL1_SPI0SEL_HIRC
+        else   //CLK_CLKSEL1_SPI0SEL_HIRC
+        {
             if((CLK->CLKSEL0 & CLK_CLKSEL0_HIRCSEL_Msk)==CLK_CLKSEL0_HIRCSEL_Msk)
                 u32ClkSrc = __HIRC36M;
-            else {
+            else
+            {
                 if((CLK->PWRCTL & CLK_PWRCTL_HIRC0EN_Msk)==CLK_PWRCTL_HIRC0EN_Msk)
                     u32ClkSrc = __HIRC16M;
                 else
                     u32ClkSrc = __HIRC12M;
             }
         }
-    } else if(spi == SPI1) {
+    }
+    else if(spi == SPI1)
+    {
         if((CLK->CLKSEL2 & CLK_CLKSEL2_SPI1SEL_Msk) == CLK_CLKSEL2_SPI1SEL_HCLK)
             u32ClkSrc = CLK_GetHCLKFreq();
         else if((CLK->CLKSEL2 & CLK_CLKSEL2_SPI1SEL_Msk) == CLK_CLKSEL2_SPI1SEL_PLL)
             u32ClkSrc = CLK_GetPLLClockFreq();
         else if((CLK->CLKSEL2 & CLK_CLKSEL2_SPI1SEL_Msk) == CLK_CLKSEL2_SPI1SEL_HXT)
             u32ClkSrc = __HXT;
-        else { //CLK_CLKSEL2_SPI1SEL_HIRC
+        else   //CLK_CLKSEL2_SPI1SEL_HIRC
+        {
             if((CLK->CLKSEL0 & CLK_CLKSEL0_HIRCSEL_Msk)==CLK_CLKSEL0_HIRCSEL_Msk)
                 u32ClkSrc = __HIRC36M;
-            else {
+            else
+            {
                 if((CLK->PWRCTL & CLK_PWRCTL_HIRC0EN_Msk)==CLK_PWRCTL_HIRC0EN_Msk)
                     u32ClkSrc = __HIRC16M;
                 else
                     u32ClkSrc = __HIRC12M;
             }
         }
-    } else if(spi == SPI2) {
+    }
+    else if(spi == SPI2)
+    {
         if((CLK->CLKSEL1 & CLK_CLKSEL1_SPI2SEL_Msk) == CLK_CLKSEL1_SPI2SEL_HCLK)
             u32ClkSrc = CLK_GetHCLKFreq();
         else if((CLK->CLKSEL1 & CLK_CLKSEL1_SPI2SEL_Msk) == CLK_CLKSEL1_SPI2SEL_PLL)
             u32ClkSrc = CLK_GetPLLClockFreq();
         else if((CLK->CLKSEL1 & CLK_CLKSEL1_SPI2SEL_Msk) == CLK_CLKSEL1_SPI2SEL_HXT)
             u32ClkSrc = __HXT;
-        else { //CLK_CLKSEL1_SPI2SEL_HIRC
+        else   //CLK_CLKSEL1_SPI2SEL_HIRC
+        {
             if((CLK->CLKSEL0 & CLK_CLKSEL0_HIRCSEL_Msk)== CLK_CLKSEL0_HIRCSEL_Msk)
                 u32ClkSrc = __HIRC36M;
-            else {
+            else
+            {
                 if((CLK->PWRCTL & CLK_PWRCTL_HIRC0EN_Msk)==CLK_PWRCTL_HIRC0EN_Msk)
                     u32ClkSrc = __HIRC16M;
                 else
                     u32ClkSrc = __HIRC12M;
             }
         }
-    }   else {
+    }
+    else
+    {
         if((CLK->CLKSEL2 & CLK_CLKSEL2_SPI3SEL_Msk) == CLK_CLKSEL2_SPI3SEL_HCLK)
             u32ClkSrc = CLK_GetHCLKFreq();
         else if((CLK->CLKSEL2 & CLK_CLKSEL2_SPI3SEL_Msk) == CLK_CLKSEL2_SPI3SEL_PLL)
             u32ClkSrc = CLK_GetPLLClockFreq();
         else if((CLK->CLKSEL2 & CLK_CLKSEL2_SPI3SEL_Msk) == CLK_CLKSEL2_SPI3SEL_HXT)
             u32ClkSrc = __HXT;
-        else { //CLK_CLKSEL2_SPI3SEL_HIRC
+        else   //CLK_CLKSEL2_SPI3SEL_HIRC
+        {
             if((CLK->CLKSEL0 & CLK_CLKSEL0_HIRCSEL_Msk)== CLK_CLKSEL0_HIRCSEL_Msk)
                 u32ClkSrc = __HIRC36M;
-            else {
+            else
+            {
                 if((CLK->PWRCTL & CLK_PWRCTL_HIRC0EN_Msk)==CLK_PWRCTL_HIRC0EN_Msk)
                     u32ClkSrc = __HIRC16M;
                 else
@@ -216,11 +238,13 @@ uint32_t SPI_SetBusClock(SPI_T *spi, uint32_t u32BusClock)
     if(u32BusClock > u32ClkSrc)
         u32BusClock = u32ClkSrc;
 
-    if(u32BusClock != 0 ) {
+    if(u32BusClock != 0 )
+    {
         u32Div = (u32ClkSrc / u32BusClock) - 1;
         if(u32Div > SPI_CLKDIV_DIVIDER_Msk)
             u32Div = SPI_CLKDIV_DIVIDER_Msk;
-    } else
+    }
+    else
         return 0;
 
     spi->CLKDIV = (spi->CLKDIV & ~SPI_CLKDIV_DIVIDER_Msk) | u32Div;
@@ -264,24 +288,29 @@ uint32_t SPI_GetBusClock(SPI_T *spi)
     uint32_t u32Div;
     uint32_t u32ClkSrc;
 
-    if(spi == SPI0) {
+    if(spi == SPI0)
+    {
         if((CLK->CLKSEL1 & CLK_CLKSEL1_SPI0SEL_Msk) == CLK_CLKSEL1_SPI0SEL_HCLK)
             u32ClkSrc = CLK_GetHCLKFreq();
         else
             u32ClkSrc = CLK_GetPLLClockFreq();
     }
-    if(spi == SPI1) {
+    if(spi == SPI1)
+    {
         if((CLK->CLKSEL1 & CLK_CLKSEL2_SPI1SEL_Msk) == CLK_CLKSEL2_SPI1SEL_HCLK)
             u32ClkSrc = CLK_GetHCLKFreq();
         else
             u32ClkSrc = CLK_GetPLLClockFreq();
     }
-    if(spi == SPI2) {
+    if(spi == SPI2)
+    {
         if((CLK->CLKSEL2 & CLK_CLKSEL1_SPI2SEL_Msk) == CLK_CLKSEL1_SPI2SEL_HCLK)
             u32ClkSrc = CLK_GetHCLKFreq();
         else
             u32ClkSrc = CLK_GetPLLClockFreq();
-    }   else {
+    }
+    else
+    {
         if((CLK->CLKSEL2 & CLK_CLKSEL2_SPI3SEL_Msk) == CLK_CLKSEL2_SPI3SEL_HCLK)
             u32ClkSrc = CLK_GetHCLKFreq();
         else

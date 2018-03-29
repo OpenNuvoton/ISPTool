@@ -11533,7 +11533,7 @@ typedef struct
      * |        |          |0 = HIRC1 trim value update limitation count does not reach.
      * |        |          |1 = HIRC1 trim value update limitation count reached and frequency still not locked.
      * |[10]    |CLKERRIF1 |HIRC1 Clock Error Interrupt Status
-     * |        |          |When the frequency of SOF or 48 MHz internal high speed RC oscillator 1 (HIRC1) is shift larger to unreasonable value, this bit will be set and to be an indicate that clock frequency is inaccuracy.
+     * |        |          |When the frequency of 48 MHz internal high speed RC oscillator 1 (HIRC1) is shift larger to unreasonable value, this bit will be set and to be an indicate that clock frequency is inaccuracy.
      * |        |          |Once this bit is set to 1, the auto trim operation stopped and FREQSEL(SYS_IRCTCL1[1:0]) will be cleared to 00 by hardware automatically if CESTOPEN(SYS_IRCTCTL1[8]) is set to 1.
      * |        |          |If this bit is set and CLKEIEN(SYS_IRCTIEN1[2]) is high, an interrupt will be triggered to notify the clock frequency is inaccuracy.
      * |        |          |Write 1 to clear this to 0.
@@ -11552,7 +11552,7 @@ typedef struct
      * |        |          |10 = Enable HIRC1 auto trim function and trim HIRC to 48 MHz.
      * |        |          |11 = Reserved.
      * |[5:4]   |LOOPSEL   |Trim Calculation Loop Selection
-     * |        |          |This field defines that trim value calculation is based on how many clocks of reference clock (1 kHz, SOF).
+     * |        |          |This field defines that trim value calculation is based on how many clocks of reference clock.
      * |        |          |00 = Trim value calculation is based on average difference in 4 clocks of reference clock.
      * |        |          |01 = Trim value calculation is based on average difference in 8 clocks of reference clock.
      * |        |          |10 = Trim value calculation is based on average difference in 16 clocks of reference clock.

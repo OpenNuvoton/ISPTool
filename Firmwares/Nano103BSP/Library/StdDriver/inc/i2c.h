@@ -81,8 +81,8 @@ do { \
   */
 #define I2C_WAIT_READY(i2c) \
 do { \
-	while(!((i2c)->INTSTS & I2C_INTSTS_INTSTS_Msk)); \
-	(i2c)->INTSTS |= I2C_INTSTS_INTSTS_Msk; \
+    while(!((i2c)->INTSTS & I2C_INTSTS_INTSTS_Msk)); \
+    (i2c)->INTSTS |= I2C_INTSTS_INTSTS_Msk; \
 } while(0)
 
 /**
@@ -91,7 +91,7 @@ do { \
   * @return Data.
   * \hideinitializer
   */
-#define I2C_GET_DATA(i2c) ((i2c)->DAT ) 
+#define I2C_GET_DATA(i2c) ((i2c)->DAT )
 
 /**
   * @brief This macro writes the data to data register of I2C module.

@@ -65,8 +65,8 @@ extern "C"
 #define IS_BOOT_FROM_APROM      0               /*!< Is booting from APROM                */
 #define IS_BOOT_FROM_LDROM      1               /*!< Is booting from LDROM                */
 
-#define READ_ALLONE_YES         0xA11FFFFF      /*!< Check-all-one result is all one.     */         
-#define READ_ALLONE_NOT         0xA1100000      /*!< Check-all-one result is not all one. */         
+#define READ_ALLONE_YES         0xA11FFFFF      /*!< Check-all-one result is all one.     */
+#define READ_ALLONE_NOT         0xA1100000      /*!< Check-all-one result is not all one. */
 #define READ_ALLONE_CMD_FAIL    0xFFFFFFFF      /*!< Check-all-one command failed.        */
 
 

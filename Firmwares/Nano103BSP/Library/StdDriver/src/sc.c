@@ -97,10 +97,13 @@ void SC_Open(SC_T *sc, uint32_t u32CD, uint32_t u32PWR)
     else
         u32Intf = 1;
 
-    if(u32CD != SC_PIN_STATE_IGNORE) {
+    if(u32CD != SC_PIN_STATE_IGNORE)
+    {
         u32Reg = u32CD ? 0: SC_PINCTL_CDLV_Msk;
         u32CardStateIgnore[u32Intf] = 0;
-    } else {
+    }
+    else
+    {
         u32CardStateIgnore[u32Intf] = 1;
     }
     u32Reg |= u32PWR ? 0 : SC_PINCTL_PWRINV_Msk;
@@ -125,9 +128,9 @@ void SC_ResetReader(SC_T *sc)
     // Reset FIFO
     sc->ALTCTL |= (SC_ALTCTL_TXRST_Msk | SC_ALTCTL_RXRST_Msk);
     // Set Rx trigger level to 1 character, longest card detect debounce period, disable error retry (EMV ATR does not use error retry)
-    sc->CTL &= ~(SC_CTL_RXTRGLV_Msk | 
-                 SC_CTL_CDDBSEL_Msk | 
-                 SC_CTL_TXRTY_Msk | 
+    sc->CTL &= ~(SC_CTL_RXTRGLV_Msk |
+                 SC_CTL_CDDBSEL_Msk |
+                 SC_CTL_TXRTY_Msk |
                  SC_CTL_TXRTYEN_Msk |
                  SC_CTL_RXRTY_Msk |
                  SC_CTL_RXRTYEN_Msk);
@@ -221,13 +224,18 @@ void SC_StartTimer(SC_T *sc, uint32_t u32TimerNum, uint32_t u32Mode, uint32_t u3
 {
     uint32_t reg = u32Mode | (SC_TMRCTL0_CNT_Msk & (u32ETUCount - 1));
 
-    if(u32TimerNum == 0) {
+    if(u32TimerNum == 0)
+    {
         sc->TMRCTL0 = reg;
         sc->ALTCTL |= SC_ALTCTL_CNTEN0_Msk;
-    } else if(u32TimerNum == 1) {
+    }
+    else if(u32TimerNum == 1)
+    {
         sc->TMRCTL1 = reg;
         sc->ALTCTL |= SC_ALTCTL_CNTEN1_Msk;
-    } else {   // timer 2
+    }
+    else       // timer 2
+    {
         sc->TMRCTL2 = reg;
         sc->ALTCTL |= SC_ALTCTL_CNTEN2_Msk;
     }
@@ -259,30 +267,47 @@ uint32_t SC_GetInterfaceClock(SC_T *sc)
 {
     uint32_t reg, freq;
 
-    if(sc == (SC_T *)SC0) {
+    if(sc == (SC_T *)SC0)
+    {
         reg = (CLK->CLKSEL2 & CLK_CLKSEL2_SC0SEL_Msk) >> CLK_CLKSEL2_SC0SEL_Pos;
-    } else {
+    }
+    else
+    {
         reg = (CLK->CLKSEL2 & CLK_CLKSEL2_SC1SEL_Msk) >> CLK_CLKSEL2_SC1SEL_Pos;
     }
 
-    if(reg == (CLK_CLKSEL2_SC0SEL_HXT >> CLK_CLKSEL2_SC0SEL_Pos)) {
+    if(reg == (CLK_CLKSEL2_SC0SEL_HXT >> CLK_CLKSEL2_SC0SEL_Pos))
+    {
         freq = __HXT;
-    } else if(reg == (CLK_CLKSEL2_SC0SEL_PLL >> CLK_CLKSEL2_SC0SEL_Pos)) {
+    }
+    else if(reg == (CLK_CLKSEL2_SC0SEL_PLL >> CLK_CLKSEL2_SC0SEL_Pos))
+    {
         freq = CLK_GetPLLClockFreq();
-    } else if(reg == (CLK_CLKSEL2_SC0SEL_HIRC >> CLK_CLKSEL2_SC0SEL_Pos)) {
-        if(CLK->CLKSEL0 & CLK_CLKSEL0_HIRCSEL_Msk) {
+    }
+    else if(reg == (CLK_CLKSEL2_SC0SEL_HIRC >> CLK_CLKSEL2_SC0SEL_Pos))
+    {
+        if(CLK->CLKSEL0 & CLK_CLKSEL0_HIRCSEL_Msk)
+        {
             freq = __HIRC36M;
-        } else {
+        }
+        else
+        {
             freq = __HIRC12M;
         }
-    } else if(reg == (CLK_CLKSEL2_SC0SEL_MIRC >> CLK_CLKSEL2_SC0SEL_Pos)) {
+    }
+    else if(reg == (CLK_CLKSEL2_SC0SEL_MIRC >> CLK_CLKSEL2_SC0SEL_Pos))
+    {
         freq = __MIRC;
-    } else
+    }
+    else
         freq = SystemCoreClock;
 
-    if(sc == (SC_T *)SC0) {
+    if(sc == (SC_T *)SC0)
+    {
         freq /= (((CLK->CLKDIV0 & CLK_CLKDIV0_SC0DIV_Msk) >> (CLK_CLKDIV0_SC0DIV_Pos)) + 1);
-    } else {
+    }
+    else
+    {
         freq /= (((CLK->CLKDIV1 & CLK_CLKDIV1_SC1DIV_Msk) >> (CLK_CLKDIV1_SC1DIV_Pos)) + 1);
     }
     return (freq /1000);

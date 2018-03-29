@@ -30,17 +30,21 @@
 uint32_t _UART_GetUartClk(UART_T* uart)
 {
     uint8_t u8UartClkSrcSel = 0;
-    uint32_t clk =0 , div = 1;
+    uint32_t clk =0, div = 1;
 
-    if(uart == UART0) {
+    if(uart == UART0)
+    {
         u8UartClkSrcSel = (CLK->CLKSEL1 & CLK_CLKSEL1_UART0SEL_Msk) >> CLK_CLKSEL1_UART0SEL_Pos;
         div = ( (CLK->CLKDIV0 & CLK_CLKDIV0_UART0DIV_Msk) >> CLK_CLKDIV0_UART0DIV_Pos) + 1; /* Get uart clock divider */
-    } else if(uart == UART1) {
+    }
+    else if(uart == UART1)
+    {
         u8UartClkSrcSel = (CLK->CLKSEL2 & CLK_CLKSEL2_UART1SEL_Msk) >> CLK_CLKSEL2_UART1SEL_Pos;
         div = ( (CLK->CLKDIV0 & CLK_CLKDIV0_UART1DIV_Msk) >> CLK_CLKDIV0_UART1DIV_Pos) + 1; /* Get uart clock divider */
     }
 
-    switch (u8UartClkSrcSel) { /* Get uart selected clock source */
+    switch (u8UartClkSrcSel)   /* Get uart selected clock source */
+    {
     case 0:
         clk = __HXT; /* HXT */
         break;
@@ -53,7 +57,8 @@ uint32_t _UART_GetUartClk(UART_T* uart)
     case 3:
         if(CLK->CLKSEL0 & CLK_CLKSEL0_HIRCSEL_Msk)
             clk = __HIRC36M; /* HIRC 36M Hz*/
-        else {
+        else
+        {
             if(CLK->PWRCTL & CLK_PWRCTL_HIRC0FSEL_Msk)
                 clk = __HIRC16M; /* HIRC 16M Hz*/
             else
@@ -90,10 +95,11 @@ extern uint32_t SysGet_PLLClockFreq(void);
  *
  *    @return None
  */
-void UART_ClearIntFlag(UART_T* uart , uint32_t u32InterruptFlag)
+void UART_ClearIntFlag(UART_T* uart, uint32_t u32InterruptFlag)
 {
 
-    if(u32InterruptFlag & UART_INTSTS_RLSIF_Msk) { /* clear Receive Line Status Interrupt */
+    if(u32InterruptFlag & UART_INTSTS_RLSIF_Msk)   /* clear Receive Line Status Interrupt */
+    {
         uart->FIFOSTS = UART_FIFOSTS_BIF_Msk | UART_FIFOSTS_FEF_Msk | UART_FIFOSTS_PEF_Msk;
         uart->TRSR = UART_TRSR_ADDRDETF_Msk;
     }
@@ -101,19 +107,23 @@ void UART_ClearIntFlag(UART_T* uart , uint32_t u32InterruptFlag)
     if(u32InterruptFlag & UART_INTSTS_MODEMIF_Msk)  /* clear Modem Interrupt */
         uart->MODEM |= UART_MODEM_CTSDETF_Msk;
 
-    if(u32InterruptFlag & UART_INTSTS_BUFERRIF_Msk) { /* clear Buffer Error Interrupt */
+    if(u32InterruptFlag & UART_INTSTS_BUFERRIF_Msk)   /* clear Buffer Error Interrupt */
+    {
         uart->FIFOSTS = UART_FIFOSTS_RXOVIF_Msk | UART_FIFOSTS_TXOVIF_Msk;
     }
 
-    if(u32InterruptFlag & UART_INTSTS_WKUPIF_Msk) { /* clear wake up Interrupt */
+    if(u32InterruptFlag & UART_INTSTS_WKUPIF_Msk)   /* clear wake up Interrupt */
+    {
         uart->INTSTS = UART_INTSTS_WKUPIF_Msk;
     }
 
-    if(u32InterruptFlag & UART_INTSTS_ABRIF_Msk) { /* clear auto-baud rate Interrupt */
+    if(u32InterruptFlag & UART_INTSTS_ABRIF_Msk)   /* clear auto-baud rate Interrupt */
+    {
         uart->TRSR = UART_TRSR_ABRDTOIF_Msk | UART_TRSR_ABRDIF_Msk;
     }
 
-    if(u32InterruptFlag & UART_INTSTS_LINIF_Msk) { /* clear LIN break Interrupt */
+    if(u32InterruptFlag & UART_INTSTS_LINIF_Msk)   /* clear LIN break Interrupt */
+    {
         uart->TRSR = UART_TRSR_LINTXIF_Msk | UART_TRSR_LINRXIF_Msk | UART_TRSR_BITEF_Msk;
     }
 
@@ -230,7 +240,8 @@ void UART_Open(UART_T* uart, uint32_t u32baudrate)
     uart->LINE = UART_WORD_LEN_8 | UART_PARITY_NONE | UART_STOP_BIT_1 |
                  UART_LINE_RFITL_1BYTE | UART_LINE_RTS_TRI_LEV_1BYTE;
 
-    if(u32baudrate != 0) {
+    if(u32baudrate != 0)
+    {
         u32Baud_Div = UART_BAUD_MODE0_DIVIDER(u32SrcFreq, u32baudrate);
 
         if(u32Baud_Div > 0xFFFF)
@@ -255,10 +266,12 @@ uint32_t UART_Read(UART_T* uart, uint8_t *pu8RxBuf, uint32_t u32ReadBytes)
 {
     uint32_t  u32Count, u32delayno;
 
-    for(u32Count=0; u32Count < u32ReadBytes; u32Count++) {
+    for(u32Count=0; u32Count < u32ReadBytes; u32Count++)
+    {
         u32delayno = 0;
 
-        while(uart->FIFOSTS & UART_FIFOSTS_RXEMPTY_Msk) { /* Check RX empty => failed */
+        while(uart->FIFOSTS & UART_FIFOSTS_RXEMPTY_Msk)   /* Check RX empty => failed */
+        {
             u32delayno++;
             if( u32delayno >= 0x40000000 )
                 return FALSE;
@@ -290,7 +303,8 @@ void UART_SetLine_Config(UART_T* uart, uint32_t u32baudrate, uint32_t u32data_wi
 
     u32SrcFreq = _UART_GetUartClk(uart);
 
-    if(u32baudrate != 0) {
+    if(u32baudrate != 0)
+    {
         u32Baud_Div = UART_BAUD_MODE0_DIVIDER(u32SrcFreq, u32baudrate);
 
         if(u32Baud_Div > 0xFFFF)
@@ -397,9 +411,11 @@ uint32_t UART_Write(UART_T* uart,uint8_t *pu8TxBuf, uint32_t u32WriteBytes)
 {
     uint32_t  u32Count, u32delayno;
 
-    for(u32Count=0; u32Count != u32WriteBytes; u32Count++) {
+    for(u32Count=0; u32Count != u32WriteBytes; u32Count++)
+    {
         u32delayno = 0;
-        while((uart->FIFOSTS & UART_FIFOSTS_TXEMPTY_Msk) == 0) { /* Wait Tx empty and Time-out manner */
+        while((uart->FIFOSTS & UART_FIFOSTS_TXEMPTY_Msk) == 0)   /* Wait Tx empty and Time-out manner */
+        {
             u32delayno++;
             if( u32delayno >= 0x40000000 )
                 return FALSE;

@@ -1,12 +1,12 @@
-/******************************************************************************
+/****************************************************************************//**
  * @file     system_Nano103.c
  * @version  V1.00
  * $Revision: 7 $
  * $Date: 16/04/29 6:58p $
- * @brief    Nano103 system clock init code and assert handler
+ * @brief    Nano103 system clock init code.
  *
  * @note
- * Copyright (C) 2015 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2015~2018 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
 
 #include <stdint.h>
@@ -34,21 +34,29 @@ uint32_t SysGet_PLLClockFreq(void)
     if (u32PllReg & CLK_PLLCTL_PD)
         return 0;    /* PLL is in power down mode */
 
-    if((u32PllReg & CLK_PLLCTL_PLLSRC_Msk) == CLK_PLLCTL_PLL_SRC_HXT) {
+    if((u32PllReg & CLK_PLLCTL_PLLSRC_Msk) == CLK_PLLCTL_PLL_SRC_HXT)
+    {
         u32PLLSrc = __HXT;
-    } else if((u32PllReg & CLK_PLLCTL_PLLSRC_Msk) == CLK_PLLCTL_PLL_SRC_HIRC) {
+    }
+    else if((u32PllReg & CLK_PLLCTL_PLLSRC_Msk) == CLK_PLLCTL_PLL_SRC_HIRC)
+    {
         /* HIRC Source Selection */
-        if(CLK->CLKSEL0 & CLK_CLKSEL0_HIRCSEL_Msk) {
+        if(CLK->CLKSEL0 & CLK_CLKSEL0_HIRCSEL_Msk)
+        {
             /* Clock source from HIRC1 (36MHz) */
             u32PLLSrc =__HIRC36M;
-        } else {
+        }
+        else
+        {
             /* Clock source from HIRC0 (12MHz) */
             if(CLK->PWRCTL & CLK_PWRCTL_HIRC0FSEL_Msk)
                 u32PLLSrc =__HIRC16M;
             else
                 u32PLLSrc =__HIRC12M;
         }
-    } else {
+    }
+    else
+    {
         u32PLLSrc =__MIRC;
     }
 
@@ -73,27 +81,41 @@ uint32_t SysGet_HCLKFreq(void)
 
     u32ClkSel = CLK->CLKSEL0 & CLK_CLKSEL0_HCLKSEL_Msk;
 
-    if (u32ClkSel == CLK_CLKSEL0_HCLKSEL_HXT) {  /* external HXT crystal clock */
+    if (u32ClkSel == CLK_CLKSEL0_HCLKSEL_HXT)    /* external HXT crystal clock */
+    {
         u32Freqout = __HXT;
-    } else if(u32ClkSel == CLK_CLKSEL0_HCLKSEL_LXT) {           /* external LXT crystal clock */
+    }
+    else if(u32ClkSel == CLK_CLKSEL0_HCLKSEL_LXT)               /* external LXT crystal clock */
+    {
         u32Freqout = __LXT;
-    } else if(u32ClkSel == CLK_CLKSEL0_HCLKSEL_PLL) {           /* PLL clock */
+    }
+    else if(u32ClkSel == CLK_CLKSEL0_HCLKSEL_PLL)               /* PLL clock */
+    {
         u32Freqout = SysGet_PLLClockFreq();
-    } else if(u32ClkSel == CLK_CLKSEL0_HCLKSEL_LIRC) {          /* internal LIRC oscillator clock */
+    }
+    else if(u32ClkSel == CLK_CLKSEL0_HCLKSEL_LIRC)              /* internal LIRC oscillator clock */
+    {
         u32Freqout = __LIRC;
-    } else if(u32ClkSel == CLK_CLKSEL0_HCLKSEL_HIRC) {          /* internal HIRC oscillator clock */
+    }
+    else if(u32ClkSel == CLK_CLKSEL0_HCLKSEL_HIRC)              /* internal HIRC oscillator clock */
+    {
         /* HIRC Source Selection */
-        if(CLK->CLKSEL0 & CLK_CLKSEL0_HIRCSEL_Msk) {
+        if(CLK->CLKSEL0 & CLK_CLKSEL0_HIRCSEL_Msk)
+        {
             /* Clock source from HIRC1 (36MHz) */
             u32Freqout =__HIRC36M;
-        } else {
+        }
+        else
+        {
             /* Clock source from HIRC0 (12MHz) */
             if((CLK->PWRCTL & CLK_PWRCTL_HIRC0FSEL_Msk) == CLK_PWRCTL_HIRC0FSEL_Msk)
                 u32Freqout =__HIRC16M;
             else
                 u32Freqout =__HIRC12M;
         }
-    } else {        /* internal MIRC oscillator clock */
+    }
+    else            /* internal MIRC oscillator clock */
+    {
         u32Freqout = __MIRC;
     }
     u32AHBDivider = (CLK->CLKDIV0 & CLK_CLKDIV0_HCLKDIV_Msk) + 1 ;
@@ -120,26 +142,17 @@ void SystemCoreClockUpdate (void)
  *
  * @return none
  *
- * @brief  Support PA9 in 32-pin package. Should call with CAP unlocked.
+ * @brief  Support PA9 in 32-pin package and adjust LXT gain level. Should call with register protection disabled.
  */
 void SystemInit (void)
 {
-    // PDID list of 32-pin packages
-    uint32_t u32PDID[] = {0x00110307, 0x00110308, 0x00110309,
-                          0x00110318, 0x00110314, 0x00110315};
-    uint32_t u32MyPDID = SYS->PDID;
-    int i;
 
-    for(i = 0; i < sizeof(u32PDID)/sizeof(uint32_t); i++) {
-        if(u32PDID[i] == u32MyPDID) {
-            CLK->APBCLK |= CLK_APBCLK_RTCCKEN_Msk;
-            RTC->RWEN = RTC_WRITE_KEY;
-            *(unsigned int volatile *)(0x400081F0) = SYS->RPDBCLK;
-            CLK->APBCLK &= ~CLK_APBCLK_RTCCKEN_Msk;
-            break;
-        }
-    }
-
+    CLK->APBCLK |= CLK_APBCLK_RTCCKEN_Msk;
+    RTC->RWEN = RTC_WRITE_KEY;
+    // RTC->MISCCTL = SYS->RPDBCLK will enable PA9 in 32-pin package and do nothing on other packages
+    // Other arithmetic is for adjust LXT gain level.
+    RTC->MISCCTL = ((SYS->RPDBCLK | RTC_MISCCTL_GAINSEL_Msk) & ~0x00FF0000) | 0x00B00000;
+    CLK->APBCLK &= ~CLK_APBCLK_RTCCKEN_Msk;
 }
 
-/*** (C) COPYRIGHT 2015 Nuvoton Technology Corp. ***/
+/*** (C) COPYRIGHT 2018 Nuvoton Technology Corp. ***/

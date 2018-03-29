@@ -50,10 +50,13 @@ uint32_t I2C_Open(I2C_T *i2c, uint32_t u32BusClock)
 void I2C_Close(I2C_T *i2c)
 {
     /* Reset I2C */
-    if((uint32_t)i2c == I2C0_BASE) {
+    if((uint32_t)i2c == I2C0_BASE)
+    {
         SYS->IPRST2 |= SYS_IPRST2_I2C0RST_Msk;
         SYS->IPRST2 &= ~SYS_IPRST2_I2C0RST_Msk;
-    } else {
+    }
+    else
+    {
         SYS->IPRST2 |= SYS_IPRST2_I2C1RST_Msk;
         SYS->IPRST2 &= ~SYS_IPRST2_I2C1RST_Msk;
     }
@@ -144,9 +147,12 @@ uint32_t I2C_SetBusClockFreq(I2C_T *i2c, uint32_t u32BusClock)
     uint32_t u32Div;
     uint32_t volatile u32Pclk;
 
-    if((uint32_t)i2c == I2C0_BASE) {
+    if((uint32_t)i2c == I2C0_BASE)
+    {
         u32Pclk = CLK_GetPCLK0Freq();
-    } else {
+    }
+    else
+    {
         u32Pclk = CLK_GetPCLK1Freq();
     }
 
@@ -221,7 +227,8 @@ void I2C_SetData(I2C_T *i2c, uint8_t u8Data)
   */
 void I2C_SetSlaveAddr(I2C_T *i2c, uint8_t u8SlaveNo, uint8_t u8SlaveAddr, uint8_t u8GCMode)
 {
-    switch (u8SlaveNo) {
+    switch (u8SlaveNo)
+    {
     case 0:
         i2c->ADDR0  = (u8SlaveAddr << 1) | u8GCMode;
         break;
@@ -242,7 +249,8 @@ void I2C_SetSlaveAddr(I2C_T *i2c, uint8_t u8SlaveNo, uint8_t u8SlaveAddr, uint8_
   */
 void I2C_SetSlaveAddrMask(I2C_T *i2c, uint8_t u8SlaveNo, uint8_t u8SlaveAddrMask)
 {
-    switch (u8SlaveNo) {
+    switch (u8SlaveNo)
+    {
     case 0:
         i2c->ADDRMSK0  = u8SlaveAddrMask << 1;
         break;

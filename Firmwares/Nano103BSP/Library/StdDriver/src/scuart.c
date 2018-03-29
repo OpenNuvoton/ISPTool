@@ -48,30 +48,47 @@ static uint32_t SCUART_GetClock(SC_T *sc)
     uint32_t u32Clk;
 
 
-    if(sc == (SC_T *)SC0) {
+    if(sc == (SC_T *)SC0)
+    {
         u32Reg = (CLK->CLKSEL2 & CLK_CLKSEL2_SC0SEL_Msk) >> CLK_CLKSEL2_SC0SEL_Pos;
-    } else {
+    }
+    else
+    {
         u32Reg = (CLK->CLKSEL2 & CLK_CLKSEL2_SC1SEL_Msk) >> CLK_CLKSEL2_SC1SEL_Pos;
     }
 
-    if(u32Reg == (CLK_CLKSEL2_SC0SEL_HXT >> CLK_CLKSEL2_SC0SEL_Pos)) {
+    if(u32Reg == (CLK_CLKSEL2_SC0SEL_HXT >> CLK_CLKSEL2_SC0SEL_Pos))
+    {
         u32Clk = __HXT;
-    } else if(u32Reg == (CLK_CLKSEL2_SC0SEL_PLL >> CLK_CLKSEL2_SC0SEL_Pos)) {
+    }
+    else if(u32Reg == (CLK_CLKSEL2_SC0SEL_PLL >> CLK_CLKSEL2_SC0SEL_Pos))
+    {
         u32Clk = CLK_GetPLLClockFreq();
-    } else if(u32Reg == (CLK_CLKSEL2_SC0SEL_HIRC >> CLK_CLKSEL2_SC0SEL_Pos)) {
-        if(CLK->CLKSEL0 & CLK_CLKSEL0_HIRCSEL_Msk) {
+    }
+    else if(u32Reg == (CLK_CLKSEL2_SC0SEL_HIRC >> CLK_CLKSEL2_SC0SEL_Pos))
+    {
+        if(CLK->CLKSEL0 & CLK_CLKSEL0_HIRCSEL_Msk)
+        {
             u32Clk = __HIRC36M;
-        } else {
+        }
+        else
+        {
             u32Clk = __HIRC12M;
         }
-    } else if(u32Reg == (CLK_CLKSEL2_SC0SEL_MIRC >> CLK_CLKSEL2_SC0SEL_Pos)) {
+    }
+    else if(u32Reg == (CLK_CLKSEL2_SC0SEL_MIRC >> CLK_CLKSEL2_SC0SEL_Pos))
+    {
         u32Clk = __MIRC;
-    } else
+    }
+    else
         u32Clk = SystemCoreClock;
 
-    if(sc == (SC_T *)SC0) {
+    if(sc == (SC_T *)SC0)
+    {
         u32Clk /= (((CLK->CLKDIV0 & CLK_CLKDIV0_SC0DIV_Msk) >> (CLK_CLKDIV0_SC0DIV_Pos)) + 1);
-    } else {
+    }
+    else
+    {
         u32Clk /= (((CLK->CLKDIV1 & CLK_CLKDIV1_SC1DIV_Msk) >> (CLK_CLKDIV1_SC1DIV_Pos)) + 1);
     }
     return u32Clk;
@@ -88,7 +105,7 @@ static uint32_t SCUART_GetClock(SC_T *sc)
   * @details This function configures character width to 8 bits, 1 stop bit, and no parity.
   *          And can use \ref SCUART_SetLineConfig function to update these settings
   *          The baudrate clock source comes from SC_CLK/SC_DIV, where SC_CLK is controlled
-  *          by SC0SEL(CLKSEL2[18:16]) and SC1SEL(CLKSEL2[22:20]), SC_DIV is controlled by 
+  *          by SC0SEL(CLKSEL2[18:16]) and SC1SEL(CLKSEL2[22:20]), SC_DIV is controlled by
   *          SC0DIV(CLKDIV0[31:28]) and SC1DIV(CLKDIV1[3:0]). Since the baudrate divider is
   *          12-bit wide and must be larger than 4, (clock source / baudrate) must be
   *          larger or equal to 5 and smaller or equal to 4096. Otherwise this function
@@ -120,8 +137,10 @@ uint32_t SCUART_Read(SC_T* sc, uint8_t *pu8RxBuf, uint32_t u32ReadBytes)
 {
     uint32_t u32Count;
 
-    for(u32Count = 0; u32Count < u32ReadBytes; u32Count++) {
-        if(SCUART_GET_RX_EMPTY(sc)) { // no data available
+    for(u32Count = 0; u32Count < u32ReadBytes; u32Count++)
+    {
+        if(SCUART_GET_RX_EMPTY(sc))   // no data available
+        {
             break;
         }
         pu8RxBuf[u32Count] = SCUART_READ(sc);    // get data from FIFO
@@ -148,7 +167,7 @@ uint32_t SCUART_Read(SC_T* sc, uint8_t *pu8RxBuf, uint32_t u32ReadBytes)
   *                 - \ref SCUART_STOP_BIT_2
   * @return Actual baudrate of smartcard
   * @details The baudrate clock source comes from SC_CLK/SC_DIV, where SC_CLK is controlled
-  *          by SC0SEL(CLKSEL2[18:16]) and SC1SEL(CLKSEL2[22:20]), SC_DIV is controlled by 
+  *          by SC0SEL(CLKSEL2[18:16]) and SC1SEL(CLKSEL2[22:20]), SC_DIV is controlled by
   *          SC0DIV(CLKDIV0[31:28]) and SC1DIV(CLKDIV1[3:0]). Since the baudrate divider is
   *          12-bit wide and must be larger than 4, (clock source / baudrate) must be
   *          larger or equal to 5 and smaller or equal to 4096. Otherwise this function
@@ -158,9 +177,12 @@ uint32_t SCUART_SetLineConfig(SC_T* sc, uint32_t u32Baudrate, uint32_t u32DataWi
 {
     uint32_t u32Clk = SCUART_GetClock(sc), u32Div;
 
-    if(u32Baudrate == 0) {  // keep original baudrate setting
+    if(u32Baudrate == 0)    // keep original baudrate setting
+    {
         u32Div = sc->ETUCTL & SC_ETUCTL_ETURDIV_Msk;
-    } else {
+    }
+    else
+    {
         // Calculate divider for target baudrate
         u32Div = (u32Clk + (u32Baudrate >> 1) - 1)/ u32Baudrate - 1;
         sc->ETUCTL = u32Div;
@@ -200,7 +222,8 @@ void SCUART_Write(SC_T* sc,uint8_t *pu8TxBuf, uint32_t u32WriteBytes)
 {
     uint32_t u32Count;
 
-    for(u32Count = 0; u32Count != u32WriteBytes; u32Count++) {
+    for(u32Count = 0; u32Count != u32WriteBytes; u32Count++)
+    {
         while(SCUART_GET_TX_FULL(sc));  // Wait 'til FIFO not full
         sc->DAT = pu8TxBuf[u32Count];    // Write 1 byte to FIFO
     }

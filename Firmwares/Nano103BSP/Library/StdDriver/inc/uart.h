@@ -242,7 +242,7 @@ extern "C"
  *    @brief    Set Rx FIFO interrupt Trigger Level
  *
  *    @param    uart        The base address of UART module
- *    @param    u32TriggerLevel   RX FIFO interrupt Trigger Level. ( \ref UART_LINE_RFITL_1BYTE / \ref UART_LINE_RFITL_4BYTES / 
+ *    @param    u32TriggerLevel   RX FIFO interrupt Trigger Level. ( \ref UART_LINE_RFITL_1BYTE / \ref UART_LINE_RFITL_4BYTES /
  *                                                                   \ref UART_LINE_RFITL_8BYTES / \ref UART_LINE_RFITL_14BYTES )
  *    @return    None
  */
@@ -351,7 +351,7 @@ __INLINE void UART_SET_RTS(UART_T* uart)
 #define UART_RS485_GET_ADDR_FLAG(uart)    ((uart->TRSR  & UART_TRSR_ADDRDETF_Msk) >> UART_TRSR_ADDRDETF_Pos)
 
 
-void UART_ClearIntFlag(UART_T* uart , uint32_t u32InterruptFlag);
+void UART_ClearIntFlag(UART_T* uart, uint32_t u32InterruptFlag);
 void UART_Close(UART_T* uart );
 void UART_DisableFlowCtrl(UART_T* uart );
 void UART_DisableInt(UART_T*  uart, uint32_t u32InterruptFlag );

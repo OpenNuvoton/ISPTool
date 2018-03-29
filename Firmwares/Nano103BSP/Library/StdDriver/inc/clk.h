@@ -101,7 +101,7 @@ extern "C"
 #define CLK_PLLCTL_PLL_SRC_MIRC   ((uint32_t)(0x00040000))    /*!< For PLL clock source is MIRC */
 
 #define CLK_PLL_SRC_N(x)          (((x)-1)<<8)                   /*!< PLL Input Source Divider */
-#define CLK_PLL_MLP(x)            ((x)<<0)                       /*!< PLL Multiple */ 
+#define CLK_PLL_MLP(x)            ((x)<<0)                       /*!< PLL Multiple */
 #if (__HXT == 12000000)
 #define CLK_PLLCTL_36MHz_HXT   (CLK_PLLCTL_PLL_SRC_HXT  | CLK_PLL_SRC_N(12) | CLK_PLL_MLP(36)) /*!< Predefined PLLCTL setting for 36MHz PLL output with 12MHz X'tal */
 #define CLK_PLLCTL_32MHz_HXT   (CLK_PLLCTL_PLL_SRC_HXT  | CLK_PLL_SRC_N(12) | CLK_PLL_MLP(32)) /*!< Predefined PLLCTL setting for 32MHz PLL output with 12MHz X'tal */
@@ -136,7 +136,7 @@ extern "C"
 /********************* Bit definition of CLKSEL0 register **********************/
 #define CLK_CLKSEL0_HCLKSEL_HXT          (0x0UL<<CLK_CLKSEL0_HCLKSEL_Pos)         /*!<Select HCLK clock source from high speed crystal */
 #define CLK_CLKSEL0_HCLKSEL_LXT          (0x1UL<<CLK_CLKSEL0_HCLKSEL_Pos)         /*!<Select HCLK clock source from low speed crystal */
-#define CLK_CLKSEL0_HCLKSEL_PLL          (0x2UL<<CLK_CLKSEL0_HCLKSEL_Pos)         /*!<Select HCLK clock source from PLL */ 
+#define CLK_CLKSEL0_HCLKSEL_PLL          (0x2UL<<CLK_CLKSEL0_HCLKSEL_Pos)         /*!<Select HCLK clock source from PLL */
 #define CLK_CLKSEL0_HCLKSEL_LIRC         (0x3UL<<CLK_CLKSEL0_HCLKSEL_Pos)         /*!<Select HCLK clock source from low speed oscillator */
 #define CLK_CLKSEL0_HCLKSEL_HIRC         (0x4UL<<CLK_CLKSEL0_HCLKSEL_Pos)         /*!<Select HCLK clock source from high speed oscillator */
 #define CLK_CLKSEL0_HCLKSEL_HIRC0        (0x4UL<<CLK_CLKSEL0_HCLKSEL_Pos)         /*!<Select HCLK clock source from high speed oscillator */
@@ -150,7 +150,7 @@ extern "C"
 #define CLK_CLKSEL1_UART0SEL_PLL         (0x2UL<<CLK_CLKSEL1_UART0SEL_Pos)        /*!<Select UART0 clock source from PLL */
 #define CLK_CLKSEL1_UART0SEL_HIRC        (0x3UL<<CLK_CLKSEL1_UART0SEL_Pos)        /*!<Select UART0 clock source from high speed oscillator */
 #define CLK_CLKSEL1_UART0SEL_MIRC        (0x4UL<<CLK_CLKSEL1_UART0SEL_Pos)        /*!<Select UART0 clock source from medium speed oscillator */
-#define CLK_CLKSEL1_PWM0SEL_PLL          (0x0UL<<CLK_CLKSEL1_PWM0SEL_Pos)         /*!<Select PWM0 clock source from PLL */ 
+#define CLK_CLKSEL1_PWM0SEL_PLL          (0x0UL<<CLK_CLKSEL1_PWM0SEL_Pos)         /*!<Select PWM0 clock source from PLL */
 #define CLK_CLKSEL1_PWM0SEL_PCLK0        (0x1UL<<CLK_CLKSEL1_PWM0SEL_Pos)         /*!<Select PWM0 clock source from PCLK0 */
 #define CLK_CLKSEL1_TMR0SEL_HXT          (0x0UL<<CLK_CLKSEL1_TMR0SEL_Pos)         /*!<Select TMR0 clock source from high speed crystal */
 #define CLK_CLKSEL1_TMR0SEL_LXT          (0x1UL<<CLK_CLKSEL1_TMR0SEL_Pos)         /*!<Select TMR0 clock source from low speed crystal */
@@ -168,16 +168,16 @@ extern "C"
 #define CLK_CLKSEL1_TMR1SEL_HCLK         (0x6UL<<CLK_CLKSEL1_TMR1SEL_Pos)         /*!<Select TMR1 clock source from HCLK */
 #define CLK_CLKSEL1_ADCSEL_HXT           (0x0UL<<CLK_CLKSEL1_ADCSEL_Pos)          /*!<Select ADC  clock source from high speed crystal */
 #define CLK_CLKSEL1_ADCSEL_LXT           (0x1UL<<CLK_CLKSEL1_ADCSEL_Pos)          /*!<Select ADC  clock source from low speed crystal */
-#define CLK_CLKSEL1_ADCSEL_PLL           (0x2UL<<CLK_CLKSEL1_ADCSEL_Pos)          /*!<Select ADC  clock source from PLL */  
+#define CLK_CLKSEL1_ADCSEL_PLL           (0x2UL<<CLK_CLKSEL1_ADCSEL_Pos)          /*!<Select ADC  clock source from PLL */
 #define CLK_CLKSEL1_ADCSEL_HIRC          (0x3UL<<CLK_CLKSEL1_ADCSEL_Pos)          /*!<Select ADC  clock source from high speed oscillator   */
 #define CLK_CLKSEL1_ADCSEL_MIRC          (0x4UL<<CLK_CLKSEL1_ADCSEL_Pos)          /*!<Select ADC  clock source from medium speed oscillator */
-#define CLK_CLKSEL1_ADCSEL_HCLK          (0x5UL<<CLK_CLKSEL1_ADCSEL_Pos)          /*!<Select ADC  clock source from HCLK */ 
+#define CLK_CLKSEL1_ADCSEL_HCLK          (0x5UL<<CLK_CLKSEL1_ADCSEL_Pos)          /*!<Select ADC  clock source from HCLK */
 #define CLK_CLKSEL1_SPI0SEL_HXT          (0x2UL<<CLK_CLKSEL1_SPI0SEL_Pos)         /*!<Select SPI0 clock source from high speed crystal */
-#define CLK_CLKSEL1_SPI0SEL_PLL          (0x0UL<<CLK_CLKSEL1_SPI0SEL_Pos)         /*!<Select SPI0 clock source from PLL */ 
+#define CLK_CLKSEL1_SPI0SEL_PLL          (0x0UL<<CLK_CLKSEL1_SPI0SEL_Pos)         /*!<Select SPI0 clock source from PLL */
 #define CLK_CLKSEL1_SPI0SEL_HIRC         (0x3UL<<CLK_CLKSEL1_SPI0SEL_Pos)         /*!<Select SPI0 clock source from high speed oscillator */
 #define CLK_CLKSEL1_SPI0SEL_HCLK         (0x1UL<<CLK_CLKSEL1_SPI0SEL_Pos)         /*!<Select SPI0 clock source from HCLK */
 #define CLK_CLKSEL1_SPI2SEL_HXT          (0x2UL<<CLK_CLKSEL1_SPI2SEL_Pos)         /*!<Select SPI2 clock source from high speed crystal */
-#define CLK_CLKSEL1_SPI2SEL_PLL          (0x0UL<<CLK_CLKSEL1_SPI2SEL_Pos)         /*!<Select SPI2 clock source from PLL */ 
+#define CLK_CLKSEL1_SPI2SEL_PLL          (0x0UL<<CLK_CLKSEL1_SPI2SEL_Pos)         /*!<Select SPI2 clock source from PLL */
 #define CLK_CLKSEL1_SPI2SEL_HIRC         (0x3UL<<CLK_CLKSEL1_SPI2SEL_Pos)         /*!<Select SPI2 clock source from high speed oscillator */
 #define CLK_CLKSEL1_SPI2SEL_HCLK         (0x1UL<<CLK_CLKSEL1_SPI2SEL_Pos)         /*!<Select SPI2 clock source from HCLK */
 #define CLK_CLKSEL1_WDTSEL_LXT           (0x1UL<<CLK_CLKSEL1_WDTSEL_Pos)          /*!<Select WDT  clock source from low speed crystal */
@@ -211,21 +211,21 @@ extern "C"
 #define CLK_CLKSEL2_TMR3SEL_EXT          (0x3UL<<CLK_CLKSEL2_TMR3SEL_Pos)         /*!<Select TMR3 clock source from external trigger  */
 #define CLK_CLKSEL2_TMR3SEL_HCLK         (0x6UL<<CLK_CLKSEL2_TMR3SEL_Pos)         /*!<Select TMR3 clock source from HCLK */
 #define CLK_CLKSEL2_SC0SEL_HXT           (0x0UL<<CLK_CLKSEL2_SC0SEL_Pos)          /*!<Select SC0 clock source from high speed crystal */
-#define CLK_CLKSEL2_SC0SEL_PLL           (0x1UL<<CLK_CLKSEL2_SC0SEL_Pos)          /*!<Select SC0 clock source from PLL */  
+#define CLK_CLKSEL2_SC0SEL_PLL           (0x1UL<<CLK_CLKSEL2_SC0SEL_Pos)          /*!<Select SC0 clock source from PLL */
 #define CLK_CLKSEL2_SC0SEL_HIRC          (0x2UL<<CLK_CLKSEL2_SC0SEL_Pos)          /*!<Select SC0 clock source from high speed oscillator   */
 #define CLK_CLKSEL2_SC0SEL_MIRC          (0x3UL<<CLK_CLKSEL2_SC0SEL_Pos)          /*!<Select SC0 clock source from medium speed oscillator */
-#define CLK_CLKSEL2_SC0SEL_HCLK          (0x4UL<<CLK_CLKSEL2_SC0SEL_Pos)          /*!<Select SC0 clock source from HCLK */ 
+#define CLK_CLKSEL2_SC0SEL_HCLK          (0x4UL<<CLK_CLKSEL2_SC0SEL_Pos)          /*!<Select SC0 clock source from HCLK */
 #define CLK_CLKSEL2_SC1SEL_HXT           (0x0UL<<CLK_CLKSEL2_SC1SEL_Pos)          /*!<Select SC1 clock source from high speed crystal      */
-#define CLK_CLKSEL2_SC1SEL_PLL           (0x1UL<<CLK_CLKSEL2_SC1SEL_Pos)          /*!<Select SC1 clock source from PLL */  
+#define CLK_CLKSEL2_SC1SEL_PLL           (0x1UL<<CLK_CLKSEL2_SC1SEL_Pos)          /*!<Select SC1 clock source from PLL */
 #define CLK_CLKSEL2_SC1SEL_HIRC          (0x2UL<<CLK_CLKSEL2_SC1SEL_Pos)          /*!<Select SC1 clock source from high speed oscillator   */
 #define CLK_CLKSEL2_SC1SEL_MIRC          (0x3UL<<CLK_CLKSEL2_SC1SEL_Pos)          /*!<Select SC1 clock source from medium speed oscillator */
-#define CLK_CLKSEL2_SC1SEL_HCLK          (0x4UL<<CLK_CLKSEL2_SC1SEL_Pos)          /*!<Select SC1 clock source from HCLK */ 
+#define CLK_CLKSEL2_SC1SEL_HCLK          (0x4UL<<CLK_CLKSEL2_SC1SEL_Pos)          /*!<Select SC1 clock source from HCLK */
 #define CLK_CLKSEL2_SPI1SEL_HXT          (0x2UL<<CLK_CLKSEL2_SPI1SEL_Pos)         /*!<Select SPI1 clock source from high speed crystal */
-#define CLK_CLKSEL2_SPI1SEL_PLL          (0x0UL<<CLK_CLKSEL2_SPI1SEL_Pos)         /*!<Select SPI1 clock source from PLL */ 
+#define CLK_CLKSEL2_SPI1SEL_PLL          (0x0UL<<CLK_CLKSEL2_SPI1SEL_Pos)         /*!<Select SPI1 clock source from PLL */
 #define CLK_CLKSEL2_SPI1SEL_HIRC         (0x3UL<<CLK_CLKSEL2_SPI1SEL_Pos)         /*!<Select SPI1 clock source from high speed oscillator */
 #define CLK_CLKSEL2_SPI1SEL_HCLK         (0x1UL<<CLK_CLKSEL2_SPI1SEL_Pos)         /*!<Select SPI1 clock source from HCLK */
 #define CLK_CLKSEL2_SPI3SEL_HXT          (0x2UL<<CLK_CLKSEL2_SPI3SEL_Pos)         /*!<Select SPI3 clock source from high speed crystal */
-#define CLK_CLKSEL2_SPI3SEL_PLL          (0x0UL<<CLK_CLKSEL2_SPI3SEL_Pos)         /*!<Select SPI3 clock source from PLL */ 
+#define CLK_CLKSEL2_SPI3SEL_PLL          (0x0UL<<CLK_CLKSEL2_SPI3SEL_Pos)         /*!<Select SPI3 clock source from PLL */
 #define CLK_CLKSEL2_SPI3SEL_HIRC         (0x3UL<<CLK_CLKSEL2_SPI3SEL_Pos)         /*!<Select SPI3 clock source from high speed oscillator */
 #define CLK_CLKSEL2_SPI3SEL_HCLK         (0x1UL<<CLK_CLKSEL2_SPI3SEL_Pos)         /*!<Select SPI3 clock source from HCLK */
 
@@ -254,8 +254,8 @@ extern "C"
 #define CLK_SC1_CLK_DIVIDER(x)         ((((uint32_t)x-1)<<CLK_CLKDIV1_SC1DIV_Pos)  & CLK_CLKDIV1_SC1DIV_Msk)           /* CLKDIV1 Setting for SC1 clock divider. It could be 1~16*/
 
 /********************* Bit definition of SysTick register **********************/
-#define CLK_CLKSEL0_STCLKSEL_HCLK         (1)     /*!< Setting systick clock source as external HCLK */ 
-#define CLK_CLKSEL0_STCLKSEL_HCLK_DIV8    (2)     /*!< Setting systick clock source as external HCLK/8 */ 
+#define CLK_CLKSEL0_STCLKSEL_HCLK         (1)     /*!< Setting systick clock source as external HCLK */
+#define CLK_CLKSEL0_STCLKSEL_HCLK_DIV8    (2)     /*!< Setting systick clock source as external HCLK/8 */
 
 /********************* Bit definition of CLKOCTL register **********************/
 #define CLK_CLKO_EN           ((uint32_t)0x00000010)    /*!<Frequency divider enable bit */

@@ -266,7 +266,7 @@ extern "C"
   *                  - \ref ACMP_VNEG_18_OVER_24_IREF
   *                  - \ref ACMP_VNEG_19_OVER_24_IREF
   * @return   None
-  * @note This macro only set CVR level, and does not enable/disable CRV 
+  * @note This macro only set CVR level, and does not enable/disable CRV
   * \hideinitializer
   */
 #define ACMP_CRV_SEL(u32Level) (ACMP->VREF = (ACMP->VREF & ~(ACMP_VREF_CRVSSEL_Msk | ACMP_VREF_CRVCTL_Msk))| u32Level)

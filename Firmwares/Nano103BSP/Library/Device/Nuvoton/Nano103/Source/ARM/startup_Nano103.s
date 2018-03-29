@@ -1,13 +1,13 @@
-;/******************************************************************************
+;/****************************************************************************//**
 ; * @file     startup_Nano103.s
 ; * @version  V1.00
 ; * $Revision: 4 $
-; * $Date: 16/01/28 3:56p $ 
+; * $Date: 16/01/28 3:56p $
 ; * @brief    CMSIS ARM Cortex-M0 Core Device Startup File
 ; *
 ; * @note
 ; * Copyright (C) 2015 Nuvoton Technology Corp. All rights reserved.
-;*****************************************************************************/  
+;*****************************************************************************/
 
 ; <h> Stack Configuration
 ;   <o> Stack Size (in Bytes) <0x0-0xFFFFFFFF:8>
@@ -63,32 +63,32 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     SysTick_Handler           ; SysTick Handler
 
                 ; External Interrupts
-                DCD     BOD_IRQHandler            ; Brownout low voltage detected interrupt  
-                DCD     WDT_IRQHandler            ; Watch Dog Timer interrupt  
+                DCD     BOD_IRQHandler            ; Brownout low voltage detected interrupt
+                DCD     WDT_IRQHandler            ; Watch Dog Timer interrupt
                 DCD     EINT0_IRQHandler          ; External signal interrupt from PB.14 pin
                 DCD     EINT1_IRQHandler          ; External signal interrupt from PB.15 pin
-                DCD     GPABC_IRQHandler          ; External interrupt from PA[15:0]/PB[15:0]/PC[15:0]  
+                DCD     GPABC_IRQHandler          ; External interrupt from PA[15:0]/PB[15:0]/PC[15:0]
                 DCD     GPDEF_IRQHandler          ; External interrupt from PD[15:0]/PE[15:0]/PF[7:0]
-                DCD     PWM0_IRQHandler           ; PWM 0 interrupt 
+                DCD     PWM0_IRQHandler           ; PWM 0 interrupt
                 DCD     0                         ; Reserved
                 DCD     TMR0_IRQHandler           ; Timer 0 interrupt
-                DCD     TMR1_IRQHandler           ; Timer 1 interrupt  
-                DCD     TMR2_IRQHandler           ; Timer 2 interrupt 
-                DCD     TMR3_IRQHandler           ; Timer 3 interrupt 
+                DCD     TMR1_IRQHandler           ; Timer 1 interrupt
+                DCD     TMR2_IRQHandler           ; Timer 2 interrupt
+                DCD     TMR3_IRQHandler           ; Timer 3 interrupt
                 DCD     UART0_IRQHandler          ; UART0 interrupt
                 DCD     UART1_IRQHandler          ; UART1 interrupt
-                DCD     SPI0_IRQHandler           ; SPI0 interrupt 
-                DCD     SPI1_IRQHandler           ; SPI1 interrupt 
-                DCD     SPI2_IRQHandler           ; SPI2 interrupt 
-                DCD     HIRC_IRQHandler           ; HIRC interrupt 
-                DCD     I2C0_IRQHandler           ; I2C0 interrupt 
-                DCD     I2C1_IRQHandler           ; I2C1 interrupt 
+                DCD     SPI0_IRQHandler           ; SPI0 interrupt
+                DCD     SPI1_IRQHandler           ; SPI1 interrupt
+                DCD     SPI2_IRQHandler           ; SPI2 interrupt
+                DCD     HIRC_IRQHandler           ; HIRC interrupt
+                DCD     I2C0_IRQHandler           ; I2C0 interrupt
+                DCD     I2C1_IRQHandler           ; I2C1 interrupt
                 DCD     Default_Handler           ; Reserved
                 DCD     SC0_IRQHandler            ; SC0 interrupt
                 DCD     SC1_IRQHandler            ; SC1 interrupt
-                DCD     Default_Handler           ; Reserved 
-                DCD     Default_Handler           ; Reserved 
-                DCD     Default_Handler           ; Reserved 
+                DCD     Default_Handler           ; Reserved
+                DCD     Default_Handler           ; Reserved
+                DCD     Default_Handler           ; Reserved
                 DCD     PDMA_IRQHandler           ; PDMA interrupt
                 DCD     SPI3_IRQHandler           ; SPI3 interrupt
                 DCD     PDWU_IRQHandler           ; Power Down Wake up interrupt
@@ -113,9 +113,12 @@ Reset_Handler   PROC
                 LDR     R1, =0x88
                 STR     R1, [R0]
 
-                ; Init POR
+                ; Disable POR
                 LDR     R2, =0x50000060
                 LDR     R1, =0x00005AA5
+                STR     R1, [R2]
+                LDR     R2, =0x50000014
+                LDR     R1, =0x000000C0
                 STR     R1, [R2]
                 ; Unlock PA9 in 32 pin package
                 LDR     R0, =SystemInit
@@ -130,7 +133,7 @@ Reset_Handler   PROC
                 ENDP
 
 
-; Dummy Exception Handlers (infinite loops which can be modified)                
+; Dummy Exception Handlers (infinite loops which can be modified)
 
 NMI_Handler     PROC
                 EXPORT  NMI_Handler               [WEAK]
@@ -184,7 +187,7 @@ Default_Handler PROC
                 EXPORT  ADC_IRQHandler            [WEAK]
                 EXPORT  ACMP_IRQHandler           [WEAK]
                 EXPORT  RTC_IRQHandler            [WEAK]
-                
+
 BOD_IRQHandler
 WDT_IRQHandler
 EINT0_IRQHandler
@@ -204,7 +207,7 @@ SPI2_IRQHandler
 HIRC_IRQHandler
 I2C0_IRQHandler
 I2C1_IRQHandler
-SC0_IRQHandler    
+SC0_IRQHandler
 SC1_IRQHandler
 PDMA_IRQHandler
 SPI3_IRQHandler
@@ -224,13 +227,13 @@ RTC_IRQHandler
 ; User Initial Stack & Heap
 
                 IF      :DEF:__MICROLIB
-                
+
                 EXPORT  __initial_sp
                 EXPORT  __heap_base
                 EXPORT  __heap_limit
-                
+
                 ELSE
-                
+
                 IMPORT  __use_two_region_memory
                 EXPORT  __user_initial_stackheap
 __user_initial_stackheap

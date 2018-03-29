@@ -45,7 +45,7 @@ extern "C"
 /*---------------------------------------------------------------------------------------------------------*/
 #define CAP_PAR_INFMT_YUV422 (0ul<<CAP_PAR_INFMT_Pos)         /*!< CAP PAR setting for Sensor Input Data YUV422 Format   \hideinitializer */
 #define CAP_PAR_INFMT_RGB565 (1ul<<CAP_PAR_INFMT_Pos)         /*!< CAP PAR setting for Sensor Input Data RGB565 Format   \hideinitializer */
-                                                                       
+
 #define CAP_PAR_SENTYPE_CCIR601  (0ul<<CAP_PAR_SENTYPE_Pos)   /*!< CAP PAR setting for Sensor Input CCIR601 Type   \hideinitializer */
 #define CAP_PAR_SENTYPE_CCIR656  (1ul<<CAP_PAR_SENTYPE_Pos)   /*!< CAP PAR setting for Sensor Input CCIR656 Type   \hideinitializer */
 
@@ -106,7 +106,7 @@ static uint32_t u32EscapeFrame = 0;
  * @return   FALSE(Enable) or TRUE(Disable)
  *
  * @details   Check Image Capture Interface module Enable or Disable
- *  \hideinitializer 
+ *  \hideinitializer
  */
 #define CAP_IS_STOPPED()  ((ICAP->CTL & CAP_CTL_CAPEN_Msk)?0:1)
 
@@ -122,7 +122,7 @@ static uint32_t u32EscapeFrame = 0;
  * @return    TRUE(Enable) or FALSE(Disable)
  *
  * @details   Clear Image Capture Interface interrupt flag
- *  \hideinitializer 
+ *  \hideinitializer
  */
 #define CAP_CLR_INT_FLAG(u32IntMask) (ICAP->INT |=u32IntMask)
 
@@ -132,7 +132,7 @@ static uint32_t u32EscapeFrame = 0;
  * @return    TRUE(Enable) or FALSE(Disable)
  *
  * @details   Get Image Capture Interface interrupt status.
- * \hideinitializer 
+ * \hideinitializer
  */
 #define CAP_GET_INT_STS() (ICAP->INT)
 

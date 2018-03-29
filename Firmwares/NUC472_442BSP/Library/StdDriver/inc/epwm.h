@@ -210,16 +210,16 @@ do { \
 
 
 uint32_t EPWM_ConfigOutputChannel(EPWM_T *pwm,
-                                 uint32_t u32ChannelNum,
-                                 uint32_t u32Frequency,
-                                 uint32_t u32DutyCycle);
+                                  uint32_t u32ChannelNum,
+                                  uint32_t u32Frequency,
+                                  uint32_t u32DutyCycle);
 void EPWM_Start (EPWM_T *pwm, uint32_t u32ChannelMask);
 void EPWM_Stop(EPWM_T *pwm, uint32_t u32ChannelMask);
 void EPWM_ForceStop(EPWM_T *pwm, uint32_t u32ChannelMask);
 void EPWM_EnableFaultBrake(EPWM_T *pwm,
-                          uint32_t u32ChannelMask,
-                          uint32_t u32LevelMask,
-                          uint32_t u32BrakeSource);
+                           uint32_t u32ChannelMask,
+                           uint32_t u32LevelMask,
+                           uint32_t u32BrakeSource);
 void EPWM_ClearFaultBrakeFlag(EPWM_T *pwm, uint32_t u32BrakeSource);
 void EPWM_EnableOutput(EPWM_T *pwm, uint32_t u32ChannelMask);
 void EPWM_DisableOutput(EPWM_T *pwm, uint32_t u32ChannelMask);

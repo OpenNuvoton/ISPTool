@@ -78,9 +78,12 @@ extern "C"
   */
 void ACMP_Open(ACMP_T *acmp, uint32_t u32ChNum, uint32_t u32NegSrc, uint32_t u32HysteresisEn)
 {
-    if(u32NegSrc & 0x80000000) { // one of ACMP_VNEG_PIN, ACMP_VNEG_IREF, ACMP_VNEG_AVSS
+    if(u32NegSrc & 0x80000000)   // one of ACMP_VNEG_PIN, ACMP_VNEG_IREF, ACMP_VNEG_AVSS
+    {
         acmp->CTL0 = ~(u32NegSrc) | u32HysteresisEn | ACMP_CTL0_ACMPEN_Msk;
-    } else {
+    }
+    else
+    {
         acmp->CTL0 = (1 << ACMP_CTL0_NEGSEL_Pos) | u32HysteresisEn | ACMP_CTL0_ACMPEN_Msk;
         acmp->VREF = u32NegSrc | ACMP_VREF_CRVEN_Msk;
     }
