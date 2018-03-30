@@ -14,8 +14,9 @@ public:
 // Dialog Data
     //{{AFX_DATA(CAboutDlg)
     enum { IDD = IDD_ABOUTBOX };
-    CHyperLink	m_LinkNuvotonM0;
     CHyperLink	m_LinkNuvoton;
+    CHyperLink	m_LinkGitHub;
+    CHyperLink	m_LinkGITEE;
     //}}AFX_DATA
 
     // ClassWizard generated virtual function overrides
@@ -32,7 +33,8 @@ protected:
     //{{AFX_MSG(CAboutDlg)
     virtual BOOL OnInitDialog();
     afx_msg void OnLinkNuvoton();
-    afx_msg void OnLinkNuvotonM0();
+    afx_msg void OnLinkGitHub();
+    afx_msg void OnLinkGITEE();
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 };

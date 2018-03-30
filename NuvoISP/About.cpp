@@ -27,15 +27,17 @@ void CAboutDlg::DoDataExchange(CDataExchange *pDX)
 {
     CDialog::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CAboutDlg)
-    DDX_Control(pDX, IDC_LINK_NUVOTON_M0, m_LinkNuvotonM0);
     DDX_Control(pDX, IDC_LINK_NUVOTON, m_LinkNuvoton);
+    DDX_Control(pDX, IDC_LINK_GITHUB, m_LinkGitHub);
+    DDX_Control(pDX, IDC_LINK_GITEE, m_LinkGITEE);
     //}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
     //{{AFX_MSG_MAP(CAboutDlg)
     ON_BN_CLICKED(IDC_LINK_NUVOTON, OnLinkNuvoton)
-    ON_BN_CLICKED(IDC_LINK_NUVOTON_M0, OnLinkNuvotonM0)
+    ON_BN_CLICKED(IDC_LINK_GITHUB, OnLinkGitHub)
+    ON_BN_CLICKED(IDC_LINK_GITEE, OnLinkGITEE)
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -59,7 +61,12 @@ BOOL CAboutDlg::OnInitDialog()
     // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CAboutDlg::OnLinkNuvotonM0()
+void CAboutDlg::OnLinkGitHub()
 {
-    m_LinkNuvotonM0.VisitURL();
+    m_LinkGitHub.VisitURL();
+}
+
+void CAboutDlg::OnLinkGITEE()
+{
+    m_LinkGITEE.VisitURL();
 }

@@ -12,6 +12,8 @@
 #define IDD_DIALOG_CONFIGURATION_NUC100 107
 #define IDD_DIALOG_HEX                  108
 #define IDC_BUTTON_IMPORT               109
+#define IDC_LINK_GITHUB                 110
+#define IDC_LINK_GITEE                  111
 #define IDB_BITMAP_CHIPS                113
 #define IDD_DIALOG_CONFIGURATION_M051   119
 #define IDD_DIALOG_CONFIGURATION_M051BN 120

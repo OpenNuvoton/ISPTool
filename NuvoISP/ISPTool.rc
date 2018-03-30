@@ -123,18 +123,20 @@ BEGIN
     LTEXT           "Version Info",IDC_STATIC_STATUS,330,339,57,8
 END
 
-IDD_ABOUTBOX DIALOGEX 0, 0, 336, 104
+IDD_ABOUTBOX DIALOGEX 0, 0, 336, 132
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Title is changed in run-time"
 FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
-    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,21,20
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
     LTEXT           "Text is changed in run-time",IDC_STATIC_MESSAGE,74,10,186,26,SS_NOPREFIX
     LTEXT           "Copyright(C) 2018",IDC_STATIC,74,46,119,8
     DEFPUSHBUTTON   "OK",IDOK,265,23,50,14,WS_GROUP
     LTEXT           "http://www.nuvoton.com/NuMicro/",IDC_LINK_NUVOTON,74,56,93,8
     LTEXT           "GitHub Repository",IDC_STATIC,74,72,65,8
-    LTEXT           "https://github.com/OpenNuvoton/ISPTool/",IDC_LINK_NUVOTON_M0,74,82,101,8
+    LTEXT           "https://github.com/OpenNuvoton/ISPTool/",IDC_LINK_GITHUB,74,82,101,8
+    LTEXT           "GITEE Repository",IDC_STATIC,74,97,65,8
+    LTEXT           "https://gitee.com/OpenNuvoton/ISPTool/",IDC_LINK_GITEE,74,106,101,8
 END
 
 IDD_DIALOG_HEX DIALOGEX 0, 0, 308, 162
@@ -1344,7 +1346,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 328
         TOPMARGIN, 7
-        BOTTOMMARGIN, 97
+        BOTTOMMARGIN, 125
     END
 
     IDD_DIALOG_CONFIGURATION_NUC100, DIALOG
