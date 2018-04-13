@@ -132,9 +132,9 @@ extern const S_USBD_INFO_T gsInfo;
 #define USBD_INT_USB            USBD_INTEN_USBIEN_Msk       /*!< USB Event Interrupt */
 #define USBD_INT_FLDET          USBD_INTEN_VBDETIEN_Msk     /*!< USB VBUS Detection Interrupt */
 #define USBD_INT_VBDET          USBD_INTEN_VBDETIEN_Msk     /*!< USB VBUS Detection Interrupt */
-#define USBD_INT_WAKEUP_IDLE    USBD_INTEN_WKIDLEIEN_Msk    /*!< USB No-Event-Wake-Up Interrupt */
+#define USBD_INT_WAKEUP_IDLE    (USBD_INTEN_WKIDLEIEN_Msk | USBD_INTEN_WKEN_Msk)    /*!< USB No-Event-Wake-Up Interrupt */
 
-#define USBD_INTSTS_WAKEUP      USBD_INTSTS_NEVWKIF_Msk     /*!< USB No-Event-Wake-Up Interrupt Status */
+#define USBD_INTSTS_WAKEUP      USBD_INTSTS_WKIDLEIF_Msk    /*!< USB No-Event-Wake-Up Interrupt Status */
 #define USBD_INTSTS_FLDET       USBD_INTSTS_VBDETIF_Msk     /*!< USB Float Detect Interrupt Status */
 #define USBD_INTSTS_VBDET       USBD_INTSTS_VBDETIF_Msk     /*!< USB Float Detect Interrupt Status */
 #define USBD_INTSTS_BUS         USBD_INTSTS_BUSIF_Msk       /*!< USB Bus Event Interrupt Status */
