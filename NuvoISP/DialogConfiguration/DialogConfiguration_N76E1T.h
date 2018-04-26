@@ -9,7 +9,6 @@
 
 #include "DialogResize.h"
 
-
 /* Byte Mask Definitions */
 #define BYTE0_Msk				(0x000000FF)
 #define BYTE1_Msk				(0x0000FF00)
@@ -21,7 +20,6 @@
 #define _GET_BYTE2(u32Param)	(((u32Param) & BYTE2_Msk) >> 16)	/*!< Extract Byte 2 (Bit 16~23) from parameter u32Param */
 #define _GET_BYTE3(u32Param)	(((u32Param) & BYTE3_Msk) >> 24)	/*!< Extract Byte 3 (Bit 24~31) from parameter u32Param */
 
-
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_N76E1T dialog
 
@@ -31,7 +29,6 @@ class CDialogConfiguration_N76E1T : public CDialogResize
 public:
     CDialogConfiguration_N76E1T(unsigned int uDID = 0x3650,
                                 CWnd *pParent = NULL);
-
 
     CAppConfig::N76E1T_configs_t m_ConfigValue;
 

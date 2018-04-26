@@ -191,6 +191,8 @@ void *GetInfo(unsigned int uPID,
         {  64 * 1024,   4 * 1024,   8 * 1024,    0x0001F000,   4 * 1024,    0x20014013}, //NUC140RD2CN
         { 128 * 1024,   0 * 1024,  16 * 1024,    0x00020000,   4 * 1024,    0x20014009}, //NUC140RE3CN
         { 128 * 1024,   0 * 1024,  16 * 1024,    0x00020000,   4 * 1024,    0x20014018}, //NUC140VE3CN
+        {  64 * 1024,   4 * 1024,   8 * 1024,    0x0001F000,   4 * 1024,    0x10003000}, //NUC030LAE
+        {  64 * 1024,   4 * 1024,   8 * 1024,    0x0001F000,   4 * 1024,    0x10003010}, //NUC030SAE
         {  32 * 1024,   4 * 1024,   8 * 1024,    0x0001F000,   4 * 1024,    0x10013103}, //NUC131LC2AE
         {  64 * 1024,   4 * 1024,   8 * 1024,    0x0001F000,   4 * 1024,    0x10013100}, //NUC131LD2AE
         {  32 * 1024,   4 * 1024,   8 * 1024,    0x0001F000,   4 * 1024,    0x10013113}, //NUC131SC2AE
@@ -623,8 +625,8 @@ bool GetInfo_NuMicro(//unsigned int uDID,
 /* 8051 1T Series */
 
 #ifndef __NUVOTON__
-void *GetInfo_N76E1T(unsigned int uDID,
-                     FLASH_INFO_BY_DID_T *pInfo)
+void *GetInfo_8051_1T(unsigned int uDID,
+                      FLASH_INFO_BY_DID_T *pInfo)
 {
 #ifdef USE_FLASH_DID_INFO_TABLE
     static FLASH_INFO_BY_DID_T g_FlashDIDs[] = {
@@ -652,6 +654,9 @@ void *GetInfo_N76E1T(unsigned int uDID,
 
         { 32 * 1024, 0, 0x0800, 0x00004932, 0},
         { 64 * 1024, 0, 0x1000, 0x00004944, 0},
+
+        //FA82xx (N76E013)
+        { 16 * 1024, 0, 0x0400, 0x00004B21, 0},
     };
     size_t i;
 
@@ -690,7 +695,7 @@ void *GetInfo_N76E1T(unsigned int uDID,
 #endif
 }
 
-bool GetInfo_N76E1T(//unsigned int uDID,
+bool GetInfo_8051_1T(//unsigned int uDID,
     unsigned int uConfig0,
     unsigned int uProgramMemorySize,
     unsigned int uFlashType,
@@ -721,12 +726,12 @@ bool GetInfo_N76E1T(//unsigned int uDID,
 }
 #endif
 
-bool GetInfo2(unsigned int uPID,
-              unsigned int uConfig0,
-              unsigned int uConfig1,
-              unsigned int *puNVM_Addr,
-              unsigned int *puAPROM_Size,
-              unsigned int *puNVM_Size)
+bool GetInfo(unsigned int uPID,
+             unsigned int uConfig0,
+             unsigned int uConfig1,
+             unsigned int *puNVM_Addr,
+             unsigned int *puAPROM_Size,
+             unsigned int *puNVM_Size)
 {
     FLASH_PID_INFO_BASE_T flashInfo;
     unsigned int uProgramMemorySize = 0;

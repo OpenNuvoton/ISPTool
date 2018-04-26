@@ -2069,7 +2069,7 @@ bool UpdateSizeInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfi
                     unsigned int *puNVM_Addr,
                     unsigned int *puAPROM_Size, unsigned int *puNVM_Size)
 {
-    if (GetInfo2(uID, uConfig0, uConfig1, puNVM_Addr, puAPROM_Size, puNVM_Size)) {
+    if (GetInfo(uID, uConfig0, uConfig1, puNVM_Addr, puAPROM_Size, puNVM_Size)) {
         return true;
     } else {
         // NuVoice Chip Series (ISDXXX, I9XXX, N57XXX ...)
@@ -2087,13 +2087,13 @@ bool UpdateSizeInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfi
         // internal ref. to Flash_N76E1T.h
         FLASH_INFO_BY_DID_T fInfo, *pInfo = &fInfo;
 
-        if (GetInfo_N76E1T(uID, pInfo) == NULL) {
+        if (GetInfo_8051_1T(uID, pInfo) == NULL) {
             return false;
         }
 
         unsigned int uLDROM_Addr;
         unsigned int uLDROM_Size;
-        GetInfo_N76E1T(//uDID,
+        GetInfo_8051_1T(//uDID,
             uConfig0,
             pInfo->uProgramMemorySize,
             pInfo->uFlashType,

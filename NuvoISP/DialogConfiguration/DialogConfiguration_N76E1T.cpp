@@ -54,12 +54,10 @@ static char THIS_FILE[] = __FILE__;
 #define N76E1T_CONFIG_WDT			0xF0
 #define N76E1T_CONFIG_WDT_DIS		0xF0
 #define N76E1T_CONFIG_WDT_STOP		0x50
-#define N76E1T_CONFIG_WDT_RUN		0x70
-
+#define N76E1T_CONFIG_WDT_RUN		0x00
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_N76E1T dialog
-
 
 CDialogConfiguration_N76E1T::CDialogConfiguration_N76E1T(unsigned int uDID,
         CWnd *pParent /*=NULL*/)
@@ -85,7 +83,6 @@ CDialogConfiguration_N76E1T::CDialogConfiguration_N76E1T(unsigned int uDID,
     m_bCheckBrownOutIAP = TRUE;
     //}}AFX_DATA_INIT
 }
-
 
 void CDialogConfiguration_N76E1T::DoDataExchange(CDataExchange *pDX)
 {
@@ -189,12 +186,9 @@ BOOL CDialogConfiguration_N76E1T::OnInitDialog()
             GetDlgItem(IDC_GROUP_RPD)->SetWindowText(_T("P3.6/RST Pin Function"));
             GetDlgItem(IDC_RADIO_RPD_RESET)->SetWindowText(_T("P3.6 as the external reset pin"));
             GetDlgItem(IDC_RADIO_RPD_INPUT)->SetWindowText(_T("P3.6 as the input-only pin"));
-            GetDlgItem(IDC_GROUP_OCDPWM)->EnableWindow(FALSE);
-            GetDlgItem(IDC_RADIO_OCDPWM_TRI)->EnableWindow(FALSE);
-            GetDlgItem(IDC_RADIO_OCDPWM_CONTI)->EnableWindow(FALSE);
-            GetDlgItem(IDC_GROUP_OCDPWM)->SetWindowText(_T("None"));
-            GetDlgItem(IDC_RADIO_OCDPWM_TRI)->SetWindowText(_T("None"));
-            GetDlgItem(IDC_RADIO_OCDPWM_CONTI)->SetWindowText(_T("None"));
+            GetDlgItem(IDC_GROUP_OCDPWM)->ShowWindow(SW_HIDE);
+            GetDlgItem(IDC_RADIO_OCDPWM_TRI)->ShowWindow(SW_HIDE);
+            GetDlgItem(IDC_RADIO_OCDPWM_CONTI)->ShowWindow(SW_HIDE);
             GetDlgItem(IDC_RADIO_BOV_7)->SetWindowText(_T("2.2V"));
             GetDlgItem(IDC_RADIO_BOV_6)->SetWindowText(_T("2.7V"));
             GetDlgItem(IDC_RADIO_BOV_5)->SetWindowText(_T("3.8V"));
@@ -237,33 +231,22 @@ BOOL CDialogConfiguration_N76E1T::OnInitDialog()
             GetDlgItem(IDC_RADIO_BOV_0)->SetWindowText(_T("4.4V"));
             break;
         }
-    }
 
-    switch ((m_uDID >> 4) & 0x0F) {
-        case 4: {
-            GetDlgItem(IDC_RADIO_LDSIZE_0K)->SetWindowText(_T("No LDROM, DataFlash = 10KB."));
-            GetDlgItem(IDC_RADIO_LDSIZE_1K)->SetWindowText(_T("LDROM = 1KB, DataFlash = 9KB."));
-            GetDlgItem(IDC_RADIO_LDSIZE_2K)->SetWindowText(_T("LDROM = 2KB, DataFlash = 8KB."));
-            GetDlgItem(IDC_RADIO_LDSIZE_3K)->SetWindowText(_T("LDROM = 3KB, DataFlash = 7KB."));
-            GetDlgItem(IDC_RADIO_LDSIZE_4K)->SetWindowText(_T("LDROM = 4KB, DataFlash = 6KB."));
-            break;
-        }
-
-        case 5: {
-            GetDlgItem(IDC_RADIO_LDSIZE_0K)->SetWindowText(_T("No LDROM, APROM = 18KB."));
-            GetDlgItem(IDC_RADIO_LDSIZE_1K)->SetWindowText(_T("LDROM = 1KB, APROM = 17KB."));
-            GetDlgItem(IDC_RADIO_LDSIZE_2K)->SetWindowText(_T("LDROM = 2KB, APROM = 16KB."));
-            GetDlgItem(IDC_RADIO_LDSIZE_3K)->SetWindowText(_T("LDROM = 3KB, APROM = 15KB."));
-            GetDlgItem(IDC_RADIO_LDSIZE_4K)->SetWindowText(_T("LDROM = 4KB, APROM = 14KB."));
-            break;
-        }
-
-        case 6: {
-            GetDlgItem(IDC_RADIO_LDSIZE_0K)->SetWindowText(_T("No LDROM, APROM = 32KB."));
-            GetDlgItem(IDC_RADIO_LDSIZE_1K)->SetWindowText(_T("LDROM = 1KB, APROM = 31KB."));
-            GetDlgItem(IDC_RADIO_LDSIZE_2K)->SetWindowText(_T("LDROM = 2KB, APROM = 30KB."));
-            GetDlgItem(IDC_RADIO_LDSIZE_3K)->SetWindowText(_T("LDROM = 3KB, APROM = 29KB."));
-            GetDlgItem(IDC_RADIO_LDSIZE_4K)->SetWindowText(_T("LDROM = 4KB, APROM = 28KB."));
+        case 0x4700:
+        case 0x4800:
+        case 0x4900: {
+            m_uLevel = N76E1T_CONFIG_CBOV_8_LEVEL;
+            GetDlgItem(IDC_GROUP_RPD)->ShowWindow(SW_HIDE);
+            GetDlgItem(IDC_RADIO_RPD_RESET)->ShowWindow(SW_HIDE);
+            GetDlgItem(IDC_RADIO_RPD_INPUT)->ShowWindow(SW_HIDE);
+            GetDlgItem(IDC_RADIO_BOV_7)->SetWindowText(_T("1.8V"));
+            GetDlgItem(IDC_RADIO_BOV_6)->SetWindowText(_T("1.8V"));
+            GetDlgItem(IDC_RADIO_BOV_5)->SetWindowText(_T("2.0V"));
+            GetDlgItem(IDC_RADIO_BOV_4)->SetWindowText(_T("2.4V"));
+            GetDlgItem(IDC_RADIO_BOV_3)->SetWindowText(_T("2.7V"));
+            GetDlgItem(IDC_RADIO_BOV_2)->SetWindowText(_T("3.0V"));
+            GetDlgItem(IDC_RADIO_BOV_1)->SetWindowText(_T("3.7V"));
+            GetDlgItem(IDC_RADIO_BOV_0)->SetWindowText(_T("4.4V"));
             break;
         }
     }
@@ -273,7 +256,7 @@ BOOL CDialogConfiguration_N76E1T::OnInitDialog()
     m_bIsInitialized = true;
     GetWindowRect(m_rect);
     AdjustDPI();
-    return TRUE;  // return TRUE unless you set the focus to a control
+    return TRUE;	// return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
 }
 
@@ -562,7 +545,6 @@ void CDialogConfiguration_N76E1T::OnOK()
     GUIToConfig();
     CDialog::OnOK();
 }
-
 
 void CDialogConfiguration_N76E1T::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
 {

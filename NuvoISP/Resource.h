@@ -12,8 +12,6 @@
 #define IDD_DIALOG_CONFIGURATION_NUC100 107
 #define IDD_DIALOG_HEX                  108
 #define IDC_BUTTON_IMPORT               109
-#define IDC_LINK_GITHUB                 110
-#define IDC_LINK_GITEE                  111
 #define IDB_BITMAP_CHIPS                113
 #define IDD_DIALOG_CONFIGURATION_M051   119
 #define IDD_DIALOG_CONFIGURATION_M051BN 120
@@ -22,6 +20,8 @@
 #define IDC_COMBO_INTERFACE             123
 #define IDC_COMBO_COM_PORT              124
 #define IDC_CHECK_RUN_APROM             125
+#define IDC_LINK_GITHUB                 126
+#define IDC_LINK_GITEE                  127
 #define IDD_DIALOG_CONFIGURATION_NANO100 130
 #define IDD_DIALOG_CONFIGURATION_MINI51 132
 #define IDI_ICON_NULINK                 134

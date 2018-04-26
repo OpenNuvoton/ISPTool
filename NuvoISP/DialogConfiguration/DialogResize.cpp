@@ -278,6 +278,11 @@ void CDialogResize::AdjustDPI()
 {
     int nScreenHeight;
     nScreenHeight = GetSystemMetrics(SM_CYSCREEN);
+    //Get task bar height
+    HWND hWnd = ::FindWindow(_T("Shell_TrayWnd"), NULL);
+    CRect taskbar_rc;
+    ::GetWindowRect(hWnd, &taskbar_rc);
+    nScreenHeight = nScreenHeight - taskbar_rc.Height();
 
     if (nScreenHeight < m_rect.Height()) {
         CRect r1;

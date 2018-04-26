@@ -18,12 +18,12 @@ typedef struct {
 void *GetInfo(unsigned int uPID,
               FLASH_PID_INFO_BASE_T *pInfo);
 
-bool GetInfo2(unsigned int uPID,
-              unsigned int uConfig0,
-              unsigned int uConfig1,
-              unsigned int *puNVM_Addr,
-              unsigned int *puAPROM_Size,
-              unsigned int *puNVM_Size);
+bool GetInfo(unsigned int uPID,
+             unsigned int uConfig0,
+             unsigned int uConfig1,
+             unsigned int *puNVM_Addr,
+             unsigned int *puAPROM_Size,
+             unsigned int *puNVM_Size);
 
 /* Get Flash Info by DID */
 typedef struct {
@@ -34,11 +34,20 @@ typedef struct {
     unsigned int uFlashType;
 } FLASH_INFO_BY_DID_T;
 
-/* 8051 1T Series */
-void *GetInfo_N76E1T(unsigned int uDID,
-                     FLASH_INFO_BY_DID_T *pInfo);
+bool GetInfo_NuMicro(//unsigned int uDID,
+    unsigned int uConfig0,
+    unsigned int uConfig1,
+    unsigned int uProgramMemorySize,
+    unsigned int uFlashType,
+    unsigned int *puNVM_Addr,
+    unsigned int *puAPROM_Size,
+    unsigned int *puNVM_Size);
 
-bool GetInfo_N76E1T(//unsigned int uDID,
+/* 8051 1T Series */
+void *GetInfo_8051_1T(unsigned int uDID,
+                      FLASH_INFO_BY_DID_T *pInfo);
+
+bool GetInfo_8051_1T(//unsigned int uDID,
     unsigned int uConfig0,
     unsigned int uProgramMemorySize,
     unsigned int uFlashType,
