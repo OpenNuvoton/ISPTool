@@ -360,6 +360,7 @@ void USBD_StandardRequest(void)
                 for(i = 0ul; i < USBD_MAX_EP; i++) {
                     if(((USBD->EP[i].CFG & 0xFul) == epNum) && ((g_u32EpStallLock & (1ul << i)) == 0ul)) {
                         USBD->EP[i].CFGP &= ~USBD_CFGP_SSTALL_Msk;
+                        USBD->EP[i].CFG &= ~USBD_CFG_DSQSYNC_Msk;
                     }
                 }
             } else if(g_usbd_SetupPacket[2] == FEATURE_DEVICE_REMOTE_WAKEUP) {
