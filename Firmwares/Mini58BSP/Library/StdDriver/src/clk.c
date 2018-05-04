@@ -418,7 +418,7 @@ void CLK_DisableModuleClock(uint32_t u32ModuleIdx)
   */
 uint32_t CLK_EnablePLL(uint32_t u32PllClkSrc, uint32_t u32PllFreq)
 {
-    uint32_t u32PllSrcClk, u32NR, u32NF, u32NO, u32CLK_SRC , u32NRT;
+    uint32_t u32PllSrcClk, u32NR, u32NF, u32NO, u32CLK_SRC, u32NRT;
     uint32_t u32Tmp, u32Tmp2, u32Tmp3, u32Min, u32MinNF, u32MinNR,u32Best;
 
     /* Disable PLL first to avoid unstable when setting PLL */

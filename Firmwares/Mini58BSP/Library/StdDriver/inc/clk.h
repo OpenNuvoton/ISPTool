@@ -2,12 +2,12 @@
  * @file     clk.h
  * @version  V1.00
  * $Revision: 16 $
- * $Date: 15/06/05 9:38a $ 
+ * $Date: 15/06/05 9:38a $
  * @brief    Mini58 series CLK driver header file
  *
  * @note
  * Copyright (C) 2015 Nuvoton Technology Corp. All rights reserved.
- *****************************************************************************/ 
+ *****************************************************************************/
 #ifndef __CLK_H__
 #define __CLK_H__
 
@@ -57,7 +57,7 @@ extern "C"
 #define CLK_CLKSEL0_HCLKSEL_PLL           0x02UL /*!< Setting clock source as PLL */
 #define CLK_CLKSEL0_HCLKSEL_LIRC          0x03UL /*!< Setting clock source as internal 10KHz RC clock */
 #define CLK_CLKSEL0_HCLKSEL_HIRC          0x07UL /*!< Setting clock source as internal RC clock */
-#define CLK_CLKSEL0_STCLKSEL_XTAL         0x00UL /*!< Setting clock source as external XTAL */ 
+#define CLK_CLKSEL0_STCLKSEL_XTAL         0x00UL /*!< Setting clock source as external XTAL */
 #define CLK_CLKSEL0_STCLKSEL_XTAL_DIV2    0x10UL /*!< Setting clock source as external XTAL/2 */
 #define CLK_CLKSEL0_STCLKSEL_HCLK_DIV2    0x18UL /*!< Setting clock source as HCLK/2 */
 #define CLK_CLKSEL0_STCLKSEL_HIRC_DIV2    0x38UL /*!< Setting clock source as internal RC clock/2 */
@@ -66,7 +66,7 @@ extern "C"
 /*---------------------------------------------------------------------------------------------------------*/
 /*  CLKSEL1 constant definitions.                                                                          */
 /*---------------------------------------------------------------------------------------------------------*/
-#define CLK_CLKSEL1_WDTSEL_XTAL          0x00000000UL /*!< Setting WDT clock source as external XTAL */ 
+#define CLK_CLKSEL1_WDTSEL_XTAL          0x00000000UL /*!< Setting WDT clock source as external XTAL */
 #define CLK_CLKSEL1_WDTSEL_HCLK_DIV2048  0x00000002UL /*!< Setting WDT clock source as HCLK/2048 */
 #define CLK_CLKSEL1_WDTSEL_IRC10K        0x00000003UL /*!< Setting WDT clock source as internal 10KHz RC clock */
 #define CLK_CLKSEL1_WDTSEL_LIRC          0x00000003UL /*!< Setting WDT clock source as internal 10KHz RC clock */
@@ -97,23 +97,23 @@ extern "C"
 /*---------------------------------------------------------------------------------------------------------*/
 /*  CLKSEL2 constant definitions.                                                                          */
 /*---------------------------------------------------------------------------------------------------------*/
-#define CLK_CLKSEL2_CLKOSEL_XTAL        0x00000000UL /*!< Setting CLKODIV clock source as external XTAL */ 
-#define CLK_CLKSEL2_CLKOSEL_HXT         0x00000000UL /*!< Setting CLKODIV clock source as external XTAL */ 
-#define CLK_CLKSEL2_CLKOSEL_LXT         0x00000000UL /*!< Setting CLKODIV clock source as external XTAL */ 
-#define CLK_CLKSEL2_CLKOSEL_LIRC        0x00000004UL /*!< Setting CLKODIV clock source as LIRC */ 
+#define CLK_CLKSEL2_CLKOSEL_XTAL        0x00000000UL /*!< Setting CLKODIV clock source as external XTAL */
+#define CLK_CLKSEL2_CLKOSEL_HXT         0x00000000UL /*!< Setting CLKODIV clock source as external XTAL */
+#define CLK_CLKSEL2_CLKOSEL_LXT         0x00000000UL /*!< Setting CLKODIV clock source as external XTAL */
+#define CLK_CLKSEL2_CLKOSEL_LIRC        0x00000004UL /*!< Setting CLKODIV clock source as LIRC */
 #define CLK_CLKSEL2_CLKOSEL_HCLK        0x00000008UL /*!< Setting CLKODIV clock source as HCLK */
 #define CLK_CLKSEL2_CLKOSEL_HIRC        0x0000000CUL /*!< Setting CLKODIV clock source as internal RC clock */
 #define CLK_CLKSEL2_PWMCH45SEL_HCLK     0x00000020UL /*!< Setting PWMCH45 clock source as HCLK */
-#define CLK_CLKSEL2_WWDTSEL_HCLK_DIV2048   0x00020000UL /*!< Setting WWDT clock source as HCLK/2048 */ 
-#define CLK_CLKSEL2_WWDTSEL_LIRC           0x00030000UL /*!< Setting WWDT clock source as internal RC clock */ 
+#define CLK_CLKSEL2_WWDTSEL_HCLK_DIV2048   0x00020000UL /*!< Setting WWDT clock source as HCLK/2048 */
+#define CLK_CLKSEL2_WWDTSEL_LIRC           0x00030000UL /*!< Setting WWDT clock source as internal RC clock */
 
 
 /*---------------------------------------------------------------------------------------------------------*/
 /*  CLKDIV constant definitions.                                                                           */
 /*---------------------------------------------------------------------------------------------------------*/
-#define CLK_CLKDIV_ADC(x)  (((x)-1) << 16) /*!< CLKDIV Setting for ADC clock divider. It could be 1~256 */ 
-#define CLK_CLKDIV_UART(x) (((x)-1) <<  8) /*!< CLKDIV Setting for UART clock divider. It could be 1~16 */ 
-#define CLK_CLKDIV_HCLK(x)  ((x)-1)        /*!< CLKDIV Setting for HCLK clock divider. It could be 1~16 */ 
+#define CLK_CLKDIV_ADC(x)  (((x)-1) << 16) /*!< CLKDIV Setting for ADC clock divider. It could be 1~256 */
+#define CLK_CLKDIV_UART(x) (((x)-1) <<  8) /*!< CLKDIV Setting for UART clock divider. It could be 1~16 */
+#define CLK_CLKDIV_HCLK(x)  ((x)-1)        /*!< CLKDIV Setting for HCLK clock divider. It could be 1~16 */
 
 /*---------------------------------------------------------------------------------------------------------*/
 /*  PLLCTL constant definitions. PLL = FIN * NF / NR / NO                                                  */
@@ -130,7 +130,7 @@ extern "C"
 
 #define CLK_PLLCTL_72MHz_HXT   (CLK_PLLCTL_PLLSRC_HXT  | CLK_PLLCTL_NR(2) | CLK_PLLCTL_NF( 24) | CLK_PLLCTL_NO_2) /*!< Predefined PLLCTL setting for  72MHz PLL output with HXT(12MHz X'tal) */
 #define CLK_PLLCTL_96MHz_HXT   (CLK_PLLCTL_PLLSRC_HXT  | CLK_PLLCTL_NR(2) | CLK_PLLCTL_NF( 32) | CLK_PLLCTL_NO_2) /*!< Predefined PLLCTL setting for  96MHz PLL output with HXT(12MHz X'tal) */
-#define CLK_PLLCTL_100MHz_HXT  (CLK_PLLCTL_PLLSRC_HXT  | CLK_PLLCTL_NR(3) | CLK_PLLCTL_NF( 50) | CLK_PLLCTL_NO_2) /*!< Predefined PLLCTL setting for 100MHz PLL output with HXT(12MHz X'tal) */	
+#define CLK_PLLCTL_100MHz_HXT  (CLK_PLLCTL_PLLSRC_HXT  | CLK_PLLCTL_NR(3) | CLK_PLLCTL_NF( 50) | CLK_PLLCTL_NO_2) /*!< Predefined PLLCTL setting for 100MHz PLL output with HXT(12MHz X'tal) */
 
 #define CLK_PLLCTL_72MHz_HIRC  (CLK_PLLCTL_PLLSRC_HIRC | CLK_PLLCTL_NR(4) | CLK_PLLCTL_NF( 26) | CLK_PLLCTL_NO_2) /*!< Predefined PLLCTL setting for 71.884800MHz PLL output with HIRC(22.1184MHz X'tal) */
 #define CLK_PLLCTL_96MHz_HIRC  (CLK_PLLCTL_PLLSRC_HIRC | CLK_PLLCTL_NR(13)| CLK_PLLCTL_NF(113) | CLK_PLLCTL_NO_2) /*!< Predefined PLLCTL setting for 96.129968MHz PLL output with HIRC(22.1184MHz X'tal) */
@@ -138,16 +138,16 @@ extern "C"
 
 /*---------------------------------------------------------------------------------------------------------*/
 /*  MODULE constant definitions.                                                                           */
-/*---------------------------------------------------------------------------------------------------------*/ 
-#define MODULE_APBCLK(x)                   ((x >>31) & 0x1)    /*!< Calculate APBCLK offset on MODULE index */ 
-#define MODULE_CLKSEL(x)                   ((x >>29) & 0x3)    /*!< Calculate CLKSEL offset on MODULE index */ 
-#define MODULE_CLKSEL_Msk(x)               ((x >>25) & 0xf)    /*!< Calculate CLKSEL mask offset on MODULE index */ 
-#define MODULE_CLKSEL_Pos(x)               ((x >>20) & 0x1f)   /*!< Calculate CLKSEL position offset on MODULE index */ 
-#define MODULE_CLKDIV(x)                   ((x >>18) & 0x3)    /*!< Calculate APBCLK CLKDIV on MODULE index */ 
-#define MODULE_CLKDIV_Msk(x)               ((x >>10) & 0xff)   /*!< Calculate CLKDIV mask offset on MODULE index */ 
-#define MODULE_CLKDIV_Pos(x)               ((x >>5 ) & 0x1f)   /*!< Calculate CLKDIV position offset on MODULE index */ 
-#define MODULE_IP_EN_Pos(x)                ((x >>0 ) & 0x1f)   /*!< Calculate APBCLK offset on MODULE index */ 
-#define MODULE_NoMsk                       0x0                 /*!< Not mask on MODULE index */ 
+/*---------------------------------------------------------------------------------------------------------*/
+#define MODULE_APBCLK(x)                   ((x >>31) & 0x1)    /*!< Calculate APBCLK offset on MODULE index */
+#define MODULE_CLKSEL(x)                   ((x >>29) & 0x3)    /*!< Calculate CLKSEL offset on MODULE index */
+#define MODULE_CLKSEL_Msk(x)               ((x >>25) & 0xf)    /*!< Calculate CLKSEL mask offset on MODULE index */
+#define MODULE_CLKSEL_Pos(x)               ((x >>20) & 0x1f)   /*!< Calculate CLKSEL position offset on MODULE index */
+#define MODULE_CLKDIV(x)                   ((x >>18) & 0x3)    /*!< Calculate APBCLK CLKDIV on MODULE index */
+#define MODULE_CLKDIV_Msk(x)               ((x >>10) & 0xff)   /*!< Calculate CLKDIV mask offset on MODULE index */
+#define MODULE_CLKDIV_Pos(x)               ((x >>5 ) & 0x1f)   /*!< Calculate CLKDIV position offset on MODULE index */
+#define MODULE_IP_EN_Pos(x)                ((x >>0 ) & 0x1f)   /*!< Calculate APBCLK offset on MODULE index */
+#define MODULE_NoMsk                       0x0                 /*!< Not mask on MODULE index */
 #define NA                                 MODULE_NoMsk        /*!< Not Available */
 
 #define MODULE_APBCLK_ENC(x)        (((x) & 0x01) << 31)   /*!< MODULE index, 0x0:AHBCLK, 0x1:APBCLK */
@@ -158,7 +158,7 @@ extern "C"
 #define MODULE_CLKDIV_Msk_ENC(x)    (((x) & 0xff) << 10)   /*!< CLKDIV mask offset on MODULE index */
 #define MODULE_CLKDIV_Pos_ENC(x)    (((x) & 0x1f) <<  5)   /*!< CLKDIV position offset on MODULE index */
 #define MODULE_IP_EN_Pos_ENC(x)     (((x) & 0x1f) <<  0)   /*!< APBCLK offset on MODULE index */
-/*-------------------------------------------------------------------------------------------------------------------------------*/        
+/*-------------------------------------------------------------------------------------------------------------------------------*/
 /*   APBCLK(1) | CLKSEL(2) | CLKSEL_Msk(4) |    CLKSEL_Pos(5)    | CLKDIV(2) | CLKDIV_Msk(8) |     CLKDIV_Pos(5)  |  IP_EN_Pos(5)*/
 /*-------------------------------------------------------------------------------------------------------------------------------*/
 #define ISP_MODULE       (( 0UL<<31)|( 0<<29)|( MODULE_NoMsk<<25)|( 0<<20)|( 0<<18)|( MODULE_NoMsk<<10)|( 0<<5)|( 2<<0)) /*!< ISP Module  \hideinitializer */

@@ -2,12 +2,12 @@
  * @file     spi.h
  * @version  V1.00
  * $Revision: 3 $
- * $Date: 15/04/17 11:45a $ 
+ * $Date: 15/04/17 11:45a $
  * @brief    Mini58 series SPI driver header file
  *
  * @note
  * Copyright (C) 2015 Nuvoton Technology Corp. All rights reserved.
- *****************************************************************************/ 
+ *****************************************************************************/
 #ifndef __SPI_H__
 #define __SPI_H__
 
@@ -147,8 +147,8 @@ extern "C"
   */
 static __INLINE void SPI_SET_SS_HIGH(SPI_T *spi)
 {
-  spi->SSCTL &= ~SPI_SSCTL_AUTOSS_Msk;  
-  spi->SSCTL |= (SPI_SSCTL_LTF_Msk | SPI_SSCTL_SSACTPOL_Msk | SPI_SSCTL_SS_Msk);
+    spi->SSCTL &= ~SPI_SSCTL_AUTOSS_Msk;
+    spi->SSCTL |= (SPI_SSCTL_LTF_Msk | SPI_SSCTL_SSACTPOL_Msk | SPI_SSCTL_SS_Msk);
 }
 
 /**
@@ -158,10 +158,10 @@ static __INLINE void SPI_SET_SS_HIGH(SPI_T *spi)
   */
 static __INLINE void SPI_SET_SS_LOW(SPI_T *spi)
 {
-  spi->SSCTL &= ~SPI_SSCTL_AUTOSS_Msk;
-  spi->SSCTL |= SPI_SSCTL_LTF_Msk;  
-  spi->SSCTL &= ~SPI_SSCTL_SSACTPOL_Msk;
-  spi->SSCTL |= SPI_SSCTL_SS_Msk;
+    spi->SSCTL &= ~SPI_SSCTL_AUTOSS_Msk;
+    spi->SSCTL |= SPI_SSCTL_LTF_Msk;
+    spi->SSCTL &= ~SPI_SSCTL_SSACTPOL_Msk;
+    spi->SSCTL |= SPI_SSCTL_SS_Msk;
 }
 
 /**
@@ -203,15 +203,15 @@ static __INLINE void SPI_SET_SS_LOW(SPI_T *spi)
 /**
   * @brief  Set the data width of a SPI transaction.
   * @param[in]  spi is the base address of SPI module.
-  * @param[in]  u32Width is the bit width of transfer data.  
+  * @param[in]  u32Width is the bit width of transfer data.
   * @return none
   */
 static __INLINE void SPI_SET_DATA_WIDTH(SPI_T *spi, uint32_t u32Width)
 {
-   if(u32Width == 32)
+    if(u32Width == 32)
         u32Width = 0;
-        
-   spi->CTL = (spi->CTL & ~SPI_CTL_DWIDTH_Msk) | (u32Width << SPI_CTL_DWIDTH_Pos);
+
+    spi->CTL = (spi->CTL & ~SPI_CTL_DWIDTH_Msk) | (u32Width << SPI_CTL_DWIDTH_Pos);
 }
 
 /**

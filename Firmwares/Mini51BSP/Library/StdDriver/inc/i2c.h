@@ -2,12 +2,12 @@
  * @file     i2c.h
  * @version  V1.00
  * $Revision: 12 $
- * $Date: 15/12/31 1:06p $ 
+ * $Date: 15/12/31 1:06p $
  * @brief    Mini51 series I2C driver header file
  *
  * @note
  * Copyright (C) 2013 Nuvoton Technology Corp. All rights reserved.
- *****************************************************************************/ 
+ *****************************************************************************/
 #ifndef __I2C_H__
 #define __I2C_H__
 

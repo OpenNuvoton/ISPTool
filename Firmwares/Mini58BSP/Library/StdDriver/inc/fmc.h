@@ -15,7 +15,7 @@
 extern "C"
 {
 #endif
-    
+
 /** @addtogroup Mini58_Device_Driver Mini58 Device Driver
   @{
 */
@@ -30,8 +30,8 @@ extern "C"
 /*---------------------------------------------------------------------------------------------------------*/
 /* Define Base Address                                                                                     */
 /*---------------------------------------------------------------------------------------------------------*/
-#define FMC_APROM_BASE          0x00000000UL    /*!< APROM  Base Address         */  
-#define FMC_APROM_END           0x00008000UL    /*!< APROM  End Address          */  
+#define FMC_APROM_BASE          0x00000000UL    /*!< APROM  Base Address         */
+#define FMC_APROM_END           0x00008000UL    /*!< APROM  End Address          */
 #define FMC_LDROM_BASE          0x00100000UL    /*!< LDROM  Base Address         */
 #define FMC_LDROM_END           0x00100A00UL    /*!< LDROM  End Address          */
 #define FMC_SPROM_BASE          0x00200000UL    /*!< SPROM  Base Address         */

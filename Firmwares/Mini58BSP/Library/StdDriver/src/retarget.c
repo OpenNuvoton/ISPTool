@@ -2,12 +2,12 @@
  * @file     retarget.c
  * @version  V1.00
  * $Revision: 4 $
- * $Date: 15/11/02 2:11p $ 
+ * $Date: 15/11/02 2:11p $
  * @brief    Mini58 series retarget source file
  *
  * @note
  * Copyright (C) 2015 Nuvoton Technology Corp. All rights reserved.
-*****************************************************************************/ 
+*****************************************************************************/
 #include <stdio.h>
 #include "Mini58Series.h"
 
@@ -48,25 +48,25 @@ enum { r0, r1, r2, r3, r12, lr, pc, psr};
 
 void stackDump(uint32_t stack[])
 {
-	printf("r0  = 0x%x\n", stack[r0]);
-	printf("r1  = 0x%x\n", stack[r1]);
-	printf("r2  = 0x%x\n", stack[r2]);
-	printf("r3  = 0x%x\n", stack[r3]);
-	printf("r12 = 0x%x\n", stack[r12]);
-	printf("lr  = 0x%x\n", stack[lr]);
-	printf("pc  = 0x%x\n", stack[pc]);
-	printf("psr = 0x%x\n", stack[psr]);
-} 
+    printf("r0  = 0x%x\n", stack[r0]);
+    printf("r1  = 0x%x\n", stack[r1]);
+    printf("r2  = 0x%x\n", stack[r2]);
+    printf("r3  = 0x%x\n", stack[r3]);
+    printf("r12 = 0x%x\n", stack[r12]);
+    printf("lr  = 0x%x\n", stack[lr]);
+    printf("pc  = 0x%x\n", stack[pc]);
+    printf("psr = 0x%x\n", stack[psr]);
+}
 
 void Hard_Fault_Handler(uint32_t stack[])
-{     
+{
     printf("In Hard Fault Handler\n");
 
     stackDump(stack);
-	
-	//Chip Reset
-	//SYS_UnlockReg();
-	//SYS->IPRSTC1 |= SYS_IPRSTC1_CHIP_RST_Msk;
+
+    //Chip Reset
+    //SYS_UnlockReg();
+    //SYS->IPRSTC1 |= SYS_IPRSTC1_CHIP_RST_Msk;
 
     while(1);
 }
@@ -113,14 +113,14 @@ void HardFault_Handler(void)
         "MOVS    r0, #4                        \n"
         "MOV     r1, LR                        \n"
         "TST     r0, r1                        \n"
-        "BEQ     Stack_Use_MSP                 \n" 
-        "MRS     R0, PSP                       \n" //; stack use PSP 
-        "B       Get_LR_and_Branch             \n" 
-        "Stack_Use_MSP:                        \n" 
-        "MRS     R0, MSP                       \n" //; stack use MSP 
-        "Get_LR_and_Branch:                    \n" 
-        "MOV     R1, LR                        \n" //; LR current value 
-        "B Hard_Fault_Handler        \n" 
+        "BEQ     Stack_Use_MSP                 \n"
+        "MRS     R0, PSP                       \n" //; stack use PSP
+        "B       Get_LR_and_Branch             \n"
+        "Stack_Use_MSP:                        \n"
+        "MRS     R0, MSP                       \n" //; stack use MSP
+        "Get_LR_and_Branch:                    \n"
+        "MOV     R1, LR                        \n" //; LR current value
+        "B Hard_Fault_Handler        \n"
        );
 
     while(1);
@@ -181,32 +181,32 @@ SP_Read_Ready
     LDR     R1, [R0, #24]         //; Get previous PC
     LDRH    R3, [R1]              //; Get instruction
     LDR     R2, =0xBEAB           //; The special BKPT instruction
-                 CMP     R3, R2                //; Test if the instruction at previous PC is BKPT
-                 BNE     HardFault_Handler_Ret //; Not BKPT
+    CMP     R3, R2                //; Test if the instruction at previous PC is BKPT
+    BNE     HardFault_Handler_Ret //; Not BKPT
 
-                 ADDS    R1, #4                //; Skip BKPT and next line
-                 STR     R1, [R0, #24]         //; Save previous PC
+    ADDS    R1, #4                //; Skip BKPT and next line
+    STR     R1, [R0, #24]         //; Save previous PC
 
-                 BX      LR                    //; Return
+    BX      LR                    //; Return
 HardFault_Handler_Ret
 
     /* TODO: Implement your own hard fault handler here. */
-    MOVS    r0, #4 
-    MOV     r1, LR 
-    TST     r0, r1 
-    BEQ     Stack_Use_MSP 
-    MRS     R0, PSP ;stack use PSP 
-    B       Get_LR_and_Branch 
-Stack_Use_MSP 
-    MRS     R0, MSP ; stack use MSP 
-Get_LR_and_Branch 
-    MOV     R1, LR ; LR current value 
-    LDR     R2,=__cpp(Hard_Fault_Handler) 
-    BX      R2                  
+    MOVS    r0, #4
+    MOV     r1, LR
+    TST     r0, r1
+    BEQ     Stack_Use_MSP
+    MRS     R0, PSP ;stack use PSP
+    B       Get_LR_and_Branch
+Stack_Use_MSP
+    MRS     R0, MSP ; stack use MSP
+Get_LR_and_Branch
+    MOV     R1, LR ; LR current value
+    LDR     R2,=__cpp(Hard_Fault_Handler)
+    BX      R2
 
-                 B       .
+    B       .
 
-                 ALIGN
+    ALIGN
 }
 
 /**
@@ -247,7 +247,7 @@ SH_End
 # if defined(__ICCARM__)
 
 /**
- * @brief    This HardFault handler is implemented to show r0, r1, r2, r3, r12, lr, pc, psr 
+ * @brief    This HardFault handler is implemented to show r0, r1, r2, r3, r12, lr, pc, psr
  *
  * @param    None
  *
@@ -261,16 +261,16 @@ void HardFault_Handler(void)
     asm("MOVS    r0, #4                        \n"
         "MOV     r1, LR                        \n"
         "TST     r0, r1                        \n"
-        "BEQ     Stack_Use_MSP                 \n" 
-        "MRS     R0, PSP                       \n" //; stack use PSP 
-        "B       Get_LR_and_Branch             \n" 
-        "Stack_Use_MSP:                        \n" 
-        "MRS     R0, MSP                       \n" //; stack use MSP 
-        "Get_LR_and_Branch:                    \n" 
-        "MOV     R1, LR                        \n" //; LR current value 
-        "B Hard_Fault_Handler                  \n" 
+        "BEQ     Stack_Use_MSP                 \n"
+        "MRS     R0, PSP                       \n" //; stack use PSP
+        "B       Get_LR_and_Branch             \n"
+        "Stack_Use_MSP:                        \n"
+        "MRS     R0, MSP                       \n" //; stack use MSP
+        "Get_LR_and_Branch:                    \n"
+        "MOV     R1, LR                        \n" //; LR current value
+        "B Hard_Fault_Handler                  \n"
        );
-     
+
     while(1);
 }
 
@@ -288,18 +288,18 @@ void HardFault_Handler(void)
  */
 __asm int32_t HardFault_Handler(void)
 {
-    MOVS    r0, #4 
-    MOV     r1, LR 
-    TST     r0, r1 
-    BEQ     Stack_Use_MSP 
-    MRS     R0, PSP ;stack use PSP 
-    B       Get_LR_and_Branch 
-Stack_Use_MSP 
-    MRS     R0, MSP ; stack use MSP 
-Get_LR_and_Branch 
-    MOV     R1, LR ; LR current value 
-    LDR     R2,=__cpp(Hard_Fault_Handler) 
-    BX      R2                  
+    MOVS    r0, #4
+    MOV     r1, LR
+    TST     r0, r1
+    BEQ     Stack_Use_MSP
+    MRS     R0, PSP ;stack use PSP
+    B       Get_LR_and_Branch
+Stack_Use_MSP
+    MRS     R0, MSP ; stack use MSP
+Get_LR_and_Branch
+    MOV     R1, LR ; LR current value
+    LDR     R2,=__cpp(Hard_Fault_Handler)
+    BX      R2
 }
 
 #endif
@@ -318,7 +318,8 @@ void SendChar_ToUART(int ch)
 #ifndef DISABLE_UART
         while(DEBUG_PORT->FIFOSTS & UART_FIFOSTS_TXFULL_Msk);
         DEBUG_PORT->DAT = ch;
-        if(ch == '\n'){
+        if(ch == '\n')
+        {
             while(DEBUG_PORT->FIFOSTS & UART_FIFOSTS_TXFULL_Msk);
             DEBUG_PORT->DAT = '\r';
         }
@@ -384,24 +385,24 @@ char GetChar(void)
     }
 # else
     int nRet;
-    while(SH_DoCommand(0x7, 0, &nRet) != 0)  
+    while(SH_DoCommand(0x7, 0, &nRet) != 0)
     {
         if(nRet != 0)
             return (char)nRet;
     }
-# endif    
+# endif
 #endif
 #ifndef DISABLE_UART
         while (1){
             if(!(DEBUG_PORT->FIFOSTS & UART_FIFOSTS_RXEMPTY_Msk))
             {
                 return (DEBUG_PORT->DAT);
-                
+
             }
         }
 #else
     return(0);
-#endif        
+#endif
 }
 
 
@@ -434,7 +435,7 @@ int IsDebugFifoEmpty(void)
     return (DEBUG_PORT->FIFOSTS & UART_FIFOSTS_TXEMPTYF_Msk) ? 1 : 0;
 #else
     return(1);
-#endif    
+#endif
 
 }
 
@@ -443,28 +444,29 @@ int IsDebugFifoEmpty(void)
 /*---------------------------------------------------------------------------------------------------------*/
 void _ttywrch(int ch)
 {
-  SendChar(ch);
-  return;
+    SendChar(ch);
+    return;
 }
 
 int fputc(int ch, FILE *f)
 {
-  SendChar(ch);
-  return ch;
+    SendChar(ch);
+    return ch;
 }
 
 int fgetc(FILE *f) {
-   return (GetChar());
+    return (GetChar());
 }
 
 
 int ferror(FILE *f) {
-  return EOF;
+    return EOF;
 }
 
-#ifdef DEBUG_ENABLE_SEMIHOST 
+#ifdef DEBUG_ENABLE_SEMIHOST
 # ifdef __ICCARM__
-void __exit(int return_code) {
+void __exit(int return_code)
+{
 
     /* Check if link with ICE */
 
@@ -477,7 +479,8 @@ void __exit(int return_code) {
 label:  goto label;  /* endless loop */
 }
 # else
-void _sys_exit(int return_code) {
+void _sys_exit(int return_code)
+{
 
     /* Check if link with ICE */
     if(SH_DoCommand(0x18, 0x20026, NULL) == 0)

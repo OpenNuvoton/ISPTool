@@ -95,7 +95,8 @@ extern "C"
 /** @addtogroup NANO100_LCD_EXPORTED_STRUCTS LCD Exported Structs
   @{
 */
-typedef enum {
+typedef enum
+{
     LCD_C_TYPE = 0,          /*!< Select LCD C-Type */
     LCD_EXTERNAL_R_TYPE = 1, /*!< Select LCD External R-Type */
     LCD_INTERNAL_R_TYPE = 2, /*!< Select LCD Internal R-Type */

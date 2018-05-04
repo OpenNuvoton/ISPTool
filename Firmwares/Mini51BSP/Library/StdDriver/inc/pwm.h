@@ -2,12 +2,12 @@
  * @file     pwm.h
  * @version  V1.00
  * $Revision: 11 $
- * $Date: 15/09/23 1:57p $ 
+ * $Date: 15/09/23 1:57p $
  * @brief    Mini51 series PWM driver header file
  *
  * @note
  * Copyright (C) 2013 Nuvoton Technology Corp. All rights reserved.
- *****************************************************************************/ 
+ *****************************************************************************/
 #ifndef __PWM_H__
 #define __PWM_H__
 
@@ -93,7 +93,7 @@ extern "C"
  * \hideinitializer
  */
 #define PWM_ENABLE_SYNC_MODE(pwm) (PWM->PCR = (PWM->PCR & ~PWM_PCR_PWMMOD_Msk) |(2UL << PWM_PCR_PWMMOD_Pos))
- 
+
 /**
  * @brief This macro disable synchronous mode, and enable independent mode.
  * @param[in] pwm The base address of PWM module
@@ -126,12 +126,12 @@ extern "C"
  * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~5
  * @param[in] u32Prescaler Clock prescaler of specified channel. Valid values are between 1 ~ 0xFF
  * @return None
- * @note Every even channel N, and channel (N + 1) share a prescaler. So if channel 0 prescaler changed, 
+ * @note Every even channel N, and channel (N + 1) share a prescaler. So if channel 0 prescaler changed,
  *       channel 1 will also be affected.
  * \hideinitializer
  */
 #define PWM_SET_PRESCALER(pwm, u32ChannelNum, u32Prescaler) \
-    (PWM->PPR = (PWM->PPR & ~(PWM_PPR_CP01_Msk << (((u32ChannelNum) >> 1) * 8))) | ((u32Prescaler) << (((u32ChannelNum) >> 1) * 8))) 
+    (PWM->PPR = (PWM->PPR & ~(PWM_PPR_CP01_Msk << (((u32ChannelNum) >> 1) * 8))) | ((u32Prescaler) << (((u32ChannelNum) >> 1) * 8)))
 
 /**
  * @brief This macro set the divider of the selected channel
@@ -142,7 +142,7 @@ extern "C"
  *              - \ref PWM_CLK_DIV_2
  *              - \ref PWM_CLK_DIV_4
  *              - \ref PWM_CLK_DIV_8
- *              - \ref PWM_CLK_DIV_16 
+ *              - \ref PWM_CLK_DIV_16
  * @return None
  * \hideinitializer
  */
@@ -152,7 +152,7 @@ extern "C"
 /**
  * @brief This macro set the duty of the selected channel
  * @param[in] pwm The base address of PWM module
- * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~5 
+ * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~5
  * @param[in] u32CMR Duty of specified channel. Valid values are between 0~0xFFFF
  * @return None
  * @note This new setting will take effect on next PWM period
@@ -163,7 +163,7 @@ extern "C"
 /**
  * @brief This macro set the period of the selected channel
  * @param[in] pwm The base address of PWM module
- * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~5 
+ * @param[in] u32ChannelNum PWM channel number. Valid values are between 0~5
  * @param[in] u32CNR Period of specified channel. Valid values are between 0~0xFFFF
  * @return None
  * @note This new setting will take effect on next PWM period
@@ -187,9 +187,9 @@ extern "C"
 
 
 uint32_t PWM_ConfigOutputChannel(PWM_T *pwm,
-                                  uint32_t u32ChannelNum, 
-                                  uint32_t u32Frequency, 
-                                  uint32_t u32DutyCycle);
+                                 uint32_t u32ChannelNum,
+                                 uint32_t u32Frequency,
+                                 uint32_t u32DutyCycle);
 void PWM_Start(PWM_T *pwm, uint32_t u32ChannelMask);
 void PWM_Stop(PWM_T *pwm, uint32_t u32ChannelMask);
 void PWM_ForceStop(PWM_T *pwm, uint32_t u32ChannelMask);
@@ -197,10 +197,10 @@ void PWM_EnableADCTrigger(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u32Condit
 void PWM_DisableADCTrigger(PWM_T *pwm, uint32_t u32ChannelNum);
 void PWM_ClearADCTriggerFlag(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u32Condition);
 uint32_t PWM_GetADCTriggerFlag(PWM_T *pwm, uint32_t u32ChannelNum);
-void PWM_EnableFaultBrake(PWM_T *pwm, 
-                           uint32_t u32ChannelMask, 
-                           uint32_t u32LevelMask, 
-                           uint32_t u32BrakeSource);
+void PWM_EnableFaultBrake(PWM_T *pwm,
+                          uint32_t u32ChannelMask,
+                          uint32_t u32LevelMask,
+                          uint32_t u32BrakeSource);
 void PWM_ClearFaultBrakeFlag(PWM_T *pwm, uint32_t u32BrakeSource);
 void PWM_EnableOutput(PWM_T *pwm, uint32_t u32ChannelMask);
 void PWM_DisableOutput(PWM_T *pwm, uint32_t u32ChannelMask);
