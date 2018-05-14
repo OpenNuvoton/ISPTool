@@ -76,7 +76,6 @@ void CDialogConfiguration_TC8226::DoDataExchange(CDataExchange *pDX)
     DDX_Radio(pDX, IDC_RADIO_IO_TRI, m_nRadioIO);
     DDX_Text(pDX, IDC_EDIT_FLASH_BASE_ADDRESS, m_sFlashBaseAddress);
     DDX_Text(pDX, IDC_EDIT_DATA_FLASH_SIZE, m_sDataFlashSize);
-    DDX_Check(pDX, IDC_CHECK_SECURITYBOOT_LOCK, m_bSecurityBootLock);
     DDX_Check(pDX, IDC_SPROM_LOCK_CACHEABLE, m_bSpromLockCacheable);
     //}}AFX_DATA_MAP
 }
@@ -99,7 +98,6 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_TC8226, CDialog)
     ON_BN_CLICKED(IDC_CHECK_BOOT_LOADER, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnButtonClick)
-    ON_BN_CLICKED(IDC_CHECK_SECURITYBOOT_LOCK, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_ICE_LOCK, OnButtonClick)
     ON_BN_CLICKED(IDC_SPROM_LOCK_CACHEABLE, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_WDT_POWER_DOWN, OnCheckClickWDTPD)
@@ -243,7 +241,6 @@ void CDialogConfiguration_TC8226::ConfigToGUI(int nEventID)
     m_SpinDataFlashSize.EnableWindow(m_bDataFlashEnable);
     m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
     m_sConfigValue1.Format(_T("0x%08X"), uConfig1);
-    m_bSecurityBootLock = ((uConfig2 & TC8226_FLASH_CONFIG_SBLOCK) == 0x5A5A ? FALSE : TRUE);
 
     switch (uConfig3 & TC8226_FLASH_CONFIG_SPIM) {
         case TC8226_FLASH_CONFIG_SPIM_SEL0:
@@ -420,8 +417,11 @@ void CDialogConfiguration_TC8226::GUIToConfig(int nEventID)
 
     if (m_bCheckBootLoader) {
         uConfig0 &= ~TC8226_FLASH_CONFIG_BOOTLOADER;
+        uConfig2 &= ~TC8226_FLASH_CONFIG_SBLOCK;
     } else {
         uConfig0 |= TC8226_FLASH_CONFIG_BOOTLOADER;
+        uConfig2 &= ~TC8226_FLASH_CONFIG_SBLOCK;
+        uConfig2 |= 0x00005A00;
     }
 
     if (m_bDataFlashEnable) {
@@ -432,8 +432,11 @@ void CDialogConfiguration_TC8226::GUIToConfig(int nEventID)
 
     if (m_bSecurityLock) {
         uConfig0 &= ~TC8226_FLASH_CONFIG_LOCK;
+        uConfig2 &= ~TC8226_FLASH_CONFIG_ALOCK;
     } else {
         uConfig0 |= TC8226_FLASH_CONFIG_LOCK;
+        uConfig2 &= ~TC8226_FLASH_CONFIG_ALOCK;
+        uConfig2 |= 0x0000005A;
     }
 
     if (m_bICELock) {
@@ -452,14 +455,6 @@ void CDialogConfiguration_TC8226::GUIToConfig(int nEventID)
     TCHAR *pEnd;
     uConfig1 = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
     m_ConfigValue.m_value[1] = uConfig1;
-
-    if (m_bSecurityBootLock) {
-        uConfig2 &= ~TC8226_FLASH_CONFIG_SBLOCK;
-    } else {
-        uConfig2 &= ~TC8226_FLASH_CONFIG_SBLOCK;
-        uConfig2 |= 0x00005A5A;
-    }
-
     uConfig3 &= ~TC8226_FLASH_CONFIG_SPIM;
 
     switch (m_nRadioSPIM) {
