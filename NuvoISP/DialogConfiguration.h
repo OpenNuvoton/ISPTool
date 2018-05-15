@@ -50,6 +50,10 @@ Reasons for these range limits:
 #define IDC_GROUP_MII_MODE                  3011
 #define IDC_GROUP_SPIM_SELECT               3012
 #define IDC_GROUP_UART1_SELECT              3013
+#define IDC_GROUP_LVR_LEVEL                 3014
+#define IDC_GROUP_HXT_MODE                  3015
+#define IDC_GROUP_CHIPRESET_TIMEEXT         3016
+#define IDC_GROUP_RST_PIN_WIDTH             3017
 
 // Clock Options
 #define IDC_RADIO_CLK_HXT                   3025
@@ -207,3 +211,13 @@ Reasons for these range limits:
 #define IDC_CHECK_CHZ_Odd0_Ctrl             3167
 #define IDC_CHECK_CHZ_Even1_Ctrl            3168
 #define IDC_CHECK_CHZ_Odd1_Ctrl             3169
+
+// M031
+#define IDC_RADIO_LVR_LEVEL_0               3170
+#define IDC_RADIO_LVR_LEVEL_1               3171
+#define IDC_RADIO_HXT_MODE_0                3172
+#define IDC_RADIO_HXT_MODE_1                3173
+#define IDC_RADIO_CHIPRESET_TIMEEXT_0       3174
+#define IDC_RADIO_CHIPRESET_TIMEEXT_1       3175
+#define IDC_RADIO_RST_PIN_WIDTH_0           3176
+#define IDC_RADIO_RST_PIN_WIDTH_1           3177

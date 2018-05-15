@@ -395,6 +395,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\DialogConfiguration\DialogConfiguration_M031.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\dialogconfiguration\DialogConfiguration_M0564.cpp"
 				>
 			</File>
