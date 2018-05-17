@@ -246,7 +246,7 @@ extern "C"
  *                                                                   \ref UART_LINE_RFITL_8BYTES / \ref UART_LINE_RFITL_14BYTES )
  *    @return    None
  */
-#define UART_SET_RX_FIFO_INTTRGLV(uart, u32TriggerLevel)   (((uart)->LINE  = ((uart)->LINE  &  ~UART_LINE_RFITL_Msk) | (u32TriggerLevel))
+#define UART_SET_RX_FIFO_INTTRGLV(uart, u32TriggerLevel)   ((uart)->LINE  = ((uart)->LINE  &  ~UART_LINE_RFITL_Msk) | (u32TriggerLevel))
 
 /**
  *    @brief    Enable specified interrupt

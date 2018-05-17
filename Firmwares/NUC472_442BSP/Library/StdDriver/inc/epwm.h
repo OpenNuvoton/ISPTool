@@ -146,7 +146,7 @@ do { \
 #define EPWM_MASK_OUTPUT(pwm, u32ChannelMask, u32LevelMask) \
 do { \
     (pwm)->MSKEN = u32ChannelMask; \
-    (pwm)->MSK = u32ChannelMask; \
+    (pwm)->MSK = u32LevelMask; \
 }while(0)
 
 /**

@@ -3022,9 +3022,12 @@ typedef struct {
      * |[19]    |PWM1CH01CKEN|PWM1_01 Clock Enable Control
      * |        |          |0 = PWM1_01 Clock Disabled.
      * |        |          |1 = PWM1_01 Clock Enabled.
-     * |[21]    |PWM1CH2345CKEN|PWM1_2345 Clock Enable Control
-     * |        |          |0 = PWM1_2345 Clock Disabled.
-     * |        |          |1 = PWM1_2345 Clock Enabled.
+     * |[20]    |PWM1CH23CKEN|PWM1_23 Clock Enable Control
+     * |        |          |0 = PWM1_23 Clock Disabled.
+     * |        |          |1 = PWM1_23 Clock Enabled.
+     * |[21]    |PWM1CH45CKEN|PWM1_45 Clock Enable Control
+     * |        |          |0 = PWM1_45 Clock Disabled.
+     * |        |          |1 = PWM1_45 Clock Enabled.
      * |[22]    |QEI0CKEN  |Quadrature Encoder Interface (QEI0) Clock Enable Control
      * |        |          |0 = QEI0 clock Disabled.
      * |        |          |1 = QEI0 clock Enabled.
@@ -3723,8 +3726,11 @@ typedef struct {
 #define CLK_APBCLK1_PWM1CH01CKEN_Pos     (19)                                              /*!< CLK_T::APBCLK1: PWM1CH01CKEN Position     */
 #define CLK_APBCLK1_PWM1CH01CKEN_Msk     (0x1ul << CLK_APBCLK1_PWM1CH01CKEN_Pos)           /*!< CLK_T::APBCLK1: PWM1CH01CKEN Mask         */
 
-#define CLK_APBCLK1_PWM1CH2345CKEN_Pos   (21)                                              /*!< CLK_T::APBCLK1: PWM1CH2345CKEN Position   */
-#define CLK_APBCLK1_PWM1CH2345CKEN_Msk   (0x1ul << CLK_APBCLK1_PWM1CH2345CKEN_Pos)         /*!< CLK_T::APBCLK1: PWM1CH2345CKEN Mask       */
+#define CLK_APBCLK1_PWM1CH23CKEN_Pos     (20)                                              /*!< CLK_T::APBCLK1: PWM1CH23CKEN Position     */
+#define CLK_APBCLK1_PWM1CH23CKEN_Msk     (0x3ul << CLK_APBCLK1_PWM1CH23CKEN_Pos)           /*!< CLK_T::APBCLK1: PWM1CH23CKEN Mask         */
+
+#define CLK_APBCLK1_PWM1CH45CKEN_Pos     (21)                                              /*!< CLK_T::APBCLK1: PWM1CH45CKEN Position   */
+#define CLK_APBCLK1_PWM1CH45CKEN_Msk     (0x1ul << CLK_APBCLK1_PWM1CH45CKEN_Pos)           /*!< CLK_T::APBCLK1: PWM1CH45CKEN Mask       */
 
 #define CLK_APBCLK1_QEI0CKEN_Pos         (22)                                              /*!< CLK_T::APBCLK1: QEI0CKEN Position         */
 #define CLK_APBCLK1_QEI0CKEN_Msk         (0x1ul << CLK_APBCLK1_QEI0CKEN_Pos)               /*!< CLK_T::APBCLK1: QEI0CKEN Mask             */

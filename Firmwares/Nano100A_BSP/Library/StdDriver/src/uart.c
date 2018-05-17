@@ -42,7 +42,7 @@ void UART_ClearIntFlag(UART_T* uart , uint32_t u32InterruptFlag)
 
     if(u32InterruptFlag & UART_ISR_RLS_IS_Msk)   /* clear Receive Line Status Interrupt */
     {
-        uart->FSR |= UART_FSR_BI_F_Msk | UART_FSR_FE_F_Msk | UART_FSR_FE_F_Msk;
+        uart->FSR |= UART_FSR_BI_F_Msk | UART_FSR_FE_F_Msk | UART_FSR_PE_F_Msk;
         uart->TRSR |= UART_TRSR_RS485_ADDET_F_Msk;
     }
 

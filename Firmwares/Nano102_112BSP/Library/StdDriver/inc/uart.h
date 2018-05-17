@@ -246,7 +246,7 @@ extern "C"
  *                                                                   \ref UART_TLCTL_RFITL_8BYTES / \ref UART_TLCTL_RFITL_14BYTES )
  *    @return    None
  */
-#define UART_SET_RX_FIFO_INTTRGLV(uart, u32TriggerLevel)   (((uart)->TLCTL  = ((uart)->TLCTL  &  ~UART_TLCTL_RFITL_Msk) | (u32TriggerLevel))
+#define UART_SET_RX_FIFO_INTTRGLV(uart, u32TriggerLevel)   ((uart)->TLCTL  = ((uart)->TLCTL  &  ~UART_TLCTL_RFITL_Msk) | (u32TriggerLevel))
 
 /**
  *    @brief    Enable specified interrupt

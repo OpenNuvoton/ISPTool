@@ -163,7 +163,11 @@ extern "C"
  * @return None
  * \hideinitializer
  */
-#define PWM_MASK_OUTPUT(pwm, u32ChannelMask, u32LevelMask) ((pwm)->MSKEN |= (u32ChannelMask))
+#define PWM_MASK_OUTPUT(pwm, u32ChannelMask, u32LevelMask) \
+do { \
+    (pwm)->MSKEN = (u32ChannelMask); \
+    (pwm)->MSK = u32LevelMask; \
+}while(0)
 
 /**
  * @brief This macro set the prescaler of the selected channel
