@@ -358,9 +358,9 @@ HBRUSH CNuvoISPDlg::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 
 LRESULT CNuvoISPDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
-    // TODO: Add your specialized code here and/or call the base class
     if (message == MSG_USER_EVENT) {
         if (wParam == MSG_UPDATE_CONNECT_STATUS) {
+            CString sMessage;
             UpdateData(true);
             m_sStatus = _T("");
 
@@ -429,7 +429,8 @@ LRESULT CNuvoISPDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
                             break;
 
                         case EPS_PROG_DONE:
-                            MessageBox(_T("Programming flash, OK!"));
+                            sMessage.Format(_T("Programming flash, OK! (%d secs)"), m_uProgTime);
+                            MessageBox(sMessage);
                             break;
 
                         default:

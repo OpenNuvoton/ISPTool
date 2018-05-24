@@ -91,6 +91,8 @@ public:
     };
 
     EProcSts m_eProcSts;
+
+    unsigned int m_uProgTime;
 };
 
 //{{AFX_INSERT_LOCATION}}

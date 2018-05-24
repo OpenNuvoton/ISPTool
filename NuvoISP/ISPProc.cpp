@@ -195,6 +195,7 @@ void CISPProc::Thread_CheckDisconnect()
     }
 }
 
+#include <time.h>
 void CISPProc::Thread_ProgramFlash()
 {
     if (m_fnThreadProcStatus != &CISPProc::Thread_ProgramFlash) {
@@ -206,6 +207,9 @@ void CISPProc::Thread_ProgramFlash()
     m_eProcSts = EPS_OK;
 
     try {
+        time_t start = time(NULL);
+        m_ISPLdDev.CMDEx_SetAckSize(64);
+
         if (m_bErase) {
             if (m_ISPLdDev.EraseAll()) {
                 m_ISPLdDev.ReadConfig(m_CONFIG);
@@ -237,6 +241,8 @@ void CISPProc::Thread_ProgramFlash()
                            &m_uNVM_Addr,
                            &m_uAPROM_Size, &m_uNVM_Size);
         }
+
+        m_ISPLdDev.CMDEx_SetAckSize(8);
 
         if (m_bProgram_APROM) {
             uAddr = m_uAPROM_Addr;
@@ -328,6 +334,8 @@ void CISPProc::Thread_ProgramFlash()
             }
         }
 
+        m_ISPLdDev.CMDEx_SetAckSize(64);
+
         if (m_bRunAPROM) {
             m_ISPLdDev.RunAPROM();
             m_eProcSts = EPS_OK;
@@ -336,6 +344,8 @@ void CISPProc::Thread_ProgramFlash()
         }
 
         if (m_fnThreadProcStatus == &CISPProc::Thread_ProgramFlash) {
+            time_t end = time(NULL);
+            m_uProgTime = unsigned int(end - start);
             m_eProcSts = EPS_PROG_DONE;
             Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
         }
