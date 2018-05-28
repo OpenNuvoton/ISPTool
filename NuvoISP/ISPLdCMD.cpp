@@ -280,7 +280,6 @@ void ISPLdCMD::UpdateAPROM(unsigned long start_addr,
             USBCMD_TIMEOUT_LONG);
         /* First block need erase the chip, need long timeout */
         ReadFile(NULL, 0, USBCMD_TIMEOUT_LONG, TRUE);
-        CMDEx_SetAckSize(8);
     } else {
         if (write_len > sizeof(acBuffer)) {
             write_len = sizeof(acBuffer);
