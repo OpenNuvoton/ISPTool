@@ -77,6 +77,10 @@ public:
     unsigned int m_uNVM_Addr;
     unsigned int m_uNVM_Size;
 
+
+    BOOL	m_bSkipSizeCheck;
+
+
     // Programming Option is binding with UI
     BOOL	m_bProgram_APROM;
     BOOL	m_bProgram_NVM;

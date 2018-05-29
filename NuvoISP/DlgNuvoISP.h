@@ -71,7 +71,8 @@ public:
     FLASH_PID_INFO_BASE_T m_sPidInfoBase;
     afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
     void UpdateAddrOffset();
-    void InitUILayout();
+    // Reset UI Layout according to the PDID
+    BOOL ResetUI(unsigned int ulDeviceID = 0);
 
 private:
     void RegisterNotification();

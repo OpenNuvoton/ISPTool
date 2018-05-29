@@ -189,7 +189,7 @@ BOOL CNuvoISPDlg::OnInitDialog()
     SetDlgItemText(IDC_EDIT_FLASH_BASE_ADDRESS, _T("100000"));
     Set_ThreadAction(&CISPProc::Thread_Idle);
     RegisterNotification();
-    InitUILayout();
+    ResetUI();
     return TRUE;	// return TRUE  unless you set the focus to a control
 }
 
@@ -386,7 +386,7 @@ LRESULT CNuvoISPDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
                             break;
                     }
 
-                    InitUILayout();
+                    ResetUI();
                     break;
 
                 case CONNECT_STATUS_USB:
@@ -647,39 +647,8 @@ void CNuvoISPDlg::OnPaint()
 
 void CNuvoISPDlg::ShowChipInfo()
 {
-    if (0x00550505 == m_ulDeviceID) {
-        SetDlgItemText(IDC_EDIT_PARTNO, _T("NUC505"));
-        SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, _T("NA"));
-        SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, _T("NA"));
-        m_bProgram_Config = 0;
-        m_bErase = 0;
-        ShowDlgItem(IDC_CHECK_CONFIG, 0);
-        ShowDlgItem(IDC_CHECK_ERASE, 0);
-        EnableDlgItem(IDC_BUTTON_CONFIG, 0);
-        ShowDlgItem(IDC_STATIC_APOFFSET, 1);
-        ShowDlgItem(IDC_STATIC_FLASH_BASE_ADDRESS, 1);
-        ShowDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS, 1);
-        std::ostringstream os;
-        os << "RAM:128K, SPI Flash:2M";
-        std::string cstr = os.str();
-        std::wstring wcstr(cstr.begin(), cstr.end());
-        CString str = wcstr.c_str();
-        CString info;
-        info.Format(_T("%s\nFW Ver: 0x%X"), wcstr.c_str(), int(m_ucFW_VER));
-        SetDlgItemText(IDC_STATIC_PARTNO, info);
-        UpdateAddrOffset();
+    if (ResetUI(m_ulDeviceID)) {
         return;
-    } else if ((0x00002150 == m_ulDeviceID)
-               || (0x00002F50 == m_ulDeviceID)
-               || (0x00003650 == m_ulDeviceID)) {
-        // N76E885, N76E616 and N76E003
-        ShowDlgItem(IDC_STATIC_FLASH_BASE_ADDRESS, 1);
-        ShowDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS, 1);
-        UpdateAddrOffset();
-    } else if ((m_ulDeviceID & 0xFFFFF000) == 0x00D48000) {
-        SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0-3:"));
-        ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 1);
-        ShowDlgItem(IDC_STATIC_CONFIG_VALUE_3, 1);
     }
 
     CString strTmp = _T("");
@@ -817,23 +786,105 @@ LRESULT CNuvoISPDlg::OnDeviceChange(WPARAM  nEventType, LPARAM  dwData)
     return TRUE;
 }
 
-void CNuvoISPDlg::InitUILayout()
+BOOL CNuvoISPDlg::ResetUI(unsigned int ulDeviceID)
 {
-    m_ButtonConnect.SetWindowText(_T("Connect"));
-    SetDlgItemText(IDC_EDIT_PARTNO, _T(""));
-    SetDlgItemText(IDC_STATIC_PARTNO, _T(""));
-    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, _T(""));
-    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, _T(""));
-    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_2, _T(""));
-    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_3, _T(""));
-    ShowDlgItem(IDC_CHECK_CONFIG, 1);
-    ShowDlgItem(IDC_CHECK_ERASE, 1);
-    EnableDlgItem(IDC_BUTTON_CONFIG, 1);
-    ShowDlgItem(IDC_STATIC_APOFFSET, 0);
-    ShowDlgItem(IDC_STATIC_FLASH_BASE_ADDRESS, 0);
-    ShowDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS, 0);
-    SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0,1:"));
-    ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 0);
-    ShowDlgItem(IDC_STATIC_CONFIG_VALUE_3, 0);
-    EnableProgramOption(TRUE);
+    if (0x00550505 == ulDeviceID) {
+        SetDlgItemText(IDC_EDIT_PARTNO, _T("NUC505"));
+        SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, _T("NA"));
+        SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, _T("NA"));
+        m_bProgram_Config = 0;
+        m_bErase = 0;
+        ShowDlgItem(IDC_CHECK_CONFIG, 0);
+        ShowDlgItem(IDC_CHECK_ERASE, 0);
+        EnableDlgItem(IDC_BUTTON_CONFIG, 0);
+        ShowDlgItem(IDC_STATIC_APOFFSET, 1);
+        ShowDlgItem(IDC_STATIC_FLASH_BASE_ADDRESS, 1);
+        ShowDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS, 1);
+        std::ostringstream os;
+        os << "RAM:128K, SPI Flash:2M";
+        std::string cstr = os.str();
+        std::wstring wcstr(cstr.begin(), cstr.end());
+        CString str = wcstr.c_str();
+        CString info;
+        info.Format(_T("%s\nFW Ver: 0x%X"), wcstr.c_str(), int(m_ucFW_VER));
+        SetDlgItemText(IDC_STATIC_PARTNO, info);
+        UpdateAddrOffset();
+        return TRUE;
+    } else if ((0x00002150 == ulDeviceID)
+               || (0x00002F50 == ulDeviceID)
+               || (0x00003650 == ulDeviceID)) {
+        // N76E885, N76E616 and N76E003
+        ShowDlgItem(IDC_STATIC_FLASH_BASE_ADDRESS, 1);
+        ShowDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS, 1);
+        UpdateAddrOffset();
+    } else if ((ulDeviceID & 0xFFFFF000) == 0x00D48000) {
+        SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0-3:"));
+        ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 1);
+        ShowDlgItem(IDC_STATIC_CONFIG_VALUE_3, 1);
+    } else if ((ulDeviceID & 0xFFFFFF00) == 0x00235100) {
+        SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0-3:"));
+        ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 1);
+        ShowDlgItem(IDC_STATIC_CONFIG_VALUE_3, 1);
+        SetDlgItemText(IDC_BUTTON_NVM, _T("APROM_NS"));
+        SetDlgItemText(IDC_CHECK_NVM, _T("APROM_NS"));
+        m_bSkipSizeCheck = TRUE;
+        m_uAPROM_Size = m_ISPLdDev.m_ConnectInfo[0];
+        m_uNVM_Addr = m_ISPLdDev.m_ConnectInfo[1];
+
+        if (m_uNVM_Addr < m_uAPROM_Size) {
+            m_uNVM_Size = (m_uAPROM_Size - m_uNVM_Addr);
+        } else {
+            m_uNVM_Size = 0;
+            m_bProgram_NVM = 0;
+        }
+
+        EnableDlgItem(IDC_CHECK_NVM, (m_uNVM_Size != 0));
+        CString strTmp = _T("");
+        strTmp = GetPartNumber(m_ulDeviceID).c_str();
+        SetDlgItemText(IDC_EDIT_PARTNO, strTmp);
+        strTmp.Format(_T("0x%08X"), m_CONFIG_User[0]);
+        SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, strTmp);
+        strTmp.Format(_T("0x%08X"), m_CONFIG_User[1]);
+        SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, strTmp);
+        strTmp.Format(_T("0x%08X"), m_CONFIG_User[2]);
+        SetDlgItemText(IDC_STATIC_CONFIG_VALUE_2, strTmp);
+        strTmp.Format(_T("0x%08X"), m_CONFIG_User[3]);
+        SetDlgItemText(IDC_STATIC_CONFIG_VALUE_3, strTmp);
+        std::ostringstream os;
+        os << "APROM: " << size_str(m_uAPROM_Size) << ","
+           " APROM_NS: " << size_str(m_uNVM_Size);
+        std::string cstr = os.str();
+        std::wstring wcstr(cstr.begin(), cstr.end());
+        CString str = wcstr.c_str();
+        CString tips;
+        tips.Format(_T("Information of target chip,\n\n%s"), str);
+        CString info;
+        info.Format(_T("%s\nFW Ver: 0x%X"), wcstr.c_str(), int(m_ucFW_VER));
+        SetDlgItemText(IDC_STATIC_PARTNO, info);
+        Invalidate(1);
+        return TRUE;
+    } else { // Defaut UI Setting in OffLine Mode
+        m_bSkipSizeCheck = FALSE;
+        m_ButtonConnect.SetWindowText(_T("Connect"));
+        SetDlgItemText(IDC_EDIT_PARTNO, _T(""));
+        SetDlgItemText(IDC_STATIC_PARTNO, _T(""));
+        SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, _T(""));
+        SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, _T(""));
+        SetDlgItemText(IDC_STATIC_CONFIG_VALUE_2, _T(""));
+        SetDlgItemText(IDC_STATIC_CONFIG_VALUE_3, _T(""));
+        SetDlgItemText(IDC_BUTTON_NVM, _T("Data Flash"));
+        SetDlgItemText(IDC_CHECK_NVM, _T("Data Flash"));
+        ShowDlgItem(IDC_CHECK_CONFIG, 1);
+        ShowDlgItem(IDC_CHECK_ERASE, 1);
+        EnableDlgItem(IDC_BUTTON_CONFIG, 1);	// For Debug CONFIG dialog
+        ShowDlgItem(IDC_STATIC_APOFFSET, 0);
+        ShowDlgItem(IDC_STATIC_FLASH_BASE_ADDRESS, 0);
+        ShowDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS, 0);
+        SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0,1:"));
+        ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 0);
+        ShowDlgItem(IDC_STATIC_CONFIG_VALUE_3, 0);
+        EnableProgramOption(TRUE);
+    }
+
+    return FALSE;
 }

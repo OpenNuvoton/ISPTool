@@ -104,6 +104,9 @@ public:
         m_strComNum = str;
     };
     CString m_strDevPathName;
+
+    unsigned int m_ConnectInfo[4];
+
 };
 
 #endif

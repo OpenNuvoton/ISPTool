@@ -387,7 +387,7 @@ BOOL ISPLdCMD::CMD_Connect(DWORD dwMilliseconds)
     BOOL ret = FALSE;
 
     if (WriteFile(CMD_CONNECT, NULL, 0, USBCMD_TIMEOUT_LONG)) {
-        ret = ReadFile(NULL, 0, dwMilliseconds, FALSE);
+        ret = ReadFile((char *)m_ConnectInfo, 16, dwMilliseconds, FALSE);
     }
 
     if (ret) {
