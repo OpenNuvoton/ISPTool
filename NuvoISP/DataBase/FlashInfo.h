@@ -13,6 +13,7 @@ typedef struct {
     unsigned int uDataFlashStartAddress;
     unsigned int uISPFlashSize;
     unsigned int uPID;
+    unsigned int uFlashType;
 } FLASH_PID_INFO_BASE_T;
 
 void *GetInfo(unsigned int uPID,

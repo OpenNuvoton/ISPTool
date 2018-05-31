@@ -585,12 +585,39 @@ void *GetInfo(unsigned int uPID,
         return NULL;
     }
 
+    unsigned int uFlashType = 0;
+
+    // DataFlash Type 2
+    if ((uPID & 0xFFFFFF00) == 0x10012300
+            || (uPID & 0xFFFFFF00) == 0x00012300
+            || (uPID & 0xFFFFFF00) == 0x10013100
+            || (uPID & 0xFFFFFF00) == 0x10051800
+            || (uPID & 0xFFFFFF00) == 0x00032000
+            || (uPID & 0xFFFFFF00) == 0x10003000) { //NUC123/NUC131/M0518/NM1320/NUC030
+        uFlashType = 2;
+    } else {
+        uFlashType = (pInfo->uDataFlashSize != 0) ? 1 : 0;
+    }
+
+    // Page Size Type: 0x000 (512 Bytes, default), 0x200 (2K), 0x300 (4K)
+    if ((uPID & 0xFFFFFF00) == 0x00044200
+            || (uPID & 0xFFFFFF00) == 0x00047200
+            || (uPID & 0xFFFFF000) == 0x00845000
+            || (uPID & 0xFFFFF000) == 0x00945000  //NUC400/M451
+            || (uPID & 0xFFFFF000) == 0x00E45000  //M452E
+            || (uPID & 0xFFFFFF00) == 0x00C56400
+            || (uPID & 0xFFFFFF00) == 0x00C05200)  {//M0564/NUC126
+        uFlashType |= 0x200 ;
+    } else if ((uPID & 0xFFFFF000) == 0x00D48000) {	//M480
+        uFlashType |= 0x300 ;
+    }
+
+    pInfo->uFlashType = uFlashType;
     return pInfo;
 #else
     return NULL;
 #endif
 }
-
 #endif
 
 /* Calculate APROM and NVM size of NuMicro */
@@ -755,36 +782,11 @@ bool GetInfo(unsigned int uPID,
 
     if (GetInfo(uPID, &flashInfo) != NULL) {
         uProgramMemorySize = flashInfo.uProgramMemorySize;
-
-        // DataFlash Type 2
-        if ((uPID & 0xFFFFFF00) == 0x10012300
-                || (uPID & 0xFFFFFF00) == 0x00012300
-                || (uPID & 0xFFFFFF00) == 0x10013100
-                || (uPID & 0xFFFFFF00) == 0x10051800
-                || (uPID & 0xFFFFFF00) == 0x00032000) { //NUC123/NUC131/M0518/NM1320
-            uFlashType = 2;
-        } else {
-            uFlashType = (flashInfo.uDataFlashSize != 0) ? 1 : 0;
-        }
+        uFlashType = flashInfo.uFlashType;
+        return GetInfo_NuMicro(uConfig0, uConfig1,
+                               uProgramMemorySize, uFlashType,
+                               puNVM_Addr, puAPROM_Size, puNVM_Size);
     } else {
         return false;
     }
-
-    // Page Size Type: 0x000 (512 Bytes, default), 0x200 (2K), 0x300 (4K)
-    if ((uPID & 0xFFFFFF00) == 0x00044200
-            || (uPID & 0xFFFFFF00) == 0x00047200
-            || (uPID & 0xFFFFF000) == 0x00845000
-            || (uPID & 0xFFFFF000) == 0x00945000  //NUC400/M451
-            || (uPID & 0xFFFFF000) == 0x00E45000  //M452E
-            || (uPID & 0xFFFFFF00) == 0x00C56400
-            || (uPID & 0xFFFFFF00) == 0x00C05200) { //M0564/NUC126
-        uFlashType |= 0x200 ;
-    } else if ((uPID & 0xFFFFF000) == 0x00D48000 //M480
-               || (uPID & 0xFFFFFF00) == 0x1D010500) {    //I94000
-        uFlashType |= 0x300 ;
-    }
-
-    return GetInfo_NuMicro(uConfig0, uConfig1,
-                           uProgramMemorySize, uFlashType,
-                           puNVM_Addr, puAPROM_Size, puNVM_Size);
 }
