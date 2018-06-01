@@ -611,7 +611,12 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 break;
 
             case IDD_DIALOG_CONFIGURATION_M031:
-                pConfigDlg = new CDialogConfiguration_M031();
+                if (uProgramMemorySize) {
+                    pConfigDlg = new CDialogConfiguration_M031(uProgramMemorySize);
+                } else {
+                    pConfigDlg = new CDialogConfiguration_M031();
+                }
+
                 Config = (((CDialogConfiguration_M031 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
