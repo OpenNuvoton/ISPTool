@@ -244,18 +244,22 @@ void CDialogConfiguration_TC8226::ConfigToGUI(int nEventID)
 
     switch (uConfig3 & TC8226_FLASH_CONFIG_SPIM) {
         case TC8226_FLASH_CONFIG_SPIM_SEL0:
+            GetDlgItem(IDC_RADIO_UART1_SEL2)->EnableWindow(FALSE);
             m_nRadioSPIM = 0;
             break;
 
         case TC8226_FLASH_CONFIG_SPIM_SEL1:
+            GetDlgItem(IDC_RADIO_UART1_SEL2)->EnableWindow(TRUE);
             m_nRadioSPIM = 1;
             break;
 
         case TC8226_FLASH_CONFIG_SPIM_SEL2:
+            GetDlgItem(IDC_RADIO_UART1_SEL2)->EnableWindow(TRUE);
             m_nRadioSPIM = 2;
             break;
 
         case TC8226_FLASH_CONFIG_SPIM_SEL3:
+            GetDlgItem(IDC_RADIO_UART1_SEL2)->EnableWindow(TRUE);
             m_nRadioSPIM = 3;
             break;
 
@@ -266,18 +270,22 @@ void CDialogConfiguration_TC8226::ConfigToGUI(int nEventID)
 
     switch (uConfig3 & TC8226_FLASH_CONFIG_UART1) {
         case TC8226_FLASH_CONFIG_UART1_SEL0:
+            GetDlgItem(IDC_RADIO_SPIM_SEL0)->EnableWindow(TRUE);
             m_nRadioUART = 0;
             break;
 
         case TC8226_FLASH_CONFIG_UART1_SEL1:
+            GetDlgItem(IDC_RADIO_SPIM_SEL0)->EnableWindow(TRUE);
             m_nRadioUART = 1;
             break;
 
         case TC8226_FLASH_CONFIG_UART1_SEL2:
+            GetDlgItem(IDC_RADIO_SPIM_SEL0)->EnableWindow(FALSE);
             m_nRadioUART = 2;
             break;
 
         case TC8226_FLASH_CONFIG_UART1_SEL3:
+            GetDlgItem(IDC_RADIO_SPIM_SEL0)->EnableWindow(TRUE);
             m_nRadioUART = 3;
             break;
 
