@@ -5,7 +5,7 @@
  *
  * @copyright (C) 2016 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
-#include "NUC121.h"
+#include "NuMicro.h"
 
 /** @addtogroup Standard_Driver Standard Driver
   @{
@@ -88,9 +88,12 @@ void ADC_EnableHWTrigger(ADC_T *adc,
 {
     adc->ADCR &= ~(ADC_ADCR_TRGS_Msk | ADC_ADCR_TRGCOND_Msk | ADC_ADCR_TRGEN_Msk);
 
-    if (u32Source == ADC_ADCR_TRGS_STADC) {
+    if (u32Source == ADC_ADCR_TRGS_STADC)
+    {
         adc->ADCR |= u32Source | u32Param | ADC_ADCR_TRGEN_Msk;
-    } else {
+    }
+    else
+    {
         adc->ADTDCR = (adc->ADTDCR & ~ADC_ADTDCR_PTDT_Msk) | u32Param;
         adc->ADCR |= u32Source | ADC_ADCR_TRGEN_Msk;
     }

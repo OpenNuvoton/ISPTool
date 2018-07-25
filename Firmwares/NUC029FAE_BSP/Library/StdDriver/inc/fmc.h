@@ -15,7 +15,7 @@
 extern "C"
 {
 #endif
-    
+
 /** @addtogroup NUC029FAE_Device_Driver NUC029FAE Device Driver
   @{
 */
@@ -30,7 +30,7 @@ extern "C"
 /*---------------------------------------------------------------------------------------------------------*/
 /* Define Base Address                                                                                     */
 /*---------------------------------------------------------------------------------------------------------*/
-#define FMC_APROM_BASE          0x00000000UL    /*!< APROM  Base Address         */  
+#define FMC_APROM_BASE          0x00000000UL    /*!< APROM  Base Address         */
 #define FMC_LDROM_BASE          0x00100000UL    /*!< LDROM  Base Address         */
 #define FMC_LDROM_END           0x00100800UL    /*!< LDROM  End Address          */
 #define FMC_CONFIG_BASE         0x00300000UL    /*!< CONFIG Base Address         */

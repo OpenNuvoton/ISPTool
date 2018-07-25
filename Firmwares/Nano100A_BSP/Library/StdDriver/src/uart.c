@@ -37,7 +37,7 @@ extern uint32_t SysGet_PLLClockFreq(void);
  *
  *    @return None
  */
-void UART_ClearIntFlag(UART_T* uart , uint32_t u32InterruptFlag)
+void UART_ClearIntFlag(UART_T* uart, uint32_t u32InterruptFlag)
 {
 
     if(u32InterruptFlag & UART_ISR_RLS_IS_Msk)   /* clear Receive Line Status Interrupt */

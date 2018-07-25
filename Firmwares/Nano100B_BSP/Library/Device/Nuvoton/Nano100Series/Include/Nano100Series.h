@@ -8,7 +8,7 @@
  *           bits definitions and memory mapping for NuMicro Nano100 series MCU.
  *
  * @note
- * Copyright (C) 2017 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2018 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 /**
    \mainpage NuMicro NANO100BN Driver Reference Guide
@@ -47,7 +47,7 @@
    *
    * <b>Copyright Notice</b>
    *
-   * Copyright (C) 2014~2017 Nuvoton Technology Corp. All rights reserved.
+   * Copyright (C) 2014~2018 Nuvoton Technology Corp. All rights reserved.
    */
 #ifndef __NANO100SERIES_H__
 #define __NANO100SERIES_H__

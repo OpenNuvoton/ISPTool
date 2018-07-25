@@ -5,7 +5,7 @@
  *
  * @copyright (C) 2016 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
-#include "NUC121.h"
+#include "NuMicro.h"
 
 /** @addtogroup Standard_Driver Standard Driver
   @{

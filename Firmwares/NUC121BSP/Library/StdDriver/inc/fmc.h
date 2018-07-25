@@ -310,7 +310,8 @@ static __INLINE int32_t FMC_Erase(uint32_t u32Addr)
     while (FMC->ISPTRG);
 
     /* Check ISPFF flag to know whether erase OK or fail. */
-    if (FMC->ISPCTL & FMC_ISPCTL_ISPFF_Msk) {
+    if (FMC->ISPCTL & FMC_ISPCTL_ISPFF_Msk)
+    {
         // comment For FMC FPGA
         //FMC->ISPCTL |= FMC_ISPCTL_ISPFF_Msk;
 

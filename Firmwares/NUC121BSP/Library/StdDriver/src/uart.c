@@ -7,7 +7,7 @@
 *****************************************************************************/
 
 #include <stdio.h>
-#include "NUC121.h"
+#include "NuMicro.h"
 
 /** @addtogroup Standard_Driver Standard Driver
   @{
@@ -37,7 +37,7 @@
  *
  *    @details      The function is used to clear UART specified interrupt flag.
  */
-void UART_ClearIntFlag(UART_T *uart , uint32_t u32InterruptFlag)
+void UART_ClearIntFlag(UART_T *uart, uint32_t u32InterruptFlag)
 {
 
     if (u32InterruptFlag & UART_INTSTS_RLSINT_Msk)      /* Clear Receive Line Status Interrupt */
@@ -52,7 +52,8 @@ void UART_ClearIntFlag(UART_T *uart , uint32_t u32InterruptFlag)
     if (u32InterruptFlag & UART_INTSTS_WKINT_Msk)       /* Clear Wake-up Interrupt */
         uart->WKSTS = uart->WKSTS;
 
-    if (u32InterruptFlag & UART_INTSTS_LININT_Msk) {    /* Clear LIN Bus Interrupt */
+    if (u32InterruptFlag & UART_INTSTS_LININT_Msk)      /* Clear LIN Bus Interrupt */
+    {
         uart->INTSTS = UART_INTSTS_LINIF_Msk;
         uart->LINSTS = uart->LINSTS;
     }
@@ -220,7 +221,8 @@ void UART_Open(UART_T *uart, uint32_t u32baudrate)
         u32ClkTbl[u8UartClkSrcSel] = CLK_GetPLLClockFreq();
 
     /* Set UART baud rate */
-    if (u32baudrate != 0) {
+    if (u32baudrate != 0)
+    {
         u32Baud_Div = UART_BAUD_MODE2_DIVIDER((u32ClkTbl[u8UartClkSrcSel]) / (u8UartClkDivNum + 1), u32baudrate);
 
         if (u32Baud_Div > 0xFFFF)
@@ -246,10 +248,12 @@ uint32_t UART_Read(UART_T *uart, uint8_t *pu8RxBuf, uint32_t u32ReadBytes)
 {
     uint32_t  u32Count, u32delayno;
 
-    for (u32Count = 0; u32Count < u32ReadBytes; u32Count++) {
+    for (u32Count = 0; u32Count < u32ReadBytes; u32Count++)
+    {
         u32delayno = 0;
 
-        while (uart->FIFOSTS & UART_FIFOSTS_RXEMPTY_Msk) { /* Check RX empty => failed */
+        while (uart->FIFOSTS & UART_FIFOSTS_RXEMPTY_Msk)   /* Check RX empty => failed */
+        {
             u32delayno++;
 
             if (u32delayno >= 0x40000000)
@@ -307,7 +311,8 @@ void UART_SetLine_Config(UART_T *uart, uint32_t u32baudrate, uint32_t u32data_wi
         u32ClkTbl[u8UartClkSrcSel] = CLK_GetPLLClockFreq();
 
     /* Set UART baud rate */
-    if (u32baudrate != 0) {
+    if (u32baudrate != 0)
+    {
         u32Baud_Div = UART_BAUD_MODE2_DIVIDER((u32ClkTbl[u8UartClkSrcSel]) / (u8UartClkDivNum + 1), u32baudrate);
 
         if (u32Baud_Div > 0xFFFF)
@@ -374,7 +379,8 @@ void UART_SelectIrDAMode(UART_T *uart, uint32_t u32Buadrate, uint32_t u32Directi
         u32ClkTbl[u8UartClkSrcSel] = CLK_GetPLLClockFreq();
 
     /* Set UART IrDA baud rate in mode 0 */
-    if (u32Buadrate != 0) {
+    if (u32Buadrate != 0)
+    {
         u32Baud_Div = UART_BAUD_MODE0_DIVIDER((u32ClkTbl[u8UartClkSrcSel]) / (u8UartClkDivNum + 1), u32Buadrate);
 
         if (u32Baud_Div < 0xFFFF)
@@ -382,10 +388,13 @@ void UART_SelectIrDAMode(UART_T *uart, uint32_t u32Buadrate, uint32_t u32Directi
     }
 
     /* Configure IrDA relative settings */
-    if (u32Direction == UART_IRDA_RXEN) {
+    if (u32Direction == UART_IRDA_RXEN)
+    {
         uart->IRDA |= UART_IRDA_RXINV_Msk;     //Rx signal is inverse
         uart->IRDA &= ~UART_IRDA_TXEN_Msk;
-    } else {
+    }
+    else
+    {
         uart->IRDA &= ~UART_IRDA_TXINV_Msk;    //Tx signal is not inverse
         uart->IRDA |= UART_IRDA_TXEN_Msk;
     }
@@ -457,10 +466,12 @@ uint32_t UART_Write(UART_T *uart, uint8_t *pu8TxBuf, uint32_t u32WriteBytes)
 {
     uint32_t  u32Count, u32delayno;
 
-    for (u32Count = 0; u32Count != u32WriteBytes; u32Count++) {
+    for (u32Count = 0; u32Count != u32WriteBytes; u32Count++)
+    {
         u32delayno = 0;
 
-        while ((uart->FIFOSTS & UART_FIFOSTS_TXEMPTYF_Msk) == 0) { /* Wait Tx empty and Time-out manner */
+        while ((uart->FIFOSTS & UART_FIFOSTS_TXEMPTYF_Msk) == 0)   /* Wait Tx empty and Time-out manner */
+        {
             u32delayno++;
 
             if (u32delayno >= 0x40000000)

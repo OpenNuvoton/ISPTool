@@ -29,7 +29,8 @@ extern "C"
 /*---------------------------------------------------------------------------------------------------------*/
 /* USCI_I2C master event definitions                                                                       */
 /*---------------------------------------------------------------------------------------------------------*/
-enum UI2C_MASTER_EVENT {
+enum UI2C_MASTER_EVENT
+{
     MASTER_SEND_ADDRESS = 10,    /*!< Master send address to Slave */
     MASTER_SEND_H_WR_ADDRESS,    /*!< Master send High address to Slave */
     MASTER_SEND_H_RD_ADDRESS,    /*!< Master send address to Slave (Read ADDR) */
@@ -44,7 +45,8 @@ enum UI2C_MASTER_EVENT {
 /*---------------------------------------------------------------------------------------------------------*/
 /* USCI_I2C slave event definitions                                                                        */
 /*---------------------------------------------------------------------------------------------------------*/
-enum UI2C_SLAVE_EVENT {
+enum UI2C_SLAVE_EVENT
+{
     SLAVE_ADDRESS_ACK = 100,      /*!< Slave send address ACK */
     SLAVE_H_WR_ADDRESS_ACK,       /*!< Slave send High address ACK */
     SLAVE_L_WR_ADDRESS_ACK,       /*!< Slave send Low address ACK */
@@ -306,7 +308,7 @@ void UI2C_EnableInt(UI2C_T *ui2c, uint32_t u32Mask);
 uint32_t UI2C_GetBusClockFreq(UI2C_T *ui2c);
 uint32_t UI2C_SetBusClockFreq(UI2C_T *ui2c, uint32_t u32BusClock);
 uint32_t UI2C_GetIntFlag(UI2C_T *ui2c, uint32_t u32Mask);
-void UI2C_ClearIntFlag(UI2C_T *ui2c , uint32_t u32Mask);
+void UI2C_ClearIntFlag(UI2C_T *ui2c, uint32_t u32Mask);
 uint32_t UI2C_GetData(UI2C_T *ui2c);
 void UI2C_SetData(UI2C_T *ui2c, uint8_t u8Data);
 void UI2C_SetSlaveAddr(UI2C_T *ui2c, uint8_t u8SlaveNo, uint16_t u16SlaveAddr, uint8_t u8GCMode);

@@ -33,7 +33,7 @@
  *
  *    @return None
  */
-void UART_ClearIntFlag(UART_T* uart , uint32_t u32InterruptFlag)
+void UART_ClearIntFlag(UART_T* uart, uint32_t u32InterruptFlag)
 {
 
     if(u32InterruptFlag & UART_ISR_RLS_INT_Msk)   /* clear Receive Line Status Interrupt */

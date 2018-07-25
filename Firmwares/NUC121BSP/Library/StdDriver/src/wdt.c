@@ -1,14 +1,11 @@
 /**************************************************************************//**
  * @file     wdt.c
  * @version  V3.00
- * $Revision: 3 $
- * $Date: 16/08/23 4:01p $
  * @brief    NUC121 series WDT driver source file
  *
- * @note
- * Copyright (C) 2016 Nuvoton Technology Corp. All rights reserved.
+ * @copyright (C) 2016 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
-#include "NUC121.h"
+#include "NuMicro.h"
 
 
 /** @addtogroup Standard_Driver Standard Driver

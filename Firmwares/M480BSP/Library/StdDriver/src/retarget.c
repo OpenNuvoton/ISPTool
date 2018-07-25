@@ -1,13 +1,9 @@
 /**************************************************************************//**
  * @file     retarget.c
  * @version  V3.00
- * $Revision: 1 $
- * $Date: 16/06/14 10:32a $
  * @brief    M480 Series Debug Port and Semihost Setting Source File
  *
- * @note
  * @copyright (C) 2017 Nuvoton Technology Corp. All rights reserved.
- *
  ******************************************************************************/
 
 
@@ -35,6 +31,13 @@
 /* Global variables                                                                                        */
 /*---------------------------------------------------------------------------------------------------------*/
 #if !(defined(__ICCARM__) && (__VER__ >= 6010000))
+# if (__ARMCC_VERSION < 6040000)
+struct __FILE
+{
+    int handle; /* Add whatever you need here */
+};
+# endif
+#elif(__VER__ >= 8000000)
 struct __FILE
 {
     int handle; /* Add whatever you need here */
@@ -42,6 +45,7 @@ struct __FILE
 #endif
 FILE __stdout;
 FILE __stdin;
+
 
 enum { r0, r1, r2, r3, r12, lr, pc, psr};
 
@@ -283,7 +287,7 @@ Get_LR_and_Branch
 
     B       .
 
-                 ALIGN
+    ALIGN
 }
 
 /**
@@ -533,8 +537,8 @@ static void SendChar(int ch)
 
             for(i = 0; i < g_buf_len; i++)
                 SendChar_ToUART(g_buf[i]);
-            g_buf_len = 0;
 #endif
+            g_buf_len = 0;
         }
     }
 #else
@@ -676,12 +680,14 @@ int _write (int fd, char *ptr, int len)
 {
     int i = len;
 
-    while(i--) {
+    while(i--)
+    {
         while(DEBUG_PORT->FIFOSTS & UART_FIFOSTS_TXFULL_Msk);
 
         DEBUG_PORT->DAT = *ptr++;
 
-        if(*ptr == '\n') {
+        if(*ptr == '\n')
+        {
             while(DEBUG_PORT->FIFOSTS & UART_FIFOSTS_TXFULL_Msk);
             DEBUG_PORT->DAT = '\r';
         }

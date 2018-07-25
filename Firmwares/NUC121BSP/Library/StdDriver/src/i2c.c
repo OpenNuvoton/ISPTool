@@ -5,7 +5,7 @@
  *
  * @copyright (C) 2016 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
-#include "NUC121.h"
+#include "NuMicro.h"
 
 /** @addtogroup Standard_Driver Standard Driver
   @{
@@ -60,10 +60,13 @@ uint32_t I2C_Open(I2C_T *i2c, uint32_t u32BusClock)
 void I2C_Close(I2C_T *i2c)
 {
     /* Reset I2C controller */
-    if ((uint32_t)i2c == I2C0_BASE) {
+    if ((uint32_t)i2c == I2C0_BASE)
+    {
         SYS->IPRST1 |= SYS_IPRST1_I2C0RST_Msk;
         SYS->IPRST1 &= ~SYS_IPRST1_I2C0RST_Msk;
-    } else if ((uint32_t)i2c == I2C1_BASE) {
+    }
+    else if ((uint32_t)i2c == I2C1_BASE)
+    {
         SYS->IPRST1 |= SYS_IPRST1_I2C1RST_Msk;
         SYS->IPRST1 &= ~SYS_IPRST1_I2C1RST_Msk;
     }
@@ -259,7 +262,8 @@ void I2C_SetData(I2C_T *i2c, uint8_t u8Data)
  */
 void I2C_SetSlaveAddr(I2C_T *i2c, uint8_t u8SlaveNo, uint8_t u8SlaveAddr, uint8_t u8GCMode)
 {
-    switch (u8SlaveNo) {
+    switch (u8SlaveNo)
+    {
     case 1:
         i2c->ADDR1  = (u8SlaveAddr << 1) | u8GCMode;
         break;
@@ -293,7 +297,8 @@ void I2C_SetSlaveAddr(I2C_T *i2c, uint8_t u8SlaveNo, uint8_t u8SlaveAddr, uint8_
  */
 void I2C_SetSlaveAddrMask(I2C_T *i2c, uint8_t u8SlaveNo, uint8_t u8SlaveAddrMask)
 {
-    switch (u8SlaveNo) {
+    switch (u8SlaveNo)
+    {
     case 1:
         i2c->ADDRMSK1  = u8SlaveAddrMask << 1;
         break;
@@ -401,10 +406,12 @@ uint8_t I2C_WriteByte(I2C_T *i2c, uint8_t u8SlaveAddr, const uint8_t data)
 
     I2C_START(i2c);
 
-    while (u8Xfering && (u8Err == 0)) {
+    while (u8Xfering && (u8Err == 0))
+    {
         I2C_WAIT_READY(i2c);
 
-        switch (I2C_GET_STATUS(i2c)) {
+        switch (I2C_GET_STATUS(i2c))
+        {
         case 0x08:
             I2C_SET_DATA(i2c, (u8SlaveAddr << 1 | 0x00));    /* Write SLA+W to Register I2CDAT */
             u8Ctrl = I2C_CTL_SI;                           /* Clear SI */
@@ -459,10 +466,12 @@ uint32_t I2C_WriteMultiBytes(I2C_T *i2c, uint8_t u8SlaveAddr, const uint8_t *dat
 
     I2C_START(i2c);                                              /* Send START */
 
-    while (u8Xfering && (u8Err == 0)) {
+    while (u8Xfering && (u8Err == 0))
+    {
         I2C_WAIT_READY(i2c);
 
-        switch (I2C_GET_STATUS(i2c)) {
+        switch (I2C_GET_STATUS(i2c))
+        {
         case 0x08:
             I2C_SET_DATA(i2c, (u8SlaveAddr << 1 | 0x00));    /* Write SLA+W to Register I2CDAT */
             u8Ctrl = I2C_CTL_SI;                           /* Clear SI */
@@ -472,7 +481,8 @@ uint32_t I2C_WriteMultiBytes(I2C_T *i2c, uint8_t u8SlaveAddr, const uint8_t *dat
         case 0x28:
             if (u32txLen < u32wLen)
                 I2C_SET_DATA(i2c, data[u32txLen++]);                /* Write Data to I2CDAT */
-            else {
+            else
+            {
                 u8Ctrl = I2C_CTL_STO_SI;                   /* Clear SI and send STOP */
                 u8Xfering = 0;
             }
@@ -520,10 +530,12 @@ uint8_t I2C_WriteByteOneReg(I2C_T *i2c, uint8_t u8SlaveAddr, uint8_t u8DataAddr,
 
     I2C_START(i2c);                                              /* Send START */
 
-    while (u8Xfering && (u8Err == 0)) {
+    while (u8Xfering && (u8Err == 0))
+    {
         I2C_WAIT_READY(i2c);
 
-        switch (I2C_GET_STATUS(i2c)) {
+        switch (I2C_GET_STATUS(i2c))
+        {
         case 0x08:
             I2C_SET_DATA(i2c, (u8SlaveAddr << 1 | 0x00));    /* Send Slave address with write bit */
             u8Ctrl = I2C_CTL_SI;                           /* Clear SI */
@@ -540,10 +552,13 @@ uint8_t I2C_WriteByteOneReg(I2C_T *i2c, uint8_t u8SlaveAddr, uint8_t u8DataAddr,
             break;
 
         case 0x28:
-            if (u32txLen < 1) {
+            if (u32txLen < 1)
+            {
                 I2C_SET_DATA(i2c, data);
                 u32txLen++;
-            } else {
+            }
+            else
+            {
                 u8Ctrl = I2C_CTL_STO_SI;                   /* Clear SI and send STOP */
                 u8Xfering = 0;
             }
@@ -586,10 +601,12 @@ uint32_t I2C_WriteMultiBytesOneReg(I2C_T *i2c, uint8_t u8SlaveAddr, uint8_t u8Da
 
     I2C_START(i2c);                                              /* Send START */
 
-    while (u8Xfering && (u8Err == 0)) {
+    while (u8Xfering && (u8Err == 0))
+    {
         I2C_WAIT_READY(i2c);
 
-        switch (I2C_GET_STATUS(i2c)) {
+        switch (I2C_GET_STATUS(i2c))
+        {
         case 0x08:
             I2C_SET_DATA(i2c, (u8SlaveAddr << 1 | 0x00));    /* Write SLA+W to Register I2CDAT */
             u8Ctrl = I2C_CTL_SI;
@@ -608,7 +625,8 @@ uint32_t I2C_WriteMultiBytesOneReg(I2C_T *i2c, uint8_t u8SlaveAddr, uint8_t u8Da
         case 0x28:
             if (u32txLen < u32wLen)
                 I2C_SET_DATA(i2c, data[u32txLen++]);
-            else {
+            else
+            {
                 u8Ctrl = I2C_CTL_STO_SI;                   /* Clear SI and send STOP */
                 u8Xfering = 0;
             }
@@ -650,10 +668,12 @@ uint8_t I2C_WriteByteTwoRegs(I2C_T *i2c, uint8_t u8SlaveAddr, uint16_t u16DataAd
 
     I2C_START(i2c);                                                         /* Send START */
 
-    while (u8Xfering && (u8Err == 0)) {
+    while (u8Xfering && (u8Err == 0))
+    {
         I2C_WAIT_READY(i2c);
 
-        switch (I2C_GET_STATUS(i2c)) {
+        switch (I2C_GET_STATUS(i2c))
+        {
         case 0x08:
             I2C_SET_DATA(i2c, (u8SlaveAddr << 1 | 0x00));               /* Write SLA+W to Register I2CDAT */
             u8Ctrl = I2C_CTL_SI;                                        /* Clear SI */
@@ -670,13 +690,18 @@ uint8_t I2C_WriteByteTwoRegs(I2C_T *i2c, uint8_t u8SlaveAddr, uint16_t u16DataAd
             break;
 
         case 0x28:
-            if (u8Addr) {
+            if (u8Addr)
+            {
                 I2C_SET_DATA(i2c, (uint8_t)(u16DataAddr & 0xFF));       /* Write Lo byte address of register */
                 u8Addr = 0;
-            } else if ((u32txLen < 1) && (u8Addr == 0)) {
+            }
+            else if ((u32txLen < 1) && (u8Addr == 0))
+            {
                 I2C_SET_DATA(i2c, data);
                 u32txLen++;
-            } else {
+            }
+            else
+            {
                 u8Ctrl = I2C_CTL_STO_SI;                              /* Clear SI and send STOP */
                 u8Xfering = 0;
             }
@@ -719,10 +744,12 @@ uint32_t I2C_WriteMultiBytesTwoRegs(I2C_T *i2c, uint8_t u8SlaveAddr, uint16_t u1
 
     I2C_START(i2c);                                                         /* Send START */
 
-    while (u8Xfering && (u8Err == 0)) {
+    while (u8Xfering && (u8Err == 0))
+    {
         I2C_WAIT_READY(i2c);
 
-        switch (I2C_GET_STATUS(i2c)) {
+        switch (I2C_GET_STATUS(i2c))
+        {
         case 0x08:
             I2C_SET_DATA(i2c, (u8SlaveAddr << 1 | 0x00));               /* Write SLA+W to Register I2CDAT */
             u8Ctrl = I2C_CTL_SI;                                      /* Clear SI */
@@ -739,12 +766,15 @@ uint32_t I2C_WriteMultiBytesTwoRegs(I2C_T *i2c, uint8_t u8SlaveAddr, uint16_t u1
             break;
 
         case 0x28:
-            if (u8Addr) {
+            if (u8Addr)
+            {
                 I2C_SET_DATA(i2c, (uint8_t)(u16DataAddr & 0xFF));       /* Write Lo byte address of register */
                 u8Addr = 0;
-            } else if ((u32txLen < u32wLen) && (u8Addr == 0))
+            }
+            else if ((u32txLen < u32wLen) && (u8Addr == 0))
                 I2C_SET_DATA(i2c, data[u32txLen++]);                           /* Write data to Register I2CDAT*/
-            else {
+            else
+            {
                 u8Ctrl = I2C_CTL_STO_SI;                              /* Clear SI and send STOP */
                 u8Xfering = 0;
             }
@@ -781,10 +811,12 @@ uint8_t I2C_ReadByte(I2C_T *i2c, uint8_t u8SlaveAddr)
 
     I2C_START(i2c);                                                /* Send START */
 
-    while (u8Xfering && (u8Err == 0)) {
+    while (u8Xfering && (u8Err == 0))
+    {
         I2C_WAIT_READY(i2c);
 
-        switch (I2C_GET_STATUS(i2c)) {
+        switch (I2C_GET_STATUS(i2c))
+        {
         case 0x08:
             I2C_SET_DATA(i2c, ((u8SlaveAddr << 1) | 0x01));    /* Write SLA+R to Register I2CDAT */
             u8Ctrl = I2C_CTL_SI;                             /* Clear SI */
@@ -843,10 +875,12 @@ uint32_t I2C_ReadMultiBytes(I2C_T *i2c, uint8_t u8SlaveAddr, uint8_t *rdata, uin
 
     I2C_START(i2c);                                                /* Send START */
 
-    while (u8Xfering && (u8Err == 0)) {
+    while (u8Xfering && (u8Err == 0))
+    {
         I2C_WAIT_READY(i2c);
 
-        switch (I2C_GET_STATUS(i2c)) {
+        switch (I2C_GET_STATUS(i2c))
+        {
         case 0x08:
             I2C_SET_DATA(i2c, ((u8SlaveAddr << 1) | 0x01));    /* Write SLA+R to Register I2CDAT */
             u8Ctrl = I2C_CTL_SI;                             /* Clear SI */
@@ -864,9 +898,12 @@ uint32_t I2C_ReadMultiBytes(I2C_T *i2c, uint8_t u8SlaveAddr, uint8_t *rdata, uin
         case 0x50:
             rdata[u32rxLen++] = (unsigned char) I2C_GET_DATA(i2c);    /* Receive Data */
 
-            if (u32rxLen < (u32rLen - 1)) {
+            if (u32rxLen < (u32rLen - 1))
+            {
                 u8Ctrl = I2C_CTL_SI_AA;                             /* Clear SI and set ACK */
-            } else {
+            }
+            else
+            {
                 u8Ctrl = I2C_CTL_SI;                                /* Clear SI */
             }
 
@@ -911,10 +948,12 @@ uint8_t I2C_ReadByteOneReg(I2C_T *i2c, uint8_t u8SlaveAddr, uint8_t u8DataAddr)
 
     I2C_START(i2c);                                                /* Send START */
 
-    while (u8Xfering && (u8Err == 0)) {
+    while (u8Xfering && (u8Err == 0))
+    {
         I2C_WAIT_READY(i2c);
 
-        switch (I2C_GET_STATUS(i2c)) {
+        switch (I2C_GET_STATUS(i2c))
+        {
         case 0x08:
             I2C_SET_DATA(i2c, (u8SlaveAddr << 1 | 0x00));      /* Write SLA+W to Register I2CDAT */
             u8Ctrl = I2C_CTL_SI;                             /* Clear SI */
@@ -992,10 +1031,12 @@ uint32_t I2C_ReadMultiBytesOneReg(I2C_T *i2c, uint8_t u8SlaveAddr, uint8_t u8Dat
 
     I2C_START(i2c);                                                /* Send START */
 
-    while (u8Xfering && (u8Err == 0)) {
+    while (u8Xfering && (u8Err == 0))
+    {
         I2C_WAIT_READY(i2c);
 
-        switch (I2C_GET_STATUS(i2c)) {
+        switch (I2C_GET_STATUS(i2c))
+        {
         case 0x08:
             I2C_SET_DATA(i2c, (u8SlaveAddr << 1 | 0x00));      /* Write SLA+W to Register I2CDAT */
             u8Ctrl = I2C_CTL_SI;                             /* Clear SI */
@@ -1077,10 +1118,12 @@ uint8_t I2C_ReadByteTwoRegs(I2C_T *i2c, uint8_t u8SlaveAddr, uint16_t u16DataAdd
 
     I2C_START(i2c);                                                         /* Send START */
 
-    while (u8Xfering && (u8Err == 0)) {
+    while (u8Xfering && (u8Err == 0))
+    {
         I2C_WAIT_READY(i2c);
 
-        switch (I2C_GET_STATUS(i2c)) {
+        switch (I2C_GET_STATUS(i2c))
+        {
         case 0x08:
             I2C_SET_DATA(i2c, (u8SlaveAddr << 1 | 0x00));               /* Write SLA+W to Register I2CDAT */
             u8Ctrl = I2C_CTL_SI;                                      /* Clear SI */
@@ -1097,10 +1140,12 @@ uint8_t I2C_ReadByteTwoRegs(I2C_T *i2c, uint8_t u8SlaveAddr, uint16_t u16DataAdd
             break;
 
         case 0x28:
-            if (u8Addr) {
+            if (u8Addr)
+            {
                 I2C_SET_DATA(i2c, (uint8_t)(u16DataAddr & 0xFF));       /* Write Lo byte address of register */
                 u8Addr = 0;
-            } else
+            }
+            else
                 u8Ctrl = I2C_CTL_STA_SI;                              /* Clear SI and send repeat START */
 
             break;
@@ -1163,10 +1208,12 @@ uint32_t I2C_ReadMultiBytesTwoRegs(I2C_T *i2c, uint8_t u8SlaveAddr, uint16_t u16
 
     I2C_START(i2c);                                                         /* Send START */
 
-    while (u8Xfering && (u8Err == 0)) {
+    while (u8Xfering && (u8Err == 0))
+    {
         I2C_WAIT_READY(i2c);
 
-        switch (I2C_GET_STATUS(i2c)) {
+        switch (I2C_GET_STATUS(i2c))
+        {
         case 0x08:
             I2C_SET_DATA(i2c, (u8SlaveAddr << 1 | 0x00));               /* Write SLA+W to Register I2CDAT */
             u8Ctrl = I2C_CTL_SI;                                      /* Clear SI */
@@ -1183,10 +1230,12 @@ uint32_t I2C_ReadMultiBytesTwoRegs(I2C_T *i2c, uint8_t u8SlaveAddr, uint16_t u16
             break;
 
         case 0x28:
-            if (u8Addr) {
+            if (u8Addr)
+            {
                 I2C_SET_DATA(i2c, (uint8_t)(u16DataAddr & 0xFF));       /* Write Lo byte address of register */
                 u8Addr = 0;
-            } else
+            }
+            else
                 u8Ctrl = I2C_CTL_STA_SI;                              /* Clear SI and send repeat START */
 
             break;

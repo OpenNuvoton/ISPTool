@@ -2,12 +2,12 @@
  * @file     gpio.h
  * @version  V1.00
  * $Revision: 1 $
- * $Date: 14/05/16 10:00a $ 
+ * $Date: 14/05/16 10:00a $
  * @brief    NUC029FAE GPIO driver header file
  *
  * @note
  * Copyright (C) 2013 Nuvoton Technology Corp. All rights reserved.
- *****************************************************************************/ 
+ *****************************************************************************/
 #ifndef __GPIO_H__
 #define __GPIO_H__
 
@@ -44,7 +44,7 @@ extern "C"
 #define GPIO_INT_RISING             0x00010000UL /*!< Interrupt enable by Input Rising Edge */
 #define GPIO_INT_FALLING            0x00000001UL /*!< Interrupt enable by Input Falling Edge */
 #define GPIO_INT_BOTH_EDGE          0x00010001UL /*!< Interrupt enable by both Rising Edge and Falling Edge */
-#define GPIO_INT_HIGH               0x01010000UL /*!< Interrupt enable by Level-High */    
+#define GPIO_INT_HIGH               0x01010000UL /*!< Interrupt enable by Level-High */
 #define GPIO_INT_LOW                0x01000001UL /*!< Interrupt enable by Level-Level */
 
 /*---------------------------------------------------------------------------------------------------------*/
@@ -56,11 +56,11 @@ extern "C"
 /*---------------------------------------------------------------------------------------------------------*/
 /*  DBNCECON Constant Definitions                                                                          */
 /*---------------------------------------------------------------------------------------------------------*/
-#define GPIO_DBNCECON_ICLK_ON           0x00000020UL /*!< DBNCECON setting for all IO pins edge detection circuit is always active after reset */ 
-#define GPIO_DBNCECON_ICLK_OFF          0x00000000UL /*!< DBNCECON setting for edge detection circuit is active only if IO pin corresponding GPIOx_IEN bit is set to 1 */ 
+#define GPIO_DBNCECON_ICLK_ON           0x00000020UL /*!< DBNCECON setting for all IO pins edge detection circuit is always active after reset */
+#define GPIO_DBNCECON_ICLK_OFF          0x00000000UL /*!< DBNCECON setting for edge detection circuit is active only if IO pin corresponding GPIOx_IEN bit is set to 1 */
 
-#define GPIO_DBNCECON_DBCLKSRC_IRC10K   0x00000010UL /*!< DBNCECON setting for de-bounce counter clock source is the internal 10 kHz */ 
-#define GPIO_DBNCECON_DBCLKSRC_HCLK     0x00000000UL /*!< DBNCECON setting for de-bounce counter clock source is the internal HCLK */ 
+#define GPIO_DBNCECON_DBCLKSRC_IRC10K   0x00000010UL /*!< DBNCECON setting for de-bounce counter clock source is the internal 10 kHz */
+#define GPIO_DBNCECON_DBCLKSRC_HCLK     0x00000000UL /*!< DBNCECON setting for de-bounce counter clock source is the internal HCLK */
 
 #define GPIO_DBNCECON_DBCLKSEL_1        0x00000000UL /*!< DBNCECON setting for sampling cycle = 1 clocks */
 #define GPIO_DBNCECON_DBCLKSEL_2        0x00000001UL /*!< DBNCECON setting for sampling cycle = 2 clocks */
@@ -81,19 +81,19 @@ extern "C"
 
 /** Define GPIO Pin Data Input/Output. It could be used to control each I/O pin by pin address mapping.
  *  Example 1:
- *  
- *      P00 = 1; 
- *  
+ *
+ *      P00 = 1;
+ *
  *  It is used to set P0.0 to high;
- *  
+ *
  *  Example 2:
- *  
+ *
  *      if (P00)
  *          P00 = 0;
- *  
+ *
  *  If P0.0 pin status is high, then set P0.0 data output to low.
  */
-#define GPIO_PIN_ADDR(port, pin)    (*((volatile uint32_t *)((GPIOBIT0_BASE+(0x20*(port))) + ((pin)<<2)))) 
+#define GPIO_PIN_ADDR(port, pin)    (*((volatile uint32_t *)((GPIOBIT0_BASE+(0x20*(port))) + ((pin)<<2))))
 #define P00             GPIO_PIN_ADDR(0, 0) /*!< Specify P00 Pin Data Input/Output */
 #define P01             GPIO_PIN_ADDR(0, 1) /*!< Specify P01 Pin Data Input/Output */
 #define P02             GPIO_PIN_ADDR(0, 2) /*!< Specify P02 Pin Data Input/Output */

@@ -1,13 +1,9 @@
 ;/**************************************************************************//**
 ; * @file     startup_NUC121.s
 ; * @version  V3.00
-; * $Revision: 5 $
-; * $Date: 16/12/21 5:31p $ 
 ; * @brief    NUC121 Startup Source File
 ; *
-; * @note
-; * Copyright (C) 2016 Nuvoton Technology Corp. All rights reserved.
-; *
+; * @copyright (C) 2016 Nuvoton Technology Corp. All rights reserved.
 ; ******************************************************************************/
     IF :LNOT: :DEF: Stack_Size
 Stack_Size      EQU     0x00000200

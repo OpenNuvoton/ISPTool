@@ -180,13 +180,13 @@ SP_Read_Ready
     LDR     R1, [R0, #24]         //; Get previous PC
     LDRH    R3, [R1]              //; Get instruction
     LDR     R2, =0xBEAB           //; The special BKPT instruction
-                 CMP     R3, R2                //; Test if the instruction at previous PC is BKPT
-                 BNE     HardFault_Handler_Ret //; Not BKPT
+    CMP     R3, R2                //; Test if the instruction at previous PC is BKPT
+    BNE     HardFault_Handler_Ret //; Not BKPT
 
-                 ADDS    R1, #4                //; Skip BKPT and next line
-                 STR     R1, [R0, #24]         //; Save previous PC
+    ADDS    R1, #4                //; Skip BKPT and next line
+    STR     R1, [R0, #24]         //; Save previous PC
 
-                 BX      LR                    //; Return
+    BX      LR                    //; Return
 HardFault_Handler_Ret
 
     /* TODO: Implement your own hard fault handler here. */
@@ -203,9 +203,9 @@ Get_LR_and_Branch
     LDR     R2,=__cpp(Hard_Fault_Handler)
     BX      R2
 
-                 B       .
+    B       .
 
-                 ALIGN
+    ALIGN
 }
 
 /**
@@ -317,7 +317,8 @@ void SendChar_ToUART(int ch)
 #ifndef DISABLE_UART
     while(DEBUG_PORT->FSR & UART_FSR_TX_FULL_F_Msk);
     DEBUG_PORT->THR = ch;
-    if(ch == '\n') {
+    if(ch == '\n')
+    {
         while(DEBUG_PORT->FSR & UART_FSR_TX_FULL_F_Msk);
         DEBUG_PORT->THR = '\r';
     }
@@ -336,14 +337,18 @@ void SendChar(int ch)
 #if defined(DEBUG_ENABLE_SEMIHOST)
     g_buf[g_buf_len++] = ch;
     g_buf[g_buf_len] = '\0';
-    if(g_buf_len + 1 >= sizeof(g_buf) || ch == '\n' || ch == '\0') {
+    if(g_buf_len + 1 >= sizeof(g_buf) || ch == '\n' || ch == '\0')
+    {
 
         /* Send the char */
 
-        if(SH_DoCommand(0x04, (int)g_buf, NULL) != 0) {
+        if(SH_DoCommand(0x04, (int)g_buf, NULL) != 0)
+        {
             g_buf_len = 0;
             return;
-        } else {
+        }
+        else
+        {
             int i;
 
             for(i=0; i<g_buf_len; i++)
@@ -369,15 +374,18 @@ char GetChar(void)
 #if defined(DEBUG_ENABLE_SEMIHOST)
 # if defined ( __CC_ARM   )
     int nRet;
-    while(SH_DoCommand(0x101, 0, &nRet) != 0) {
-        if(nRet != 0) {
+    while(SH_DoCommand(0x101, 0, &nRet) != 0)
+    {
+        if(nRet != 0)
+        {
             SH_DoCommand(0x07, 0, &nRet);
             return (char)nRet;
         }
     }
 # else
     int nRet;
-    while(SH_DoCommand(0x7, 0, &nRet) != 0) {
+    while(SH_DoCommand(0x7, 0, &nRet) != 0)
+    {
         if(nRet != 0)
             return (char)nRet;
     }
@@ -385,7 +393,8 @@ char GetChar(void)
 #endif
 #ifndef DISABLE_UART
     while (1) {
-        if(!(DEBUG_PORT->FSR & UART_FSR_RX_EMPTY_F_Msk)) {
+        if(!(DEBUG_PORT->FSR & UART_FSR_RX_EMPTY_F_Msk))
+        {
             return (DEBUG_PORT->RBR);
 
         }
@@ -462,7 +471,8 @@ void __exit(int return_code)
 
     /* Check if link with ICE */
 
-    if(SH_DoCommand(0x18, 0x20026, NULL) == 0) {
+    if(SH_DoCommand(0x18, 0x20026, NULL) == 0)
+    {
         /* Make sure all message is print out */
 
         while(IsDebugFifoEmpty() == 0);
@@ -475,7 +485,8 @@ void _sys_exit(int return_code)
 {
 
     /* Check if link with ICE */
-    if(SH_DoCommand(0x18, 0x20026, NULL) == 0) {
+    if(SH_DoCommand(0x18, 0x20026, NULL) == 0)
+    {
         /* Make sure all message is print out */
         while(IsDebugFifoEmpty() == 0);
     }

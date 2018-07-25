@@ -147,7 +147,7 @@ extern "C"
   * @return None
   * \hideinitializer
   */
-#define FMC_DISABLE_ISP()           (FMC->ISPCON &= ~FMC_ISPCON_ISPEN_Msk) 
+#define FMC_DISABLE_ISP()           (FMC->ISPCON &= ~FMC_ISPCON_ISPEN_Msk)
 
 /**
   * @brief This macro gets ISP fail flag value.

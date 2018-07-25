@@ -194,7 +194,8 @@ __STATIC_INLINE void SC_SetTxRetry(SC_T *sc, uint32_t u32Count)
     // Retry count must set while enable bit disabled, so disable it first
     sc->CTL &= ~(SC_CTL_TX_ERETRY_Msk | SC_CTL_TX_ERETRY_EN_Msk);
 
-    if(u32Count != 0) {
+    if(u32Count != 0)
+    {
         sc->CTL |= ((u32Count - 1) << SC_CTL_TX_ERETRY_Pos) | SC_CTL_TX_ERETRY_EN_Msk;
     }
 }
@@ -210,7 +211,8 @@ __STATIC_INLINE void  SC_SetRxRetry(SC_T *sc, uint32_t u32Count)
     // Retry count must set while enable bit disabled, so disable it first
     sc->CTL &= ~(SC_CTL_RX_ERETRY_Msk | SC_CTL_RX_ERETRY_EN_Msk);
 
-    if(u32Count != 0) {
+    if(u32Count != 0)
+    {
         sc->CTL |= ((u32Count - 1) << SC_CTL_RX_ERETRY_Pos) | SC_CTL_RX_ERETRY_EN_Msk;
     }
 }

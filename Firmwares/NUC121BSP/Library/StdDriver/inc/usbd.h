@@ -8,11 +8,11 @@
 #ifndef __USBD_H__
 #define __USBD_H__
 
-/*!<    Define it to enable Link Power Management(LPM) function.              
-        LPM related handler will raise after LPM event happen.                         
-        if bcdUSB >= 0x0201, USB version is equal or higher than 2.1,                 
-        OS(Windows) will issue "get BOS descriptor" request.                               
-        WIN8 ~ WIN10 will not recognize the device if device stalls the request.        
+/*!<    Define it to enable Link Power Management(LPM) function.
+        LPM related handler will raise after LPM event happen.
+        if bcdUSB >= 0x0201, USB version is equal or higher than 2.1,
+        OS(Windows) will issue "get BOS descriptor" request.
+        WIN8 ~ WIN10 will not recognize the device if device stalls the request.
         The device can be recognized on WIN7 even though the "get BOS request" been stalled.  */
 //#define SUPPORT_LPM
 
@@ -27,7 +27,8 @@
 /** @addtogroup USBD_EXPORTED_STRUCTS USBD Exported Structs
   @{
 */
-typedef struct s_usbd_info {
+typedef struct s_usbd_info
+{
     const uint8_t *gu8DevDesc;            /*!< Pointer for USB Device Descriptor          */
     const uint8_t *gu8ConfigDesc;         /*!< Pointer for USB Configuration Descriptor   */
     const uint8_t **gu8StringDesc;        /*!< Pointer for USB String Descriptor pointers */
@@ -602,11 +603,13 @@ static __INLINE void USBD_SetStall(uint8_t epnum)
     uint32_t u32Cfg;
     int i;
 
-    for (i = 0; i < USBD_MAX_EP; i++) {
+    for (i = 0; i < USBD_MAX_EP; i++)
+    {
         u32CfgAddr = (uint32_t)(i << 4) + (uint32_t)&USBD->EP[0].CFG; /* USBD_CFG0 */
         u32Cfg = *((__IO uint32_t *)(u32CfgAddr));
 
-        if ((u32Cfg & 0xf) == epnum) {
+        if ((u32Cfg & 0xf) == epnum)
+        {
             u32CfgAddr = (uint32_t)(i << 4) + (uint32_t)&USBD->EP[0].CFGP; /* USBD_CFGP0 */
             u32Cfg = *((__IO uint32_t *)(u32CfgAddr));
 
@@ -631,11 +634,13 @@ static __INLINE void USBD_ClearStall(uint8_t epnum)
     uint32_t u32Cfg;
     int i;
 
-    for (i = 0; i < USBD_MAX_EP; i++) {
+    for (i = 0; i < USBD_MAX_EP; i++)
+    {
         u32CfgAddr = (uint32_t)(i << 4) + (uint32_t)&USBD->EP[0].CFG; /* USBD_CFG0 */
         u32Cfg = *((__IO uint32_t *)(u32CfgAddr));
 
-        if ((u32Cfg & 0xf) == epnum) {
+        if ((u32Cfg & 0xf) == epnum)
+        {
             u32CfgAddr = (uint32_t)(i << 4) + (uint32_t)&USBD->EP[0].CFGP; /* USBD_CFGP0 */
             u32Cfg = *((__IO uint32_t *)(u32CfgAddr));
 
@@ -662,11 +667,13 @@ static __INLINE uint32_t USBD_GetStall(uint8_t epnum)
     uint32_t u32Cfg;
     int i;
 
-    for (i = 0; i < USBD_MAX_EP; i++) {
+    for (i = 0; i < USBD_MAX_EP; i++)
+    {
         u32CfgAddr = (uint32_t)(i << 4) + (uint32_t)&USBD->EP[0].CFG; /* USBD_CFG0 */
         u32Cfg = *((__IO uint32_t *)(u32CfgAddr));
 
-        if ((u32Cfg & 0xf) == epnum) {
+        if ((u32Cfg & 0xf) == epnum)
+        {
             u32CfgAddr = (uint32_t)(i << 4) + (uint32_t)&USBD->EP[0].CFGP; /* USBD_CFGP0 */
             break;
         }

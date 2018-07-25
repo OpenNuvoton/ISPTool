@@ -5,7 +5,7 @@
  *
  * @copyright (C) 2016 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
-#include "NUC121.h"
+#include "NuMicro.h"
 
 /** @addtogroup Standard_Driver Standard Driver
   @{
@@ -338,7 +338,7 @@ uint32_t UI2C_GetIntFlag(UI2C_T *ui2c, uint32_t u32Mask)
  *
  *    @details      Use this function to clear USCI_I2C interrupt flag when module occurs interrupt event and set flag.
  */
-void UI2C_ClearIntFlag(UI2C_T *ui2c , uint32_t u32Mask)
+void UI2C_ClearIntFlag(UI2C_T *ui2c, uint32_t u32Mask)
 {
     /* Clear Time-out Interrupt Flag */
     if (u32Mask & UI2C_TO_INT_MASK)
@@ -525,10 +525,12 @@ uint8_t UI2C_WriteByte(UI2C_T *ui2c, uint8_t u8SlaveAddr, const uint8_t data)
 
     UI2C_START(ui2c);                                                       /* Send START */
 
-    while (u8Xfering && (u8Err == 0)) {
+    while (u8Xfering && (u8Err == 0))
+    {
         while (!(UI2C_GET_PROT_STATUS(ui2c) & 0x3F00));                     /* Wait UI2C new status occur */
 
-        switch (UI2C_GET_PROT_STATUS(ui2c) & 0x3F00) {
+        switch (UI2C_GET_PROT_STATUS(ui2c) & 0x3F00)
+        {
         case UI2C_PROTSTS_STARIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_STARIF_Msk);     /* Clear START INT Flag */
             UI2C_SET_DATA(ui2c, (u8SlaveAddr << 1) | 0x00);             /* Write SLA+W to Register UI2C_TXDAT */
@@ -539,10 +541,13 @@ uint8_t UI2C_WriteByte(UI2C_T *ui2c, uint8_t u8SlaveAddr, const uint8_t data)
         case UI2C_PROTSTS_ACKIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_ACKIF_Msk);      /* Clear ACK INT Flag */
 
-            if (eEvent == MASTER_SEND_ADDRESS) {
+            if (eEvent == MASTER_SEND_ADDRESS)
+            {
                 UI2C_SET_DATA(ui2c, data);                              /* Write data to UI2C_TXDAT */
                 eEvent = MASTER_SEND_DATA;
-            } else {
+            }
+            else
+            {
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STO);                /* Clear SI and send STOP */
                 u8Xfering = 0;
             }
@@ -589,10 +594,12 @@ uint32_t UI2C_WriteMultiBytes(UI2C_T *ui2c, uint8_t u8SlaveAddr, const uint8_t *
 
     UI2C_START(ui2c);                                                       /* Send START */
 
-    while (u8Xfering && (u8Err == 0)) {
+    while (u8Xfering && (u8Err == 0))
+    {
         while (!(UI2C_GET_PROT_STATUS(ui2c) & 0x3F00));                     /* Wait UI2C new status occur */
 
-        switch (UI2C_GET_PROT_STATUS(ui2c) & 0x3F00) {
+        switch (UI2C_GET_PROT_STATUS(ui2c) & 0x3F00)
+        {
         case UI2C_PROTSTS_STARIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_STARIF_Msk);     /* Clear START INT Flag */
             UI2C_SET_DATA(ui2c, (u8SlaveAddr << 1) | 0x00);             /* Write SLA+W to Register UI2C_TXDAT */
@@ -604,7 +611,8 @@ uint32_t UI2C_WriteMultiBytes(UI2C_T *ui2c, uint8_t u8SlaveAddr, const uint8_t *
 
             if (u32txLen < u32wLen)
                 UI2C_SET_DATA(ui2c, data[u32txLen++]);                  /* Write data to UI2C_TXDAT */
-            else {
+            else
+            {
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STO);                /* Clear SI and send STOP */
                 u8Xfering = 0;
             }
@@ -652,10 +660,12 @@ uint8_t UI2C_WriteByteOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8DataAd
 
     UI2C_START(ui2c);                                                       /* Send START */
 
-    while (u8Xfering && (u8Err == 0)) {
+    while (u8Xfering && (u8Err == 0))
+    {
         while (!(UI2C_GET_PROT_STATUS(ui2c) & 0x3F00));                     /* Wait UI2C new status occur */
 
-        switch (UI2C_GET_PROT_STATUS(ui2c) & 0x3F00) {
+        switch (UI2C_GET_PROT_STATUS(ui2c) & 0x3F00)
+        {
         case UI2C_PROTSTS_STARIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_STARIF_Msk);     /* Clear START INT Flag */
             UI2C_SET_DATA(ui2c, (u8SlaveAddr << 1) | 0x00);             /* Write SLA+W to Register UI2C_TXDAT */
@@ -665,13 +675,18 @@ uint8_t UI2C_WriteByteOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8DataAd
         case UI2C_PROTSTS_ACKIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_ACKIF_Msk);      /* Clear ACK INT Flag */
 
-            if (u32txLen == 0) {
+            if (u32txLen == 0)
+            {
                 UI2C_SET_DATA(ui2c, u8DataAddr);                        /* Write data address to UI2C_TXDAT */
                 u32txLen++;
-            } else if (u32txLen == 1) {
+            }
+            else if (u32txLen == 1)
+            {
                 UI2C_SET_DATA(ui2c, data);                              /* Write data to UI2C_TXDAT */
                 u32txLen++;
-            } else {
+            }
+            else
+            {
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STO);                /* Clear SI and send STOP */
                 u8Xfering = 0;
             }
@@ -720,10 +735,12 @@ uint32_t UI2C_WriteMultiBytesOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u
 
     UI2C_START(ui2c);                                                       /* Send START */
 
-    while (u8Xfering && (u8Err == 0)) {
+    while (u8Xfering && (u8Err == 0))
+    {
         while (!(UI2C_GET_PROT_STATUS(ui2c) & 0x3F00));                     /* Wait UI2C new status occur */
 
-        switch (UI2C_GET_PROT_STATUS(ui2c) & 0x3F00) {
+        switch (UI2C_GET_PROT_STATUS(ui2c) & 0x3F00)
+        {
         case UI2C_PROTSTS_STARIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_STARIF_Msk);     /* Clear START INT Flag */
             UI2C_SET_DATA(ui2c, (u8SlaveAddr << 1) | 0x00);             /* Write SLA+W to Register UI2C_TXDAT */
@@ -733,13 +750,17 @@ uint32_t UI2C_WriteMultiBytesOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u
         case UI2C_PROTSTS_ACKIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_ACKIF_Msk);      /* Clear ACK INT Flag */
 
-            if (u32txLen == 0) {
+            if (u32txLen == 0)
+            {
                 UI2C_SET_DATA(ui2c, u8DataAddr);                        /* Write data address to UI2C_TXDAT */
                 u32txLen++;
-            } else {
+            }
+            else
+            {
                 if (u32txLen < u32wLen + 1)                             /* TX length = u32wLen + 1(u8DataAddr)*/
                     UI2C_SET_DATA(ui2c, data[u32txLen++]);              /* Write data to UI2C_TXDAT */
-                else {
+                else
+                {
                     u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STO);            /* Clear SI and send STOP */
                     u8Xfering = 0;
                 }
@@ -788,10 +809,12 @@ uint8_t UI2C_WriteByteTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16Dat
 
     UI2C_START(ui2c);                                                           /* Send START */
 
-    while (u8Xfering && (u8Err == 0)) {
+    while (u8Xfering && (u8Err == 0))
+    {
         while (!(UI2C_GET_PROT_STATUS(ui2c) & 0x3F00));                     /* Wait UI2C new status occur */
 
-        switch (UI2C_GET_PROT_STATUS(ui2c) & 0x3F00) {
+        switch (UI2C_GET_PROT_STATUS(ui2c) & 0x3F00)
+        {
         case UI2C_PROTSTS_STARIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_STARIF_Msk);         /* Clear START INT Flag */
             UI2C_SET_DATA(ui2c, (u8SlaveAddr << 1) | 0x00);                 /* Write SLA+W to Register UI2C_TXDAT */
@@ -801,16 +824,23 @@ uint8_t UI2C_WriteByteTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16Dat
         case UI2C_PROTSTS_ACKIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_ACKIF_Msk);          /* Clear ACK INT Flag */
 
-            if (u32txLen == 0) {
+            if (u32txLen == 0)
+            {
                 UI2C_SET_DATA(ui2c, (uint8_t)((u16DataAddr & 0xFF00) >> 8));  /* Write Hi byte data address to UI2C_TXDAT */
                 u32txLen++;
-            } else if (u32txLen == 1) {
+            }
+            else if (u32txLen == 1)
+            {
                 UI2C_SET_DATA(ui2c, (uint8_t)(u16DataAddr & 0xFF));         /* Write Lo byte data address to UI2C_TXDAT */
                 u32txLen++;
-            } else if (u32txLen == 2) {
+            }
+            else if (u32txLen == 2)
+            {
                 UI2C_SET_DATA(ui2c, data);                                  /* Write data to UI2C_TXDAT */
                 u32txLen++;
-            } else {
+            }
+            else
+            {
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STO);                /* Clear SI and send STOP */
                 u8Xfering = 0;
             }
@@ -860,10 +890,12 @@ uint32_t UI2C_WriteMultiBytesTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t
 
     UI2C_START(ui2c);                                                           /* Send START */
 
-    while (u8Xfering && (u8Err == 0)) {
+    while (u8Xfering && (u8Err == 0))
+    {
         while (!(UI2C_GET_PROT_STATUS(ui2c) & 0x3F00));                     /* Wait UI2C new status occur */
 
-        switch (UI2C_GET_PROT_STATUS(ui2c) & 0x3F00) {
+        switch (UI2C_GET_PROT_STATUS(ui2c) & 0x3F00)
+        {
         case UI2C_PROTSTS_STARIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_STARIF_Msk);         /* Clear START INT Flag */
             UI2C_SET_DATA(ui2c, (u8SlaveAddr << 1) | 0x00);                 /* Write SLA+W to Register UI2C_TXDAT */
@@ -874,16 +906,22 @@ uint32_t UI2C_WriteMultiBytesTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t
         case UI2C_PROTSTS_ACKIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_ACKIF_Msk);          /* Clear ACK INT Flag */
 
-            if (eEvent == MASTER_SEND_ADDRESS) {
+            if (eEvent == MASTER_SEND_ADDRESS)
+            {
                 UI2C_SET_DATA(ui2c, (uint8_t)((u16DataAddr & 0xFF00) >> 8));  /* Write Hi byte data address to UI2C_TXDAT */
                 eEvent = MASTER_SEND_H_WR_ADDRESS;
-            } else if (eEvent == MASTER_SEND_H_WR_ADDRESS) {
+            }
+            else if (eEvent == MASTER_SEND_H_WR_ADDRESS)
+            {
                 UI2C_SET_DATA(ui2c, (uint8_t)(u16DataAddr & 0xFF));         /* Write Lo byte data address to UI2C_TXDAT */
                 eEvent = MASTER_SEND_L_ADDRESS;
-            } else {
+            }
+            else
+            {
                 if (u32txLen < u32wLen)
                     UI2C_SET_DATA(ui2c, data[u32txLen++]);                  /* Write data to UI2C_TXDAT */
-                else {
+                else
+                {
                     u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STO);                /* Clear SI and send STOP */
                     u8Xfering = 0;
                 }
@@ -928,10 +966,12 @@ uint8_t UI2C_ReadByte(UI2C_T *ui2c, uint8_t u8SlaveAddr)
 
     UI2C_START(ui2c);                                                       /* Send START */
 
-    while (u8Xfering && (u8Err == 0)) {
+    while (u8Xfering && (u8Err == 0))
+    {
         while (!(UI2C_GET_PROT_STATUS(ui2c) & 0x3F00));                     /* Wait UI2C new status occur */
 
-        switch (UI2C_GET_PROT_STATUS(ui2c) & 0x3F00) {
+        switch (UI2C_GET_PROT_STATUS(ui2c) & 0x3F00)
+        {
         case UI2C_PROTSTS_STARIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_STARIF_Msk);     /* Clear START INT Flag */
             UI2C_SET_DATA(ui2c, (u8SlaveAddr << 1) | 0x01);             /* Write SLA+R to Register UI2C_TXDAT */
@@ -947,10 +987,13 @@ uint8_t UI2C_ReadByte(UI2C_T *ui2c, uint8_t u8SlaveAddr)
         case UI2C_PROTSTS_NACKIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_NACKIF_Msk);     /* Clear NACK INT Flag */
 
-            if (eEvent == MASTER_SEND_H_RD_ADDRESS) {
+            if (eEvent == MASTER_SEND_H_RD_ADDRESS)
+            {
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STO);
                 u8Err = 1;
-            } else {
+            }
+            else
+            {
                 rdata = (unsigned char) UI2C_GET_DATA(ui2c);            /* Receive Data */
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STO);
                 u8Xfering = 0;
@@ -997,10 +1040,12 @@ uint32_t UI2C_ReadMultiBytes(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t *rdata, 
 
     UI2C_START(ui2c);                                                       /* Send START */
 
-    while (u8Xfering && (u8Err == 0)) {
+    while (u8Xfering && (u8Err == 0))
+    {
         while (!(UI2C_GET_PROT_STATUS(ui2c) & 0x3F00));                     /* Wait UI2C new status occur */
 
-        switch (UI2C_GET_PROT_STATUS(ui2c) & 0x3F00) {
+        switch (UI2C_GET_PROT_STATUS(ui2c) & 0x3F00)
+        {
         case UI2C_PROTSTS_STARIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_STARIF_Msk);     /* Clear START INT Flag */
             UI2C_SET_DATA(ui2c, (u8SlaveAddr << 1) | 0x01);             /* Write SLA+R to Register UI2C_TXDAT */
@@ -1011,10 +1056,13 @@ uint32_t UI2C_ReadMultiBytes(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t *rdata, 
         case UI2C_PROTSTS_ACKIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_ACKIF_Msk);      /* Clear ACK INT Flag */
 
-            if (eEvent == MASTER_SEND_H_RD_ADDRESS) {
+            if (eEvent == MASTER_SEND_H_RD_ADDRESS)
+            {
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_AA);
                 eEvent = MASTER_READ_DATA;
-            } else {
+            }
+            else
+            {
                 rdata[u32rxLen++] = (unsigned char) UI2C_GET_DATA(ui2c);    /* Receive Data */
 
                 if (u32rxLen < (u32rLen - 1))
@@ -1028,10 +1076,13 @@ uint32_t UI2C_ReadMultiBytes(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t *rdata, 
         case UI2C_PROTSTS_NACKIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_NACKIF_Msk);     /* Clear NACK INT Flag */
 
-            if (eEvent == MASTER_SEND_H_RD_ADDRESS) {
+            if (eEvent == MASTER_SEND_H_RD_ADDRESS)
+            {
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STO);
                 u8Err = 1;
-            } else {
+            }
+            else
+            {
                 rdata[u32rxLen++] = (unsigned char) UI2C_GET_DATA(ui2c);    /* Receive Data */
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STO);
                 u8Xfering = 0;
@@ -1073,17 +1124,22 @@ uint8_t UI2C_ReadByteOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8DataAdd
 
     UI2C_START(ui2c);                                                       /* Send START */
 
-    while (u8Xfering && (u8Err == 0)) {
+    while (u8Xfering && (u8Err == 0))
+    {
         while (!(UI2C_GET_PROT_STATUS(ui2c) & 0x3F00));                     /* Wait UI2C new status occur */
 
-        switch (UI2C_GET_PROT_STATUS(ui2c) & 0x3F00) {
+        switch (UI2C_GET_PROT_STATUS(ui2c) & 0x3F00)
+        {
         case UI2C_PROTSTS_STARIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_STARIF_Msk);     /* Clear START INT Flag */
 
-            if (eEvent == MASTER_SEND_START) {
+            if (eEvent == MASTER_SEND_START)
+            {
                 UI2C_SET_DATA(ui2c, (u8SlaveAddr << 1) | 0x00);         /* Write SLA+W to Register UI2C_TXDAT */
                 eEvent = MASTER_SEND_ADDRESS;
-            } else if (eEvent == MASTER_SEND_REPEAT_START) {
+            }
+            else if (eEvent == MASTER_SEND_REPEAT_START)
+            {
                 UI2C_SET_DATA(UI2C0, (u8SlaveAddr << 1) | 0x01);        /* Write SLA+R to Register TXDAT */
                 eEvent = MASTER_SEND_H_RD_ADDRESS;
             }
@@ -1094,14 +1150,19 @@ uint8_t UI2C_ReadByteOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8DataAdd
         case UI2C_PROTSTS_ACKIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_ACKIF_Msk);      /* Clear ACK INT Flag */
 
-            if (eEvent == MASTER_SEND_ADDRESS) {
+            if (eEvent == MASTER_SEND_ADDRESS)
+            {
                 UI2C_SET_DATA(ui2c, u8DataAddr);                        /* Write data address of register */
                 u8Ctrl = UI2C_CTL_PTRG;
                 eEvent = MASTER_SEND_DATA;
-            } else if (eEvent == MASTER_SEND_DATA) {
+            }
+            else if (eEvent == MASTER_SEND_DATA)
+            {
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STA);                /* Send repeat START signal */
                 eEvent = MASTER_SEND_REPEAT_START;
-            } else {
+            }
+            else
+            {
                 /* SLA+R ACK */
                 u8Ctrl = UI2C_CTL_PTRG;
                 eEvent = MASTER_READ_DATA;
@@ -1112,10 +1173,13 @@ uint8_t UI2C_ReadByteOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8DataAdd
         case UI2C_PROTSTS_NACKIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_NACKIF_Msk);     /* Clear NACK INT Flag */
 
-            if (eEvent == MASTER_SEND_H_RD_ADDRESS) {
+            if (eEvent == MASTER_SEND_H_RD_ADDRESS)
+            {
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STO);
                 u8Err = 1;
-            } else {
+            }
+            else
+            {
                 rdata = (uint8_t) UI2C_GET_DATA(ui2c);                  /* Receive Data */
                 u8Ctrl = I2C_CTL_STO_SI;
                 u8Xfering = 0;
@@ -1162,17 +1226,22 @@ uint32_t UI2C_ReadMultiBytesOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8
 
     UI2C_START(ui2c);                                                       /* Send START */
 
-    while (u8Xfering && (u8Err == 0)) {
+    while (u8Xfering && (u8Err == 0))
+    {
         while (!(UI2C_GET_PROT_STATUS(ui2c) & 0x3F00));                     /* Wait UI2C new status occur */
 
-        switch (UI2C_GET_PROT_STATUS(ui2c) & 0x3F00) {
+        switch (UI2C_GET_PROT_STATUS(ui2c) & 0x3F00)
+        {
         case UI2C_PROTSTS_STARIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_STARIF_Msk);     /* Clear START INT Flag */
 
-            if (eEvent == MASTER_SEND_START) {
+            if (eEvent == MASTER_SEND_START)
+            {
                 UI2C_SET_DATA(ui2c, (u8SlaveAddr << 1) | 0x00);         /* Write SLA+W to Register UI2C_TXDAT */
                 eEvent = MASTER_SEND_ADDRESS;
-            } else if (eEvent == MASTER_SEND_REPEAT_START) {
+            }
+            else if (eEvent == MASTER_SEND_REPEAT_START)
+            {
                 UI2C_SET_DATA(UI2C0, (u8SlaveAddr << 1) | 0x01);        /* Write SLA+R to Register TXDAT */
                 eEvent = MASTER_SEND_H_RD_ADDRESS;
             }
@@ -1183,18 +1252,25 @@ uint32_t UI2C_ReadMultiBytesOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8
         case UI2C_PROTSTS_ACKIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_ACKIF_Msk);      /* Clear ACK INT Flag */
 
-            if (eEvent == MASTER_SEND_ADDRESS) {
+            if (eEvent == MASTER_SEND_ADDRESS)
+            {
                 UI2C_SET_DATA(ui2c, u8DataAddr);                        /* Write data address of register */
                 u8Ctrl = UI2C_CTL_PTRG;
                 eEvent = MASTER_SEND_DATA;
-            } else if (eEvent == MASTER_SEND_DATA) {
+            }
+            else if (eEvent == MASTER_SEND_DATA)
+            {
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STA);                /* Send repeat START signal */
                 eEvent = MASTER_SEND_REPEAT_START;
-            } else if (eEvent == MASTER_SEND_H_RD_ADDRESS) {
+            }
+            else if (eEvent == MASTER_SEND_H_RD_ADDRESS)
+            {
                 /* SLA+R ACK */
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_AA);
                 eEvent = MASTER_READ_DATA;
-            } else {
+            }
+            else
+            {
                 rdata[u32rxLen++] = (uint8_t) UI2C_GET_DATA(ui2c);      /* Receive Data */
 
                 if (u32rxLen < u32rLen - 1)
@@ -1208,10 +1284,13 @@ uint32_t UI2C_ReadMultiBytesOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8
         case UI2C_PROTSTS_NACKIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_NACKIF_Msk);     /* Clear NACK INT Flag */
 
-            if (eEvent == MASTER_SEND_H_RD_ADDRESS) {
+            if (eEvent == MASTER_SEND_H_RD_ADDRESS)
+            {
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STO);
                 u8Err = 1;
-            } else {
+            }
+            else
+            {
                 rdata[u32rxLen++] = (uint8_t) UI2C_GET_DATA(ui2c);      /* Receive Data */
                 u8Ctrl = I2C_CTL_STO_SI;
                 u8Xfering = 0;
@@ -1252,17 +1331,22 @@ uint8_t UI2C_ReadByteTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16Data
 
     UI2C_START(ui2c);                                                       /* Send START */
 
-    while (u8Xfering && (u8Err == 0)) {
+    while (u8Xfering && (u8Err == 0))
+    {
         while (!(UI2C_GET_PROT_STATUS(ui2c) & 0x3F00));                     /* Wait UI2C new status occur */
 
-        switch (UI2C_GET_PROT_STATUS(ui2c) & 0x3F00) {
+        switch (UI2C_GET_PROT_STATUS(ui2c) & 0x3F00)
+        {
         case UI2C_PROTSTS_STARIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_STARIF_Msk);     /* Clear START INT Flag */
 
-            if (eEvent == MASTER_SEND_START) {
+            if (eEvent == MASTER_SEND_START)
+            {
                 UI2C_SET_DATA(ui2c, (u8SlaveAddr << 1) | 0x00);        /* Write SLA+W to Register UI2C_TXDAT */
                 eEvent = MASTER_SEND_ADDRESS;
-            } else if (eEvent == MASTER_SEND_REPEAT_START) {
+            }
+            else if (eEvent == MASTER_SEND_REPEAT_START)
+            {
                 UI2C_SET_DATA(UI2C0, (u8SlaveAddr << 1) | 0x01);        /* Write SLA+R to Register TXDAT */
                 eEvent = MASTER_SEND_H_RD_ADDRESS;
             }
@@ -1273,16 +1357,23 @@ uint8_t UI2C_ReadByteTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16Data
         case UI2C_PROTSTS_ACKIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_ACKIF_Msk);      /* Clear ACK INT Flag */
 
-            if (eEvent == MASTER_SEND_ADDRESS) {
+            if (eEvent == MASTER_SEND_ADDRESS)
+            {
                 UI2C_SET_DATA(ui2c, (uint8_t)((u16DataAddr & 0xFF00) >> 8));  /* Write Hi byte address of register */
                 eEvent = MASTER_SEND_H_WR_ADDRESS;
-            } else if (eEvent == MASTER_SEND_H_WR_ADDRESS) {
+            }
+            else if (eEvent == MASTER_SEND_H_WR_ADDRESS)
+            {
                 UI2C_SET_DATA(ui2c, (uint8_t)(u16DataAddr & 0xFF));       /* Write Lo byte address of register */
                 eEvent = MASTER_SEND_L_ADDRESS;
-            } else if (eEvent == MASTER_SEND_L_ADDRESS) {
+            }
+            else if (eEvent == MASTER_SEND_L_ADDRESS)
+            {
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STA);                /* Send repeat START signal */
                 eEvent = MASTER_SEND_REPEAT_START;
-            } else {
+            }
+            else
+            {
                 /* SLA+R ACK */
                 u8Ctrl = UI2C_CTL_PTRG;
                 eEvent = MASTER_READ_DATA;
@@ -1293,10 +1384,13 @@ uint8_t UI2C_ReadByteTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16Data
         case UI2C_PROTSTS_NACKIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_NACKIF_Msk);     /* Clear NACK INT Flag */
 
-            if ((eEvent == MASTER_SEND_H_RD_ADDRESS) || (eEvent == MASTER_SEND_H_WR_ADDRESS) || (eEvent == MASTER_SEND_L_ADDRESS)) {
+            if ((eEvent == MASTER_SEND_H_RD_ADDRESS) || (eEvent == MASTER_SEND_H_WR_ADDRESS) || (eEvent == MASTER_SEND_L_ADDRESS))
+            {
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STO);
                 u8Err = 1;
-            } else {
+            }
+            else
+            {
                 rdata = (uint8_t) UI2C_GET_DATA(ui2c);                  /* Receive Data */
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STO);
                 u8Xfering = 0;
@@ -1343,17 +1437,22 @@ uint32_t UI2C_ReadMultiBytesTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t 
 
     UI2C_START(ui2c);                                                       /* Send START */
 
-    while (u8Xfering && (u8Err == 0)) {
+    while (u8Xfering && (u8Err == 0))
+    {
         while (!(UI2C_GET_PROT_STATUS(ui2c) & 0x3F00));                     /* Wait UI2C new status occur */
 
-        switch (UI2C_GET_PROT_STATUS(ui2c) & 0x3F00) {
+        switch (UI2C_GET_PROT_STATUS(ui2c) & 0x3F00)
+        {
         case UI2C_PROTSTS_STARIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_STARIF_Msk);     /* Clear START INT Flag */
 
-            if (eEvent == MASTER_SEND_START) {
+            if (eEvent == MASTER_SEND_START)
+            {
                 UI2C_SET_DATA(ui2c, (u8SlaveAddr << 1) | 0x00);         /* Write SLA+W to Register UI2C_TXDAT */
                 eEvent = MASTER_SEND_ADDRESS;
-            } else if (eEvent == MASTER_SEND_REPEAT_START) {
+            }
+            else if (eEvent == MASTER_SEND_REPEAT_START)
+            {
                 UI2C_SET_DATA(UI2C0, (u8SlaveAddr << 1) | 0x01);        /* Write SLA+R to Register TXDAT */
                 eEvent = MASTER_SEND_H_RD_ADDRESS;
             }
@@ -1364,19 +1463,28 @@ uint32_t UI2C_ReadMultiBytesTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t 
         case UI2C_PROTSTS_ACKIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_ACKIF_Msk);      /* Clear ACK INT Flag */
 
-            if (eEvent == MASTER_SEND_ADDRESS) {
+            if (eEvent == MASTER_SEND_ADDRESS)
+            {
                 UI2C_SET_DATA(ui2c, (uint8_t)((u16DataAddr & 0xFF00) >> 8));  /* Write Hi byte address of register */
                 eEvent = MASTER_SEND_H_WR_ADDRESS;
-            } else if (eEvent == MASTER_SEND_H_WR_ADDRESS) {
+            }
+            else if (eEvent == MASTER_SEND_H_WR_ADDRESS)
+            {
                 UI2C_SET_DATA(ui2c, (uint8_t)(u16DataAddr & 0xFF));       /* Write Lo byte address of register */
                 eEvent = MASTER_SEND_L_ADDRESS;
-            } else if (eEvent == MASTER_SEND_L_ADDRESS) {
+            }
+            else if (eEvent == MASTER_SEND_L_ADDRESS)
+            {
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STA);                /* Send repeat START signal */
                 eEvent = MASTER_SEND_REPEAT_START;
-            } else if (eEvent == MASTER_SEND_H_RD_ADDRESS) {
+            }
+            else if (eEvent == MASTER_SEND_H_RD_ADDRESS)
+            {
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_AA);
                 eEvent = MASTER_READ_DATA;
-            } else {
+            }
+            else
+            {
                 rdata[u32rxLen++] = (uint8_t) UI2C_GET_DATA(ui2c);      /* Receive Data */
 
                 if (u32rxLen < u32rLen - 1)
@@ -1390,10 +1498,13 @@ uint32_t UI2C_ReadMultiBytesTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t 
         case UI2C_PROTSTS_NACKIF_Msk:
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_NACKIF_Msk);     /* Clear NACK INT Flag */
 
-            if ((eEvent == MASTER_SEND_H_RD_ADDRESS) || (eEvent == MASTER_SEND_H_WR_ADDRESS) || (eEvent == MASTER_SEND_L_ADDRESS)) {
+            if ((eEvent == MASTER_SEND_H_RD_ADDRESS) || (eEvent == MASTER_SEND_H_WR_ADDRESS) || (eEvent == MASTER_SEND_L_ADDRESS))
+            {
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STO);
                 u8Err = 1;
-            } else {
+            }
+            else
+            {
                 rdata[u32rxLen++] = (uint8_t) UI2C_GET_DATA(ui2c);                  /* Receive Data */
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STO);
                 u8Xfering = 0;

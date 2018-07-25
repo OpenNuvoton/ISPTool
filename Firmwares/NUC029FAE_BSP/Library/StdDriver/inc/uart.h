@@ -2,12 +2,12 @@
  * @file     UART.h
  * @version  V1.00
  * $Revision: 1 $
- * $Date: 14/05/16 10:00a $ 
+ * $Date: 14/05/16 10:00a $
  * @brief    NUC029FAE UART driver header file
  *
  * @note
  * Copyright (C) 2013 Nuvoton Technology Corp. All rights reserved.
- *****************************************************************************/ 
+ *****************************************************************************/
 #ifndef __UART_H__
 #define __UART_H__
 
@@ -87,9 +87,9 @@ extern "C"
  *    @brief    Calculate UART baudrate mode0 divider
  *
  *    @param    None
- *    
+ *
  *    @return    UART baudrate mode0 register setting value
- *    
+ *
  */
 #define UART_BAUD_MODE0        (0)
 
@@ -97,9 +97,9 @@ extern "C"
  *    @brief    Calculate UART baudrate mode0 divider
  *
  *    @param    None
- *    
+ *
  *    @return    UART baudrate mode2 register setting value
- *    
+ *
  */
 #define UART_BAUD_MODE2        (UART_BAUD_DIV_X_EN_Msk | UART_BAUD_DIV_X_ONE_Msk)
 
@@ -109,9 +109,9 @@ extern "C"
  *
  *    @param    u32SrcFreq      UART clock frequency
  *    @param    u32BaudRate     Baudrate of UART module
- *    
+ *
  *    @return    UART baudrate mode0 divider
- *    
+ *
  */
 #define UART_BAUD_MODE0_DIVIDER(u32SrcFreq, u32BaudRate)    (((u32SrcFreq + (u32BaudRate*8)) / u32BaudRate >> 4)-2)
 
@@ -120,18 +120,18 @@ extern "C"
  *
  *    @param    u32SrcFreq    UART clock frequency
  *    @param    u32BaudRate    Baudrate of UART module
- *    
- *    @return    UART baudrate mode2 divider  
+ *
+ *    @return    UART baudrate mode2 divider
  */
-#define UART_BAUD_MODE2_DIVIDER(u32SrcFreq, u32BaudRate)    (((u32SrcFreq + (u32BaudRate/2)) / u32BaudRate)-2)     
+#define UART_BAUD_MODE2_DIVIDER(u32SrcFreq, u32BaudRate)    (((u32SrcFreq + (u32BaudRate/2)) / u32BaudRate)-2)
 
 
 /**
  *    @brief    Write Data to Tx data register
  *
  *    @param    uart        The base address of UART module.
- *    @param    u8Data  Data byte to transmit 
- *                          
+ *    @param    u8Data  Data byte to transmit
+ *
  *    @return    None
  */
 #define UART_WRITE(uart, u8Data)    (uart->THR = (u8Data))
@@ -139,78 +139,78 @@ extern "C"
 /**
  *    @brief    Read Rx data register
  *
- *    @param    uart        The base address of UART module. 
+ *    @param    uart        The base address of UART module.
  *
- *    @return    The oldest data byte in RX FIFO 
+ *    @return    The oldest data byte in RX FIFO
  */
 #define UART_READ(uart)    (uart->RBR)
 
 
 /**
- *    @brief    Get Tx empty register value. 
+ *    @brief    Get Tx empty register value.
  *
- *    @param    uart        The base address of UART module  
+ *    @param    uart        The base address of UART module
  *
- *    @return    Tx empty register value. 
+ *    @return    Tx empty register value.
  */
-#define UART_GET_TX_EMPTY(uart)    (uart->FSR & UART_FSR_TX_EMPTY_Msk) 
+#define UART_GET_TX_EMPTY(uart)    (uart->FSR & UART_FSR_TX_EMPTY_Msk)
 
 
 /**
- *    @brief    Get Rx empty register value. 
+ *    @brief    Get Rx empty register value.
  *
- *    @param    uart        The base address of UART module 
- * 
+ *    @param    uart        The base address of UART module
+ *
  *    @return    Rx empty register value.
  */
-#define UART_GET_RX_EMPTY(uart)    (uart->FSR & UART_FSR_RX_EMPTY_Msk) 
+#define UART_GET_RX_EMPTY(uart)    (uart->FSR & UART_FSR_RX_EMPTY_Msk)
 
 /**
- *    @brief    Check specified uart port transmission is over. 
+ *    @brief    Check specified uart port transmission is over.
  *
- *    @param    uart        The base address of UART module 
- * 
+ *    @param    uart        The base address of UART module
+ *
  *    @return    TE_Flag.
  */
-#define UART_IS_TX_EMPTY(uart)    ((uart->FSR & UART_FSR_TE_FLAG_Msk) >> UART_FSR_TE_FLAG_Pos) 
+#define UART_IS_TX_EMPTY(uart)    ((uart->FSR & UART_FSR_TE_FLAG_Msk) >> UART_FSR_TE_FLAG_Pos)
 
 
 /**
- *    @brief    Wait specified uart port transmission is over 
+ *    @brief    Wait specified uart port transmission is over
  *
- *    @param    uart        The base address of UART module 
+ *    @param    uart        The base address of UART module
  *
- *    @return    None 
+ *    @return    None
  */
 #define UART_WAIT_TX_EMPTY(uart)    while(!(((uart->FSR) & UART_FSR_TE_FLAG_Msk) >> UART_FSR_TE_FLAG_Pos))
-                                     
+
 /**
  *    @brief    Check RDA_IF is set or not
  *
- *    @param    uart        The base address of UART module 
+ *    @param    uart        The base address of UART module
  *
- *    @return     
- *            0 : The number of bytes in the RX FIFO is less than the RFITL  
+ *    @return
+ *            0 : The number of bytes in the RX FIFO is less than the RFITL
  *            1 : The number of bytes in the RX FIFO equals or larger than RFITL
  */
 #define UART_IS_RX_READY(uart)    ((uart->ISR & UART_ISR_RDA_IF_Msk)>>UART_ISR_RDA_IF_Pos)
 
 
 /**
- *    @brief    Check TX FIFO is full or not 
+ *    @brief    Check TX FIFO is full or not
  *
- *    @param    uart        The base address of UART module 
+ *    @param    uart        The base address of UART module
  *
- *    @return     
+ *    @return
  *            1 = TX FIFO is full
  *            0 = TX FIFO is not full
  */
 #define UART_IS_TX_FULL(uart)    ((uart->FSR & UART_FSR_TX_FULL_Msk)>>UART_FSR_TX_FULL_Pos)
 
 /**
- *    @brief    Check RX FIFO is full or not 
+ *    @brief    Check RX FIFO is full or not
  *
- *    @param    uart        The base address of UART module  
+ *    @param    uart        The base address of UART module
  *
  *    @return
  *            1 = RX FIFO is full
@@ -221,21 +221,21 @@ extern "C"
 
 
 /**
- *    @brief    Get Tx full register value 
+ *    @brief    Get Tx full register value
  *
- *    @param    uart        The base address of UART module 
+ *    @param    uart        The base address of UART module
  *
- *    @return    Tx full register value 
+ *    @return    Tx full register value
  */
 #define UART_GET_TX_FULL(uart)    (uart->FSR & UART_FSR_TX_FULL_Msk)
 
 
 /**
- *    @brief    Get Rx full register value 
+ *    @brief    Get Rx full register value
  *
- *    @param    uart        The base address of UART module 
+ *    @param    uart        The base address of UART module
  *
- *    @return    Rx full register value 
+ *    @return    Rx full register value
  */
 #define UART_GET_RX_FULL(uart)    (uart->FSR & UART_FSR_RX_FULL_Msk)
 
@@ -243,36 +243,36 @@ extern "C"
 /**
  *    @brief    Enable specified interrupt
  *
- *    @param    uart        The base address of UART module  
- *    @param    u32eIntSel    Interrupt type select 
+ *    @param    uart        The base address of UART module
+ *    @param    u32eIntSel    Interrupt type select
  *                        - UART_IER_TIME_OUT_EN_Msk    : Rx Time Out interrupt
  *                        - UART_IER_WAKE_EN_Msk        : Wakeup interrupt
- *                        - UART_IER_BUF_ERR_IEN_Msk    : Buffer Error interrupt   
- *                        - UART_IER_RTO_IEN_Msk        : Rx time-out interrupt       
- *                        - UART_IER_MODEM_IEN_Msk    : Modem interrupt           
- *                        - UART_IER_RLS_IEN_Msk        : Rx Line status interrupt                              
- *                        - UART_IER_THRE_IEN_Msk        : Tx empty interrupt          
- *                        - UART_IER_RDA_IEN_Msk        : Rx ready interrupt           
+ *                        - UART_IER_BUF_ERR_IEN_Msk    : Buffer Error interrupt
+ *                        - UART_IER_RTO_IEN_Msk        : Rx time-out interrupt
+ *                        - UART_IER_MODEM_IEN_Msk    : Modem interrupt
+ *                        - UART_IER_RLS_IEN_Msk        : Rx Line status interrupt
+ *                        - UART_IER_THRE_IEN_Msk        : Tx empty interrupt
+ *                        - UART_IER_RDA_IEN_Msk        : Rx ready interrupt
  *
- *    @return    None                                                    
+ *    @return    None
  */
 #define UART_ENABLE_INT(uart, u32eIntSel)    (uart->IER |= (u32eIntSel))
 
 
 /**
- *    @brief    Disable specified interrupt  
+ *    @brief    Disable specified interrupt
  *
- *    @param    uart        The base address of UART module 
- *    @param    u32eIntSel    Interrupt type select 
+ *    @param    uart        The base address of UART module
+ *    @param    u32eIntSel    Interrupt type select
  *                        - UART_IER_TIME_OUT_EN_Msk    : Rx Time Out interrupt
  *                        - UART_IER_WAKE_EN_Msk           : Wakeup interrupt
- *                        - UART_IER_BUF_ERR_IEN_Msk    : Buffer Error interrupt   
- *                        - UART_IER_RTO_IEN_Msk         : Rx time-out interrupt       
- *                        - UART_IER_MODEM_IEN_Msk       : Modem interrupt           
- *                        - UART_IER_RLS_IEN_Msk         : Rx Line status interrupt                              
- *                        - UART_IER_THRE_IEN_Msk        : Tx empty interrupt          
- *                        - UART_IER_RDA_IEN_Msk         : Rx ready interrupt          
- *    @return    None                                                    
+ *                        - UART_IER_BUF_ERR_IEN_Msk    : Buffer Error interrupt
+ *                        - UART_IER_RTO_IEN_Msk         : Rx time-out interrupt
+ *                        - UART_IER_MODEM_IEN_Msk       : Modem interrupt
+ *                        - UART_IER_RLS_IEN_Msk         : Rx Line status interrupt
+ *                        - UART_IER_THRE_IEN_Msk        : Tx empty interrupt
+ *                        - UART_IER_RDA_IEN_Msk         : Rx ready interrupt
+ *    @return    None
  */
 #define UART_DISABLE_INT(uart, u32eIntSel)    (uart->IER &= ~ (u32eIntSel))
 
@@ -280,31 +280,31 @@ extern "C"
 /**
  *    @brief    Get specified interrupt flag/status
  *
- *    @param    uart            The base address of UART module 
- *    @param    u32eIntTypeFlag    Interrupt Type Flag,should be   
+ *    @param    uart            The base address of UART module
+ *    @param    u32eIntTypeFlag    Interrupt Type Flag,should be
  *                            - UART_IER_TIME_OUT_EN_Msk    : Rx Time Out interrupt
  *                            - UART_IER_WAKE_EN_Msk           : Wakeup interrupt
- *                            - UART_IER_BUF_ERR_IEN_Msk    : Buffer Error interrupt   
- *                            - UART_IER_RTO_IEN_Msk         : Rx time-out interrupt       
- *                            - UART_IER_MODEM_IEN_Msk       : Modem interrupt           
- *                            - UART_IER_RLS_IEN_Msk         : Rx Line status interrupt                              
- *                            - UART_IER_THRE_IEN_Msk        : Tx empty interrupt          
- *                            - UART_IER_RDA_IEN_Msk         : Rx ready interrupt      
+ *                            - UART_IER_BUF_ERR_IEN_Msk    : Buffer Error interrupt
+ *                            - UART_IER_RTO_IEN_Msk         : Rx time-out interrupt
+ *                            - UART_IER_MODEM_IEN_Msk       : Modem interrupt
+ *                            - UART_IER_RLS_IEN_Msk         : Rx Line status interrupt
+ *                            - UART_IER_THRE_IEN_Msk        : Tx empty interrupt
+ *                            - UART_IER_RDA_IEN_Msk         : Rx ready interrupt
  *
  *    @return
- *            0 = The specified interrupt is not happened. 
- *            1 = The specified interrupt is happened.                                                      
- */                                                                                      
+ *            0 = The specified interrupt is not happened.
+ *            1 = The specified interrupt is happened.
+ */
 #define UART_GET_INT_FLAG(uart,u32eIntTypeFlag)    ((uart->ISR & (u32eIntTypeFlag))?1:0)
 
 
 /**
  *    @brief    Set RTS pin is low
  *
- *    @param    uart        The base address of UART module 
+ *    @param    uart        The base address of UART module
  *    @return    None
- */ 
-__INLINE void UART_CLEAR_RTS(UART_T* uart)  
+ */
+__INLINE void UART_CLEAR_RTS(UART_T* uart)
 {
     uart->MCR |= UART_MCR_LEV_RTS_Msk;
     uart->MCR &= UART_MCR_RTS_Msk;
@@ -313,33 +313,33 @@ __INLINE void UART_CLEAR_RTS(UART_T* uart)
 /**
  *    @brief    Set RTS pin is high
  *
- *    @param    uart        The base address of UART module 
+ *    @param    uart        The base address of UART module
  *    @return    None
- */ 
+ */
 __INLINE void UART_SET_RTS(UART_T* uart)
 {
     uart->MCR |= UART_MCR_LEV_RTS_Msk | UART_MCR_RTS_Msk;
 }
 
 /**
- *	@brief	Clear RS-485 Address Byte Detection Flag
+ *  @brief  Clear RS-485 Address Byte Detection Flag
  *
- *	@param	uart	The base address of UART module 
- *	@return	None
- */                                                                                                                                 
+ *  @param  uart    The base address of UART module
+ *  @return None
+ */
 #define UART_RS485_CLEAR_ADDR_FLAG(uart)    (uart->FSR  |= UART_FSR_RS485_ADD_DETF_Msk)
 
 
 /**
  *    @brief    Get RS-485 Address Byte Detection Flag
  *
- *    @param    uart        The base address of UART module 
+ *    @param    uart        The base address of UART module
  *    @return    RS-485 Address Byte Detection Flag
- */    
+ */
 #define UART_RS485_GET_ADDR_FLAG(uart)    ((uart->FSR  & UART_FSR_RS485_ADD_DETF_Msk) >> UART_FSR_RS485_ADD_DETF_Pos)
 
 
-void UART_ClearIntFlag(UART_T* uart , uint32_t u32InterruptFlag);
+void UART_ClearIntFlag(UART_T* uart, uint32_t u32InterruptFlag);
 void UART_Close(UART_T* uart );
 void UART_DisableFlowCtrl(UART_T* uart );
 void UART_DisableInt(UART_T*  uart, uint32_t u32InterruptFlag );

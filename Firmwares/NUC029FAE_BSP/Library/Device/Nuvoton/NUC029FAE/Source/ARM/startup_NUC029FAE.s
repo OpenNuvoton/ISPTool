@@ -1,13 +1,13 @@
-;/******************************************************************************
+;/*************************************************************************//**
 ; * @file     startup_NUC029FAE.s
 ; * @version  V1.00
 ; * $Revision: 1 $
-; * $Date: 14/05/16 10:00a $ 
+; * $Date: 14/05/16 10:00a $
 ; * @brief    CMSIS ARM Cortex-M0 Core Device Startup File
 ; *
 ; * @note
 ; * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
-;*****************************************************************************/  
+;*****************************************************************************/
 
 Stack_Size      EQU     0x00000200
 
@@ -55,21 +55,21 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
 
                 ; External Interrupts
                                                   ; maximum of 32 External Interrupts are possible
-                DCD     BOD_IRQHandler  
-                DCD     WDT_IRQHandler  
+                DCD     BOD_IRQHandler
+                DCD     WDT_IRQHandler
                 DCD     EINT0_IRQHandler
                 DCD     EINT1_IRQHandler
-                DCD     GPIO01_IRQHandler 
+                DCD     GPIO01_IRQHandler
                 DCD     GPIO234_IRQHandler
-                DCD     PWM_IRQHandler 
-                DCD     FB_IRQHandler 
-                DCD     TMR0_IRQHandler 
-                DCD     TMR1_IRQHandler 
-                DCD     Default_Handler 
-                DCD     Default_Handler 
+                DCD     PWM_IRQHandler
+                DCD     FB_IRQHandler
+                DCD     TMR0_IRQHandler
+                DCD     TMR1_IRQHandler
+                DCD     Default_Handler
+                DCD     Default_Handler
                 DCD     UART_IRQHandler
                 DCD     Default_Handler
-                DCD     SPI_IRQHandler              
+                DCD     SPI_IRQHandler
                 DCD     Default_Handler
                 DCD     GPIO5_IRQHandler
                 DCD     HIRC_IRQHandler
@@ -83,32 +83,32 @@ __Vectors       DCD     __initial_sp              ; Top of Stack
                 DCD     ACMP_IRQHandler
                 DCD     Default_Handler
                 DCD     Default_Handler
-                DCD     PDWU_IRQHandler 
-                DCD     ADC_IRQHandler 
+                DCD     PDWU_IRQHandler
+                DCD     ADC_IRQHandler
                 DCD     Default_Handler
-                DCD     Default_Handler 
-                                
-                
+                DCD     Default_Handler
+
+
                 AREA    |.text|, CODE, READONLY
-                
-                
-                
-; Reset Handler 
-                
+
+
+
+; Reset Handler
+
                 ENTRY
-                
+
 Reset_Handler   PROC
                 EXPORT  Reset_Handler             [WEAK]
-                IMPORT  __main                            
-                
+                IMPORT  __main
+
                 LDR     R0, =__main
                 BX      R0
                 ENDP
 
-                
-                
-; Dummy Exception Handlers (infinite loops which can be modified)                
-                
+
+
+; Dummy Exception Handlers (infinite loops which can be modified)
+
 NMI_Handler     PROC
                 EXPORT  NMI_Handler               [WEAK]
                 B       .
@@ -144,14 +144,14 @@ Default_Handler PROC
                 EXPORT  TMR0_IRQHandler           [WEAK]
                 EXPORT  TMR1_IRQHandler           [WEAK]
                 EXPORT  UART_IRQHandler           [WEAK]
-                EXPORT  SPI_IRQHandler           [WEAK]                
+                EXPORT  SPI_IRQHandler           [WEAK]
                 EXPORT  GPIO5_IRQHandler          [WEAK]
                 EXPORT  HIRC_IRQHandler           [WEAK]
                 EXPORT  I2C_IRQHandler            [WEAK]
                 EXPORT  ACMP_IRQHandler           [WEAK]
                 EXPORT  PDWU_IRQHandler           [WEAK]
                 EXPORT  ADC_IRQHandler            [WEAK]
-                
+
 BOD_IRQHandler
 WDT_IRQHandler
 EINT0_IRQHandler
@@ -180,13 +180,13 @@ ADC_IRQHandler
 ; User Initial Stack & Heap
 
                 IF      :DEF:__MICROLIB
-                
+
                 EXPORT  __initial_sp
                 EXPORT  __heap_base
                 EXPORT  __heap_limit
-                
+
                 ELSE
-                
+
                 IMPORT  __use_two_region_memory
                 EXPORT  __user_initial_stackheap
 __user_initial_stackheap

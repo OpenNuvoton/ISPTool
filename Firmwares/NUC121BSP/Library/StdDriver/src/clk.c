@@ -5,7 +5,7 @@
  *
  * @copyright (C) 2016 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
-#include "NUC121.h"
+#include "NuMicro.h"
 /** @addtogroup Standard_Driver Standard Driver
   @{
 */
@@ -221,7 +221,8 @@ uint32_t CLK_SetCoreClock(uint32_t u32Hclk)
         u32Hclk = CLK_EnablePLL(CLK_PLLCTL_PLLSRC_HXT, (u32Hclk << 1));
 
     /* Configure PLL setting if HXT clock is not stable */
-    else {
+    else
+    {
         u32Hclk = CLK_EnablePLL(CLK_PLLCTL_PLLSRC_HIRC_DIV2, (u32Hclk << 1));
 
         /* Read HIRC clock source stable flag */
@@ -357,14 +358,16 @@ void CLK_SetModuleClock(uint32_t u32ModuleIdx, uint32_t u32ClkSrc, uint32_t u32C
     uint32_t u32SelTbl[] = {0x0, 0x4, 0xC, 0x24};
     uint32_t u32DivTbl[] = {0x0};
 
-    if (MODULE_CLKDIV_Msk(u32ModuleIdx) != MODULE_NoMsk) {
+    if (MODULE_CLKDIV_Msk(u32ModuleIdx) != MODULE_NoMsk)
+    {
         /* Get clock divider control register address */
         u32div = (uint32_t)&CLK->CLKDIV0 + (u32DivTbl[MODULE_CLKDIV(u32ModuleIdx)]);
         /* Apply new divider */
         M32(u32div) = (M32(u32div) & (~(MODULE_CLKDIV_Msk(u32ModuleIdx) << MODULE_CLKDIV_Pos(u32ModuleIdx)))) | u32ClkDiv;
     }
 
-    if (MODULE_CLKSEL_Msk(u32ModuleIdx) != MODULE_NoMsk) {
+    if (MODULE_CLKSEL_Msk(u32ModuleIdx) != MODULE_NoMsk)
+    {
         /* Get clock select control register address */
         u32sel = (uint32_t)&CLK->CLKSEL0 + (u32SelTbl[MODULE_CLKSEL(u32ModuleIdx)]);
         /* Set new clock selection setting */
@@ -528,7 +531,8 @@ uint32_t CLK_EnablePLL(uint32_t u32PllClkSrc, uint32_t u32PllFreq)
     CLK_DisablePLL();
 
     /* PLL source clock is from HXT */
-    if (u32PllClkSrc == CLK_PLLCTL_PLLSRC_HXT) {
+    if (u32PllClkSrc == CLK_PLLCTL_PLLSRC_HXT)
+    {
         /* Enable HXT clock */
         CLK->PWRCTL = (CLK->PWRCTL & ~CLK_PWRCTL_XTLEN_Msk) | CLK_PWRCTL_HXTEN;
 
@@ -544,7 +548,8 @@ uint32_t CLK_EnablePLL(uint32_t u32PllClkSrc, uint32_t u32PllFreq)
     }
 
     /* PLL source clock is from HIRC_DIV2 */
-    else {
+    else
+    {
         /* Enable HIRC_DIV2 clock */
         CLK->PWRCTL |= CLK_PWRCTL_HIRCEN_Msk;
 
@@ -560,15 +565,22 @@ uint32_t CLK_EnablePLL(uint32_t u32PllClkSrc, uint32_t u32PllFreq)
     }
 
     /* Select "NO" according to request frequency */
-    if ((u32PllFreq <= FREQ_500MHZ) && (u32PllFreq > FREQ_250MHZ)) {
+    if ((u32PllFreq <= FREQ_500MHZ) && (u32PllFreq > FREQ_250MHZ))
+    {
         u32NO = 0;
-    } else if ((u32PllFreq <= FREQ_250MHZ) && (u32PllFreq > FREQ_125MHZ)) {
+    }
+    else if ((u32PllFreq <= FREQ_250MHZ) && (u32PllFreq > FREQ_125MHZ))
+    {
         u32NO = 1;
         u32PllFreq = u32PllFreq << 1;
-    } else if ((u32PllFreq <= FREQ_125MHZ) && (u32PllFreq >= FREQ_50MHZ)) {
+    }
+    else if ((u32PllFreq <= FREQ_125MHZ) && (u32PllFreq >= FREQ_50MHZ))
+    {
         u32NO = 3;
         u32PllFreq = u32PllFreq << 2;
-    } else {
+    }
+    else
+    {
         /* Wrong frequency request. Just return default setting. */
         goto lexit;
     }
@@ -578,17 +590,22 @@ uint32_t CLK_EnablePLL(uint32_t u32PllClkSrc, uint32_t u32PllFreq)
     u32MinNR = 0;
     u32MinNF = 0;
 
-    for (; u32NR <= 33; u32NR++) {
+    for (; u32NR <= 33; u32NR++)
+    {
         u32Tmp = u32PllSrcClk / u32NR;
 
-        if ((u32Tmp > 1600000) && (u32Tmp < 16000000)) {
-            for (u32NF = 2; u32NF <= 513; u32NF++) {
+        if ((u32Tmp > 1600000) && (u32Tmp < 16000000))
+        {
+            for (u32NF = 2; u32NF <= 513; u32NF++)
+            {
                 u32Tmp2 = u32Tmp * u32NF;
 
-                if ((u32Tmp2 >= 200000000) && (u32Tmp2 <= 500000000)) {
+                if ((u32Tmp2 >= 200000000) && (u32Tmp2 <= 500000000))
+                {
                     u32Tmp3 = (u32Tmp2 > u32PllFreq) ? u32Tmp2 - u32PllFreq : u32PllFreq - u32Tmp2;
 
-                    if (u32Tmp3 < u32Min) {
+                    if (u32Tmp3 < u32Min)
+                    {
                         u32Min = u32Tmp3;
                         u32MinNR = u32NR;
                         u32MinNF = u32NF;
@@ -654,7 +671,8 @@ uint32_t CLK_WaitClockReady(uint32_t u32ClkMask)
 {
     int32_t i32TimeOutCnt = 2160000;
 
-    while ((CLK->STATUS & u32ClkMask) != u32ClkMask) {
+    while ((CLK->STATUS & u32ClkMask) != u32ClkMask)
+    {
         if (i32TimeOutCnt-- <= 0)
             return 0;
     }

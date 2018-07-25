@@ -6,7 +6,7 @@
  * @copyright (C) 2016 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 #include <stdio.h>
-#include "NUC121.h"
+#include "NuMicro.h"
 
 /** @addtogroup Standard_Driver Standard Driver
   @{
@@ -284,7 +284,8 @@ int32_t FMC_WriteConfig(uint32_t *u32Config, uint32_t u32Count)
 {
     int32_t i;
 
-    for (i = 0; i < u32Count; i++) {
+    for (i = 0; i < u32Count; i++)
+    {
         FMC_Write(FMC_CONFIG_BASE + i * 4, u32Config[i]);
 
         if (FMC_Read(FMC_CONFIG_BASE + i * 4) != u32Config[i])

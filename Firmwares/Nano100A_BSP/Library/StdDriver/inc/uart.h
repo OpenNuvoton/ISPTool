@@ -340,7 +340,7 @@ __INLINE void UART_SET_RTS(UART_T* uart)
 #define UART_RS485_GET_ADDR_FLAG(uart)    ((uart->TRSR  & UART_TRSR_RS485_ADDET_F_Msk) >> UART_TRSR_RS485_ADDET_F_Pos)
 
 
-void UART_ClearIntFlag(UART_T* uart , uint32_t u32InterruptFlag);
+void UART_ClearIntFlag(UART_T* uart, uint32_t u32InterruptFlag);
 void UART_Close(UART_T* uart );
 void UART_DisableFlowCtrl(UART_T* uart );
 void UART_DisableInt(UART_T*  uart, uint32_t u32InterruptFlag );

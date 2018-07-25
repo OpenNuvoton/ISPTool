@@ -2,12 +2,12 @@
  * @file     i2c.h
  * @version  V1.00
  * $Revision: 1 $
- * $Date: 14/05/16 10:00a $ 
+ * $Date: 14/05/16 10:00a $
  * @brief    NUC029FAE I2C driver header file
  *
  * @note
  * Copyright (C) 2013 Nuvoton Technology Corp. All rights reserved.
- *****************************************************************************/ 
+ *****************************************************************************/
 #ifndef __I2C_H__
 #define __I2C_H__
 

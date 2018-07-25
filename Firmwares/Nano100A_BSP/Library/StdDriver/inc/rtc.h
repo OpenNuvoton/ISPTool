@@ -77,7 +77,8 @@ extern "C"
 /**
   * @brief  RTC define Time Data Struct
   */
-typedef struct {
+typedef struct
+{
     uint32_t u32Year;          /*!<  Year value */
     uint32_t u32Month;         /*!<  Month value */
     uint32_t u32Day;           /*!<  Day value */

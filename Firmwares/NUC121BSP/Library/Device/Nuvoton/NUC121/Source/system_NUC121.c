@@ -7,7 +7,7 @@
  ******************************************************************************/
 #include <stdio.h>
 #include <stdint.h>
-#include "NUC121.h"
+#include "NuMicro.h"
 
 
 /*----------------------------------------------------------------------------
@@ -40,7 +40,8 @@ void SystemCoreClockUpdate(void)
     PllClock = CLK_GetPLLClockFreq();
 
 
-    switch (u32ClkSrc) {
+    switch (u32ClkSrc)
+    {
     case CLK_CLKSEL0_HCLKSEL_PLL:
         u32Freq = PllClock;
         break;
@@ -83,27 +84,32 @@ void SystemInit(void)
     i8IsPllEn = 0;
     u32HclkSelect = CLK->CLKSEL0 & CLK_CLKSEL0_HCLKSEL_Msk;
 
-    if (u32HclkSelect == CLK_CLKSEL0_HCLKSEL_HXT) {
+    if (u32HclkSelect == CLK_CLKSEL0_HCLKSEL_HXT)
+    {
         /* Set to 50MHz system clock frequency when clock source is from external 12MHz X'Tal*/
         CLK->PLLCTL = CLK_PLLCTL_50MHz_HXT;
 
         /* Waiting for PLL ready */
         i32TimeoutCnt = (__HXT / 1000); /* Timeout is about 1ms */
 
-        while ((CLK->STATUS & CLK_STATUS_PLLSTB_Msk) == 0) {
+        while ((CLK->STATUS & CLK_STATUS_PLLSTB_Msk) == 0)
+        {
             if (i32TimeoutCnt-- <= 0)
                 break;
         }
 
         i8IsPllEn = 1;
-    } else if (u32HclkSelect == CLK_CLKSEL0_HCLKSEL_HIRC_DIV2) {
+    }
+    else if (u32HclkSelect == CLK_CLKSEL0_HCLKSEL_HIRC_DIV2)
+    {
         /* Set to 50MHz system clock frequency when clock source is from internal 48MHz RC clock */
         CLK->PLLCTL = CLK_PLLCTL_50MHz_HIRC_DIV2;
 
         /* Waiting for PLL ready */
         i32TimeoutCnt = (__HIRC_DVI2 / 1000); /* Timeout is about 1ms */
 
-        while ((CLK->STATUS & CLK_STATUS_PLLSTB_Msk) == 0) {
+        while ((CLK->STATUS & CLK_STATUS_PLLSTB_Msk) == 0)
+        {
             if (i32TimeoutCnt-- <= 0)
                 break;
         }
@@ -111,7 +117,8 @@ void SystemInit(void)
         i8IsPllEn = 1;
     }
 
-    if (i8IsPllEn) {
+    if (i8IsPllEn)
+    {
         /* Set PLL as HCLK clock source (HCLK_S is locked setting)*/
         SYS_UnlockReg();
         CLK->CLKSEL0 = CLK_CLKSEL0_HCLKSEL_PLL;

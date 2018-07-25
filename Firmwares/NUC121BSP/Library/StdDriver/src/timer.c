@@ -5,7 +5,7 @@
  *
  * @copyright (C) 2016 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
-#include "NUC121.h"
+#include "NuMicro.h"
 
 /** @addtogroup Standard_Driver Standard Driver
   @{
@@ -43,16 +43,24 @@ uint32_t TIMER_Open(TIMER_T *timer, uint32_t u32Mode, uint32_t u32Freq)
     uint32_t u32Cmpr = 0, u32Prescale = 0;
 
     // Fastest possible timer working freq is (u32Clk / 2). While cmpr = 2, pre-scale = 0.
-    if (u32Freq > (u32Clk / 2)) {
+    if (u32Freq > (u32Clk / 2))
+    {
         u32Cmpr = 2;
-    } else {
-        if (u32Clk > 64000000) {
+    }
+    else
+    {
+        if (u32Clk > 64000000)
+        {
             u32Prescale = 7;    // real prescaler value is 8
             u32Clk >>= 3;
-        } else if (u32Clk > 32000000) {
+        }
+        else if (u32Clk > 32000000)
+        {
             u32Prescale = 3;    // real prescaler value is 4
             u32Clk >>= 2;
-        } else if (u32Clk > 16000000) {
+        }
+        else if (u32Clk > 16000000)
+        {
             u32Prescale = 1;    // real prescaler value is 2
             u32Clk >>= 1;
         }
@@ -92,7 +100,7 @@ void TIMER_Close(TIMER_T *timer)
   * @details    This API is used to create a delay loop for u32usec micro seconds by using timer one-shot mode.
   * @note       This API overwrites the register setting of the timer used to count the delay time.
   * @note       This API use polling mode. So there is no need to enable interrupt for the timer module used to generate delay.
-  * @note       This API is limited by interger arithmetic, If user want a more precise delay, please calculate the compare count directly.    
+  * @note       This API is limited by interger arithmetic, If user want a more precise delay, please calculate the compare count directly.
   */
 void TIMER_Delay(TIMER_T *timer, uint32_t u32Usec)
 {
@@ -104,13 +112,16 @@ void TIMER_Delay(TIMER_T *timer, uint32_t u32Usec)
     timer->CTL = 0;
     timer->EXTCTL = 0;
 
-    if (u32Clk <= 1000000) { // min delay is 1000 us if timer clock source is <= 1 MHz
+    if (u32Clk <= 1000000)   // min delay is 1000 us if timer clock source is <= 1 MHz
+    {
         if (u32Usec < 1000)
             u32Usec = 1000;
 
         if (u32Usec > 1000000)
             u32Usec = 1000000;
-    } else {
+    }
+    else
+    {
         if (u32Usec < 100)
             u32Usec = 100;
 
@@ -118,27 +129,40 @@ void TIMER_Delay(TIMER_T *timer, uint32_t u32Usec)
             u32Usec = 1000000;
     }
 
-    if (u32Clk <= 1000000) {
+    if (u32Clk <= 1000000)
+    {
         u32Prescale = 0;
         u32NsecPerTick = 1000000000 / u32Clk;
         u32Cmpr = (u32Usec * 1000) / u32NsecPerTick;
-    } else {
-        if (u32Clk > 64000000) {
+    }
+    else
+    {
+        if (u32Clk > 64000000)
+        {
             u32Prescale = 7;    // real prescaler value is 8
             u32Clk >>= 3;
-        } else if (u32Clk > 32000000) {
+        }
+        else if (u32Clk > 32000000)
+        {
             u32Prescale = 3;    // real prescaler value is 4
             u32Clk >>= 2;
-        } else if (u32Clk > 16000000) {
+        }
+        else if (u32Clk > 16000000)
+        {
             u32Prescale = 1;    // real prescaler value is 2
             u32Clk >>= 1;
         }
 
-        if (u32Usec < 250) {
+        if (u32Usec < 250)
+        {
             u32Cmpr = (u32Usec * u32Clk) / 1000000;
-        } else if (u32Clk % 1000000 == 0) {
+        }
+        else if (u32Clk % 1000000 == 0)
+        {
             u32Cmpr = (u32Clk / 1000000) * u32Usec;
-        } else {
+        }
+        else
+        {
             u32NsecPerTick = 1000000000 / u32Clk;
             u32Cmpr = (u32Usec * 1000) / u32NsecPerTick;
         }
@@ -149,7 +173,8 @@ void TIMER_Delay(TIMER_T *timer, uint32_t u32Usec)
 
     // When system clock is faster than timer clock, it is possible timer active bit cannot set in time while we check it.
     // And the while loop below return immediately, so put a tiny delay here allowing timer start counting and raise active flag.
-    for (; delay > 0; delay--) {
+    for (; delay > 0; delay--)
+    {
         __NOP();
     }
 
@@ -255,7 +280,8 @@ uint32_t TIMER_GetModuleClock(TIMER_T *timer)
     else
         return 0;
 
-    if (u32Src == 2) {
+    if (u32Src == 2)
+    {
         return (SystemCoreClock);
     }
 

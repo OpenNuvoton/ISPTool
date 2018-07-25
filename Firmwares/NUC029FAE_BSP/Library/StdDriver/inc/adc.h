@@ -2,12 +2,12 @@
  * @file     adc.h
  * @version  V1.00
  * $Revision: 1 $
- * $Date: 14/05/16 10:00a $ 
+ * $Date: 14/05/16 10:00a $
  * @brief    NUC029FAE ADC driver header file
  *
  * @note
  * Copyright (C) 2013 Nuvoton Technology Corp. All rights reserved.
- *****************************************************************************/ 
+ *****************************************************************************/
 #ifndef __ADC_H__
 #define __ADC_H__
 
@@ -68,7 +68,7 @@ extern "C"
   *                     - \ref ADC_CH7_EXT
   *                     - \ref ADC_CH7_BGP
   * @return None
-  * @note While using VBG as channel 7 source, ADC module clock must /b not exceed 300kHz 
+  * @note While using VBG as channel 7 source, ADC module clock must /b not exceed 300kHz
   * \hideinitializer
   */
 #define ADC_CONFIG_CH7(adc, u32Source) (ADC->ADCHER = (ADC->ADCHER & ~ADC_ADCHER_PRESEL_Msk) | (u32Source))
@@ -117,7 +117,7 @@ extern "C"
   * \hideinitializer
   */
 #define ADC_IS_BUSY(adc) (ADC->ADSR & ADC_ADSR_BUSY_Msk ? 1 : 0)
-     
+
 /**
   * @brief Check if the ADC conversion data is over written or not
   * @param[in] adc Base address of ADC module
@@ -126,7 +126,7 @@ extern "C"
   * @retval 0 ADC data is not overrun
   * @retval 1 ADC data us overrun
   * \hideinitializer
-  */     
+  */
 #define ADC_IS_DATA_OVERRUN(adc, u32ChNum) (ADC->ADSR & ADC_ADSR_OVERRUN_Msk ? 1 : 0)
 
 /**
@@ -137,7 +137,7 @@ extern "C"
   * @retval 0 ADC data is not valid
   * @retval 1 ADC data us valid
   * \hideinitializer
-  */  
+  */
 #define ADC_IS_DATA_VALID(adc, u32ChNum) (ADC->ADSR & ADC_ADSR_VALID_Msk ? 1 : 0)
 
 /**
@@ -154,7 +154,7 @@ extern "C"
   * @return None
   * \hideinitializer
   */
-#define ADC_POWER_ON(adc) (ADC->ADCR |= ADC_ADCR_ADEN_Msk)                                                        
+#define ADC_POWER_ON(adc) (ADC->ADCR |= ADC_ADCR_ADEN_Msk)
 
 /**
   * @brief Configure the comparator 0 and enable it
@@ -167,10 +167,10 @@ extern "C"
   * @param[in] u32MatchCount Specifies the match count setting, valid values are between 1~16
   * @return None
   * @details For example, ADC_ENABLE_CMP0(ADC, 5, ADC_CMP_GREATER_OR_EQUAL_TO, 0x800, 10);
-  *          Means ADC will assert comparator 0 flag if channel 5 conversion result is 
+  *          Means ADC will assert comparator 0 flag if channel 5 conversion result is
   *          greater or equal to 0x800 for 10 times continuously.
   * \hideinitializer
-  */ 
+  */
 #define ADC_ENABLE_CMP0(adc, \
                         u32ChNum, \
                         u32Condition, \
@@ -180,13 +180,13 @@ extern "C"
                                                                    ((u32Data) << ADC_ADCMPR_CMPD_Pos) | \
                                                                    (((u32MatchCount) - 1) << ADC_ADCMPR_CMPMATCNT_Pos) |\
                                                                    ADC_ADCMPR_CMPEN_Msk)
-                                                                   
+
 /**
   * @brief Disable comparator 0
   * @param[in] adc Base address of ADC module
   * \hideinitializer
-  */  
-#define ADC_DISABLE_CMP0(adc) (ADC->ADCMPR[0] = 0)              
+  */
+#define ADC_DISABLE_CMP0(adc) (ADC->ADCMPR[0] = 0)
 
 /**
   * @brief Configure the comparator 1 and enable it
@@ -199,10 +199,10 @@ extern "C"
   * @param[in] u32MatchCount Specifies the match count setting, valid values are between 1~16
   * @return None
   * @details For example, ADC_ENABLE_CMP1(ADC, 5, ADC_CMP_GREATER_OR_EQUAL_TO, 0x800, 10);
-  *          Means ADC will assert comparator 1 flag if channel 5 conversion result is 
+  *          Means ADC will assert comparator 1 flag if channel 5 conversion result is
   *          greater or equal to 0x800 for 10 times continuously.
   * \hideinitializer
-  */                     
+  */
 #define ADC_ENABLE_CMP1(adc, \
                         u32ChNum, \
                         u32Condition, \
@@ -211,13 +211,13 @@ extern "C"
                                                                    (u32Condition) | \
                                                                    ((u32Data) << ADC_ADCMPR_CMPD_Pos) | \
                                                                    ((u32MatchCount - 1) << ADC_ADCMPR_CMPMATCNT_Pos) |\
-                                                                   ADC_ADCMPR_CMPEN_Msk)  
+                                                                   ADC_ADCMPR_CMPEN_Msk)
 
 /**
   * @brief Disable comparator 1
   * @param[in] adc Base address of ADC module
   * \hideinitializer
-  */                          
+  */
 #define ADC_DISABLE_CMP1(adc) (ADC->ADCMPR[1] = 0)
 
 /**
@@ -228,7 +228,7 @@ extern "C"
   * @note NUC029FAE MCU ADC can only convert 1 channel at a time. If more than 1 channels are enabled, only channel
   *       with smallest number will be convert.
   * \hideinitializer
-  */   
+  */
 #define ADC_SET_INPUT_CHANNEL(adc, u32Mask) (ADC->ADCHER = (ADC->ADCHER & ~ADC_ADCHER_CHEN_Msk) | (u32Mask))
 
 /**
@@ -248,9 +248,9 @@ extern "C"
 #define ADC_STOP_CONV(adc) (ADC->ADCR &= ~ADC_ADCR_ADST_Msk)
 
 void ADC_Open(ADC_T *adc,
-               uint32_t u32InputMode, 
-               uint32_t u32OpMode,  
-               uint32_t u32ChMask);
+              uint32_t u32InputMode,
+              uint32_t u32OpMode,
+              uint32_t u32ChMask);
 void ADC_Close(ADC_T *adc);
 void ADC_EnableHWTrigger(ADC_T *adc,
                          uint32_t u32Source,
@@ -261,9 +261,9 @@ void ADC_SetExtraSampleTime(ADC_T *adc,
                             uint32_t u32SampleTime);
 void ADC_EnableInt(ADC_T *adc, uint32_t u32Mask);
 void ADC_DisableInt(ADC_T *adc, uint32_t u32Mask);
-                   
-                   
-                   
+
+
+
 /*@}*/ /* end of group NUC029FAE_ADC_EXPORTED_FUNCTIONS */
 
 /*@}*/ /* end of group NUC029FAE_ADC_Driver */
