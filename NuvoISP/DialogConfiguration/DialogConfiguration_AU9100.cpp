@@ -20,14 +20,12 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_NUC1xx dialog
 
-CDialogConfiguration_AU9100::CDialogConfiguration_AU9100(unsigned int uPID,
-        unsigned int uProgramMemorySize,
+CDialogConfiguration_AU9100::CDialogConfiguration_AU9100(unsigned int uProgramMemorySize,
         unsigned int uLDROM_Size,
         CWnd *pParent /*=NULL*/)
     : CDialogResize(CDialogConfiguration_AU9100::IDD, pParent)
     , m_uProgramMemorySize(uProgramMemorySize)
     , m_uLDROM_Size(uLDROM_Size)
-    , m_uPID(uPID)
 {
     //{{AFX_DATA_INIT(CDialogConfiguration_NUC1xx)
     m_nRadioBS = -1;
@@ -39,6 +37,7 @@ CDialogConfiguration_AU9100::CDialogConfiguration_AU9100(unsigned int uPID,
     m_bSecurityLock = FALSE;
     m_bLDROM_EN = FALSE;
     m_sFlashBaseAddress = _T("");
+    m_uPageSize = AU91XX_FLASH_PAGE_SIZE;
     //}}AFX_DATA_INIT
 }
 
@@ -87,16 +86,6 @@ END_MESSAGE_MAP()
 BOOL CDialogConfiguration_AU9100::OnInitDialog()
 {
     CDialog::OnInitDialog();
-    unsigned int uPID = m_uPID & 0xFF00FF00;
-
-    if ((uPID == 0x1d000400)	|| (uPID == 0x1d000600)) {	//I9200
-        m_uPageSize = NUMICRO_M0_FLASH_PAGE_SIZE;
-        m_bLDROM_EN = 1;
-        GetDlgItem(IDC_CHECK_LDROM_EN)->ShowWindow(SW_HIDE);
-    } else {
-        m_uPageSize = AU91XX_FLASH_PAGE_SIZE;
-    }
-
     // TODO: Add extra initialization here
     UDACCEL pAccel[1];
     pAccel[0].nInc = 1;
@@ -241,3 +230,18 @@ void CDialogConfiguration_AU9100::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar 
     CDialogResize::OnVScroll(nSBCode, nPos, pScrollBar);
 }
 
+/////////////////////////////////////////////////////////////////////////////
+// CDialogConfiguration_I9200
+/////////////////////////////////////////////////////////////////////////////
+CDialogConfiguration_I9200::CDialogConfiguration_I9200(unsigned int uProgramMemorySize, unsigned int uLDROM_Size, CWnd *pParent /*=NULL*/)
+    : CDialogConfiguration_AU9100(uProgramMemorySize, uLDROM_Size, pParent)
+{
+}
+
+BOOL CDialogConfiguration_I9200::OnInitDialog()
+{
+    m_uPageSize = NUMICRO_M0_FLASH_PAGE_SIZE;
+    m_bLDROM_EN = 1;
+    GetDlgItem(IDC_CHECK_LDROM_EN)->ShowWindow(SW_HIDE);
+    return CDialogConfiguration_AU9100::OnInitDialog();
+}

@@ -536,14 +536,24 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 Config = (((CDialogConfiguration_N76E1T *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_M0564:	// M0564, NUC121, NUC125, NUC126
+            case IDD_DIALOG_CONFIGURATION_M0564:	// M0564, NUC126
                 if (uProgramMemorySize) {
-                    pConfigDlg = new CDialogConfiguration_M0564(uID, uProgramMemorySize);
+                    pConfigDlg = new CDialogConfiguration_M0564(uProgramMemorySize);
                 } else {
                     pConfigDlg = new CDialogConfiguration_M0564();
                 }
 
                 Config = (((CDialogConfiguration_M0564 *)pConfigDlg)->m_ConfigValue.m_value);
+                break;
+
+            case 0x00012100:	// NUC121, NUC125
+                if (uProgramMemorySize) {
+                    pConfigDlg = new CDialogConfiguration_NUC121(uProgramMemorySize);
+                } else {
+                    pConfigDlg = new CDialogConfiguration_NUC121();
+                }
+
+                Config = (((CDialogConfiguration_NUC121 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
             case IDD_DIALOG_CONFIGURATION_TC8226:
@@ -574,19 +584,19 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
 
             case ISD_91200_SERIES:
                 if (uProgramMemorySize) {
-                    pConfigDlg = new CDialogConfiguration_AU9100(0x1D000400, uProgramMemorySize);
+                    pConfigDlg = new CDialogConfiguration_I9200(uProgramMemorySize);
                 } else {
-                    pConfigDlg = new CDialogConfiguration_AU9100(0x1D000400, 128 * 1024);
+                    pConfigDlg = new CDialogConfiguration_I9200();
                 }
 
-                Config = (((CDialogConfiguration_AU9100 *)pConfigDlg)->m_ConfigValue.m_value);
+                Config = (((CDialogConfiguration_I9200 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
             case ISD_9160_SERIES:
             case ISD_91300_SERIES:
             case NUVOICE_N575_SERIES:
                 if (uProgramMemorySize) {
-                    pConfigDlg = new CDialogConfiguration_AU9100(0, uProgramMemorySize);
+                    pConfigDlg = new CDialogConfiguration_AU9100(uProgramMemorySize);
                 } else {
                     pConfigDlg = new CDialogConfiguration_AU9100();
                 }
@@ -764,7 +774,8 @@ UINT DialogTemplate[] = {
     IDD_DIALOG_CONFIGURATION_M051BN,
     IDD_DIALOG_CONFIGURATION_M051CN,
     IDD_DIALOG_CONFIGURATION_M058,
-    IDD_DIALOG_CONFIGURATION_M0564,	// M0564, NUC121, NUC125, NUC126
+    0x00012100, // NUC121, NUC125
+    IDD_DIALOG_CONFIGURATION_M0564,	// M0564, NUC126
     IDD_DIALOG_CONFIGURATION_M451,
     0x00E45200,
     IDD_DIALOG_CONFIGURATION_MINI51,
@@ -799,6 +810,7 @@ UINT DialogTemplate[] = {
     IDD_DIALOG_CONFIGURATION_I94000,
     IDD_DIALOG_CONFIGURATION_AU9100,
     IDD_DIALOG_CONFIGURATION_N570,
+    ISD_91200_SERIES,
     IDD_DIALOG_CONFIGURATION_M031,
 };
 
@@ -870,6 +882,7 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
         CMenu *subVoice = new CMenu;
         subVoice->CreatePopupMenu();
         subVoice->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_AU9100, _T("AU9100 Series"));
+        subVoice->AppendMenu(MF_STRING, ISD_91200_SERIES, _T("I91200 Series"));
         subVoice->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_I94000, _T("I94000 Series"));
         subVoice->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_N570, _T("I91000 Series"));
         menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subVoice->m_hMenu, _T("NuVoice"));

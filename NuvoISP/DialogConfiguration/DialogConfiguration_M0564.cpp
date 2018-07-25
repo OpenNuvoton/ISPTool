@@ -20,11 +20,10 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_M0564 dialog
 
-CDialogConfiguration_M0564::CDialogConfiguration_M0564(unsigned int uPID, unsigned int uProgramMemorySize,
+CDialogConfiguration_M0564::CDialogConfiguration_M0564(unsigned int uProgramMemorySize,
         CWnd *pParent /*=NULL*/)
     : CDialogResize(CDialogConfiguration_M0564::IDD, pParent)
     , m_uProgramMemorySize(uProgramMemorySize)
-    , m_uPID(uPID)
 {
     //{{AFX_DATA_INIT(CDialogConfiguration_M0564)
     m_nRadioClk = -1;
@@ -42,6 +41,7 @@ CDialogConfiguration_M0564::CDialogConfiguration_M0564(unsigned int uPID, unsign
     m_nRadioGPG = -1;
     m_nRadioIO = -1;
     m_sFlashBaseAddress = _T("");
+    m_uPageSize = M0564_FLASH_PAGE_SIZE;
     //}}AFX_DATA_INIT
 }
 
@@ -117,13 +117,6 @@ BOOL CDialogConfiguration_M0564::OnInitDialog()
     pAccel[0].nInc = 1;
     pAccel[0].nSec = 0;
     m_SpinDataFlashSize.SetAccel(1, pAccel);
-    m_uPageSize = M0564_FLASH_PAGE_SIZE;
-
-    if (((m_uPID & 0x000FFF00) == 0x00012100) || ((m_uPID & 0x000FFF00) == 0x00012500)) {
-        GetDlgItem(IDC_RADIO_CLK_I22M)->SetWindowText(_T("Internal high speed RC oscillator divided by 2 (24MHz)"));
-        m_uPageSize = NUMICRO_M0_FLASH_PAGE_SIZE;
-    }
-
     ConfigToGUI(0);
     UpdateData(FALSE);
     m_bIsInitialized = true;
@@ -441,4 +434,19 @@ void CDialogConfiguration_M0564::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *
     }
 
     CDialogResize::OnVScroll(nSBCode, nPos, pScrollBar);
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// CDialogConfiguration_NUC121
+/////////////////////////////////////////////////////////////////////////////
+CDialogConfiguration_NUC121::CDialogConfiguration_NUC121(unsigned int uProgramMemorySize, CWnd *pParent /*=NULL*/)
+    : CDialogConfiguration_M0564(uProgramMemorySize, pParent)
+{
+}
+
+BOOL CDialogConfiguration_NUC121::OnInitDialog()
+{
+    GetDlgItem(IDC_RADIO_CLK_I22M)->SetWindowText(_T("Internal high speed RC oscillator divided by 2 (24MHz)"));
+    m_uPageSize = NUMICRO_M0_FLASH_PAGE_SIZE;
+    return CDialogConfiguration_M0564::OnInitDialog();
 }

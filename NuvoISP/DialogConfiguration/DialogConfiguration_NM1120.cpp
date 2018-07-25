@@ -33,7 +33,6 @@ CDialogConfiguration_NM1120::CDialogConfiguration_NM1120(unsigned int uProgramMe
     m_sConfigValue0 = _T("");
     m_sConfigValue1 = _T("");
     m_bDataFlashEnable = FALSE;
-    m_bPwmDbgEnable = FALSE;
     m_bSecurityLock = FALSE;
     m_sFlashBaseAddress = _T("");
     m_bCheckBrownOutReset = FALSE;
@@ -52,12 +51,10 @@ void CDialogConfiguration_NM1120::DoDataExchange(CDataExchange *pDX)
     DDX_Radio(pDX, IDC_RADIO_BS_LDROM, m_nRadioBS);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_0, m_sConfigValue0);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_1, m_sConfigValue1);
-    DDX_Check(pDX, IDC_PWM_DEBUG_ENABLE, m_bPwmDbgEnable);
     DDX_Check(pDX, IDC_CHECK_DATA_FLASH_ENABLE, m_bDataFlashEnable);
     DDX_Check(pDX, IDC_CHECK_SECURITY_LOCK, m_bSecurityLock);
     DDX_Text(pDX, IDC_EDIT_FLASH_BASE_ADDRESS, m_sFlashBaseAddress);
     DDX_Text(pDX, IDC_EDIT_DATA_FLASH_SIZE, m_sDataFlashSize);
-//	DDX_Check(pDX, IDC_RADIO_HIRC_ENABLE, m_bRadioHIRC);
     DDX_Check(pDX, IDC_CHECK_BROWN_OUT_ENABLE, m_bCheckBrownOutEnable);
     DDX_Check(pDX, IDC_CHECK_BROWN_OUT_RESET, m_bCheckBrownOutReset);
     DDX_Radio(pDX, IDC_RADIO_IO_TRI, m_nRadioIO);
@@ -87,7 +84,6 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_NM1120, CDialog)
     ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM, OnButtonClick)
-    ON_BN_CLICKED(IDC_PWM_DEBUG_ENABLE, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_ENABLE, OnButtonClick)
@@ -227,8 +223,6 @@ void CDialogConfiguration_NM1120::ConfigToGUI()
     }
 
     m_nRadioIO = ((uConfig0 & NM1120_FLASH_CONFIG_CIOINI) == 0 ? 1 : 0);
-//	m_bRadioHIRC = ((uConfig0 & NM1120_FLASH_CONFIG_CKFHIRC) == 0 ? 0 : 1);
-    m_bPwmDbgEnable = ((uConfig0 & NM1120_FLASH_CONFIG_PWM_DBGEN) == 0 ? TRUE : FALSE);
     m_bCheckBrownOutEnable = ((uConfig0 & NM1120_FLASH_CONFIG_CBOVEN) == 0 ? TRUE : FALSE);
     m_bCheckBrownOutReset = ((uConfig0 & NM1120_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
     m_bDataFlashEnable = ((uConfig0 & NM1120_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
@@ -463,12 +457,6 @@ void CDialogConfiguration_NM1120::GUIToConfig()
         uConfig0 &= ~NM1120_FLASH_CONFIG_CBOVEN;
     } else {
         uConfig0 |= NM1120_FLASH_CONFIG_CBOVEN;
-    }
-
-    if (m_bPwmDbgEnable) {
-        uConfig0 &= ~NM1120_FLASH_CONFIG_PWM_DBGEN;
-    } else {
-        uConfig0 |= NM1120_FLASH_CONFIG_PWM_DBGEN;
     }
 
     if (m_bDataFlashEnable) {

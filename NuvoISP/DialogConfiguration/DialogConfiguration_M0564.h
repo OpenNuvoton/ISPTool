@@ -16,7 +16,7 @@ class CDialogConfiguration_M0564 : public CDialogResize
 {
 // Construction
 public:
-    CDialogConfiguration_M0564(unsigned int uPID = 0, unsigned int uProgramMemorySize = 256 * 1024,
+    CDialogConfiguration_M0564(unsigned int uProgramMemorySize = 256 * 1024,
                                CWnd *pParent = NULL);   // standard constructor
 
     CAppConfig::M0564_configs_t m_ConfigValue;
@@ -71,6 +71,14 @@ protected:
     afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
+};
+
+class CDialogConfiguration_NUC121 : public CDialogConfiguration_M0564
+{
+public:
+    CDialogConfiguration_NUC121(unsigned int uProgramMemorySize = 32 * 1024, CWnd *pParent = NULL);
+protected:
+    virtual BOOL OnInitDialog();
 };
 
 //{{AFX_INSERT_LOCATION}}

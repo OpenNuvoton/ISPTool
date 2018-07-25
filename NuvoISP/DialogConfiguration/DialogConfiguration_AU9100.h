@@ -16,8 +16,7 @@ class CDialogConfiguration_AU9100 : public CDialogResize
 {
 // Construction
 public:
-    CDialogConfiguration_AU9100(unsigned int uPID = 0,
-                                unsigned int uProgramMemorySize = 141 * 1024,
+    CDialogConfiguration_AU9100(unsigned int uProgramMemorySize = 141 * 1024,
                                 unsigned int uLDROM_Size = 4 * 1024,
                                 CWnd *pParent = NULL);   // standard constructor
 
@@ -42,7 +41,6 @@ public:
 
     unsigned int	m_uProgramMemorySize;
     unsigned int	m_uLDROM_Size;
-    unsigned int	m_uPID;
     unsigned int	m_uPageSize;
     //}}AFX_DATA
 
@@ -68,6 +66,14 @@ protected:
     afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
+};
+
+class CDialogConfiguration_I9200 : public CDialogConfiguration_AU9100
+{
+public:
+    CDialogConfiguration_I9200(unsigned int uProgramMemorySize = 128 * 1024, unsigned int uLDROM_Size = 4 * 1024, CWnd *pParent = NULL);   // standard constructor
+protected:
+    virtual BOOL OnInitDialog();
 };
 
 //{{AFX_INSERT_LOCATION}}

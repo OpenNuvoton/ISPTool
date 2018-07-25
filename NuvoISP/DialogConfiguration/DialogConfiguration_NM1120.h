@@ -35,7 +35,6 @@ public:
     CString	m_sFlashBaseAddress;
     CString	m_sDataFlashSize;
     BOOL	m_bDataFlashEnable;
-    BOOL	m_bPwmDbgEnable;
     BOOL	m_bSecurityLock;
     BOOL	m_bRadioHIRC;
     BOOL	m_bCheckBrownOutEnable;
