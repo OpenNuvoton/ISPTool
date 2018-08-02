@@ -1,0 +1,61 @@
+#if !defined(AFX_DIALOGCONFIGURATION_M251_H__E0CD7A09_C5DC_481E_A871_03B422E615F8__INCLUDED_)
+#define AFX_DIALOGCONFIGURATION_M251_H__E0CD7A09_C5DC_481E_A871_03B422E615F8__INCLUDED_
+
+#if _MSC_VER > 1000
+#pragma once
+#endif // _MSC_VER > 1000
+// DialogConfiguration.h : header file
+//
+
+#include <deque>
+#include <string>
+#include "AppConfig.h"
+#include "DialogResize.h"
+
+/////////////////////////////////////////////////////////////////////////////
+// CDialogConfiguration_M251 dialog
+
+class CDialogConfiguration_M251 : public CDialogResize
+{
+// Construction
+public:
+    CDialogConfiguration_M251(unsigned int uProgramMemorySize = 192 * 1024,
+                              CWnd *pParent = NULL);   // standard constructor
+
+    CAppConfig::M251_configs_t m_ConfigValue;
+
+    //{{AFX_DATA(CDialogConfiguration_M251)
+    enum { IDD = IDD_DIALOG_CONFIGURATION_M251 };
+    int		m_nRadioBov;
+    int		m_nRadioBS;
+    CString	m_sConfigValue0;
+    BOOL	m_bCheckBrownOutDetect;
+    BOOL	m_bCheckBrownOutReset;
+    BOOL	m_bSecurityLock;
+    BOOL	m_bICELock;
+    BOOL	m_bWDTEnable;
+    BOOL	m_bWDTPowerDown;
+    int		m_nRadioGPG;
+    int		m_nRadioIO;
+    CSpinButtonCtrl	m_SpinDataFlashSize;
+
+    unsigned int	m_uProgramMemorySize;
+    afx_msg void ConfigToGUI(int nEventID);
+    afx_msg void GUIToConfig(int nEventID);
+
+protected:
+    virtual void DoDataExchange(CDataExchange *pDX);
+    void OnGUIEvent(int nEventID = 0);
+
+    virtual BOOL OnInitDialog();
+    afx_msg void OnButtonClick();
+    afx_msg void OnCheckClickWDTPD();
+    virtual void OnOK();
+    afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
+    DECLARE_MESSAGE_MAP()
+};
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_DIALOGCONFIGURATION_M251_H__E0CD7A09_C5DC_481E_A871_03B422E615F8__INCLUDED_)

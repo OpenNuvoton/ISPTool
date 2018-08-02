@@ -361,7 +361,31 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 			<File
+				RelativePath=".\res\1373459379_4852.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\banner.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\res\chips.bmp"
+				>
+			</File>
+			<File
 				RelativePath=".\ISPTool.rc"
+				>
+			</File>
+			<File
+				RelativePath=".\res\k-cm-memory.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\nulink.ico"
+				>
+			</File>
+			<File
+				RelativePath=".\res\nuvoton.bmp"
 				>
 			</File>
 		</Filter>
@@ -408,6 +432,10 @@
 			</File>
 			<File
 				RelativePath=".\dialogconfiguration\DialogConfiguration_M2351.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\DialogConfiguration\DialogConfiguration_M251.cpp"
 				>
 			</File>
 			<File
@@ -535,6 +563,10 @@
 				>
 			</File>
 		</Filter>
+		<File
+			RelativePath=".\res\xp_style.xml"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

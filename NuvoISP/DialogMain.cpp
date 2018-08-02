@@ -314,6 +314,7 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 #include "DialogConfiguration_AU9100.h"
 #include "DialogConfiguration_N570.h"
 #include "DialogConfiguration_M031.h"
+#include "DialogConfiguration_M251.h"
 
 bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigned int uSeriesCode /* = 0*/)
 {
@@ -630,6 +631,16 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 Config = (((CDialogConfiguration_M031 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
+            case IDD_DIALOG_CONFIGURATION_M251:
+                if (uProgramMemorySize) {
+                    pConfigDlg = new CDialogConfiguration_M251(uProgramMemorySize);
+                } else {
+                    pConfigDlg = new CDialogConfiguration_M251();
+                }
+
+                Config = (((CDialogConfiguration_M251 *)pConfigDlg)->m_ConfigValue.m_value);
+                break;
+
             case 0x505:	// "NUC505";
                 printf("NUC505 ");
 
@@ -812,6 +823,7 @@ UINT DialogTemplate[] = {
     IDD_DIALOG_CONFIGURATION_N570,
     ISD_91200_SERIES,
     IDD_DIALOG_CONFIGURATION_M031,
+    IDD_DIALOG_CONFIGURATION_M251,
 };
 
 bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
@@ -893,6 +905,7 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
         subOthers->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_MT500, _T("MT500"));
         subOthers->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_NM1120, _T("NM1120"));
         subOthers->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M031, _T("M031"));
+        subOthers->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M251, _T("M251AE"));
         menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subOthers->m_hMenu, _T("Others"));
         menu.AppendMenu(MF_SEPARATOR);
         POINT point;

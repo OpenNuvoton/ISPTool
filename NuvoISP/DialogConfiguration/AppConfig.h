@@ -28,6 +28,7 @@ public:
 #define N76E1T_configs_t configs_t
 #define NUC4xx_configs_t configs_t
 #define TC8226_configs_t configs_t
+#define M251_configs_t configs_t
 
 };
 
