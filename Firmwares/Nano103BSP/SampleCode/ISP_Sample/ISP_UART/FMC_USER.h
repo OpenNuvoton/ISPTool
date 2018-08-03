@@ -23,11 +23,11 @@
 
 
 extern void EraseAP(uint32_t bAprom, unsigned int addr_start, unsigned int addr_end);
-extern void ReadData(unsigned int addr_start, unsigned int addr_end, unsigned int* data);
+extern void ReadData(unsigned int addr_start, unsigned int addr_end, unsigned int *data);
 extern void WriteData(unsigned int addr_start, unsigned int addr_end, unsigned int *data);
 extern void GetDataFlashInfo(uint32_t *addr, uint32_t *size);
 int FMC_Write_User(unsigned int u32Addr, unsigned int u32Data);
-int FMC_Read_User(unsigned int u32Addr, unsigned int * data);
+int FMC_Read_User(unsigned int u32Addr, unsigned int *data);
 int FMC_Erase_User(unsigned int u32Addr);
 
 #endif

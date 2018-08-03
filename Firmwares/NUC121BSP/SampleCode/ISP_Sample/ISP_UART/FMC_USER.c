@@ -22,15 +22,14 @@ int FMC_Write_User(unsigned int u32Addr, unsigned int u32Data)
     FMC->ISPADDR = u32Addr;
     FMC->ISPDAT = u32Data;
     FMC->ISPTRG = 0x1;
-
     __ISB();
-
     Reg = FMC->ISPCTL;
 
-    if(Reg & FMC_ISPCTL_ISPFF_Msk) {
+    if (Reg & FMC_ISPCTL_ISPFF_Msk) {
         FMC->ISPCTL = Reg;
         return -1;
     }
+
     return 0;
 }
 
@@ -48,19 +47,17 @@ int FMC_Write_User(unsigned int u32Addr, unsigned int u32Data)
  *              before using this function. User can check the status of
  *              Register Write-Protection Function with DrvSYS_IsProtectedRegLocked().
  */
-int FMC_Read_User(unsigned int u32Addr, unsigned int * data)
+int FMC_Read_User(unsigned int u32Addr, unsigned int *data)
 {
     unsigned int Reg;
     FMC->ISPCMD = FMC_ISPCMD_READ;
     FMC->ISPADDR = u32Addr;
     FMC->ISPDAT = 0;
     FMC->ISPTRG = 0x1;
-
     __ISB();
-
     Reg = FMC->ISPCTL;
 
-    if(Reg & FMC_ISPCTL_ISPFF_Msk) {
+    if (Reg & FMC_ISPCTL_ISPFF_Msk) {
         FMC->ISPCTL = Reg;
         return -1;
     }
@@ -88,12 +85,10 @@ int FMC_Erase_User(unsigned int u32Addr)
     FMC->ISPCMD = FMC_ISPCMD_PAGE_ERASE;
     FMC->ISPADDR = u32Addr;
     FMC->ISPTRG = 0x1;
-
     __ISB();
-
     Reg = FMC->ISPCTL;
 
-    if(Reg & FMC_ISPCTL_ISPFF_Msk) {
+    if (Reg & FMC_ISPCTL_ISPFF_Msk) {
         FMC->ISPCTL = Reg;
         return -1;
     }
@@ -101,11 +96,11 @@ int FMC_Erase_User(unsigned int u32Addr)
     return 0;
 }
 
-void ReadData(unsigned int addr_start, unsigned int addr_end, unsigned int* data)    // Read data from flash
+void ReadData(unsigned int addr_start, unsigned int addr_end, unsigned int *data)    // Read data from flash
 {
     unsigned int rLoop;
 
-    for ( rLoop = addr_start; rLoop < addr_end; rLoop += 4 ) {
+    for (rLoop = addr_start; rLoop < addr_end; rLoop += 4) {
         FMC_Read_User(rLoop, data);
         data++;
     }
@@ -117,9 +112,8 @@ void WriteData(unsigned int addr_start, unsigned int addr_end, unsigned int *dat
 {
     unsigned int wLoop;
 
-    for ( wLoop = addr_start; wLoop < addr_end; wLoop+=4 ) {
+    for (wLoop = addr_start; wLoop < addr_end; wLoop += 4) {
         FMC_Write_User(wLoop, *data);
         data++;
     }
-
 }

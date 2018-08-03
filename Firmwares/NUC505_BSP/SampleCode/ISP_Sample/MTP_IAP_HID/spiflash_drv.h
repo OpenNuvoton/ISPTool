@@ -8,9 +8,9 @@
  * @note
  * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
  ******************************************************************************/
- 
+
 #ifdef __cplusplus
- extern "C" {
+extern "C" {
 #endif
 
 #ifndef __SPIFLASH_DRV_H__
@@ -75,11 +75,11 @@ void SPIFlash_EraseAddrRange(uint32_t u32Addr, uint32_t u32Len);
 void SPIFlash_WriteInPageData(uint32_t u32Addr, uint32_t u32NTx, uint8_t *pu8TxBuf);
 void SPIFlash_WriteData(uint32_t u32Addr, uint32_t u32NTx, uint8_t *pu8TxBuf);
 void SPIFlash_ReadData(uint32_t u32Addr, uint32_t u32NRx, uint8_t *pu8RxBuf);
-void SPIFlash_DMAWrite(SPIM_T *spim, uint32_t u32FlashAddr, int is4ByteAddr, uint32_t u32Len, uint8_t *pu8TxBuf, 
-    uint32_t u32WriteCmdCode);
-void SPIFlash_DMARead(SPIM_T *spim, uint32_t u32FlashAddr, int is4ByteAddr, uint32_t u32Len, uint8_t *pu8RxBuf, 
-    uint32_t u32ReadCmdCode);
-    
+void SPIFlash_DMAWrite(SPIM_T *spim, uint32_t u32FlashAddr, int is4ByteAddr, uint32_t u32Len, uint8_t *pu8TxBuf,
+                       uint32_t u32WriteCmdCode);
+void SPIFlash_DMARead(SPIM_T *spim, uint32_t u32FlashAddr, int is4ByteAddr, uint32_t u32Len, uint8_t *pu8RxBuf,
+                      uint32_t u32ReadCmdCode);
+
 #endif /* #ifndef __SPIFLASH_DRV_H__ */
 
 #ifdef __cplusplus

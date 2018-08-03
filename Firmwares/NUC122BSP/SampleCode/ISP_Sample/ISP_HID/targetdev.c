@@ -10,11 +10,13 @@ uint32_t GetApromSize()
 
     do {
         result = FMC_Read_User(size, &data);
-        if(result < 0) {
+
+        if (result < 0) {
             return size;
-        } else
+        } else {
             size *= 2;
-    } while(1);
+        }
+    } while (1);
 }
 
 void GetDataFlashInfo(uint32_t *addr, uint32_t *size)

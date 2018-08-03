@@ -62,7 +62,7 @@
 
 extern uint8_t  usb_rcvbuf[];
 extern uint8_t  usb_sendbuf[];
-extern volatile uint8_t bUsbDataReady; 
+extern volatile uint8_t bUsbDataReady;
 
 /*-------------------------------------------------------------*/
 void HID_Init(void);

@@ -120,7 +120,7 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
         TotalLen = inpw(pSrc + 4);
         pSrc += 8;
         srclen -= 8;
-   } else if (lcmd == CMD_UPDATE_CONFIG) {
+    } else if (lcmd == CMD_UPDATE_CONFIG) {
         if ((security == 0) && (!bUpdateApromCmd)) { //security lock
             goto out;
         }
