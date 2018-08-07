@@ -374,7 +374,7 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>.\;..\..\..\..\Library\CMSIS\Include;..\..\..\..\Library\Device\Nuvoton\NUC029xEE\Include;..\..\..\..\Library\StdDriver\inc</IncludePath>
+              <IncludePath>.\;..\..\..\Library\CMSIS\Include;..\..\..\Library\Device\Nuvoton\NUC029xEE\Include;..\..\..\Library\StdDriver\inc;..\</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -421,12 +421,12 @@
             <File>
               <FileName>system_NUC029xEE.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\Library\Device\Nuvoton\NUC029xEE\Source\system_NUC029xEE.c</FilePath>
+              <FilePath>..\..\..\Library\Device\Nuvoton\NUC029xEE\Source\system_NUC029xEE.c</FilePath>
             </File>
             <File>
               <FileName>startup_NUC029xEE.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\..\..\..\Library\Device\Nuvoton\NUC029xEE\Source\ARM\startup_NUC029xEE.s</FilePath>
+              <FilePath>..\..\..\Library\Device\Nuvoton\NUC029xEE\Source\ARM\startup_NUC029xEE.s</FilePath>
             </File>
           </Files>
         </Group>
@@ -444,19 +444,19 @@
               <FilePath>..\isp_user.c</FilePath>
             </File>
             <File>
-              <FileName>main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\main.c</FilePath>
-            </File>
-            <File>
               <FileName>targetdev.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\targetdev.c</FilePath>
             </File>
             <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\ISP_UART\main.c</FilePath>
+            </File>
+            <File>
               <FileName>uart_transfer.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\uart_transfer.c</FilePath>
+              <FilePath>..\ISP_UART\uart_transfer.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -3,7 +3,7 @@
  * @brief    USBD descriptor
  *
  * @note
- * Copyright (C) 2017 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2018 Nuvoton Technology Corp. All rights reserved.
  ******************************************************************************/
 /*!<Includes */
 #include "NuMicro.h"
