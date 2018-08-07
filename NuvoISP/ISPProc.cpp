@@ -339,6 +339,15 @@ void CISPProc::Thread_ProgramFlash()
         if (m_bRunAPROM) {
             m_ISPLdDev.RunAPROM();
             m_eProcSts = EPS_OK;
+            time_t end = time(NULL);
+            m_uProgTime = unsigned int(end - start);
+            CString str;
+            str.Format(_T("Programming flash, OK! Run to APROM (%d secs)"), m_uProgTime);
+            MessageBox(*MainHWND, str, NULL, MB_ICONINFORMATION);
+            // For Virtual Com Port device, it takes more than 5ms to convert USB signals to UART signals. (64 * 10 * 1000 / 115200 )
+            // After sending Reset Command by PC Tool, we must wait for a little time to make sure the target device will receive Reset Command.
+            // Without this latency, the Close Port operation will cancel the transmission immediately.
+            Sleep(20);
             Set_ThreadAction(&CISPProc::Thread_Idle);
             return;
         }
