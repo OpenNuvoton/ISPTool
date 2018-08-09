@@ -1,34 +1,16 @@
-/****************************************************************************
- * @file     main.c
- * @version  V3.00
- * $Revision: 7 $
- * $Date: 14/10/28 9:01a $
- * @brief
- *           Show how to use auto baud rate detection function.
- *           This sample code needs to work with UART_AutoBaudRate_Slave.
- * @note
- * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
- *
- ******************************************************************************/
 #include <stdio.h>
-#include "M451Series.h"
-#include "ISP_USER.h"
+#include "targetdev.h"
+
 
 #define PLLCTL_SETTING  CLK_PLLCTL_72MHz_HIRC
 #define PLL_CLOCK       71884880
 
+/*---------------------------------------------------------------------------------------------------------*/
+/* Global variables                                                                                        */
+/*---------------------------------------------------------------------------------------------------------*/
 uint8_t volatile bufhead = 0;
 uint8_t volatile bUartDataReady = 0;
 __align(4) uint8_t  uart_rcvbuf[64];
-
-/*---------------------------------------------------------------------------------------------------------*/
-/* Define functions prototype                                                                              */
-/*---------------------------------------------------------------------------------------------------------*/
-extern char GetChar(void);
-int32_t main(void);
-void AutoBaudRate_TestItem(void);
-void AutoBaudRate_TxTest(void);
-
 
 void SYS_Init(void)
 {
@@ -41,12 +23,9 @@ void SYS_Init(void)
     /* Wait for HIRC clock ready */
     while (!(CLK->STATUS & CLK_STATUS_HIRCSTB_Msk));
 
-    /* Select HCLK clock source as HIRC and and HCLK clock divider as 1 */
-    //CLK->CLKSEL0 &= ~CLK_CLKSEL0_HCLKSEL_Msk;
-    //CLK->CLKSEL0 |= CLK_CLKSEL0_HCLKSEL_HIRC;
+    /* Select HCLK clock source as HIRC and HCLK clock divider as 1 */
     CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLKSEL_Msk)) | CLK_CLKSEL0_HCLKSEL_HIRC;
-    CLK->CLKDIV0 &= ~CLK_CLKDIV0_HCLKDIV_Msk;
-    CLK->CLKDIV0 |= CLK_CLKDIV0_HCLK(1);
+    CLK->CLKDIV0 = (CLK->CLKDIV0 & (~CLK_CLKDIV0_HCLKDIV_Msk)) | CLK_CLKDIV0_HCLK(1);
     /* Set PLL to Power-down mode */
     CLK->PLLCTL |= CLK_PLLCTL_PD_Msk;
     /* Set core clock as PLL_CLOCK from PLL */
@@ -54,8 +33,6 @@ void SYS_Init(void)
 
     while (!(CLK->STATUS & CLK_STATUS_PLLSTB_Msk));
 
-    //CLK->CLKSEL0 &= (~CLK_CLKSEL0_HCLKSEL_Msk);
-    //CLK->CLKSEL0 |= CLK_CLKSEL0_HCLKSEL_PLL;
     CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLKSEL_Msk)) | CLK_CLKSEL0_HCLKSEL_PLL;
     /* Update System Core Clock */
     PllClock        = PLL_CLOCK;            // PLL
@@ -64,10 +41,8 @@ void SYS_Init(void)
     /* Enable UART module clock */
     CLK->APBCLK0 |= CLK_APBCLK0_UART0CKEN_Msk;
     /* Select UART module clock source as HIRC and UART module clock divider as 1 */
-    CLK->CLKSEL1 &= ~CLK_CLKSEL1_UARTSEL_Msk;
-    CLK->CLKSEL1 |= CLK_CLKSEL1_UARTSEL_HIRC;
-    CLK->CLKDIV0 &= ~CLK_CLKDIV0_UARTDIV_Msk;
-    CLK->CLKDIV0 |= CLK_CLKDIV0_UART(1);
+    CLK->CLKSEL1 = (CLK->CLKSEL1 & (~CLK_CLKSEL1_UARTSEL_Msk)) | CLK_CLKSEL1_UARTSEL_HIRC;
+    CLK->CLKDIV0 = (CLK->CLKDIV0 & (~CLK_CLKDIV0_UARTDIV_Msk)) | CLK_CLKDIV0_UART(1);
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */
     /*---------------------------------------------------------------------------------------------------------*/
@@ -142,12 +117,8 @@ int main(void)
 {
     /* Unlock protected registers */
     SYS_UnlockReg();
-    WDT->CTL &= ~WDT_CTL_WDTEN_Msk;
     /* Init System, peripheral clock and multi-function I/O */
     SYS_Init();
-//    /* Lock protected registers */
-//    SYS_LockReg();
-    /* Init UART0 for printf */
     UART0_Init();
     FMC->ISPCTL |= FMC_ISPCTL_ISPEN_Msk;	// (1ul << 0)
     g_apromSize = GetApromSize();
@@ -184,11 +155,10 @@ int main(void)
     }
 
 _APROM:
-    outpw(&SYS->RSTSTS, 3);//clear bit
-    outpw(&FMC->ISPCTL, inpw(&FMC->ISPCTL) & 0xFFFFFFFC);
-    outpw(&SCB->AIRCR, (V6M_AIRCR_VECTKEY_DATA | V6M_AIRCR_SYSRESETREQ));
+    SYS->RSTSTS = (SYS_RSTSTS_PORF_Msk | SYS_RSTSTS_PINRF_Msk);//clear bit
+    FMC->ISPCTL &=  ~(FMC_ISPCTL_ISPEN_Msk | FMC_ISPCTL_BS_Msk);
+    SCB->AIRCR = (V6M_AIRCR_VECTKEY_DATA | V6M_AIRCR_SYSRESETREQ);
 
     /* Trap the CPU */
     while (1);
 }
-

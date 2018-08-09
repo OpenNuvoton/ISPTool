@@ -1,10 +1,3 @@
-/******************************************************************************
- * @file     hid_transfer.h
- * @brief    ALL series USB HID transfer header file
- *
- * @note
- * Copyright (C) 2014~2015 Nuvoton Technology Corp. All rights reserved.
- ******************************************************************************/
 #ifndef __USBD_HID_H__
 #define __USBD_HID_H__
 
@@ -76,4 +69,4 @@ void HID_GetOutReport(uint8_t *pu8EpBuf, uint32_t u32Size);
 
 #endif  /* __USBD_HID_H_ */
 
-/*** (C) COPYRIGHT 2014~2015 Nuvoton Technology Corp. ***/
+

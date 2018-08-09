@@ -1,5 +1,47 @@
 #include <stdio.h>
-#include "FMC_USER.h"
+#include "fmc_user.h"
+
+//#define ISPADDR						ISPADR
+//#define ISPCTL						ISPCON
+//#define FMC_ISPCTL_ISPFF_Msk		FMC_ISPCON_ISPFF_Msk
+
+int FMC_Proc(unsigned int u32Cmd, unsigned int addr_start, unsigned int addr_end, unsigned int *data)
+{
+    unsigned int u32Addr, Reg;
+
+    for (u32Addr = addr_start; u32Addr < addr_end; data++) {
+        FMC->ISPCMD = u32Cmd;
+        FMC->ISPADDR = u32Addr;
+
+        if (u32Cmd == FMC_ISPCMD_PROGRAM) {
+            FMC->ISPDAT = *data;
+        }
+
+        FMC->ISPTRG = 0x1;
+        __ISB();
+
+        while (FMC->ISPTRG & 0x1) ;  /* Wait for ISP command done. */
+
+        Reg = FMC->ISPCTL;
+
+        if (Reg & FMC_ISPCTL_ISPFF_Msk) {
+            FMC->ISPCTL = Reg;
+            return -1;
+        }
+
+        if (u32Cmd == FMC_ISPCMD_READ) {
+            *data = FMC->ISPDAT;
+        }
+
+        if (u32Cmd == FMC_ISPCMD_PAGE_ERASE) {
+            u32Addr += FMC_FLASH_PAGE_SIZE;
+        } else {
+            u32Addr += 4;
+        }
+    }
+
+    return 0;
+}
 
 /**
  * @brief      Program 32-bit data into specified address of flash
@@ -17,22 +59,7 @@
  */
 int FMC_Write_User(unsigned int u32Addr, unsigned int u32Data)
 {
-    unsigned int Reg;
-    FMC->ISPCMD = FMC_ISPCMD_PROGRAM;
-    FMC->ISPADDR = u32Addr;
-    FMC->ISPDAT = u32Data;
-    FMC->ISPTRG = 0x1;
-#if ISBEN
-    __ISB();
-#endif
-    Reg = FMC->ISPCTL;
-
-    if (Reg & FMC_ISPCTL_ISPFF_Msk) {
-        FMC->ISPCTL = Reg;
-        return -1;
-    }
-
-    return 0;
+    return FMC_Proc(FMC_ISPCMD_PROGRAM, u32Addr, u32Addr + 4, &u32Data);
 }
 
 /**
@@ -51,23 +78,7 @@ int FMC_Write_User(unsigned int u32Addr, unsigned int u32Data)
  */
 int FMC_Read_User(unsigned int u32Addr, unsigned int *data)
 {
-    unsigned int Reg;
-    FMC->ISPCMD = FMC_ISPCMD_READ;
-    FMC->ISPADDR = u32Addr;
-    FMC->ISPDAT = 0;
-    FMC->ISPTRG = 0x1;
-#if ISBEN
-    __ISB();
-#endif
-    Reg = FMC->ISPCTL;
-
-    if (Reg & FMC_ISPCTL_ISPFF_Msk) {
-        FMC->ISPCTL = Reg;
-        return -1;
-    }
-
-    *data = FMC->ISPDAT;
-    return 0;
+    return FMC_Proc(FMC_ISPCMD_READ, u32Addr, u32Addr + 4, data);
 }
 
 /**
@@ -85,41 +96,37 @@ int FMC_Read_User(unsigned int u32Addr, unsigned int *data)
  */
 int FMC_Erase_User(unsigned int u32Addr)
 {
-    unsigned int Reg;
-    FMC->ISPCMD = FMC_ISPCMD_PAGE_ERASE;
-    FMC->ISPADDR = u32Addr;
-    FMC->ISPTRG = 0x1;
-#if ISBEN
-    __ISB();
-#endif
-    Reg = FMC->ISPCTL;
-
-    if (Reg & FMC_ISPCTL_ISPFF_Msk) {
-        FMC->ISPCTL = Reg;
-        return -1;
-    }
-
-    return 0;
+    return FMC_Proc(FMC_ISPCMD_PAGE_ERASE, u32Addr, u32Addr + 4, 0);
 }
 
 void ReadData(unsigned int addr_start, unsigned int addr_end, unsigned int *data)    // Read data from flash
 {
-    unsigned int rLoop;
-
-    for (rLoop = addr_start; rLoop < addr_end; rLoop += 4) {
-        FMC_Read_User(rLoop, data);
-        data++;
-    }
-
+    FMC_Proc(FMC_ISPCMD_READ, addr_start, addr_end, data);
     return;
 }
 
 void WriteData(unsigned int addr_start, unsigned int addr_end, unsigned int *data)  // Write data into flash
 {
-    unsigned int wLoop;
+    FMC_Proc(FMC_ISPCMD_PROGRAM, addr_start, addr_end, data);
+    return;
+}
 
-    for (wLoop = addr_start; wLoop < addr_end; wLoop += 4) {
-        FMC_Write_User(wLoop, *data);
-        data++;
+int EraseAP(unsigned int addr_start, unsigned int size)
+{
+    return FMC_Proc(FMC_ISPCMD_PAGE_ERASE, addr_start, addr_start + size, NULL);
+}
+
+void UpdateConfig(unsigned int *data, unsigned int *res)
+{
+    // For M451 series, CONIFG2 must be 0xFFFFFF5A (Don't modify this value. It should be 0xFFFFFF5A after reset.)
+    unsigned int u32Size = 8;
+    FMC_ENABLE_CFG_UPDATE();
+    FMC_Proc(FMC_ISPCMD_PAGE_ERASE, Config0, Config0 + 8, 0);
+    FMC_Proc(FMC_ISPCMD_PROGRAM, Config0, Config0 + u32Size, data);
+
+    if (res) {
+        FMC_Proc(FMC_ISPCMD_READ, Config0, Config0 + u32Size, res);
     }
+
+    FMC_DISABLE_CFG_UPDATE();
 }

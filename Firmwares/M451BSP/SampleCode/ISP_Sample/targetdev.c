@@ -1,4 +1,3 @@
-
 #include "targetdev.h"
 
 // Supports 40K/72K/128K/256K bytes application ROM (APROM)

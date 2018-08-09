@@ -1,14 +1,6 @@
-/******************************************************************************
- * @file     ISP_USER.c
- * @brief    M5451 series ISP sample source file
- * @version  0x27
- * @date     31, December, 2014
- *
- * @note
- * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
- ******************************************************************************/
 #include <stdio.h>
-#include "ISP_USER.h"
+#include "isp_user.h"
+#include "fmc_user.h"
 
 __align(4) uint8_t response_buff[64];
 __align(4) static uint8_t aprom_buf[FMC_FLASH_PAGE_SIZE];
@@ -27,54 +19,9 @@ static uint16_t Checksum(unsigned char *buf, int len)
     return (c);
 }
 
-static uint16_t CalCheckSum(uint32_t start, uint32_t len)
-{
-    int i;
-    register uint16_t lcksum = 0;
-
-    for (i = 0; i < len; i += FMC_FLASH_PAGE_SIZE) {
-        ReadData(start + i, start + i + FMC_FLASH_PAGE_SIZE, (uint32_t *)aprom_buf);
-
-        if (len - i >= FMC_FLASH_PAGE_SIZE) {
-            lcksum += Checksum(aprom_buf, FMC_FLASH_PAGE_SIZE);
-        } else {
-            lcksum += Checksum(aprom_buf, len - i);
-        }
-    }
-
-    return lcksum;
-}
-
-//bAprom == TRUE erase all aprom besides data flash
-void EraseAP(unsigned int addr_start, unsigned int addr_end)
-{
-    unsigned int eraseLoop = addr_start;
-
-    for (; eraseLoop < addr_end; eraseLoop += FMC_FLASH_PAGE_SIZE) {
-        FMC_Erase_User(eraseLoop);
-    }
-
-    return;
-}
-
-void UpdateConfig(unsigned int *data, unsigned int *res)
-{
-    FMC_ENABLE_CFG_UPDATE();
-    FMC_Erase_User(Config0);
-    FMC_Write_User(Config0, *data);
-    FMC_Write_User(Config1, *(data + 1));
-
-    if (res) {
-        FMC_Read_User(Config0, res);
-        FMC_Read_User(Config1, res + 1);
-    }
-
-    FMC_DISABLE_CFG_UPDATE();
-}
-
 int ParseCmd(unsigned char *buffer, uint8_t len)
 {
-    static uint32_t StartAddress, StartAddress_bak, TotalLen, TotalLen_bak, LastDataLen, g_packno = 1;
+    static uint32_t StartAddress, TotalLen, LastDataLen, g_packno = 1;
     uint8_t *response;
     uint16_t lcksum;
     uint32_t lcmd, srclen, i, regcnf0, security;
@@ -100,7 +47,7 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
     }
 
     if (lcmd == CMD_GET_FWVER) {
-        response[8] = FW_VERSION;//version 2.3
+        response[8] = FW_VERSION;
     } else if (lcmd == CMD_GET_DEVICEID) {
         outpw(response + 8, SYS->PDID);
         goto out;
@@ -116,30 +63,25 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
         } else {
             i = (FMC->ISPCTL & 0xFFFFFFFE);//ISP disable
         }
-
-        outpw(&FMC->ISPCTL, i);
-        outpw(&SCB->AIRCR, (V6M_AIRCR_VECTKEY_DATA | V6M_AIRCR_SYSRESETREQ));
+        
+        FMC->ISPCTL = i;
+        SCB->AIRCR = (V6M_AIRCR_VECTKEY_DATA | V6M_AIRCR_SYSRESETREQ);
 
         /* Trap the CPU */
         while (1);
     } else if (lcmd == CMD_CONNECT) {
         g_packno = 1;
         goto out;
-    } else if (lcmd == CMD_DISCONNECT) {
-        return 0;
     } else if ((lcmd == CMD_UPDATE_APROM) || (lcmd == CMD_ERASE_ALL)) {
         EraseAP(FMC_APROM_BASE, g_dataFlashAddr); // erase APROM
 
-        if (lcmd == CMD_ERASE_ALL) { //erase APROM + data flash
-            EraseAP(g_dataFlashAddr, g_apromSize);
+        if (lcmd == CMD_ERASE_ALL) {
+            EraseAP(g_dataFlashAddr, g_dataFlashSize);
             *(uint32_t *)(response + 8) = regcnf0 | 0x02;
             UpdateConfig((uint32_t *)(response + 8), NULL);
         }
 
         bUpdateApromCmd = TRUE;
-    } else if (lcmd == CMD_GET_FLASHMODE) {
-        //return 1: APROM, 2: LDROM
-        outpw(response + 8, (FMC->ISPCTL & 0x2) ? 2 : 1);
     }
 
     if ((lcmd == CMD_UPDATE_APROM) || (lcmd == CMD_UPDATE_DATAFLASH)) {
@@ -147,7 +89,7 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
             StartAddress = g_dataFlashAddr;
 
             if (g_dataFlashSize) { //g_dataFlashAddr
-                EraseAP(g_dataFlashAddr, g_dataFlashAddr + g_dataFlashSize);
+                EraseAP(g_dataFlashAddr, g_dataFlashSize);
             } else {
                 goto out;
             }
@@ -159,8 +101,6 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
         TotalLen = inpw(pSrc + 4);
         pSrc += 8;
         srclen -= 8;
-        StartAddress_bak = StartAddress;
-        TotalLen_bak = TotalLen;
     } else if (lcmd == CMD_UPDATE_CONFIG) {
         if ((security == 0) && (!bUpdateApromCmd)) { //security lock
             goto out;
@@ -170,19 +110,21 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
         GetDataFlashInfo(&g_dataFlashAddr, &g_dataFlashSize);
         goto out;
     } else if (lcmd == CMD_RESEND_PACKET) { //for APROM&Data flash only
+        uint32_t PageAddress;
         StartAddress -= LastDataLen;
         TotalLen += LastDataLen;
+        PageAddress = StartAddress & (0x100000 - FMC_FLASH_PAGE_SIZE);
 
-        if ((StartAddress & 0xFFE00) >= Config0) {
+        if (PageAddress >= Config0) {
             goto out;
         }
 
-        ReadData(StartAddress & 0xFFE00, StartAddress, (uint32_t *)aprom_buf);
-        FMC_Erase_User(StartAddress & 0xFFE00);
-        WriteData(StartAddress & 0xFFE00, StartAddress, (uint32_t *)aprom_buf);
+        ReadData(PageAddress, StartAddress, (uint32_t *)aprom_buf);
+        FMC_Erase_User(PageAddress);
+        WriteData(PageAddress, StartAddress, (uint32_t *)aprom_buf);
 
         if ((StartAddress % FMC_FLASH_PAGE_SIZE) >= (FMC_FLASH_PAGE_SIZE - LastDataLen)) {
-            FMC_Erase_User((StartAddress & 0xFFE00) + FMC_FLASH_PAGE_SIZE);
+            FMC_Erase_User(PageAddress + FMC_FLASH_PAGE_SIZE);
         }
 
         goto out;
@@ -194,16 +136,11 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
         }
 
         TotalLen -= srclen;
-        WriteData(StartAddress, StartAddress + srclen, (uint32_t *)pSrc); //WriteData(StartAddress, StartAddress + srclen, (uint32_t*)pSrc);
+        WriteData(StartAddress, StartAddress + srclen, (uint32_t *)pSrc);
         memset(pSrc, 0, srclen);
         ReadData(StartAddress, StartAddress + srclen, (uint32_t *)pSrc);
         StartAddress += srclen;
         LastDataLen =  srclen;
-
-        if (TotalLen == 0) {
-            lcksum = CalCheckSum(StartAddress_bak, TotalLen_bak);
-            outps(response + 8, lcksum);
-        }
     }
 
 out:

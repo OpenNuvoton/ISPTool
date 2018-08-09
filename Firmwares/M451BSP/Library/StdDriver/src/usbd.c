@@ -52,6 +52,7 @@ static volatile uint32_t g_usbd_UsbAddr = 0;
 static volatile uint32_t g_usbd_UsbConfig = 0;
 static volatile uint32_t g_usbd_CtrlMaxPktSize = 8;
 static volatile uint32_t g_usbd_UsbAltInterface = 0;
+static volatile uint8_t  g_usbd_CtrlInZeroFlag = 0;
 /**
  * @endcond
  */
@@ -403,6 +404,7 @@ void USBD_StandardRequest(void)
                         if(((USBD->EP[i].CFG & 0xF) == epNum) && ((g_u32EpStallLock & (1 << i)) == 0))
                         {
                             USBD->EP[i].CFGP &= ~USBD_CFGP_SSTALL_Msk;
+                            USBD->EP[i].CFG &= ~USBD_CFG_DSQSYNC_Msk;
                             DBG_PRINTF("Clr stall ep%d %x\n", i, USBD->EP[i].CFGP);
                         }
                     }
@@ -522,6 +524,10 @@ void USBD_PrepareCtrlIn(uint8_t *pu8Buf, uint32_t u32Size)
         // Data size <= MXPLD
         g_usbd_CtrlInPointer = 0;
         g_usbd_CtrlInSize = 0;
+
+        if(u32Size == g_usbd_CtrlMaxPktSize)
+            g_usbd_CtrlInZeroFlag = 1;
+
         USBD_SET_DATA1(EP0);
         USBD_MemCopy((uint8_t *)USBD_BUF_BASE + USBD_GET_EP_BUF_ADDR(EP0), pu8Buf, u32Size);
         USBD_SET_PAYLOAD_LEN(EP0, u32Size);
@@ -540,8 +546,6 @@ void USBD_PrepareCtrlIn(uint8_t *pu8Buf, uint32_t u32Size)
   */
 void USBD_CtrlIn(void)
 {
-    static uint8_t u8ZeroFlag = 0;
-    
     DBG_PRINTF("Ctrl In Ack. residue %d\n", g_usbd_CtrlInSize);
     if(g_usbd_CtrlInSize)
     {
@@ -559,8 +563,10 @@ void USBD_CtrlIn(void)
             // Data size <= MXPLD
             USBD_MemCopy((uint8_t *)USBD_BUF_BASE + USBD_GET_EP_BUF_ADDR(EP0), (uint8_t *)g_usbd_CtrlInPointer, g_usbd_CtrlInSize);
             USBD_SET_PAYLOAD_LEN(EP0, g_usbd_CtrlInSize);
+
             if(g_usbd_CtrlInSize == g_usbd_CtrlMaxPktSize)
-                u8ZeroFlag = 1;
+                g_usbd_CtrlInZeroFlag = 1;
+
             g_usbd_CtrlInPointer = 0;
             g_usbd_CtrlInSize = 0;
         }
@@ -577,10 +583,10 @@ void USBD_CtrlIn(void)
         }
 
         /* For the case of data size is integral times maximum packet size */
-        if(u8ZeroFlag)
+        if(g_usbd_CtrlInZeroFlag)
         {
             USBD_SET_PAYLOAD_LEN(EP0, 0);
-            u8ZeroFlag = 0;
+            g_usbd_CtrlInZeroFlag = 0;
         }
         
         DBG_PRINTF("Ctrl In done.\n");

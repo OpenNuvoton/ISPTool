@@ -7,10 +7,10 @@
 
   <Targets>
     <Target>
-      <TargetName>ISP_UART</TargetName>
+      <TargetName>ISP_HID</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060183::V5.06 update 2 (build 183)::ARMCC</pCCUsed>
+      <pCCUsed>5060528::V5.06 update 5 (build 528)::ARMCC</pCCUsed>
       <TargetOption>
         <TargetCommonOption>
           <Device>M453VG6AE</Device>
@@ -30,14 +30,14 @@
           <SLE66CMisc></SLE66CMisc>
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
-          <SFDFile>SFD\Nuvoton\M451_v1.SFR</SFDFile>
+          <SFDFile>M451_v1.SFR</SFDFile>
           <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
           <IncludePath></IncludePath>
           <LibPath></LibPath>
-          <RegisterFilePath></RegisterFilePath>
-          <DBRegisterFilePath></DBRegisterFilePath>
+          <RegisterFilePath>?ST\STM32F10x\</RegisterFilePath>
+          <DBRegisterFilePath>?ST\STM32F10x\</DBRegisterFilePath>
           <TargetStatus>
             <Error>0</Error>
             <ExitCodeStop>0</ExitCodeStop>
@@ -46,7 +46,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\obj\</OutputDirectory>
-          <OutputName>M451_ISP_UART0_PD0_PD1</OutputName>
+          <OutputName>M451_ISP_HID_PB6</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -86,7 +86,7 @@
             <nStopA1X>0</nStopA1X>
             <nStopA2X>0</nStopA2X>
           </AfterMake>
-          <SelectedForBatchBuild>1</SelectedForBatchBuild>
+          <SelectedForBatchBuild>0</SelectedForBatchBuild>
           <SVCSIdString></SVCSIdString>
         </TargetCommonOption>
         <CommonProperty>
@@ -148,7 +148,7 @@
             <RestoreSysVw>1</RestoreSysVw>
           </Target>
           <RunDebugAfterBuild>0</RunDebugAfterBuild>
-          <TargetSelection>16</TargetSelection>
+          <TargetSelection>18</TargetSelection>
           <SimDlls>
             <CpuDll></CpuDll>
             <CpuDllArguments></CpuDllArguments>
@@ -172,7 +172,7 @@
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>4107</DriverSelection>
+            <DriverSelection>4106</DriverSelection>
           </Flash1>
           <bUseTDR>0</bUseTDR>
           <Flash2>Bin\Nu_Link.dll</Flash2>
@@ -203,14 +203,14 @@
             <AdsANot>0</AdsANot>
             <AdsLLst>1</AdsLLst>
             <AdsLmap>1</AdsLmap>
-            <AdsLcgr>1</AdsLcgr>
-            <AdsLsym>1</AdsLsym>
+            <AdsLcgr>0</AdsLcgr>
+            <AdsLsym>0</AdsLsym>
             <AdsLszi>1</AdsLszi>
             <AdsLtoi>1</AdsLtoi>
-            <AdsLsun>1</AdsLsun>
-            <AdsLven>1</AdsLven>
-            <AdsLsxf>1</AdsLsxf>
-            <RvctClst>0</RvctClst>
+            <AdsLsun>0</AdsLsun>
+            <AdsLven>0</AdsLven>
+            <AdsLsxf>0</AdsLsxf>
+            <RvctClst>1</RvctClst>
             <GenPPlst>1</GenPPlst>
             <AdsCpuType>"Cortex-M4"</AdsCpuType>
             <RvctDeviceName></RvctDeviceName>
@@ -224,13 +224,13 @@
             <RvdsVP>2</RvdsVP>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
-            <StupSel>0</StupSel>
+            <StupSel>8</StupSel>
             <useUlib>1</useUlib>
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
             <nSecure>0</nSecure>
-            <RoSelD>0</RoSelD>
-            <RwSelD>5</RwSelD>
+            <RoSelD>3</RoSelD>
+            <RwSelD>3</RwSelD>
             <CodeSel>0</CodeSel>
             <OptFeed>0</OptFeed>
             <NoZi1>0</NoZi1>
@@ -358,7 +358,7 @@
             <PlainCh>0</PlainCh>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
-            <wLevel>2</wLevel>
+            <wLevel>0</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>0</uC99>
@@ -369,23 +369,25 @@
             <vShortWch>1</vShortWch>
             <v6Lto>0</v6Lto>
             <v6WtE>0</v6WtE>
+            <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\..\..\Library\CMSIS\Include;..\..\..\..\Library\Device\Nuvoton\M451Series\Include;..\..\..\..\Library\StdDriver\inc</IncludePath>
+              <IncludePath>..\;..\..\..\Library\CMSIS\Include;..\..\..\Library\StdDriver\inc;..\..\..\Library\Device\Nuvoton\M451Series\Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
             <interw>1</interw>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
-            <thumb>1</thumb>
+            <thumb>0</thumb>
             <SplitLS>0</SplitLS>
             <SwStkChk>0</SwStkChk>
             <NoWarn>0</NoWarn>
             <uSurpInc>0</uSurpInc>
             <useXO>0</useXO>
+            <uClangAs>0</uClangAs>
             <VariousControls>
               <MiscControls></MiscControls>
               <Define></Define>
@@ -406,8 +408,7 @@
             <ScatterFile></ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
-            <Misc>--map --first='startup_M451Series.o(RESET)' --datacompressor=off --info=inline --entry Reset_Handler
-</Misc>
+            <Misc>--map --first='startup_M451Series_user.o(RESET)' --datacompressor=off --info=inline --entry Reset_Handler</Misc>
             <LinkerInputFile></LinkerInputFile>
             <DisabledWarnings></DisabledWarnings>
           </LDads>
@@ -420,12 +421,7 @@
             <File>
               <FileName>system_M451Series.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\Library\Device\Nuvoton\M451Series\Source\system_M451Series.c</FilePath>
-            </File>
-            <File>
-              <FileName>startup_M451Series.s</FileName>
-              <FileType>2</FileType>
-              <FilePath>..\..\..\..\Library\Device\Nuvoton\M451Series\Source\ARM\startup_M451Series.s</FilePath>
+              <FilePath>..\..\..\Library\Device\Nuvoton\M451Series\Source\system_M451Series.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -433,29 +429,51 @@
           <GroupName>User</GroupName>
           <Files>
             <File>
+              <FileName>descriptors.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\ISP_HID\descriptors.c</FilePath>
+            </File>
+            <File>
+              <FileName>hid_transfer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\ISP_HID\hid_transfer.c</FilePath>
+            </File>
+            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\main.c</FilePath>
+              <FilePath>..\ISP_HID\main.c</FilePath>
             </File>
             <File>
-              <FileName>FMC_USER.c</FileName>
+              <FileName>fmc_user.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\FMC_USER.c</FilePath>
+              <FilePath>..\fmc_user.c</FilePath>
             </File>
             <File>
-              <FileName>ISP_USER.c</FileName>
+              <FileName>isp_user.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\ISP_USER.c</FilePath>
+              <FilePath>..\isp_user.c</FilePath>
             </File>
             <File>
               <FileName>targetdev.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\targetdev.c</FilePath>
             </File>
+            <File>
+              <FileName>startup_M451Series_user.s</FileName>
+              <FileType>2</FileType>
+              <FilePath>..\ISP_HID\startup_M451Series_user.s</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>Library</GroupName>
+          <Files>
+            <File>
+              <FileName>usbd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\Library\StdDriver\src\usbd.c</FilePath>
+            </File>
+          </Files>
         </Group>
       </Groups>
     </Target>

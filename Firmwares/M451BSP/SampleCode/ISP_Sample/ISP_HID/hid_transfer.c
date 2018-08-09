@@ -1,15 +1,6 @@
-/******************************************************************************
- * @file     hid_transfer.c
- * @brief    All series USBD HID transfer sample file
- *
- * @note
- * Copyright (C) 2014~2015 Nuvoton Technology Corp. All rights reserved.
- ******************************************************************************/
-
-/*!<Includes */
 #include <stdio.h>
 #include <string.h>
-#include "M451Series.h"
+#include "targetdev.h"
 #include "hid_transfer.h"
 
 uint8_t volatile g_u8EP2Ready = 0;

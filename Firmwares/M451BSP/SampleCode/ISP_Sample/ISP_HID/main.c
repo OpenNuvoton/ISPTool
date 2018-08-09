@@ -1,12 +1,3 @@
-/****************************************************************************
- * @file     main.c
- * @version  V3.00
- * @brief
- *           ISP HID sample.
- * @note
- * Copyright (C) 2016 Nuvoton Technology Corp. All rights reserved.
- *
- ******************************************************************************/
 #include <stdio.h>
 #include "targetdev.h"
 
@@ -85,13 +76,10 @@ int32_t main(void)
         }
     }
 
-    outpw(&SYS->RSTSTS, 3);//clear bit
-    outpw(&FMC->ISPCTL, inpw(&FMC->ISPCTL) & 0xFFFFFFFC);
-    outpw(&SCB->AIRCR, (V6M_AIRCR_VECTKEY_DATA | V6M_AIRCR_SYSRESETREQ));
+    SYS->RSTSTS = (SYS_RSTSTS_PORF_Msk | SYS_RSTSTS_PINRF_Msk);//clear bit
+    FMC->ISPCTL &=  ~(FMC_ISPCTL_ISPEN_Msk | FMC_ISPCTL_BS_Msk);
+    SCB->AIRCR = (V6M_AIRCR_VECTKEY_DATA | V6M_AIRCR_SYSRESETREQ);
 
     /* Trap the CPU */
     while (1);
 }
-
-/*** (C) COPYRIGHT 2014~2015 Nuvoton Technology Corp. ***/
-
