@@ -1,13 +1,3 @@
-/**************************************************************************//**
- * @file     usci_uart_transfer.c
- * @version  V1.00
- * $Date: 14/11/17 5:36p $
- * @brief    General USCI_UART ISP slave Sample file
- *
- * @note
- * Copyright (C) 2017 Nuvoton Technology Corp. All rights reserved.
- ******************************************************************************/
-
 /*!<Includes */
 #include <string.h>
 #include "targetdev.h"
@@ -17,6 +7,7 @@ __align(4) uint8_t  uart_rcvbuf[MAX_PKT_SIZE] = {0};
 
 uint8_t volatile bUartDataReady = 0;
 uint8_t volatile bufhead = 0;
+uint32_t volatile rcvsize = 0;
 
 
 /* please check "targetdev.h" for chip specifc define option */
@@ -52,11 +43,8 @@ void USCI0_IRQHandler(void)
         while (!UUART_IS_RX_EMPTY(UUART0)) {
             /* Get the character from USCI UART Buffer */
             uart_rcvbuf[bufhead++] = UUART_READ(UUART0);
-
-            if (bufhead == MAX_PKT_SIZE) {
-                bUartDataReady = TRUE;
-                bufhead = 0;
-            }
+            bufhead &= 0x3F;
+            rcvsize++;
         }
     }
 }

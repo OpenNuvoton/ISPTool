@@ -46,7 +46,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\obj\</OutputDirectory>
-          <OutputName>NM1120_ISP_USCI_PA0_UART0_PD5_PD6</OutputName>
+          <OutputName>NM1120_ISP_USCI_UART0_PD5_PD6</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>

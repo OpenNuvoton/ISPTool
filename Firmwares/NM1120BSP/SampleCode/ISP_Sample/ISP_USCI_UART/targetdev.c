@@ -3,10 +3,10 @@
 #include "isp_user.h"
 
 //the APROM size is 29.5K
-uint32_t GetApromSize()
-{
-    return 0x7600;
-}
+//uint32_t GetApromSize()
+//{
+//    return 0x7600;
+//}
 
 void GetDataFlashInfo(uint32_t *addr, uint32_t *size)
 {
