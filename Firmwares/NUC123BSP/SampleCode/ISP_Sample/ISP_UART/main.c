@@ -109,5 +109,3 @@ _APROM:
 }
 
 
-/*** (C) COPYRIGHT 2013 Nuvoton Technology Corp. ***/
-

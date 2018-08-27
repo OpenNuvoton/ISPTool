@@ -512,9 +512,9 @@ void PWM_EnableCaptureInt(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u32Edge)
 void PWM_DisableCaptureInt(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u32Edge)
 {
     if(u32ChannelNum < 2)
-        (pwm)->CCR0 &= u32Edge << ~(u32ChannelNum * 16);
+        (pwm)->CCR0 &= ~(u32Edge << (u32ChannelNum * 16));
     else
-        (pwm)->CCR2 &= u32Edge << ~((u32ChannelNum - 2) * 16);
+        (pwm)->CCR2 &= ~(u32Edge << ((u32ChannelNum - 2) * 16));
 }
 
 /**

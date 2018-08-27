@@ -1,6 +1,6 @@
 
 #include "targetdev.h"
-#include "ISP_USER.h"
+#include "isp_user.h"
 
 #define CONFIG0_DFEN                0x01
 #define CONFIG0_DFVSEN              0x04

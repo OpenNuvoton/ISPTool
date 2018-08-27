@@ -1,12 +1,3 @@
-/******************************************************************************
- * @file     main.c
- * @brief
- *           Demonstrate how to transfer data between USB device and PC through USB HID interface.
- *           A windows tool is also included in this sample code to connect with USB device.
- *
- * @note
- * Copyright (C) 2014~2015 Nuvoton Technology Corp. All rights reserved.
- ******************************************************************************/
 #include <stdio.h>
 #include "NUC123.h"
 #include "hid_transfer.h"
@@ -106,5 +97,5 @@ _APROM:
     /* Trap the CPU */
     while (1);
 }
-/*** (C) COPYRIGHT 2014~2015 Nuvoton Technology Corp. ***/
+
 

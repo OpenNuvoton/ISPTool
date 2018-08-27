@@ -1,7 +1,7 @@
 
 #include "NUC123.h"
 #include "uart_transfer.h"
-#include "ISP_USER.h"
+#include "isp_user.h"
 
 /* rename for uart_transfer.c */
 #define UART_N							UART1
