@@ -1,12 +1,3 @@
-/******************************************************************************
- * @file     isp_user.c
- * @brief    ISP Command source file
- * @version  0x31
- * @date     31, December, 2014
- *
- * @note
- * Copyright (C) 2016-2017 Nuvoton Technology Corp. All rights reserved.
- ******************************************************************************/
 #include <stdio.h>
 #include "string.h"
 #include "isp_user.h"
@@ -28,27 +19,9 @@ static uint16_t Checksum(unsigned char *buf, int len)
     return (c);
 }
 
-static uint16_t CalCheckSum(uint32_t start, uint32_t len)
-{
-    int i;
-    register uint16_t lcksum = 0;
-
-    for (i = 0; i < len; i += FMC_FLASH_PAGE_SIZE) {
-        ReadData(start + i, start + i + FMC_FLASH_PAGE_SIZE, (uint32_t *)aprom_buf);
-
-        if (len - i >= FMC_FLASH_PAGE_SIZE) {
-            lcksum += Checksum(aprom_buf, FMC_FLASH_PAGE_SIZE);
-        } else {
-            lcksum += Checksum(aprom_buf, len - i);
-        }
-    }
-
-    return lcksum;
-}
-
 int ParseCmd(unsigned char *buffer, uint8_t len)
 {
-    static uint32_t StartAddress, StartAddress_bak, TotalLen, TotalLen_bak, LastDataLen, g_packno = 1;
+    static uint32_t StartAddress, TotalLen, LastDataLen, g_packno = 1;
     uint8_t *response;
     uint16_t lcksum;
     uint32_t lcmd, srclen, i, regcnf0, security;
@@ -61,7 +34,7 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
     outpw(response + 4, 0);
     pSrc += 8;
     srclen -= 8;
-    ReadData(Config0, Config0 + 16, (uint32_t *)(response + 8)); //read config
+    ReadData(Config0, Config0 + 8, (uint32_t *)(response + 8)); //read config
     regcnf0 = *(uint32_t *)(response + 8);
     security = regcnf0 & 0x2;
 
@@ -74,7 +47,7 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
     }
 
     if (lcmd == CMD_GET_FWVER) {
-        response[8] = FW_VERSION;//version 2.3
+        response[8] = FW_VERSION;
     } else if (lcmd == CMD_GET_DEVICEID) {
         outpw(response + 8, SYS->PDID);
         goto out;
@@ -90,9 +63,9 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
         } else {
             i = (FMC->ISPCTL & 0xFFFFFFFE);//ISP disable
         }
-
-        outpw(&FMC->ISPCTL, i);
-        outpw(&SCB->AIRCR, (V6M_AIRCR_VECTKEY_DATA | V6M_AIRCR_SYSRESETREQ));
+        
+        FMC->ISPCTL = i;
+        SCB->AIRCR = (V6M_AIRCR_VECTKEY_DATA | V6M_AIRCR_SYSRESETREQ);
 
         /* Trap the CPU */
         while (1);
@@ -109,9 +82,6 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
         }
 
         bUpdateApromCmd = TRUE;
-    } else if (lcmd == CMD_GET_FLASHMODE) {
-        //return 1: APROM, 2: LDROM
-        outpw(response + 8, (FMC->ISPCTL & 0x2) ? 2 : 1);
     }
 
     if ((lcmd == CMD_UPDATE_APROM) || (lcmd == CMD_UPDATE_DATAFLASH)) {
@@ -131,8 +101,6 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
         TotalLen = inpw(pSrc + 4);
         pSrc += 8;
         srclen -= 8;
-        StartAddress_bak = StartAddress;
-        TotalLen_bak = TotalLen;
     } else if (lcmd == CMD_UPDATE_CONFIG) {
         if ((security == 0) && (!bUpdateApromCmd)) { //security lock
             goto out;
@@ -168,16 +136,11 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
         }
 
         TotalLen -= srclen;
-        WriteData(StartAddress, StartAddress + srclen, (uint32_t *)pSrc); //WriteData(StartAddress, StartAddress + srclen, (uint32_t*)pSrc);
+        WriteData(StartAddress, StartAddress + srclen, (uint32_t *)pSrc);
         memset(pSrc, 0, srclen);
         ReadData(StartAddress, StartAddress + srclen, (uint32_t *)pSrc);
         StartAddress += srclen;
         LastDataLen =  srclen;
-
-        if (TotalLen == 0) {
-            lcksum = CalCheckSum(StartAddress_bak, TotalLen_bak);
-            outps(response + 8, lcksum);
-        }
     }
 
 out:

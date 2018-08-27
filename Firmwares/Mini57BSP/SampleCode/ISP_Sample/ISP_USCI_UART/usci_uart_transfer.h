@@ -20,6 +20,7 @@
 extern uint8_t  uart_rcvbuf[];
 extern uint8_t volatile bUartDataReady;
 extern uint8_t volatile bufhead;
+extern uint32_t volatile rcvsize;
 
 /*-------------------------------------------------------------*/
 void USCI0_Init(void);
