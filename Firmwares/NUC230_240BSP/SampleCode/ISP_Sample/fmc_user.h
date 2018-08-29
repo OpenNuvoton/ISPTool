@@ -3,9 +3,6 @@
 
 #include "targetdev.h"
 
-// #define FMC_CONFIG0_ADDR        (FMC_CONFIG_BASE)       /*!< CONFIG 0 Address */
-// #define FMC_CONFIG1_ADDR        (FMC_CONFIG_BASE + 4)   /*!< CONFIG 1 Address */
-
 #define Config0         FMC_CONFIG_BASE
 #define Config1         (FMC_CONFIG_BASE+4)
 
@@ -22,7 +19,8 @@
 #define _FMC_DISABLE_CFG_UPDATE()  (FMC->ISPCTL &= ~FMC_ISPCTL_CFGUEN_Msk) /*!< Disable CONFIG Update Function */
 
 
-extern void EraseAP(unsigned int addr_start, unsigned int addr_end);
+extern int EraseAP(unsigned int addr_start, unsigned int addr_end);
+extern void UpdateConfig(unsigned int *data, unsigned int *res);
 extern void ReadData(unsigned int addr_start, unsigned int addr_end, unsigned int *data);
 extern void WriteData(unsigned int addr_start, unsigned int addr_end, unsigned int *data);
 extern void GetDataFlashInfo(uint32_t *addr, uint32_t *size);

@@ -1,19 +1,9 @@
-/******************************************************************************
- * @file     main.c
- * @brief
- *           Transfer data between USB device and PC through USB HID interface.
- *           A windows tool is also included in this sample code to connect with USB device.
- *
- * @note
- * Copyright (C) 2013 Nuvoton Technology Corp. All rights reserved.
- ******************************************************************************/
 #include <stdio.h>
 #include "targetdev.h"
 
-
-
 #define PLLCON_SETTING  CLK_PLLCON_72MHz_HIRC
 #define PLL_CLOCK       71884880
+
 /*--------------------------------------------------------------------------*/
 void SYS_Init(void)
 {
@@ -27,8 +17,6 @@ void SYS_Init(void)
     while (!(CLK->CLKSTATUS & CLK_CLKSTATUS_OSC22M_STB_Msk));
 
     /* Switch HCLK clock source to Internal RC and HCLK source divide 1 */
-    //CLK->CLKSEL0 &= ~CLK_CLKSEL0_HCLK_S_Msk;
-    //CLK->CLKSEL0 |= CLK_CLKSEL0_HCLK_S_HIRC;
     CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLK_S_Msk)) | CLK_CLKSEL0_HCLK_S_HIRC;
     CLK->CLKDIV &= ~CLK_CLKDIV_HCLK_N_Msk;
     CLK->CLKDIV |= CLK_CLKDIV_HCLK(1);
@@ -37,8 +25,6 @@ void SYS_Init(void)
 
     while (!(CLK->CLKSTATUS & CLK_CLKSTATUS_PLL_STB_Msk));
 
-    //CLK->CLKSEL0 &= (~CLK_CLKSEL0_HCLK_S_Msk);
-    //CLK->CLKSEL0 |= CLK_CLKSEL0_HCLK_S_PLL;
     CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLK_S_Msk)) | CLK_CLKSEL0_HCLK_S_PLL;
     /* Update System Core Clock */
     /* User can use SystemCoreClockUpdate() to calculate PllClock, SystemCoreClock and CycylesPerUs automatically. */
@@ -47,7 +33,7 @@ void SYS_Init(void)
     //SystemCoreClock = PLL_CLOCK / 1;        // HCLK
     CyclesPerUs     = PLL_CLOCK / 1000000;  // For SYS_SysTickDelay()
     /* Enable module clock */
-    CLK->APBCLK |= (CLK_APBCLK_UART0_EN_Msk | CLK_APBCLK_USBD_EN_Msk);
+    CLK->APBCLK |= CLK_APBCLK_UART0_EN_Msk;
     CLK->AHBCLK |= CLK_AHBCLK_ISP_EN_Msk;	// (1ul << 2)
     /* Select module clock source */
     //CLK_SetModuleClock(UART0_MODULE, CLK_CLKSEL1_UART_S_HIRC, CLK_CLKDIV_UART(1));
@@ -118,7 +104,3 @@ _APROM:
     /* Trap the CPU */
     while (1);
 }
-
-
-/*** (C) COPYRIGHT 2013 Nuvoton Technology Corp. ***/
-

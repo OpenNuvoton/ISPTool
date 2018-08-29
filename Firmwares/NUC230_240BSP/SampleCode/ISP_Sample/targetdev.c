@@ -1,6 +1,6 @@
 
 #include "targetdev.h"
-#include "ISP_USER.h"
+#include "isp_user.h"
 
 //the smallest of APROM size is 32K (32K, 64K, 128K)
 uint32_t GetApromSize()

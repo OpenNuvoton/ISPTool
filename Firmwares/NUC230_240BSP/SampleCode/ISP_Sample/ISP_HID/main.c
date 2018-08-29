@@ -1,12 +1,3 @@
-/******************************************************************************
- * @file     main.c
- * @brief
- *           Transfer data between USB device and PC through USB HID interface.
- *           A windows tool is also included in this sample code to connect with USB device.
- *
- * @note
- * Copyright (C) 2013 Nuvoton Technology Corp. All rights reserved.
- ******************************************************************************/
 #include <stdio.h>
 #include "targetdev.h"
 
@@ -110,7 +101,3 @@ _APROM:
     /* Trap the CPU */
     while (1);
 }
-
-
-/*** (C) COPYRIGHT 2013 Nuvoton Technology Corp. ***/
-
