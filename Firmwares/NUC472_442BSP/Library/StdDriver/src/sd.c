@@ -40,11 +40,11 @@ uint8_t volatile _sd_SDDataReady = FALSE;
 uint8_t *_sd_pSDHCBuffer;
 uint32_t _sd_ReferenceClock;
 
-#if defined (__CC_ARM)
-__align(4096) uint8_t _sd_ucSDHCBuffer[512];
-#elif defined ( __ICCARM__ ) /*!< IAR Compiler */
-#pragma data_alignment = 4096
-uint8_t _sd_ucSDHCBuffer[512];
+#ifdef __ICCARM__
+#pragma data_alignment = 4
+static uint8_t _sd_ucSDHCBuffer[512];
+#else
+static uint8_t _sd_ucSDHCBuffer[512] __attribute__((aligned(4)));
 #endif
 
 int sd0_ok = 0;
@@ -357,7 +357,7 @@ int SD_Init(SD_INFO_T *pSD)
 {
     int volatile i, status;
     unsigned int resp;
-    unsigned int CIDBuffer[4];
+    uint32_t CIDBuffer[4];
     unsigned int volatile u32CmdTimeOut;
 
     // set the clock to 200KHz
@@ -618,7 +618,7 @@ int SD_SelectCardType(SD_INFO_T *pSD)
 void SD_Get_SD_info(SD_INFO_T *pSD, DISK_DATA_T *_info)
 {
     unsigned int R_LEN, C_Size, MULT, size;
-    unsigned int Buffer[4];
+    uint32_t Buffer[4];
     unsigned char *ptr;
 
     SD_SDCmdAndRsp2(pSD, 9, pSD->RCA, Buffer);

@@ -37,12 +37,15 @@ static uint8_t u32ChSelect[PDMA_CH_MAX];
  */
 void PDMA_Open(uint32_t u32Mask)
 {
-    int volatile i;
+    uint32_t i;
 
-    for(i = 0; i < PDMA_CH_MAX; i++)
+    for(i = 0UL; i < PDMA_CH_MAX; i++)
     {
-        PDMA->DSCT[i].CTL = 0;
-        u32ChSelect[i] = PDMA_MEM;
+        if((1 << i) & u32Mask)
+        {
+            PDMA->DSCT[i].CTL = 0UL;
+            u32ChSelect[i] = PDMA_MEM;
+        }
     }
 
     PDMA->CHCTL |= u32Mask;

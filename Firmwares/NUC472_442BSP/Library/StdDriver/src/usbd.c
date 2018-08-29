@@ -44,7 +44,7 @@ static uint8_t g_usbd_TestSelector = 0;
 #pragma data_alignment=4
 static uint8_t g_usbd_buf[12];
 #else
-__align(4) static uint8_t g_usbd_buf[12];
+static uint8_t g_usbd_buf[12] __attribute__((aligned(4)));
 #endif
 
 
