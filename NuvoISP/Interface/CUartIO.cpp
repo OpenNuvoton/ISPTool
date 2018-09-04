@@ -68,7 +68,7 @@ BOOL CUartIO::OpenDevice(CString strComNum)
         dcb.StopBits = ONESTOPBIT ;
         dcb.fBinary = TRUE ;
         dcb.fParity = FALSE;
-        //dcb.fDtrControl = 0;
+        dcb.fDtrControl = DTR_CONTROL_ENABLE;
         //printf("SetCommState - ");
         SetCommState(m_hCOMHandle, &dcb);					//串口參數配置
         //printf("SetCommMask - ");
