@@ -833,6 +833,7 @@ BOOL CNuvoISPDlg::ResetUI(unsigned int ulDeviceID)
 
         if (m_uNVM_Addr < m_uAPROM_Size) {
             m_uNVM_Size = (m_uAPROM_Size - m_uNVM_Addr);
+            m_uAPROM_Size = m_uNVM_Addr;
         } else {
             m_uNVM_Size = 0;
             m_bProgram_NVM = 0;
