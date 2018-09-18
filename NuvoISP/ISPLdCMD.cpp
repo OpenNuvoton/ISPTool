@@ -422,6 +422,7 @@ BOOL ISPLdCMD::CMDEx_SetAckSize(const char ucAckSize)
 {
     BOOL ret = FALSE;
     m_uUartAckSize = 64;
+    return ret; // Comment this line to use CMDEx_SetAckSize
     char ucRetAckSize = 0;
 
     if (WriteFile(CMD_SET_ACKSIZE, &ucAckSize, 4, USBCMD_TIMEOUT)) {

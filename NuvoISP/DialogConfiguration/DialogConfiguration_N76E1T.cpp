@@ -200,7 +200,8 @@ BOOL CDialogConfiguration_N76E1T::OnInitDialog()
             break;
         }
 
-        case 0x3600: {
+        case 0x3600:
+        case 0x4B00: {
             m_uLevel = N76E1T_CONFIG_CBOV_4_LEVEL;
             GetDlgItem(IDC_GROUP_RPD)->SetWindowText(_T("P2.0/RST Pin Function"));
             GetDlgItem(IDC_RADIO_RPD_RESET)->SetWindowText(_T("P2.0 as the external reset pin"));

@@ -530,6 +530,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
             case 0x00002F50:
             case 0x00003650:
             case 0x00003E61:
+            case 0x06004721:
                 uID = uSeriesCode;
 
             case IDD_DIALOG_CONFIGURATION_N76E1T:
@@ -798,10 +799,13 @@ UINT DialogTemplate[] = {
     //{"N76E616", 0x00002F50, IDD_DIALOG_CONFIGURATION_N76E1T},
     //{"N76E003", 0x00003650, IDD_DIALOG_CONFIGURATION_N76E1T},
     //{"N76L151", 0x00003E61, IDD_DIALOG_CONFIGURATION_N76E1T},
+    //{"ML51BB9AE", 0x06004721, IDD_DIALOG_CONFIGURATION_N76E1T},
+
     0x00002140,
     0x00002F50,
     0x00003650,
     0x00003E61,
+    0x06004721,
 
     IDD_DIALOG_CONFIGURATION_NANO100,
     IDD_DIALOG_CONFIGURATION_NANO100BN,
@@ -840,6 +844,7 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
         sub8051->AppendMenu(MF_STRING, 0x00002F50, _T("N76E616"));
         sub8051->AppendMenu(MF_STRING, 0x00003650, _T("N76E003"));
         sub8051->AppendMenu(MF_STRING, 0x00003E61, _T("N76L151"));
+        sub8051->AppendMenu(MF_STRING, 0x00003E61, _T("ML51"));
         menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)sub8051->m_hMenu, _T("8051 1T Series"));
         menu.AppendMenu(MF_SEPARATOR);
         // M051 Series
