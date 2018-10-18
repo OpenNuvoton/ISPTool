@@ -23,17 +23,17 @@
 */
 
 /**
-  * @brief      Clear reset source 
+  * @brief      Clear reset source
   * @param[in]  u32Src is system reset source. Including :
   *             - \ref SYS_RSTSRC_RSTS_CPU_Msk
   *             - \ref SYS_RSTSRC_RSTS_MCU_Msk
   *             - \ref SYS_RSTSRC_RSTS_BOD_Msk
   *             - \ref SYS_RSTSRC_RSTS_LVR_Msk
-  *             - \ref SYS_RSTSRC_RSTS_WDT_Msk 
-  *             - \ref SYS_RSTSRC_RSTS_RESET_Msk 
-  *             - \ref SYS_RSTSRC_RSTS_POR_Msk  
+  *             - \ref SYS_RSTSRC_RSTS_WDT_Msk
+  *             - \ref SYS_RSTSRC_RSTS_RESET_Msk
+  *             - \ref SYS_RSTSRC_RSTS_POR_Msk
   * @return     None
-  * @details    This function clear the selected system reset source.    
+  * @details    This function clear the selected system reset source.
   */
 void SYS_ClearResetSrc(uint32_t u32Src)
 {
@@ -46,7 +46,7 @@ void SYS_ClearResetSrc(uint32_t u32Src)
   * @retval     0 System voltage is higher than BOD_VL setting or BOD_EN is 0.
   * @retval     1 System voltage is lower than BOD_VL setting.
   * @details    This function get Brown-out detector output status.
-  *             If the BOD_EN is 0, this function always return 0.  
+  *             If the BOD_EN is 0, this function always return 0.
   */
 uint32_t SYS_GetBODStatus(void)
 {
@@ -57,7 +57,7 @@ uint32_t SYS_GetBODStatus(void)
   * @brief      Get reset source
   * @param      None
   * @return     Reset source
-  * @details    This function get the system reset source register value.  
+  * @details    This function get the system reset source register value.
   */
 uint32_t SYS_GetResetSrc(void)
 {
@@ -69,7 +69,7 @@ uint32_t SYS_GetResetSrc(void)
   * @param      None
   * @retval     0 Write-protection function is disabled.
   * @retval     1 Write-protection function is enabled.
-  * @details    This function check register write-protection bit setting.  
+  * @details    This function check register write-protection bit setting.
   */
 uint32_t SYS_IsRegLocked(void)
 {
@@ -80,7 +80,7 @@ uint32_t SYS_IsRegLocked(void)
   * @brief      Get product ID
   * @param      None
   * @return     Product ID
-  * @details    This function get product ID.  
+  * @details    This function get product ID.
   */
 uint32_t  SYS_ReadPDID(void)
 {
@@ -91,7 +91,7 @@ uint32_t  SYS_ReadPDID(void)
   * @brief      Reset chip with chip reset
   * @param      None
   * @return     None
-  * @details    This function reset chip with chip reset.  
+  * @details    This function reset chip with chip reset.
   */
 void SYS_ResetChip(void)
 {
@@ -102,7 +102,7 @@ void SYS_ResetChip(void)
   * @brief      Reset chip with CPU reset
   * @param      None
   * @return     None
-  * @details    This function reset CPU with CPU reset.  
+  * @details    This function reset CPU with CPU reset.
   */
 void SYS_ResetCPU(void)
 {
@@ -131,7 +131,7 @@ void SYS_ResetCPU(void)
   *             - \ref ACMP23_RST
   *             - \ref ADC_RST
   * @return     None
-  * @details    This function reset selected module.    
+  * @details    This function reset selected module.
   */
 void SYS_ResetModule(uint32_t u32ModuleIndex)
 {
@@ -155,7 +155,7 @@ void SYS_ResetModule(uint32_t u32ModuleIndex)
   * @return     None
   * @details    This function configure Brown-out detector function.
   *             It configure Brown-out detector reset or interrupt mode, enable Brown-out function and set Brown-out voltage level.
-  *             
+  *
   */
 void SYS_EnableBOD(int32_t i32Mode, uint32_t u32BODLevel)
 {
@@ -168,7 +168,7 @@ void SYS_EnableBOD(int32_t i32Mode, uint32_t u32BODLevel)
   * @brief      Disable Brown-out detector function
   * @param      None
   * @return     None
-  * @details    This function disable Brown-out detector function.   
+  * @details    This function disable Brown-out detector function.
   */
 void SYS_DisableBOD(void)
 {

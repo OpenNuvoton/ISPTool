@@ -1,14 +1,11 @@
 /**************************************************************************//**
  * @file     Nano100Series.h
- * @version  V1.00
- * $Revision: 36 $
- * $Date: 15/07/03 9:51a $
  * @brief    Nano100 series peripheral access layer header file.
  *           This file contains all the peripheral register's definitions,
  *           bits definitions and memory mapping for NuMicro Nano100 series MCU.
  *
  * @note
- * Copyright (C) 2017 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2018 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 /**
    \mainpage NuMicro NANO100AN Driver Reference Guide
@@ -47,7 +44,7 @@
    *
    * <b>Copyright Notice</b>
    *
-   * Copyright (C) 2013 ~ 2017 Nuvoton Technology Corp. All rights reserved.
+   * Copyright (C) 2013 ~ 2018 Nuvoton Technology Corp. All rights reserved.
    */
 #ifndef __NANO100SERIES_H__
 #define __NANO100SERIES_H__

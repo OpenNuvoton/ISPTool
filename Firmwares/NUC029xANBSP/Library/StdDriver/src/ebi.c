@@ -56,56 +56,56 @@ void EBI_Open(uint32_t u32Bank, uint32_t u32DataWidth, uint32_t u32TimingClass, 
 
     switch(u32TimingClass)
     {
-    case EBI_TIMING_FASTEST:
-        EBI->EBICON = (EBI->EBICON & ~(EBI_EBICON_MCLKDIV_Msk | EBI_EBICON_ExttALE_Msk)) |
-                      (EBI_MCLKDIV_1 << EBI_EBICON_MCLKDIV_Pos) | EBI_EBICON_ExtEN_Msk;
-        EBI->EXTIME = 0x0;
-        break;
+        case EBI_TIMING_FASTEST:
+            EBI->EBICON = (EBI->EBICON & ~(EBI_EBICON_MCLKDIV_Msk | EBI_EBICON_ExttALE_Msk)) |
+                          (EBI_MCLKDIV_1 << EBI_EBICON_MCLKDIV_Pos) | EBI_EBICON_ExtEN_Msk;
+            EBI->EXTIME = 0x0;
+            break;
 
-    case EBI_TIMING_VERYFAST:
-        EBI->EBICON = (EBI->EBICON & ~(EBI_EBICON_MCLKDIV_Msk | EBI_EBICON_ExttALE_Msk)) |
-                      (EBI_MCLKDIV_1 << EBI_EBICON_MCLKDIV_Pos) | EBI_EBICON_ExtEN_Msk   |
-                      (0x3 << EBI_EBICON_ExttALE_Pos) ;
-        EBI->EXTIME = 0x03003318;
-        break;
+        case EBI_TIMING_VERYFAST:
+            EBI->EBICON = (EBI->EBICON & ~(EBI_EBICON_MCLKDIV_Msk | EBI_EBICON_ExttALE_Msk)) |
+                          (EBI_MCLKDIV_1 << EBI_EBICON_MCLKDIV_Pos) | EBI_EBICON_ExtEN_Msk   |
+                          (0x3 << EBI_EBICON_ExttALE_Pos) ;
+            EBI->EXTIME = 0x03003318;
+            break;
 
-    case EBI_TIMING_FAST:
-        EBI->EBICON = (EBI->EBICON & ~(EBI_EBICON_MCLKDIV_Msk | EBI_EBICON_ExttALE_Msk)) |
-                      (EBI_MCLKDIV_2 << EBI_EBICON_MCLKDIV_Pos) | EBI_EBICON_ExtEN_Msk;
-        EBI->EXTIME = 0x0;
-        break;
+        case EBI_TIMING_FAST:
+            EBI->EBICON = (EBI->EBICON & ~(EBI_EBICON_MCLKDIV_Msk | EBI_EBICON_ExttALE_Msk)) |
+                          (EBI_MCLKDIV_2 << EBI_EBICON_MCLKDIV_Pos) | EBI_EBICON_ExtEN_Msk;
+            EBI->EXTIME = 0x0;
+            break;
 
-    case EBI_TIMING_NORMAL:
-        EBI->EBICON = (EBI->EBICON & ~(EBI_EBICON_MCLKDIV_Msk | EBI_EBICON_ExttALE_Msk)) |
-                      (EBI_MCLKDIV_2 << EBI_EBICON_MCLKDIV_Pos) | EBI_EBICON_ExtEN_Msk   |
-                      (0x3 << EBI_EBICON_ExttALE_Pos) ;
-        EBI->EXTIME = 0x03003318;
-        break;
+        case EBI_TIMING_NORMAL:
+            EBI->EBICON = (EBI->EBICON & ~(EBI_EBICON_MCLKDIV_Msk | EBI_EBICON_ExttALE_Msk)) |
+                          (EBI_MCLKDIV_2 << EBI_EBICON_MCLKDIV_Pos) | EBI_EBICON_ExtEN_Msk   |
+                          (0x3 << EBI_EBICON_ExttALE_Pos) ;
+            EBI->EXTIME = 0x03003318;
+            break;
 
-    case EBI_TIMING_SLOW:
-        EBI->EBICON = (EBI->EBICON & ~(EBI_EBICON_MCLKDIV_Msk | EBI_EBICON_ExttALE_Msk)) |
-                      (EBI_MCLKDIV_2 << EBI_EBICON_MCLKDIV_Pos) | EBI_EBICON_ExtEN_Msk   |
-                      (0x7 << EBI_EBICON_ExttALE_Pos) ;
-        EBI->EXTIME = 0x07007738;
-        break;
+        case EBI_TIMING_SLOW:
+            EBI->EBICON = (EBI->EBICON & ~(EBI_EBICON_MCLKDIV_Msk | EBI_EBICON_ExttALE_Msk)) |
+                          (EBI_MCLKDIV_2 << EBI_EBICON_MCLKDIV_Pos) | EBI_EBICON_ExtEN_Msk   |
+                          (0x7 << EBI_EBICON_ExttALE_Pos) ;
+            EBI->EXTIME = 0x07007738;
+            break;
 
-    case EBI_TIMING_VERYSLOW:
-        EBI->EBICON = (EBI->EBICON & ~(EBI_EBICON_MCLKDIV_Msk | EBI_EBICON_ExttALE_Msk)) |
-                      (EBI_MCLKDIV_4 << EBI_EBICON_MCLKDIV_Pos) | EBI_EBICON_ExtEN_Msk   |
-                      (0x7 << EBI_EBICON_ExttALE_Pos) ;
-        EBI->EXTIME = 0x07007738;
-        break;
+        case EBI_TIMING_VERYSLOW:
+            EBI->EBICON = (EBI->EBICON & ~(EBI_EBICON_MCLKDIV_Msk | EBI_EBICON_ExttALE_Msk)) |
+                          (EBI_MCLKDIV_4 << EBI_EBICON_MCLKDIV_Pos) | EBI_EBICON_ExtEN_Msk   |
+                          (0x7 << EBI_EBICON_ExttALE_Pos) ;
+            EBI->EXTIME = 0x07007738;
+            break;
 
-    case EBI_TIMING_SLOWEST:
-        EBI->EBICON = (EBI->EBICON & ~(EBI_EBICON_MCLKDIV_Msk | EBI_EBICON_ExttALE_Msk)) |
-                      (EBI_MCLKDIV_8 << EBI_EBICON_MCLKDIV_Pos) | EBI_EBICON_ExtEN_Msk   |
-                      (0x7 << EBI_EBICON_ExttALE_Pos) ;
-        EBI->EXTIME = 0x07007738;
-        break;
+        case EBI_TIMING_SLOWEST:
+            EBI->EBICON = (EBI->EBICON & ~(EBI_EBICON_MCLKDIV_Msk | EBI_EBICON_ExttALE_Msk)) |
+                          (EBI_MCLKDIV_8 << EBI_EBICON_MCLKDIV_Pos) | EBI_EBICON_ExtEN_Msk   |
+                          (0x7 << EBI_EBICON_ExttALE_Pos) ;
+            EBI->EXTIME = 0x07007738;
+            break;
 
-    default:
-        EBI->EBICON &= ~EBI_EBICON_ExtEN_Msk;
-        break;
+        default:
+            EBI->EBICON &= ~EBI_EBICON_ExtEN_Msk;
+            break;
     }
 }
 

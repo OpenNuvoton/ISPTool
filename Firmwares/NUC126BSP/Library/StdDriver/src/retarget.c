@@ -318,7 +318,7 @@ SH_End
 
 /* Make sure won't goes here only because --gnu is defined , so
    add !__CC_ARM and !__ICCARM__ checking */
-# if defined ( __GNUC__ ) && !(__CC_ARM) && !(__ICCARM__) 
+# if defined ( __GNUC__ ) && !(__CC_ARM) && !(__ICCARM__)
 
 /**
  * @brief    This HardFault handler is implemented to show r0, r1, r2, r3, r12, lr, pc, psr
@@ -341,7 +341,7 @@ void HardFault_Handler(void)
         "B       Hard_Fault_Handler            \n"
         "1:                                    \n"
         "MRS     R0, MSP                       \n" /*; LR current value */
-        "B       Hard_Fault_Handler            \n"    
+        "B       Hard_Fault_Handler            \n"
         ::[Hard_Fault_Handler] "r" (Hard_Fault_Handler) // input
     );
     while(1);
@@ -655,6 +655,7 @@ int fputc(int ch, FILE *stream)
 
 #if defined ( __GNUC__ )
 
+#if !defined (OS_USE_SEMIHOSTING)
 int _write (int fd, char *ptr, int len)
 {
     int i = len;
@@ -681,6 +682,7 @@ int _read (int fd, char *ptr, int len)
 
 
 }
+#endif
 
 #else
 /**

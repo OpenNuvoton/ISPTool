@@ -1,14 +1,10 @@
 /**************************************************************************//**
  * @file     Nano1X2Series.h
- * @version  V1.00
- * $Revision: 97 $
- * $Date: 16/03/22 9:06a $
  * @brief    Nano102/112  peripheral access layer header file.
  *           This file contains all the peripheral register's definitions,
  *           bits definitions and memory mapping for NuMicro Nano102/112 MCU.
  *
- * @note
- * Copyright (C) 2017 Nuvoton Technology Corp. All rights reserved.
+ * @copyright (C) 2018 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 /**
    \mainpage NuMicro Nano102/112 Driver Reference Guide
@@ -47,7 +43,7 @@
    *
    * <b>Copyright Notice</b>
    *
-   * Copyright (C) 2013-2017 Nuvoton Technology Corp. All rights reserved.
+   * Copyright (C) 2013-2018 Nuvoton Technology Corp. All rights reserved.
    */
 #ifndef __NANO1X2SERIES_H__
 #define __NANO1X2SERIES_H__

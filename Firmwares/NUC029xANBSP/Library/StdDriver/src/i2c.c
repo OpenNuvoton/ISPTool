@@ -63,10 +63,13 @@ uint32_t I2C_Open(I2C_T *i2c, uint32_t u32BusClock)
 void I2C_Close(I2C_T *i2c)
 {
     /* Reset I2C Controller */
-	  if((uint32_t)i2c == I2C0_BASE) {
+    if((uint32_t)i2c == I2C0_BASE)
+    {
         SYS->IPRSTC2 |= SYS_IPRSTC2_I2C0_RST_Msk;
         SYS->IPRSTC2 &= ~SYS_IPRSTC2_I2C0_RST_Msk;
-    } else if((uint32_t)i2c == I2C1_BASE) {
+    }
+    else if((uint32_t)i2c == I2C1_BASE)
+    {
         SYS->IPRSTC2 |= SYS_IPRSTC2_I2C1_RST_Msk;
         SYS->IPRSTC2 &= ~SYS_IPRSTC2_I2C1_RST_Msk;
     }
@@ -261,19 +264,19 @@ void I2C_SetSlaveAddr(I2C_T *i2c, uint8_t u8SlaveNo, uint8_t u8SlaveAddr, uint8_
 {
     switch(u8SlaveNo)
     {
-    case 1:
-        i2c->I2CADDR1  = (u8SlaveAddr << 1) | u8GCMode;
-        break;
-    case 2:
-        i2c->I2CADDR2  = (u8SlaveAddr << 1) | u8GCMode;
-        break;
-    case 3:
-        i2c->I2CADDR3  = (u8SlaveAddr << 1) | u8GCMode;
-        break;
-    case 0:
-    default:
-        i2c->I2CADDR0  = (u8SlaveAddr << 1) | u8GCMode;
-        break;
+        case 1:
+            i2c->I2CADDR1  = (u8SlaveAddr << 1) | u8GCMode;
+            break;
+        case 2:
+            i2c->I2CADDR2  = (u8SlaveAddr << 1) | u8GCMode;
+            break;
+        case 3:
+            i2c->I2CADDR3  = (u8SlaveAddr << 1) | u8GCMode;
+            break;
+        case 0:
+        default:
+            i2c->I2CADDR0  = (u8SlaveAddr << 1) | u8GCMode;
+            break;
     }
 }
 
@@ -293,19 +296,19 @@ void I2C_SetSlaveAddrMask(I2C_T *i2c, uint8_t u8SlaveNo, uint8_t u8SlaveAddrMask
 {
     switch(u8SlaveNo)
     {
-    case 1:
-        i2c->I2CADM1  = u8SlaveAddrMask << 1;
-        break;
-    case 2:
-        i2c->I2CADM2  = u8SlaveAddrMask << 1;
-        break;
-    case 3:
-        i2c->I2CADM3  = u8SlaveAddrMask << 1;
-        break;
-    case 0:
-    default:
-        i2c->I2CADM0  = u8SlaveAddrMask << 1;
-        break;
+        case 1:
+            i2c->I2CADM1  = u8SlaveAddrMask << 1;
+            break;
+        case 2:
+            i2c->I2CADM2  = u8SlaveAddrMask << 1;
+            break;
+        case 3:
+            i2c->I2CADM3  = u8SlaveAddrMask << 1;
+            break;
+        case 0:
+        default:
+            i2c->I2CADM0  = u8SlaveAddrMask << 1;
+            break;
     }
 }
 

@@ -7,7 +7,7 @@
  *           This file contains all the peripheral register's definitions,
  *           bits definitions and memory mapping for NuMicro NUC472/NUC442 MCU.
  * @note
- * Copyright (C) 2017 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2018 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 /**
    \mainpage NuMicro NUC472/NUC442 MCU Driver Reference Guide
@@ -46,7 +46,7 @@
    *
    * <b>Copyright Notice</b>
    *
-   * Copyright (C) 2015~2017 Nuvoton Technology Corp. All rights reserved.
+   * Copyright (C) 2015~2018 Nuvoton Technology Corp. All rights reserved.
    */
 
 #ifndef __NUC472_442_H__

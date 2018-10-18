@@ -217,7 +217,7 @@ extern "C"
  *
  * @details     Disable I/O DOUT mask of specified GPIO pin.
  */
-#define GPIO_DISABLE_DOUT_MASK(port, u32PinMask)    ((port)->DMASK &= ~(u32PinMask))    
+#define GPIO_DISABLE_DOUT_MASK(port, u32PinMask)    ((port)->DMASK &= ~(u32PinMask))
 
 /**
  * @brief       Enable I/O DOUT mask

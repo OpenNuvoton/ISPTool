@@ -306,7 +306,7 @@ extern "C"
   * @brief Stop the A/D conversion.
   * @param[in] adc The pointer of the specified ADC module.
   * @return None
-  * @details ADST (ADCR[11]) will be cleared to 0 by hardware automatically at the ends of single mode and single-cycle scan mode. 
+  * @details ADST (ADCR[11]) will be cleared to 0 by hardware automatically at the ends of single mode and single-cycle scan mode.
   *          In continuous scan mode and burst mode, A/D conversion is continuously performed until software writes 0 to this bit.
   * @note If ADST bit is cleared to 0 when ADC is in converting, the BUSY bit will be cleared to 0 immediately,
   *       ADC will terminate the current conversion and enter idle state directly.

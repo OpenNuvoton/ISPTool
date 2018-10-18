@@ -46,30 +46,17 @@ uint32_t TIMER_Open(TIMER_T *timer, uint32_t u32Mode, uint32_t u32Freq)
     uint32_t u32Clk = TIMER_GetModuleClock(timer);
     uint32_t u32Cmpr = 0, u32Prescale = 0;
 
-    // Fastest possible timer working freq is (u32Clk / 2). While cmpr = 2, pre-scale = 0.
+    /* Fastest possible timer working freq is (u32Clk / 2). While cmpr = 2, prescaler = 0. */
     if(u32Freq > (u32Clk / 2))
     {
         u32Cmpr = 2;
     }
     else
     {
-        if(u32Clk > 64000000)
-        {
-            u32Prescale = 7;    // real prescaler value is 8
-            u32Clk >>= 3;
-        }
-        else if(u32Clk > 32000000)
-        {
-            u32Prescale = 3;    // real prescaler value is 4
-            u32Clk >>= 2;
-        }
-        else if(u32Clk > 16000000)
-        {
-            u32Prescale = 1;    // real prescaler value is 2
-            u32Clk >>= 1;
-        }
-
         u32Cmpr = u32Clk / u32Freq;
+        u32Prescale = (u32Cmpr >> 24);  /* for 24 bits CMPDAT */
+        if (u32Prescale > 0UL)
+            u32Cmpr = u32Cmpr / (u32Prescale + 1UL);
     }
 
     timer->CTL = u32Mode | u32Prescale;
@@ -138,38 +125,19 @@ void TIMER_Delay(TIMER_T *timer, uint32_t u32Usec)
     }
     else
     {
-        if(u32Clk > 64000000)
-        {
-            u32Prescale = 7;    // real prescaler value is 8
-            u32Clk >>= 3;
-        }
-        else if(u32Clk > 32000000)
-        {
-            u32Prescale = 3;    // real prescaler value is 4
-            u32Clk >>= 2;
-        }
-        else if(u32Clk > 16000000)
-        {
-            u32Prescale = 1;    // real prescaler value is 2
-            u32Clk >>= 1;
-        }
-
-        if(u32Usec < 250)
-        {
-            u32Cmpr = (u32Usec * u32Clk) / 1000000;
-        }
-        else
-        {
-            u32NsecPerTick = 1000000000 / u32Clk;
-            u32Cmpr = (u32Usec * 1000) / u32NsecPerTick;
-        }
+        u32Cmpr = u32Usec * (u32Clk / 1000000UL);
+        u32Prescale = (u32Cmpr >> 24);  /* for 24 bits CMPDAT */
+        if (u32Prescale > 0UL)
+            u32Cmpr = u32Cmpr / (u32Prescale + 1UL);
     }
 
     timer->CMP = u32Cmpr;
     timer->CTL = TIMER_CTL_CNTEN_Msk | TIMER_ONESHOT_MODE | u32Prescale;
 
-    // When system clock is faster than timer clock, it is possible timer active bit cannot set in time while we check it.
-    // And the while loop below return immediately, so put a tiny delay here allowing timer start counting and raise active flag.
+    /*
+        When system clock is faster than timer clock, it is possible timer active bit cannot set in time while we check it.
+        And the while loop below return immediately, so put a tiny delay here allowing timer start counting and raise active flag.
+    */
     for(; delay > 0; delay--)
     {
         __NOP();

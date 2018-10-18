@@ -24,9 +24,9 @@
 
 /**
   * @brief      Disable frequency output function
-  * @param      None  
+  * @param      None
   * @return     None
-  * @details    This function disable frequency output function. 
+  * @details    This function disable frequency output function.
   */
 void CLK_DisableCKO(void)
 {
@@ -66,47 +66,47 @@ void CLK_EnableCKO(uint32_t u32ClkSrc, uint32_t u32ClkDiv, uint32_t u32ClkDivBy1
 
 /**
   * @brief      Enter to Power-down mode
-  * @param      None  
+  * @param      None
   * @return     None
-  * @details    This function let system enter to Power-down mode. 
+  * @details    This function let system enter to Power-down mode.
   *             The register write-protection function should be disabled before using this function.
   */
 void CLK_PowerDown(void)
 {
-    /* Set the processor uses deep sleep as its low power mode */       
+    /* Set the processor uses deep sleep as its low power mode */
     SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
-    
-    /* Set system Power-down enabled and Power-down entry condition */     
+
+    /* Set system Power-down enabled and Power-down entry condition */
     CLK->PWRCON |= (CLK_PWRCON_PWR_DOWN_EN_Msk | CLK_PWRCON_PD_WAIT_CPU_Msk);
-    
-    /* Chip enter Power-down mode after CPU run WFI instruction */     
+
+    /* Chip enter Power-down mode after CPU run WFI instruction */
     __WFI();
 }
 
 /**
   * @brief      Enter to Idle mode.
-  * @param      None  
+  * @param      None
   * @return     None
-  * @details    This function let system enter to Idle mode. 
+  * @details    This function let system enter to Idle mode.
   *             The register write-protection function should be disabled before using this function.
   */
 void CLK_Idle(void)
 {
-    /* Set the processor uses sleep as its low power mode */     
+    /* Set the processor uses sleep as its low power mode */
     SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk;
-    
-    /* Set chip in idle mode because of WFI command */     
+
+    /* Set chip in idle mode because of WFI command */
     CLK->PWRCON &= ~CLK_PWRCON_PWR_DOWN_EN_Msk;
-    
-    /* Chip enter idle mode after CPU run WFI instruction */     
+
+    /* Chip enter idle mode after CPU run WFI instruction */
     __WFI();
 }
 
 /**
   * @brief      Get external high speed crystal clock frequency
-  * @param      None  
+  * @param      None
   * @return     External high frequency crystal frequency
-  * @details    This function get external high frequency crystal frequency. The frequency unit is Hz. 
+  * @details    This function get external high frequency crystal frequency. The frequency unit is Hz.
   */
 uint32_t CLK_GetHXTFreq(void)
 {
@@ -119,7 +119,7 @@ uint32_t CLK_GetHXTFreq(void)
 
 /**
   * @brief      Get HCLK frequency
-  * @param      None  
+  * @param      None
   * @return     HCLK frequency
   * @details    This function get HCLK frequency. The frequency unit is Hz.
   */
@@ -131,7 +131,7 @@ uint32_t CLK_GetHCLKFreq(void)
 
 /**
   * @brief      Get PCLK frequency
-  * @param      None  
+  * @param      None
   * @return     PCLK frequency
   * @details    This function get PCLK frequency. The frequency unit is Hz.
   */
@@ -143,7 +143,7 @@ uint32_t CLK_GetPCLKFreq(void)
 
 /**
   * @brief      Get CPU frequency
-  * @param      None 
+  * @param      None
   * @return     CPU frequency
   * @details    This function get CPU frequency. The frequency unit is Hz.
   */
@@ -155,7 +155,7 @@ uint32_t CLK_GetCPUFreq(void)
 
 
 /**
-  * @brief      Set HCLK frequency 
+  * @brief      Set HCLK frequency
   * @param[in]  u32Hclk is HCLK frequency
   * @return     HCLK frequency
   * @details    This function set HCLK frequency. The frequency unit is Hz. The range of u32Hclk is 25 MHz ~ 50 MHz.
@@ -165,10 +165,10 @@ uint32_t CLK_SetCoreClock(uint32_t u32Hclk)
 {
     uint32_t u32HIRCSTB;
 
-    /* Read HIRC clock source stable flag */    
-    u32HIRCSTB = CLK->CLKSTATUS & CLK_CLKSTATUS_OSC22M_STB_Msk;        
-    
-    /* The range of u32Hclk is 25 MHz ~ 50 MHz */    
+    /* Read HIRC clock source stable flag */
+    u32HIRCSTB = CLK->CLKSTATUS & CLK_CLKSTATUS_OSC22M_STB_Msk;
+
+    /* The range of u32Hclk is 25 MHz ~ 50 MHz */
     if(u32Hclk > FREQ_50MHZ)
         u32Hclk = FREQ_50MHZ;
     else if(u32Hclk < FREQ_25MHZ)
@@ -176,30 +176,30 @@ uint32_t CLK_SetCoreClock(uint32_t u32Hclk)
 
     /* Switch HCLK clock source to HIRC clock for safe */
     CLK->PWRCON |= CLK_PWRCON_OSC22M_EN_Msk;
-    CLK_WaitClockReady(CLK_CLKSTATUS_OSC22M_STB_Msk);  
+    CLK_WaitClockReady(CLK_CLKSTATUS_OSC22M_STB_Msk);
     CLK->CLKSEL0 |= CLK_CLKSEL0_HCLK_S_Msk;
-    CLK->CLKDIV &= (~CLK_CLKDIV_HCLK_N_Msk);    
-    
+    CLK->CLKDIV &= (~CLK_CLKDIV_HCLK_N_Msk);
+
     /* Configure PLL setting if HXT clock is stable */
     if(CLK->CLKSTATUS & CLK_CLKSTATUS_XTL12M_STB_Msk)
         u32Hclk = CLK_EnablePLL(CLK_PLLCON_PLL_SRC_HXT, u32Hclk);
 
-    /* Configure PLL setting if HXT clock is not stable */    
+    /* Configure PLL setting if HXT clock is not stable */
     else
     {
         u32Hclk = CLK_EnablePLL(CLK_PLLCON_PLL_SRC_HIRC, u32Hclk);
-        
-        /* Read HIRC clock source stable flag */    
-        u32HIRCSTB = CLK->CLKSTATUS & CLK_CLKSTATUS_OSC22M_STB_Msk;            
+
+        /* Read HIRC clock source stable flag */
+        u32HIRCSTB = CLK->CLKSTATUS & CLK_CLKSTATUS_OSC22M_STB_Msk;
     }
 
-    /* Select HCLK clock source to PLL */    
+    /* Select HCLK clock source to PLL */
     CLK_SetHCLK(CLK_CLKSEL0_HCLK_S_PLL, CLK_CLKDIV_HCLK(1));
 
     /* Disable HIRC if HIRC is disabled before setting core clock */
-    if( u32HIRCSTB == 0 )
-        CLK->PWRCON &= ~CLK_PWRCON_OSC22M_EN_Msk;      
-    
+    if(u32HIRCSTB == 0)
+        CLK->PWRCON &= ~CLK_PWRCON_OSC22M_EN_Msk;
+
     return u32Hclk;
 }
 
@@ -219,27 +219,27 @@ uint32_t CLK_SetCoreClock(uint32_t u32Hclk)
 void CLK_SetHCLK(uint32_t u32ClkSrc, uint32_t u32ClkDiv)
 {
     uint32_t u32HIRCSTB;
-    
-    /* Read HIRC clock source stable flag */    
+
+    /* Read HIRC clock source stable flag */
     u32HIRCSTB = CLK->CLKSTATUS & CLK_CLKSTATUS_OSC22M_STB_Msk;
-    
+
     /* Switch to HIRC for Safe. Avoid HCLK too high when applying new divider. */
     CLK->PWRCON |= CLK_PWRCON_OSC22M_EN_Msk;
-    CLK_WaitClockReady(CLK_CLKSTATUS_OSC22M_STB_Msk);  
+    CLK_WaitClockReady(CLK_CLKSTATUS_OSC22M_STB_Msk);
     CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLK_S_Msk)) | CLK_CLKSEL0_HCLK_S_HIRC;
-      
+
     /* Apply new Divider */
     CLK->CLKDIV = (CLK->CLKDIV & (~CLK_CLKDIV_HCLK_N_Msk)) | u32ClkDiv;
 
     /* Switch HCLK to new HCLK source */
-    CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLK_S_Msk)) | u32ClkSrc;    
-        
+    CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLK_S_Msk)) | u32ClkSrc;
+
     /* Update System Core Clock */
     SystemCoreClockUpdate();
-    
+
     /* Disable HIRC if HIRC is disabled before switching HCLK source */
-    if( u32HIRCSTB == 0 )
-        CLK->PWRCON &= ~CLK_PWRCON_OSC22M_EN_Msk;        
+    if(u32HIRCSTB == 0)
+        CLK->PWRCON &= ~CLK_PWRCON_OSC22M_EN_Msk;
 }
 
 /**
@@ -406,7 +406,7 @@ void CLK_DisableXtalRC(uint32_t u32ClkMask)
   *             - \ref ACMP01_MODULE
   *             - \ref ACMP23_MODULE
   * @return     None
-  * @details    This function enable module clock.  
+  * @details    This function enable module clock.
   *             The register write-protection function should be disabled before using this function.
   */
 void CLK_EnableModuleClock(uint32_t u32ModuleIdx)
@@ -441,8 +441,8 @@ void CLK_EnableModuleClock(uint32_t u32ModuleIdx)
   *             - \ref ACMP01_MODULE
   *             - \ref ACMP23_MODULE
   * @return     None
-  * @details    This function disable module clock. 
-  *             The register write-protection function should be disabled before using this function.  
+  * @details    This function disable module clock.
+  *             The register write-protection function should be disabled before using this function.
   */
 void CLK_DisableModuleClock(uint32_t u32ModuleIdx)
 {
@@ -468,7 +468,7 @@ uint32_t CLK_EnablePLL(uint32_t u32PllClkSrc, uint32_t u32PllFreq)
     /* Disable PLL first to avoid unstable when setting PLL. */
     CLK->PLLCON = CLK_PLLCON_PD_Msk;
 
-    /* PLL source clock is from HXT */    
+    /* PLL source clock is from HXT */
     if(u32PllClkSrc == CLK_PLLCON_PLL_SRC_HXT)
     {
         /* Enable HXT clock */
@@ -484,10 +484,10 @@ uint32_t CLK_EnablePLL(uint32_t u32PllClkSrc, uint32_t u32PllFreq)
         /* u32NR start from 2 */
         u32NR = 2;
     }
-    
-    /* PLL source clock is from HIRC */    
+
+    /* PLL source clock is from HIRC */
     else
-    {       
+    {
         /* Enable HIRC clock */
         CLK->PWRCON |= CLK_PWRCON_OSC22M_EN_Msk;
 
@@ -499,7 +499,7 @@ uint32_t CLK_EnablePLL(uint32_t u32PllClkSrc, uint32_t u32PllFreq)
         u32PllSrcClk = __HIRC;
 
         /* u32NR start from 4 when FIN = 22.1184MHz to avoid calculation overflow */
-        u32NR = 4;                
+        u32NR = 4;
     }
 
     /* Select "NO" according to request frequency */
@@ -580,7 +580,7 @@ lexit:
   * @brief      Disable PLL
   * @param      None
   * @return     None
-  * @details    This function disable PLL. 
+  * @details    This function disable PLL.
   */
 void CLK_DisablePLL(void)
 {
@@ -601,7 +601,7 @@ void CLK_DisablePLL(void)
   */
 uint32_t CLK_WaitClockReady(uint32_t u32ClkMask)
 {
-    int32_t i32TimeOutCnt = 1200000;   
+    int32_t i32TimeOutCnt = 1200000;
 
     while((CLK->CLKSTATUS & u32ClkMask) != u32ClkMask)
     {
@@ -623,39 +623,39 @@ uint32_t CLK_WaitClockReady(uint32_t u32ClkMask)
   * @param[in]  u32Count is System Tick reload value. It could be 0~0xFFFFFF.
   * @return     None
   * @details    This function set System Tick clock source, reload value, enable System Tick counter and interrupt.
-  *             The register write-protection function should be disabled before using this function. 
+  *             The register write-protection function should be disabled before using this function.
   */
-void CLK_EnableSysTick(uint32_t u32ClkSrc, uint32_t u32Count) 
+void CLK_EnableSysTick(uint32_t u32ClkSrc, uint32_t u32Count)
 {
     /* Set System Tick counter disabled */
-    SysTick->CTRL = 0;    
+    SysTick->CTRL = 0;
 
     /* Set System Tick clock source */
-    if( u32ClkSrc == CLK_CLKSEL0_STCLK_S_HCLK )         
+    if(u32ClkSrc == CLK_CLKSEL0_STCLK_S_HCLK)
         SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk;
     else
-        CLK->CLKSEL0 = (CLK->CLKSEL0 & ~CLK_CLKSEL0_STCLK_S_Msk) | u32ClkSrc; 
+        CLK->CLKSEL0 = (CLK->CLKSEL0 & ~CLK_CLKSEL0_STCLK_S_Msk) | u32ClkSrc;
 
     /* Set System Tick reload value */
-    SysTick->LOAD = u32Count;   
-    
+    SysTick->LOAD = u32Count;
+
     /* Clear System Tick current value and counter flag */
-    SysTick->VAL = 0;           
-    
-    /* Set System Tick interrupt enabled and counter enabled */    
-    SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk | SysTick_CTRL_ENABLE_Msk;       
+    SysTick->VAL = 0;
+
+    /* Set System Tick interrupt enabled and counter enabled */
+    SysTick->CTRL |= SysTick_CTRL_TICKINT_Msk | SysTick_CTRL_ENABLE_Msk;
 }
 
 /**
   * @brief      Disable System Tick counter
-  * @param      None 
+  * @param      None
   * @return     None
   * @details    This function disable System Tick counter.
   */
-void CLK_DisableSysTick(void) 
-{    
+void CLK_DisableSysTick(void)
+{
     /* Set System Tick counter disabled */
-	SysTick->CTRL = 0;    
+    SysTick->CTRL = 0;
 }
 
 /*@}*/ /* end of group NUC029_CLK_EXPORTED_FUNCTIONS */

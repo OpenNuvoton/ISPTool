@@ -44,7 +44,8 @@ struct __FILE
 FILE __stdout;
 FILE __stdin;
 
-#ifndef __GNUC__
+
+#if (defined(__ARMCC_VERSION) || defined(__ICCARM__))
 extern int32_t SH_DoCommand(int32_t n32In_R0, int32_t n32In_R1, int32_t *pn32Out_R0);
 
 #if defined( __ICCARM__ )
@@ -61,7 +62,7 @@ int IsDebugFifoEmpty(void);
 void _ttywrch(int ch);
 int fputc(int ch, FILE *stream);
 
-#ifndef __GNUC__
+#if (defined(__ARMCC_VERSION) || defined(__ICCARM__))
 int fgetc(FILE *stream);
 int ferror(FILE *stream);
 #endif
@@ -71,7 +72,7 @@ void SendChar_ToUART(int ch);
 void SendChar(int ch);
 
 #if defined(DEBUG_ENABLE_SEMIHOST)
-#ifndef __GNUC__
+#if (defined(__ARMCC_VERSION) || defined(__ICCARM__))
 /* The static buffer is used to speed up the semihost */
 static char g_buf[16];
 static char g_buf_len = 0;

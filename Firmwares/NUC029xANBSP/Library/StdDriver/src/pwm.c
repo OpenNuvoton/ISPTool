@@ -178,7 +178,7 @@ uint32_t PWM_ConfigOutputChannel(PWM_T *pwm,
     // set PWM to edge aligned type
     (pwm)->PCR &= ~(PWM_PCR_PWM01TYPE_Msk << (u32ChannelNum >> 1));
     (pwm)->PCR |= PWM_PCR_CH0MOD_Msk << (8 * u32ChannelNum);
-    if (u32DutyCycle)
+    if(u32DutyCycle)
         *((__IO uint32_t *)((((uint32_t) & ((pwm)->CMR0)) + u32ChannelNum * 12))) = u32DutyCycle * (u16CNR + 1) / 100 - 1;
     else
         *((__IO uint32_t *)((((uint32_t) & ((pwm)->CMR0)) + u32ChannelNum * 12))) = 0;

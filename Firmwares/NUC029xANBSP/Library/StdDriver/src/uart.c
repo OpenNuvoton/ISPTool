@@ -39,7 +39,7 @@
  *
  *    @details      The function is used to clear UART specified interrupt flag.
  */
-void UART_ClearIntFlag(UART_T* uart , uint32_t u32InterruptFlag)
+void UART_ClearIntFlag(UART_T* uart, uint32_t u32InterruptFlag)
 {
 
     if(u32InterruptFlag & UART_ISR_RLS_INT_Msk) /* clear Receive Line Status Interrupt */
@@ -150,7 +150,7 @@ void UART_EnableFlowCtrl(UART_T* uart)
  *
  *    @param[in]    uart                The pointer of the specified UART module.
  *    @param[in]    u32InterruptFlag    The specified interrupt of UART module:
- *                                      - UART_IER_LIN_RX_BRK_IEN_Msk  : LIN bus interrupt                                  
+ *                                      - UART_IER_LIN_RX_BRK_IEN_Msk  : LIN bus interrupt
  *                                      - UART_IER_WAKE_EN_Msk         : Wakeup interrupt
  *                                      - UART_IER_BUF_ERR_IEN_Msk     : Buffer Error interrupt
  *                                      - UART_IER_RTO_IEN_Msk         : Rx time-out interrupt
@@ -388,7 +388,7 @@ void UART_SelectIrDAMode(UART_T* uart, uint32_t u32Buadrate, uint32_t u32Directi
     else
     {
         uart->IRCR &= ~UART_IRCR_INV_TX_Msk;    //Tx signal is not inverted
-        uart->IRCR |= UART_IRCR_TX_SELECT_Msk;        
+        uart->IRCR |= UART_IRCR_TX_SELECT_Msk;
     }
 }
 

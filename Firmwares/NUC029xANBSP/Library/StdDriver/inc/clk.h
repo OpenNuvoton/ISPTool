@@ -190,9 +190,9 @@
 
 /**
   * @brief      Get PLL clock frequency
-  * @param      None     
+  * @param      None
   * @return     PLL frequency
-  * @details    This function get PLL frequency. The frequency unit is Hz.    
+  * @details    This function get PLL frequency. The frequency unit is Hz.
   */
 __STATIC_INLINE uint32_t CLK_GetPLLClockFreq(void)
 {
@@ -241,14 +241,14 @@ __STATIC_INLINE void CLK_SysTickDelay(uint32_t us)
 
     /* Waiting for down-count to zero */
     while((SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) == 0);
-    
+
     /* Disable SysTick counter */
-    SysTick->CTRL = 0;    
+    SysTick->CTRL = 0;
 }
 
 /**
   * @brief      This function execute long delay function.
-  * @param[in]  us  Delay time. 
+  * @param[in]  us  Delay time.
   * @return     None
   * @details    Use the SysTick to generate the long delay time and the UNIT is in us.
   *             The SysTick clock source is from HCLK, i.e the same as system core clock.
@@ -257,7 +257,7 @@ __STATIC_INLINE void CLK_SysTickDelay(uint32_t us)
 __STATIC_INLINE void CLK_SysTickLongDelay(uint32_t us)
 {
     uint32_t delay;
-        
+
     /* It should <= 335544us for each delay loop */
     delay = 335544UL;
 
@@ -271,8 +271,8 @@ __STATIC_INLINE void CLK_SysTickLongDelay(uint32_t us)
         {
             delay = us;
             us = 0UL;
-        }        
-        
+        }
+
         SysTick->LOAD = delay * CyclesPerUs;
         SysTick->VAL  = (0x0UL);
         SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
@@ -282,9 +282,10 @@ __STATIC_INLINE void CLK_SysTickLongDelay(uint32_t us)
 
         /* Disable SysTick counter */
         SysTick->CTRL = 0UL;
-    
-    }while(us > 0UL);
-    
+
+    }
+    while(us > 0UL);
+
 }
 
 
