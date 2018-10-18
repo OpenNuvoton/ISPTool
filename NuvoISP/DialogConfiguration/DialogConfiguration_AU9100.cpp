@@ -240,7 +240,7 @@ CDialogConfiguration_I9200::CDialogConfiguration_I9200(unsigned int uProgramMemo
 
 BOOL CDialogConfiguration_I9200::OnInitDialog()
 {
-    m_uPageSize = NUMICRO_M0_FLASH_PAGE_SIZE;
+    m_uPageSize = NUMICRO_FLASH_PAGE_SIZE_512;
     m_bLDROM_EN = 1;
     GetDlgItem(IDC_CHECK_LDROM_EN)->ShowWindow(SW_HIDE);
     return CDialogConfiguration_AU9100::OnInitDialog();

@@ -132,42 +132,42 @@ void CDialogConfiguration_M2351::ConfigToGUI()
     unsigned int uConfig0 = m_uConfigValue[0];
     unsigned int uConfig3 = m_uConfigValue[3];
 
-    switch (uConfig0 & TC8226_FLASH_CONFIG_CBOV) {
-        case TC8226_FLASH_CONFIG_CBOV_30:
+    switch (uConfig0 & M480_FLASH_CONFIG_CBOV) {
+        case M480_FLASH_CONFIG_CBOV_30:
             m_nRadioBov = 0;
             break;
 
-        case TC8226_FLASH_CONFIG_CBOV_28:
+        case M480_FLASH_CONFIG_CBOV_28:
             m_nRadioBov = 1;
             break;
 
-        case TC8226_FLASH_CONFIG_CBOV_26:
+        case M480_FLASH_CONFIG_CBOV_26:
             m_nRadioBov = 2;
             break;
 
-        case TC8226_FLASH_CONFIG_CBOV_24:
+        case M480_FLASH_CONFIG_CBOV_24:
             m_nRadioBov = 3;
             break;
 
-        case TC8226_FLASH_CONFIG_CBOV_22:
+        case M480_FLASH_CONFIG_CBOV_22:
             m_nRadioBov = 4;
             break;
 
-        case TC8226_FLASH_CONFIG_CBOV_20:
+        case M480_FLASH_CONFIG_CBOV_20:
             m_nRadioBov = 5;
             break;
 
-        case TC8226_FLASH_CONFIG_CBOV_18:
+        case M480_FLASH_CONFIG_CBOV_18:
             m_nRadioBov = 6;
             break;
 
-        case TC8226_FLASH_CONFIG_CBOV_16:
+        case M480_FLASH_CONFIG_CBOV_16:
             m_nRadioBov = 7;
             break;
 
         default:
             /* Keep old value */
-            uConfig0 |= (m_uConfigValue[0] & TC8226_FLASH_CONFIG_CBOV);
+            uConfig0 |= (m_uConfigValue[0] & M480_FLASH_CONFIG_CBOV);
     }
 
     switch (uConfig0 & FLASH_CONFIG_CWDTEN) {
@@ -188,12 +188,12 @@ void CDialogConfiguration_M2351::ConfigToGUI()
             m_nRadioWDT = 1;
     }
 
-    m_nRadioBS = ((uConfig0 & TC8226_FLASH_CONFIG_CBS) ? 0 : 1);
-    m_nRadioGPG = ((uConfig0 & TC8226_FLASH_CONFIG_CGPFMFP) ? 0 : 1);
-    m_nRadioIO = ((uConfig0 & TC8226_FLASH_CONFIG_CIOINI) ? 0 : 1);
-    m_bCheckMBS = ((uConfig0 & TC8226_FLASH_CONFIG_MBS) == 0 ? TRUE : FALSE);
-    m_bCheckBrownOutDetect = ((uConfig0 & TC8226_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
-    m_bCheckBrownOutReset = ((uConfig0 & TC8226_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
+    m_nRadioBS = ((uConfig0 & M480_FLASH_CONFIG_CBS) ? 0 : 1);
+    m_nRadioGPG = ((uConfig0 & M480_FLASH_CONFIG_CGPFMFP) ? 0 : 1);
+    m_nRadioIO = ((uConfig0 & M480_FLASH_CONFIG_CIOINI) ? 0 : 1);
+    m_bCheckMBS = ((uConfig0 & M480_FLASH_CONFIG_MBS) == 0 ? TRUE : FALSE);
+    m_bCheckBrownOutDetect = ((uConfig0 & M480_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
+    m_bCheckBrownOutReset = ((uConfig0 & M480_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
     m_bDisableICE = ((uConfig0 & M2351_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
 
     switch (uConfig3 & M2351_FLASH_CONFIG_UART1PSL) {
@@ -227,44 +227,44 @@ void CDialogConfiguration_M2351::GUIToConfig()
     UpdateData(TRUE);
     unsigned int uConfig0 = m_uConfigValue[0];
     unsigned int uConfig3 = m_uConfigValue[3];
-    uConfig0 &= ~TC8226_FLASH_CONFIG_CBOV;
+    uConfig0 &= ~M480_FLASH_CONFIG_CBOV;
 
     switch (m_nRadioBov) {
         case 0:
-            uConfig0 |= TC8226_FLASH_CONFIG_CBOV_30;
+            uConfig0 |= M480_FLASH_CONFIG_CBOV_30;
             break;
 
         case 1:
-            uConfig0 |= TC8226_FLASH_CONFIG_CBOV_28;
+            uConfig0 |= M480_FLASH_CONFIG_CBOV_28;
             break;
 
         case 2:
-            uConfig0 |= TC8226_FLASH_CONFIG_CBOV_26;
+            uConfig0 |= M480_FLASH_CONFIG_CBOV_26;
             break;
 
         case 3:
-            uConfig0 |= TC8226_FLASH_CONFIG_CBOV_24;
+            uConfig0 |= M480_FLASH_CONFIG_CBOV_24;
             break;
 
         case 4:
-            uConfig0 |= TC8226_FLASH_CONFIG_CBOV_22;
+            uConfig0 |= M480_FLASH_CONFIG_CBOV_22;
             break;
 
         case 5:
-            uConfig0 |= TC8226_FLASH_CONFIG_CBOV_20;
+            uConfig0 |= M480_FLASH_CONFIG_CBOV_20;
             break;
 
         case 6:
-            uConfig0 |= TC8226_FLASH_CONFIG_CBOV_18;
+            uConfig0 |= M480_FLASH_CONFIG_CBOV_18;
             break;
 
         case 7:
-            uConfig0 |= TC8226_FLASH_CONFIG_CBOV_16;
+            uConfig0 |= M480_FLASH_CONFIG_CBOV_16;
             break;
 
         default:
             /* Keep old value */
-            uConfig0 |= (m_uConfigValue[0] & TC8226_FLASH_CONFIG_CBOV);
+            uConfig0 |= (m_uConfigValue[0] & M480_FLASH_CONFIG_CBOV);
     }
 
     switch (m_nRadioWDT) {
@@ -287,39 +287,39 @@ void CDialogConfiguration_M2351::GUIToConfig()
     }
 
     if (m_nRadioBS == 0) {
-        uConfig0 |=  TC8226_FLASH_CONFIG_CBS;
+        uConfig0 |=  M480_FLASH_CONFIG_CBS;
     } else {
-        uConfig0 &= ~TC8226_FLASH_CONFIG_CBS;
+        uConfig0 &= ~M480_FLASH_CONFIG_CBS;
     }
 
     if (m_nRadioGPG == 0) {
-        uConfig0 |=  TC8226_FLASH_CONFIG_CGPFMFP;
+        uConfig0 |=  M480_FLASH_CONFIG_CGPFMFP;
     } else {
-        uConfig0 &= ~TC8226_FLASH_CONFIG_CGPFMFP;
+        uConfig0 &= ~M480_FLASH_CONFIG_CGPFMFP;
     }
 
     if (m_nRadioIO == 0) {
-        uConfig0 |=  TC8226_FLASH_CONFIG_CIOINI;
+        uConfig0 |=  M480_FLASH_CONFIG_CIOINI;
     } else {
-        uConfig0 &= ~TC8226_FLASH_CONFIG_CIOINI;
+        uConfig0 &= ~M480_FLASH_CONFIG_CIOINI;
     }
 
     if (m_bCheckMBS) {
-        uConfig0 &= ~TC8226_FLASH_CONFIG_MBS;
+        uConfig0 &= ~M480_FLASH_CONFIG_MBS;
     } else {
-        uConfig0 |= TC8226_FLASH_CONFIG_MBS;
+        uConfig0 |= M480_FLASH_CONFIG_MBS;
     }
 
     if (m_bCheckBrownOutDetect) {
-        uConfig0 &= ~TC8226_FLASH_CONFIG_CBODEN;
+        uConfig0 &= ~M480_FLASH_CONFIG_CBODEN;
     } else {
-        uConfig0 |= TC8226_FLASH_CONFIG_CBODEN;
+        uConfig0 |= M480_FLASH_CONFIG_CBODEN;
     }
 
     if (m_bCheckBrownOutReset) {
-        uConfig0 &= ~TC8226_FLASH_CONFIG_CBORST;
+        uConfig0 &= ~M480_FLASH_CONFIG_CBORST;
     } else {
-        uConfig0 |= TC8226_FLASH_CONFIG_CBORST;
+        uConfig0 |= M480_FLASH_CONFIG_CBORST;
     }
 
     if (m_bDisableICE) {

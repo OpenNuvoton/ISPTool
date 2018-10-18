@@ -202,9 +202,9 @@ void CDialogConfiguration_NUC4xx::ConfigToGUI(int nEventID)
     m_bSecurityLock = ((uConfig0 & NUC4XX_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
     unsigned int uFlashBaseAddress = uConfig1;
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
-    unsigned int uPageNum = uFlashBaseAddress / NUC4XX_FLASH_PAGE_SIZE;
-    unsigned int uLimitNum = m_uProgramMemorySize / NUC4XX_FLASH_PAGE_SIZE;
-    unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * NUC4XX_FLASH_PAGE_SIZE) : 0;
+    unsigned int uPageNum = uFlashBaseAddress / NUMICRO_FLASH_PAGE_SIZE_2K;
+    unsigned int uLimitNum = m_uProgramMemorySize / NUMICRO_FLASH_PAGE_SIZE_2K;
+    unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * NUMICRO_FLASH_PAGE_SIZE_2K) : 0;
     m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uDataFlashSize : 0) / 1024.);
     m_SpinDataFlashSize.EnableWindow(m_bDataFlashEnable ? TRUE : FALSE);
     m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
@@ -386,9 +386,9 @@ void CDialogConfiguration_NUC4xx::OnChangeEditFlashBaseAddress()
     TCHAR *pEnd;
     unsigned int uFlashBaseAddress = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
     m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);
-    unsigned int uPageNum = uFlashBaseAddress / NUC4XX_FLASH_PAGE_SIZE;
-    unsigned int uLimitNum = m_uProgramMemorySize / NUC4XX_FLASH_PAGE_SIZE;
-    unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * NUC4XX_FLASH_PAGE_SIZE) : 0;
+    unsigned int uPageNum = uFlashBaseAddress / NUMICRO_FLASH_PAGE_SIZE_2K;
+    unsigned int uLimitNum = m_uProgramMemorySize / NUMICRO_FLASH_PAGE_SIZE_2K;
+    unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * NUMICRO_FLASH_PAGE_SIZE_2K) : 0;
     m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uDataFlashSize : 0) / 1024.);
     UpdateData(FALSE);
 }
@@ -436,8 +436,8 @@ void CDialogConfiguration_NUC4xx::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRE
     UpdateData(TRUE);
     TCHAR *pEnd;
     unsigned int uFlashBaseAddress = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
-    unsigned int uPageNum = uFlashBaseAddress / NUC4XX_FLASH_PAGE_SIZE;
-    unsigned int uLimitNum = m_uProgramMemorySize / NUC4XX_FLASH_PAGE_SIZE;
+    unsigned int uPageNum = uFlashBaseAddress / NUMICRO_FLASH_PAGE_SIZE_2K;
+    unsigned int uLimitNum = m_uProgramMemorySize / NUMICRO_FLASH_PAGE_SIZE_2K;
 
     if (pNMUpDown->iDelta == 1) {
         uPageNum += 1;
@@ -445,10 +445,10 @@ void CDialogConfiguration_NUC4xx::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRE
         uPageNum -= 1;
     }
 
-    uFlashBaseAddress = 0 + min(uPageNum, uLimitNum) * NUC4XX_FLASH_PAGE_SIZE;
+    uFlashBaseAddress = 0 + min(uPageNum, uLimitNum) * NUMICRO_FLASH_PAGE_SIZE_2K;
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
     m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);
-    unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * NUC4XX_FLASH_PAGE_SIZE) : 0;
+    unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * NUMICRO_FLASH_PAGE_SIZE_2K) : 0;
     m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uDataFlashSize : 0) / 1024.);
     UpdateData(FALSE);
     *pResult = 0;

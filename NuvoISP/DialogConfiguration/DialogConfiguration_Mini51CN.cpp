@@ -202,8 +202,8 @@ void CDialogConfiguration_Mini51CN::ConfigToGUI()
     m_bSecurityLock = ((uConfig0 & MINI51_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
 
     if (m_bDataFlashEnable) {
-        uFlashBaseAddress = ((uFlashBaseAddress >= MINI51_FLASH_PAGE_SIZE) && (uFlashBaseAddress < m_uProgramMemorySize)) ? uFlashBaseAddress : (m_uProgramMemorySize - MINI51_FLASH_PAGE_SIZE);
-        uFlashBaseAddress = (uFlashBaseAddress & MINI51_FLASH_CONFIG_DFBA) / MINI51_FLASH_PAGE_SIZE * MINI51_FLASH_PAGE_SIZE;
+        uFlashBaseAddress = ((uFlashBaseAddress >= NUMICRO_FLASH_PAGE_SIZE_512) && (uFlashBaseAddress < m_uProgramMemorySize)) ? uFlashBaseAddress : (m_uProgramMemorySize - NUMICRO_FLASH_PAGE_SIZE_512);
+        uFlashBaseAddress = (uFlashBaseAddress & MINI51_FLASH_CONFIG_DFBA) / NUMICRO_FLASH_PAGE_SIZE_512 * NUMICRO_FLASH_PAGE_SIZE_512;
         uConfig1 = uFlashBaseAddress;
     }
 
@@ -334,11 +334,11 @@ void CDialogConfiguration_Mini51CN::OnKillfocusEditFlashBaseAddress()
     unsigned int uFlashBaseAddress = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
 
     if (m_bDataFlashEnable) {
-        if (!((uFlashBaseAddress >= MINI51_FLASH_PAGE_SIZE) && (uFlashBaseAddress < m_uProgramMemorySize))) {
-            uFlashBaseAddress = m_uProgramMemorySize - MINI51_FLASH_PAGE_SIZE;
+        if (!((uFlashBaseAddress >= NUMICRO_FLASH_PAGE_SIZE_512) && (uFlashBaseAddress < m_uProgramMemorySize))) {
+            uFlashBaseAddress = m_uProgramMemorySize - NUMICRO_FLASH_PAGE_SIZE_512;
         }
 
-        uFlashBaseAddress &= ~(MINI51_FLASH_PAGE_SIZE - 1);
+        uFlashBaseAddress &= ~(NUMICRO_FLASH_PAGE_SIZE_512 - 1);
         m_sDataFlashSize.Format(_T("%.2fK"), (uFlashBaseAddress < m_uProgramMemorySize) ? ((m_uProgramMemorySize - uFlashBaseAddress) / 1024.) : 0.);
     }
 
@@ -364,16 +364,16 @@ void CDialogConfiguration_Mini51CN::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, L
     unsigned int uFlashBaseAddress = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
 
     if (pNMUpDown->iDelta == 1) {
-        if ((uFlashBaseAddress + MINI51_FLASH_PAGE_SIZE) < m_uProgramMemorySize) {
-            uFlashBaseAddress += MINI51_FLASH_PAGE_SIZE;
+        if ((uFlashBaseAddress + NUMICRO_FLASH_PAGE_SIZE_512) < m_uProgramMemorySize) {
+            uFlashBaseAddress += NUMICRO_FLASH_PAGE_SIZE_512;
         }
     } else if (pNMUpDown->iDelta == -1) {
-        if (!(uFlashBaseAddress <= MINI51_FLASH_PAGE_SIZE)) {
-            uFlashBaseAddress -= MINI51_FLASH_PAGE_SIZE;
+        if (!(uFlashBaseAddress <= NUMICRO_FLASH_PAGE_SIZE_512)) {
+            uFlashBaseAddress -= NUMICRO_FLASH_PAGE_SIZE_512;
         }
     }
 
-    uFlashBaseAddress = (uFlashBaseAddress & MINI51_FLASH_CONFIG_DFBA) / MINI51_FLASH_PAGE_SIZE * MINI51_FLASH_PAGE_SIZE;
+    uFlashBaseAddress = (uFlashBaseAddress & MINI51_FLASH_CONFIG_DFBA) / NUMICRO_FLASH_PAGE_SIZE_512 * NUMICRO_FLASH_PAGE_SIZE_512;
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
     m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable && (uFlashBaseAddress < m_uProgramMemorySize)) ? ((m_uProgramMemorySize - uFlashBaseAddress) / 1024.) : 0.);
     m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);

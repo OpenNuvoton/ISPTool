@@ -41,7 +41,7 @@ CDialogConfiguration_M0564::CDialogConfiguration_M0564(unsigned int uProgramMemo
     m_nRadioGPG = -1;
     m_nRadioIO = -1;
     m_sFlashBaseAddress = _T("");
-    m_uPageSize = M0564_FLASH_PAGE_SIZE;
+    m_uPageSize = NUMICRO_FLASH_PAGE_SIZE_2K;
     //}}AFX_DATA_INIT
 }
 
@@ -447,6 +447,6 @@ CDialogConfiguration_NUC121::CDialogConfiguration_NUC121(unsigned int uProgramMe
 BOOL CDialogConfiguration_NUC121::OnInitDialog()
 {
     GetDlgItem(IDC_RADIO_CLK_I22M)->SetWindowText(_T("Internal high speed RC oscillator divided by 2 (24MHz)"));
-    m_uPageSize = NUMICRO_M0_FLASH_PAGE_SIZE;
+    m_uPageSize = NUMICRO_FLASH_PAGE_SIZE_512;
     return CDialogConfiguration_M0564::OnInitDialog();
 }

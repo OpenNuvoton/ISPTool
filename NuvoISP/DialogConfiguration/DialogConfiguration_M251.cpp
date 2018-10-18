@@ -10,7 +10,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#define page_size NUMICRO_M0_FLASH_PAGE_SIZE
+#define page_size NUMICRO_FLASH_PAGE_SIZE_512
 #define M251_FLASH_CONFIG_ICELOCK		0x00001000UL
 
 
@@ -100,58 +100,58 @@ void CDialogConfiguration_M251::ConfigToGUI(int nEventID)
 {
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
 
-    switch (uConfig0 & TC8226_FLASH_CONFIG_CBOV) {
-        case TC8226_FLASH_CONFIG_CBOV_30:
+    switch (uConfig0 & M480_FLASH_CONFIG_CBOV) {
+        case M480_FLASH_CONFIG_CBOV_30:
             m_nRadioBov = 0;
             break;
 
-        case TC8226_FLASH_CONFIG_CBOV_28:
+        case M480_FLASH_CONFIG_CBOV_28:
             m_nRadioBov = 1;
             break;
 
-        case TC8226_FLASH_CONFIG_CBOV_26:
+        case M480_FLASH_CONFIG_CBOV_26:
             m_nRadioBov = 2;
             break;
 
-        case TC8226_FLASH_CONFIG_CBOV_24:
+        case M480_FLASH_CONFIG_CBOV_24:
             m_nRadioBov = 3;
             break;
 
-        case TC8226_FLASH_CONFIG_CBOV_22:
+        case M480_FLASH_CONFIG_CBOV_22:
             m_nRadioBov = 4;
             break;
 
-        case TC8226_FLASH_CONFIG_CBOV_20:
+        case M480_FLASH_CONFIG_CBOV_20:
             m_nRadioBov = 5;
             break;
 
-        case TC8226_FLASH_CONFIG_CBOV_18:
+        case M480_FLASH_CONFIG_CBOV_18:
             m_nRadioBov = 6;
             break;
 
-        case TC8226_FLASH_CONFIG_CBOV_16:
+        case M480_FLASH_CONFIG_CBOV_16:
             m_nRadioBov = 7;
             break;
 
         default:
             /* Keep old value */
-            uConfig0 |= (m_ConfigValue.m_value[0] & TC8226_FLASH_CONFIG_CBOV);
+            uConfig0 |= (m_ConfigValue.m_value[0] & M480_FLASH_CONFIG_CBOV);
     }
 
-    switch (uConfig0 & TC8226_FLASH_CONFIG_CBS2) {
-        case TC8226_FLASH_CONFIG_CBS_LD:
+    switch (uConfig0 & M480_FLASH_CONFIG_CBS2) {
+        case M480_FLASH_CONFIG_CBS_LD:
             m_nRadioBS = 0;
             break;
 
-        case TC8226_FLASH_CONFIG_CBS_AP:
+        case M480_FLASH_CONFIG_CBS_AP:
             m_nRadioBS = 1;
             break;
 
-        case TC8226_FLASH_CONFIG_CBS_LD_AP:
+        case M480_FLASH_CONFIG_CBS_LD_AP:
             m_nRadioBS = 2;
             break;
 
-        case TC8226_FLASH_CONFIG_CBS_AP_LD:
+        case M480_FLASH_CONFIG_CBS_AP_LD:
             m_nRadioBS = 3;
             break;
 
@@ -160,18 +160,18 @@ void CDialogConfiguration_M251::ConfigToGUI(int nEventID)
             break;
     }
 
-    m_nRadioGPG = ((uConfig0 & TC8226_FLASH_CONFIG_CGPFMFP) == 0 ? 0 : 1);
-    m_nRadioIO = ((uConfig0 & TC8226_FLASH_CONFIG_CIOINI) == 0 ? 1 : 0);
-    m_bWDTPowerDown = ((uConfig0 & TC8226_FLASH_CONFIG_CWDTPDEN) == 0 ? TRUE : FALSE);
-    m_bWDTEnable = ((uConfig0 & TC8226_FLASH_CONFIG_CWDTEN) == 0 ? TRUE : FALSE);;
+    m_nRadioGPG = ((uConfig0 & M480_FLASH_CONFIG_CGPFMFP) == 0 ? 0 : 1);
+    m_nRadioIO = ((uConfig0 & M480_FLASH_CONFIG_CIOINI) == 0 ? 1 : 0);
+    m_bWDTPowerDown = ((uConfig0 & M480_FLASH_CONFIG_CWDTPDEN) == 0 ? TRUE : FALSE);
+    m_bWDTEnable = ((uConfig0 & M480_FLASH_CONFIG_CWDTEN) == 0 ? TRUE : FALSE);;
 
     if (!m_bWDTEnable) {
         m_bWDTPowerDown = FALSE;
     }
 
-    m_bCheckBrownOutDetect = ((uConfig0 & TC8226_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
-    m_bCheckBrownOutReset = ((uConfig0 & TC8226_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
-    m_bSecurityLock = ((uConfig0 & TC8226_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    m_bCheckBrownOutDetect = ((uConfig0 & M480_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
+    m_bCheckBrownOutReset = ((uConfig0 & M480_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
+    m_bSecurityLock = ((uConfig0 & M480_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
     m_bICELock = ((uConfig0 & M251_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
     m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
 }
@@ -179,129 +179,129 @@ void CDialogConfiguration_M251::ConfigToGUI(int nEventID)
 void CDialogConfiguration_M251::GUIToConfig(int nEventID)
 {
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
-    uConfig0 &= ~TC8226_FLASH_CONFIG_CBOV;
+    uConfig0 &= ~M480_FLASH_CONFIG_CBOV;
 
     switch (m_nRadioBov) {
         case 0:
-            uConfig0 |= TC8226_FLASH_CONFIG_CBOV_30;
+            uConfig0 |= M480_FLASH_CONFIG_CBOV_30;
             break;
 
         case 1:
-            uConfig0 |= TC8226_FLASH_CONFIG_CBOV_28;
+            uConfig0 |= M480_FLASH_CONFIG_CBOV_28;
             break;
 
         case 2:
-            uConfig0 |= TC8226_FLASH_CONFIG_CBOV_26;
+            uConfig0 |= M480_FLASH_CONFIG_CBOV_26;
             break;
 
         case 3:
-            uConfig0 |= TC8226_FLASH_CONFIG_CBOV_24;
+            uConfig0 |= M480_FLASH_CONFIG_CBOV_24;
             break;
 
         case 4:
-            uConfig0 |= TC8226_FLASH_CONFIG_CBOV_22;
+            uConfig0 |= M480_FLASH_CONFIG_CBOV_22;
             break;
 
         case 5:
-            uConfig0 |= TC8226_FLASH_CONFIG_CBOV_20;
+            uConfig0 |= M480_FLASH_CONFIG_CBOV_20;
             break;
 
         case 6:
-            uConfig0 |= TC8226_FLASH_CONFIG_CBOV_18;
+            uConfig0 |= M480_FLASH_CONFIG_CBOV_18;
             break;
 
         case 7:
-            uConfig0 |= TC8226_FLASH_CONFIG_CBOV_16;
+            uConfig0 |= M480_FLASH_CONFIG_CBOV_16;
             break;
 
         default:
             /* Keep old value */
-            uConfig0 |= (m_ConfigValue.m_value[0] & TC8226_FLASH_CONFIG_CBOV);
+            uConfig0 |= (m_ConfigValue.m_value[0] & M480_FLASH_CONFIG_CBOV);
     }
 
-    uConfig0 &= ~TC8226_FLASH_CONFIG_CBS2;
+    uConfig0 &= ~M480_FLASH_CONFIG_CBS2;
 
     switch (m_nRadioBS) {
         case 0:
-            uConfig0 |= TC8226_FLASH_CONFIG_CBS_LD;
+            uConfig0 |= M480_FLASH_CONFIG_CBS_LD;
             break;
 
         case 1:
-            uConfig0 |= TC8226_FLASH_CONFIG_CBS_AP;
+            uConfig0 |= M480_FLASH_CONFIG_CBS_AP;
             break;
 
         case 2:
-            uConfig0 |= TC8226_FLASH_CONFIG_CBS_LD_AP;
+            uConfig0 |= M480_FLASH_CONFIG_CBS_LD_AP;
             break;
 
         case 3:
-            uConfig0 |= TC8226_FLASH_CONFIG_CBS_AP_LD;
+            uConfig0 |= M480_FLASH_CONFIG_CBS_AP_LD;
             break;
 
         default:
             /* Keep old value */
-            uConfig0 |= (m_ConfigValue.m_value[0] & TC8226_FLASH_CONFIG_CBS2);
+            uConfig0 |= (m_ConfigValue.m_value[0] & M480_FLASH_CONFIG_CBS2);
     }
 
     if (m_nRadioGPG == 0) {
-        uConfig0 &= ~TC8226_FLASH_CONFIG_CGPFMFP;
+        uConfig0 &= ~M480_FLASH_CONFIG_CGPFMFP;
     } else {
-        uConfig0 |= TC8226_FLASH_CONFIG_CGPFMFP;
+        uConfig0 |= M480_FLASH_CONFIG_CGPFMFP;
     }
 
     if (m_nRadioIO == 0) {
-        uConfig0 |= TC8226_FLASH_CONFIG_CIOINI;
+        uConfig0 |= M480_FLASH_CONFIG_CIOINI;
     } else {
-        uConfig0 &= ~TC8226_FLASH_CONFIG_CIOINI;
+        uConfig0 &= ~M480_FLASH_CONFIG_CIOINI;
     }
 
     if (m_bWDTPowerDown) {
-        uConfig0 &= ~TC8226_FLASH_CONFIG_CWDTPDEN;
+        uConfig0 &= ~M480_FLASH_CONFIG_CWDTPDEN;
     } else {
-        uConfig0 |= TC8226_FLASH_CONFIG_CWDTPDEN;
+        uConfig0 |= M480_FLASH_CONFIG_CWDTPDEN;
     }
 
     if (m_bWDTEnable) {
-        uConfig0 &= ~TC8226_FLASH_CONFIG_CWDTEN;
+        uConfig0 &= ~M480_FLASH_CONFIG_CWDTEN;
 
         if (!m_bWDTPowerDown) {
-            uConfig0 &= ~TC8226_FLASH_CONFIG_CWDTEN_BIT1;
-            uConfig0 &= ~TC8226_FLASH_CONFIG_CWDTEN_BIT0;
+            uConfig0 &= ~M480_FLASH_CONFIG_CWDTEN_BIT1;
+            uConfig0 &= ~M480_FLASH_CONFIG_CWDTEN_BIT0;
         }
     } else {
-        uConfig0 |= TC8226_FLASH_CONFIG_CWDTEN;
+        uConfig0 |= M480_FLASH_CONFIG_CWDTEN;
     }
 
     if (nEventID == IDC_CHECK_WDT_POWER_DOWN) {
         if (m_bWDTPowerDown) {
-            uConfig0 &= ~TC8226_FLASH_CONFIG_CWDTEN;
-            uConfig0 |= TC8226_FLASH_CONFIG_CWDTEN_BIT1;
-            uConfig0 |= TC8226_FLASH_CONFIG_CWDTEN_BIT0;
+            uConfig0 &= ~M480_FLASH_CONFIG_CWDTEN;
+            uConfig0 |= M480_FLASH_CONFIG_CWDTEN_BIT1;
+            uConfig0 |= M480_FLASH_CONFIG_CWDTEN_BIT0;
         }
     } else {
         if (!m_bWDTEnable) {
-            uConfig0 |= TC8226_FLASH_CONFIG_CWDTPDEN;
-            uConfig0 |= TC8226_FLASH_CONFIG_CWDTEN_BIT1;
-            uConfig0 |= TC8226_FLASH_CONFIG_CWDTEN_BIT0;
+            uConfig0 |= M480_FLASH_CONFIG_CWDTPDEN;
+            uConfig0 |= M480_FLASH_CONFIG_CWDTEN_BIT1;
+            uConfig0 |= M480_FLASH_CONFIG_CWDTEN_BIT0;
         }
     }
 
     if (m_bCheckBrownOutDetect) {
-        uConfig0 &= ~TC8226_FLASH_CONFIG_CBODEN;
+        uConfig0 &= ~M480_FLASH_CONFIG_CBODEN;
     } else {
-        uConfig0 |= TC8226_FLASH_CONFIG_CBODEN;
+        uConfig0 |= M480_FLASH_CONFIG_CBODEN;
     }
 
     if (m_bCheckBrownOutReset) {
-        uConfig0 &= ~TC8226_FLASH_CONFIG_CBORST;
+        uConfig0 &= ~M480_FLASH_CONFIG_CBORST;
     } else {
-        uConfig0 |= TC8226_FLASH_CONFIG_CBORST;
+        uConfig0 |= M480_FLASH_CONFIG_CBORST;
     }
 
     if (m_bSecurityLock) {
-        uConfig0 &= ~TC8226_FLASH_CONFIG_LOCK;
+        uConfig0 &= ~M480_FLASH_CONFIG_LOCK;
     } else {
-        uConfig0 |= TC8226_FLASH_CONFIG_LOCK;
+        uConfig0 |= M480_FLASH_CONFIG_LOCK;
     }
 
     if (m_bICELock) {
