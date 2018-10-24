@@ -39,7 +39,7 @@ uint32_t PWM_ConfigCaptureChannel(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u
     uint32_t u32Src;
     uint32_t u32PWMClockSrc;
     uint32_t u32NearestUnitTimeNsec;
-    uint16_t u16Prescale = 1, u16CNR = 0xFFFF;
+    uint32_t u32Prescale = 1, u32CNR = 0xFFFF;
 
     if(pwm == PWM0)
         u32Src = CLK->CLKSEL1 & CLK_CLKSEL1_PWM0SEL_Msk;
@@ -55,18 +55,21 @@ uint32_t PWM_ConfigCaptureChannel(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u
     {
         //clock source is from PCLK
         SystemCoreClockUpdate();
-        u32PWMClockSrc = SystemCoreClock;
+        if(pwm == PWM0)
+            u32PWMClockSrc = CLK_GetPCLK0Freq();
+        else//(pwm == PWM1)
+            u32PWMClockSrc = CLK_GetPCLK1Freq();
     }
 
     u32PWMClockSrc /= 1000;
-    for(u16Prescale = 1; u16Prescale <= 0x1000; u16Prescale++)
+    for(u32Prescale = 1; u32Prescale <= 0x1000; u32Prescale++)
     {
-        u32NearestUnitTimeNsec = (1000000 * u16Prescale) / u32PWMClockSrc;
+        u32NearestUnitTimeNsec = (1000000 * u32Prescale) / u32PWMClockSrc;
         if(u32NearestUnitTimeNsec < u32UnitTimeNsec)
         {
-            if(u16Prescale == 0x1000)  //limit to the maximum unit time(nano second)
+            if(u32Prescale == 0x1000)  //limit to the maximum unit time(nano second)
                 break;
-            if(!((1000000 * (u16Prescale + 1) > (u32NearestUnitTimeNsec * u32PWMClockSrc))))
+            if(!((1000000 * (u32Prescale + 1) > (u32NearestUnitTimeNsec * u32PWMClockSrc))))
                 break;
             continue;
         }
@@ -75,13 +78,13 @@ uint32_t PWM_ConfigCaptureChannel(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u
 
     // convert to real register value
     // every two channels share a prescaler
-    PWM_SET_PRESCALER(pwm, u32ChannelNum, --u16Prescale);
+    PWM_SET_PRESCALER(pwm, u32ChannelNum, --u32Prescale);
 
     // set PWM to down count type(edge aligned)
     (pwm)->CTL1 = ((pwm)->CTL1 & ~(PWM_CTL1_CNTTYPE0_Msk << (u32ChannelNum << 1))) | (1UL << (u32ChannelNum << 1));
     // set PWM to auto-reload mode
     (pwm)->CTL1 &= ~(PWM_CTL1_CNTMODE0_Msk << u32ChannelNum);
-    PWM_SET_CNR(pwm, u32ChannelNum, u16CNR);
+    PWM_SET_CNR(pwm, u32ChannelNum, u32CNR);
 
     return (u32NearestUnitTimeNsec);
 }
@@ -105,7 +108,7 @@ uint32_t PWM_ConfigOutputChannel(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u3
     uint32_t u32Src;
     uint32_t u32PWMClockSrc;
     uint32_t i;
-    uint16_t u16Prescale = 1, u16CNR = 0xFFFF;
+    uint32_t u32Prescale = 1, u32CNR = 0xFFFF;
 
     if(pwm == PWM0)
         u32Src = CLK->CLKSEL1 & CLK_CLKSEL1_PWM0SEL_Msk;
@@ -121,35 +124,38 @@ uint32_t PWM_ConfigOutputChannel(PWM_T *pwm, uint32_t u32ChannelNum, uint32_t u3
     {
         //clock source is from PCLK
         SystemCoreClockUpdate();
-        u32PWMClockSrc = SystemCoreClock;
+        if(pwm == PWM0)
+            u32PWMClockSrc = CLK_GetPCLK0Freq();
+        else//(pwm == PWM1)
+            u32PWMClockSrc = CLK_GetPCLK1Freq();
     }
 
-    for(u16Prescale = 1; u16Prescale < 0xFFF; u16Prescale++)//prescale could be 0~0xFFF
+    for(u32Prescale = 1; u32Prescale < 0xFFF; u32Prescale++)//prescale could be 0~0xFFF
     {
-        i = (u32PWMClockSrc / u32Frequency) / u16Prescale;
+        i = (u32PWMClockSrc / u32Frequency) / u32Prescale;
         // If target value is larger than CNR, need to use a larger prescaler
         if(i > (0x10000))
             continue;
 
-        u16CNR = i;
+        u32CNR = i;
         break;
     }
     // Store return value here 'cos we're gonna change u16Prescale & u16CNR to the real value to fill into register
-    i = u32PWMClockSrc / (u16Prescale * u16CNR);
+    i = u32PWMClockSrc / (u32Prescale * u32CNR);
 
     // convert to real register value
     // every two channels share a prescaler
-    PWM_SET_PRESCALER(pwm, u32ChannelNum, --u16Prescale);
+    PWM_SET_PRESCALER(pwm, u32ChannelNum, --u32Prescale);
     // set PWM to up counter type(edge aligned) and auto-reload mode
     (pwm)->CTL1 = ((pwm)->CTL1 & ~((PWM_CTL1_CNTTYPE0_Msk << (u32ChannelNum << 1)) | (PWM_CTL1_CNTMODE0_Msk << u32ChannelNum)));
 
-    PWM_SET_CNR(pwm, u32ChannelNum, --u16CNR);
-    PWM_SET_CMR(pwm, u32ChannelNum, u32DutyCycle * (u16CNR + 1) / 100);
+    PWM_SET_CNR(pwm, u32ChannelNum, --u32CNR);
+    PWM_SET_CMR(pwm, u32ChannelNum, u32DutyCycle * (u32CNR + 1) / 100);
 
     (pwm)->WGCTL0 = ((pwm)->WGCTL0 & ~((PWM_WGCTL0_PRDPCTL0_Msk | PWM_WGCTL0_ZPCTL0_Msk) << (u32ChannelNum << 1))) | \
-                    (PWM_OUTPUT_HIGH << (u32ChannelNum << 1 + PWM_WGCTL0_ZPCTL0_Pos));
+                    (PWM_OUTPUT_HIGH << (u32ChannelNum << 1 << PWM_WGCTL0_ZPCTL0_Pos));
     (pwm)->WGCTL1 = ((pwm)->WGCTL1 & ~((PWM_WGCTL1_CMPDCTL0_Msk | PWM_WGCTL1_CMPUCTL0_Msk) << (u32ChannelNum << 1))) | \
-                    (PWM_OUTPUT_LOW << (u32ChannelNum << 1 + PWM_WGCTL1_CMPUCTL0_Pos));
+                    (PWM_OUTPUT_LOW << (u32ChannelNum << 1 << PWM_WGCTL1_CMPUCTL0_Pos));
 
     return(i);
 }

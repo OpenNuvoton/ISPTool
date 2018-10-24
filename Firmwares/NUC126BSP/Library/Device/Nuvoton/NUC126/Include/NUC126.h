@@ -11225,46 +11225,32 @@ typedef struct
      * |        |          |110 = 128 system clock (HCLK).
      * |        |          |111 = 256 system clock (HCLK).
      * |        |          |Note: These bits are write protected. Refer to the SYS_REGLCTL register.
-     * |[16]    |EBODEN    |External BOD External Input Voltage Enable Bit
-     * |        |          |0 = EBOD detect external input voltage function Disabled.
-     * |        |          |1 = EBOD detect external input voltage function Enabled.
+     * |[16]    |VDETEN    |Voltage Detector Enable Bit   
+     * |        |          |0 = VDET detect external input voltage function Disabled.
+     * |        |          |1 = VDET detect external input voltage function Enabled.
      * |        |          |Note1: This function is still active in whole chip power-down mode.
-     * |        |          |Note2: This function need use LIRC or LXT as EBOD clock source, which is selected in EBODCKSEL (CLK_BODCLK[0]).
-     * |        |          |Note3: The input pin for EBOD detect voltage is selectabe by EBODPINSEL (SYS_BODCTL[17]).
-     * |[17]    |EBODPINSEL|External BOD External Input Voltage Pin Selection
-     * |        |          |0 = The input voltage is from P1.0.
-     * |        |          |1 = The input voltage is from P1.1.
-     * |        |          |Note1: If P1.0 is selected, multi-function pin must be selected correctly in P10MFP (SYS_GP1_MFPL[3:0]).
-     * |        |          |Note2: If P1.1 is selected, multi-function pin must be selected correctly in P11MFP (SYS_GP1_MFPL[7:4]).
-     * |[18]    |EBODIEN   |External BOD Interrupt Enable Bit
-     * |        |          |0 = EBOD interrupt Disabled.
-     * |        |          |1 = EBOD interrupt Enabled.
-     * |[19]    |EBODIF    |External BOD Interrupt Flag
-     * |        |          |0 = EBOD does not detect any voltage draft at external pin down through or up through the voltage of Bandgap.
-     * |        |          |1 = When EBOD detects the external pin is dropped down through the voltage of Bandgap or the external pin is raised up through the voltage of Bandgap, this bit is set to 1 and the brown-out interrupt is requested if brown-out interrupt is enabled.
+     * |        |          |Note2: This function need use LIRC or LXT as VDET clock source, which is selected in VDETCKSEL (CLK_BODCLK[0]).
+     * |        |          |Note3: The input pin for VDET detect voltage is selectabe by VDETPINSEL (SYS_BODCTL[17]).
+     * |[17]    |VDETPINSEL|Voltage Detector External Input Voltage Pin Selection
+     * |        |          |0 = The input voltage is from VDET_P0 (PB.0).
+     * |        |          |1 = The input voltage is from VDET_P1 (PB.1).
+     * |        |          |Note1: If VDET_P0 is selected, multi-function pin must be selected correctly in PB0MFP (SYS_GPB_MFPL[3:0]).
+     * |        |          |Note2: If VDET_P1 is selected, multi-function pin must be selected correctly in PB1MFP (SYS_GPB_MFPL[7:4]).
+     * |[18]    |VDETIEN   |Voltage Detector Interrupt Enable Bit
+     * |        |          |0 = VDET interrupt Disabled.
+     * |        |          |1 = VDET interrupt Enabled.          
+     * |[19]    |VDETIF    |Voltage Detector Interrupt Flag
+     * |        |          |0 = VDET does not detect any voltage draft at external pin down through or up through the voltage of Bandgap.
+     * |        |          |1 = When VDET detects the external pin is dropped down through the voltage of Bandgap or the external pin is raised up through the voltage of Bandgap, this bit is set to 1 and the brown-out interrupt is requested if brown-out interrupt is enabled.
      * |        |          |Note: This bit can be cleared by software writing 1.
-     * |[21:20] |EBODDTSEL |External BOD Frequency Select for External Input Voltage
-     * |        |          |EBOD detect external voltage function can be enabled per serveral EBOD clocks for saving power.
-     * |        |          |00 = EBOD detect external voltage function is always enabled.
-     * |        |          |01 = EBOD detect external voltage function is enabled once per 64 EBOD clocks.
-     * |        |          |10 = EBOD detect external voltage function is enabled once per 128 EBOD clocks.
-     * |        |          |11 = EBOD detect external voltage function is enabled once per 256 EBOD clocks.
-     * |        |          |Note: The EBOD clock must be enabled. The EBOD clock is selected in EBODCKSEL (CLK_BODCLK[0]).
-     * |[23:22] |EBODBGSEL |External BOD Bandgap Enable Frequency Select for External Input Voltage
-     * |        |          |If EBODDTSEL (SYS_BODCTL[21:20]) is selected to 00, the EBOD bandgap can be enabled per serveral EBOD clocks for saving power.
-     * |        |          |00 = EBOD bandgap is always enabled.
-     * |        |          |01 = EBOD bandgap is enabled once per 64 EBOD clocks.
-     * |        |          |10 = EBOD bandgap is enabled once per 128 EBOD clocks.
-     * |        |          |11 = EBOD bandgap is enabled once per 256 EBOD clocks.
-     * |        |          |Note: The EBOD clock must be enabled. The EBOD clock is selected in EBODCKSEL (CLK_BODCLK[0]).
-     * |[24]    |EBODOUT   |External BOD Output Status
-     * |        |          |0 = EBOD output status is 0.
-     * |        |          |It means the detected voltage is higher than Bandgap or EBODEN is 0.
-     * |        |          |1 = EBOD output status is 1.
-     * |        |          |It means the detected voltage is lower than Bandgap.
-     * |        |          |If the EBODEN is 0, EBOD function disabled, this bit always responds 0.
-     * |[27:25] |EBODDGSEL |External BOD Output De-glitch Time Select (Write Protect)
-     * |        |          |000 = EBOD output is sampled by EBOD clock.
+     * |[24]    |VDETOUT   |Voltage Detector Output Status
+     * |        |          |0 = VDET output status is 0.
+     * |        |          |It means the detected voltage is higher than Bandgap or VDETEN is 0.
+     * |        |          |1 = VDET output status is 1.
+     * |        |          |It means the detected voltage is lower than Bandgap. 
+     * |        |          |If the VDETEN is 0, VDET function disabled, this bit always responds 0. 
+     * |[27:25] |VDETDGSEL |Voltage Detector Output De-glitch Time Select (Write Protect)
+     * |        |          |000 = VDET output is sampled by VDET clock.
      * |        |          |001 = 16 system clock (HCLK).
      * |        |          |010 = 32 system clock (HCLK).
      * |        |          |011 = 64 system clock (HCLK).
@@ -11272,7 +11258,7 @@ typedef struct
      * |        |          |101 = 256 system clock (HCLK).
      * |        |          |110 = 512 system clock (HCLK).
      * |        |          |111 = 1024 system clock (HCLK).
-     * |        |          |Note: These bits are write protected. Refer to the SYS_REGLCTL register.
+     * |        |          |Note: These bits are write protected. Refer to the SYS_REGLCTL register.     
      * @var SYS_T::IVSCTL
      * Offset: 0x1C  Internal Voltage Source Control Register
      * ---------------------------------------------------------------------------------------------------
@@ -11865,29 +11851,23 @@ typedef struct
 #define SYS_BODCTL_LVRDGSEL_Pos          (12)                                              /*!< SYS_T::BODCTL: LVRDGSEL Position       */
 #define SYS_BODCTL_LVRDGSEL_Msk          (0x7ul << SYS_BODCTL_LVRDGSEL_Pos)                /*!< SYS_T::BODCTL: LVRDGSEL Mask           */
 
-#define SYS_BODCTL_EBODEN_Pos            (16)                                              /*!< SYS_T::BODCTL: EBODEN Position         */
-#define SYS_BODCTL_EBODEN_Msk            (0x1ul << SYS_BODCTL_EBODEN_Pos)                  /*!< SYS_T::BODCTL: EBODEN Mask             */
+#define SYS_BODCTL_VDETEN_Pos            (16)                                              /*!< SYS_T::BODCTL: VDETEN Position         */
+#define SYS_BODCTL_VDETEN_Msk            (0x1ul << SYS_BODCTL_VDETEN_Pos)                  /*!< SYS_T::BODCTL: VDETEN Mask             */
 
-#define SYS_BODCTL_EBODPINSEL_Pos        (17)                                              /*!< SYS_T::BODCTL: EBODPINSEL Position     */
-#define SYS_BODCTL_EBODPINSEL_Msk        (0x1ul << SYS_BODCTL_EBODPINSEL_Pos)              /*!< SYS_T::BODCTL: EBODPINSEL Mask         */
+#define SYS_BODCTL_VDETPINSEL_Pos        (17)                                              /*!< SYS_T::BODCTL: VDETPINSEL Position     */
+#define SYS_BODCTL_VDETPINSEL_Msk        (0x1ul << SYS_BODCTL_VDETPINSEL_Pos)              /*!< SYS_T::BODCTL: VDETPINSEL Mask         */
 
-#define SYS_BODCTL_EBODIEN_Pos           (18)                                              /*!< SYS_T::BODCTL: EBODIEN Position        */
-#define SYS_BODCTL_EBODIEN_Msk           (0x1ul << SYS_BODCTL_EBODIEN_Pos)                 /*!< SYS_T::BODCTL: EBODIEN Mask            */
+#define SYS_BODCTL_VDETIEN_Pos           (18)                                              /*!< SYS_T::BODCTL: VDETIEN Position        */
+#define SYS_BODCTL_VDETIEN_Msk           (0x1ul << SYS_BODCTL_VDETIEN_Pos)                 /*!< SYS_T::BODCTL: VDETIEN Mask            */
 
-#define SYS_BODCTL_EBODIF_Pos            (19)                                              /*!< SYS_T::BODCTL: EBODIF Position         */
-#define SYS_BODCTL_EBODIF_Msk            (0x1ul << SYS_BODCTL_EBODIF_Pos)                  /*!< SYS_T::BODCTL: EBODIF Mask             */
+#define SYS_BODCTL_VDETIF_Pos            (19)                                              /*!< SYS_T::BODCTL: VDETIF Position         */
+#define SYS_BODCTL_VDETIF_Msk            (0x1ul << SYS_BODCTL_VDETIF_Pos)                  /*!< SYS_T::BODCTL: VDETIF Mask             */
 
-#define SYS_BODCTL_EBODDTSEL_Pos         (20)                                              /*!< SYS_T::BODCTL: EBODDTSEL Position      */
-#define SYS_BODCTL_EBODDTSEL_Msk         (0x3ul << SYS_BODCTL_EBODDTSEL_Pos)               /*!< SYS_T::BODCTL: EBODDTSEL Mask          */
+#define SYS_BODCTL_VDETOUT_Pos           (24)                                              /*!< SYS_T::BODCTL: VDETOUT Position        */
+#define SYS_BODCTL_VDETOUT_Msk           (0x1ul << SYS_BODCTL_VDETOUT_Pos)                 /*!< SYS_T::BODCTL: VDETOUT Mask            */
 
-#define SYS_BODCTL_EBODBGSEL_Pos         (22)                                              /*!< SYS_T::BODCTL: EBODBGSEL Position      */
-#define SYS_BODCTL_EBODBGSEL_Msk         (0x3ul << SYS_BODCTL_EBODBGSEL_Pos)               /*!< SYS_T::BODCTL: EBODBGSEL Mask          */
-
-#define SYS_BODCTL_EBODOUT_Pos           (24)                                              /*!< SYS_T::BODCTL: EBODOUT Position        */
-#define SYS_BODCTL_EBODOUT_Msk           (0x1ul << SYS_BODCTL_EBODOUT_Pos)                 /*!< SYS_T::BODCTL: EBODOUT Mask            */
-
-#define SYS_BODCTL_EBODDGSEL_Pos         (25)                                              /*!< SYS_T::BODCTL: EBODDGSEL Position      */
-#define SYS_BODCTL_EBODDGSEL_Msk         (0x7ul << SYS_BODCTL_EBODDGSEL_Pos)               /*!< SYS_T::BODCTL: EBODDGSEL Mask          */
+#define SYS_BODCTL_VDETDGSEL_Pos         (25)                                              /*!< SYS_T::BODCTL: VDETDGSEL Position      */
+#define SYS_BODCTL_VDETDGSEL_Msk         (0x7ul << SYS_BODCTL_VDETDGSEL_Pos)               /*!< SYS_T::BODCTL: VDETDGSEL Mask          */
 
 #define SYS_IVSCTL_VTEMPEN_Pos           (0)                                               /*!< SYS_T::IVSCTL: VTEMPEN Position        */
 #define SYS_IVSCTL_VTEMPEN_Msk           (0x1ul << SYS_IVSCTL_VTEMPEN_Pos)                 /*!< SYS_T::IVSCTL: VTEMPEN Mask            */

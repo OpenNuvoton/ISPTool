@@ -26,7 +26,7 @@ extern "C"
   @{
 */
 /*--------------------------------------------------------------------------------------------------*/
-/*  Status and Erroe Code Constant Definitions                                                      */
+/*  Status and Error Code Constant Definitions                                                      */
 /*--------------------------------------------------------------------------------------------------*/
 #define BL_ERR_TT_CHECK         0xF0F00000UL    /*!< Not a Non-secure parameter         */
 #define BL_ERR_PARAMETER        0xF0F00001UL    /*!< Invalid parameter                  */
@@ -53,6 +53,10 @@ extern "C"
 #define BL_RNG_SWRNG            (1UL)   /*!<Use S/W random number generator */
 #define BL_RNG_LIRC32K          (0UL)   /*!<Use LIRC32 for random number generator */
 #define BL_RNG_LXT              (2UL)   /*!<Use LXT for random number generator */
+#define XTRNG_PRNG              (0UL)   /*!<Use H/W random number generator */
+#define XTRNG_SWRNG             (1UL)   /*!<Use S/W random number generator */
+#define XTRNG_LIRC32K           (0UL)   /*!<Use LIRC32 for random number generator */
+#define XTRNG_LXT               (2UL)   /*!<Use LXT for random number generator */
 
 /*--------------------------------------------------------------------------------------------------*/
 /*  Maximum SecureISP Mode Transmit/Receive Packet Size Constant Definitions                        */
@@ -76,6 +80,14 @@ typedef struct
     uint8_t buf2[20];   /*!< Internal use for random number generator */
 } BL_RNG_T;
 
+typedef struct
+{
+    uint32_t opt;       /*!< Operation mode */
+    int32_t data_len;   /*!< Internal use for random number generator */
+    uint8_t buf[32];    /*!< Internal use for random number generator */
+    uint8_t buf2[20];   /*!< Internal use for random number generator */
+} XTRNG_T;
+
 
 /**
   * @details    XCRPT_T is structure for access MKROM Crypto library
@@ -85,8 +97,8 @@ typedef struct
     CRPT_T      *crpt;       /*!< The pointer of the CRYPTO module */
     ECC_CURVE   *pCurve;     /*!< Internal use for ECC */
     ECC_CURVE   Curve_Copy;  /*!< Internal use for ECC */
-    uint32_t    AES_CTL[4];  /*!< AES cnahnel selection */ 
-    uint32_t    TDES_CTL[4]; /*!< TDES cnahnel selection */
+    uint32_t    AES_CTL[4];  /*!< AES channel selection */ 
+    uint32_t    TDES_CTL[4]; /*!< TDES channel selection */
 } XCRPT_T;
 
 /*---------------------------------------------------------------------------------------------------*/
@@ -225,14 +237,14 @@ typedef struct
 /*@}*/ /* end of group MKROM_EXPORTED_STRUCTS */
 
 
-/** @addtogroup MKROM_EXPORTED_FUNCTIONS Bootlader Exported Functions
+/** @addtogroup MKROM_EXPORTED_FUNCTIONS Bootloader Exported Functions
   @{
 */
 /**
   * @brief      Get MKROM Version Number
   * @param      None
   * @return     Version number of MKROM
-  * @details    Return MKROM version number.
+  * @details    This API will return the MKROM version number.
   */
 uint32_t BL_GetVersion(void);
 
@@ -370,8 +382,8 @@ int32_t BL_FlashPageErase(uint32_t u32NSAddr);
   * @retval     0xF0F00003      u32NSAddr isn't valid flash address
   * @retval     -1              Execute CRC32 operation failed
   * @retval     Result of CRC32 checksum
-  * @details    This API will calculate the CRC32 checksum result of specified Non-secure flash area.
-  *             And the starting address and calculated szie must be all 2048 bytes page size aligned.
+  * @details    This API will calculate the CRC32 checksum result of specified non-secure flash area.
+  *             The starting address and calculated size must be all 2048 bytes page size aligned.
   */
 uint32_t BL_FlashChecksum(uint32_t u32NSAddr, uint32_t u32ByteCount);
 
@@ -490,7 +502,7 @@ int32_t BL_SetXOMRegion(uint32_t u32XOM, uint32_t u32Base, uint32_t u32PageCnt, 
   * @retval     0xF0F00008  Invalid u32XOMBase address
   * @retval     -1          Erase XOM region failed
   * @retval     0           Erase XOM region success
-  * @details    This API will erase specified XOM region data and relavive XOM setting.
+  * @details    This API will erase specified XOM region data and relative XOM setting.
   */
 int32_t BL_EraseXOMRegion(uint32_t u32XOMBase);
 
@@ -529,7 +541,6 @@ uint32_t BL_GetKPROMCounter(void);
   * @return     KPCNT register status
   * @details    This API can read KPROM KPCNT register status.
   */
-
 uint32_t BL_GetKPROMPowerOnCounter(void);
 
 
@@ -543,7 +554,7 @@ uint32_t BL_GetKPROMPowerOnCounter(void);
   * @retval     0xF0F0000B  KPROM Key is mismatch
   * @retval     0xF0F0000C  KPROM key still locked
   * @retval     0           KPROM Key are matched
-  * @details    User can use this API to unlock KPROM write-protection then execute FMC program command well.
+  * @details    With this API, user can unlock KPROM write-protection and then execute FMC program command well.
   */
 int32_t BL_TrgKPROMCompare(uint32_t key0, uint32_t key1, uint32_t key2);
 
@@ -561,7 +572,360 @@ void BL_ResetChip(void);
 /*  The following functions are for Secure code only                                                */
 /*--------------------------------------------------------------------------------------------------*/
 /**
+  * @brief      Check if ECC Private Key Valid
+  * @param[in]  xcrpt       The pointer of the global XCRPT data
+  * @param[in]  ecc_curve   The pre-defined ECC curve.
+  * @param[in]  private_k   The input private key.
+  * @return     1   Is valid.
+  * @return     0   Is not valid.
+  * @return     -1  Invalid curve.
+  * @details    This API is used to check if the private key is placed in valid range of curve.
+  */
+int32_t XECC_IsPrivateKeyValid(XCRPT_T *xcrpt, E_ECC_CURVE ecc_curve, char private_k[]);
+
+
+/**
+  * @brief      Generate ECC Public Key
+  * @param[in]  xcrpt       The pointer of the global XCRPT data
+  * @param[in]  ecc_curve   The pre-defined ECC curve.
+  * @param[in]  private_k   The input private key.
+  * @param[out] public_k1   The output public key 1.
+  * @param[out] public_k2   The output public key 2.
+  * @return     0   Success.
+  * @return     -1  "ecc_curve" value is invalid.
+  * @details    This API is used to generate a public key pair by a specified ECC private key and ECC curve.
+  */
+int32_t XECC_GeneratePublicKey(XCRPT_T *xcrpt, E_ECC_CURVE ecc_curve, char *private_k, char public_k1[], char public_k2[]);
+
+
+/**
+  * @brief      Generate ECDSA Signature
+  * @param[in]  xcrpt       The pointer of the global XCRPT data
+  * @param[in]  ecc_curve   The pre-defined ECC curve.
+  * @param[in]  message     The hash value of source context.
+  * @param[in]  d           The private key.
+  * @param[in]  k           The selected random integer.
+  * @param[out] R           R of the (R,S) pair digital signature
+  * @param[out] S           S of the (R,S) pair digital signature
+  * @return     0   Success.
+  * @return     -1  "ecc_curve" value is invalid.
+  * @details    This API is used to generate an ECDSA digital signature.
+  */
+int32_t XECC_GenerateSignature(XCRPT_T *xcrpt, E_ECC_CURVE ecc_curve, char *message, char *d, char *k, char *R, char *S);
+
+
+/**
+  * @brief      Verify ECDSA Signature
+  * @param[in]  xcrpt       The pointer of the global XCRPT data
+  * @param[in]  ecc_curve   The pre-defined ECC curve.
+  * @param[in]  message     The hash value of source context.
+  * @param[in]  public_k1   The public key 1.
+  * @param[in]  public_k2   The public key 2.
+  * @param[in]  R           R of the (R,S) pair digital signature
+  * @param[in]  S           S of the (R,S) pair digital signature
+  * @return     0   Success.
+  * @return     -1  "ecc_curve" value is invalid.
+  * @return     -2  Verification failed.
+  * @details    This API is used to perform the ECDSA digital signature verification.
+  */
+int32_t XECC_VerifySignature(XCRPT_T *xcrpt, E_ECC_CURVE ecc_curve, char *message, char *public_k1, char *public_k2, char *R, char *S);
+
+
+/**
+  * @brief      Generate ECDH Secret Shared Key
+  * @param[in]  xcrpt       The pointer of the global XCRPT data
+  * @param[in]  ecc_curve   The pre-defined ECC curve.
+  * @param[in]  private_k   One's own private key.
+  * @param[in]  public_k1   The other party's public key 1.
+  * @param[in]  public_k2   The other party's public key 2.
+  * @param[out] secret_z    The ECC CDH secret Z.
+  * @return     0   Success.
+  * @return     -1  "ecc_curve" value is invalid.
+  * @details    This API is used to generate an ECDH shared key.
+  */
+int32_t XECC_GenerateSecretZ(XCRPT_T *xcrpt, E_ECC_CURVE ecc_curve, char *private_k, char public_k1[], char public_k2[], char secret_z[]);
+
+
+/**
+  * @brief      Convert Data to Hex Format
+  * @param[in]  count   Byte counts for convert.
+  * @param[in]  reg     The input data buffer.
+  * @param[out] output  The output data buffer.
+  * @return     None
+  * @details    This API is used to convert the data to hex format.
+  */
+void XECC_Reg2Hex(int32_t count, uint32_t volatile reg[], char output[]);
+
+
+/**
+  * @brief      Convert Data to Register Format
+  * @param[in]  input   The input data buffer.
+  * @param[out] reg     The output data buffer.
+  * @return     None
+  * @details    This API is used to convert the data in a register data format.
+  */
+void XECC_Hex2Reg(char input[], uint32_t volatile reg[]);
+
+
+/**
   * @brief      Get ID ECC R, S digital signature (for Secure code)
+  * @param[out] R           R of the (R,S) pair digital signature
+  * @param[out] S           S of the (R,S) pair digital signature
+  * @retval     -1          Get R, S digital signature fail
+  * @retval     0           Success
+  * @details    This API will return ECC R, S digital signature of chip ID, include PDID, UID0~2 and UCID0~3.
+  */
+int32_t XECC_GetIDECCSignature(uint32_t *R, uint32_t *S);
+
+
+/**
+  * @brief      Open TDES Encrypt/Decrypt
+  * @param[in]  xcrpt       The pointer of the global XCRPT data
+  * @param[in]  u32Channel  TDES channel. Must be 0~3.
+  * @param[in]  u32EncDec   1: TDES encode; 0: TDES decode
+  * @param[in]  Is3DES      1: TDES; 0: DES
+  * @param[in]  Is3Key      1: TDES 3 key mode; 0: TDES 2 key mode
+  * @param[in]  u32OpMode   TDES operation mode, including:
+  *                 - \ref TDES_MODE_ECB
+  *                 - \ref TDES_MODE_CBC
+  *                 - \ref TDES_MODE_CFB
+  *                 - \ref TDES_MODE_OFB
+  *                 - \ref TDES_MODE_CTR
+  * @param[in]  u32SwapType is TDES input/output data swap control and word swap control, including:
+  *                 - \ref TDES_NO_SWAP
+  *                 - \ref TDES_WHL_SWAP
+  *                 - \ref TDES_OUT_SWAP
+  *                 - \ref TDES_OUT_WHL_SWAP
+  *                 - \ref TDES_IN_SWAP
+  *                 - \ref TDES_IN_WHL_SWAP
+  *                 - \ref TDES_IN_OUT_SWAP
+  *                 - \ref TDES_IN_OUT_WHL_SWAP
+  * @return     None
+  * @details    This API is used to enable TDES encrypt/decrypt function.
+  */
+void XTDES_Open(XCRPT_T *xcrpt, uint32_t u32Channel, uint32_t u32EncDec, int32_t Is3DES, int32_t Is3Key, uint32_t u32OpMode, uint32_t u32SwapType);
+
+
+/**
+  * @brief      Start TDES Encrypt/Decrypt
+  * @param[in]  xcrpt       The pointer of the global XCRPT data
+  * @param[in]  u32Channel  TDES channel. Must be 0~3.
+  * @param[in]  u32DMAMode  TDES DMA control, including:
+  *                 - \ref CRYPTO_DMA_ONE_SHOT  One shot TDES encrypt/decrypt.
+  *                 - \ref CRYPTO_DMA_CONTINUE  Continuous TDES encrypt/decrypt.
+  *                 - \ref CRYPTO_DMA_LAST      Last TDES encrypt/decrypt of a series of XTDES_Start.
+  * @return     None
+  * @details    This API is used to start TDES encrypt/decrypt.
+  */
+void XTDES_Start(XCRPT_T *xcrpt, int32_t u32Channel, uint32_t u32DMAMode);
+
+
+/**
+  * @brief      Set TDES Keys
+  * @param[in]  xcrpt           The pointer of the global XCRPT data
+  * @param[in]  u32Channel      TDES channel. Must be 0~3.
+  * @param[in]  au32Keys        The TDES keys. au32Keys[0][0] is Key0 high word and au32Keys[0][1] is key0 low word.
+  * @return     None
+  * @details    This API is used to set TDES keys.
+  */
+void XTDES_SetKey(XCRPT_T *xcrpt, uint32_t u32Channel, uint32_t au32Keys[3][2]);
+
+
+/**
+  * @brief      Set TDES Initial Vectors
+  * @param[in]  xcrpt       The pointer of the global XCRPT data
+  * @param[in]  u32Channel  TDES channel. Must be 0~3.
+  * @param[in]  u32IVH      TDES initial vector high word.
+  * @param[in]  u32IVL      TDES initial vector low word.
+  * @return     None
+  * @details    This API is used to set TDES initial vectors.
+  */
+void XTDES_SetInitVect(XCRPT_T *xcrpt, uint32_t u32Channel, uint32_t u32IVH, uint32_t u32IVL);
+
+
+/**
+  * @brief      Set TDES DMA Transfer Configuration
+  * @param[in]  xcrpt       The pointer of the global XCRPT data
+  * @param[in]  u32Channel  TDES channel. Must be 0~3.
+  * @param[in]  u32SrcAddr  TDES DMA source address
+  * @param[in]  u32DstAddr  TDES DMA destination address
+  * @param[in]  u32TransCnt TDES DMA transfer byte count
+  * @return     None
+  * @details    This API is used to configure the TDES DMA transfer.
+  */
+void XTDES_SetDMATransfer(XCRPT_T *xcrpt, uint32_t u32Channel, uint32_t u32SrcAddr, uint32_t u32DstAddr, uint32_t u32TransCnt);
+
+
+/**
+  * @brief      Open SHA Encrypt
+  * @param[in]  xcrpt       The pointer of the global XCRPT data
+  * @param[in]  u32OpMode   SHA operation mode, including:
+  *                 - \ref SHA_MODE_SHA1
+  *                 - \ref SHA_MODE_SHA224
+  *                 - \ref SHA_MODE_SHA256
+  *                 - \ref SHA_MODE_SHA384
+  *                 - \ref SHA_MODE_SHA512
+  * @param[in]  u32SwapType is the SHA input/output data swap control, including:
+  *                 - \ref SHA_NO_SWAP
+  *                 - \ref SHA_OUT_SWAP
+  *                 - \ref SHA_IN_SWAP
+  *                 - \ref SHA_IN_OUT_SWAP
+  * @param[in]  hmac_key_len    HMAC key byte count
+  * @return     None
+  * @details    This API is used to enable SHA encrypt function.
+  */
+void XSHA_Open(XCRPT_T *xcrpt, uint32_t u32OpMode, uint32_t u32SwapType, uint32_t hmac_key_len);
+
+
+/**
+  * @brief      Start SHA Encrypt
+  * @param[in]  xcrpt       The pointer of the global XCRPT data
+  * @param[in]  u32DMAMode  SHA DMA control, including:
+  *                 - \ref CRYPTO_DMA_ONE_SHOT  One shot SHA encrypt.
+  *                 - \ref CRYPTO_DMA_CONTINUE  Continuous SHA encrypt.
+  *                 - \ref CRYPTO_DMA_LAST      Last SHA encrypt of a series of XSHA_Start.
+  * @return     None
+  * @details    This API is used to start SHA encrypt.
+  */
+void XSHA_Start(XCRPT_T *xcrpt, uint32_t u32DMAMode);
+
+
+/**
+  * @brief      Set SHA DMA Transfer Configuration
+  * @param[in]  xcrpt       The pointer of the global XCRPT data
+  * @param[in]  u32SrcAddr  SHA DMA source address
+  * @param[in]  u32TransCnt SHA DMA transfer byte count
+  * @return     None
+  * @details    This API is used to configure the SHA DMA transfer.
+  */
+void XSHA_SetDMATransfer(XCRPT_T *xcrpt, uint32_t u32SrcAddr, uint32_t u32TransCnt);
+
+
+/**
+  * @brief      Read SHA Digest
+  * @param[in]  xcrpt       The pointer of the global XCRPT data
+  * @param[out] u32Digest   The SHA encrypt output digest.
+  * @return     None
+  * @details    This API is used to read the SHA digest.
+  */
+void XSHA_Read(XCRPT_T *xcrpt, uint32_t u32Digest[]);
+
+
+/**
+  * @brief      Open AES Encrypt/Decrypt
+  * @param[in]  xcrpt       The pointer of the global XCRPT data
+  * @param[in]  u32Channel  AES channel. Must be 0~3.
+  * @param[in]  u32EncDec   1: AES encode;  0: AES decode
+  * @param[in]  u32OpMode   AES operation mode, including:
+  *                 - \ref AES_MODE_ECB
+  *                 - \ref AES_MODE_CBC
+  *                 - \ref AES_MODE_CFB
+  *                 - \ref AES_MODE_OFB
+  *                 - \ref AES_MODE_CTR
+  *                 - \ref AES_MODE_CBC_CS1
+  *                 - \ref AES_MODE_CBC_CS2
+  *                 - \ref AES_MODE_CBC_CS3
+  * @param[in]  u32KeySize is AES key size, including:
+  *                 - \ref AES_KEY_SIZE_128
+  *                 - \ref AES_KEY_SIZE_192
+  *                 - \ref AES_KEY_SIZE_256
+  * @param[in]  u32SwapType is AES input/output data swap control, including:
+  *                 - \ref AES_NO_SWAP
+  *                 - \ref AES_OUT_SWAP
+  *                 - \ref AES_IN_SWAP
+  *                 - \ref AES_IN_OUT_SWAP
+  * @return     None
+  * @details    This API is used to enable AES encrypt/decrypt function.
+  */
+void XAES_Open(XCRPT_T *xcrpt, uint32_t u32Channel, uint32_t u32EncDec, uint32_t u32OpMode, uint32_t u32KeySize, uint32_t u32SwapType);
+
+
+/**
+  * @brief      Start AES Encrypt/Decrypt
+  * @param[in]  xcrpt       The pointer of the global XCRPT data
+  * @param[in]  u32Channel  AES channel. Must be 0~3.
+  * @param[in]  u32DMAMode  AES DMA control, including:
+  *                     - \ref CRYPTO_DMA_ONE_SHOT  One shot AES encrypt/decrypt.
+  *                     - \ref CRYPTO_DMA_CONTINUE  Continuous AES encrypt/decrypt.
+  *                     - \ref CRYPTO_DMA_LAST      Last AES encrypt/decrypt of a series of XAES_Start.
+  * @return     None
+  * @details    This API is used to start AES encrypt/decrypt.
+  */
+void XAES_Start(XCRPT_T *xcrpt, int32_t u32Channel, uint32_t u32DMAMode);
+
+
+/**
+  * @brief      Set AES Keys
+  * @param[in]  xcrpt       The pointer of the global XCRPT data
+  * @param[in]  u32Channel  AES channel. Must be 0~3.
+  * @param[in]  au32Keys    An word array contains AES keys.
+  * @param[in]  u32KeySize is AES key size, including:
+  *                 - \ref AES_KEY_SIZE_128
+  *                 - \ref AES_KEY_SIZE_192
+  *                 - \ref AES_KEY_SIZE_256
+  * @return     None
+  * @details    This API is used to set AES keys.
+  */
+void XAES_SetKey(XCRPT_T *xcrpt, uint32_t u32Channel, uint32_t au32Keys[], uint32_t u32KeySize);
+
+
+/**
+  * @brief      Set AES Initial Vectors
+  * @param[in]  xcrpt       The pointer of the global XCRPT data
+  * @param[in]  u32Channel  AES channel. Must be 0~3.
+  * @param[in]  au32IV      A four entry word array contains AES initial vectors.
+  * @return     None
+  * @details    This API is used to set AES initial vectors.
+  */
+void XAES_SetInitVect(XCRPT_T *xcrpt, uint32_t u32Channel, uint32_t au32IV[]);
+
+
+/**
+  * @brief      Set AES DMA Transfer Configuration
+  * @param[in]  xcrpt       The pointer of the global XCRPT data
+  * @param[in]  u32Channel   AES channel. Must be 0~3.
+  * @param[in]  u32SrcAddr   AES DMA source address
+  * @param[in]  u32DstAddr   AES DMA destination address
+  * @param[in]  u32TransCnt  AES DMA transfer byte count
+  * @return     None
+  * @details    This API is used to configure the AES DMA transfer.
+  */
+void XAES_SetDMATransfer(XCRPT_T *xcrpt, uint32_t u32Channel, uint32_t u32SrcAddr, uint32_t u32DstAddr, uint32_t u32TransCnt);
+
+
+/**
+  * @brief      Initial Random Number Generator (for Secure code)
+  *
+  * @param[in]  rng     The structure of random number generator
+  * @param[in]  opt     Operation modes. Possible options are,
+  *                         (XTRNG_PRNG | XTRNG_LIRC32K),
+  *                         (XTRNG_PRNG | XTRNG_LXT),
+  *                         (XTRNG_SWRNG | XTRNG_LIRC32K),
+  *                         (XTRNG_SWRNG | XTRNG_LXT)
+  * @retval     -1      Fail
+  * @retval     0       Success
+  *
+  * @details    This API is used to initial random number generator.
+  *             After initial this API success, user can call XTRNG_Random API to generate the random number.
+  */
+int32_t XTRNG_RandomInit(XTRNG_T *rng, uint32_t opt);
+
+
+/**
+  * @brief      Generate Random Number (for Secure code)
+  *
+  * @param[in]  rng     The structure of random number generator
+  * @param[out] p       Starting buffer address to store random number
+  * @param[in]  size    Total byte counts of random number
+  * @retval     -1      Fail
+  * @retval     0       Success
+  * @details    This API is used to generate random number.
+  */
+int32_t XTRNG_Random(XTRNG_T *rng, uint8_t *p, uint32_t size);
+
+
+/**
+  * @brief      Get ID ECC R, S Digital Signature (for Secure code)
   * @param[out] R           R of the (R,S) pair digital signature
   * @param[out] S           S of the (R,S) pair digital signature
   * @retval     -1          Get R, S digital signature fail
@@ -603,305 +967,16 @@ int32_t BL_Random(BL_RNG_T *rng, uint8_t *p, uint32_t size);
 
 
 /**
-  * @brief      Check if the private key is located in valid range of curve.
-  * @param[in]  xcrpt       The pointer of the global XCRPT data
-  * @param[in]  ecc_curve   The pre-defined ECC curve.
-  * @param[in]  private_k   The input private key.
-  * @return     1   Is valid.
-  * @return     0   Is not valid.
-  * @return     -1  Invalid curve.
-  */
-int32_t XECC_IsPrivateKeyValid(XCRPT_T *xcrpt, E_ECC_CURVE ecc_curve, char private_k[]);
-
-
-/**
-  * @brief      Given a private key and curve to generate the public key pair.
-  * @param[in]  xcrpt       The pointer of the global XCRPT data
-  * @param[in]  ecc_curve   The pre-defined ECC curve.
-  * @param[in]  private_k   The input private key.
-  * @param[out] public_k1   The output public key 1.
-  * @param[out] public_k2   The output public key 2.
-  * @return     0   Success.
-  * @return     -1  "ecc_curve" value is invalid.
-  */
-int32_t XECC_GeneratePublicKey(XCRPT_T *xcrpt, E_ECC_CURVE ecc_curve, char *private_k, char public_k1[], char public_k2[]);
-
-
-/**
-  * @brief      ECDSA digital signature generation.
-  * @param[in]  xcrpt       The pointer of the global XCRPT data
-  * @param[in]  ecc_curve   The pre-defined ECC curve.
-  * @param[in]  message     The hash value of source context.
-  * @param[in]  d           The private key.
-  * @param[in]  k           The selected random integer.
-  * @param[out] R           R of the (R,S) pair digital signature
-  * @param[out] S           S of the (R,S) pair digital signature
-  * @return     0   Success.
-  * @return     -1  "ecc_curve" value is invalid.
-  */
-int32_t XECC_GenerateSignature(XCRPT_T *xcrpt, E_ECC_CURVE ecc_curve, char *message, char *d, char *k, char *R, char *S);
-
-
-/**
-  * @brief      ECDSA digital signature verification.
-  * @param[in]  xcrpt       The pointer of the global XCRPT data
-  * @param[in]  ecc_curve   The pre-defined ECC curve.
-  * @param[in]  message     The hash value of source context.
-  * @param[in]  public_k1   The public key 1.
-  * @param[in]  public_k2   The public key 2.
-  * @param[in]  R           R of the (R,S) pair digital signature
-  * @param[in]  S           S of the (R,S) pair digital signature
-  * @return     0   Success.
-  * @return     -1  "ecc_curve" value is invalid.
-  * @return     -2  Verification failed.
-  */
-int32_t XECC_VerifySignature(XCRPT_T *xcrpt, E_ECC_CURVE ecc_curve, char *message, char *public_k1, char *public_k2, char *R, char *S);
-
-
-/**
-  * @brief      Given a curve parameter, the other party's public key, and one's own private key to generate the secret Z.
-  * @param[in]  xcrpt       The pointer of the global XCRPT data
-  * @param[in]  ecc_curve   The pre-defined ECC curve.
-  * @param[in]  private_k   One's own private key.
-  * @param[in]  public_k1   The other party's public key 1.
-  * @param[in]  public_k2   The other party's public key 2.
-  * @param[out] secret_z    The ECC CDH secret Z.
-  * @return     0   Success.
-  * @return     -1  "ecc_curve" value is invalid.
-  */
-int32_t XECC_GenerateSecretZ(XCRPT_T *xcrpt, E_ECC_CURVE ecc_curve, char *private_k, char public_k1[], char public_k2[], char secret_z[]);
-
-
-/**
-  * @brief      Convert data to hex format.
-  * @param[in]  count   Byte counts for convert.
-  * @param[in]  reg     The input data buffer.
-  * @param[out] output  The output data buffer.
-  * @return     None
-  */
-void XECC_Reg2Hex(int32_t count, uint32_t volatile reg[], char output[]);
-
-
-/**
-  * @brief      Convert data in a register data format.
-  * @param[in]  input   The input data buffer.
-  * @param[out] reg     The output data buffer.
-  * @return     None
-  */
-void XECC_Hex2Reg(char input[], uint32_t volatile reg[]);
-
-
-/**
-  * @brief      Open TDES encrypt/decrypt function.
-  * @param[in]  xcrpt       The pointer of the global XCRPT data
-  * @param[in]  u32Channel  TDES channel. Must be 0~3.
-  * @param[in]  u32EncDec   1: TDES encode; 0: TDES decode
-  * @param[in]  Is3DES      1: TDES; 0: DES
-  * @param[in]  Is3Key      1: TDES 3 key mode; 0: TDES 2 key mode
-  * @param[in]  u32OpMode   TDES operation mode, including:
-  *                 - \ref TDES_MODE_ECB
-  *                 - \ref TDES_MODE_CBC
-  *                 - \ref TDES_MODE_CFB
-  *                 - \ref TDES_MODE_OFB
-  *                 - \ref TDES_MODE_CTR
-  * @param[in]  u32SwapType is TDES input/output data swap control and word swap control, including:
-  *                 - \ref TDES_NO_SWAP
-  *                 - \ref TDES_WHL_SWAP
-  *                 - \ref TDES_OUT_SWAP
-  *                 - \ref TDES_OUT_WHL_SWAP
-  *                 - \ref TDES_IN_SWAP
-  *                 - \ref TDES_IN_WHL_SWAP
-  *                 - \ref TDES_IN_OUT_SWAP
-  *                 - \ref TDES_IN_OUT_WHL_SWAP
-  * @return     None
-  */
-void XTDES_Open(XCRPT_T *xcrpt, uint32_t u32Channel, uint32_t u32EncDec, int32_t Is3DES, int32_t Is3Key, uint32_t u32OpMode, uint32_t u32SwapType);
-
-
-/**
-  * @brief      Start TDES encrypt/decrypt
-  * @param[in]  xcrpt       The pointer of the global XCRPT data
-  * @param[in]  u32Channel  TDES channel. Must be 0~3.
-  * @param[in]  u32DMAMode  TDES DMA control, including:
-  *                 - \ref CRYPTO_DMA_ONE_SHOT  One shot TDES encrypt/decrypt.
-  *                 - \ref CRYPTO_DMA_CONTINUE  Continuous TDES encrypt/decrypt.
-  *                 - \ref CRYPTO_DMA_LAST      Last TDES encrypt/decrypt of a series of XTDES_Start.
-  * @return     None
-  */
-void XTDES_Start(XCRPT_T *xcrpt, int32_t u32Channel, uint32_t u32DMAMode);
-
-
-/**
-  * @brief      Set TDES keys
-  * @param[in]  xcrpt           The pointer of the global XCRPT data
-  * @param[in]  u32Channel      TDES channel. Must be 0~3.
-  * @param[in]  au32Keys        The TDES keys. au32Keys[0][0] is Key0 high word and au32Keys[0][1] is key0 low word.
-  * @return     None
-  */
-void XTDES_SetKey(XCRPT_T *xcrpt, uint32_t u32Channel, uint32_t au32Keys[3][2]);
-
-
-/**
-  * @brief      Set TDES initial vectors
-  * @param[in]  xcrpt       The pointer of the global XCRPT data
-  * @param[in]  u32Channel  TDES channel. Must be 0~3.
-  * @param[in]  u32IVH      TDES initial vector high word.
-  * @param[in]  u32IVL      TDES initial vector low word.
-  * @return     None
-  */
-void XTDES_SetInitVect(XCRPT_T *xcrpt, uint32_t u32Channel, uint32_t u32IVH, uint32_t u32IVL);
-
-
-/**
-  * @brief      Set TDES DMA transfer configuration.
-  * @param[in]  xcrpt       The pointer of the global XCRPT data
-  * @param[in]  u32Channel  TDES channel. Must be 0~3.
-  * @param[in]  u32SrcAddr  TDES DMA source address
-  * @param[in]  u32DstAddr  TDES DMA destination address
-  * @param[in]  u32TransCnt TDES DMA transfer byte count
-  * @return     None
-  */
-void XTDES_SetDMATransfer(XCRPT_T *xcrpt, uint32_t u32Channel, uint32_t u32SrcAddr, uint32_t u32DstAddr, uint32_t u32TransCnt);
-
-
-/**
-  * @brief      Open SHA encrypt function.
-  * @param[in]  xcrpt       The pointer of the global XCRPT data
-  * @param[in]  u32OpMode   SHA operation mode, including:
-  *                 - \ref SHA_MODE_SHA1
-  *                 - \ref SHA_MODE_SHA224
-  *                 - \ref SHA_MODE_SHA256
-  *                 - \ref SHA_MODE_SHA384
-  *                 - \ref SHA_MODE_SHA512
-  * @param[in]  u32SwapType is the SHA input/output data swap control, including:
-  *                 - \ref SHA_NO_SWAP
-  *                 - \ref SHA_OUT_SWAP
-  *                 - \ref SHA_IN_SWAP
-  *                 - \ref SHA_IN_OUT_SWAP
-  * @param[in]  hmac_key_len    HMAC key byte count
-  * @return     None
-  */
-void XSHA_Open(XCRPT_T *xcrpt, uint32_t u32OpMode, uint32_t u32SwapType, uint32_t hmac_key_len);
-
-
-/**
-  * @brief      Start SHA encrypt
-  * @param[in]  xcrpt       The pointer of the global XCRPT data
-  * @param[in]  u32DMAMode  SHA DMA control, including:
-  *                 - \ref CRYPTO_DMA_ONE_SHOT  One shot SHA encrypt.
-  *                 - \ref CRYPTO_DMA_CONTINUE  Continuous SHA encrypt.
-  *                 - \ref CRYPTO_DMA_LAST      Last SHA encrypt of a series of XSHA_Start.
-  * @return     None
-  */
-void XSHA_Start(XCRPT_T *xcrpt, uint32_t u32DMAMode);
-
-
-/**
-  * @brief      Set SHA DMA transfer
-  * @param[in]  xcrpt       The pointer of the global XCRPT data
-  * @param[in]  u32SrcAddr  SHA DMA source address
-  * @param[in]  u32TransCnt SHA DMA transfer byte count
-  * @return     None
-  */
-void XSHA_SetDMATransfer(XCRPT_T *xcrpt, uint32_t u32SrcAddr, uint32_t u32TransCnt);
-
-
-/**
-  * @brief      Read the SHA digest.
-  * @param[in]  xcrpt       The pointer of the global XCRPT data
-  * @param[out] u32Digest   The SHA encrypt output digest.
-  * @return     None
-  */
-void XSHA_Read(XCRPT_T *xcrpt, uint32_t u32Digest[]);
-
-
-/**
-  * @brief      Open AES encrypt/decrypt function.
-  * @param[in]  xcrpt       The pointer of the global XCRPT data
-  * @param[in]  u32Channel  AES channel. Must be 0~3.
-  * @param[in]  u32EncDec   1: AES encode;  0: AES decode
-  * @param[in]  u32OpMode   AES operation mode, including:
-  *                 - \ref AES_MODE_ECB
-  *                 - \ref AES_MODE_CBC
-  *                 - \ref AES_MODE_CFB
-  *                 - \ref AES_MODE_OFB
-  *                 - \ref AES_MODE_CTR
-  *                 - \ref AES_MODE_CBC_CS1
-  *                 - \ref AES_MODE_CBC_CS2
-  *                 - \ref AES_MODE_CBC_CS3
-  * @param[in]  u32KeySize is AES key size, including:
-  *                 - \ref AES_KEY_SIZE_128
-  *                 - \ref AES_KEY_SIZE_192
-  *                 - \ref AES_KEY_SIZE_256
-  * @param[in]  u32SwapType is AES input/output data swap control, including:
-  *                 - \ref AES_NO_SWAP
-  *                 - \ref AES_OUT_SWAP
-  *                 - \ref AES_IN_SWAP
-  *                 - \ref AES_IN_OUT_SWAP
-  * @return     None
-  */
-void XAES_Open(XCRPT_T *xcrpt, uint32_t u32Channel, uint32_t u32EncDec, uint32_t u32OpMode, uint32_t u32KeySize, uint32_t u32SwapType);
-
-
-/**
-  * @brief      Start AES encrypt/decrypt
-  * @param[in]  xcrpt       The pointer of the global XCRPT data
-  * @param[in]  u32Channel  AES channel. Must be 0~3.
-  * @param[in]  u32DMAMode  AES DMA control, including:
-  *                     - \ref CRYPTO_DMA_ONE_SHOT  One shot AES encrypt/decrypt.
-  *                     - \ref CRYPTO_DMA_CONTINUE  Continuous AES encrypt/decrypt.
-  *                     - \ref CRYPTO_DMA_LAST      Last AES encrypt/decrypt of a series of XAES_Start.
-  * @return     None
-  */
-void XAES_Start(XCRPT_T *xcrpt, int32_t u32Channel, uint32_t u32DMAMode);
-
-
-/**
-  * @brief      Set AES keys
-  * @param[in]  xcrpt       The pointer of the global XCRPT data
-  * @param[in]  u32Channel  AES channel. Must be 0~3.
-  * @param[in]  au32Keys    An word array contains AES keys.
-  * @param[in]  u32KeySize is AES key size, including:
-  *                 - \ref AES_KEY_SIZE_128
-  *                 - \ref AES_KEY_SIZE_192
-  *                 - \ref AES_KEY_SIZE_256
-  * @return     None
-  */
-void XAES_SetKey(XCRPT_T *xcrpt, uint32_t u32Channel, uint32_t au32Keys[], uint32_t u32KeySize);
-
-
-/**
-  * @brief      Set AES initial vectors
-  * @param[in]  xcrpt       The pointer of the global XCRPT data
-  * @param[in]  u32Channel  AES channel. Must be 0~3.
-  * @param[in]  au32IV      A four entry word array contains AES initial vectors.
-  * @return     None
-  */
-void XAES_SetInitVect(XCRPT_T *xcrpt, uint32_t u32Channel, uint32_t au32IV[]);
-
-
-/**
-  * @brief  Set AES DMA transfer configuration.
-  * @param[in]  xcrpt       The pointer of the global XCRPT data
-  * @param[in]  u32Channel   AES channel. Must be 0~3.
-  * @param[in]  u32SrcAddr   AES DMA source address
-  * @param[in]  u32DstAddr   AES DMA destination address
-  * @param[in]  u32TransCnt  AES DMA transfer byte count
-  * @return     None
-  */
-void XAES_SetDMATransfer(XCRPT_T *xcrpt, uint32_t u32Channel, uint32_t u32SrcAddr, uint32_t u32DstAddr, uint32_t u32TransCnt);
-
-
-/**
-  * @brief      Initial and enable SecureISP function on USB or UART1 (for Secure code)
-  * @param[in]  pISPInfo        The ISP information data buffer address
-  * @param[in]  pUSBDInfo       USB data buffer for SecureISP USB
-  * @param[in]  mode            Operation mode. Possible options are
-  *                                 - \ref USB_MODE
-  *                                 - \ref UART_MODE
-  *                                 - \ref USB_UART_MODE
+  * @brief      Initialize SecureISP Function (for Secure code)
+  * @param[in]  pISPInfo    The ISP information data buffer address
+  * @param[in]  pUSBDInfo   USB data buffer for SecureISP USB
+  * @param[in]  mode        Operation mode. Possible options are
+  *                             - \ref USB_MODE
+  *                             - \ref UART_MODE
+  *                             - \ref USB_UART_MODE
+  *                             - \ref RESYNC_ISP
   * @return     Return process status and exit SecureISP mode.
-  * @details    Execute this API will enable USB or UART1 SecureISP function.
+  * @details    Executing this API will initialize USB or UART1 SecureISP function.
   *             User can use SecureISP Tool to communicate with target chip.
   * @note       Configure relate USB and UART1 settings are necessary before executing this API.
   */
@@ -931,33 +1006,33 @@ int32_t BL_ProcessUART1Interrupt(uint32_t *pInfo);
 
 
 /**
-  * @brief      Get vendor data (for Secure code)
+  * @brief      Get Vendor Data (for Secure code)
   * @param[in]  pInfo       The ISP information data buffer address
   * @param[out] pu32Data    Data buffer to store vendor data. Maximum buffer size is 44 bytes.
   * @param[in]  pu32Buf     Internal used data buffer address
-  * @retval     0       Success
-  * @retval     -1      Invalid command packet
-  * @retval     -2      Not in vendor function
+  * @retval     0           Success
+  * @retval     -1          Invalid command packet
+  * @retval     -2          Not in vendor function
   * @details    This API is used to get the vendor data and should be called in the vendor function.
   */
 int32_t BL_GetVendorData(uint32_t *pInfo, uint32_t *pu32Data, uint32_t *pu32Buf);
 
 
 /**
-  * @brief      Return vendor data (for Secure code)
+  * @brief      Return Vendor Data (for Secure code)
   * @param[in]  pu32Data    Data buffer to store response data
   * @param[in]  u32Len      Data buffer length, maximum size is 40 bytes.
   * @param[in]  pu32Buf     Internal used data buffer address
-  * @retval     0       Success
-  * @retval     -1      Invalid buffer length
-  * @retval     -2      Not in vendor function
+  * @retval     0           Success
+  * @retval     -1          Invalid buffer length
+  * @retval     -2          Not in vendor function
   * @details    This API is used to return vendor data to server and should be called in the vendor function.
   */
 int32_t BL_ReturnVendorData(uint32_t *pu32Data, uint32_t u32Len, uint32_t *pu32Buf);
 
 
 /**
-  * @brief      Generate command response data (for Secure code)
+  * @brief      Generate Command Response Data (for Secure code)
   * @param[in]  pCMD        Buffer address to store command data
   * @param[in]  pISPInfo    The ISP information data buffer address
   * @retval     0           Command success
@@ -968,7 +1043,7 @@ int32_t Cmd_GenRspPacket(CMD_PACKET_T *pCMD, ISP_INFO_T *pISPInfo);
 
 
 /**
-  * @brief      Parse command (for Secure code)
+  * @brief      Parse Command (for Secure code)
   * @param[in]  pCMD        Buffer address to store command
   * @param[in]  pISPInfo    The ISP information data buffer address
   * @retval     0           Command success
@@ -979,8 +1054,8 @@ int32_t Cmd_ParseReqPacket(CMD_PACKET_T *pCMD, ISP_INFO_T *pISPInfo);
 
 
 /**
-  * @brief      Parse CONNECT command (for Secure code)
-  * @param[in]  pISPInfo   The ISP information data buffer address
+  * @brief      Parse CONNECT Command (for Secure code)
+  * @param[in]  pISPInfo    The ISP information data buffer address
   * @retval     0           Success
   * @retval     Other       Command fail
   * @details    This API is used for parse CONNECT command only.
@@ -989,8 +1064,8 @@ int32_t ParseCONNECT(ISP_INFO_T *pISPInfo);
 
 
 /**
-  * @brief      Parse relate ECDH commands (for Secure code)
-  * @param[in]  pISPInfo   The ISP information data buffer address
+  * @brief      Parse related ECDH Commands (for Secure code)
+  * @param[in]  pISPInfo    The ISP information data buffer address
   * @retval     0           Success
   * @retval     Other       Command fail
   * @details    This API is used for parse related ECDH commands.
@@ -999,8 +1074,8 @@ int32_t ParseECDH(ISP_INFO_T *pISPInfo);
 
 
 /**
-  * @brief      Parse commands (for Secure code)
-  * @param[in]  pISPInfo   The ISP information data buffer address
+  * @brief      Parse Commands (for Secure code)
+  * @param[in]  pISPInfo    The ISP information data buffer address
   * @retval     0           Success
   * @retval     Other       Command fail
   * @details    This API is used for parse all commands except CONNECT and related ECDH commands.
@@ -1009,13 +1084,13 @@ int32_t ParseCommands(ISP_INFO_T *pISPInfo);
 
 
 /**
-  * @brief      This function makes USBD module to be ready to use (for Secure code)
+  * @brief      Initialize USBD Module (for Secure code)
   * @param[in]  param           The structure of USBD information
   * @param[in]  pfnClassReq     USB Class request callback function
   * @param[in]  pfnSetInterface USB Set Interface request callback function
   * @param[in]  pUSBDInfo       USB data buffer for SecureISP USB mode
-  * @retval     -1      Execute API in Non-secure code
-  * @retval     0       Success
+  * @retval     -1              Execute API in Non-secure code
+  * @retval     0               Success
   * @details    This function will enable USB controller, USB PHY transceiver and pull-up resistor of USB_D+ pin. USB PHY will drive SE0 to bus.
   */
 int32_t BL_USBDOpen(const S_USBD_INFO_T *param, CLASS_REQ pfnClassReq, SET_INTERFACE_REQ pfnSetInterface, uint32_t *pUSBDInfo);
@@ -1034,7 +1109,7 @@ int32_t BL_USBDInstallEPHandler(uint32_t ep, void *pfnEPHandler, uint32_t *pfnEP
 
 
 /**
-  * @brief      This function makes USB host to recognize the device (for Secure code)
+  * @brief      Start USBD Function (for Secure code)
   * @param      None
   * @retval     -1      Execute API in Non-secure code
   * @retval     0       Success

@@ -26,7 +26,8 @@
 /* Global variables                                                                                        */
 /*---------------------------------------------------------------------------------------------------------*/
 #if !(defined(__ICCARM__) && (__VER__ >= 6010000))
-struct __FILE {
+struct __FILE
+{
     int handle; /* Add whatever you need here */
 };
 #endif
@@ -42,7 +43,7 @@ enum { r0, r1, r2, r3, r12, lr, pc, psr};
  * @details     This function is implement to print r0, r1, r2, r3, r12, lr, pc, psr
  */
 static void stackDump(uint32_t stack[])
-{   
+{
     printf("r0  = 0x%x\n", stack[r0]);
     printf("r1  = 0x%x\n", stack[r1]);
     printf("r2  = 0x%x\n", stack[r2]);
@@ -79,7 +80,11 @@ void Hard_Fault_Handler(uint32_t stack[])
 static char g_buf[16];
 static char g_buf_len = 0;
 
-# if defined(__ICCARM__)
+/* Make sure won't goes here only because --gnu is defined , so
+   add !__CC_ARM and !__ICCARM__ checking */
+# if defined ( __GNUC__ ) && !(__CC_ARM) && !(__ICCARM__)
+
+# elif defined(__ICCARM__)
 
 
 void SH_End(void)
@@ -91,10 +96,10 @@ void SH_End(void)
 
 void SH_ICE(void)
 {
-  asm("CMP   R2,#0   \n"
-      "BEQ   SH_End  \n"
-      "STR   R0,[R2] \n"       //; Save the return value to *pn32Out_R0
-     );
+    asm("CMP   R2,#0   \n"
+        "BEQ   SH_End  \n"
+        "STR   R0,[R2] \n"       //; Save the return value to *pn32Out_R0
+       );
 }
 
 /**
@@ -114,7 +119,7 @@ int32_t SH_DoCommand(int32_t n32In_R0, int32_t n32In_R1, int32_t *pn32Out_R0)
         "SH_HardFault: \n"       //; Captured by HardFault
         "MOVS   R0,#0  \n"       //; Set return value to 0
         "BX     lr     \n"       //; Return
-        );
+       );
 
     return 1;                    //; Return 1 when it is trap by ICE
 }
@@ -195,8 +200,8 @@ void SP_is_PSP(void)
     asm(
         "MRS     R0, PSP       \n"      //; stack use PSP, read PSP
         "B       Get_LR_and_Branch    \n"
-    
-       );
+
+    );
 }
 
 /**
@@ -209,7 +214,7 @@ void SP_is_PSP(void)
  * @details  This function is implement to support semihost message print.
  *
  */
-void HardFault_Handler (void)
+void HardFault_Handler(void)
 {
     asm("MOV     R0, lr        \n"
         "LSLS    R0, #29       \n"        //; Check bit 2
@@ -233,6 +238,8 @@ void HardFault_Handler (void)
  */
 __asm int32_t HardFault_Handler(void)
 {
+    IMPORT  Hard_Fault_Handler
+
     MOV     R0, LR
     LSLS    R0, #29               //; Check bit 2
     BMI     SP_is_PSP             //; previous stack is PSP
@@ -244,7 +251,7 @@ SP_is_PSP
 SP_Read_Ready
     LDR     R1, [R0, #24]         //; Get previous PC
     LDRH    R3, [R1]              //; Get instruction
-    LDR     R2, =0xBEAB           //; The special BKPT instruction
+    LDR     R2, = 0xBEAB          //; The special BKPT instruction
     CMP     R3, R2                //; Test if the instruction at previous PC is BKPT
     BNE     HardFault_Handler_Ret //; Not BKPT
 
@@ -257,20 +264,20 @@ HardFault_Handler_Ret
     /* TODO: Implement your own hard fault handler here. */
     MOVS    r0, #4
     MOV     r1, LR
-    TST     r0, r1                          //; check LR bit 2  
+    TST     r0, r1                          //; check LR bit 2
     BEQ     Stack_Use_MSP                   //; stack use MSP
-    MRS     R0, PSP ;stack use PSP          //; stack use PSP, read PSP
+    MRS     R0, PSP ; stack use PSP         //; stack use PSP, read PSP
     B       Get_LR_and_Branch
 Stack_Use_MSP
     MRS     R0, MSP ; stack use MSP         //; read MSP
 Get_LR_and_Branch
-    MOV     R1, LR ; LR current value       //; LR current value       
-    LDR     R2,=__cpp(Hard_Fault_Handler)   //; branch to Hard_Fault_Handler 
+    MOV     R1, LR ; LR current value       //; LR current value
+    LDR     R2, = __cpp(Hard_Fault_Handler) //; branch to Hard_Fault_Handler
     BX      R2
 
     B       .
 
-                 ALIGN
+    ALIGN
 }
 
 /**
@@ -307,9 +314,40 @@ SH_End
 #endif
 
 
-#else
+#else // Non-semihost
 
-# if defined(__ICCARM__)
+/* Make sure won't goes here only because --gnu is defined , so
+   add !__CC_ARM and !__ICCARM__ checking */
+# if defined ( __GNUC__ ) && !(__CC_ARM) && !(__ICCARM__)
+
+/**
+ * @brief    This HardFault handler is implemented to show r0, r1, r2, r3, r12, lr, pc, psr
+ *
+ * @param    None
+ *
+ * @returns  None
+ *
+ * @details  This function is implement to print r0, r1, r2, r3, r12, lr, pc, psr.
+ *
+ */
+void HardFault_Handler(void)
+{
+    asm("MOVS    r0, #4                        \n"
+        "MOV     r1, LR                        \n"
+        "TST     r0, r1                        \n" /*; check LR bit 2 */
+        "BEQ     1f                            \n" /*; stack use MSP */
+        "MRS     R0, PSP                       \n" /*; stack use PSP, read PSP */
+        "MOV     R1, LR                        \n" /*; LR current value */
+        "B       Hard_Fault_Handler            \n"
+        "1:                                    \n"
+        "MRS     R0, MSP                       \n" /*; LR current value */
+        "B       Hard_Fault_Handler            \n"
+        ::[Hard_Fault_Handler] "r" (Hard_Fault_Handler) // input
+    );
+    while(1);
+}
+
+# elif defined(__ICCARM__)
 
 void Get_LR_and_Branch(void)
 {
@@ -362,9 +400,11 @@ void HardFault_Handler(void)
  */
 __asm int32_t HardFault_Handler(void)
 {
-    MOVS    r0, #4  
+    IMPORT  Hard_Fault_Handler
+
+    MOVS    r0, #4
     MOV     r1, LR
-    TST     r0, r1          //; check LR bit 2                 
+    TST     r0, r1          //; check LR bit 2
     BEQ     Stack_Use_MSP   //; stack use MSP
     MRS     R0, PSP         //; stack use PSP, read PSP
     B       Get_LR_and_Branch
@@ -372,7 +412,7 @@ Stack_Use_MSP
     MRS     R0, MSP         //; read MSP
 Get_LR_and_Branch
     MOV     R1, LR          //; LR current value
-    LDR     R2,=__cpp(Hard_Fault_Handler) //; branch to Hard_Fault_Handler 
+    LDR     R2, = __cpp(Hard_Fault_Handler) //; branch to Hard_Fault_Handler
     BX      R2
 }
 
@@ -383,26 +423,30 @@ Get_LR_and_Branch
 
 
 /**
- * @brief       Routine to send a char
+ * @brief    Routine to send a char
  *
- * @param[in]   ch  Character to be written to debug port
+ * @param[in] ch  A character writes to debug port
  *
- * @returns     Send value from UART debug port
+ * @returns  Send value from UART debug port
  *
- * @details     Send a target char to UART debug port .
+ * @details  Send a target char to UART debug port .
  */
+
 #ifndef NONBLOCK_PRINTF
+
 void SendChar_ToUART(int ch)
 {
 
     while(DEBUG_PORT->FSR & UART_FSR_TX_FULL_Msk);
     DEBUG_PORT->DATA = ch;
-    if(ch == '\n') {
+    if(ch == '\n')
+    {
         while(DEBUG_PORT->FSR & UART_FSR_TX_FULL_Msk);
         DEBUG_PORT->DATA = '\r';
     }
 }
 #else
+
 /* Non-block implement of send char */
 #define BUF_SIZE    2048
 void SendChar_ToUART(int ch)
@@ -411,23 +455,23 @@ void SendChar_ToUART(int ch)
     static int32_t i32Head = 0;
     static int32_t i32Tail = 0;
     int32_t i32Tmp;
-    
+
     /* Only flush the data in buffer to UART when ch == 0 */
     if(ch)
     {
         // Push char
-        i32Tmp = i32Head+1;
-        if(i32Tmp > BUF_SIZE) i32Tmp = 0;
+        i32Tmp = i32Head + 1;
+        if(i32Tmp >= BUF_SIZE) i32Tmp = 0;
         if(i32Tmp != i32Tail)
         {
             u8Buf[i32Head] = ch;
             i32Head = i32Tmp;
         }
-        
+
         if(ch == '\n')
         {
-            i32Tmp = i32Head+1;
-            if(i32Tmp > BUF_SIZE) i32Tmp = 0;
+            i32Tmp = i32Head + 1;
+            if(i32Tmp >= BUF_SIZE) i32Tmp = 0;
             if(i32Tmp != i32Tail)
             {
                 u8Buf[i32Head] = '\r';
@@ -440,13 +484,13 @@ void SendChar_ToUART(int ch)
         if(i32Tail == i32Head)
             return;
     }
-    
+
     // pop char
     do
     {
         i32Tmp = i32Tail + 1;
-        if(i32Tmp > BUF_SIZE) i32Tmp = 0;
-        
+        if(i32Tmp >= BUF_SIZE) i32Tmp = 0;
+
         if((DEBUG_PORT->FSR & UART_FSR_TX_FULL_Msk) == 0)
         {
             DEBUG_PORT->DATA = u8Buf[i32Tail];
@@ -454,29 +498,37 @@ void SendChar_ToUART(int ch)
         }
         else
             break; // FIFO full
-    }while(i32Tail != i32Head);
+    }
+    while(i32Tail != i32Head);
 }
+
 #endif
+
+
 /**
- * @brief       Routine to send a char
+ * @brief    Routine to send a char
  *
- * @param[in]   ch  Character to be written to debug port
+ * @param[in] ch  A character for transmission
  *
- * @returns     Send value from UART debug port or semihost
+ * @returns  Send value from UART debug port or semihost
  *
- * @details     Send a target char to UART debug port or semihost.
+ * @details  Send a target char to UART debug port or semihost.
  */
 void SendChar(int ch)
 {
 #if defined(DEBUG_ENABLE_SEMIHOST)
     g_buf[g_buf_len++] = ch;
     g_buf[g_buf_len] = '\0';
-    if(g_buf_len + 1 >= sizeof(g_buf) || ch == '\n' || ch == '\0') {
+    if(g_buf_len + 1 >= sizeof(g_buf) || ch == '\n' || ch == '\0')
+    {
         /* Send the char */
-        if(SH_DoCommand(0x04, (int)g_buf, NULL) != 0) {
+        if(SH_DoCommand(0x04, (int)g_buf, NULL) != 0)
+        {
             g_buf_len = 0;
             return;
-        } else {
+        }
+        else
+        {
             g_buf_len = 0;
         }
     }
@@ -499,15 +551,18 @@ char GetChar(void)
 #ifdef DEBUG_ENABLE_SEMIHOST
 # if defined ( __CC_ARM   )
     int nRet;
-    while(SH_DoCommand(0x101, 0, &nRet) != 0) {
-        if(nRet != 0) {
+    while(SH_DoCommand(0x101, 0, &nRet) != 0)
+    {
+        if(nRet != 0)
+        {
             SH_DoCommand(0x07, 0, &nRet);
             return (char)nRet;
         }
     }
 # else
     int nRet;
-    while(SH_DoCommand(0x7, 0, &nRet) != 0) {
+    while(SH_DoCommand(0x7, 0, &nRet) != 0)
+    {
         if(nRet != 0)
             return (char)nRet;
     }
@@ -515,8 +570,10 @@ char GetChar(void)
     return (0);
 #else
 
-    while (1) {
-        if((DEBUG_PORT->FSR & UART_FSR_RX_EMPTY_Msk) == 0 ) {
+    while(1)
+    {
+        if((DEBUG_PORT->FSR & UART_FSR_RX_EMPTY_Msk) == 0 )
+        {
             return (DEBUG_PORT->DATA);
         }
     }
@@ -558,7 +615,7 @@ int IsDebugFifoEmpty(void)
 /**
  * @brief       C library retargetting
  *
- * @param[in]   ch  Character to be written to debug port
+ * @param[in]  ch  Write a character data
  *
  * @returns  None
  *
@@ -596,7 +653,38 @@ int fputc(int ch, FILE *stream)
     return ch;
 }
 
+#if defined ( __GNUC__ )
 
+#if !defined (OS_USE_SEMIHOSTING)
+int _write (int fd, char *ptr, int len)
+{
+    int i = len;
+
+    while(i--) {
+        while(DEBUG_PORT->FSR & UART_FSR_TX_FULL_Msk);
+
+        DEBUG_PORT->DATA = *ptr++;
+
+        if(*ptr == '\n') {
+            while(DEBUG_PORT->FSR & UART_FSR_TX_FULL_Msk);
+            DEBUG_PORT->DATA = '\r';
+        }
+    }
+    return len;
+}
+
+int _read (int fd, char *ptr, int len)
+{
+
+    while((DEBUG_PORT->FSR & UART_FSR_RX_EMPTY_Msk) != 0);
+    *ptr = DEBUG_PORT->DATA;
+    return 1;
+
+
+}
+#endif
+
+#else
 /**
  * @brief      Get character from UART debug port or semihosting input
  *
@@ -632,6 +720,7 @@ int ferror(FILE *stream)
 {
     return EOF;
 }
+#endif
 
 #ifdef DEBUG_ENABLE_SEMIHOST
 # ifdef __ICCARM__
@@ -639,7 +728,8 @@ void __exit(int return_code)
 {
 
     /* Check if link with ICE */
-    if(SH_DoCommand(0x18, 0x20026, NULL) == 0) {
+    if(SH_DoCommand(0x18, 0x20026, NULL) == 0)
+    {
         /* Make sure all message is print out */
         while(IsDebugFifoEmpty() == 0);
     }
@@ -651,7 +741,8 @@ void _sys_exit(int return_code)
 {
 
     /* Check if link with ICE */
-    if(SH_DoCommand(0x18, 0x20026, NULL) == 0) {
+    if(SH_DoCommand(0x18, 0x20026, NULL) == 0)
+    {
         /* Make sure all message is print out */
         while(IsDebugFifoEmpty() == 0);
     }

@@ -284,14 +284,16 @@ void SPI_ClearIntFlag(SPI_T *spi, uint32_t u32Mask);
 uint32_t SPI_GetStatus(SPI_T *spi, uint32_t u32Mask);
 
 
+/*@}*/ /* end of group NUC131_SPI_EXPORTED_FUNCTIONS */
 
-/**
-  * @} End of SPI Device Function Interface
-  */
+/*@}*/ /* end of group NUC131_SPI_Driver */
 
-/**
-  * @} End of NUC131 Function Interface
-  */
+/*@}*/ /* end of group NUC131_Device_Driver */
+
+
+#ifdef __cplusplus
+}
+#endif
 
 
 #endif

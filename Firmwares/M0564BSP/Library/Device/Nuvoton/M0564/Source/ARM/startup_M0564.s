@@ -1,12 +1,12 @@
 ;/**************************************************************************//**
-; * @file     startup_M051Series.s
+; * @file     startup_M0564.s
 ; * @version  V2.00
 ; * $Revision: 2 $
 ; * $Date: 16/06/28 1:34p $ 
 ; * @brief    M051 Series Startup Source File
 ; *
 ; * @note
-; * Copyright (C) 2011 Nuvoton Technology Corp. All rights reserved.
+; * Copyright (C) 2018 Nuvoton Technology Corp. All rights reserved.
 ; *
 ; ******************************************************************************/
     IF :LNOT: :DEF: Stack_Size
@@ -104,26 +104,6 @@ Reset_Handler   PROC
                 EXPORT  Reset_Handler             [WEAK]
                 IMPORT  SystemInit
                 IMPORT  __main
-                
-
-                 LDR     R0, =0x50000100
-                ; Unlock Register                
-
-                LDR     R1, =0x59
-                STR     R1, [R0]
-                LDR     R1, =0x16
-                STR     R1, [R0]
-                LDR     R1, =0x88
-                STR     R1, [R0]
-
-                ; Init POR
-                LDR     R2, =0x50000024
-                LDR     R1, =0x00005AA5
-                STR     R1, [R2]
-
-                ; Lock register
-                MOVS    R1, #0
-                STR     R1, [R0]                
                 
                 LDR     R0, =SystemInit
                 BLX     R0
