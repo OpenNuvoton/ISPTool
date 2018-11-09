@@ -8,7 +8,7 @@
  *           bits definitions and memory mapping for NuMicro NUC029FAE MCU.
  *
  * @note
- * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2018 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 /**
    \mainpage NuMicro NUC029FAE Driver Reference Guide
@@ -47,17 +47,8 @@
    *
    * <b>Copyright Notice</b>
    *
-   * Copyright (C) 2014 Nuvoton Technology Corp. All rights reserved.
+   * Copyright (C) 2018 Nuvoton Technology Corp. All rights reserved.
    */
-/**
-  * \page pg1 NuMicro NUC029FAE BSP Directory Structure
-  * Please refer to Readme.pdf under BSP root directory for the BSP directory structure
-  *
-  * \page pg2 Revision History
-  *
-  * <b>Revision 3.00.000</b>
-  * \li Initial release.
-*/
 
 
 #ifndef __NUC029FAE_H__
@@ -3473,4 +3464,3 @@ typedef volatile unsigned long  vu32;       ///< Define 32-bit unsigned volatile
 
 #endif  // __NUC029FAE_H__
 
-/*** (C) COPYRIGHT 2014 Nuvoton Technology Corp. ***/

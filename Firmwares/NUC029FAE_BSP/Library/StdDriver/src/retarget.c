@@ -71,7 +71,11 @@ void Hard_Fault_Handler(uint32_t stack[])
 static char g_buf[16];
 static char g_buf_len = 0;
 
-# if defined(__ICCARM__)
+/* Make sure won't goes here only because --gnu is defined , so
+   add !__CC_ARM and !__ICCARM__ checking */
+# if defined ( __GNUC__ ) && !(__CC_ARM) && !(__ICCARM__)
+
+# elif defined(__ICCARM__)
 
 
 /**
@@ -238,7 +242,38 @@ SH_End
 
 #else
 
-# if defined(__ICCARM__)
+/* Make sure won't goes here only because --gnu is defined , so
+   add !__CC_ARM and !__ICCARM__ checking */
+# if defined ( __GNUC__ ) && !(__CC_ARM) && !(__ICCARM__) 
+
+/**
+ * @brief    This HardFault handler is implemented to show r0, r1, r2, r3, r12, lr, pc, psr
+ *
+ * @param    None
+ *
+ * @returns  None
+ *
+ * @details  This function is implement to print r0, r1, r2, r3, r12, lr, pc, psr.
+ *
+ */
+void HardFault_Handler(void)
+{
+    asm("MOVS    r0, #4                        \n"
+        "MOV     r1, LR                        \n"
+        "TST     r0, r1                        \n" /*; check LR bit 2 */
+        "BEQ     1f                            \n" /*; stack use MSP */
+        "MRS     R0, PSP                       \n" /*; stack use PSP, read PSP */
+        "MOV     R1, LR                        \n" /*; LR current value */
+        "B       Hard_Fault_Handler            \n"
+        "1:                                    \n"
+        "MRS     R0, MSP                       \n" /*; LR current value */
+        "B       Hard_Fault_Handler            \n"    
+        ::[Hard_Fault_Handler] "r" (Hard_Fault_Handler) // input
+    );
+    while(1);
+}
+
+# elif defined(__ICCARM__)
 
 /**
  * @brief    This HardFault handler is implemented to show r0, r1, r2, r3, r12, lr, pc, psr
@@ -310,13 +345,13 @@ Get_LR_and_Branch
 void SendChar_ToUART(int ch)
 {
 #ifndef DISABLE_UART
+    while(UART->FSR & UART_FSR_TX_FULL_Msk);
+    UART->THR = ch;
+    if(ch == '\n')
+    {
         while(UART->FSR & UART_FSR_TX_FULL_Msk);
-        UART->THR = ch;
-        if(ch == '\n')
-        {
-            while(UART->FSR & UART_FSR_TX_FULL_Msk);
-            UART->THR = '\r';
-        }
+        UART->THR = '\r';
+    }
 #endif
 }
 
@@ -387,8 +422,7 @@ char GetChar(void)
 # endif
 #endif
 #ifndef DISABLE_UART
-        while (1)
-        {
+        while (1){
             if(!(UART->FSR & UART_FSR_RX_EMPTY_Msk))
             {
                 return (UART->RBR);
@@ -448,7 +482,36 @@ int fputc(int ch, FILE *f)
     SendChar(ch);
     return ch;
 }
+#if defined (__GNUC__) && !defined(__ARMCC_VERSION)
 
+int _write (int fd, char *ptr, int len)
+{
+    int i = len;
+
+    while(i--) {
+        while(UART->FSR & UART_FSR_TX_FULL_Msk);
+
+        UART->THR = *ptr++;
+
+        if(*ptr == '\n') {
+            while(UART->FSR & UART_FSR_TX_FULL_Msk);
+            UART->THR = '\r';
+        }
+    }
+    return len;
+}
+
+int _read (int fd, char *ptr, int len)
+{
+
+    while((UART->FSR & UART_FSR_RX_EMPTY_Msk) != 0);
+    *ptr = UART->RBR;
+    return 1;
+
+
+}
+
+#else
 int fgetc(FILE *f) {
     return (GetChar());
 }
@@ -457,7 +520,7 @@ int fgetc(FILE *f) {
 int ferror(FILE *f) {
     return EOF;
 }
-
+#endif
 #ifdef DEBUG_ENABLE_SEMIHOST
 # ifdef __ICCARM__
 void __exit(int return_code)

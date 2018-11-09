@@ -285,11 +285,11 @@ extern "C"
 #define SYS_GPC_MFPL_PC1MFP_GPIO              (0x00UL<<SYS_GPC_MFPL_PC1MFP_Pos) /*!< General purpose digital I/O pin. */
 #define SYS_GPC_MFPL_PC1MFP_SPI0_CLK          (0x01UL<<SYS_GPC_MFPL_PC1MFP_Pos) /*!< SPI0 serial clock pin. */
 #define SYS_GPC_MFPL_PC1MFP_SC1_DAT           (0x04UL<<SYS_GPC_MFPL_PC1MFP_Pos) /*!< SmartCard1 data pin. */
-#define SYS_GPC_MFPL_PC1MFP_PWM0_BRAKE1       (0x05UL<<SYS_GPC_MFPL_PC1MFP_Pos) /*!< Brake input pin 1 of PWM0. */
+#define SYS_GPC_MFPL_PC1MFP_PWM0_BRAKE0       (0x05UL<<SYS_GPC_MFPL_PC1MFP_Pos) /*!< Brake input pin 0 of PWM0. */
 #define SYS_GPC_MFPL_PC2MFP_GPIO              (0x00UL<<SYS_GPC_MFPL_PC2MFP_Pos) /*!< General purpose digital I/O pin. */
 #define SYS_GPC_MFPL_PC2MFP_SPI0_MISO0        (0x01UL<<SYS_GPC_MFPL_PC2MFP_Pos) /*!< 1st SPI0 MISO (Master In, Slave Out) pin. */
 #define SYS_GPC_MFPL_PC2MFP_SC1_PWR           (0x04UL<<SYS_GPC_MFPL_PC2MFP_Pos) /*!< SmartCard1 power pin. */
-#define SYS_GPC_MFPL_PC2MFP_PWM0_BRAKE0       (0x05UL<<SYS_GPC_MFPL_PC2MFP_Pos) /*!< Brake input pin 0 of PWM0. */
+#define SYS_GPC_MFPL_PC2MFP_PWM0_BRAKE1       (0x05UL<<SYS_GPC_MFPL_PC2MFP_Pos) /*!< Brake input pin 1 of PWM0. */
 #define SYS_GPC_MFPL_PC3MFP_GPIO              (0x00UL<<SYS_GPC_MFPL_PC3MFP_Pos) /*!< General purpose digital I/O pin. */
 #define SYS_GPC_MFPL_PC3MFP_SPI0_MOSI0        (0x01UL<<SYS_GPC_MFPL_PC3MFP_Pos) /*!< 1st SPI0 MOSI (Master Out, Slave In) pin. */
 #define SYS_GPC_MFPL_PC3MFP_SC1_RST           (0x04UL<<SYS_GPC_MFPL_PC3MFP_Pos) /*!< SmartCard1 reset pin. */
