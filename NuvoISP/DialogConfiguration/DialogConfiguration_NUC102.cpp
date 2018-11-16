@@ -66,7 +66,6 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_NUC102, CDialog)
     ON_BN_CLICKED(IDC_RADIO_CLK_E12M, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnButtonClick)
-    ON_EN_CHANGE(IDC_EDIT_FLASH_BASE_ADDRESS, OnChangeEditFlashBaseAddress)
     ON_BN_CLICKED(IDC_RADIO_CLK_I22M, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnButtonClick)
@@ -236,20 +235,6 @@ void CDialogConfiguration_NUC102::OnButtonClick()
     UpdateData(TRUE);
     GUIToConfig();
     ConfigToGUI();
-    UpdateData(FALSE);
-}
-
-void CDialogConfiguration_NUC102::OnChangeEditFlashBaseAddress()
-{
-    // TODO: If this is a RICHEDIT control, the control will not
-    // send this notification unless you override the CDialog::OnInitDialog()
-    // function and call CRichEditCtrl().SetEventMask()
-    // with the ENM_CHANGE flag ORed into the mask.
-    // TODO: Add your control notification handler code here
-    UpdateData(TRUE);
-    TCHAR *pEnd;
-    unsigned int uConfig1 = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
-    m_sConfigValue1.Format(_T("0x%08X"), uConfig1);
     UpdateData(FALSE);
 }
 

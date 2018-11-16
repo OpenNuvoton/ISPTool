@@ -65,7 +65,7 @@ protected:
     virtual BOOL OnInitDialog();
     afx_msg void OnButtonClick();
     afx_msg void OnCheckClickWDTPD();
-    virtual afx_msg void OnChangeEditFlashBaseAddress();
+    virtual afx_msg void OnKillfocusEditFlashBaseAddress();
     virtual void OnOK();
     virtual afx_msg void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
