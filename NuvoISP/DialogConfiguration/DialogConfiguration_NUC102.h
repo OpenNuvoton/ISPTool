@@ -53,6 +53,7 @@ protected:
     //{{AFX_MSG(CDialogConfiguration_NUC102)
     virtual BOOL OnInitDialog();
     afx_msg void OnButtonClick();
+    afx_msg void OnChangeEditFlashBaseAddress();
     virtual void OnOK();
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()

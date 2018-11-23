@@ -57,7 +57,7 @@ protected:
     //{{AFX_MSG(CDialogConfiguration_Mini51)
     virtual BOOL OnInitDialog();
     afx_msg void OnButtonClick();
-    afx_msg void OnKillfocusEditFlashBaseAddress();
+    afx_msg void OnChangeEditFlashBaseAddress();
     virtual void OnOK();
     afx_msg void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
