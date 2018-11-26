@@ -80,7 +80,11 @@ void Hard_Fault_Handler(uint32_t stack[])
 static char g_buf[16];
 static char g_buf_len = 0;
 
-# if defined(__ICCARM__)
+/* Make sure won't goes here only because --gnu is defined , so
+   add !__CC_ARM and !__ICCARM__ checking */
+# if defined ( __GNUC__ ) && !(__CC_ARM) && !(__ICCARM__)
+
+# elif defined(__ICCARM__)
 
 
 void SH_End(void)
@@ -308,9 +312,40 @@ SH_End
 #endif
 
 
-#else
+#else // Non-semihost
 
-# if defined(__ICCARM__)
+/* Make sure won't goes here only because --gnu is defined , so
+   add !__CC_ARM and !__ICCARM__ checking */
+# if defined ( __GNUC__ ) && !(__CC_ARM) && !(__ICCARM__) 
+
+/**
+ * @brief    This HardFault handler is implemented to show r0, r1, r2, r3, r12, lr, pc, psr
+ *
+ * @param    None
+ *
+ * @returns  None
+ *
+ * @details  This function is implement to print r0, r1, r2, r3, r12, lr, pc, psr.
+ *
+ */
+void HardFault_Handler(void)
+{
+    asm("MOVS    r0, #4                        \n"
+        "MOV     r1, LR                        \n"
+        "TST     r0, r1                        \n" /*; check LR bit 2 */
+        "BEQ     1f                            \n" /*; stack use MSP */
+        "MRS     R0, PSP                       \n" /*; stack use PSP, read PSP */
+        "MOV     R1, LR                        \n" /*; LR current value */
+        "B       Hard_Fault_Handler            \n"
+        "1:                                    \n"
+        "MRS     R0, MSP                       \n" /*; LR current value */
+        "B       Hard_Fault_Handler            \n"    
+        ::[Hard_Fault_Handler] "r" (Hard_Fault_Handler) // input
+    );
+    while(1);
+}
+
+# elif defined(__ICCARM__)
 
 void Get_LR_and_Branch(void)
 {
@@ -614,7 +649,40 @@ int fputc(int ch, FILE *stream)
     return ch;
 }
 
+#if defined ( __GNUC__ )
 
+#if !defined(OS_USE_SEMIHOSTING)
+
+int _write (int fd, char *ptr, int len)
+{
+    int i = len;
+
+    while(i--) {
+        while(DEBUG_PORT->FSR & UART_FSR_TX_FULL_Msk);
+
+        DEBUG_PORT->DATA = *ptr++;
+
+        if(*ptr == '\n') {
+            while(DEBUG_PORT->FSR & UART_FSR_TX_FULL_Msk);
+            DEBUG_PORT->DATA = '\r';
+        }
+    }
+    return len;
+}
+
+int _read (int fd, char *ptr, int len)
+{
+
+    while((DEBUG_PORT->FSR & UART_FSR_RX_EMPTY_Msk) != 0);
+    *ptr = DEBUG_PORT->DATA;
+    return 1;
+
+
+}
+
+#endif
+
+#else
 /**
  * @brief      Get character from UART debug port or semihosting input
  *
@@ -650,6 +718,7 @@ int ferror(FILE *stream)
 {
     return EOF;
 }
+#endif
 
 #ifdef DEBUG_ENABLE_SEMIHOST
 # ifdef __ICCARM__

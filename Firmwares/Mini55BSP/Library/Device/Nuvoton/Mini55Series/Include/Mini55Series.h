@@ -8,7 +8,7 @@
  *           bits definitions and memory mapping for NuMicro Mini55 series MCU.
  *
  * @note
- * Copyright (C) 2014~2017 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2014~2018 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 /**
    \mainpage NuMicro Mini55 Driver Reference Guide
@@ -47,7 +47,7 @@
    *
    * <b>Copyright Notice</b>
    *
-   * Copyright (C) 2017 Nuvoton Technology Corp. All rights reserved.
+   * Copyright (C) 2018 Nuvoton Technology Corp. All rights reserved.
    */
 
 #ifndef __MINI55SERIES_H__
@@ -7246,4 +7246,3 @@ typedef volatile unsigned long  vu32;       ///< Define 32-bit unsigned volatile
 
 #endif  // __MINI55SERIES_H__
 
-/*** (C) COPYRIGHT 2017 Nuvoton Technology Corp. ***/

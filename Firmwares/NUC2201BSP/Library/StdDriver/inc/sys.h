@@ -527,11 +527,11 @@ Example: If user want to set PA.0 as ADC0 and PA1 as ADC1 in initial function,
 #define SYS_ALT_MFP2_PB13_GPIO      NULL                /*!< No ALT_MFP2 setting for PB.13 */
 
 #define SYS_GPB_MFP_PB13_AD1        (1UL<<13)           /*!< GPB_MFP PB.13 setting for AD1 */
-#define SYS_ALT_MFP_PB13_AD1        NULL                /*!< No ALT_MFP setting for PB.13 */
+#define SYS_ALT_MFP_PB13_AD1        0UL                 /*!< No ALT_MFP setting for PB.13 */
 #define SYS_ALT_MFP2_PB13_AD1       NULL                /*!< No ALT_MFP2 setting for PB.13 */
 
 #define SYS_GPB_MFP_PB13_Msk        (1UL<<13)           /*!< GPB_MFP PB.13 mask */
-#define SYS_ALT_MFP_PB13_Msk        NULL                /*!< ALT_MFP PB.13 mask */
+#define SYS_ALT_MFP_PB13_Msk        0UL                 /*!< ALT_MFP PB.13 mask */
 #define SYS_ALT_MFP2_PB13_Msk       NULL                /*!< ALT_MFP2 PB.13 mask */
 
 //PB.14
@@ -540,15 +540,15 @@ Example: If user want to set PA.0 as ADC0 and PA1 as ADC1 in initial function,
 #define SYS_ALT_MFP2_PB14_GPIO      0x00000000UL        /*!< ALT_MFP2 PB.14 setting for GPIO */
 
 #define SYS_GPB_MFP_PB14_INT0       (1UL<<14)           /*!< GPB_MFP PB.14 setting for INT0 */
-#define SYS_ALT_MFP_PB14_INT0       NULL                /*!< No ALT_MFP setting for  PB.14 */
+#define SYS_ALT_MFP_PB14_INT0       0UL                 /*!< No ALT_MFP setting for  PB.14 */
 #define SYS_ALT_MFP2_PB14_INT0      0x00000000UL        /*!< ALT_MFP2 PB.14 setting for INT0 */
 
 #define SYS_GPB_MFP_PB14_AD0        (1UL<<14)           /*!< GPB_MFP PB.14 setting for AD0 */
-#define SYS_ALT_MFP_PB14_AD0        NULL                /*!< No ALT_MFP setting for PB.14 */
+#define SYS_ALT_MFP_PB14_AD0        0UL                 /*!< No ALT_MFP setting for PB.14 */
 #define SYS_ALT_MFP2_PB14_AD0       (1UL<<1)            /*!< ALT_MFP2 PB.14 setting for AD0 */
 
 #define SYS_GPB_MFP_PB14_Msk        (1UL<<14)           /*!< GPB_MFP PB.14 mask */
-#define SYS_ALT_MFP_PB14_Msk        NULL                /*!< ALT_MFP PB.14 mask */
+#define SYS_ALT_MFP_PB14_Msk        0UL                /*!< ALT_MFP PB.14 mask */
 #define SYS_ALT_MFP2_PB14_Msk       (1UL<<1)            /*!< ALT_MFP2 PB.14 mask */
 
 //PB.15
@@ -586,11 +586,11 @@ Example: If user want to set PA.0 as ADC0 and PA1 as ADC1 in initial function,
 #define SYS_ALT_MFP2_PC0_GPIO           NULL            /*!< No ALT_MFP2 setting for PC.0 */
 
 #define SYS_GPC_MFP_PC0_SPI0_SS0        (1UL<<0)        /*!< GPC_MFP PC.0 setting for SPI0_SS0 */
-#define SYS_ALT_MFP_PC0_SPI0_SS0        NULL            /*!< No ALT_MFP setting for PC.0 */
+#define SYS_ALT_MFP_PC0_SPI0_SS0        0UL            /*!< No ALT_MFP setting for PC.0 */
 #define SYS_ALT_MFP2_PC0_SPI0_SS0       NULL            /*!< No ALT_MFP2 setting for PC.0 */
 
 #define SYS_GPC_MFP_PC0_Msk             (1UL<<0)        /*!< GPC_MFP PC.0 mask */
-#define SYS_ALT_MFP_PC0_Msk             NULL            /*!< ALT_MFP PC.0 mask */
+#define SYS_ALT_MFP_PC0_Msk             0UL             /*!< ALT_MFP PC.0 mask */
 #define SYS_ALT_MFP2_PC0_Msk            NULL            /*!< ALT_MFP2 PC.0 mask */
 
 //PC.1
@@ -599,11 +599,11 @@ Example: If user want to set PA.0 as ADC0 and PA1 as ADC1 in initial function,
 #define SYS_ALT_MFP2_PC1_GPIO           NULL            /*!< No ALT_MFP2 setting for PC.1 */
 
 #define SYS_GPC_MFP_PC1_SPI0_CLK        (1UL<<1)        /*!< GPC_MFP PC.1 setting for SPI0_CLK */
-#define SYS_ALT_MFP_PC1_SPI0_CLK        NULL            /*!< ALT_MFP PC.1 setting for SPI0_CLK */
+#define SYS_ALT_MFP_PC1_SPI0_CLK        0UL            /*!< ALT_MFP PC.1 setting for SPI0_CLK */
 #define SYS_ALT_MFP2_PC1_SPI0_CLK       NULL            /*!< No ALT_MFP2 setting for PC.1 */
 
 #define SYS_GPC_MFP_PC1_Msk             (1UL<<1)        /*!< GPC_MFP PC.1 mask */
-#define SYS_ALT_MFP_PC1_Msk             NULL            /*!< ALT_MFP PC.1 mask */
+#define SYS_ALT_MFP_PC1_Msk             0UL            /*!< ALT_MFP PC.1 mask */
 #define SYS_ALT_MFP2_PC1_Msk            NULL            /*!< ALT_MFP2 PC.1 mask */
 
 //PC.2
@@ -612,11 +612,11 @@ Example: If user want to set PA.0 as ADC0 and PA1 as ADC1 in initial function,
 #define SYS_ALT_MFP2_PC2_GPIO           NULL            /*!< No ALT_MFP2 setting for PC.2 */
 
 #define SYS_GPC_MFP_PC2_SPI0_MISO0      (1UL<<2)        /*!< GPC_MFP PC.2 setting for SPI0_MISO0 */
-#define SYS_ALT_MFP_PC2_SPI0_MISO0      NULL            /*!< No ALT_MFP setting for PC.2 */
+#define SYS_ALT_MFP_PC2_SPI0_MISO0      0UL            /*!< No ALT_MFP setting for PC.2 */
 #define SYS_ALT_MFP2_PC2_SPI0_MISO0     NULL            /*!< No ALT_MFP2 setting for PC.2 */
 
 #define SYS_GPC_MFP_PC2_Msk             (1UL<<2)        /*!< GPC_MFP PC.2 mask */
-#define SYS_ALT_MFP_PC2_Msk             NULL            /*!< ALT_MFP PC.2 mask */
+#define SYS_ALT_MFP_PC2_Msk             0UL            /*!< ALT_MFP PC.2 mask */
 #define SYS_ALT_MFP2_PC2_Msk            NULL            /*!< ALT_MFP2 PC.2 mask */
 
 //PC.3
@@ -625,11 +625,11 @@ Example: If user want to set PA.0 as ADC0 and PA1 as ADC1 in initial function,
 #define SYS_ALT_MFP2_PC3_GPIO           NULL            /*!< No ALT_MFP2 setting for PC.3 */
 
 #define SYS_GPC_MFP_PC3_SPI0_MOSI0      (1UL<<3)        /*!< GPC_MFP PC.3 setting for SPI0_MOSI0 */
-#define SYS_ALT_MFP_PC3_SPI0_MOSI0      NULL            /*!< No ALT_MFP setting for PC.3 */
+#define SYS_ALT_MFP_PC3_SPI0_MOSI0      0UL            /*!< No ALT_MFP setting for PC.3 */
 #define SYS_ALT_MFP2_PC3_SPI0_MOSI0     NULL            /*!< No ALT_MFP2 setting for PC.3 */
 
 #define SYS_GPC_MFP_PC3_Msk             (1UL<<3)        /*!< GPC_MFP PC.3 mask */
-#define SYS_ALT_MFP_PC3_Msk             NULL            /*!< ALT_MFP PC.3 mask */
+#define SYS_ALT_MFP_PC3_Msk             0UL            /*!< ALT_MFP PC.3 mask */
 #define SYS_ALT_MFP2_PC3_Msk            NULL            /*!< ALT_MFP2 PC.3 mask */
 
 //PC.6

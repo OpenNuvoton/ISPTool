@@ -85,133 +85,133 @@ Example: If user want to set PA.0 as ADC0 and PA1 as ADC1 in initial function,
 
 //PA.0
 #define SYS_GPA_MFP_PA0_GPIO        0x00000000UL        /*!< GPA_MFP PA.0 setting for GPIO */
-#define SYS_ALT_MFP_PA0_GPIO        NULL                /*!< No ALT_MFP setting for PA.0 */
+#define SYS_ALT_MFP_PA0_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PA.0 */
 #define SYS_ALT_MFP1_PA0_GPIO       0x00000000UL        /*!< ALT_MFP1 PA.0 setting for GPIO */
-#define SYS_ALT_MFP2_PA0_GPIO       NULL                /*!< No ALT_MFP2 setting for PA.0 */
+#define SYS_ALT_MFP2_PA0_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.0 */
 
 #define SYS_GPA_MFP_PA0_ADC0        (1UL<<0)            /*!< GPA_MFP PA.0 setting for ADC0 */
-#define SYS_ALT_MFP_PA0_ADC0        NULL                /*!< No ALT_MFP setting for PA.0 */
+#define SYS_ALT_MFP_PA0_ADC0        (uint32_t)NULL      /*!< No ALT_MFP setting for PA.0 */
 #define SYS_ALT_MFP1_PA0_ADC0       0x00000000UL        /*!< ALT_MFP1 PA.0 setting for ADC0 */
-#define SYS_ALT_MFP2_PA0_ADC0       NULL                /*!< No ALT_MFP2 setting for PA.0 */
+#define SYS_ALT_MFP2_PA0_ADC0       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.0 */
 
 #define SYS_GPA_MFP_PA0_SC0_PWR     (1UL<<0)            /*!< GPA_MFP PA.0 setting for SC0_PWR */
-#define SYS_ALT_MFP_PA0_SC0_PWR     NULL                /*!< No ALT_MFP setting for PA.0 */
+#define SYS_ALT_MFP_PA0_SC0_PWR     (uint32_t)NULL      /*!< No ALT_MFP setting for PA.0 */
 #define SYS_ALT_MFP1_PA0_SC0_PWR    (1UL<<2)            /*!< ALT_MFP1 PA.0 setting for SC0_PWR */
-#define SYS_ALT_MFP2_PA0_SC0_PWR    NULL                /*!< No ALT_MFP2 setting for PA.0 */
+#define SYS_ALT_MFP2_PA0_SC0_PWR    (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.0 */
 
 #define SYS_GPA_MFP_PA0_Msk         (1UL<<0)            /*!< GPA_MFP PA.0 mask */
 #define SYS_ALT_MFP1_PA0_Msk        (1UL<<2)            /*!< ALT_MFP1 PA.0 mask */
 
 //PA.1
 #define SYS_GPA_MFP_PA1_GPIO        0x00000000UL        /*!< GPA_MFP PA.1 setting for GPIO */
-#define SYS_ALT_MFP_PA1_GPIO        NULL                /*!< No ALT_MFP setting for PA.1 */
+#define SYS_ALT_MFP_PA1_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PA.1 */
 #define SYS_ALT_MFP1_PA1_GPIO       0x00000000UL        /*!< ALT_MFP1 PA.1 setting for GPIO */
-#define SYS_ALT_MFP2_PA1_GPIO       NULL                /*!< No ALT_MFP2 setting for PA.1 */
+#define SYS_ALT_MFP2_PA1_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.1 */
 
 #define SYS_GPA_MFP_PA1_ADC1        (1UL<<1)            /*!< GPA_MFP PA.1 setting for ADC1 */
-#define SYS_ALT_MFP_PA1_ADC1        NULL                /*!< No ALT_MFP setting for PA.1 */
+#define SYS_ALT_MFP_PA1_ADC1        (uint32_t)NULL      /*!< No ALT_MFP setting for PA.1 */
 #define SYS_ALT_MFP1_PA1_ADC1       0x00000000UL        /*!< ALT_MFP1 PA.1 setting for ADC1 */
-#define SYS_ALT_MFP2_PA1_ADC1       NULL                /*!< No ALT_MFP2 setting for PA.1 */
+#define SYS_ALT_MFP2_PA1_ADC1       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.1 */
 
 #define SYS_GPA_MFP_PA1_SC0_RST     (1UL<<1)            /*!< GPA_MFP PA.1 setting for SC0_RST */
-#define SYS_ALT_MFP_PA1_SC0_RST     NULL                /*!< No ALT_MFP setting for PA.1 */
+#define SYS_ALT_MFP_PA1_SC0_RST     (uint32_t)NULL      /*!< No ALT_MFP setting for PA.1 */
 #define SYS_ALT_MFP1_PA1_SC0_RST    (1UL<<3)            /*!< ALT_MFP1 PA.1 setting for SC0_RST */
-#define SYS_ALT_MFP2_PA1_SC0_RST    NULL                /*!< No ALT_MFP2 setting for PA.1 */
+#define SYS_ALT_MFP2_PA1_SC0_RST    (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.1 */
 
 #define SYS_GPA_MFP_PA1_Msk         (1UL<<1)            /*!< GPA_MFP PA.1 mask */
 #define SYS_ALT_MFP1_PA1_Msk        (1UL<<3)            /*!< ALT_MFP1 PA.1 mask */
 
 //PA.2
 #define SYS_GPA_MFP_PA2_GPIO        0x00000000UL        /*!< GPA_MFP PA.2 setting for GPIO */
-#define SYS_ALT_MFP_PA2_GPIO        NULL                /*!< No ALT_MFP setting for PA.2 */
+#define SYS_ALT_MFP_PA2_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PA.2 */
 #define SYS_ALT_MFP1_PA2_GPIO       0x00000000UL        /*!< ALT_MFP1 PA.2 setting for GPIO */
-#define SYS_ALT_MFP2_PA2_GPIO       NULL                /*!< No ALT_MFP2 setting for PA.2 */
+#define SYS_ALT_MFP2_PA2_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.2 */
 
 #define SYS_GPA_MFP_PA2_ADC2        (1UL<<2)            /*!< GPA_MFP PA.2 setting for ADC2 */
-#define SYS_ALT_MFP_PA2_ADC2        NULL                /*!< Mp ALT_MFP setting for PA.2 */
+#define SYS_ALT_MFP_PA2_ADC2        (uint32_t)NULL      /*!< Mp ALT_MFP setting for PA.2 */
 #define SYS_ALT_MFP1_PA2_ADC2       0x00000000UL        /*!< ALT_MFP1 PA.2 setting for ADC2 */
-#define SYS_ALT_MFP2_PA2_ADC2       NULL                /*!< No ALT_MFP2 setting for PA.2 */
+#define SYS_ALT_MFP2_PA2_ADC2       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.2 */
 
 #define SYS_GPA_MFP_PA2_SC0_CLK     (1UL<<2)            /*!< GPA_MFP PA.2 setting for SC0_CLK */
-#define SYS_ALT_MFP_PA2_SC0_CLK     NULL                /*!< No ALT_MFP setting for PA.2 */
+#define SYS_ALT_MFP_PA2_SC0_CLK     (uint32_t)NULL      /*!< No ALT_MFP setting for PA.2 */
 #define SYS_ALT_MFP1_PA2_SC0_CLK    (1UL<<0)            /*!< ALT_MFP1 PA.2 setting for SC0_CLK */
-#define SYS_ALT_MFP2_PA2_SC0_CLK    NULL                /*!< No ALT_MFP2 setting for PA.2 */
+#define SYS_ALT_MFP2_PA2_SC0_CLK    (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.2 */
 
 #define SYS_GPA_MFP_PA2_Msk         (1UL<<2)            /*!< GPA_MFP PA.2 mask             */
 #define SYS_ALT_MFP1_PA2_Msk        (1UL<<0)            /*!< ALT_MFP1 PA.2 mask            */
 
 //PA.3
 #define SYS_GPA_MFP_PA3_GPIO        0x00000000UL        /*!< GPA_MFP PA.3 setting for GPIO */
-#define SYS_ALT_MFP_PA3_GPIO        NULL                /*!< No ALT_MFP setting for PA.3 */
+#define SYS_ALT_MFP_PA3_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PA.3 */
 #define SYS_ALT_MFP1_PA3_GPIO       0x00000000UL        /*!< ALT_MFP1 PA.3 setting for GPIO */
-#define SYS_ALT_MFP2_PA3_GPIO       NULL                /*!< No ALT_MFP2 setting for PA.3 */
+#define SYS_ALT_MFP2_PA3_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.3 */
 
 #define SYS_GPA_MFP_PA3_ADC3        (1UL<<3)            /*!< GPA_MFP PA.3 setting for ADC3 */
-#define SYS_ALT_MFP_PA3_ADC3        NULL                /*!< No ALT_MFP setting for PA.3 */
+#define SYS_ALT_MFP_PA3_ADC3        (uint32_t)NULL      /*!< No ALT_MFP setting for PA.3 */
 #define SYS_ALT_MFP1_PA3_ADC3       0x00000000UL        /*!< ALT_MFP1 PA.3 setting for ADC3 */
-#define SYS_ALT_MFP2_PA3_ADC3       NULL                /*!< No ALT_MFP2 setting for PA.3 */
+#define SYS_ALT_MFP2_PA3_ADC3       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.3 */
 
 #define SYS_GPA_MFP_PA3_SC0_DAT     (1UL<<3)            /*!< GPA_MFP PA.3 setting for SC0_DAT */
-#define SYS_ALT_MFP_PA3_SC0_DAT     NULL                /*!< No ALT_MFP setting for PA.3 */
+#define SYS_ALT_MFP_PA3_SC0_DAT     (uint32_t)NULL      /*!< No ALT_MFP setting for PA.3 */
 #define SYS_ALT_MFP1_PA3_SC0_DAT    (1UL<<1)            /*!< ALT_MFP1 PA.3 setting for SC0_DAT */
-#define SYS_ALT_MFP2_PA3_SC0_DAT    NULL                /*!< No ALT_MFP2 setting for PA.3 */
+#define SYS_ALT_MFP2_PA3_SC0_DAT    (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.3 */
 
 #define SYS_GPA_MFP_PA3_Msk         (1UL<<3)            /*!< GPA_MFP PA.3 mask             */
 #define SYS_ALT_MFP1_PA3_Msk        (1UL<<1)            /*!< ALT_MFP1 PA.3 mask            */
 
 //PA.4
 #define SYS_GPA_MFP_PA4_GPIO        0x00000000UL        /*!< GPA_MFP PA.4 setting for GPIO */
-#define SYS_ALT_MFP_PA4_GPIO        NULL                /*!< No ALT_MFP setting for PA.4 */
+#define SYS_ALT_MFP_PA4_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PA.4 */
 #define SYS_ALT_MFP1_PA4_GPIO       0x00000000UL        /*!< ALT_MFP1 PA.4 setting for GPIO */
-#define SYS_ALT_MFP2_PA4_GPIO       NULL                /*!< No ALT_MFP2 setting for PA.4 */
+#define SYS_ALT_MFP2_PA4_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.4 */
 
 #define SYS_GPA_MFP_PA4_ADC4        (1UL<<4)            /*!< GPA_MFP PA.4 setting for ADC4 */
-#define SYS_ALT_MFP_PA4_ADC4        NULL                /*!< No ALT_MFP setting for PA.4 */
+#define SYS_ALT_MFP_PA4_ADC4        (uint32_t)NULL      /*!< No ALT_MFP setting for PA.4 */
 #define SYS_ALT_MFP1_PA4_ADC4       0x00000000UL        /*!< ALT_MFP1 PA.4 setting for ADC4 */
-#define SYS_ALT_MFP2_PA4_ADC4       NULL                /*!< No ALT_MFP2 setting for PA.4 */
+#define SYS_ALT_MFP2_PA4_ADC4       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.4 */
 
 #define SYS_GPA_MFP_PA4_SC1_PWR     (1UL<<4)            /*!< GPA_MFP PA.4 setting for SC1_PWR */
-#define SYS_ALT_MFP_PA4_SC1_PWR     NULL                /*!< No ALT_MFP setting for PA.4 */
+#define SYS_ALT_MFP_PA4_SC1_PWR     (uint32_t)NULL      /*!< No ALT_MFP setting for PA.4 */
 #define SYS_ALT_MFP1_PA4_SC1_PWR    (1UL<<7)            /*!< ALT_MFP1 PA.4 setting for SC1_PWR */
-#define SYS_ALT_MFP2_PA4_SC1_PWR    NULL                /*!< No ALT_MFP2 setting for PA.4 */
+#define SYS_ALT_MFP2_PA4_SC1_PWR    (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.4 */
 
 #define SYS_GPA_MFP_PA4_Msk         (1UL<<4)            /*!< GPA_MFP PA.4 mask             */
 #define SYS_ALT_MFP1_PA4_Msk        (1UL<<7)            /*!< ALT_MFP1 PA.4 mask            */
 
 //PA.5
 #define SYS_GPA_MFP_PA5_GPIO        0x00000000UL        /*!< GPA_MFP PA.5 setting for GPIO */
-#define SYS_ALT_MFP_PA5_GPIO        NULL                /*!< No ALT_MFP setting for PA.5 */
+#define SYS_ALT_MFP_PA5_GPIO        (uint32_t)          /*!< No ALT_MFP setting for PA.5 */
 #define SYS_ALT_MFP1_PA5_GPIO       0x00000000UL        /*!< ALT_MFP1 PA.5 setting for GPIO */
-#define SYS_ALT_MFP2_PA5_GPIO       NULL                /*!< No ALT_MFP2 setting for PA.5 */
+#define SYS_ALT_MFP2_PA5_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.5 */
 
 #define SYS_GPA_MFP_PA5_ADC5        (1UL<<5)            /*!< GPA_MFP PA.5 setting for ADC5 */
-#define SYS_ALT_MFP_PA5_ADC5        NULL                /*!< No ALT_MFP setting for PA.5 */
+#define SYS_ALT_MFP_PA5_ADC5        (uint32_t)NULL      /*!< No ALT_MFP setting for PA.5 */
 #define SYS_ALT_MFP1_PA5_ADC5       0x00000000UL        /*!< ALT_MFP1 PA.5 setting for ADC5 */
-#define SYS_ALT_MFP2_PA5_ADC5       NULL                /*!< No ALT_MFP2 setting for PA.5 */
+#define SYS_ALT_MFP2_PA5_ADC5       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.5 */
 
 #define SYS_GPA_MFP_PA5_SC1_RST     (1UL<<5)            /*!< GPA_MFP PA.5 setting for SC1_RST */
-#define SYS_ALT_MFP_PA5_SC1_RST     NULL                /*!< No ALT_MFP setting for PA.5 */
+#define SYS_ALT_MFP_PA5_SC1_RST     (uint32_t)NULL      /*!< No ALT_MFP setting for PA.5 */
 #define SYS_ALT_MFP1_PA5_SC1_RST    (1UL<<8)            /*!< ALT_MFP1 PA.5 setting for SC1_RST */
-#define SYS_ALT_MFP2_PA5_SC1_RST    NULL                /*!< No ALT_MFP2 setting for PA.5 */
+#define SYS_ALT_MFP2_PA5_SC1_RST    (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.5 */
 
 #define SYS_GPA_MFP_PA5_Msk         (1UL<<5)            /*!< GPA_MFP PA.5 mask */
 #define SYS_ALT_MFP1_PA5_Msk        (1UL<<8)            /*!< ALT_MFP1 PA.5 mask */
 
 //PA.6
 #define SYS_GPA_MFP_PA6_GPIO        0x00000000UL        /*!< GPA_MFP PA.6 setting for GPIO */
-#define SYS_ALT_MFP_PA6_GPIO        NULL                /*!< No ALT_MFP setting for PA.6 */
+#define SYS_ALT_MFP_PA6_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PA.6 */
 #define SYS_ALT_MFP1_PA6_GPIO       0x00000000UL        /*!< ALT_MFP1 PA.6 setting for GPIO */
-#define SYS_ALT_MFP2_PA6_GPIO       NULL                /*!< No ALT_MFP2 setting for PA.6 */
+#define SYS_ALT_MFP2_PA6_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.6 */
 
 #define SYS_GPA_MFP_PA6_ADC6        (1UL<<6)            /*!< GPA_MFP PA.6 setting for ADC6 */
-#define SYS_ALT_MFP_PA6_ADC6        NULL                /*!< No ALT_MFP setting for PA.6 */
+#define SYS_ALT_MFP_PA6_ADC6        (uint32_t)NULL      /*!< No ALT_MFP setting for PA.6 */
 #define SYS_ALT_MFP1_PA6_ADC6       0x00000000UL        /*!< ALT_MFP1 PA.6 setting for ADC6 */
-#define SYS_ALT_MFP2_PA6_ADC6       NULL                /*!< No ALT_MFP2 setting for PA.6 */
+#define SYS_ALT_MFP2_PA6_ADC6       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.6 */
 
 #define SYS_GPA_MFP_PA6_SC1_CLK     (1UL<<6)            /*!< GPA_MFP PA.6 setting for SC1_CLK */
-#define SYS_ALT_MFP_PA6_SC1_CLK     NULL                /*!< No ALT_MFP setting for PA.6 */
+#define SYS_ALT_MFP_PA6_SC1_CLK     (uint32_t)NULL      /*!< No ALT_MFP setting for PA.6 */
 #define SYS_ALT_MFP1_PA6_SC1_CLK    (1UL<<5)            /*!< ALT_MFP1 PA.6 setting for SC1_CLK */
-#define SYS_ALT_MFP2_PA6_SC1_CLK    NULL                /*!< No ALT_MFP2 setting for PA.6 */
+#define SYS_ALT_MFP2_PA6_SC1_CLK    (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.6 */
 
 #define SYS_GPA_MFP_PA6_Msk         (1UL<<6)            /*!< GPA_MFP PA.6 mask */
 #define SYS_ALT_MFP1_PA6_Msk        (1UL<<5)            /*!< ALT_MFP1 PA.6 mask */
@@ -220,22 +220,22 @@ Example: If user want to set PA.0 as ADC0 and PA1 as ADC1 in initial function,
 #define SYS_GPA_MFP_PA7_GPIO        0x00000000UL        /*!< GPA_MFP PA.7 setting for GPIO  */
 #define SYS_ALT_MFP_PA7_GPIO        0x00000000UL        /*!< ALT_MFP PA.7 setting for GPIO  */
 #define SYS_ALT_MFP1_PA7_GPIO       0x00000000UL        /*!< ALT_MFP1 PA.7 setting for GPIO */
-#define SYS_ALT_MFP2_PA7_GPIO       NULL                /*!< No ALT_MFP2 setting for PA.7    */
+#define SYS_ALT_MFP2_PA7_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.7    */
 
 #define SYS_GPA_MFP_PA7_ADC7        (1UL<<7)            /*!< GPA_MFP PA.7 setting for ADC7  */
 #define SYS_ALT_MFP_PA7_ADC7        0x00000000UL        /*!< ALT_MFP PA.7 setting for ADC7  */
 #define SYS_ALT_MFP1_PA7_ADC7       0x00000000UL        /*!< ALT_MFP1 PA.7 setting for ADC7 */
-#define SYS_ALT_MFP2_PA7_ADC7       NULL                /*!< No ALT_MFP2 setting for PA.7   */
+#define SYS_ALT_MFP2_PA7_ADC7       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.7   */
 
 #define SYS_GPA_MFP_PA7_SPI2_SS1    (1UL<<7)            /*!< GPA_MFP PA.7 setting for SPI2_SS1  */
 #define SYS_ALT_MFP_PA7_SPI2_SS1    (1UL<<2)            /*!< ALT_MFP PA.7 setting for SPI2_SS1  */
 #define SYS_ALT_MFP1_PA7_SPI2_SS1   0x00000000UL        /*!< ALT_MFP1 PA.7 setting for SPI2_SS1 */
-#define SYS_ALT_MFP2_PA7_SPI2_SS1   NULL                /*!< No ALT_MFP2 setting for PA.7       */
+#define SYS_ALT_MFP2_PA7_SPI2_SS1   (uint32_t)LL        /*!< No ALT_MFP2 setting for PA.7       */
 
 #define SYS_GPA_MFP_PA7_SC1_DAT     (1UL<<7)            /*!< GPA_MFP PA.7 setting for SC1_DAT  */
 #define SYS_ALT_MFP_PA7_SC1_DAT     0x00000000UL        /*!< ALT_MFP PA.7 setting for SC1_DAT  */
 #define SYS_ALT_MFP1_PA7_SC1_DAT    (1UL<<6)            /*!< ALT_MFP1 PA.7 setting for SC1_DAT */
-#define SYS_ALT_MFP2_PA7_SC1_DAT    NULL                /*!< No ALT_MFP2 setting for PA.7      */
+#define SYS_ALT_MFP2_PA7_SC1_DAT    (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.7      */
 
 #define SYS_GPA_MFP_PA7_Msk         (1UL<<7)            /*!< GPA_MFP PA.7 mask             */
 #define SYS_ALT_MFP_PA7_Msk         (1UL<<2)            /*!< ALT_MFP PA.7 mask             */
@@ -243,109 +243,109 @@ Example: If user want to set PA.0 as ADC0 and PA1 as ADC1 in initial function,
 
 //PA.8
 #define SYS_GPA_MFP_PA8_GPIO        0x00000000UL        /*!< GPA_MFP PA.8 setting for GPIO */
-#define SYS_ALT_MFP_PA8_GPIO        NULL                /*!< No ALT_MFP setting for PA.8 */
-#define SYS_ALT_MFP1_PA8_GPIO       NULL                /*!< No ALT_MFP1 setting for PA.8 */
-#define SYS_ALT_MFP2_PA8_GPIO       NULL                /*!< No ALT_MFP2 setting for PA.8 */
+#define SYS_ALT_MFP_PA8_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PA.8 */
+#define SYS_ALT_MFP1_PA8_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PA.8 */
+#define SYS_ALT_MFP2_PA8_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.8 */
 
 #define SYS_GPA_MFP_PA8_I2C0_SDA    (1UL<<8)            /*!< GPA_MFP PA.8 setting for I2C0_SDA */
-#define SYS_ALT_MFP_PA8_I2C0_SDA    NULL                /*!< No ALT_MFP setting for PA.8 */
-#define SYS_ALT_MFP1_PA8_I2C0_SDA   NULL                /*!< No ALT_MFP1 setting for PA.8 */
-#define SYS_ALT_MFP2_PA8_I2C0_SDA   NULL                /*!< No ALT_MFP2 setting for PA.8 */
+#define SYS_ALT_MFP_PA8_I2C0_SDA    (uint32_t)NULL      /*!< No ALT_MFP setting for PA.8 */
+#define SYS_ALT_MFP1_PA8_I2C0_SDA   (uint32_t)NULL      /*!< No ALT_MFP1 setting for PA.8 */
+#define SYS_ALT_MFP2_PA8_I2C0_SDA   (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.8 */
 
 #define SYS_GPA_MFP_PA8_Msk         (1UL<<8)            /*!< GPA_MFP PA.8 mask */
 
 //PA.9
 #define SYS_GPA_MFP_PA9_GPIO        0x00000000UL        /*!< GPA_MFP PA.9 setting for GPIO */
-#define SYS_ALT_MFP_PA9_GPIO        NULL                /*!< No ALT_MFP setting for PA.9   */
-#define SYS_ALT_MFP1_PA9_GPIO       NULL                /*!< No ALT_MFP1 setting for PA.9  */
-#define SYS_ALT_MFP2_PA9_GPIO       NULL                /*!< No ALT_MFP2 setting for PA.9  */
+#define SYS_ALT_MFP_PA9_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PA.9   */
+#define SYS_ALT_MFP1_PA9_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PA.9  */
+#define SYS_ALT_MFP2_PA9_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.9  */
 
 #define SYS_GPA_MFP_PA9_I2C0_SCL    (1UL<<9)            /*!< GPA_MFP PA.9 setting for I2C0_SCL */
-#define SYS_ALT_MFP_PA9_I2C0_SCL    NULL                /*!< No ALT_MFP setting for PA.9 */
-#define SYS_ALT_MFP1_PA9_I2C0_SCL   NULL                /*!< No ALT_MFP1 setting for PA.9 */
-#define SYS_ALT_MFP2_PA9_I2C0_SCL   NULL                /*!< No ALT_MFP2 setting for PA.9 */
+#define SYS_ALT_MFP_PA9_I2C0_SCL    (uint32_t)NULL      /*!< No ALT_MFP setting for PA.9 */
+#define SYS_ALT_MFP1_PA9_I2C0_SCL   (uint32_t)NULL      /*!< No ALT_MFP1 setting for PA.9 */
+#define SYS_ALT_MFP2_PA9_I2C0_SCL   (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.9 */
 
 #define SYS_GPA_MFP_PA9_Msk         (1UL<<9)            /*!< GPA_MFP PA.9 mask             */
 
 //PA.10
 #define SYS_GPA_MFP_PA10_GPIO       0x00000000UL        /*!< GPA_MFP PA.10 setting for GPIO */
-#define SYS_ALT_MFP_PA10_GPIO       NULL                /*!< No ALT_MFP setting for PA.10 */
-#define SYS_ALT_MFP1_PA10_GPIO      NULL                /*!< No ALT_MFP1 setting for PA.10 */
-#define SYS_ALT_MFP2_PA10_GPIO      NULL                /*!< No ALT_MFP2 setting for PA.10 */
+#define SYS_ALT_MFP_PA10_GPIO       (uint32_t)NULL      /*!< No ALT_MFP setting for PA.10 */
+#define SYS_ALT_MFP1_PA10_GPIO      (uint32_t)NULL      /*!< No ALT_MFP1 setting for PA.10 */
+#define SYS_ALT_MFP2_PA10_GPIO      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.10 */
 
 #define SYS_GPA_MFP_PA10_I2C1_SDA   (1UL<<10)           /*!< GPA_MFP PA.10 setting for I2C1_SDA */
-#define SYS_ALT_MFP_PA10_I2C1_SDA   NULL                /*!< No ALT_MFP setting for PA.10 */
-#define SYS_ALT_MFP1_PA10_I2C1_SDA  NULL                /*!< No ALT_MFP1 setting for PA.10 */
-#define SYS_ALT_MFP2_PA10_I2C1_SDA  NULL                /*!< No ALT_MFP2 setting for PA.10 */
+#define SYS_ALT_MFP_PA10_I2C1_SDA   (uint32_t)NULL      /*!< No ALT_MFP setting for PA.10 */
+#define SYS_ALT_MFP1_PA10_I2C1_SDA  (uint32_t)NULL      /*!< No ALT_MFP1 setting for PA.10 */
+#define SYS_ALT_MFP2_PA10_I2C1_SDA  (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.10 */
 
 #define SYS_GPA_MFP_PA10_Msk        (1UL<<10)           /*!< GPA_MFP PA.10 mask             */
 
 //PA.11
 #define SYS_GPA_MFP_PA11_GPIO       0x00000000UL        /*!< GPA_MFP PA.11 setting for GPIO */
-#define SYS_ALT_MFP_PA11_GPIO       NULL                /*!< No ALT_MFP setting for PA.11   */
-#define SYS_ALT_MFP1_PA11_GPIO      NULL                /*!< No ALT_MFP1 setting for PA.11  */
-#define SYS_ALT_MFP2_PA11_GPIO      NULL                /*!< No ALT_MFP2 setting for PA.11  */
+#define SYS_ALT_MFP_PA11_GPIO       (uint32_t)NULL      /*!< No ALT_MFP setting for PA.11   */
+#define SYS_ALT_MFP1_PA11_GPIO      (uint32_t)NULL      /*!< No ALT_MFP1 setting for PA.11  */
+#define SYS_ALT_MFP2_PA11_GPIO      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.11  */
 
 #define SYS_GPA_MFP_PA11_I2C1_SCL   (1UL<<11)           /*!< GPA_MFP PA.11 setting for I2C1_SCL */
-#define SYS_ALT_MFP_PA11_I2C1_SCL   NULL                /*!< No ALT_MFP setting for PA.11  */
-#define SYS_ALT_MFP1_PA11_I2C1_SCL  NULL                /*!< No ALT_MFP1 setting for PA.11 */
-#define SYS_ALT_MFP2_PA11_I2C1_SCL  NULL                /*!< No ALT_MFP2 setting for PA.11 */
+#define SYS_ALT_MFP_PA11_I2C1_SCL   (uint32_t)NULL      /*!< No ALT_MFP setting for PA.11  */
+#define SYS_ALT_MFP1_PA11_I2C1_SCL  (uint32_t)NULL      /*!< No ALT_MFP1 setting for PA.11 */
+#define SYS_ALT_MFP2_PA11_I2C1_SCL  (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.11 */
 
 #define SYS_GPA_MFP_PA11_Msk        (1UL<<11)           /*!< GPA_MFP PA.11 mask             */
 
 //PA.12
 #define SYS_GPA_MFP_PA12_GPIO       0x00000000UL        /*!< GPA_MFP PA.12 setting for GPIO */
-#define SYS_ALT_MFP_PA12_GPIO       NULL                /*!< No ALT_MFP setting for PA.12 */
+#define SYS_ALT_MFP_PA12_GPIO       (uint32_t)NULL      /*!< No ALT_MFP setting for PA.12 */
 #define SYS_ALT_MFP1_PA12_GPIO      0x00000000UL        /*!< ALT_MFP1 PA.12 setting for GPIO */
-#define SYS_ALT_MFP2_PA12_GPIO      NULL                /*!< No ALT_MFP2 setting for PA.12 */
+#define SYS_ALT_MFP2_PA12_GPIO      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.12 */
 
 #define SYS_GPA_MFP_PA12_PWM0       (1UL<<12)           /*!< GPA_MFP PA.12 setting for PWM0 */
-#define SYS_ALT_MFP_PA12_PWM0       NULL                /*!< No ALT_MFP setting for PA.12 */
+#define SYS_ALT_MFP_PA12_PWM0       (uint32_t)NULL      /*!< No ALT_MFP setting for PA.12 */
 #define SYS_ALT_MFP1_PA12_PWM0      0x00000000UL        /*!< ALT_MFP1 PA.12 setting for PWM0 */
-#define SYS_ALT_MFP2_PA12_PWM0      NULL                /*!< No ALT_MFP2 setting for PA.12 */
+#define SYS_ALT_MFP2_PA12_PWM0      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.12 */
 
 #define SYS_GPA_MFP_PA12_SC2_DAT    (1UL<<12)           /*!< GPA_MFP PA.12 setting for SC2_DAT  */
-#define SYS_ALT_MFP_PA12_SC2_DAT    NULL                /*!< No ALT_MFP setting for PA.12 */
+#define SYS_ALT_MFP_PA12_SC2_DAT    (uint32_t)NULL      /*!< No ALT_MFP setting for PA.12 */
 #define SYS_ALT_MFP1_PA12_SC2_DAT   (1UL<<11)           /*!< ALT_MFP1 PA.12 setting for SC2_DAT */
-#define SYS_ALT_MFP2_PA12_SC2_DAT   NULL                /*!< No ALT_MFP2 setting for PA.12 */
+#define SYS_ALT_MFP2_PA12_SC2_DAT   (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.12 */
 
 #define SYS_GPA_MFP_PA12_Msk        (1UL<<12)           /*!< GPA_MFP PA.12 mask             */
 #define SYS_ALT_MFP1_PA12_Msk       (1UL<<11)           /*!< ALT_MFP1 PA.12 mask            */
 
 //PA.13
 #define SYS_GPA_MFP_PA13_GPIO       0x00000000UL        /*!< GPA_MFP PA.13 setting for GPIO */
-#define SYS_ALT_MFP_PA13_GPIO       NULL                /*!< No ALT_MFP setting for PA.13 */
+#define SYS_ALT_MFP_PA13_GPIO       (uint32_t)NULL      /*!< No ALT_MFP setting for PA.13 */
 #define SYS_ALT_MFP1_PA13_GPIO      0x00000000UL        /*!< ALT_MFP1 PA.13 setting for GPIO */
-#define SYS_ALT_MFP2_PA13_GPIO      NULL                /*!< No ALT_MFP2 setting for PA.13 */
+#define SYS_ALT_MFP2_PA13_GPIO      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.13 */
 
 #define SYS_GPA_MFP_PA13_PWM1       (1UL<<13)           /*!< GPA_MFP PA.13 setting for PWM1 */
-#define SYS_ALT_MFP_PA13_PWM1       NULL                /*!< No ALT_MFP setting for PA.13 */
+#define SYS_ALT_MFP_PA13_PWM1       (uint32_t)NULL      /*!< No ALT_MFP setting for PA.13 */
 #define SYS_ALT_MFP1_PA13_PWM1      0x00000000UL        /*!< ALT_MFP1 PA.13 setting for PWM1 */
-#define SYS_ALT_MFP2_PA13_PWM1      NULL                /*!< No ALT_MFP2 setting for PA.13 */
+#define SYS_ALT_MFP2_PA13_PWM1      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.13 */
 
 #define SYS_GPA_MFP_PA13_SC2_CLK    (1UL<<13)           /*!< GPA_MFP PA.13 setting for SC2_CLK */
-#define SYS_ALT_MFP_PA13_SC2_CLK    NULL                /*!< No ALT_MFP setting for PA.13 */
+#define SYS_ALT_MFP_PA13_SC2_CLK    (uint32_t)NULL      /*!< No ALT_MFP setting for PA.13 */
 #define SYS_ALT_MFP1_PA13_SC2_CLK   (1UL<<10)           /*!< ALT_MFP1 PA.13 setting for SC2_CLK */
-#define SYS_ALT_MFP2_PA13_SC2_CLK   NULL                /*!< No ALT_MFP2 setting for PA.13 */
+#define SYS_ALT_MFP2_PA13_SC2_CLK   (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.13 */
 
 #define SYS_GPA_MFP_PA13_Msk        (1UL<<13)           /*!< GPA_MFP PA.13 mask             */
 #define SYS_ALT_MFP1_PA13_Msk       (1UL<<10)           /*!< ALT_MFP1 PA.13 mask             */
 
 //PA.14
 #define SYS_GPA_MFP_PA14_GPIO       0x00000000UL        /*!< GPA_MFP PA.14 setting for GPIO */
-#define SYS_ALT_MFP_PA14_GPIO       NULL                /*!< No ALT_MFP setting for PA.14 */
+#define SYS_ALT_MFP_PA14_GPIO       (uint32_t)NULL      /*!< No ALT_MFP setting for PA.14 */
 #define SYS_ALT_MFP1_PA14_GPIO      0x00000000UL        /*!< ALT_MFP1 PA.14 setting for GPIO */
-#define SYS_ALT_MFP2_PA14_GPIO      NULL                /*!< No ALT_MFP2 setting for PA.14 */
+#define SYS_ALT_MFP2_PA14_GPIO      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.14 */
 
 #define SYS_GPA_MFP_PA14_PWM2       (1UL<<14)           /*!< GPA_MFP PA.14 setting for PWM2 */
-#define SYS_ALT_MFP_PA14_PWM2       NULL                /*!< No ALT_MFP setting for PA.14 */
+#define SYS_ALT_MFP_PA14_PWM2       (uint32_t)          /*!< No ALT_MFP setting for PA.14 */
 #define SYS_ALT_MFP1_PA14_PWM2      0x00000000UL        /*!< ALT_MFP1 PA.14 setting for PWM2 */
-#define SYS_ALT_MFP2_PA14_PWM2      NULL                /*!< No ALT_MFP2 setting for PA.14 */
+#define SYS_ALT_MFP2_PA14_PWM2      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.14 */
 
 #define SYS_GPA_MFP_PA14_SC2_RST    (1UL<<14)           /*!< GPA_MFP PA.14 setting for SC2_RST */
-#define SYS_ALT_MFP_PA14_SC2_RST    NULL                /*!< No ALT_MFP setting for PA.14 */
+#define SYS_ALT_MFP_PA14_SC2_RST    (uint32_t)NULL      /*!< No ALT_MFP setting for PA.14 */
 #define SYS_ALT_MFP1_PA14_SC2_RST   (1UL<<13)           /*!< ALT_MFP1 PA.14 setting for SC2_RST */
-#define SYS_ALT_MFP2_PA14_SC2_RST   NULL                /*!< No ALT_MFP2 setting for PA.14 */
+#define SYS_ALT_MFP2_PA14_SC2_RST   (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.14 */
 
 #define SYS_GPA_MFP_PA14_Msk        (1UL<<14)           /*!< GPA_MFP PA.14 mask             */
 #define SYS_ALT_MFP1_PA14_Msk       (1UL<<13)           /*!< ALT_MFP1 PA.14 mask             */
@@ -354,22 +354,22 @@ Example: If user want to set PA.0 as ADC0 and PA1 as ADC1 in initial function,
 #define SYS_GPA_MFP_PA15_GPIO       0x00000000UL        /*!< GPA_MFP PA.15 setting for GPIO */
 #define SYS_ALT_MFP_PA15_GPIO       0x00000000UL        /*!< ALT_MFP PA.15 setting for GPIO */
 #define SYS_ALT_MFP1_PA15_GPIO      0x00000000UL        /*!< ALT_MFP1 PA.15 setting for GPIO */
-#define SYS_ALT_MFP2_PA15_GPIO      NULL                /*!< No ALT_MFP2 setting for PA.15 */
+#define SYS_ALT_MFP2_PA15_GPIO      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.15 */
 
 #define SYS_GPA_MFP_PA15_PWM3       (1UL<<15)           /*!< GPA_MFP PA.15 setting for PWM3 */
 #define SYS_ALT_MFP_PA15_PWM3       0x00000000UL        /*!< ALT_MFP PA.15 setting for PWM3 */
 #define SYS_ALT_MFP1_PA15_PWM3      0x00000000UL        /*!< ALT_MFP1 PA.15 setting for PWM3 */
-#define SYS_ALT_MFP2_PA15_PWM3      NULL                /*!< No ALT_MFP2 setting for PA.15 */
+#define SYS_ALT_MFP2_PA15_PWM3      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.15 */
 
 #define SYS_GPA_MFP_PA15_I2S_MCLK   (1UL<<15)           /*!< GPA_MFP PA.15 setting for I2S_MCLK */
 #define SYS_ALT_MFP_PA15_I2S_MCLK   (1UL<<9)            /*!< ALT_MFP PA.15 setting for I2S_MCLK */
 #define SYS_ALT_MFP1_PA15_I2S_MCLK  0x00000000UL        /*!< ALT_MFP1 PA.15 setting for I2S_MCLK */
-#define SYS_ALT_MFP2_PA15_I2S_MCLK  NULL                /*!< No ALT_MFP2 setting for PA.15 */
+#define SYS_ALT_MFP2_PA15_I2S_MCLK  (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.15 */
 
 #define SYS_GPA_MFP_PA15_SC2_PWR    (1UL<<15)           /*!< GPA_MFP PA.15 setting for SC2_PWR */
 #define SYS_ALT_MFP_PA15_SC2_PWR    0x00000000UL        /*!< ALT_MFP PA.15 setting for SC2_PWR */
 #define SYS_ALT_MFP1_PA15_SC2_PWR   (1UL<<12)           /*!< ALT_MFP1 PA.15 setting for SC2_PWR */
-#define SYS_ALT_MFP2_PA15_SC2_PWR   NULL                /*!< No ALT_MFP2 setting for PA.15 */
+#define SYS_ALT_MFP2_PA15_SC2_PWR   (uint32_t)NULL      /*!< No ALT_MFP2 setting for PA.15 */
 
 #define SYS_GPA_MFP_PA15_Msk        (1UL<<15)           /*!< GPA_MFP PA.15 mask             */
 #define SYS_ALT_MFP_PA15_Msk        (1UL<<9)            /*!< ALT_MFP PA.15 mask             */
@@ -377,55 +377,55 @@ Example: If user want to set PA.0 as ADC0 and PA1 as ADC1 in initial function,
 
 //PB.0
 #define SYS_GPB_MFP_PB0_GPIO        0x00000000UL        /*!< GPB_MFP PB.0 setting for GPIO */
-#define SYS_ALT_MFP_PB0_GPIO        NULL                /*!< No ALT_MFP setting for PB.0   */
-#define SYS_ALT_MFP1_PB0_GPIO       NULL                /*!< No ALT_MFP1 setting for PB.0  */
-#define SYS_ALT_MFP2_PB0_GPIO       NULL                /*!< No ALT_MFP2 setting for PB.0  */
+#define SYS_ALT_MFP_PB0_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PB.0   */
+#define SYS_ALT_MFP1_PB0_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.0  */
+#define SYS_ALT_MFP2_PB0_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.0  */
 
 #define SYS_GPB_MFP_PB0_UART0_RXD   (1UL<<0)            /*!< GPB_MFP PB.0 setting for UART0_RXD */
-#define SYS_ALT_MFP_PB0_UART0_RXD   NULL                /*!< No ALT_MFP setting for PB.0   */
-#define SYS_ALT_MFP1_PB0_UART0_RXD  NULL                /*!< No ALT_MFP1 setting for PB.0  */
-#define SYS_ALT_MFP2_PB0_UART0_RXD  NULL                /*!< No ALT_MFP2 setting for PB.0  */
+#define SYS_ALT_MFP_PB0_UART0_RXD   (uint32_t)NULL      /*!< No ALT_MFP setting for PB.0   */
+#define SYS_ALT_MFP1_PB0_UART0_RXD  (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.0  */
+#define SYS_ALT_MFP2_PB0_UART0_RXD  (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.0  */
 
 #define SYS_GPB_MFP_PB0_Msk         (1UL<<0)            /*!< GPB_MFP PB.0 mask             */
 
 //PB.1
 #define SYS_GPB_MFP_PB1_GPIO        0x00000000UL        /*!< GPB_MFP PB.1 setting for GPIO */
-#define SYS_ALT_MFP_PB1_GPIO        NULL                /*!< No ALT_MFP setting for PB.1   */
-#define SYS_ALT_MFP1_PB1_GPIO       NULL                /*!< No ALT_MFP1 setting for PB.1  */
-#define SYS_ALT_MFP2_PB1_GPIO       NULL                /*!< No ALT_MFP2 setting for PB.1  */
+#define SYS_ALT_MFP_PB1_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PB.1   */
+#define SYS_ALT_MFP1_PB1_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.1  */
+#define SYS_ALT_MFP2_PB1_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.1  */
 
 #define SYS_GPB_MFP_PB1_UART0_TXD   (1UL<<1)            /*!< GPB_MFP PB.1 setting for UART0_TXD */
-#define SYS_ALT_MFP_PB1_UART0_TXD   NULL                /*!< No ALT_MFP setting for PB.1   */
-#define SYS_ALT_MFP1_PB1_UART0_TXD  NULL                /*!< No ALT_MFP1 setting for PB.1  */
-#define SYS_ALT_MFP2_PB1_UART0_TXD  NULL                /*!< No ALT_MFP2 setting for PB.1  */
+#define SYS_ALT_MFP_PB1_UART0_TXD   (uint32_t)NULL      /*!< No ALT_MFP setting for PB.1   */
+#define SYS_ALT_MFP1_PB1_UART0_TXD  (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.1  */
+#define SYS_ALT_MFP2_PB1_UART0_TXD  (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.1  */
 
 #define SYS_GPB_MFP_PB1_Msk         (1UL<<1)            /*!< GPB_MFP PB.1 mask             */
 
 //PB.2
 #define SYS_GPB_MFP_PB2_GPIO        0x00000000UL        /*!< GPB_MFP PB.2 setting for GPIO */
 #define SYS_ALT_MFP_PB2_GPIO        0x00000000UL        /*!< ALT_MFP PB.2 setting for GPIO */
-#define SYS_ALT_MFP1_PB2_GPIO       NULL                /*!< No ALT_MFP1 setting for PB.2  */
-#define SYS_ALT_MFP2_PB2_GPIO       NULL                /*!< No ALT_MFP2 setting for PB.2  */
+#define SYS_ALT_MFP1_PB2_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.2  */
+#define SYS_ALT_MFP2_PB2_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.2  */
 
 #define SYS_GPB_MFP_PB2_UART0_nRTS      (1UL<<2)        /*!< GPB_MFP PB.2 setting for UART0_nRTS */
 #define SYS_ALT_MFP_PB2_UART0_nRTS      0x00000000UL    /*!< ALT_MFP PB.2 setting for UART0_nRTS */
-#define SYS_ALT_MFP1_PB2_UART0_nRTS     NULL            /*!< No ALT_MFP1 setting for PB.2 */
-#define SYS_ALT_MFP2_PB2_UART0_nRTS     NULL            /*!< No ALT_MFP2 setting for PB.2 */
+#define SYS_ALT_MFP1_PB2_UART0_nRTS     (uint32_t)NULL  /*!< No ALT_MFP1 setting for PB.2 */
+#define SYS_ALT_MFP2_PB2_UART0_nRTS     (uint32_t)NULL  /*!< No ALT_MFP2 setting for PB.2 */
 
 #define SYS_GPB_MFP_PB2_TM2_EXT     (1UL<<2)            /*!< GPB_MFP PB.2 setting for TM2_EXT */
 #define SYS_ALT_MFP_PB2_TM2_EXT     (1UL<<26)           /*!< ALT_MFP PB.2 setting for TM2_EXT */
-#define SYS_ALT_MFP1_PB2_TM2_EXT    NULL                /*!< No ALT_MFP1 setting for PB.2 */
-#define SYS_ALT_MFP2_PB2_TM2_EXT    NULL                /*!< No ALT_MFP2 setting for PB.2 */
+#define SYS_ALT_MFP1_PB2_TM2_EXT    (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.2 */
+#define SYS_ALT_MFP2_PB2_TM2_EXT    (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.2 */
 
 #define SYS_GPB_MFP_PB2_ACMP0_O     (1UL<<2)            /*!< GPB_MFP PB.2 setting for ACMP0_O */
 #define SYS_ALT_MFP_PB2_ACMP0_O     (1UL<<30)           /*!< ALT_MFP PB.2 setting for ACMP0_O */
-#define SYS_ALT_MFP1_PB2_ACMP0_O    NULL                /*!< No ALT_MFP1 setting for PB.2 */
-#define SYS_ALT_MFP2_PB2_ACMP0_O    NULL                /*!< No ALT_MFP2 setting for PB.2 */
+#define SYS_ALT_MFP1_PB2_ACMP0_O    (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.2 */
+#define SYS_ALT_MFP2_PB2_ACMP0_O    (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.2 */
 
 #define SYS_GPB_MFP_PB2_CMP0_O      (1UL<<2)            /*!< GPB_MFP PB.2 setting for CMP0_O */
 #define SYS_ALT_MFP_PB2_CMP0_O      (1UL<<30)           /*!< ALT_MFP PB.2 setting for CMP0_O */
-#define SYS_ALT_MFP1_PB2_CMP0_O     NULL                /*!< No ALT_MFP1 setting for PB.2 */
-#define SYS_ALT_MFP2_PB2_CMP0_O     NULL                /*!< No ALT_MFP2 setting for PB.2 */
+#define SYS_ALT_MFP1_PB2_CMP0_O     (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.2 */
+#define SYS_ALT_MFP2_PB2_CMP0_O     (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.2 */
 
 #define SYS_GPB_MFP_PB2_Msk     (1UL<<2)                /*!< GPB_MFP PB.2 mask */
 #define SYS_ALT_MFP_PB2_Msk     ((1UL<<30)|(1UL<<26))   /*!< ALT_MFP PB.2 mask */
@@ -434,22 +434,22 @@ Example: If user want to set PA.0 as ADC0 and PA1 as ADC1 in initial function,
 #define SYS_GPB_MFP_PB3_GPIO        0x00000000UL        /*!< GPB_MFP PB.3 setting for GPIO */
 #define SYS_ALT_MFP_PB3_GPIO        0x00000000UL        /*!< ALT_MFP PB.3 setting for GPIO */
 #define SYS_ALT_MFP1_PB3_GPIO       0x00000000UL        /*!< ALT_MFP1 PB.3 setting for GPIO */
-#define SYS_ALT_MFP2_PB3_GPIO       NULL                /*!< No ALT_MFP2 setting for PB.3 */
+#define SYS_ALT_MFP2_PB3_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.3 */
 
 #define SYS_GPB_MFP_PB3_UART0_nCTS    (1UL<<3)          /*!< GPB_MFP PB.3 setting for UART0_nCTS */
 #define SYS_ALT_MFP_PB3_UART0_nCTS    0x00000000UL      /*!< ALT_MFP PB.3 setting for UART0_nCTS */
 #define SYS_ALT_MFP1_PB3_UART0_nCTS   0x00000000UL      /*!< ALT_MFP1 PB.3 setting for UART0_nCTS */
-#define SYS_ALT_MFP2_PB3_UART0_nCTS   NULL              /*!< No ALT_MFP2 setting for PB.3 */
+#define SYS_ALT_MFP2_PB3_UART0_nCTS   (uint32_t)NULL    /*!< No ALT_MFP2 setting for PB.3 */
 
 #define SYS_GPB_MFP_PB3_TM3_EXT     (1UL<<3)            /*!< GPB_MFP PB.3 setting for TM3_EXT */
 #define SYS_ALT_MFP_PB3_TM3_EXT     (1UL<<27)           /*!< ALT_MFP PB.3 setting for TM3_EXT */
 #define SYS_ALT_MFP1_PB3_TM3_EXT    0x00000000UL        /*!< ALT_MFP1 PB.3 setting for TM3_EXT */
-#define SYS_ALT_MFP2_PB3_TM3_EXT    NULL                /*!< No ALT_MFP2 setting for PB.3 */
+#define SYS_ALT_MFP2_PB3_TM3_EXT    (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.3 */
 
 #define SYS_GPB_MFP_PB3_SC2_CD      (1UL<<3)            /*!< GPB_MFP PB.3 setting for SC2_CD */
 #define SYS_ALT_MFP_PB3_SC2_CD      0x00000000UL        /*!< ALT_MFP PB.3 setting for SC2_CD */
 #define SYS_ALT_MFP1_PB3_SC2_CD     (1UL<<14)           /*!< ALT_MFP1 PB.3 setting for SC2_CD */
-#define SYS_ALT_MFP2_PB3_SC2_CD     NULL                /*!< No ALT_MFP2 setting for PB.3 */
+#define SYS_ALT_MFP2_PB3_SC2_CD     (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.3 */
    
 #define SYS_GPB_MFP_PB3_Msk         (1UL<<3)            /*!< GPB_MFP PB.3 mask */
 #define SYS_ALT_MFP_PB3_Msk         (1UL<<27)           /*!< ALT_MFP PB.3 mask */
@@ -458,71 +458,71 @@ Example: If user want to set PA.0 as ADC0 and PA1 as ADC1 in initial function,
 
 //PB.4
 #define SYS_GPB_MFP_PB4_GPIO        0x00000000UL        /*!< GPA_MFP PB.4 setting for GPIO */
-#define SYS_ALT_MFP_PB4_GPIO        NULL                /*!< No ALT_MFP setting for PB.4   */
-#define SYS_ALT_MFP1_PB4_GPIO       NULL                /*!< No ALT_MFP1 setting for PB.4  */
-#define SYS_ALT_MFP2_PB4_GPIO       NULL                /*!< No ALT_MFP2 setting for PB.4  */
+#define SYS_ALT_MFP_PB4_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PB.4   */
+#define SYS_ALT_MFP1_PB4_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.4  */
+#define SYS_ALT_MFP2_PB4_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.4  */
 
 #define SYS_GPB_MFP_PB4_UART1_RXD       (1UL<<4)        /*!< GPA_MFP PB.4 setting for UART1_RXD */
-#define SYS_ALT_MFP_PB4_UART1_RXD       NULL            /*!< No ALT_MFP setting for PB.4   */
-#define SYS_ALT_MFP1_PB4_UART1_RXD      NULL            /*!< No ALT_MFP1 setting for PB.4  */
-#define SYS_ALT_MFP2_PB4_UART1_RXD      NULL            /*!< No ALT_MFP2 setting for PB.4  */
+#define SYS_ALT_MFP_PB4_UART1_RXD       (uint32_t)NULL  /*!< No ALT_MFP setting for PB.4   */
+#define SYS_ALT_MFP1_PB4_UART1_RXD      (uint32_t)NULL  /*!< No ALT_MFP1 setting for PB.4  */
+#define SYS_ALT_MFP2_PB4_UART1_RXD      (uint32_t)NULL  /*!< No ALT_MFP2 setting for PB.4  */
 
 #define SYS_GPB_MFP_PB4_Msk         (1UL<<4)            /*!< GPA_MFP PB.4 mask */
 
 //PB.5
 #define SYS_GPB_MFP_PB5_GPIO        0x00000000UL        /*!< GPA_MFP PB.5 setting for GPIO */
-#define SYS_ALT_MFP_PB5_GPIO        NULL                /*!< No ALT_MFP setting for PB.5   */
-#define SYS_ALT_MFP1_PB5_GPIO       NULL                /*!< No ALT_MFP1 setting for PB.5  */
-#define SYS_ALT_MFP2_PB5_GPIO       NULL                /*!< No ALT_MFP2 setting for PB.5  */
+#define SYS_ALT_MFP_PB5_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PB.5   */
+#define SYS_ALT_MFP1_PB5_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.5  */
+#define SYS_ALT_MFP2_PB5_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.5  */
 
 #define SYS_GPB_MFP_PB5_UART1_TXD       (1UL<<5)        /*!< GPA_MFP PB.5 setting for UART1_TXD */
-#define SYS_ALT_MFP_PB5_UART1_TXD       NULL            /*!< No ALT_MFP setting for PB.5   */
-#define SYS_ALT_MFP1_PB5_UART1_TXD      NULL            /*!< No ALT_MFP1 setting for PB.5  */
-#define SYS_ALT_MFP2_PB5_UART1_TXD      NULL            /*!< No ALT_MFP2 setting for PB.5  */
+#define SYS_ALT_MFP_PB5_UART1_TXD       (uint32_t)NULL  /*!< No ALT_MFP setting for PB.5   */
+#define SYS_ALT_MFP1_PB5_UART1_TXD      (uint32_t)NULL  /*!< No ALT_MFP1 setting for PB.5  */
+#define SYS_ALT_MFP2_PB5_UART1_TXD      (uint32_t)NULL  /*!< No ALT_MFP2 setting for PB.5  */
 
 #define SYS_GPB_MFP_PB5_Msk         (1UL<<5)            /*!< GPA_MFP PB.5 mask */
 
 //PB.6
 #define SYS_GPB_MFP_PB6_GPIO        0x00000000UL        /*!< GPB_MFP PB.6 setting for GPIO */
-#define SYS_ALT_MFP_PB6_GPIO        NULL                /*!< No ALT_MFP setting for PB.6 */
-#define SYS_ALT_MFP1_PB6_GPIO       NULL                /*!< No ALT_MFP1 setting for PB.6 */
-#define SYS_ALT_MFP2_PB6_GPIO       NULL                /*!< No ALT_MFP2 setting for PB.6 */
+#define SYS_ALT_MFP_PB6_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PB.6 */
+#define SYS_ALT_MFP1_PB6_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.6 */
+#define SYS_ALT_MFP2_PB6_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.6 */
 
 #define SYS_GPB_MFP_PB6_UART1_nRTS      (1UL<<6)        /*!< GPB_MFP PB.6 setting for UART1_nRTS */
-#define SYS_ALT_MFP_PB6_UART1_nRTS      NULL            /*!< No ALT_MFP setting for PB.6 */
-#define SYS_ALT_MFP1_PB6_UART1_nRTS     NULL            /*!< No ALT_MFP1 setting for PB.6  */
-#define SYS_ALT_MFP2_PB6_UART1_nRTS     NULL            /*!< No ALT_MFP2 setting for PB.6  */
+#define SYS_ALT_MFP_PB6_UART1_nRTS      (uint32_t)NULL  /*!< No ALT_MFP setting for PB.6 */
+#define SYS_ALT_MFP1_PB6_UART1_nRTS     (uint32_t)NULL  /*!< No ALT_MFP1 setting for PB.6  */
+#define SYS_ALT_MFP2_PB6_UART1_nRTS     (uint32_t)NULL  /*!< No ALT_MFP2 setting for PB.6  */
 
 #define SYS_GPB_MFP_PB6_Msk         (1UL<<6)            /*!< GPB_MFP PB.6 mask */
 
 //PB.7
 #define SYS_GPB_MFP_PB7_GPIO        0x00000000UL        /*!< GPB_MFP PB.7 setting for GPIO */
-#define SYS_ALT_MFP_PB7_GPIO        NULL                /*!< No ALT_MFP setting for PB.7 */
-#define SYS_ALT_MFP1_PB7_GPIO       NULL                /*!< No ALT_MFP1 setting for PB.7 */
-#define SYS_ALT_MFP2_PB7_GPIO       NULL                /*!< No ALT_MFP2 setting for PB.7 */
+#define SYS_ALT_MFP_PB7_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PB.7 */
+#define SYS_ALT_MFP1_PB7_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.7 */
+#define SYS_ALT_MFP2_PB7_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.7 */
 
 #define SYS_GPB_MFP_PB7_UART1_nCTS    (1UL<<7)          /*!< GPB_MFP PB.7 setting for UART1_nCTS */
-#define SYS_ALT_MFP_PB7_UART1_nCTS    NULL              /*!< No ALT_MFP setting for PB.7 */
-#define SYS_ALT_MFP1_PB7_UART1_nCTS   NULL              /*!< No ALT_MFP1 setting for PB.7  */
-#define SYS_ALT_MFP2_PB7_UART1_nCTS   NULL              /*!< No ALT_MFP2 setting for PB.7  */
+#define SYS_ALT_MFP_PB7_UART1_nCTS    (uint32_t)NULL    /*!< No ALT_MFP setting for PB.7 */
+#define SYS_ALT_MFP1_PB7_UART1_nCTS   (uint32_t)NULL    /*!< No ALT_MFP1 setting for PB.7  */
+#define SYS_ALT_MFP2_PB7_UART1_nCTS   (uint32_t)NULL    /*!< No ALT_MFP2 setting for PB.7  */
 
 #define SYS_GPB_MFP_PB7_Msk         (1UL<<7)            /*!< GPB_MFP PB.7 mask */
 
 //PB.8
 #define SYS_GPB_MFP_PB8_GPIO        0x00000000UL        /*!< GPA_MFP PB.8 setting for GPIO */
 #define SYS_ALT_MFP_PB8_GPIO        0x00000000UL        /*!< ALT_MFP PB.8 setting for GPIO */
-#define SYS_ALT_MFP1_PB8_GPIO       NULL                /*!< No ALT_MFP1 setting for PB.8  */
-#define SYS_ALT_MFP2_PB8_GPIO       NULL                /*!< No ALT_MFP2 setting for PB.8  */
+#define SYS_ALT_MFP1_PB8_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.8  */
+#define SYS_ALT_MFP2_PB8_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.8  */
 
 #define SYS_GPB_MFP_PB8_TM0         (1UL<<8)            /*!< GPA_MFP PB.8 setting for TM0 */
 #define SYS_ALT_MFP_PB8_TM0         0x00000000UL        /*!< ALT_MFP PB.8 setting for TM0 */
-#define SYS_ALT_MFP1_PB8_TM0        NULL                /*!< No ALT_MFP1 setting for PB.8 */
-#define SYS_ALT_MFP2_PB8_TM0        NULL                /*!< No ALT_MFP2 setting for PB.8 */
+#define SYS_ALT_MFP1_PB8_TM0        (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.8 */
+#define SYS_ALT_MFP2_PB8_TM0        (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.8 */
 
 #define SYS_GPB_MFP_PB8_CLKO        (1UL<<8)            /*!< GPA_MFP PB.8 setting for CLKO */
 #define SYS_ALT_MFP_PB8_CLKO        (1UL<<29)           /*!< ALT_MFP PB.8 setting for CLKO */
-#define SYS_ALT_MFP1_PB8_CLKO       NULL                /*!< No ALT_MFP1 setting for PB.8  */
-#define SYS_ALT_MFP2_PB8_CLKO       NULL                /*!< No ALT_MFP2 setting for PB.8  */
+#define SYS_ALT_MFP1_PB8_CLKO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.8  */
+#define SYS_ALT_MFP2_PB8_CLKO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.8  */
 
 #define SYS_GPB_MFP_PB8_Msk         (1UL<<8)            /*!< GPA_MFP PB.8 mask */
 #define SYS_ALT_MFP_PB8_Msk         (1UL<<29)           /*!< ALT_MFP PB.8 mask */
@@ -530,18 +530,18 @@ Example: If user want to set PA.0 as ADC0 and PA1 as ADC1 in initial function,
 //PB.9
 #define SYS_GPB_MFP_PB9_GPIO        0x00000000UL        /*!< GPB_MFP PB.9 setting for GPIO */
 #define SYS_ALT_MFP_PB9_GPIO        0x00000000UL        /*!< ALT_MFP PB.9 setting for GPIO */
-#define SYS_ALT_MFP1_PB9_GPIO       NULL                /*!< No ALT_MFP1 setting for PB.9  */
-#define SYS_ALT_MFP2_PB9_GPIO       NULL                /*!< No ALT_MFP2 setting for PB.9  */
+#define SYS_ALT_MFP1_PB9_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.9  */
+#define SYS_ALT_MFP2_PB9_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.9  */
 
 #define SYS_GPB_MFP_PB9_TM1         (1UL<<9)            /*!< GPB_MFP PB.9 setting for TM1 */
 #define SYS_ALT_MFP_PB9_TM1         0x00000000UL        /*!< ALT_MFP PB.9 setting for TM1 */
-#define SYS_ALT_MFP1_PB9_TM1        NULL                /*!< No ALT_MFP1 setting for PB.9 */
-#define SYS_ALT_MFP2_PB9_TM1        NULL                /*!< No ALT_MFP2 setting for PB.9 */
+#define SYS_ALT_MFP1_PB9_TM1        (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.9 */
+#define SYS_ALT_MFP2_PB9_TM1        (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.9 */
 
 #define SYS_GPB_MFP_PB9_SPI1_SS1        (1UL<<9)        /*!< GPB_MFP PB.9 setting for SPI1_SS1 */
 #define SYS_ALT_MFP_PB9_SPI1_SS1        (1UL<<1)        /*!< ALT_MFP PB.9 setting for SPI1_SS1 */
-#define SYS_ALT_MFP1_PB9_SPI1_SS1       NULL            /*!< No ALT_MFP1 setting for PB.9  */
-#define SYS_ALT_MFP2_PB9_SPI1_SS1       NULL            /*!< No ALT_MFP2 setting for PB.9  */
+#define SYS_ALT_MFP1_PB9_SPI1_SS1       (uint32_t)NULL  /*!< No ALT_MFP1 setting for PB.9  */
+#define SYS_ALT_MFP2_PB9_SPI1_SS1       (uint32_t)NULL  /*!< No ALT_MFP2 setting for PB.9  */
 
 #define SYS_GPB_MFP_PB9_Msk         (1UL<<9)            /*!< GPB_MFP PB.9 mask */
 #define SYS_ALT_MFP_PB9_Msk         (1UL<<1)            /*!< ALT_MFP PB.9 mask */
@@ -549,18 +549,18 @@ Example: If user want to set PA.0 as ADC0 and PA1 as ADC1 in initial function,
 //PB.10
 #define SYS_GPB_MFP_PB10_GPIO       0x00000000UL        /*!< GPB_MFP PB.10 setting for GPIO */
 #define SYS_ALT_MFP_PB10_GPIO       0x00000000UL        /*!< ALT_MFP PB.10 setting for GPIO */
-#define SYS_ALT_MFP1_PB10_GPIO      NULL                /*!< No ALT_MFP1 setting for PB.10  */
-#define SYS_ALT_MFP2_PB10_GPIO      NULL                /*!< No ALT_MFP2 setting for PB.10  */
+#define SYS_ALT_MFP1_PB10_GPIO      (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.10  */
+#define SYS_ALT_MFP2_PB10_GPIO      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.10  */
 
 #define SYS_GPB_MFP_PB10_TM2        (1UL<<10)           /*!< GPB_MFP PB.10 setting for TM2 */
 #define SYS_ALT_MFP_PB10_TM2        0x00000000UL        /*!< ALT_MFP PB.10 setting for TM2 */
-#define SYS_ALT_MFP1_PB10_TM2       NULL                /*!< No ALT_MFP1 setting for PB.10 */
-#define SYS_ALT_MFP2_PB10_TM2       NULL                /*!< No ALT_MFP2 setting for PB.10 */
+#define SYS_ALT_MFP1_PB10_TM2       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.10 */
+#define SYS_ALT_MFP2_PB10_TM2       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.10 */
 
 #define SYS_GPB_MFP_PB10_SPI0_SS1       (1UL<<10)       /*!< GPB_MFP PB.10 setting for SPI0_SS1 */
 #define SYS_ALT_MFP_PB10_SPI0_SS1       (1UL<<0)        /*!< ALT_MFP PB.10 setting for SPI0_SS1 */
-#define SYS_ALT_MFP1_PB10_SPI0_SS1      NULL            /*!< No ALT_MFP1 setting for PB.10 */
-#define SYS_ALT_MFP2_PB10_SPI0_SS1      NULL            /*!< No ALT_MFP2 setting for PB.10 */
+#define SYS_ALT_MFP1_PB10_SPI0_SS1      (uint32_t)NULL  /*!< No ALT_MFP1 setting for PB.10 */
+#define SYS_ALT_MFP2_PB10_SPI0_SS1      (uint32_t)NULL  /*!< No ALT_MFP2 setting for PB.10 */
 
 #define SYS_GPB_MFP_PB10_Msk        (1UL<<10)           /*!< GPB_MFP PB.10 mask */
 #define SYS_ALT_MFP_PB10_Msk        (1UL<<0)            /*!< ALT_MFP PB.10 mask */
@@ -568,18 +568,18 @@ Example: If user want to set PA.0 as ADC0 and PA1 as ADC1 in initial function,
 //PB.11
 #define SYS_GPB_MFP_PB11_GPIO       0x00000000UL        /*!< GPB_MFP PB.11 setting for GPIO */
 #define SYS_ALT_MFP_PB11_GPIO       0x00000000UL        /*!< ALT_MFP PB.11 setting for GPIO */
-#define SYS_ALT_MFP1_PB11_GPIO      NULL                /*!< No ALT_MFP1 setting for PB.11  */
-#define SYS_ALT_MFP2_PB11_GPIO      NULL                /*!< No ALT_MFP2 setting for PB.11  */
+#define SYS_ALT_MFP1_PB11_GPIO      (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.11  */
+#define SYS_ALT_MFP2_PB11_GPIO      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.11  */
 
 #define SYS_GPB_MFP_PB11_TM3        (1UL<<11)           /*!< GPB_MFP PB.11 setting for TM3 */
 #define SYS_ALT_MFP_PB11_TM3        0x00000000UL        /*!< ALT_MFP PB.11 setting for TM3 */
-#define SYS_ALT_MFP1_PB11_TM3       NULL                /*!< No ALT_MFP1 setting for PB.11 */
-#define SYS_ALT_MFP2_PB11_TM3       NULL                /*!< No ALT_MFP2 setting for PB.11 */
+#define SYS_ALT_MFP1_PB11_TM3       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.11 */
+#define SYS_ALT_MFP2_PB11_TM3       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.11 */
 
 #define SYS_GPB_MFP_PB11_PWM4       (1UL<<11)           /*!< GPB_MFP PB.11 setting for PWM4 */
 #define SYS_ALT_MFP_PB11_PWM4       (1UL<<4)            /*!< ALT_MFP PB.11 setting for PWM4 */
-#define SYS_ALT_MFP1_PB11_PWM4      NULL                /*!< No ALT_MFP1 setting for PB.11  */
-#define SYS_ALT_MFP2_PB11_PWM4      NULL                /*!< No ALT_MFP2 setting for PB.11  */
+#define SYS_ALT_MFP1_PB11_PWM4      (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.11  */
+#define SYS_ALT_MFP2_PB11_PWM4      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.11  */
 
 #define SYS_GPB_MFP_PB11_Msk        (1UL<<11)           /*!< GPB_MFP PB.11 mask */
 #define SYS_ALT_MFP_PB11_Msk        (1UL<<4)            /*!< ALT_MFP PB.11 mask */
@@ -588,37 +588,37 @@ Example: If user want to set PA.0 as ADC0 and PA1 as ADC1 in initial function,
 
 //PB.13
 #define SYS_GPB_MFP_PB13_GPIO       0x00000000UL        /*!< GPB_MFP PB.13 setting for GPIO */
-#define SYS_ALT_MFP_PB13_GPIO       NULL                /*!< No ALT_MFP setting for PB.13 */
-#define SYS_ALT_MFP1_PB13_GPIO      NULL                /*!< No ALT_MFP1 setting for PB.13  */
-#define SYS_ALT_MFP2_PB13_GPIO      NULL                /*!< No ALT_MFP2 setting for PB.13  */
+#define SYS_ALT_MFP_PB13_GPIO       (uint32_t)NULL      /*!< No ALT_MFP setting for PB.13 */
+#define SYS_ALT_MFP1_PB13_GPIO      (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.13  */
+#define SYS_ALT_MFP2_PB13_GPIO      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.13  */
 
 #define SYS_GPB_MFP_PB13_ACMP1_O    (1UL<<13)           /*!< GPB_MFP PB.13 setting for ACMP1_O */
-#define SYS_ALT_MFP_PB13_ACMP1_O    NULL                /*!< No ALT_MFP setting for PB.13 */
-#define SYS_ALT_MFP1_PB13_ACMP1_O   NULL                /*!< No ALT_MFP1 setting for PB.13 */
-#define SYS_ALT_MFP2_PB13_ACMP1_O   NULL                /*!< No ALT_MFP2 setting for PB.13 */
+#define SYS_ALT_MFP_PB13_ACMP1_O    (uint32_t)NULL      /*!< No ALT_MFP setting for PB.13 */
+#define SYS_ALT_MFP1_PB13_ACMP1_O   (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.13 */
+#define SYS_ALT_MFP2_PB13_ACMP1_O   (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.13 */
 
 #define SYS_GPB_MFP_PB13_CMP1_O     (1UL<<13)           /*!< GPB_MFP PB.13 setting for CMP1_O */
-#define SYS_ALT_MFP_PB13_CMP1_O     NULL                /*!< No ALT_MFP setting for PB.13 */
-#define SYS_ALT_MFP1_PB13_CMP1_O    NULL                /*!< No ALT_MFP1 setting for PB.13 */
-#define SYS_ALT_MFP2_PB13_CMP1_O    NULL                /*!< No ALT_MFP2 setting for PB.13 */
+#define SYS_ALT_MFP_PB13_CMP1_O     (uint32_t)NULL      /*!< No ALT_MFP setting for PB.13 */
+#define SYS_ALT_MFP1_PB13_CMP1_O    (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.13 */
+#define SYS_ALT_MFP2_PB13_CMP1_O    (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.13 */
 
 #define SYS_GPB_MFP_PB13_Msk        (1UL<<13)           /*!< GPB_MFP PB.13 mask */
 
 //PB.14
 #define SYS_GPB_MFP_PB14_GPIO       0x00000000UL        /*!< GPB_MFP PB.14 setting for GPIO */
 #define SYS_ALT_MFP_PB14_GPIO       0x00000000UL        /*!< ALT_MFP PB.14 setting for GPIO */
-#define SYS_ALT_MFP1_PB14_GPIO      NULL                /*!< No ALT_MFP1 setting for PB.14 */
-#define SYS_ALT_MFP2_PB14_GPIO      NULL                /*!< No ALT_MFP2 setting for PB.14 */
+#define SYS_ALT_MFP1_PB14_GPIO      (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.14 */
+#define SYS_ALT_MFP2_PB14_GPIO      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.14 */
 
 #define SYS_GPB_MFP_PB14_INT0       (1UL<<14)           /*!< GPB_MFP PB.14 setting for INT0 */
 #define SYS_ALT_MFP_PB14_INT0       0x00000000UL        /*!< ALT_MFP PB.14 setting for INT0 */
-#define SYS_ALT_MFP1_PB14_INT0      NULL                /*!< No ALT_MFP1 setting for PB.14 */
-#define SYS_ALT_MFP2_PB14_INT0      NULL                /*!< No ALT_MFP2 setting for PB.14 */
+#define SYS_ALT_MFP1_PB14_INT0      (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.14 */
+#define SYS_ALT_MFP2_PB14_INT0      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.14 */
 
 #define SYS_GPB_MFP_PB14_SPI3_SS1    (1UL<<14)          /*!< GPB_MFP PB.14 setting for SPI3_SS1 */
 #define SYS_ALT_MFP_PB14_SPI3_SS1    (1UL<<3)           /*!< ALT_MFP PB.14 setting for SPI3_SS1 */
-#define SYS_ALT_MFP1_PB14_SPI3_SS1   NULL               /*!< No ALT_MFP1 setting for PB.14 */
-#define SYS_ALT_MFP2_PB14_SPI3_SS1   NULL               /*!< No ALT_MFP2 setting for PB.14 */
+#define SYS_ALT_MFP1_PB14_SPI3_SS1   (uint32_t)NULL     /*!< No ALT_MFP1 setting for PB.14 */
+#define SYS_ALT_MFP2_PB14_SPI3_SS1   (uint32_t)NULL     /*!< No ALT_MFP2 setting for PB.14 */
 
 #define SYS_GPB_MFP_PB14_Msk        (1UL<<14)           /*!< GPB_MFP PB.14 mask */
 #define SYS_ALT_MFP_PB14_Msk        (1UL<<3)            /*!< ALT_MFP PB.14 mask */
@@ -626,18 +626,18 @@ Example: If user want to set PA.0 as ADC0 and PA1 as ADC1 in initial function,
 //PB.15
 #define SYS_GPB_MFP_PB15_GPIO       0x00000000UL        /*!< GPB_MFP PB.15 setting for GPIO */
 #define SYS_ALT_MFP_PB15_GPIO       0x00000000UL        /*!< ALT_MFP PB.15 setting for GPIO */
-#define SYS_ALT_MFP1_PB15_GPIO      NULL                /*!< No ALT_MFP1 setting for PB.15 */
-#define SYS_ALT_MFP2_PB15_GPIO      NULL                /*!< No ALT_MFP2 setting for PB.15 */
+#define SYS_ALT_MFP1_PB15_GPIO      (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.15 */
+#define SYS_ALT_MFP2_PB15_GPIO      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.15 */
 
 #define SYS_GPB_MFP_PB15_INT1       (1UL<<15)           /*!< GPB_MFP PB.15 setting for INT1 */
 #define SYS_ALT_MFP_PB15_INT1       0x00000000UL        /*!< ALT_MFP PB.15 setting for INT1 */
-#define SYS_ALT_MFP1_PB15_INT1      NULL                /*!< No ALT_MFP1 setting for PB.15 */
-#define SYS_ALT_MFP2_PB15_INT1      NULL                /*!< No ALT_MFP2 setting for PB.15 */
+#define SYS_ALT_MFP1_PB15_INT1      (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.15 */
+#define SYS_ALT_MFP2_PB15_INT1      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.15 */
 
 #define SYS_GPB_MFP_PB15_TM0_EXT    (1UL<<15)           /*!< GPB_MFP PB.15 setting for TM0_EXT */
 #define SYS_ALT_MFP_PB15_TM0_EXT    (1UL<<24)           /*!< ALT_MFP PB.15 setting for TM0_EXT */
-#define SYS_ALT_MFP1_PB15_TM0_EXT   NULL                /*!< No ALT_MFP1 setting for PB.15 */
-#define SYS_ALT_MFP2_PB15_TM0_EXT   NULL                /*!< No ALT_MFP2 setting for PB.15 */
+#define SYS_ALT_MFP1_PB15_TM0_EXT   (uint32_t)NULL      /*!< No ALT_MFP1 setting for PB.15 */
+#define SYS_ALT_MFP2_PB15_TM0_EXT   (uint32_t)NULL      /*!< No ALT_MFP2 setting for PB.15 */
 
 #define SYS_GPB_MFP_PB15_Msk        (1UL<<15)            /*!< GPB_MFP PB.15 mask */
 #define SYS_ALT_MFP_PB15_Msk        (1UL<<24)            /*!< ALT_MFP PB.15 mask */
@@ -646,23 +646,23 @@ Example: If user want to set PA.0 as ADC0 and PA1 as ADC1 in initial function,
 //PC.0
 #define SYS_GPC_MFP_PC0_GPIO        0x00000000UL        /*!< GPC_MFP PC.0 setting for GPIO */
 #define SYS_ALT_MFP_PC0_GPIO        0x00000000UL        /*!< ALT_MFP PC.0 setting for GPIO */
-#define SYS_ALT_MFP1_PC0_GPIO       NULL                /*!< No ALT_MFP1 setting for PC.0 */
-#define SYS_ALT_MFP2_PC0_GPIO       NULL                /*!< No ALT_MFP2 setting for PC.0 */
+#define SYS_ALT_MFP1_PC0_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PC.0 */
+#define SYS_ALT_MFP2_PC0_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PC.0 */
 
 #define SYS_GPC_MFP_PC0_SPI0_SS0        (1UL<<0)        /*!< GPC_MFP PC.0 setting for SPI0_SS0 */
 #define SYS_ALT_MFP_PC0_SPI0_SS0        0x00000000UL    /*!< ALT_MFP PC.0 setting for SPI0_SS0 */
-#define SYS_ALT_MFP1_PC0_SPI0_SS0       NULL            /*!< No ALT_MFP1 setting for PC.0 */
-#define SYS_ALT_MFP2_PC0_SPI0_SS0       NULL            /*!< No ALT_MFP2 setting for PC.0 */
+#define SYS_ALT_MFP1_PC0_SPI0_SS0       (uint32_t)NULL  /*!< No ALT_MFP1 setting for PC.0 */
+#define SYS_ALT_MFP2_PC0_SPI0_SS0       (uint32_t)NULL  /*!< No ALT_MFP2 setting for PC.0 */
 
 #define SYS_GPC_MFP_PC0_I2S_LRCLK       (1UL<<0)        /*!< GPC_MFP PC.0 setting for I2S_LRCLK */
 #define SYS_ALT_MFP_PC0_I2S_LRCLK       (1UL<<5)        /*!< ALT_MFP PC.0 setting for I2S_LRCLK */
-#define SYS_ALT_MFP1_PC0_I2S_LRCLK      NULL            /*!< No ALT_MFP1 setting for PC.0 */
-#define SYS_ALT_MFP2_PC0_I2S_LRCLK      NULL            /*!< No ALT_MFP2 setting for PC.0 */
+#define SYS_ALT_MFP1_PC0_I2S_LRCLK      (uint32_t)NULL  /*!< No ALT_MFP1 setting for PC.0 */
+#define SYS_ALT_MFP2_PC0_I2S_LRCLK      (uint32_t)NULL  /*!< No ALT_MFP2 setting for PC.0 */
 
 #define SYS_GPC_MFP_PC0_I2S_LRCK        (1UL<<0)        /*!< GPC_MFP PC.0 setting for I2S_LRCK */
 #define SYS_ALT_MFP_PC0_I2S_LRCK        (1UL<<5)        /*!< ALT_MFP PC.0 setting for I2S_LRCK */
-#define SYS_ALT_MFP1_PC0_I2S_LRCK       NULL            /*!< No ALT_MFP1 setting for PC.0 */
-#define SYS_ALT_MFP2_PC0_I2S_LRCK       NULL            /*!< No ALT_MFP2 setting for PC.0 */
+#define SYS_ALT_MFP1_PC0_I2S_LRCK       (uint32_t)NULL  /*!< No ALT_MFP1 setting for PC.0 */
+#define SYS_ALT_MFP2_PC0_I2S_LRCK       (uint32_t)NULL  /*!< No ALT_MFP2 setting for PC.0 */
 
 #define SYS_GPC_MFP_PC0_Msk         (1UL<<0)            /*!< GPC_MFP PC.0 mask */
 #define SYS_ALT_MFP_PC0_Msk         (1UL<<5)            /*!< ALT_MFP PC.0 mask */
@@ -670,18 +670,18 @@ Example: If user want to set PA.0 as ADC0 and PA1 as ADC1 in initial function,
 //PC.1
 #define SYS_GPC_MFP_PC1_GPIO        0x00000000UL        /*!< GPC_MFP PC.1 setting for GPIO */
 #define SYS_ALT_MFP_PC1_GPIO        0x00000000UL        /*!< ALT_MFP PC.1 setting for GPIO */
-#define SYS_ALT_MFP1_PC1_GPIO       NULL                /*!< No ALT_MFP1 setting for PC.1 */
-#define SYS_ALT_MFP2_PC1_GPIO       NULL                /*!< No ALT_MFP2 setting for PC.1 */
+#define SYS_ALT_MFP1_PC1_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PC.1 */
+#define SYS_ALT_MFP2_PC1_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PC.1 */
 
 #define SYS_GPC_MFP_PC1_SPI0_CLK     (1UL<<1)           /*!< GPC_MFP PC.1 setting for SPI0_CLK */
 #define SYS_ALT_MFP_PC1_SPI0_CLK     0x00000000UL       /*!< ALT_MFP PC.1 setting for SPI0_CLK */
-#define SYS_ALT_MFP1_PC1_SPI0_CLK    NULL               /*!< No ALT_MFP1 setting for PC.1 */
-#define SYS_ALT_MFP2_PC1_SPI0_CLK    NULL               /*!< No ALT_MFP2 setting for PC.1 */
+#define SYS_ALT_MFP1_PC1_SPI0_CLK    (uint32_t)NULL     /*!< No ALT_MFP1 setting for PC.1 */
+#define SYS_ALT_MFP2_PC1_SPI0_CLK    (uint32_t)NULL     /*!< No ALT_MFP2 setting for PC.1 */
 
 #define SYS_GPC_MFP_PC1_I2S_BCLK     (1UL<<1)           /*!< GPC_MFP PC.1 setting for I2S_BCLK */
 #define SYS_ALT_MFP_PC1_I2S_BCLK     (1UL<<6)           /*!< ALT_MFP PC.1 setting for I2S_BCLK */
-#define SYS_ALT_MFP1_PC1_I2S_BCLK    NULL               /*!< No ALT_MFP1 setting for PC.1 */
-#define SYS_ALT_MFP2_PC1_I2S_BCLK    NULL               /*!< No ALT_MFP2 setting for PC.1 */
+#define SYS_ALT_MFP1_PC1_I2S_BCLK    (uint32_t)NULL     /*!< No ALT_MFP1 setting for PC.1 */
+#define SYS_ALT_MFP2_PC1_I2S_BCLK    (uint32_t)NULL     /*!< No ALT_MFP2 setting for PC.1 */
 
 #define SYS_GPC_MFP_PC1_Msk         (1UL<<1)            /*!< GPC_MFP PC.1 mask */
 #define SYS_ALT_MFP_PC1_Msk         (1UL<<6)            /*!< ALT_MFP PC.1 mask */
@@ -689,18 +689,18 @@ Example: If user want to set PA.0 as ADC0 and PA1 as ADC1 in initial function,
 //PC.2
 #define SYS_GPC_MFP_PC2_GPIO        0x00000000UL        /*!< GPC_MFP PC.2 setting for GPIO */
 #define SYS_ALT_MFP_PC2_GPIO        0x00000000UL        /*!< ALT_MFP PC.2 setting for GPIO */
-#define SYS_ALT_MFP1_PC2_GPIO       NULL                /*!< No ALT_MFP1 setting for PC.2 */
-#define SYS_ALT_MFP2_PC2_GPIO       NULL                /*!< No ALT_MFP2 setting for PC.2 */
+#define SYS_ALT_MFP1_PC2_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PC.2 */
+#define SYS_ALT_MFP2_PC2_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PC.2 */
 
 #define SYS_GPC_MFP_PC2_SPI0_MISO0      (1UL<<2)        /*!< GPC_MFP PC.2 setting for SPI0_MISO0 */
 #define SYS_ALT_MFP_PC2_SPI0_MISO0      0x00000000UL    /*!< ALT_MFP PC.2 setting for SPI0_MISO0 */
-#define SYS_ALT_MFP1_PC2_SPI0_MISO0     NULL            /*!< No ALT_MFP1 setting for PC.2 */
-#define SYS_ALT_MFP2_PC2_SPI0_MISO0     NULL            /*!< No ALT_MFP2 setting for PC.2 */
+#define SYS_ALT_MFP1_PC2_SPI0_MISO0     (uint32_t)NULL  /*!< No ALT_MFP1 setting for PC.2 */
+#define SYS_ALT_MFP2_PC2_SPI0_MISO0     (uint32_t)NULL  /*!< No ALT_MFP2 setting for PC.2 */
 
 #define SYS_GPC_MFP_PC2_I2S_DI       (1UL<<2)           /*!< GPC_MFP PC.2 setting for I2S_DI */
 #define SYS_ALT_MFP_PC2_I2S_DI       (1UL<<7)           /*!< ALT_MFP PC.2 setting for I2S_DI */
-#define SYS_ALT_MFP1_PC2_I2S_DI      NULL               /*!< No ALT_MFP1 setting for PC.2 */
-#define SYS_ALT_MFP2_PC2_I2S_DI      NULL               /*!< No ALT_MFP2 setting for PC.2 */
+#define SYS_ALT_MFP1_PC2_I2S_DI      (uint32_t)NULL     /*!< No ALT_MFP1 setting for PC.2 */
+#define SYS_ALT_MFP2_PC2_I2S_DI      (uint32_t)NULL     /*!< No ALT_MFP2 setting for PC.2 */
 
 #define SYS_GPC_MFP_PC2_Msk         (1UL<<2)            /*!< GPC_MFP PC.2 mask */
 #define SYS_ALT_MFP_PC2_Msk         (1UL<<7)            /*!< ALT_MFP PC.2 mask */
@@ -708,286 +708,286 @@ Example: If user want to set PA.0 as ADC0 and PA1 as ADC1 in initial function,
 //PC.3
 #define SYS_GPC_MFP_PC3_GPIO        0x00000000UL        /*!< GPC_MFP PC.3 setting for GPIO */
 #define SYS_ALT_MFP_PC3_GPIO        0x00000000UL        /*!< ALT_MFP PC.3 setting for GPIO */
-#define SYS_ALT_MFP1_PC3_GPIO       NULL                /*!< No ALT_MFP1 setting for PC.3 */
-#define SYS_ALT_MFP2_PC3_GPIO       NULL                /*!< No ALT_MFP2 setting for PC.3 */
+#define SYS_ALT_MFP1_PC3_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PC.3 */
+#define SYS_ALT_MFP2_PC3_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PC.3 */
 
 #define SYS_GPC_MFP_PC3_SPI0_MOSI0      (1UL<<3)        /*!< GPC_MFP PC.3 setting for SPI0_MOSI0 */
 #define SYS_ALT_MFP_PC3_SPI0_MOSI0      0x00000000UL    /*!< ALT_MFP PC.3 setting for SPI0_MOSI0 */
-#define SYS_ALT_MFP1_PC3_SPI0_MOSI0     NULL            /*!< No ALT_MFP1 setting for PC.3 */
-#define SYS_ALT_MFP2_PC3_SPI0_MOSI0    NULL             /*!< No ALT_MFP2 setting for PC.3 */
+#define SYS_ALT_MFP1_PC3_SPI0_MOSI0     (uint32_t)NULL  /*!< No ALT_MFP1 setting for PC.3 */
+#define SYS_ALT_MFP2_PC3_SPI0_MOSI0     (uint32_t)NULL  /*!< No ALT_MFP2 setting for PC.3 */
 
 #define SYS_GPC_MFP_PC3_I2S_DO       (1UL<<3)           /*!< GPC_MFP PC.3 setting for I2S_DO */
 #define SYS_ALT_MFP_PC3_I2S_DO       (1UL<<8)           /*!< ALT_MFP PC.3 setting for I2S_DO */
-#define SYS_ALT_MFP1_PC3_I2S_DO      NULL               /*!< No ALT_MFP1 setting for PC.3 */
-#define SYS_ALT_MFP2_PC3_I2S_DO      NULL               /*!< No ALT_MFP2 setting for PC.3 */
+#define SYS_ALT_MFP1_PC3_I2S_DO      (uint32_t)NULL     /*!< No ALT_MFP1 setting for PC.3 */
+#define SYS_ALT_MFP2_PC3_I2S_DO      (uint32_t)NULL     /*!< No ALT_MFP2 setting for PC.3 */
 
 #define SYS_GPC_MFP_PC3_Msk         (1UL<<3)            /*!< GPC_MFP PC.3 mask */
 #define SYS_ALT_MFP_PC3_Msk         (1UL<<8)            /*!< ALT_MFP PC.3 mask */
 
 //PC.4
 #define SYS_GPC_MFP_PC4_GPIO        0x00000000UL        /*!< GPC_MFP PC.4 setting for GPIO */
-#define SYS_ALT_MFP_PC4_GPIO        NULL                /*!< No ALT_MFP setting for PC.4 */
-#define SYS_ALT_MFP1_PC4_GPIO       NULL                /*!< No ALT_MFP1 setting for PC.4 */
-#define SYS_ALT_MFP2_PC4_GPIO       NULL                /*!< No ALT_MFP2 setting for PC.4 */
+#define SYS_ALT_MFP_PC4_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PC.4 */
+#define SYS_ALT_MFP1_PC4_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PC.4 */
+#define SYS_ALT_MFP2_PC4_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PC.4 */
 
 #define SYS_GPC_MFP_PC4_SPI0_MISO1       (1UL<<4)       /*!< GPC_MFP PC.4 setting for SPI0_MISO1 */
-#define SYS_ALT_MFP_PC4_SPI0_MISO1       NULL           /*!< No ALT_MFP setting for PC.4 */
-#define SYS_ALT_MFP1_PC4_SPI0_MISO1      NULL           /*!< No ALT_MFP1 setting for PC.4 */
-#define SYS_ALT_MFP2_PC4_SPI0_MISO1      NULL           /*!< No ALT_MFP2 setting for PC.4 */
+#define SYS_ALT_MFP_PC4_SPI0_MISO1       (uint32_t)NULL /*!< No ALT_MFP setting for PC.4 */
+#define SYS_ALT_MFP1_PC4_SPI0_MISO1      (uint32_t)NULL /*!< No ALT_MFP1 setting for PC.4 */
+#define SYS_ALT_MFP2_PC4_SPI0_MISO1      (uint32_t)NULL /*!< No ALT_MFP2 setting for PC.4 */
 
 #define SYS_GPC_MFP_PC4_Msk         (1UL<<4)            /*!< GPC_MFP PC.4 mask */
 
 //PC.5
 #define SYS_GPC_MFP_PC5_GPIO        0x00000000UL        /*!< GPC_MFP PC.5 setting for GPIO */
-#define SYS_ALT_MFP_PC5_GPIO        NULL                /*!< No ALT_MFP setting for PC.5 */
-#define SYS_ALT_MFP1_PC5_GPIO       NULL                /*!< No ALT_MFP1 setting for PC.5 */
-#define SYS_ALT_MFP2_PC5_GPIO       NULL                /*!< No ALT_MFP2 setting for PC.5 */
+#define SYS_ALT_MFP_PC5_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PC.5 */
+#define SYS_ALT_MFP1_PC5_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PC.5 */
+#define SYS_ALT_MFP2_PC5_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PC.5 */
 
 #define SYS_GPC_MFP_PC5_SPI0_MOSI1      (1UL<<5)        /*!< GPC_MFP PC.5 setting for SPI0_MOSI1 */
-#define SYS_ALT_MFP_PC5_SPI0_MOSI1      NULL            /*!< No ALT_MFP setting for PC.5 */
-#define SYS_ALT_MFP1_PC5_SPI0_MOSI1     NULL            /*!< No ALT_MFP1 setting for PC.5 */
-#define SYS_ALT_MFP2_PC5_SPI0_MOSI1     NULL            /*!< No ALT_MFP2 setting for PC.5 */
+#define SYS_ALT_MFP_PC5_SPI0_MOSI1      (uint32_t)NULL  /*!< No ALT_MFP setting for PC.5 */
+#define SYS_ALT_MFP1_PC5_SPI0_MOSI1     (uint32_t)NULL  /*!< No ALT_MFP1 setting for PC.5 */
+#define SYS_ALT_MFP2_PC5_SPI0_MOSI1     (uint32_t)NULL  /*!< No ALT_MFP2 setting for PC.5 */
 
 #define SYS_GPC_MFP_PC5_Msk         (1UL<<5)            /*!< GPC_MFP PC.5 mask */
 
 //PC.6
 #define SYS_GPC_MFP_PC6_GPIO        0x00000000UL        /*!< GPC_MFP PC.6 setting for GPIO */
-#define SYS_ALT_MFP_PC6_GPIO        NULL                /*!< No ALT_MFP setting for PC.6 */
+#define SYS_ALT_MFP_PC6_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PC.6 */
 #define SYS_ALT_MFP1_PC6_GPIO       0x00000000UL        /*!< ALT_MFP1 PC.6 setting for GPIO */
-#define SYS_ALT_MFP2_PC6_GPIO       NULL                /*!< No ALT_MFP2 setting for PC.6 */
+#define SYS_ALT_MFP2_PC6_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PC.6 */
 
 #define SYS_GPC_MFP_PC6_ACMP0_P     (1UL<<6)            /*!< GPC_MFP PC.6 setting for ACMP0_P */
-#define SYS_ALT_MFP_PC6_ACMP0_P     NULL                /*!< No ALT_MFP setting for PC.6 */
+#define SYS_ALT_MFP_PC6_ACMP0_P     (uint32_t)NULL      /*!< No ALT_MFP setting for PC.6 */
 #define SYS_ALT_MFP1_PC6_ACMP0_P    0x00000000UL        /*!< ALT_MFP1 PC.6 setting for ACMP0_P */
-#define SYS_ALT_MFP2_PC6_ACMP0_P    NULL                /*!< No ALT_MFP2 setting for PC.6 */
+#define SYS_ALT_MFP2_PC6_ACMP0_P    (uint32_t)NULL      /*!< No ALT_MFP2 setting for PC.6 */
 
 #define SYS_GPC_MFP_PC6_CMP0_P      (1UL<<6)            /*!< GPC_MFP PC.6 setting for CMP0_P */
-#define SYS_ALT_MFP_PC6_CMP0_P      NULL                /*!< No ALT_MFP setting for PC.6 */
+#define SYS_ALT_MFP_PC6_CMP0_P      (uint32_t)NULL      /*!< No ALT_MFP setting for PC.6 */
 #define SYS_ALT_MFP1_PC6_CMP0_P     0x00000000UL        /*!< ALT_MFP1 PC.6 setting for CMP0_P */
-#define SYS_ALT_MFP2_PC6_CMP0_P     NULL                /*!< No ALT_MFP2 setting for PC.6 */
+#define SYS_ALT_MFP2_PC6_CMP0_P     (uint32_t)NULL      /*!< No ALT_MFP2 setting for PC.6 */
 
 #define SYS_GPC_MFP_PC6_SC0_CD      (1UL<<6)            /*!< GPC_MFP PC.6 setting for SC0_CD */
-#define SYS_ALT_MFP_PC6_SC0_CD      NULL                /*!< No ALT_MFP setting for PC.6 */
+#define SYS_ALT_MFP_PC6_SC0_CD      (uint32_t)NULL      /*!< No ALT_MFP setting for PC.6 */
 #define SYS_ALT_MFP1_PC6_SC0_CD     (1UL<<4)            /*!< ALT_MFP1 PC.6 setting for SC0_CD */
-#define SYS_ALT_MFP2_PC6_SC0_CD     NULL                /*!< No ALT_MFP2 setting for PC.6 */
+#define SYS_ALT_MFP2_PC6_SC0_CD     (uint32_t)NULL      /*!< No ALT_MFP2 setting for PC.6 */
 
 #define SYS_GPC_MFP_PC6_Msk         (1UL<<6)            /*!< GPC_MFP PC.6 mask */
 #define SYS_ALT_MFP1_PC6_Msk        (1UL<<4)            /*!< ALT_MFP1 PC.6 mask */
 
 //PC.7
 #define SYS_GPC_MFP_PC7_GPIO        0x00000000UL        /*!< GPC_MFP PC.7 setting for GPIO */
-#define SYS_ALT_MFP_PC7_GPIO        NULL                /*!< No ALT_MFP setting for PC.7 */
+#define SYS_ALT_MFP_PC7_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PC.7 */
 #define SYS_ALT_MFP1_PC7_GPIO       0x00000000UL        /*!< ALT_MFP1 PC.7 setting for GPIO */
-#define SYS_ALT_MFP2_PC7_GPIO       NULL                /*!< No ALT_MFP2 setting for PC.7 */
+#define SYS_ALT_MFP2_PC7_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PC.7 */
 
 #define SYS_GPC_MFP_PC7_ACMP0_N     (1UL<<7)            /*!< GPC_MFP PC.7 setting for ACMP0_N */
-#define SYS_ALT_MFP_PC7_ACMP0_N     NULL                /*!< No ALT_MFP setting for PC.7 */
+#define SYS_ALT_MFP_PC7_ACMP0_N     (uint32_t)NULL      /*!< No ALT_MFP setting for PC.7 */
 #define SYS_ALT_MFP1_PC7_ACMP0_N    0x00000000UL        /*!< ALT_MFP1 PC.7 setting for ACMP0_N */
-#define SYS_ALT_MFP2_PC7_ACMP0_N    NULL                /*!< No ALT_MFP2 setting for PC.7 */
+#define SYS_ALT_MFP2_PC7_ACMP0_N    (uint32_t)NULL      /*!< No ALT_MFP2 setting for PC.7 */
 
 #define SYS_GPC_MFP_PC7_CMP0_N      (1UL<<7)            /*!< GPC_MFP PC.7 setting for CMP0_N */
-#define SYS_ALT_MFP_PC7_CMP0_N      NULL                /*!< No ALT_MFP setting for PC.7 */
+#define SYS_ALT_MFP_PC7_CMP0_N      (uint32_t)NULL      /*!< No ALT_MFP setting for PC.7 */
 #define SYS_ALT_MFP1_PC7_CMP0_N     0x00000000UL        /*!< ALT_MFP1 PC.7 setting for CMP0_N */
-#define SYS_ALT_MFP2_PC7_CMP0_N     NULL                /*!< No ALT_MFP2 setting for PC.7 */
+#define SYS_ALT_MFP2_PC7_CMP0_N     (uint32_t)NULL      /*!< No ALT_MFP2 setting for PC.7 */
 
 #define SYS_GPC_MFP_PC7_SC1_CD      (1UL<<7)            /*!< GPC_MFP PC.7 setting for SC1_CD */
-#define SYS_ALT_MFP_PC7_SC1_CD      NULL                /*!< No ALT_MFP setting for PC.7 */
+#define SYS_ALT_MFP_PC7_SC1_CD      (uint32_t)NULL      /*!< No ALT_MFP setting for PC.7 */
 #define SYS_ALT_MFP1_PC7_SC1_CD     (1UL<<9)            /*!< ALT_MFP1 PC.7 setting for SC1_CD */
-#define SYS_ALT_MFP2_PC7_SC1_CD     NULL                /*!< No ALT_MFP2 setting for PC.7 */
+#define SYS_ALT_MFP2_PC7_SC1_CD     (uint32_t)NULL      /*!< No ALT_MFP2 setting for PC.7 */
 
 #define SYS_GPC_MFP_PC7_Msk         (1UL<<7)            /*!< GPC_MFP PC.7 mask */
 #define SYS_ALT_MFP1_PC7_Msk        (1UL<<9)            /*!< ALT_MFP1 PC.7 mask */
 
 //PC.8
 #define SYS_GPC_MFP_PC8_GPIO        0x00000000UL        /*!< GPC_MFP PC.8 setting for GPIO */
-#define SYS_ALT_MFP_PC8_GPIO        NULL                /*!< No ALT_MFP setting for PC.8 */
-#define SYS_ALT_MFP1_PC8_GPIO       NULL                /*!< No ALT_MFP1 setting for PC.8 */
-#define SYS_ALT_MFP2_PC8_GPIO       NULL                /*!< No ALT_MFP2 setting for PC.8 */
+#define SYS_ALT_MFP_PC8_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PC.8 */
+#define SYS_ALT_MFP1_PC8_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PC.8 */
+#define SYS_ALT_MFP2_PC8_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PC.8 */
 
 #define SYS_GPC_MFP_PC8_SPI1_SS0    (1UL<<8)            /*!< GPC_MFP PC.8 setting for SPI1_SS0 */
-#define SYS_ALT_MFP_PC8_SPI1_SS0    NULL                /*!< No ALT_MFP setting for PC.8 */
-#define SYS_ALT_MFP1_PC8_SPI1_SS0   NULL                /*!< No ALT_MFP1 setting for PC.8 */
-#define SYS_ALT_MFP2_PC8_SPI1_SS0   NULL                /*!< No ALT_MFP2 setting for PC.8 */
+#define SYS_ALT_MFP_PC8_SPI1_SS0    (uint32_t)NULL      /*!< No ALT_MFP setting for PC.8 */
+#define SYS_ALT_MFP1_PC8_SPI1_SS0   (uint32_t)NULL      /*!< No ALT_MFP1 setting for PC.8 */
+#define SYS_ALT_MFP2_PC8_SPI1_SS0   (uint32_t)NULL      /*!< No ALT_MFP2 setting for PC.8 */
 
 #define SYS_GPC_MFP_PC8_Msk         (1UL<<8)            /*!< GPC_MFP PC.8 mask */
 
 //PC.9
 #define SYS_GPC_MFP_PC9_GPIO        0x00000000UL        /*!< GPC_MFP PC.9 setting for GPIO */
-#define SYS_ALT_MFP_PC9_GPIO        NULL                /*!< No ALT_MFP setting for PC.9 */
-#define SYS_ALT_MFP1_PC9_GPIO       NULL                /*!< No ALT_MFP1 setting for PC.9 */
-#define SYS_ALT_MFP2_PC9_GPIO       NULL                /*!< No ALT_MFP2 setting for PC.9 */
+#define SYS_ALT_MFP_PC9_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PC.9 */
+#define SYS_ALT_MFP1_PC9_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PC.9 */
+#define SYS_ALT_MFP2_PC9_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PC.9 */
 
 #define SYS_GPC_MFP_PC9_SPI1_CLK        (1UL<<9)        /*!< GPC_MFP PC.9 setting for SPI1_CLK */
-#define SYS_ALT_MFP_PC9_SPI1_CLK        NULL            /*!< No ALT_MFP setting for PC.9 */
-#define SYS_ALT_MFP1_PC9_SPI1_CLK       NULL            /*!< No ALT_MFP1 setting for PC.9 */
-#define SYS_ALT_MFP2_PC9_SPI1_CLK       NULL            /*!< No ALT_MFP2 setting for PC.9 */
+#define SYS_ALT_MFP_PC9_SPI1_CLK        (uint32_t)NULL  /*!< No ALT_MFP setting for PC.9 */
+#define SYS_ALT_MFP1_PC9_SPI1_CLK       (uint32_t)NULL  /*!< No ALT_MFP1 setting for PC.9 */
+#define SYS_ALT_MFP2_PC9_SPI1_CLK       (uint32_t)NULL  /*!< No ALT_MFP2 setting for PC.9 */
 
 #define SYS_GPC_MFP_PC9_Msk         (1UL<<9)            /*!< GPC_MFP PC.9 mask */
 
 //PC.10
 #define SYS_GPC_MFP_PC10_GPIO       0x00000000UL        /*!< GPC_MFP PC.10 setting for GPIO */
-#define SYS_ALT_MFP_PC10_GPIO       NULL                /*!< No ALT_MFP setting for PC.10 */
-#define SYS_ALT_MFP1_PC10_GPIO      NULL                /*!< No ALT_MFP1 setting for PC.10 */
-#define SYS_ALT_MFP2_PC10_GPIO      NULL                /*!< No ALT_MFP2 setting for PC.10 */
+#define SYS_ALT_MFP_PC10_GPIO       (uint32_t)NULL      /*!< No ALT_MFP setting for PC.10 */
+#define SYS_ALT_MFP1_PC10_GPIO      (uint32_t)NULL      /*!< No ALT_MFP1 setting for PC.10 */
+#define SYS_ALT_MFP2_PC10_GPIO      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PC.10 */
 
 #define SYS_GPC_MFP_PC10_SPI1_MISO0     (1UL<<10)       /*!< GPC_MFP PC.10 setting for SPI1_MISO0 */
-#define SYS_ALT_MFP_PC10_SPI1_MISO0     NULL            /*!< No ALT_MFP setting for PC.10 */
-#define SYS_ALT_MFP1_PC10_SPI1_MISO0    NULL            /*!< No ALT_MFP1 setting for PC.10 */
-#define SYS_ALT_MFP2_PC10_SPI1_MISO0    NULL            /*!< No ALT_MFP2 setting for PC.10 */
+#define SYS_ALT_MFP_PC10_SPI1_MISO0     (uint32_t)NULL  /*!< No ALT_MFP setting for PC.10 */
+#define SYS_ALT_MFP1_PC10_SPI1_MISO0    (uint32_t)NULL  /*!< No ALT_MFP1 setting for PC.10 */
+#define SYS_ALT_MFP2_PC10_SPI1_MISO0    (uint32_t)NULL  /*!< No ALT_MFP2 setting for PC.10 */
 
 #define SYS_GPC_MFP_PC10_Msk        (1UL<<10)            /*!< GPC_MFP PC.10 mask */
 
 //PC.11
 #define SYS_GPC_MFP_PC11_GPIO       0x00000000UL        /*!< GPC_MFP PC.11 setting for GPIO */
-#define SYS_ALT_MFP_PC11_GPIO       NULL                /*!< No ALT_MFP setting for PC.11 */
-#define SYS_ALT_MFP1_PC11_GPIO      NULL                /*!< No ALT_MFP1 setting for PC.11 */
-#define SYS_ALT_MFP2_PC11_GPIO      NULL                /*!< No ALT_MFP2 setting for PC.11 */
+#define SYS_ALT_MFP_PC11_GPIO       (uint32_t)NULL      /*!< No ALT_MFP setting for PC.11 */
+#define SYS_ALT_MFP1_PC11_GPIO      (uint32_t)NULL      /*!< No ALT_MFP1 setting for PC.11 */
+#define SYS_ALT_MFP2_PC11_GPIO      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PC.11 */
 
 #define SYS_GPC_MFP_PC11_SPI1_MOSI0     (1UL<<11)       /*!< GPC_MFP PC.11 setting for SPI1_MOSI0 */
-#define SYS_ALT_MFP_PC11_SPI1_MOSI0     NULL            /*!< No ALT_MFP setting for PC.11 */
-#define SYS_ALT_MFP1_PC11_SPI1_MOSI0    NULL            /*!< No ALT_MFP1 setting for PC.11 */
-#define SYS_ALT_MFP2_PC11_SPI1_MOSI0    NULL            /*!< No ALT_MFP2 setting for PC.11 */
+#define SYS_ALT_MFP_PC11_SPI1_MOSI0     (uint32_t)NULL  /*!< No ALT_MFP setting for PC.11 */
+#define SYS_ALT_MFP1_PC11_SPI1_MOSI0    (uint32_t)NULL  /*!< No ALT_MFP1 setting for PC.11 */
+#define SYS_ALT_MFP2_PC11_SPI1_MOSI0    (uint32_t)NULL  /*!< No ALT_MFP2 setting for PC.11 */
 
 #define SYS_GPC_MFP_PC11_Msk         (1UL<<11)          /*!< GPC_MFP PC.11 mask */
 
 
 //PC.12
 #define SYS_GPC_MFP_PC12_GPIO        0x00000000UL       /*!< GPC_MFP PC.12 setting for GPIO */
-#define SYS_ALT_MFP_PC12_GPIO        NULL               /*!< No ALT_MFP setting for PC.12 */
-#define SYS_ALT_MFP1_PC12_GPIO       NULL               /*!< No ALT_MFP1 setting for PC.12 */
-#define SYS_ALT_MFP2_PC12_GPIO       NULL               /*!< No ALT_MFP2 setting for PC.12 */
+#define SYS_ALT_MFP_PC12_GPIO        (uint32_t)NULL     /*!< No ALT_MFP setting for PC.12 */
+#define SYS_ALT_MFP1_PC12_GPIO       (uint32_t)NULL     /*!< No ALT_MFP1 setting for PC.12 */
+#define SYS_ALT_MFP2_PC12_GPIO       (uint32_t)NULL     /*!< No ALT_MFP2 setting for PC.12 */
 
 #define SYS_GPC_MFP_PC12_SPI1_MISO1      (1UL<<12)      /*!< GPC_MFP PC.12 setting for SPI1_MISO1 */
-#define SYS_ALT_MFP_PC12_SPI1_MISO1      NULL           /*!< No ALT_MFP setting for PC.12 */
-#define SYS_ALT_MFP1_PC12_SPI1_MISO1     NULL           /*!< No ALT_MFP1 setting for PC.12 */
-#define SYS_ALT_MFP2_PC12_SPI1_MISO1     NULL           /*!< No ALT_MFP2 setting for PC.12 */
+#define SYS_ALT_MFP_PC12_SPI1_MISO1      (uint32_t)NULL /*!< No ALT_MFP setting for PC.12 */
+#define SYS_ALT_MFP1_PC12_SPI1_MISO1     (uint32_t)NULL /*!< No ALT_MFP1 setting for PC.12 */
+#define SYS_ALT_MFP2_PC12_SPI1_MISO1     (uint32_t)NULL /*!< No ALT_MFP2 setting for PC.12 */
 
 #define SYS_GPC_MFP_PC12_Msk         (1UL<<12)          /*!< GPC_MFP PC.12 mask */
 
 //PC.13
 #define SYS_GPC_MFP_PC13_GPIO        0x00000000UL       /*!< GPC_MFP PC.13 setting for GPIO */
-#define SYS_ALT_MFP_PC13_GPIO        NULL               /*!< No ALT_MFP setting for PC.13 */
-#define SYS_ALT_MFP1_PC13_GPIO       NULL               /*!< No ALT_MFP1 setting for PC.13 */
-#define SYS_ALT_MFP2_PC13_GPIO       NULL               /*!< No ALT_MFP2 setting for PC.13 */
+#define SYS_ALT_MFP_PC13_GPIO        (uint32_t)NULL     /*!< No ALT_MFP setting for PC.13 */
+#define SYS_ALT_MFP1_PC13_GPIO       (uint32_t)NULL     /*!< No ALT_MFP1 setting for PC.13 */
+#define SYS_ALT_MFP2_PC13_GPIO       (uint32_t)NULL     /*!< No ALT_MFP2 setting for PC.13 */
 
 #define SYS_GPC_MFP_PC13_SPI1_MOSI1     (1UL<<13)       /*!< GPC_MFP PC.13 setting for SPI1_MOSI1 */
-#define SYS_ALT_MFP_PC13_SPI1_MOSI1     NULL            /*!< No ALT_MFP setting for PC.13 */
-#define SYS_ALT_MFP1_PC13_SPI1_MOSI1    NULL            /*!< No ALT_MFP1 setting for PC.13 */
-#define SYS_ALT_MFP2_PC13_SPI1_MOSI1    NULL            /*!< No ALT_MFP2 setting for PC.13 */
+#define SYS_ALT_MFP_PC13_SPI1_MOSI1     (uint32_t)NULL  /*!< No ALT_MFP setting for PC.13 */
+#define SYS_ALT_MFP1_PC13_SPI1_MOSI1    (uint32_t)NULL  /*!< No ALT_MFP1 setting for PC.13 */
+#define SYS_ALT_MFP2_PC13_SPI1_MOSI1    (uint32_t)NULL  /*!< No ALT_MFP2 setting for PC.13 */
 
 #define SYS_GPC_MFP_PC13_Msk         (1UL<<13)          /*!< GPC_MFP PC.13 mask */
 
 //PC.14
 #define SYS_GPC_MFP_PC14_GPIO        0x00000000UL       /*!< GPC_MFP PC.14 setting for GPIO */
-#define SYS_ALT_MFP_PC14_GPIO        NULL               /*!< No LT_MFP setting for PC.14 */
-#define SYS_ALT_MFP1_PC14_GPIO       NULL               /*!< No ALT_MFP1 setting for PC.14 */
-#define SYS_ALT_MFP2_PC14_GPIO       NULL               /*!< No ALT_MFP2 setting for PC.14 */
+#define SYS_ALT_MFP_PC14_GPIO        (uint32_t)NULL     /*!< No LT_MFP setting for PC.14 */
+#define SYS_ALT_MFP1_PC14_GPIO       (uint32_t)NULL     /*!< No ALT_MFP1 setting for PC.14 */
+#define SYS_ALT_MFP2_PC14_GPIO       (uint32_t)NULL     /*!< No ALT_MFP2 setting for PC.14 */
 
 #define SYS_GPC_MFP_PC14_ACMP1_P     (1UL<<14)          /*!< GPC_MFP PC.14 setting for ACMP1_P */
-#define SYS_ALT_MFP_PC14_ACMP1_P     NULL               /*!< No ALT_MFP setting for PC.14 */
-#define SYS_ALT_MFP1_PC14_ACMP1_P    NULL               /*!< No ALT_MFP1 setting for PC.14 */
-#define SYS_ALT_MFP2_PC14_ACMP1_P    NULL               /*!< No ALT_MFP2 setting for PC.14 */
+#define SYS_ALT_MFP_PC14_ACMP1_P     (uint32_t)NULL     /*!< No ALT_MFP setting for PC.14 */
+#define SYS_ALT_MFP1_PC14_ACMP1_P    (uint32_t)NULL     /*!< No ALT_MFP1 setting for PC.14 */
+#define SYS_ALT_MFP2_PC14_ACMP1_P    (uint32_t)NULL     /*!< No ALT_MFP2 setting for PC.14 */
 
 #define SYS_GPC_MFP_PC14_CMP1_P      (1UL<<14)          /*!< GPC_MFP PC.14 setting for CMP1_P */
-#define SYS_ALT_MFP_PC14_CMP1_P      NULL               /*!< No ALT_MFP setting for PC.14 */
-#define SYS_ALT_MFP1_PC14_CMP1_P     NULL               /*!< No ALT_MFP1 setting for PC.14 */
-#define SYS_ALT_MFP2_PC14_CMP1_P     NULL               /*!< No ALT_MFP2 setting for PC.14 */
+#define SYS_ALT_MFP_PC14_CMP1_P      (uint32_t)NULL     /*!< No ALT_MFP setting for PC.14 */
+#define SYS_ALT_MFP1_PC14_CMP1_P     (uint32_t)NULL     /*!< No ALT_MFP1 setting for PC.14 */
+#define SYS_ALT_MFP2_PC14_CMP1_P     (uint32_t)NULL     /*!< No ALT_MFP2 setting for PC.14 */
 
 #define SYS_GPC_MFP_PC14_Msk         (1UL<<14)          /*!< GPC_MFP PC.14 mask */
 
 //PC.15
 #define SYS_GPC_MFP_PC15_GPIO       0x00000000UL        /*!< GPC_MFP PC.15 setting for GPIO */
-#define SYS_ALT_MFP_PC15_GPIO       NULL                /*!< No ALT_MFP setting for PC.15 */
-#define SYS_ALT_MFP1_PC15_GPIO      NULL                /*!< No ALT_MFP1 setting for PC.15 */
-#define SYS_ALT_MFP2_PC15_GPIO      NULL                /*!< No ALT_MFP2 setting for PC.15 */
+#define SYS_ALT_MFP_PC15_GPIO       (uint32_t)NULL      /*!< No ALT_MFP setting for PC.15 */
+#define SYS_ALT_MFP1_PC15_GPIO      (uint32_t)NULL      /*!< No ALT_MFP1 setting for PC.15 */
+#define SYS_ALT_MFP2_PC15_GPIO      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PC.15 */
 
 #define SYS_GPC_MFP_PC15_ACMP1_N    (1UL<<15)           /*!< GPC_MFP PC.15 setting for ACMP1_N */
-#define SYS_ALT_MFP_PC15_ACMP1_N    NULL                /*!< No ALT_MFP setting for PC.15 */
-#define SYS_ALT_MFP1_PC15_ACMP1_N   NULL                /*!< No ALT_MFP1 setting for PC.15 */
-#define SYS_ALT_MFP2_PC15_ACMP1_N   NULL                /*!< No ALT_MFP2 setting for PC.15 */
+#define SYS_ALT_MFP_PC15_ACMP1_N    (uint32_t)NULL      /*!< No ALT_MFP setting for PC.15 */
+#define SYS_ALT_MFP1_PC15_ACMP1_N   (uint32_t)NULL      /*!< No ALT_MFP1 setting for PC.15 */
+#define SYS_ALT_MFP2_PC15_ACMP1_N   (uint32_t)NULL      /*!< No ALT_MFP2 setting for PC.15 */
 
 #define SYS_GPC_MFP_PC15_CMP1_N     (1UL<<15)           /*!< GPC_MFP PC.15 setting for CMP1_N */
-#define SYS_ALT_MFP_PC15_CMP1_N     NULL                /*!< No ALT_MFP setting for PC.15 */
-#define SYS_ALT_MFP1_PC15_CMP1_N    NULL                /*!< No ALT_MFP1 setting for PC.15 */
-#define SYS_ALT_MFP2_PC15_CMP1_N    NULL                /*!< No ALT_MFP2 setting for PC.15 */
+#define SYS_ALT_MFP_PC15_CMP1_N     (uint32_t)NULL      /*!< No ALT_MFP setting for PC.15 */
+#define SYS_ALT_MFP1_PC15_CMP1_N    (uint32_t)NULL      /*!< No ALT_MFP1 setting for PC.15 */
+#define SYS_ALT_MFP2_PC15_CMP1_N    (uint32_t)NULL      /*!< No ALT_MFP2 setting for PC.15 */
 
 #define SYS_GPC_MFP_PC15_Msk        (1UL<<15)           /*!< GPC_MFP PC.15 mask */
 
 //PD.0
 #define SYS_GPD_MFP_PD0_GPIO        0x00000000UL        /*!< GPD_MFP PD.0 setting for GPIO */
-#define SYS_ALT_MFP_PD0_GPIO        NULL                /*!< No ALT_MFP setting for PD.0 */
-#define SYS_ALT_MFP1_PD0_GPIO       NULL                /*!< No ALT_MFP1 setting for PD.0 */
-#define SYS_ALT_MFP2_PD0_GPIO       NULL                /*!< No ALT_MFP2 setting for PD.0 */
+#define SYS_ALT_MFP_PD0_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PD.0 */
+#define SYS_ALT_MFP1_PD0_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PD.0 */
+#define SYS_ALT_MFP2_PD0_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PD.0 */
 
 #define SYS_GPD_MFP_PD0_SPI2_SS0     (1UL<<0)           /*!< GPD_MFP PD.0 setting for SPI2_SS0 */
-#define SYS_ALT_MFP_PD0_SPI2_SS0     NULL               /*!< No ALT_MFP setting for PD.0 */
-#define SYS_ALT_MFP1_PD0_SPI2_SS0    NULL               /*!< No ALT_MFP1 setting for PD.0 */
-#define SYS_ALT_MFP2_PD0_SPI2_SS0    NULL               /*!< No ALT_MFP2 setting for PD.0 */
+#define SYS_ALT_MFP_PD0_SPI2_SS0     (uint32_t)NULL     /*!< No ALT_MFP setting for PD.0 */
+#define SYS_ALT_MFP1_PD0_SPI2_SS0    (uint32_t)NULL     /*!< No ALT_MFP1 setting for PD.0 */
+#define SYS_ALT_MFP2_PD0_SPI2_SS0    (uint32_t)NULL     /*!< No ALT_MFP2 setting for PD.0 */
 
 #define SYS_GPD_MFP_PD0_Msk         (1UL<<0)            /*!< GPD_MFP PD.0 mask */
 
 //PD.1
 #define SYS_GPD_MFP_PD1_GPIO        0x00000000UL        /*!< GPD_MFP PD.1 setting for GPIO */
-#define SYS_ALT_MFP_PD1_GPIO        NULL                /*!< No ALT_MFP setting for PD.1 */
-#define SYS_ALT_MFP1_PD1_GPIO       NULL                /*!< No ALT_MFP1 setting for PD.1 */
-#define SYS_ALT_MFP2_PD1_GPIO       NULL                /*!< No ALT_MFP2 setting for PD.1 */
+#define SYS_ALT_MFP_PD1_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PD.1 */
+#define SYS_ALT_MFP1_PD1_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PD.1 */
+#define SYS_ALT_MFP2_PD1_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PD.1 */
 
 #define SYS_GPD_MFP_PD1_SPI2_CLK     (1UL<<1)           /*!< GPD_MFP PD.1 setting for SPI2_CLK */
-#define SYS_ALT_MFP_PD1_SPI2_CLK     NULL               /*!< No ALT_MFP setting for PD.1 */
-#define SYS_ALT_MFP1_PD1_SPI2_CLK    NULL               /*!< No ALT_MFP1 setting for PD.1 */
-#define SYS_ALT_MFP2_PD1_SPI2_CLK    NULL               /*!< No ALT_MFP2 setting for PD.1 */
+#define SYS_ALT_MFP_PD1_SPI2_CLK     (uint32_t)NULL     /*!< No ALT_MFP setting for PD.1 */
+#define SYS_ALT_MFP1_PD1_SPI2_CLK    (uint32_t)NULL     /*!< No ALT_MFP1 setting for PD.1 */
+#define SYS_ALT_MFP2_PD1_SPI2_CLK    (uint32_t)NULL     /*!< No ALT_MFP2 setting for PD.1 */
 
 #define SYS_GPD_MFP_PD1_Msk         (1UL<<1)            /*!< GPD_MFP PD.1 mask */
 
 //PD.2
 #define SYS_GPD_MFP_PD2_GPIO        0x00000000UL        /*!< GPD_MFP PD.2 setting for GPIO */
-#define SYS_ALT_MFP_PD2_GPIO        NULL                /*!< No ALT_MFP setting for PD.2 */
-#define SYS_ALT_MFP1_PD2_GPIO       NULL                /*!< No ALT_MFP1 setting for PD.2 */
-#define SYS_ALT_MFP2_PD2_GPIO       NULL                /*!< No ALT_MFP2 setting for PD.2 */
+#define SYS_ALT_MFP_PD2_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PD.2 */
+#define SYS_ALT_MFP1_PD2_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PD.2 */
+#define SYS_ALT_MFP2_PD2_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PD.2 */
 
 #define SYS_GPD_MFP_PD2_SPI2_MISO0      (1UL<<2)        /*!< GPD_MFP PD.2 setting for SPI2_MISO0 */
-#define SYS_ALT_MFP_PD2_SPI2_MISO0      NULL            /*!< No ALT_MFP setting for PD.2 */
-#define SYS_ALT_MFP1_PD2_SPI2_MISO0     NULL            /*!< No ALT_MFP1 setting for PD.2 */
-#define SYS_ALT_MFP2_PD2_SPI2_MISO0     NULL            /*!< No ALT_MFP2 setting for PD.2 */
+#define SYS_ALT_MFP_PD2_SPI2_MISO0      (uint32_t)NULL  /*!< No ALT_MFP setting for PD.2 */
+#define SYS_ALT_MFP1_PD2_SPI2_MISO0     (uint32_t)NULL  /*!< No ALT_MFP1 setting for PD.2 */
+#define SYS_ALT_MFP2_PD2_SPI2_MISO0     (uint32_t)NULL  /*!< No ALT_MFP2 setting for PD.2 */
 
 #define SYS_GPD_MFP_PD2_Msk         (1UL<<2)            /*!< GPD_MFP PD.2 mask */
 
 //PD.3
 #define SYS_GPD_MFP_PD3_GPIO        0x00000000UL        /*!< GPD_MFP PD.3 setting for GPIO */
-#define SYS_ALT_MFP_PD3_GPIO        NULL                /*!< No ALT_MFP setting for PD.3 */
-#define SYS_ALT_MFP1_PD3_GPIO       NULL                /*!< No ALT_MFP1 setting for PD.3 */
-#define SYS_ALT_MFP2_PD3_GPIO       NULL                /*!< No ALT_MFP2 setting for PD.3 */
+#define SYS_ALT_MFP_PD3_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PD.3 */
+#define SYS_ALT_MFP1_PD3_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PD.3 */
+#define SYS_ALT_MFP2_PD3_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PD.3 */
 
 #define SYS_GPD_MFP_PD3_SPI2_MOSI0      (1UL<<3)        /*!< GPD_MFP PD.3 setting for SPI2_MOSI0 */
-#define SYS_ALT_MFP_PD3_SPI2_MOSI0      NULL            /*!< No ALT_MFP setting for PD.3 */
-#define SYS_ALT_MFP1_PD3_SPI2_MOSI0     NULL            /*!< No ALT_MFP1 setting for PD.3 */
-#define SYS_ALT_MFP2_PD3_SPI2_MOSI0     NULL            /*!< No ALT_MFP2 setting for PD.3 */
+#define SYS_ALT_MFP_PD3_SPI2_MOSI0      (uint32_t)NULL  /*!< No ALT_MFP setting for PD.3 */
+#define SYS_ALT_MFP1_PD3_SPI2_MOSI0     (uint32_t)NULL  /*!< No ALT_MFP1 setting for PD.3 */
+#define SYS_ALT_MFP2_PD3_SPI2_MOSI0     (uint32_t)NULL  /*!< No ALT_MFP2 setting for PD.3 */
 
 #define SYS_GPD_MFP_PD3_Msk         (1UL<<3)            /*!< GPD_MFP PD.3 mask */
 
 //PD.4
 #define SYS_GPD_MFP_PD4_GPIO        0x00000000UL        /*!< GPD_MFP PD.4 setting for GPIO */
-#define SYS_ALT_MFP_PD4_GPIO        NULL                /*!< No ALT_MFP setting for PD.4 */
-#define SYS_ALT_MFP1_PD4_GPIO       NULL                /*!< No ALT_MFP1 setting for PD.4 */
-#define SYS_ALT_MFP2_PD4_GPIO       NULL                /*!< No ALT_MFP2 setting for PD.4 */
+#define SYS_ALT_MFP_PD4_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PD.4 */
+#define SYS_ALT_MFP1_PD4_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PD.4 */
+#define SYS_ALT_MFP2_PD4_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PD.4 */
 
 #define SYS_GPD_MFP_PD4_SPI2_MISO1      (1UL<<4)        /*!< GPD_MFP PD.4 setting for SPI2_MISO1 */
-#define SYS_ALT_MFP_PD4_SPI2_MISO1      NULL            /*!< No ALT_MFP setting for PD.4 */
-#define SYS_ALT_MFP1_PD4_SPI2_MISO1     NULL            /*!< No ALT_MFP1 setting for PD.4 */
-#define SYS_ALT_MFP2_PD4_SPI2_MISO1     NULL            /*!< No ALT_MFP2 setting for PD.4 */
+#define SYS_ALT_MFP_PD4_SPI2_MISO1      (uint32_t)NULL  /*!< No ALT_MFP setting for PD.4 */
+#define SYS_ALT_MFP1_PD4_SPI2_MISO1     (uint32_t)NULL  /*!< No ALT_MFP1 setting for PD.4 */
+#define SYS_ALT_MFP2_PD4_SPI2_MISO1     (uint32_t)NULL  /*!< No ALT_MFP2 setting for PD.4 */
 
 #define SYS_GPD_MFP_PD4_Msk         (1UL<<4)            /*!< GPD_MFP PD.4 mask */
 
 //PD.5
 #define SYS_GPD_MFP_PD5_GPIO        0x00000000UL        /*!< GPD_MFP PD.5 setting for GPIO */
-#define SYS_ALT_MFP_PD5_GPIO        NULL                /*!< No ALT_MFP setting for PD.5 */
-#define SYS_ALT_MFP1_PD5_GPIO       NULL                /*!< No ALT_MFP1 setting for PD.5 */
-#define SYS_ALT_MFP2_PD5_GPIO       NULL                /*!< No ALT_MFP2 setting for PD.5 */
+#define SYS_ALT_MFP_PD5_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PD.5 */
+#define SYS_ALT_MFP1_PD5_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PD.5 */
+#define SYS_ALT_MFP2_PD5_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PD.5 */
 
 #define SYS_GPD_MFP_PD5_SPI2_MOSI1      (1UL<<5)        /*!< GPD_MFP PD.5 setting for SPI2_MOSI1 */
-#define SYS_ALT_MFP_PD5_SPI2_MOSI1      NULL            /*!< No ALT_MFP setting for PD.5 */
-#define SYS_ALT_MFP1_PD5_SPI2_MOSI1     NULL            /*!< No ALT_MFP1 setting for PD.5 */
-#define SYS_ALT_MFP2_PD5_SPI2_MOSI1     NULL            /*!< No ALT_MFP2 setting for PD.5 */
+#define SYS_ALT_MFP_PD5_SPI2_MOSI1      (uint32_t)NULL  /*!< No ALT_MFP setting for PD.5 */
+#define SYS_ALT_MFP1_PD5_SPI2_MOSI1     (uint32_t)NULL  /*!< No ALT_MFP1 setting for PD.5 */
+#define SYS_ALT_MFP2_PD5_SPI2_MOSI1     (uint32_t)NULL  /*!< No ALT_MFP2 setting for PD.5 */
 
 #define SYS_GPD_MFP_PD5_Msk         (1UL<<5)            /*!< GPD_MFP PD.5 mask */
 
@@ -997,202 +997,202 @@ Example: If user want to set PA.0 as ADC0 and PA1 as ADC1 in initial function,
 
 //PD.8
 #define SYS_GPD_MFP_PD8_GPIO        0x00000000UL        /*!< GPD_MFP PD.8 setting for GPIO */
-#define SYS_ALT_MFP_PD8_GPIO        NULL                /*!< No ALT_MFP setting for PD.8 */
-#define SYS_ALT_MFP1_PD8_GPIO       NULL                /*!< No ALT_MFP1 setting for PD.8 */
-#define SYS_ALT_MFP2_PD8_GPIO       NULL                /*!< No ALT_MFP2 setting for PD.8 */
+#define SYS_ALT_MFP_PD8_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PD.8 */
+#define SYS_ALT_MFP1_PD8_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PD.8 */
+#define SYS_ALT_MFP2_PD8_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PD.8 */
 
 #define SYS_GPD_MFP_PD8_SPI3_SS0        (1UL<<8)        /*!< GPD_MFP PD.8 setting for SPI3_SS0 */
-#define SYS_ALT_MFP_PD8_SPI3_SS0        NULL            /*!< No ALT_MFP setting for PD.8 */
-#define SYS_ALT_MFP1_PD8_SPI3_SS0       NULL            /*!< No ALT_MFP1 setting for PD.8 */
-#define SYS_ALT_MFP2_PD8_SPI3_SS0       NULL            /*!< No ALT_MFP2 setting for PD.8 */
+#define SYS_ALT_MFP_PD8_SPI3_SS0        (uint32_t)NULL  /*!< No ALT_MFP setting for PD.8 */
+#define SYS_ALT_MFP1_PD8_SPI3_SS0       (uint32_t)NULL  /*!< No ALT_MFP1 setting for PD.8 */
+#define SYS_ALT_MFP2_PD8_SPI3_SS0       (uint32_t)NULL  /*!< No ALT_MFP2 setting for PD.8 */
 
 #define SYS_GPD_MFP_PD8_Msk         (1UL<<8)            /*!< GPD_MFP PD.8 mask */
 
 //PD.9
 #define SYS_GPD_MFP_PD9_GPIO        0x00000000UL        /*!< GPD_MFP PD.9 setting for GPIO */
-#define SYS_ALT_MFP_PD9_GPIO        NULL                /*!< No ALT_MFP setting for PD.9 */
-#define SYS_ALT_MFP1_PD9_GPIO       NULL                /*!< No ALT_MFP1 setting for PD.9 */
-#define SYS_ALT_MFP2_PD9_GPIO       NULL                /*!< No ALT_MFP2 setting for PD.9 */
+#define SYS_ALT_MFP_PD9_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PD.9 */
+#define SYS_ALT_MFP1_PD9_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PD.9 */
+#define SYS_ALT_MFP2_PD9_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PD.9 */
 
 #define SYS_GPD_MFP_PD9_SPI3_CLK    (1UL<<9)            /*!< GPD_MFP PD.9 setting for SPI3_CLK */
-#define SYS_ALT_MFP_PD9_SPI3_CLK    NULL                /*!< No ALT_MFP setting for PD.9 */
-#define SYS_ALT_MFP1_PD9_SPI3_CLK   NULL                /*!< No ALT_MFP1 setting for PD.9 */
-#define SYS_ALT_MFP2_PD9_SPI3_CLK   NULL                /*!< No ALT_MFP2 setting for PD.9 */
+#define SYS_ALT_MFP_PD9_SPI3_CLK    (uint32_t)NULL      /*!< No ALT_MFP setting for PD.9 */
+#define SYS_ALT_MFP1_PD9_SPI3_CLK   (uint32_t)NULL      /*!< No ALT_MFP1 setting for PD.9 */
+#define SYS_ALT_MFP2_PD9_SPI3_CLK   (uint32_t)NULL      /*!< No ALT_MFP2 setting for PD.9 */
 
 #define SYS_GPD_MFP_PD9_Msk         (1UL<<9)            /*!< GPD_MFP PD.9 mask */
 
 //PD.10
 #define SYS_GPD_MFP_PD10_GPIO       0x00000000UL        /*!< GPD_MFP PD.10 setting for GPIO */
-#define SYS_ALT_MFP_PD10_GPIO       NULL                /*!< No ALT_MFP setting for PD.10 */
-#define SYS_ALT_MFP1_PD10_GPIO      NULL                /*!< No ALT_MFP1 setting for PD.10 */
-#define SYS_ALT_MFP2_PD10_GPIO      NULL                /*!< No ALT_MFP2 setting for PD.10 */
+#define SYS_ALT_MFP_PD10_GPIO       (uint32_t)NULL      /*!< No ALT_MFP setting for PD.10 */
+#define SYS_ALT_MFP1_PD10_GPIO      (uint32_t)NULL      /*!< No ALT_MFP1 setting for PD.10 */
+#define SYS_ALT_MFP2_PD10_GPIO      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PD.10 */
 
 #define SYS_GPD_MFP_PD10_SPI3_MISO0     (1UL<<10)       /*!< GPD_MFP PD.10 setting for SPI3_MISO0 */
-#define SYS_ALT_MFP_PD10_SPI3_MISO0     NULL            /*!< No ALT_MFP setting for PD.10 */
-#define SYS_ALT_MFP1_PD10_SPI3_MISO0    NULL            /*!< No ALT_MFP1 setting for PD.10 */
-#define SYS_ALT_MFP2_PD10_SPI3_MISO0    NULL            /*!< No ALT_MFP2 setting for PD.10 */
+#define SYS_ALT_MFP_PD10_SPI3_MISO0     (uint32_t)NULL  /*!< No ALT_MFP setting for PD.10 */
+#define SYS_ALT_MFP1_PD10_SPI3_MISO0    (uint32_t)NULL  /*!< No ALT_MFP1 setting for PD.10 */
+#define SYS_ALT_MFP2_PD10_SPI3_MISO0    (uint32_t)NULL  /*!< No ALT_MFP2 setting for PD.10 */
 
 #define SYS_GPD_MFP_PD10_Msk        (1UL<<10)           /*!< GPD_MFP PD.10 mask */
 
 //PD.11
 #define SYS_GPD_MFP_PD11_GPIO       0x00000000UL        /*!< GPD_MFP PD.11 setting for GPIO */
-#define SYS_ALT_MFP_PD11_GPIO       NULL                /*!< No ALT_MFP setting for PD.11 */
-#define SYS_ALT_MFP1_PD11_GPIO      NULL                /*!< No ALT_MFP1 setting for PD.11 */
-#define SYS_ALT_MFP2_PD11_GPIO      NULL                /*!< No ALT_MFP2 setting for PD.11 */
+#define SYS_ALT_MFP_PD11_GPIO       (uint32_t)NULL      /*!< No ALT_MFP setting for PD.11 */
+#define SYS_ALT_MFP1_PD11_GPIO      (uint32_t)NULL      /*!< No ALT_MFP1 setting for PD.11 */
+#define SYS_ALT_MFP2_PD11_GPIO      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PD.11 */
 
 #define SYS_GPD_MFP_PD11_SPI3_MOSI0     (1UL<<11)       /*!< GPD_MFP PD.11 setting for SPI3_MOSI0 */
-#define SYS_ALT_MFP_PD11_SPI3_MOSI0     NULL            /*!< No ALT_MFP setting for PD.11 */
-#define SYS_ALT_MFP1_PD11_SPI3_MOSI0    NULL            /*!< No ALT_MFP1 setting for PD.11 */
-#define SYS_ALT_MFP2_PD11_SPI3_MOSI0    NULL            /*!< No ALT_MFP2 setting for PD.11 */
+#define SYS_ALT_MFP_PD11_SPI3_MOSI0     (uint32_t)NULL  /*!< No ALT_MFP setting for PD.11 */
+#define SYS_ALT_MFP1_PD11_SPI3_MOSI0    (uint32_t)NULL  /*!< No ALT_MFP1 setting for PD.11 */
+#define SYS_ALT_MFP2_PD11_SPI3_MOSI0    (uint32_t)NULL  /*!< No ALT_MFP2 setting for PD.11 */
 
 #define SYS_GPD_MFP_PD11_Msk        (1UL<<11)           /*!< GPD_MFP PD.11 mask */
 
 //PD.12
 #define SYS_GPD_MFP_PD12_GPIO       0x00000000UL        /*!< GPD_MFP PD.12 setting for GPIO */
-#define SYS_ALT_MFP_PD12_GPIO       NULL                /*!< No ALT_MFP setting for PD.12 */
-#define SYS_ALT_MFP1_PD12_GPIO      NULL                /*!< No ALT_MFP1 setting for PD.12 */
-#define SYS_ALT_MFP2_PD12_GPIO      NULL                /*!< No ALT_MFP2 setting for PD.12 */
+#define SYS_ALT_MFP_PD12_GPIO       (uint32_t)NULL      /*!< No ALT_MFP setting for PD.12 */
+#define SYS_ALT_MFP1_PD12_GPIO      (uint32_t)NULL      /*!< No ALT_MFP1 setting for PD.12 */
+#define SYS_ALT_MFP2_PD12_GPIO      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PD.12 */
 
 #define SYS_GPD_MFP_PD12_SPI3_MISO1     (1UL<<12)       /*!< GPD_MFP PD.12 setting for SPI3_MISO1 */
-#define SYS_ALT_MFP_PD12_SPI3_MISO1     NULL            /*!< No ALT_MFP setting for PD.12 */
-#define SYS_ALT_MFP1_PD12_SPI3_MISO1    NULL            /*!< No ALT_MFP1 setting for PD.12 */
-#define SYS_ALT_MFP2_PD12_SPI3_MISO1    NULL            /*!< No ALT_MFP2 setting for PD.12 */
+#define SYS_ALT_MFP_PD12_SPI3_MISO1     (uint32_t)NULL  /*!< No ALT_MFP setting for PD.12 */
+#define SYS_ALT_MFP1_PD12_SPI3_MISO1    (uint32_t)NULL  /*!< No ALT_MFP1 setting for PD.12 */
+#define SYS_ALT_MFP2_PD12_SPI3_MISO1    (uint32_t)NULL  /*!< No ALT_MFP2 setting for PD.12 */
 
 #define SYS_GPD_MFP_PD12_Msk        (1UL<<12)           /*!< GPD_MFP PD.12 mask */
 
 //PD.13
 #define SYS_GPD_MFP_PD13_GPIO       0x00000000UL        /*!< GPD_MFP PD.13 setting for GPIO */
-#define SYS_ALT_MFP_PD13_GPIO       NULL                /*!< No ALT_MFP setting for PD.13 */
-#define SYS_ALT_MFP1_PD13_GPIO      NULL                /*!< No ALT_MFP1 setting for PD.13 */
-#define SYS_ALT_MFP2_PD13_GPIO      NULL                /*!< No ALT_MFP2 setting for PD.13 */
+#define SYS_ALT_MFP_PD13_GPIO       (uint32_t)NULL      /*!< No ALT_MFP setting for PD.13 */
+#define SYS_ALT_MFP1_PD13_GPIO      (uint32_t)NULL      /*!< No ALT_MFP1 setting for PD.13 */
+#define SYS_ALT_MFP2_PD13_GPIO      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PD.13 */
 
 #define SYS_GPD_MFP_PD13_SPI3_MOSI1     (1UL<<13)       /*!< GPD_MFP PD.13 setting for SPI3_MOSI1 */
-#define SYS_ALT_MFP_PD13_SPI3_MOSI1     NULL            /*!< No ALT_MFP setting for PD.13 */
-#define SYS_ALT_MFP1_PD13_SPI3_MOSI1    NULL            /*!< No ALT_MFP1 setting for PD.13 */
-#define SYS_ALT_MFP2_PD13_SPI3_MOSI1    NULL            /*!< No ALT_MFP2 setting for PD.13 */
+#define SYS_ALT_MFP_PD13_SPI3_MOSI1     (uint32_t)NULL  /*!< No ALT_MFP setting for PD.13 */
+#define SYS_ALT_MFP1_PD13_SPI3_MOSI1    (uint32_t)NULL  /*!< No ALT_MFP1 setting for PD.13 */
+#define SYS_ALT_MFP2_PD13_SPI3_MOSI1    (uint32_t)NULL  /*!< No ALT_MFP2 setting for PD.13 */
 
 #define SYS_GPD_MFP_PD13_Msk        (1UL<<13)           /*!< GPD_MFP PD.13 mask */
 
 //PD.14
 #define SYS_GPD_MFP_PD14_GPIO       0x00000000UL        /*!< GPD_MFP PD.14 setting for GPIO */
-#define SYS_ALT_MFP_PD14_GPIO       NULL                /*!< No ALT_MFP setting for PD.14 */
-#define SYS_ALT_MFP1_PD14_GPIO      NULL                /*!< No ALT_MFP1 setting for PD.14 */
-#define SYS_ALT_MFP2_PD14_GPIO      NULL                /*!< No ALT_MFP2 setting for PD.14 */
+#define SYS_ALT_MFP_PD14_GPIO       (uint32_t)NULL      /*!< No ALT_MFP setting for PD.14 */
+#define SYS_ALT_MFP1_PD14_GPIO      (uint32_t)NULL      /*!< No ALT_MFP1 setting for PD.14 */
+#define SYS_ALT_MFP2_PD14_GPIO      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PD.14 */
 
 #define SYS_GPD_MFP_PD14_UART2_RXD      (1UL<<14)       /*!< GPD_MFP PD.14 setting for UART2_RXD */
-#define SYS_ALT_MFP_PD14_UART2_RXD      NULL            /*!< No ALT_MFP setting for PD.14 */
-#define SYS_ALT_MFP1_PD14_UART2_RXD     NULL            /*!< No ALT_MFP1 setting for PD.14 */
-#define SYS_ALT_MFP2_PD14_UART2_RXD     NULL            /*!< No ALT_MFP2 setting for PD.14 */
+#define SYS_ALT_MFP_PD14_UART2_RXD      (uint32_t)NULL  /*!< No ALT_MFP setting for PD.14 */
+#define SYS_ALT_MFP1_PD14_UART2_RXD     (uint32_t)NULL  /*!< No ALT_MFP1 setting for PD.14 */
+#define SYS_ALT_MFP2_PD14_UART2_RXD     (uint32_t)NULL  /*!< No ALT_MFP2 setting for PD.14 */
 
 #define SYS_GPD_MFP_PD14_Msk        (1UL<<14)           /*!< GPD_MFP PD.14 mask */
 
 //PD.15
 #define SYS_GPD_MFP_PD15_GPIO       0x00000000UL        /*!< GPD_MFP PD.15 setting for GPIO */
-#define SYS_ALT_MFP_PD15_GPIO       NULL                /*!< No ALT_MFP setting for PD.15 */
-#define SYS_ALT_MFP1_PD15_GPIO      NULL                /*!< No ALT_MFP1 setting for PD.15 */
-#define SYS_ALT_MFP2_PD15_GPIO      NULL                /*!< No ALT_MFP2 setting for PD.15 */
+#define SYS_ALT_MFP_PD15_GPIO       (uint32_t)NULL      /*!< No ALT_MFP setting for PD.15 */
+#define SYS_ALT_MFP1_PD15_GPIO      (uint32_t)NULL      /*!< No ALT_MFP1 setting for PD.15 */
+#define SYS_ALT_MFP2_PD15_GPIO      (uint32_t)NULL      /*!< No ALT_MFP2 setting for PD.15 */
 
 #define SYS_GPD_MFP_PD15_UART2_TXD       (1UL<<15)      /*!< GPD_MFP PD.15 setting for UART2_TXD */
-#define SYS_ALT_MFP_PD15_UART2_TXD       NULL           /*!< No ALT_MFP setting for PD.15 */
-#define SYS_ALT_MFP1_PD15_UART2_TXD      NULL           /*!< No ALT_MFP1 setting for PD.15 */
-#define SYS_ALT_MFP2_PD15_UART2_TXD      NULL           /*!< No ALT_MFP2 setting for PD.15 */
+#define SYS_ALT_MFP_PD15_UART2_TXD       (uint32_t)NULL /*!< No ALT_MFP setting for PD.15 */
+#define SYS_ALT_MFP1_PD15_UART2_TXD      (uint32_t)NULL /*!< No ALT_MFP1 setting for PD.15 */
+#define SYS_ALT_MFP2_PD15_UART2_TXD      (uint32_t)NULL /*!< No ALT_MFP2 setting for PD.15 */
 
 #define SYS_GPD_MFP_PD15_Msk        (1UL<<15)           /*!< GPD_MFP PD.15 mask */
 
 //PE.0
 #define SYS_GPE_MFP_PE0_GPIO        0x00000000UL        /*!< GPE_MFP PE.0 setting for GPIO */
-#define SYS_ALT_MFP_PE0_GPIO        NULL                /*!< No ALT_MFP setting for PE.0 */
-#define SYS_ALT_MFP1_PE0_GPIO       NULL                /*!< No ALT_MFP1 setting for PE.0 */
-#define SYS_ALT_MFP2_PE0_GPIO       NULL                /*!< No ALT_MFP2 setting for PE.0 */
+#define SYS_ALT_MFP_PE0_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PE.0 */
+#define SYS_ALT_MFP1_PE0_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PE.0 */
+#define SYS_ALT_MFP2_PE0_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PE.0 */
 
 #define SYS_GPE_MFP_PE0_PWM6        (1UL<<0)            /*!< GPE_MFP PE.0 setting for PWM6 */
-#define SYS_ALT_MFP_PE0_PWM6        NULL                /*!< No ALT_MFP setting for PE.0 */
-#define SYS_ALT_MFP1_PE0_PWM6       NULL                /*!< No ALT_MFP1 setting for PE.0 */
-#define SYS_ALT_MFP2_PE0_PWM6       NULL                /*!< No ALT_MFP2 setting for PE.0 */
+#define SYS_ALT_MFP_PE0_PWM6        (uint32_t)NULL      /*!< No ALT_MFP setting for PE.0 */
+#define SYS_ALT_MFP1_PE0_PWM6       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PE.0 */
+#define SYS_ALT_MFP2_PE0_PWM6       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PE.0 */
 
 #define SYS_GPE_MFP_PE0_Msk         (1UL<<0)            /*!< GPE_MFP PE.0 mask */
 
 //PE.1
 #define SYS_GPE_MFP_PE1_GPIO        0x00000000UL        /*!< GPE_MFP PE.1 setting for GPIO */
-#define SYS_ALT_MFP_PE1_GPIO        NULL                /*!< No ALT_MFP setting for PE.1 */
-#define SYS_ALT_MFP1_PE1_GPIO       NULL                /*!< No ALT_MFP1 setting for PE.1 */
-#define SYS_ALT_MFP2_PE1_GPIO       NULL                /*!< No ALT_MFP2 setting for PE.1 */
+#define SYS_ALT_MFP_PE1_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PE.1 */
+#define SYS_ALT_MFP1_PE1_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PE.1 */
+#define SYS_ALT_MFP2_PE1_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PE.1 */
 
 #define SYS_GPE_MFP_PE1_PWM7        (1UL<<1)            /*!< GPE_MFP PE.1 setting for PWM7 */
-#define SYS_ALT_MFP_PE1_PWM7        NULL                /*!< No ALT_MFP setting for PE.1 */
-#define SYS_ALT_MFP1_PE1_PWM7       NULL                /*!< No ALT_MFP1 setting for PE.1 */
-#define SYS_ALT_MFP2_PE1_PWM7       NULL                /*!< No ALT_MFP2 setting for PE.1 */
+#define SYS_ALT_MFP_PE1_PWM7        (uint32_t)NULL      /*!< No ALT_MFP setting for PE.1 */
+#define SYS_ALT_MFP1_PE1_PWM7       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PE.1 */
+#define SYS_ALT_MFP2_PE1_PWM7       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PE.1 */
 
 #define SYS_GPE_MFP_PE1_Msk         (1UL<<1)            /*!< GPE_MFP PE.1 mask */
 
 //PE.5
 #define SYS_GPE_MFP_PE5_GPIO        0x00000000UL        /*!< GPE_MFP PE.5 setting for GPIO */
 #define SYS_ALT_MFP_PE5_GPIO        0x00000000UL        /*!< ALT_MFP PE.5 setting for GPIO */
-#define SYS_ALT_MFP1_PE5_GPIO       NULL                /*!< No ALT_MFP1 setting for PE.5 */
-#define SYS_ALT_MFP2_PE5_GPIO       NULL                /*!< No ALT_MFP2 setting for PE.5 */
+#define SYS_ALT_MFP1_PE5_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PE.5 */
+#define SYS_ALT_MFP2_PE5_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PE.5 */
 
 #define SYS_GPE_MFP_PE5_PWM5        (1UL<<5)            /*!< GPE_MFP PE.5 setting for PWM5 */
 #define SYS_ALT_MFP_PE5_PWM5        0x00000000UL        /*!< ALT_MFP PE.5 setting for PWM5 */
-#define SYS_ALT_MFP1_PE5_PWM5       NULL                /*!< No ALT_MFP1 setting for PE.5 */
-#define SYS_ALT_MFP2_PE5_PWM5       NULL                /*!< No ALT_MFP2 setting for PE.5 */
+#define SYS_ALT_MFP1_PE5_PWM5       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PE.5 */
+#define SYS_ALT_MFP2_PE5_PWM5       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PE.5 */
 
 #define SYS_GPE_MFP_PE5_TM1_EXT     (1UL<<5)            /*!< GPE_MFP PE.5 setting for TM1_EXT */
 #define SYS_ALT_MFP_PE5_TM1_EXT     (1UL<<25)           /*!< ALT_MFP PE.5 setting for TM1_EXT */
-#define SYS_ALT_MFP1_PE5_TM1_EXT    NULL                /*!< No ALT_MFP1 setting for PE.5 */
-#define SYS_ALT_MFP2_PE5_TM1_EXT    NULL                /*!< No ALT_MFP2 setting for PE.5 */
+#define SYS_ALT_MFP1_PE5_TM1_EXT    (uint32_t)NULL      /*!< No ALT_MFP1 setting for PE.5 */
+#define SYS_ALT_MFP2_PE5_TM1_EXT    (uint32_t)NULL      /*!< No ALT_MFP2 setting for PE.5 */
 
 #define SYS_GPE_MFP_PE5_Msk         (1UL<<5)            /*!< GPE_MFP PE.5 mask */
 #define SYS_ALT_MFP_PE5_Msk         (1UL<<25)           /*!< ALT_MFP PE.5 mask */
 
 //PF.0
 #define SYS_GPF_MFP_PF0_GPIO        0x00000000UL        /*!< GPF_MFP PF.0 setting for GPIO */
-#define SYS_ALT_MFP_PF0_GPIO        NULL                /*!< No ALT_MFP setting for PF.0 */
-#define SYS_ALT_MFP1_PF0_GPIO       NULL                /*!< No ALT_MFP1 setting for PF.0 */
-#define SYS_ALT_MFP2_PF0_GPIO       NULL                /*!< No ALT_MFP2 setting for PF.0 */
+#define SYS_ALT_MFP_PF0_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PF.0 */
+#define SYS_ALT_MFP1_PF0_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PF.0 */
+#define SYS_ALT_MFP2_PF0_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PF.0 */
 
 #define SYS_GPF_MFP_PF0_XT1_OUT     (1UL<<0)            /*!< GPF_MFP PF.0 setting for XT1_OUT */
-#define SYS_ALT_MFP_PF0_XT1_OUT     NULL                /*!< No ALT_MFP setting for PF.0 */
-#define SYS_ALT_MFP1_PF0_XT1_OUT    NULL                /*!< No ALT_MFP1 setting for PF.0 */
-#define SYS_ALT_MFP2_PF0_XT1_OUT    NULL                /*!< No ALT_MFP2 setting for PF.0 */
+#define SYS_ALT_MFP_PF0_XT1_OUT     (uint32_t)NULL      /*!< No ALT_MFP setting for PF.0 */
+#define SYS_ALT_MFP1_PF0_XT1_OUT    (uint32_t)NULL      /*!< No ALT_MFP1 setting for PF.0 */
+#define SYS_ALT_MFP2_PF0_XT1_OUT    (uint32_t)NULL      /*!< No ALT_MFP2 setting for PF.0 */
 
 #define SYS_GPF_MFP_PF0_Msk         (1UL<<0)            /*!< GPF_MFP PF.0 mask */
 
 //PF.1
 #define SYS_GPF_MFP_PF1_GPIO        0x00000000UL        /*!< GPF_MFP PF.1 setting for GPIO */
-#define SYS_ALT_MFP_PF1_GPIO        NULL                /*!< No ALT_MFP setting for PF.1 */
-#define SYS_ALT_MFP1_PF1_GPIO       NULL                /*!< No ALT_MFP1 setting for PF.1 */
-#define SYS_ALT_MFP2_PF1_GPIO       NULL                /*!< No ALT_MFP2 setting for PF.1 */
+#define SYS_ALT_MFP_PF1_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PF.1 */
+#define SYS_ALT_MFP1_PF1_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PF.1 */
+#define SYS_ALT_MFP2_PF1_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PF.1 */
 
 #define SYS_GPF_MFP_PF1_XT1_IN      (1UL<<1)            /*!< GPF_MFP PF.1 setting for XT1_IN */
-#define SYS_ALT_MFP_PF1_XT1_IN      NULL                /*!< No ALT_MFP setting for PF.1 */
-#define SYS_ALT_MFP1_PF1_XT1_IN     NULL                /*!< No ALT_MFP1 setting for PF.1 */
-#define SYS_ALT_MFP2_PF1_XT1_IN     NULL                /*!< No ALT_MFP2 setting for PF.1 */
+#define SYS_ALT_MFP_PF1_XT1_IN      (uint32_t)NULL      /*!< No ALT_MFP setting for PF.1 */
+#define SYS_ALT_MFP1_PF1_XT1_IN     (uint32_t)NULL      /*!< No ALT_MFP1 setting for PF.1 */
+#define SYS_ALT_MFP2_PF1_XT1_IN     (uint32_t)NULL      /*!< No ALT_MFP2 setting for PF.1 */
 
 #define SYS_GPF_MFP_PF1_Msk         (1UL<<1)            /*!< GPF_MFP PF.1 mask */
 
 //PF.2
 #define SYS_GPF_MFP_PF2_GPIO        0x00000000UL        /*!< GPF_MFP PF.2 setting for GPIO */
-#define SYS_ALT_MFP_PF2_GPIO        NULL                /*!< No ALT_MFP setting for PF.2 */
-#define SYS_ALT_MFP1_PF2_GPIO       NULL                /*!< No ALT_MFP1 setting for PF.2 */
-#define SYS_ALT_MFP2_PF2_GPIO       NULL                /*!< No ALT_MFP2 setting for PF.2 */
+#define SYS_ALT_MFP_PF2_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PF.2 */
+#define SYS_ALT_MFP1_PF2_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PF.2 */
+#define SYS_ALT_MFP2_PF2_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PF.2 */
 
 #define SYS_GPF_MFP_PF2_PS2_DAT     (1UL<<2)            /*!< GPF_MFP PF.2 setting for PS2_DAT */
-#define SYS_ALT_MFP_PF2_PS2_DAT     NULL                /*!< No ALT_MFP setting for PF.2 */
-#define SYS_ALT_MFP1_PF2_PS2_DAT    NULL                /*!< No ALT_MFP1 setting for PF.2 */
-#define SYS_ALT_MFP2_PF2_PS2_DAT    NULL                /*!< No ALT_MFP2 setting for PF.2 */
+#define SYS_ALT_MFP_PF2_PS2_DAT     (uint32_t)NULL      /*!< No ALT_MFP setting for PF.2 */
+#define SYS_ALT_MFP1_PF2_PS2_DAT    (uint32_t)NULL      /*!< No ALT_MFP1 setting for PF.2 */
+#define SYS_ALT_MFP2_PF2_PS2_DAT    (uint32_t)NULL      /*!< No ALT_MFP2 setting for PF.2 */
 
 #define SYS_GPF_MFP_PF2_Msk         (1UL<<2)            /*!< GPF_MFP PF.2 mask */
 
 //PF.3
 #define SYS_GPF_MFP_PF3_GPIO        0x00000000UL        /*!< GPF_MFP PF.3 setting for GPIO */
-#define SYS_ALT_MFP_PF3_GPIO        NULL                /*!< No ALT_MFP setting for PF.3 */
-#define SYS_ALT_MFP1_PF3_GPIO       NULL                /*!< No ALT_MFP1 setting for PF.3 */
-#define SYS_ALT_MFP2_PF3_GPIO       NULL                /*!< No ALT_MFP2 setting for PF.3 */
+#define SYS_ALT_MFP_PF3_GPIO        (uint32_t)NULL      /*!< No ALT_MFP setting for PF.3 */
+#define SYS_ALT_MFP1_PF3_GPIO       (uint32_t)NULL      /*!< No ALT_MFP1 setting for PF.3 */
+#define SYS_ALT_MFP2_PF3_GPIO       (uint32_t)NULL      /*!< No ALT_MFP2 setting for PF.3 */
 
 #define SYS_GPF_MFP_PF3_PS2_CLK     (1UL<<3)            /*!< GPF_MFP PF.3 setting for PS2_CLK */
-#define SYS_ALT_MFP_PF3_PS2_CLK     NULL                /*!< No ALT_MFP setting for PF.3 */
-#define SYS_ALT_MFP1_PF3_PS2_CLK    NULL                /*!< No ALT_MFP1 setting for PF.3 */
-#define SYS_ALT_MFP2_PF3_PS2_CLK    NULL                /*!< No ALT_MFP2 setting for PF.3 */
+#define SYS_ALT_MFP_PF3_PS2_CLK     (uint32_t)NULL      /*!< No ALT_MFP setting for PF.3 */
+#define SYS_ALT_MFP1_PF3_PS2_CLK    (uint32_t)NULL      /*!< No ALT_MFP1 setting for PF.3 */
+#define SYS_ALT_MFP2_PF3_PS2_CLK    (uint32_t)NULL      /*!< No ALT_MFP2 setting for PF.3 */
 
 #define SYS_GPF_MFP_PF3_Msk         (1UL<<3)            /*!< GPF_MFP PF.3 mask */
 

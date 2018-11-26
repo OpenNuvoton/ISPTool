@@ -8,7 +8,7 @@
  *           bits definitions and memory mapping for NuMicro Mini51 series MCU.
  *
  * @note
- * Copyright (C) 2017 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2018 Nuvoton Technology Corp. All rights reserved.
  *****************************************************************************/
 /**
    \mainpage NuMicro Mini51DE Driver Reference Guide
@@ -47,7 +47,7 @@
    *
    * <b>Copyright Notice</b>
    *
-   * Copyright (C) 2013-2017 Nuvoton Technology Corp. All rights reserved.
+   * Copyright (C) 2013-2018 Nuvoton Technology Corp. All rights reserved.
    */
 #ifndef __MINI51SERIES_H__
 #define __MINI51SERIES_H__
@@ -5970,4 +5970,3 @@ typedef volatile unsigned long  vu32;       ///< Define 32-bit unsigned volatile
 
 #endif  // __MINI51SERIES_H__
 
-/*** (C) COPYRIGHT 2013-2016 Nuvoton Technology Corp. ***/

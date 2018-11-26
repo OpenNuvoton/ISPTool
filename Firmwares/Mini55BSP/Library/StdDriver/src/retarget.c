@@ -77,7 +77,11 @@ void Hard_Fault_Handler(uint32_t stack[])
 static char g_buf[16];
 static char g_buf_len = 0;
 
-# if defined(__ICCARM__)
+/* Make sure won't goes here only because --gnu is defined , so
+   add !__CC_ARM and !__ICCARM__ checking */
+# if defined ( __GNUC__ ) && !(__CC_ARM) && !(__ICCARM__)
+
+# elif defined(__ICCARM__)
 
 
 /**
@@ -102,7 +106,7 @@ void HardFault_Handler(void)
         "SP_Read_Ready:        \n"
         "LDR     R1, [R0, #24] \n"        //; Get previous PC
         "LDRH    R3, [R1]      \n"        //; Get instruction
-        "LDR     R2, [pc, #8]  \n"        //; The sepcial BKPT instruction
+        "LDR     R2, [pc, #8]  \n"        //; The special BKPT instruction
         "CMP     R3, R2        \n"        //; Test if the instruction at previous PC is BKPT
         "BNE     HardFault_Handler_Ret\n" //; Not BKPT
         "ADDS    R1, #4        \n"        //; Skip BKPT and next line
@@ -180,7 +184,7 @@ SP_is_PSP
 SP_Read_Ready
     LDR     R1, [R0, #24]         //; Get previous PC
     LDRH    R3, [R1]              //; Get instruction
-    LDR     R2, =0xBEAB           //; The sepcial BKPT instruction
+    LDR     R2, =0xBEAB           //; The special BKPT instruction
     CMP     R3, R2                //; Test if the instruction at previous PC is BKPT
     BNE     HardFault_Handler_Ret //; Not BKPT
 
@@ -244,7 +248,38 @@ SH_End
 
 #else
 
-# if defined(__ICCARM__)
+/* Make sure won't goes here only because --gnu is defined , so
+   add !__CC_ARM and !__ICCARM__ checking */
+# if defined ( __GNUC__ ) && !(__CC_ARM) && !(__ICCARM__) 
+
+/**
+ * @brief    This HardFault handler is implemented to show r0, r1, r2, r3, r12, lr, pc, psr
+ *
+ * @param    None
+ *
+ * @returns  None
+ *
+ * @details  This function is implement to print r0, r1, r2, r3, r12, lr, pc, psr.
+ *
+ */
+void HardFault_Handler(void)
+{
+    asm("MOVS    r0, #4                        \n"
+        "MOV     r1, LR                        \n"
+        "TST     r0, r1                        \n" /*; check LR bit 2 */
+        "BEQ     1f                            \n" /*; stack use MSP */
+        "MRS     R0, PSP                       \n" /*; stack use PSP, read PSP */
+        "MOV     R1, LR                        \n" /*; LR current value */
+        "B       Hard_Fault_Handler            \n"
+        "1:                                    \n"
+        "MRS     R0, MSP                       \n" /*; LR current value */
+        "B       Hard_Fault_Handler            \n"    
+        ::[Hard_Fault_Handler] "r" (Hard_Fault_Handler) // input
+    );
+    while(1);
+}
+
+# elif defined(__ICCARM__)
 
 /**
  * @brief    This HardFault handler is implemented to show r0, r1, r2, r3, r12, lr, pc, psr
@@ -316,13 +351,13 @@ Get_LR_and_Branch
 void SendChar_ToUART(int ch)
 {
 #ifndef DISABLE_UART
+    while(DEBUG_PORT->FIFOSTS & UART_FIFOSTS_TXFULL_Msk);
+    DEBUG_PORT->DAT = ch;
+    if(ch == '\n')
+    {
         while(DEBUG_PORT->FIFOSTS & UART_FIFOSTS_TXFULL_Msk);
-        DEBUG_PORT->DAT = ch;
-        if(ch == '\n')
-        {
-            while(DEBUG_PORT->FIFOSTS & UART_FIFOSTS_TXFULL_Msk);
-            DEBUG_PORT->DAT = '\r';
-        }
+        DEBUG_PORT->DAT = '\r';
+    }
 #endif
 }
 
@@ -453,7 +488,39 @@ int fputc(int ch, FILE *f)
     SendChar(ch);
     return ch;
 }
+#if defined (__GNUC__) && !defined(__ARMCC_VERSION)
 
+int _write (int fd, char *ptr, int len)
+{
+    int i = len;
+#ifndef DISABLE_UART
+    while(i--) {
+        while(DEBUG_PORT->FIFOSTS & UART_FIFOSTS_TXFULL_Msk);
+
+        DEBUG_PORT->DAT = *ptr++;
+
+        if(*ptr == '\n') {
+            while(DEBUG_PORT->FIFOSTS & UART_FIFOSTS_TXFULL_Msk);
+            DEBUG_PORT->DAT = '\r';
+        }
+    }
+#endif
+    return len;
+}
+
+int _read (int fd, char *ptr, int len)
+{
+#ifndef DISABLE_UART
+    while((DEBUG_PORT->FIFOSTS & UART_FIFOSTS_RXEMPTY_Msk) != 0);
+    *ptr = DEBUG_PORT->DAT;
+    return 1;
+#else
+    return 0;
+#endif
+
+}
+
+#else
 int fgetc(FILE *f) {
     return (GetChar());
 }
@@ -462,7 +529,7 @@ int fgetc(FILE *f) {
 int ferror(FILE *f) {
     return EOF;
 }
-
+#endif
 #ifdef DEBUG_ENABLE_SEMIHOST
 # ifdef __ICCARM__
 void __exit(int return_code)
@@ -492,5 +559,5 @@ label:  goto label;  /* endless loop */
 }
 # endif
 #endif
-/*** (C) COPYRIGHT 2014 Nuvoton Technology Corp. ***/
+/*** (C) COPYRIGHT 2018 Nuvoton Technology Corp. ***/
 

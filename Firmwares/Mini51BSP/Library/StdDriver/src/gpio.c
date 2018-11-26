@@ -8,7 +8,7 @@
  * @note
  * Copyright (C) 2013 Nuvoton Technology Corp. All rights reserved.
 *****************************************************************************/
-#include "mini51series.h"
+#include "Mini51Series.h"
 
 
 

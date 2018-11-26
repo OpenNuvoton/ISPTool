@@ -41,7 +41,7 @@ enum { r0, r1, r2, r3, r12, lr, pc, psr};
  * @details     This function is implement to print r0, r1, r2, r3, r12, lr, pc, psr
  */
 static void stackDump(uint32_t stack[])
-{   
+{
     printf("r0  = 0x%x\n", stack[r0]);
     printf("r1  = 0x%x\n", stack[r1]);
     printf("r2  = 0x%x\n", stack[r2]);
@@ -78,8 +78,11 @@ void Hard_Fault_Handler(uint32_t stack[])
 static char g_buf[16];
 static char g_buf_len = 0;
 
-# if defined(__ICCARM__)
+/* Make sure won't goes here only because --gnu is defined , so
+   add !__CC_ARM and !__ICCARM__ checking */
+# if defined ( __GNUC__ ) && !(__CC_ARM) && !(__ICCARM__)
 
+# elif defined(__ICCARM__)
 
 void SH_End(void)
 {
@@ -90,10 +93,10 @@ void SH_End(void)
 
 void SH_ICE(void)
 {
-  asm("CMP   R2,#0   \n"
-      "BEQ   SH_End  \n"
-      "STR   R0,[R2] \n"       //; Save the return value to *pn32Out_R0
-     );
+    asm("CMP   R2,#0   \n"
+        "BEQ   SH_End  \n"
+        "STR   R0,[R2] \n"       //; Save the return value to *pn32Out_R0
+       );
 }
 
 /**
@@ -113,7 +116,7 @@ int32_t SH_DoCommand(int32_t n32In_R0, int32_t n32In_R1, int32_t *pn32Out_R0)
         "SH_HardFault: \n"       //; Captured by HardFault
         "MOVS   R0,#0  \n"       //; Set return value to 0
         "BX     lr     \n"       //; Return
-        );
+       );
 
     return 1;                    //; Return 1 when it is trap by ICE
 }
@@ -194,8 +197,8 @@ void SP_is_PSP(void)
     asm(
         "MRS     R0, PSP       \n"      //; stack use PSP, read PSP
         "B       Get_LR_and_Branch    \n"
-    
-       );
+
+    );
 }
 
 /**
@@ -208,7 +211,7 @@ void SP_is_PSP(void)
  * @details  This function is implement to support semihost message print.
  *
  */
-void HardFault_Handler (void)
+void HardFault_Handler(void)
 {
     asm("MOV     R0, lr        \n"
         "LSLS    R0, #29       \n"        //; Check bit 2
@@ -232,6 +235,8 @@ void HardFault_Handler (void)
  */
 __asm int32_t HardFault_Handler(void)
 {
+    IMPORT  Hard_Fault_Handler
+
     MOV     R0, LR
     LSLS    R0, #29               //; Check bit 2
     BMI     SP_is_PSP             //; previous stack is PSP
@@ -243,7 +248,7 @@ SP_is_PSP
 SP_Read_Ready
     LDR     R1, [R0, #24]         //; Get previous PC
     LDRH    R3, [R1]              //; Get instruction
-    LDR     R2, =0xBEAB           //; The special BKPT instruction
+    LDR     R2, = 0xBEAB          //; The special BKPT instruction
     CMP     R3, R2                //; Test if the instruction at previous PC is BKPT
     BNE     HardFault_Handler_Ret //; Not BKPT
 
@@ -256,20 +261,20 @@ HardFault_Handler_Ret
     /* TODO: Implement your own hard fault handler here. */
     MOVS    r0, #4
     MOV     r1, LR
-    TST     r0, r1                          //; check LR bit 2  
+    TST     r0, r1                          //; check LR bit 2
     BEQ     Stack_Use_MSP                   //; stack use MSP
-    MRS     R0, PSP ;stack use PSP          //; stack use PSP, read PSP
+    MRS     R0, PSP ; stack use PSP         //; stack use PSP, read PSP
     B       Get_LR_and_Branch
 Stack_Use_MSP
     MRS     R0, MSP ; stack use MSP         //; read MSP
 Get_LR_and_Branch
-    MOV     R1, LR ; LR current value       //; LR current value       
-    LDR     R2,=__cpp(Hard_Fault_Handler)   //; branch to Hard_Fault_Handler 
+    MOV     R1, LR ; LR current value       //; LR current value
+    LDR     R2, = __cpp(Hard_Fault_Handler) //; branch to Hard_Fault_Handler
     BX      R2
 
     B       .
 
-                 ALIGN
+    ALIGN
 }
 
 /**
@@ -303,12 +308,43 @@ SH_End
     MOVS   R0, #1        //; Set return value to 1
     BX     lr            //; Return
 }
+
 #endif
 
+#else // Non-semihost
 
-#else
+/* Make sure won't goes here only because --gnu is defined , so
+   add !__CC_ARM and !__ICCARM__ checking */
+# if defined ( __GNUC__ ) && !(__CC_ARM) && !(__ICCARM__)
 
-# if defined(__ICCARM__)
+/**
+ * @brief    This HardFault handler is implemented to show r0, r1, r2, r3, r12, lr, pc, psr
+ *
+ * @param    None
+ *
+ * @returns  None
+ *
+ * @details  This function is implement to print r0, r1, r2, r3, r12, lr, pc, psr.
+ *
+ */
+void HardFault_Handler(void)
+{
+    asm("MOVS    r0, #4                        \n"
+        "MOV     r1, LR                        \n"
+        "TST     r0, r1                        \n" /*; check LR bit 2 */
+        "BEQ     1f                            \n" /*; stack use MSP */
+        "MRS     R0, PSP                       \n" /*; stack use PSP, read PSP */
+        "MOV     R1, LR                        \n" /*; LR current value */
+        "B       Hard_Fault_Handler            \n"
+        "1:                                    \n"
+        "MRS     R0, MSP                       \n" /*; LR current value */
+        "B       Hard_Fault_Handler            \n"
+        ::[Hard_Fault_Handler] "r"(Hard_Fault_Handler)  // input
+       );
+    while(1);
+}
+
+# elif defined(__ICCARM__)
 
 void Get_LR_and_Branch(void)
 {
@@ -361,9 +397,11 @@ void HardFault_Handler(void)
  */
 __asm int32_t HardFault_Handler(void)
 {
-    MOVS    r0, #4  
+    IMPORT  Hard_Fault_Handler
+
+    MOVS    r0, #4
     MOV     r1, LR
-    TST     r0, r1          //; check LR bit 2                 
+    TST     r0, r1          //; check LR bit 2
     BEQ     Stack_Use_MSP   //; stack use MSP
     MRS     R0, PSP         //; stack use PSP, read PSP
     B       Get_LR_and_Branch
@@ -371,7 +409,7 @@ Stack_Use_MSP
     MRS     R0, MSP         //; read MSP
 Get_LR_and_Branch
     MOV     R1, LR          //; LR current value
-    LDR     R2,=__cpp(Hard_Fault_Handler) //; branch to Hard_Fault_Handler 
+    LDR     R2, = __cpp(Hard_Fault_Handler) //; branch to Hard_Fault_Handler
     BX      R2
 }
 
@@ -397,15 +435,16 @@ void SendChar_ToUART(int ch)
 {
 
     while(DEBUG_PORT->FSR & UART_FSR_TX_FULL_Msk);
-    DEBUG_PORT->DATA = ch;
+    DEBUG_PORT->THR = ch;
     if(ch == '\n')
     {
         while(DEBUG_PORT->FSR & UART_FSR_TX_FULL_Msk);
-        DEBUG_PORT->DATA = '\r';
+        DEBUG_PORT->THR = '\r';
     }
 }
 
 #else
+
 /* Non-block implement of send char */
 #define BUF_SIZE    2048
 void SendChar_ToUART(int ch)
@@ -460,6 +499,7 @@ void SendChar_ToUART(int ch)
     }
     while(i32Tail != i32Head);
 }
+
 #endif
 
 
@@ -533,7 +573,7 @@ char GetChar(void)
     {
         if((DEBUG_PORT->FSR & UART_FSR_RX_EMPTY_Msk) == 0)
         {
-            return (DEBUG_PORT->DATA);
+            return (DEBUG_PORT->THR);
         }
     }
 
@@ -612,6 +652,40 @@ int fputc(int ch, FILE *stream)
     return ch;
 }
 
+#if defined ( __GNUC__ )
+
+#if !defined(OS_USE_SEMIHOSTING)
+int _write(int fd, char *ptr, int len)
+{
+    int i = len;
+
+    while(i--)
+    {
+        while(DEBUG_PORT->FSR & UART_FSR_TX_FULL_Msk);
+
+        DEBUG_PORT->THR = *ptr++;
+
+        if(*ptr == '\n')
+        {
+            while(DEBUG_PORT->FSR & UART_FSR_TX_FULL_Msk);
+            DEBUG_PORT->THR = '\r';
+        }
+    }
+    return len;
+}
+
+int _read(int fd, char *ptr, int len)
+{
+
+    while((DEBUG_PORT->FSR & UART_FSR_RX_EMPTY_Msk) != 0);
+    *ptr = DEBUG_PORT->THR;
+    return 1;
+
+
+}
+#endif
+
+#else
 
 /**
  * @brief      Get character from UART debug port or semihosting input
@@ -649,6 +723,8 @@ int ferror(FILE *stream)
     return EOF;
 }
 
+#endif
+
 #ifdef DEBUG_ENABLE_SEMIHOST
 # ifdef __ICCARM__
 void __exit(int return_code)
@@ -680,6 +756,6 @@ label:
 #endif
 
 
-
+/*** (C) COPYRIGHT 2018 Nuvoton Technology Corp. ***/
 
 

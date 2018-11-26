@@ -1,12 +1,12 @@
 /**************************************************************************//**
  * @file     retarget.c
  * @version  V3.00
- * $Revision: 8 $
- * $Date: 15/11/03 9:25a $
- * @brief    NUC029xDE Debug Port and Semihost Setting Source File
+ * $Revision: 7 $
+ * $Date: 16/10/25 4:25p $
+ * @brief    Debug Port and Semihost Setting Source File
  *
  * @note
- * Copyright (C) 2018 Nuvoton Technology Corp. All rights reserved.
+ * Copyright (C) 2016 Nuvoton Technology Corp. All rights reserved.
  *
  ******************************************************************************/
 
@@ -26,7 +26,8 @@
 /* Global variables                                                                                        */
 /*---------------------------------------------------------------------------------------------------------*/
 #if !(defined(__ICCARM__) && (__VER__ >= 6010000))
-struct __FILE {
+struct __FILE
+{
     int handle; /* Add whatever you need here */
 };
 #endif
@@ -79,7 +80,11 @@ void Hard_Fault_Handler(uint32_t stack[])
 static char g_buf[16];
 static char g_buf_len = 0;
 
-# if defined(__ICCARM__)
+/* Make sure won't goes here only because --gnu is defined , so
+   add !__CC_ARM and !__ICCARM__ checking */
+# if defined ( __GNUC__ ) && !(__CC_ARM) && !(__ICCARM__)
+
+# elif defined(__ICCARM__)
 
 
 void SH_End(void)
@@ -309,7 +314,39 @@ SH_End
 
 #else
 
-# if defined(__ICCARM__)
+/* Make sure won't goes here only because --gnu is defined , so
+   add !__CC_ARM and !__ICCARM__ checking */
+# if defined ( __GNUC__ ) && !(__CC_ARM) && !(__ICCARM__)
+
+/**
+ * @brief    This HardFault handler is implemented to show r0, r1, r2, r3, r12, lr, pc, psr
+ *
+ * @param    None
+ *
+ * @returns  None
+ *
+ * @details  This function is implement to print r0, r1, r2, r3, r12, lr, pc, psr.
+ *
+ */
+void HardFault_Handler(void)
+{
+    asm("MOVS    r0, #4                        \n"
+        "MOV     r1, LR                        \n"
+        "TST     r0, r1                        \n" /*; check LR bit 2 */
+        "BEQ     1f                            \n" /*; stack use MSP */
+        "MRS     R0, PSP                       \n" /*; stack use PSP, read PSP */
+        "MOV     R1, LR                        \n" /*; LR current value */
+        "B       Hard_Fault_Handler            \n"
+        "1:                                    \n"
+        "MRS     R0, MSP                       \n" /*; LR current value */
+        "B       Hard_Fault_Handler            \n"
+        ::[Hard_Fault_Handler] "r" (Hard_Fault_Handler) // input
+    );
+    while(1);
+}
+
+# elif defined(__ICCARM__)
+
 
 void Get_LR_and_Branch(void)
 {
@@ -385,12 +422,13 @@ Get_LR_and_Branch
 /**
  * @brief       Routine to send a char
  *
- * @param[in]   ch  Character to be written to debug port
+ * @param[in]   ch Character to send to debug port.
  *
  * @returns     Send value from UART debug port
  *
  * @details     Send a target char to UART debug port .
  */
+
 #ifndef NONBLOCK_PRINTF
 
 void SendChar_ToUART(int ch)
@@ -398,7 +436,8 @@ void SendChar_ToUART(int ch)
 
     while(DEBUG_PORT->FSR & UART_FSR_TX_FULL_Msk);
     DEBUG_PORT->DATA = ch;
-    if(ch == '\n') {
+    if(ch == '\n')
+    {
         while(DEBUG_PORT->FSR & UART_FSR_TX_FULL_Msk);
         DEBUG_PORT->DATA = '\r';
     }
@@ -413,23 +452,23 @@ void SendChar_ToUART(int ch)
     static int32_t i32Head = 0;
     static int32_t i32Tail = 0;
     int32_t i32Tmp;
-    
+
     /* Only flush the data in buffer to UART when ch == 0 */
     if(ch)
     {
         // Push char
-        i32Tmp = i32Head+1;
-        if(i32Tmp > BUF_SIZE) i32Tmp = 0;
+        i32Tmp = i32Head + 1;
+        if(i32Tmp >= BUF_SIZE) i32Tmp = 0;
         if(i32Tmp != i32Tail)
         {
             u8Buf[i32Head] = ch;
             i32Head = i32Tmp;
         }
-        
+
         if(ch == '\n')
         {
-            i32Tmp = i32Head+1;
-            if(i32Tmp > BUF_SIZE) i32Tmp = 0;
+            i32Tmp = i32Head + 1;
+            if(i32Tmp >= BUF_SIZE) i32Tmp = 0;
             if(i32Tmp != i32Tail)
             {
                 u8Buf[i32Head] = '\r';
@@ -442,45 +481,51 @@ void SendChar_ToUART(int ch)
         if(i32Tail == i32Head)
             return;
     }
-    
+
     // pop char
     do
     {
         i32Tmp = i32Tail + 1;
         if(i32Tmp > BUF_SIZE) i32Tmp = 0;
-        
+
         if((DEBUG_PORT->FSR & UART_FSR_TX_FULL_Msk) == 0)
         {
-            DEBUG_PORT->DATA = u8Buf[i32Tail];
+            DEBUG_PORT->THR = u8Buf[i32Tail];
             i32Tail = i32Tmp;
         }
         else
             break; // FIFO full
-    }while(i32Tail != i32Head);
+    }
+    while(i32Tail != i32Head);
 }
 #endif
 
 
+
 /**
- * @brief       Routine to send a char
+ * @brief    Routine to send a char
  *
- * @param[in]   ch  Character to be written to debug port
+ * @param[in]   ch Character to send to debug port.
  *
- * @returns     Send value from UART debug port or semihost
+ * @returns  Send value from UART debug port or semihost
  *
- * @details     Send a target char to UART debug port or semihost.
+ * @details  Send a target char to UART debug port or semihost.
  */
 void SendChar(int ch)
 {
 #if defined(DEBUG_ENABLE_SEMIHOST)
     g_buf[g_buf_len++] = ch;
     g_buf[g_buf_len] = '\0';
-    if(g_buf_len + 1 >= sizeof(g_buf) || ch == '\n' || ch == '\0') {
+    if(g_buf_len + 1 >= sizeof(g_buf) || ch == '\n' || ch == '\0')
+    {
         /* Send the char */
-        if(SH_DoCommand(0x04, (int)g_buf, NULL) != 0) {
+        if(SH_DoCommand(0x04, (int)g_buf, NULL) != 0)
+        {
             g_buf_len = 0;
             return;
-        } else {
+        }
+        else
+        {
             g_buf_len = 0;
         }
     }
@@ -503,15 +548,18 @@ char GetChar(void)
 #ifdef DEBUG_ENABLE_SEMIHOST
 # if defined ( __CC_ARM   )
     int nRet;
-    while(SH_DoCommand(0x101, 0, &nRet) != 0) {
-        if(nRet != 0) {
+    while(SH_DoCommand(0x101, 0, &nRet) != 0)
+    {
+        if(nRet != 0)
+        {
             SH_DoCommand(0x07, 0, &nRet);
             return (char)nRet;
         }
     }
 # else
     int nRet;
-    while(SH_DoCommand(0x7, 0, &nRet) != 0) {
+    while(SH_DoCommand(0x7, 0, &nRet) != 0)
+    {
         if(nRet != 0)
             return (char)nRet;
     }
@@ -519,8 +567,10 @@ char GetChar(void)
     return (0);
 #else
 
-    while (1) {
-        if((DEBUG_PORT->FSR & UART_FSR_RX_EMPTY_Msk) == 0 ) {
+    while(1)
+    {
+        if((DEBUG_PORT->FSR & UART_FSR_RX_EMPTY_Msk) == 0)
+        {
             return (DEBUG_PORT->DATA);
         }
     }
@@ -541,7 +591,7 @@ char GetChar(void)
 
 int kbhit(void)
 {
-    return !((DEBUG_PORT->FSR&UART_FSR_RX_EMPTY_Msk) == 0);
+    return !((DEBUG_PORT->FSR & UART_FSR_RX_EMPTY_Msk) == 0);
 }
 /**
  * @brief    Check if debug message finished
@@ -556,13 +606,13 @@ int kbhit(void)
 
 int IsDebugFifoEmpty(void)
 {
-    return ((DEBUG_PORT->FSR&UART_FSR_TE_FLAG_Msk) != 0);
+    return ((DEBUG_PORT->FSR & UART_FSR_TE_FLAG_Msk) != 0);
 }
 
 /**
- * @brief       C library retargetting
+ * @brief    C library retargetting
  *
- * @param[in]   ch  Character to be written to debug port
+ * @param[in]   ch Character to send to debug port.  
  *
  * @returns  None
  *
@@ -600,6 +650,38 @@ int fputc(int ch, FILE *stream)
     return ch;
 }
 
+#if defined ( __GNUC__ )
+
+#if !defined (OS_USE_SEMIHOSTING)
+int _write (int fd, char *ptr, int len)
+{
+    int i = len;
+
+    while(i--) {
+        while(DEBUG_PORT->FSR & UART_FSR_TX_FULL_Msk);
+
+        DEBUG_PORT->DATA = *ptr++;
+
+        if(*ptr == '\n') {
+            while(DEBUG_PORT->FSR & UART_FSR_TX_FULL_Msk);
+            DEBUG_PORT->DATA = '\r';
+        }
+    }
+    return len;
+}
+
+int _read (int fd, char *ptr, int len)
+{
+
+    while((DEBUG_PORT->FSR & UART_FSR_RX_EMPTY_Msk) != 0);
+    *ptr = DEBUG_PORT->DATA;
+    return 1;
+
+
+}
+#endif
+
+#else
 
 /**
  * @brief      Get character from UART debug port or semihosting input
@@ -637,13 +719,16 @@ int ferror(FILE *stream)
     return EOF;
 }
 
+#endif
+
 #ifdef DEBUG_ENABLE_SEMIHOST
 # ifdef __ICCARM__
 void __exit(int return_code)
 {
 
     /* Check if link with ICE */
-    if(SH_DoCommand(0x18, 0x20026, NULL) == 0) {
+    if(SH_DoCommand(0x18, 0x20026, NULL) == 0)
+    {
         /* Make sure all message is print out */
         while(IsDebugFifoEmpty() == 0);
     }
@@ -655,7 +740,8 @@ void _sys_exit(int return_code)
 {
 
     /* Check if link with ICE */
-    if(SH_DoCommand(0x18, 0x20026, NULL) == 0) {
+    if(SH_DoCommand(0x18, 0x20026, NULL) == 0)
+    {
         /* Make sure all message is print out */
         while(IsDebugFifoEmpty() == 0);
     }
