@@ -87,7 +87,7 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_NUC103, CDialog)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_WDT_POWER_DOWN, OnCheckClickWDTPD)
     ON_BN_CLICKED(IDC_CHECK_WDT_ENABLE, OnButtonClick)
-    ON_EN_CHANGE(IDC_EDIT_FLASH_BASE_ADDRESS, OnChangeEditFlashBaseAddress)
+    ON_EN_KILLFOCUS(IDC_EDIT_FLASH_BASE_ADDRESS, OnKillfocusEditFlashBaseAddress)
     ON_BN_CLICKED(IDC_RADIO_CLK_I22M, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnButtonClick)
@@ -199,7 +199,7 @@ void CDialogConfiguration_NUC103::ConfigToGUI(int nEventID)
     m_bDataFlashVarSizeEnable = ((uConfig0 & NUC1XX_FLASH_CONFIG_DFVSEN) == 0 ? TRUE : FALSE);
     m_bDataFlashEnable = ((uConfig0 & NUC1XX_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
     m_bSecurityLock = ((uConfig0 & NUC1XX_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
-    unsigned int uFlashBaseAddress = uConfig1;
+    unsigned int uFlashBaseAddress = uConfig1 & 0xFFFFF;
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
 
     if (m_bDataFlashVarSizeEnable) {
@@ -213,6 +213,7 @@ void CDialogConfiguration_NUC103::ConfigToGUI(int nEventID)
         m_SpinDataFlashSize.EnableWindow(FALSE);
     }
 
+    GetDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS)->EnableWindow(m_bDataFlashEnable && m_bDataFlashVarSizeEnable);
     m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
     m_sConfigValue1.Format(_T("0x%08X"), uConfig1);
 }
@@ -337,6 +338,10 @@ void CDialogConfiguration_NUC103::GUIToConfig(int nEventID)
         uConfig0 |= NUC1XX_FLASH_CONFIG_DFEN;
     }
 
+    if (!(m_bDataFlashEnable && m_bDataFlashVarSizeEnable)) {
+        m_sFlashBaseAddress = "FFFFF";
+    }
+
     if (m_nRadioGPF == 0) {
         uConfig0 &= ~NUC1XX_FLASH_CONFIG_CGPFMFP;
     } else {
@@ -358,7 +363,7 @@ void CDialogConfiguration_NUC103::GUIToConfig(int nEventID)
     m_ConfigValue.m_value[0] = uConfig0;
     TCHAR *pEnd;
     uConfig1 = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
-    m_ConfigValue.m_value[1] = uConfig1;
+    m_ConfigValue.m_value[1] = uConfig1;// | 0xFFF00000;
 }
 
 void CDialogConfiguration_NUC103::OnGUIEvent(int nEventID)
@@ -382,7 +387,7 @@ void CDialogConfiguration_NUC103::OnCheckClickWDTPD()
     OnGUIEvent(IDC_CHECK_WDT_POWER_DOWN);
 }
 
-void CDialogConfiguration_NUC103::OnChangeEditFlashBaseAddress()
+void CDialogConfiguration_NUC103::OnKillfocusEditFlashBaseAddress()
 {
     // TODO: If this is a RICHEDIT control, the control will not
     // send this notification unless you override the CDialog::OnInitDialog()
@@ -392,17 +397,22 @@ void CDialogConfiguration_NUC103::OnChangeEditFlashBaseAddress()
     UpdateData(TRUE);
     TCHAR *pEnd;
     unsigned int uFlashBaseAddress = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
-    m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);
 
     if (m_bDataFlashVarSizeEnable) {
-        unsigned int uPageNum = uFlashBaseAddress / NUMICRO_FLASH_PAGE_SIZE_512;
-        unsigned int uLimitNum = (m_uProgramMemorySize + m_uDataFlashSize) / NUMICRO_FLASH_PAGE_SIZE_512;
-        unsigned int uNVM_Size = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * NUMICRO_FLASH_PAGE_SIZE_512) : 0;
-        m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uNVM_Size : 0) / 1024.);
+        if (m_bDataFlashEnable) {
+            if (!((uFlashBaseAddress >= NUMICRO_FLASH_PAGE_SIZE_512) && (uFlashBaseAddress < m_uProgramMemorySize))) {
+                uFlashBaseAddress = m_uProgramMemorySize - NUMICRO_FLASH_PAGE_SIZE_512;
+            }
+
+            uFlashBaseAddress &= ~(NUMICRO_FLASH_PAGE_SIZE_512 - 1);
+            m_sDataFlashSize.Format(_T("%.2fK"), (uFlashBaseAddress < m_uProgramMemorySize) ? ((m_uProgramMemorySize - uFlashBaseAddress) / 1024.) : 0.);
+        }
     } else {
         m_sDataFlashSize.Format(_T("%.2fK"), m_uDataFlashSize / 1024.);
     }
 
+    m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
+    m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);// | 0xFFF00000);
     UpdateData(FALSE);
 }
 
@@ -432,7 +442,7 @@ void CDialogConfiguration_NUC103::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRE
 
     uFlashBaseAddress = 0 + min(uPageNum, uLimitNum) * NUMICRO_FLASH_PAGE_SIZE_512;
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
-    m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);
+    m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);// | 0xFFF00000);
 
     if (m_bDataFlashVarSizeEnable) {
         unsigned int uNVM_Size = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * NUMICRO_FLASH_PAGE_SIZE_512) : 0;
