@@ -1,10 +1,8 @@
 #include "stdafx.h"
 #include "Resource.h"
+#include "DialogConfiguration.h" // Resource ID
 #include "DlgNuvoISP.h"
 #include "About.h"
-
-#include "DialogConfiguration_Nano103.h"
-#include "DialogConfiguration_Mini51CN.h"
 
 #include "PartNumID.h"
 #include "FlashInfo.h"
@@ -189,7 +187,6 @@ BOOL CNuvoISPDlg::OnInitDialog()
     SetDlgItemText(IDC_EDIT_FLASH_BASE_ADDRESS, _T("100000"));
     Set_ThreadAction(&CISPProc::Thread_Idle);
     RegisterNotification();
-    ResetUI();
     return TRUE;	// return TRUE  unless you set the focus to a control
 }
 
@@ -653,6 +650,13 @@ void CNuvoISPDlg::ShowChipInfo()
 
     CString strTmp = _T("");
     strTmp = GetPartNumber(m_ulDeviceID).c_str();
+
+    if (gsChipCfgInfo.uSeriesCode == IDD_DIALOG_CONFIGURATION_N76E1T) {
+        m_bProgram_NVM = 0;
+        EnableDlgItem(IDC_CHECK_NVM, 0);
+        EnableDlgItem(IDC_BUTTON_NVM, 0);
+    }
+
     SetDlgItemText(IDC_EDIT_PARTNO, strTmp);
     strTmp.Format(_T("0x%08X"), m_CONFIG_User[0]);
     SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, strTmp);
@@ -697,6 +701,8 @@ void CNuvoISPDlg::OnSysCommand(UINT nID, LPARAM lParam)
     }
 }
 
+// This function is used by NUC505 only.
+// User can specify the spi flash address.
 void CNuvoISPDlg::UpdateAddrOffset()
 {
     m_uAPROM_Addr = 0;
@@ -721,15 +727,6 @@ void CNuvoISPDlg::UpdateAddrOffset()
             m_uNVM_Addr = uAddr;
             m_uNVM_Size = 0x200000 - m_uNVM_Addr;
         }
-    } else if ((0x00002150 == m_ulDeviceID)
-               || (0x00002F50 == m_ulDeviceID)
-               || (0x00003650 == m_ulDeviceID)) {
-        if (uAddr >= 0x4800) {
-            uAddr = 0x3800;
-        }
-
-        m_uNVM_Addr = uAddr;
-        m_uNVM_Size = 0x4800 - m_uNVM_Addr;
     }
 
     strAddr.Format(_T("%06X"), uAddr);
@@ -786,6 +783,13 @@ LRESULT CNuvoISPDlg::OnDeviceChange(WPARAM  nEventType, LPARAM  dwData)
     return TRUE;
 }
 
+// NUC505: No CONFIG, only SPI Flash, return "TRUE" to skip query flash size
+// M480: Show CONFIG0 ~ CONFIG3
+// M2351: Show CONFIG0 ~ CONFIG3. Rename Data Flash to APROM_NS, return "TRUE" to skip query flash size
+// Default: CONIFG0, CONFIG1, APROM, and Data Flash. Return "FALSE" to query flash size
+
+// Use ulDeviceID instead of m_ulDeviceID as input, since m_ulDeviceID is not available in offline mode.
+// Offline mode is used for debug purpose only.
 BOOL CNuvoISPDlg::ResetUI(unsigned int ulDeviceID)
 {
     if (0x00550505 == ulDeviceID) {
@@ -810,13 +814,6 @@ BOOL CNuvoISPDlg::ResetUI(unsigned int ulDeviceID)
         SetDlgItemText(IDC_STATIC_PARTNO, info);
         UpdateAddrOffset();
         return TRUE;
-    } else if ((0x00002150 == ulDeviceID)
-               || (0x00002F50 == ulDeviceID)
-               || (0x00003650 == ulDeviceID)) {
-        // N76E885, N76E616 and N76E003
-        ShowDlgItem(IDC_STATIC_FLASH_BASE_ADDRESS, 1);
-        ShowDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS, 1);
-        UpdateAddrOffset();
     } else if ((ulDeviceID & 0xFFFFF000) == 0x00D48000) {
         SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0-3:"));
         ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 1);
@@ -864,7 +861,7 @@ BOOL CNuvoISPDlg::ResetUI(unsigned int ulDeviceID)
         SetDlgItemText(IDC_STATIC_PARTNO, info);
         Invalidate(1);
         return TRUE;
-    } else { // Defaut UI Setting in OffLine Mode
+    } else { // Default UI Setting in OffLine Mode
         m_bSkipSizeCheck = FALSE;
         m_ButtonConnect.SetWindowText(_T("Connect"));
         SetDlgItemText(IDC_EDIT_PARTNO, _T(""));

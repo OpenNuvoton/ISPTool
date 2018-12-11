@@ -4,7 +4,7 @@
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
-// DialogConfiguration.h : header file
+// DialogConfiguration_N76E1T.h : header file
 //
 
 #include "DialogResize.h"
@@ -27,7 +27,7 @@ class CDialogConfiguration_N76E1T : public CDialogResize
 {
 // Construction
 public:
-    CDialogConfiguration_N76E1T(unsigned int uDID = 0x3650,
+    CDialogConfiguration_N76E1T(unsigned int uPartNo = 0x3650,
                                 CWnd *pParent = NULL);
 
     CAppConfig::N76E1T_configs_t m_ConfigValue;
@@ -55,6 +55,7 @@ public:
     BOOL	m_bCheckBrownOutIAP;
     BOOL	m_bCheckBrownOutReset;
 
+    unsigned int	m_uPID;
     unsigned int	m_uDID;
     unsigned int	m_uLevel;
     //}}AFX_DATA

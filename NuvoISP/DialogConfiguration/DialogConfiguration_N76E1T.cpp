@@ -59,10 +59,11 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_N76E1T dialog
 
-CDialogConfiguration_N76E1T::CDialogConfiguration_N76E1T(unsigned int uDID,
+CDialogConfiguration_N76E1T::CDialogConfiguration_N76E1T(unsigned int uPartNo,
         CWnd *pParent /*=NULL*/)
     : CDialogResize(CDialogConfiguration_N76E1T::IDD, pParent)
-    , m_uDID(uDID)
+    , m_uDID(uPartNo & 0xFFFF)
+    , m_uPID((uPartNo >> 16) & 0xFFFF)
 {
     //{{AFX_DATA_INIT(CDialogConfiguration_N76E1T)
     m_nRadio_RPD	= -1;
@@ -353,7 +354,11 @@ void CDialogConfiguration_N76E1T::ConfigToGUI()
         }
     }
 
-    m_bCheckBrownOutEnable = ((ucConfig2 & N76E1T_CONFIG_CBODEN) != 0 ? TRUE : FALSE);
+    if (((m_uPID & 0x10) && !(ucConfig2 & N76E1T_CONFIG_CBODEN)) || (!(m_uPID & 0x10) && (ucConfig2 & N76E1T_CONFIG_CBODEN))) {
+        m_bCheckBrownOutEnable = TRUE;
+    } else {
+        m_bCheckBrownOutEnable = FALSE;
+    }
 
     switch (ucConfig4 & N76E1T_CONFIG_WDT) {
         case N76E1T_CONFIG_WDT_DIS:
@@ -497,7 +502,7 @@ void CDialogConfiguration_N76E1T::GUIToConfig()
         ucConfig2 &= ~N76E1T_CONFIG_BOIAP;
     }
 
-    if (!m_bCheckBrownOutEnable) {
+    if (((m_uPID & 0x10) && m_bCheckBrownOutEnable) || (!(m_uPID & 0x10) && !m_bCheckBrownOutEnable)) {
         ucConfig2 &= ~N76E1T_CONFIG_CBODEN;
     }
 
