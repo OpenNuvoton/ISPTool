@@ -543,11 +543,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\NumEdit.cpp"
+				RelativePath=".\DataBase\NuDataBase.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\DataBase\NuVoiceInfo.cpp"
+				RelativePath=".\NumEdit.cpp"
 				>
 			</File>
 			<File

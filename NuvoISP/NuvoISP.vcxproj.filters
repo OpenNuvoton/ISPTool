@@ -54,6 +54,9 @@
     <ClInclude Include="DialogConfiguration\DialogConfiguration_M2351.h">
       <Filter>External\DialogConfiguration</Filter>
     </ClInclude>
+    <ClInclude Include="DataBase\NuDataBase.h">
+      <Filter>External\DataBase</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -170,9 +173,6 @@
     <ClCompile Include="DialogConfiguration\DialogConfiguration_AU9100.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
-    <ClCompile Include="DataBase\NuVoiceInfo.cpp">
-      <Filter>External\DataBase</Filter>
-    </ClCompile>
     <ClCompile Include="DialogConfiguration\DialogConfiguration_N570.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
@@ -181,6 +181,9 @@
     </ClCompile>
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M251.cpp">
       <Filter>External\DialogConfiguration</Filter>
+    </ClCompile>
+    <ClCompile Include="DataBase\NuDataBase.cpp">
+      <Filter>External\DataBase</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

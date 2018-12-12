@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "ISPProc.h"
 #include "thread_proxy.h"	// thread_proxy
-#include "PartNumID.h"
+#include "NuDataBase.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

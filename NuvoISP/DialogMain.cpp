@@ -6,6 +6,8 @@
 #include "resource.h"
 #include <cstring>
 
+#include "NuDataBase.h"
+
 IMPLEMENT_DYNAMIC(CDialogMain, CDialog)
 
 CDialogMain::CDialogMain(UINT nIDTemplate, CWnd *pParent /*=NULL*/)
@@ -287,9 +289,6 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 }
 
 #ifndef _NO_CONFIGURATION_DLG
-
-#include "PartNumID.h"
-#include "FlashInfo.h"
 
 #include "DialogConfiguration_M05x.h"
 #include "DialogConfiguration_M451.h"

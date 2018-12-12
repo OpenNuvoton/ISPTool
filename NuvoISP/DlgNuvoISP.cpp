@@ -4,10 +4,10 @@
 #include "DlgNuvoISP.h"
 #include "About.h"
 
-#include "PartNumID.h"
-#include "FlashInfo.h"
-
 #include <dbt.h>
+
+#include "NuDataBase.h"
+#include <sstream>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
