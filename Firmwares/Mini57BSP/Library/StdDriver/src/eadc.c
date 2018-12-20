@@ -45,9 +45,9 @@ void EADC_Open(EADC_T *eadc, uint32_t u32InputMode)
 void EADC_Close(EADC_T *eadc)
 {
     eadc->CTL = eadc->CTL
-             | (EADC_EADC0_7 << EADC_CTL_ADC0CHSEL_Pos)                 /* Switching to channel Vss to save power */
-             | ((EADC_EADC1_7-EADC_EADC1_0) << EADC_CTL_ADC1CHSEL_Pos)  /* Switching to channel Vss to save power */
-             & (~EADC_CTL_ADCEN_Msk);
+                | (EADC_EADC0_7 << EADC_CTL_ADC0CHSEL_Pos)                 /* Switching to channel Vss to save power */
+                | ((EADC_EADC1_7-EADC_EADC1_0) << EADC_CTL_ADC1CHSEL_Pos)  /* Switching to channel Vss to save power */
+                & (~EADC_CTL_ADCEN_Msk);
     SYS_ResetModule(EADC_RST);
 }
 
@@ -124,7 +124,7 @@ void EADC_ConfigSampleModule(EADC_T *eadc,
         else
         {
             eadc->TRGSOR = (eadc->TRGSOR & ~(EADC_TRGSOR_ADC0TRGSOR_Msk | EADC_TRGSOR_ADC0STADCSEL_Msk | EADC_TRGSOR_ADC0PWMTRGSEL_Msk))
-                         | (u32TriggerSrc << EADC_TRGSOR_ADC0TRGSOR_Pos);
+                           | (u32TriggerSrc << EADC_TRGSOR_ADC0TRGSOR_Pos);
             eadc->CTL |= EADC_CTL_ADC0HWTRGEN_Msk;
         }
     }
@@ -136,7 +136,7 @@ void EADC_ConfigSampleModule(EADC_T *eadc,
         else
         {
             eadc->TRGSOR = (eadc->TRGSOR & ~(EADC_TRGSOR_ADC1TRGSOR_Msk | EADC_TRGSOR_ADC1STADCSEL_Msk | EADC_TRGSOR_ADC1PWMTRGSEL_Msk))
-                         | (u32TriggerSrc << EADC_TRGSOR_ADC1TRGSOR_Pos);
+                           | (u32TriggerSrc << EADC_TRGSOR_ADC1TRGSOR_Pos);
             eadc->CTL |= EADC_CTL_ADC1HWTRGEN_Msk;
         }
     }
@@ -242,13 +242,13 @@ void EADC_EnablePWMTrigger(EADC_T *eadc,
     if (u32ModuleNum == EADC_EADC0)
     {
         eadc->TRGSOR = (eadc->TRGSOR & ~(EADC_TRGSOR_ADC0TRGSOR_Msk | EADC_TRGSOR_ADC0STADCSEL_Msk | EADC_TRGSOR_ADC0PWMTRGSEL_Msk))
-                     | (u32Source << EADC_TRGSOR_ADC0TRGSOR_Pos);
+                       | (u32Source << EADC_TRGSOR_ADC0TRGSOR_Pos);
         eadc->CTL |= EADC_CTL_ADC0HWTRGEN_Msk;
     }
     else if (u32ModuleNum == EADC_EADC1)
     {
         eadc->TRGSOR = (eadc->TRGSOR & ~(EADC_TRGSOR_ADC1TRGSOR_Msk | EADC_TRGSOR_ADC1STADCSEL_Msk | EADC_TRGSOR_ADC1PWMTRGSEL_Msk))
-                     | (u32Source << EADC_TRGSOR_ADC1TRGSOR_Pos);
+                       | (u32Source << EADC_TRGSOR_ADC1TRGSOR_Pos);
         eadc->CTL |= EADC_CTL_ADC1HWTRGEN_Msk;
     }
 }
@@ -327,24 +327,24 @@ void EADC_DisableWCMP(EADC_T *eadc)
   *             greater or equal to 100 for 5 times continuously, and a compare interrupt request is generated.
   */
 void EADC_EnableWCMP(EADC_T *eadc,
-              uint32_t u32HighBound,
-              uint32_t u32LowBound,
-              uint32_t u32FlagEN,
-              uint32_t u32MatchCount,
-              uint32_t u32FlagCTL)
+                     uint32_t u32HighBound,
+                     uint32_t u32LowBound,
+                     uint32_t u32FlagEN,
+                     uint32_t u32MatchCount,
+                     uint32_t u32FlagCTL)
 {
     /* MUST disable WCMP first to reset internal compare match counter. */
     EADC_DisableWCMP(eadc);
 
     eadc->WCMPDAT = ((u32HighBound & 0xFFF) << EADC_WCMPDAT_WCMPHIGHDAT_Pos)
-                  | ((u32LowBound  & 0xFFF) << EADC_WCMPDAT_WCMPLOWDAT_Pos);
+                    | ((u32LowBound  & 0xFFF) << EADC_WCMPDAT_WCMPLOWDAT_Pos);
 
     if (u32MatchCount == 16)
         u32MatchCount = 0;  /* set WCMPMCNT to 0 means count 16. */
     eadc->WCMPCTL = (EADC_WCMPCTL_WCMPEN_Msk)
-                  | u32FlagEN
-                  | u32FlagCTL
-                  | ((u32MatchCount & 0xF)  << EADC_WCMPCTL_WCMPMCNT_Pos);
+                    | u32FlagEN
+                    | u32FlagCTL
+                    | ((u32MatchCount & 0xF)  << EADC_WCMPCTL_WCMPMCNT_Pos);
 }
 
 /**

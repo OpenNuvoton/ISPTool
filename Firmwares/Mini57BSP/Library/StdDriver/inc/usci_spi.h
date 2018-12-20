@@ -221,7 +221,7 @@ static __INLINE void USPI_SET_DATA_WIDTH(USPI_T *uspi, uint32_t u32Width)
   * @brief Clear the USCI_SPI wakeup flag.
   * @param[in] uspi The pointer of the specified USCI_SPI module.
   * @return None
-  * \hideinitializer  
+  * \hideinitializer
   */
 #define USPI_CLR_WAKEUP_FLAG(uspi)  ( (uspi)->WKSTS = USPI_WKSTS_WKF_Msk)
 
@@ -244,7 +244,7 @@ static __INLINE void USPI_SET_DATA_WIDTH(USPI_T *uspi, uint32_t u32Width)
   *                                  - \ref USPI_PROTSTS_RXENDIF_Msk
   *                                  - \ref USPI_PROTSTS_RXSTIF_Msk
   *                                  - \ref USPI_PROTSTS_TXENDIF_Msk
-  *                                  - \ref USPI_PROTSTS_TXSTIF_Msk  
+  *                                  - \ref USPI_PROTSTS_TXSTIF_Msk
   * @return None
   * \hideinitializer
   */
@@ -275,7 +275,7 @@ static __INLINE void USPI_SET_DATA_WIDTH(USPI_T *uspi, uint32_t u32Width)
   * @param[in] u32IntSel Interrupt Type, should be
   *                                  - \ref USPI_PROTIEN_SLVBEIEN_Msk
   *                                  - \ref USPI_PROTIEN_SLVTOIEN_Msk
-  *                                  - \ref USPI_PROTIEN_SSACTIEN_Msk  
+  *                                  - \ref USPI_PROTIEN_SSACTIEN_Msk
   *                                  - \ref USPI_PROTIEN_SSINAIEN_Msk
   * @return None
   * \hideinitializer
@@ -288,7 +288,7 @@ static __INLINE void USPI_SET_DATA_WIDTH(USPI_T *uspi, uint32_t u32Width)
   * @param[in] u32IntSel Interrupt Type, should be
   *                                  - \ref USPI_PROTIEN_SLVBEIEN_Msk
   *                                  - \ref USPI_PROTIEN_SLVTOIEN_Msk
-  *                                  - \ref USPI_PROTIEN_SSACTIEN_Msk  
+  *                                  - \ref USPI_PROTIEN_SSACTIEN_Msk
   *                                  - \ref USPI_PROTIEN_SSINAIEN_Msk
   * @return None
   * \hideinitializer
@@ -324,7 +324,7 @@ static __INLINE void USPI_SET_DATA_WIDTH(USPI_T *uspi, uint32_t u32Width)
   *                                  - \ref USPI_INTEN_RXENDIEN_Msk
   *                                  - \ref USPI_INTEN_RXSTIEN_Msk
   *                                  - \ref USPI_INTEN_TXENDIEN_Msk
-  *                                  - \ref USPI_INTEN_TXSTIEN_Msk  
+  *                                  - \ref USPI_INTEN_TXSTIEN_Msk
   * @return None
   * \hideinitializer
   */

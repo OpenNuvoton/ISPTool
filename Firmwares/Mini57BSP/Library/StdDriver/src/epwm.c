@@ -37,13 +37,15 @@ uint32_t EPWM_ConfigOutputChannel(EPWM_T *epwm, uint32_t u32ChannelNum, uint32_t
     uint16_t  u16Divider = 1;
     uint16_t u16CNR = 0xFFFF;
 
-    for(; u16Divider < 512; u16Divider <<= 1, j++) {  /* clk divider could only be 1, 2, 4, 8, 16, 32, 64, 128, 256 */
+    for(; u16Divider < 512; u16Divider <<= 1, j++)    /* clk divider could only be 1, 2, 4, 8, 16, 32, 64, 128, 256 */
+    {
         i = (SystemCoreClock / u32Frequency) / u16Divider;
         /* If target value is larger than CNR , need to use a larger divider */
         if(i > (0x10000))
             continue;
 
-        if(i <= 0x10000) {
+        if(i <= 0x10000)
+        {
             if(i == 1)
                 u16CNR = 1;     /* Too fast, and PWM cannot generate expected frequency... */
             else
@@ -145,8 +147,10 @@ void EPWM_EnableOutput(EPWM_T *epwm, uint32_t u32ChannelMask)
     uint32_t i;
     uint32_t field_len = 2;
 
-    for (i=0; i<EPWM_CHANNEL_NUM; i++) {
-        if (u32ChannelMask & (1 << i)) {
+    for (i=0; i<EPWM_CHANNEL_NUM; i++)
+    {
+        if (u32ChannelMask & (1 << i))
+        {
             PA->MODE = (PA->MODE & ~(0x3 << (i*field_len))) | (GPIO_MODE_OUTPUT << (i*field_len));
         }
     }
@@ -165,8 +169,10 @@ void EPWM_DisableOutput(EPWM_T *epwm, uint32_t u32ChannelMask)
     uint32_t i;
     uint32_t field_len = 2;
 
-    for (i=0; i<EPWM_CHANNEL_NUM; i++) {
-        if (u32ChannelMask & (1 << i)) {
+    for (i=0; i<EPWM_CHANNEL_NUM; i++)
+    {
+        if (u32ChannelMask & (1 << i))
+        {
             PA->MODE = (PA->MODE & ~(0x3 << (i*field_len))) | (GPIO_MODE_INPUT << (i*field_len));
         }
     }

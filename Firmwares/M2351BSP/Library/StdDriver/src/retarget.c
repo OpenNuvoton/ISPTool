@@ -496,7 +496,7 @@ int fputc(int ch, FILE *stream)
 }
 
 
-#if defined ( __GNUC__ )
+#if (defined(__GNUC__) && !defined(__ARMCC_VERSION))
 
 #if !defined(OS_USE_SEMIHOSTING)
 int _write (int fd, char *ptr, int len)

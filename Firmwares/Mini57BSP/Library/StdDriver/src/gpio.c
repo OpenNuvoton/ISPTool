@@ -51,8 +51,10 @@ void GPIO_SetMode(GPIO_T *port, uint32_t u32PinMask, uint32_t u32Mode)
     uint32_t i;
     uint32_t field_len = 2;
 
-    for (i=0; i<GPIO_PIN_MAX; i++) {
-        if (u32PinMask & (1 << i)) {
+    for (i=0; i<GPIO_PIN_MAX; i++)
+    {
+        if (u32PinMask & (1 << i))
+        {
             port->MODE = (port->MODE & ~(0x3 << (i*field_len))) | (u32Mode << (i*field_len));
         }
     }

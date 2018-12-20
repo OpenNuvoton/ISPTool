@@ -43,7 +43,7 @@ void SystemCoreClockUpdate(void)
     CyclesPerUs = (SystemCoreClock + 500000) / 1000000;
 #if DEBUG
     printf("SystemCoreClockUpdate(): u32ClkSrc=%d, u32Freq=%d, u32HclkDiv=%d, SystemCoreClock=%d\n",
-        u32ClkSrc, u32Freq, u32HclkDiv, SystemCoreClock);
+           u32ClkSrc, u32Freq, u32HclkDiv, SystemCoreClock);
 #endif
 }
 

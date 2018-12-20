@@ -56,12 +56,12 @@ void CLK_DisableCKO(void)
 void CLK_EnableCKO(uint32_t u32ClkSrc, uint32_t u32ClkDiv, uint32_t u32ClkDivBy1En)
 {
     /* Select CKO clock source */
-    CLK_SetModuleClock(CLKO_MODULE, u32ClkSrc, NULL);
+    CLK_SetModuleClock(CLKO_MODULE, u32ClkSrc, 0UL);
 
     /* CKO = clock source / 2^(u32ClkDiv + 1) */
     CLK->CLKOCTL = (CLK->CLKOCTL & ~(CLK_CLKOCTL_FREQSEL_Msk | CLK_CLKOCTL_DIV1EN_Msk))
-                    | ((u32ClkDiv) << CLK_CLKOCTL_FREQSEL_Pos)
-                    | ((u32ClkDivBy1En) << CLK_CLKOCTL_DIV1EN_Pos);
+                   | ((u32ClkDiv) << CLK_CLKOCTL_FREQSEL_Pos)
+                   | ((u32ClkDivBy1En) << CLK_CLKOCTL_DIV1EN_Pos);
 
     /* Enable CKO clock source */
     CLK->CLKOCTL |= CLK_CLKOCTL_CLKOEN_Msk;
@@ -276,14 +276,16 @@ void CLK_SetModuleClock(uint32_t u32ModuleIdx, uint32_t u32ClkSrc, uint32_t u32C
 {
     uint32_t u32tmp=0,u32sel=0,u32div=0;
 
-    if(MODULE_CLKDIV_Msk(u32ModuleIdx)!=MODULE_NoMsk) {
+    if(MODULE_CLKDIV_Msk(u32ModuleIdx)!=MODULE_NoMsk)
+    {
         u32div =(uint32_t)&CLK->CLKDIV+((MODULE_CLKDIV(u32ModuleIdx))*4);   /* Get register address */
         u32tmp = *(volatile uint32_t *)(u32div);                            /* Get register content value */
         u32tmp = ( u32tmp & ~(MODULE_CLKDIV_Msk(u32ModuleIdx)<<MODULE_CLKDIV_Pos(u32ModuleIdx)) ) | u32ClkDiv;
         *(volatile uint32_t *)(u32div) = u32tmp;
     }
 
-    if(MODULE_CLKSEL_Msk(u32ModuleIdx)!=MODULE_NoMsk) {
+    if(MODULE_CLKSEL_Msk(u32ModuleIdx)!=MODULE_NoMsk)
+    {
         u32sel = (uint32_t)&CLK->CLKSEL0+((MODULE_CLKSEL(u32ModuleIdx))*4); /* Get register address */
         u32tmp = *(volatile uint32_t *)(u32sel);                            /* Get register content value */
         u32tmp = ( u32tmp & ~(MODULE_CLKSEL_Msk(u32ModuleIdx)<<MODULE_CLKSEL_Pos(u32ModuleIdx)) ) | u32ClkSrc;
@@ -304,6 +306,8 @@ void CLK_SetModuleClock(uint32_t u32ModuleIdx, uint32_t u32ClkSrc, uint32_t u32C
   */
 void CLK_EnableXtalRC(uint32_t u32ClkMask)
 {
+    if((u32ClkMask == CLK_PWRCTL_HXT_EN) || (u32ClkMask == CLK_PWRCTL_LXT_EN))
+        CLK->PWRCTL &= ~CLK_PWRCTL_XTLEN_Msk;
     CLK->PWRCTL |= u32ClkMask;
 }
 
@@ -452,7 +456,8 @@ uint32_t CLK_WaitClockReady(uint32_t u32ClkMask)
 {
     int32_t i32TimeOutCnt=2160000;
 
-    while((CLK->STATUS & u32ClkMask) != u32ClkMask) {
+    while((CLK->STATUS & u32ClkMask) != u32ClkMask)
+    {
         if(i32TimeOutCnt-- <= 0)
             return 0;
     }

@@ -284,6 +284,6 @@ uint32_t TIMER_GetModuleClock(TIMER_T *timer);
 }
 #endif
 
-#endif 
+#endif
 
 /*** (C) COPYRIGHT 2017 Nuvoton Technology Corp. ***/

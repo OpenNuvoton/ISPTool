@@ -219,7 +219,7 @@ extern "C"
  *    @param[in]    u32IntSel  Interrupt type select
  *                             - \ref UUART_PROTIEN_RLSIEN_Msk   : Rx Line status interrupt
  *                             - \ref UUART_PROTIEN_ABRIEN_Msk   : Auto-baud rate interrupt
- *                             - \ref UUART_PROTIEN_BRKIEN_Msk   : LIN break detected interrupt 
+ *                             - \ref UUART_PROTIEN_BRKIEN_Msk   : LIN break detected interrupt
  *
  *    @return       None
  *
@@ -235,7 +235,7 @@ extern "C"
  *    @param[in]    u32IntSel  Interrupt type select
  *                             - \ref UUART_PROTIEN_RLSIEN_Msk   : Rx Line status interrupt
  *                             - \ref UUART_PROTIEN_ABRIEN_Msk   : Auto-baud rate interrupt
- *                             - \ref UUART_PROTIEN_BRKIEN_Msk   : LIN break detected interrupt 
+ *                             - \ref UUART_PROTIEN_BRKIEN_Msk   : LIN break detected interrupt
  *
  *    @return       None
  *
@@ -416,6 +416,6 @@ void UUART_DisableWakeup(UUART_T* uuart);
 }
 #endif
 
-#endif 
+#endif
 
 /*** (C) COPYRIGHT 2017 Nuvoton Technology Corp. ***/

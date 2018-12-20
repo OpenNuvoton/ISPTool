@@ -152,6 +152,6 @@ void  WDT_Open(uint32_t u32TimeoutInterval,
 }
 #endif
 
-#endif 
+#endif
 
 /*** (C) COPYRIGHT 2017 Nuvoton Technology Corp. ***/

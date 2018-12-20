@@ -28,10 +28,10 @@ extern "C"
 /** @addtogroup Mini57_BPWM_EXPORTED_CONSTANTS BPWM Exported Constants
   @{
 */
-#define BPWM_CHANNEL_NUM                     (2)   			                 /*!< BPWM channel number */
-#define BPWM_CLK_DIV_1                       (4UL) 			                 /*!< BPWM clock divide by 1 */
-#define BPWM_CLK_DIV_2                       (0UL) 			                 /*!< BPWM clock divide by 2 */
-#define BPWM_CLK_DIV_4                       (1UL) 			                 /*!< BPWM clock divide by 4 */
+#define BPWM_CHANNEL_NUM                     (2)                             /*!< BPWM channel number */
+#define BPWM_CLK_DIV_1                       (4UL)                           /*!< BPWM clock divide by 1 */
+#define BPWM_CLK_DIV_2                       (0UL)                           /*!< BPWM clock divide by 2 */
+#define BPWM_CLK_DIV_4                       (1UL)                           /*!< BPWM clock divide by 4 */
 #define BPWM_CLK_DIV_8                       (2UL)                       /*!< BPWM clock divide by 8 */
 #define BPWM_CLK_DIV_16                      (3UL)                       /*!< BPWM clock divide by 16 */
 #define BPWM_EDGE_ALIGNED                    (0UL)                       /*!< BPWM working in edge aligned type */
@@ -180,6 +180,6 @@ uint32_t BPWM_GetPeriodIntFlag(BPWM_T *bpwm, uint32_t u32ChannelNum);
 }
 #endif
 
-#endif 
+#endif
 
 /*** (C) COPYRIGHT 2017 Nuvoton Technology Corp. ***/

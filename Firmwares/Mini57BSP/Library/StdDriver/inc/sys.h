@@ -81,7 +81,6 @@ Example: If user want to set PA.0 as ADC0 and PA.1 as ADC1 in initial function,
 #define SYS_GPA_MFP_PA0_SPI0_SS     (0x9UL<<SYS_GPA_MFP_PA0MFP_Pos)     /*!< GPA_MFP PA0 setting for SPI0_SS    */
 #define SYS_GPA_MFP_PA0_SPI1_CLK    (0xAUL<<SYS_GPA_MFP_PA0MFP_Pos)     /*!< GPA_MFP PA0 setting for SPI1_CLK   */
 #define SYS_GPA_MFP_PA0_UART1_TXD   (0xBUL<<SYS_GPA_MFP_PA0MFP_Pos)     /*!< GPA_MFP PA0 setting for UART1_TXD  */
-#define SYS_GPA_MFP_PA0_SMP0        (0xCUL<<SYS_GPA_MFP_PA0MFP_Pos)     /*!< GPA_MFP PA0 setting for SMP0       */
 
 /* PA.1 */
 #define SYS_GPA_MFP_PA1_GPIO        (0x0UL<<SYS_GPA_MFP_PA1MFP_Pos)     /*!< GPA_MFP PA1 setting for GPIO       */
@@ -90,7 +89,6 @@ Example: If user want to set PA.0 as ADC0 and PA.1 as ADC1 in initial function,
 #define SYS_GPA_MFP_PA1_SPI0_MISO   (0x9UL<<SYS_GPA_MFP_PA1MFP_Pos)     /*!< GPA_MFP PA1 setting for SPI0_MISO  */
 #define SYS_GPA_MFP_PA1_SPI1_MOSI   (0xAUL<<SYS_GPA_MFP_PA1MFP_Pos)     /*!< GPA_MFP PA1 setting for SPI1_MOSI  */
 #define SYS_GPA_MFP_PA1_UART1_RXD   (0xBUL<<SYS_GPA_MFP_PA1MFP_Pos)     /*!< GPA_MFP PA1 setting for UART1_RXD  */
-#define SYS_GPA_MFP_PA1_SMP1        (0xCUL<<SYS_GPA_MFP_PA1MFP_Pos)     /*!< GPA_MFP PA1 setting for SMP1       */
 
 /* PA.2 */
 #define SYS_GPA_MFP_PA2_GPIO        (0x0UL<<SYS_GPA_MFP_PA2MFP_Pos)     /*!< GPA_MFP PA2 setting for GPIO       */
@@ -124,34 +122,32 @@ Example: If user want to set PA.0 as ADC0 and PA.1 as ADC1 in initial function,
 #define SYS_GPB_MFP_PB0_GPIO        (0x0UL<<SYS_GPB_MFP_PB0MFP_Pos)     /*!< GPB_MFP PB0 setting for GPIO       */
 #define SYS_GPB_MFP_PB0_ADC0_CH0    (0x2UL<<SYS_GPB_MFP_PB0MFP_Pos)     /*!< GPB_MFP PB0 setting for ADC0_CH0   */
 #define SYS_GPB_MFP_PB0_ACMP0_P0    (0x4UL<<SYS_GPB_MFP_PB0MFP_Pos)     /*!< GPB_MFP PB0 setting for ACMP0_P0   */
-#define SYS_GPB_MFP_PB0_ECAP0       (0x7UL<<SYS_GPB_MFP_PB0MFP_Pos)     /*!< GPB_MFP PB0 setting for ECAP0      */
-#define SYS_GPB_MFP_PB0_SMP2        (0xCUL<<SYS_GPB_MFP_PB0MFP_Pos)     /*!< GPB_MFP PB0 setting for SMP2       */
+#define SYS_GPB_MFP_PB0_ECAP_P0     (0x7UL<<SYS_GPB_MFP_PB0MFP_Pos)     /*!< GPB_MFP PB0 setting for ECAP_P0    */
 
 /* PB.1 */
 #define SYS_GPB_MFP_PB1_GPIO        (0x0UL<<SYS_GPB_MFP_PB1MFP_Pos)     /*!< GPB_MFP PB1 setting for GPIO       */
-#define SYS_GPB_MFP_PB1_ADC0_CH1    (0x2UL<<SYS_GPB_MFP_PB1MFP_Pos)     /*!< GPB_MFP PB1 setting for ADC_CH1    */
+#define SYS_GPB_MFP_PB1_ADC0_CH1    (0x2UL<<SYS_GPB_MFP_PB1MFP_Pos)     /*!< GPB_MFP PB1 setting for ADC0_CH1   */
 #define SYS_GPB_MFP_PB1_ACMP0_P1    (0x4UL<<SYS_GPB_MFP_PB1MFP_Pos)     /*!< GPB_MFP PB1 setting for ACMP0_P1   */
-#define SYS_GPB_MFP_PB1_ECAP1       (0x7UL<<SYS_GPB_MFP_PB1MFP_Pos)     /*!< GPB_MFP PB1 setting for ECAP1      */
-#define SYS_GPB_MFP_PB1_SMP3        (0xCUL<<SYS_GPB_MFP_PB1MFP_Pos)     /*!< GPB_MFP PB1 setting for SMP3       */
+#define SYS_GPB_MFP_PB1_ECAP_P1     (0x7UL<<SYS_GPB_MFP_PB1MFP_Pos)     /*!< GPB_MFP PB1 setting for ECAP_P1    */
 
 /* PB.2 */
 #define SYS_GPB_MFP_PB2_GPIO        (0x0UL<<SYS_GPB_MFP_PB2MFP_Pos)     /*!< GPB_MFP PB2 setting for GPIO       */
 #define SYS_GPB_MFP_PB2_ADC0_CH2    (0x2UL<<SYS_GPB_MFP_PB2MFP_Pos)     /*!< GPB_MFP PB2 setting for ADC0_CH2   */
 #define SYS_GPB_MFP_PB2_BPWM_CH1    (0x3UL<<SYS_GPB_MFP_PB2MFP_Pos)     /*!< GPB_MFP PB2 setting for BPWM_CH1   */
 #define SYS_GPB_MFP_PB2_ACMP0_P2    (0x4UL<<SYS_GPB_MFP_PB2MFP_Pos)     /*!< GPB_MFP PB2 setting for ACMP0_P2   */
-#define SYS_GPB_MFP_PB2_ECAP2       (0x7UL<<SYS_GPB_MFP_PB2MFP_Pos)     /*!< GPB_MFP PB2 setting for ECAP2      */
+#define SYS_GPB_MFP_PB2_ECAP_P2     (0x7UL<<SYS_GPB_MFP_PB2MFP_Pos)     /*!< GPB_MFP PB2 setting for ECAP_P2    */
 
 /* PB.3 */
 #define SYS_GPB_MFP_PB3_GPIO        (0x0UL<<SYS_GPB_MFP_PB3MFP_Pos)     /*!< GPB_MFP PB3 setting for GPIO       */
 #define SYS_GPB_MFP_PB3_ACMP1_N     (0x5UL<<SYS_GPB_MFP_PB3MFP_Pos)     /*!< GPB_MFP PB3 setting for ACMP1_N    */
 #define SYS_GPB_MFP_PB3_PGA_I       (0x6UL<<SYS_GPB_MFP_PB3MFP_Pos)     /*!< GPB_MFP PB3 setting for PGA_I      */
-#define SYS_GPB_MFP_PB3_T0          (0x7UL<<SYS_GPB_MFP_PB3MFP_Pos)     /*!< GPB_MFP PB3 setting for T0         */
+#define SYS_GPB_MFP_PB3_TM0         (0x7UL<<SYS_GPB_MFP_PB3MFP_Pos)     /*!< GPB_MFP PB3 setting for TM0        */
 
 /* PB.4 */
 #define SYS_GPB_MFP_PB4_GPIO        (0x0UL<<SYS_GPB_MFP_PB4MFP_Pos)     /*!< GPB_MFP PB4 setting for GPIO       */
 #define SYS_GPB_MFP_PB4_ADC1_CH0    (0x2UL<<SYS_GPB_MFP_PB4MFP_Pos)     /*!< GPB_MFP PB4 setting for ADC1_CH0   */
 #define SYS_GPB_MFP_PB4_ACMP0_N     (0x4UL<<SYS_GPB_MFP_PB4MFP_Pos)     /*!< GPB_MFP PB4 setting for ACMP0_N    */
-#define SYS_GPB_MFP_PB4_T1          (0x7UL<<SYS_GPB_MFP_PB4MFP_Pos)     /*!< GPB_MFP PB4 setting for T1         */
+#define SYS_GPB_MFP_PB4_TM1         (0x7UL<<SYS_GPB_MFP_PB4MFP_Pos)     /*!< GPB_MFP PB4 setting for TM1        */
 
 /********************* Bit definition of GPC_MFP register **********************/
 /* PC.0 */
@@ -162,7 +158,7 @@ Example: If user want to set PA.0 as ADC0 and PA.1 as ADC1 in initial function,
 #define SYS_GPC_MFP_PC0_I2C1_SCL    (0x8UL<<SYS_GPC_MFP_PC0MFP_Pos)     /*!< GPC_MFP PC0 setting for I2C1_SCL   */
 #define SYS_GPC_MFP_PC0_SPI0_SS     (0x9UL<<SYS_GPC_MFP_PC0MFP_Pos)     /*!< GPC_MFP PC0 setting for SPI0_SS    */
 #define SYS_GPC_MFP_PC0_SPI1_CLK    (0xAUL<<SYS_GPC_MFP_PC0MFP_Pos)     /*!< GPC_MFP PC0 setting for SPI1_CLK   */
-#define SYS_GPC_MFP_PC0_UART1_TXD   (0xBUL<<SYS_GPC_MFP_PC0MFP_Pos)     /*!< GPC_MFP PA0 setting for UART_RXD   */
+#define SYS_GPC_MFP_PC0_UART1_TXD   (0xBUL<<SYS_GPC_MFP_PC0MFP_Pos)     /*!< GPC_MFP PA0 setting for UART1_TXD  */
 
 /* PC.1 */
 #define SYS_GPC_MFP_PC1_GPIO        (0x0UL<<SYS_GPC_MFP_PC1MFP_Pos)     /*!< GPC_MFP PC1 setting for GPIO       */
@@ -176,12 +172,12 @@ Example: If user want to set PA.0 as ADC0 and PA.1 as ADC1 in initial function,
 /* PC.2 */
 #define SYS_GPC_MFP_PC2_GPIO        (0x0UL<<SYS_GPC_MFP_PC2MFP_Pos)     /*!< GPC_MFP PC2 setting for GPIO       */
 #define SYS_GPC_MFP_PC2_ADC1_CH2    (0x2UL<<SYS_GPC_MFP_PC2MFP_Pos)     /*!< GPC_MFP PC2 setting for ADC1_CH2   */
-#define SYS_GPC_MFP_PC2_PWM_BRAKE   (0x3UL<<SYS_GPC_MFP_PC2MFP_Pos)     /*!< GPC_MFP PC2 setting for PWM_BRAKE  */
-#define SYS_GPC_MFP_PC2_CCAP        (0x7UL<<SYS_GPC_MFP_PC2MFP_Pos)     /*!< GPC_MFP PC2 setting for CCAP       */
+#define SYS_GPC_MFP_PC2_BRAKE       (0x3UL<<SYS_GPC_MFP_PC2MFP_Pos)     /*!< GPC_MFP PC2 setting for BRAKE      */
+#define SYS_GPC_MFP_PC2_CCAP_P1     (0x7UL<<SYS_GPC_MFP_PC2MFP_Pos)     /*!< GPC_MFP PC2 setting for CCAP_P1    */
 #define SYS_GPC_MFP_PC2_I2C1_SDA    (0x8UL<<SYS_GPC_MFP_PC2MFP_Pos)     /*!< GPC_MFP PC2 setting for I2C1_SDA   */
 #define SYS_GPC_MFP_PC2_SPI0_MISO   (0x9UL<<SYS_GPC_MFP_PC2MFP_Pos)     /*!< GPC_MFP PC2 setting for SPI0_MISO  */
 #define SYS_GPC_MFP_PC2_SPI1_MOSI   (0xAUL<<SYS_GPC_MFP_PC2MFP_Pos)     /*!< GPC_MFP PC2 setting for SPI1_MOSI  */
-#define SYS_GPC_MFP_PC2_UART1_RXD   (0xBUL<<SYS_GPC_MFP_PC2MFP_Pos)     /*!< GPC_MFP PC2 setting for UART_RXD   */
+#define SYS_GPC_MFP_PC2_UART1_RXD   (0xBUL<<SYS_GPC_MFP_PC2MFP_Pos)     /*!< GPC_MFP PC2 setting for UART1_RXD  */
 
 /* PC.3 */
 #define SYS_GPC_MFP_PC3_GPIO        (0x0UL<<SYS_GPC_MFP_PC3MFP_Pos)     /*!< GPC_MFP PC3 setting for GPIO       */
@@ -192,7 +188,7 @@ Example: If user want to set PA.0 as ADC0 and PA.1 as ADC1 in initial function,
 
 /* PC.4 */
 #define SYS_GPC_MFP_PC4_GPIO        (0x0UL<<SYS_GPC_MFP_PC4MFP_Pos)     /*!< GPC_MFP PC4 setting for GPIO   */
-#define SYS_GPC_MFP_PC4_ECAP0       (0x7UL<<SYS_GPC_MFP_PC4MFP_Pos)     /*!< GPC_MFP PC4 setting for ECAP0  */
+#define SYS_GPC_MFP_PC4_ECAP_P3     (0x7UL<<SYS_GPC_MFP_PC4MFP_Pos)     /*!< GPC_MFP PC4 setting for ECAP_P3 */
 
 /********************* Bit definition of GPD_MFP register **********************/
 /* PD.0 */
@@ -211,7 +207,7 @@ Example: If user want to set PA.0 as ADC0 and PA.1 as ADC1 in initial function,
 #define SYS_GPD_MFP_PD2_GPIO        (0x0UL<<SYS_GPD_MFP_PD2MFP_Pos)     /*!< GPD_MFP PD2 setting for GPIO       */
 #define SYS_GPD_MFP_PD2_ICE_DAT     (0x1UL<<SYS_GPD_MFP_PD2MFP_Pos)     /*!< GPD_MFP PD2 setting for ICE_DAT    */
 #define SYS_GPD_MFP_PD2_ADC1_CH1    (0x2UL<<SYS_GPD_MFP_PD2MFP_Pos)     /*!< GPD_MFP PD2 setting for ADC1_CH1   */
-#define SYS_GPD_MFP_PD2_CCAP        (0x7UL<<SYS_GPD_MFP_PD2MFP_Pos)     /*!< GPD_MFP PD2 setting for CCAP       */
+#define SYS_GPD_MFP_PD2_CCAP_P0     (0x7UL<<SYS_GPD_MFP_PD2MFP_Pos)     /*!< GPD_MFP PD2 setting for CCAP_P0    */
 #define SYS_GPD_MFP_PD2_I2C0_SDA    (0x8UL<<SYS_GPD_MFP_PD2MFP_Pos)     /*!< GPD_MFP PD2 setting for I2C0_SDA   */
 #define SYS_GPD_MFP_PD2_SPI0_MOSI   (0x9UL<<SYS_GPD_MFP_PD2MFP_Pos)     /*!< GPD_MFP PD2 setting for SPI0_MOSI  */
 #define SYS_GPD_MFP_PD2_SPI1_MISO   (0xAUL<<SYS_GPD_MFP_PD2MFP_Pos)     /*!< GPD_MFP PD2 setting for SPI1_MISO  */

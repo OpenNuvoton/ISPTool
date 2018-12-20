@@ -33,30 +33,32 @@ extern "C"
 /*---------------------------------------------------------------------------------------------------------*/
 /* USCI_I2C master event definitions                                                                       */
 /*---------------------------------------------------------------------------------------------------------*/
-enum UI2C_MASTER_EVENT { 
-                             MASTER_SEND_ADDRESS = 10,    /*!< Master send address to Slave */
-                             MASTER_SEND_H_WR_ADDRESS,    /*!< Master send High address to Slave */
-                             MASTER_SEND_H_RD_ADDRESS,    /*!< Master send address to Slave (Read ADDR) */
-                             MASTER_SEND_L_ADDRESS,       /*!< Master send Low address to Slave */
-                             MASTER_SEND_DATA,            /*!< Master Send Data to Slave */
-                             MASTER_SEND_REPEAT_START,    /*!< Master send repeat start to Slave */
-                             MASTER_READ_DATA,            /*!< Master Get Data from Slave */
-                             MASTER_STOP,                 /*!< Master send stop to Slave */
-                             MASTER_SEND_START            /*!< Master send start to Slave */
-                           };
+enum UI2C_MASTER_EVENT
+{
+    MASTER_SEND_ADDRESS = 10,    /*!< Master send address to Slave */
+    MASTER_SEND_H_WR_ADDRESS,    /*!< Master send High address to Slave */
+    MASTER_SEND_H_RD_ADDRESS,    /*!< Master send address to Slave (Read ADDR) */
+    MASTER_SEND_L_ADDRESS,       /*!< Master send Low address to Slave */
+    MASTER_SEND_DATA,            /*!< Master Send Data to Slave */
+    MASTER_SEND_REPEAT_START,    /*!< Master send repeat start to Slave */
+    MASTER_READ_DATA,            /*!< Master Get Data from Slave */
+    MASTER_STOP,                 /*!< Master send stop to Slave */
+    MASTER_SEND_START            /*!< Master send start to Slave */
+};
 
 /*---------------------------------------------------------------------------------------------------------*/
 /* USCI_I2C slave event definitions                                                                        */
 /*---------------------------------------------------------------------------------------------------------*/
-enum UI2C_SLAVE_EVENT {
-                            SLAVE_ADDRESS_ACK = 100,      /*!< Slave send address ACK */
-                            SLAVE_H_WR_ADDRESS_ACK,       /*!< Slave send High address ACK */
-                            SLAVE_L_WR_ADDRESS_ACK,       /*!< Slave send Low address ACK */
-                            SLAVE_GET_DATA,               /*!< Slave Get Data from Master (Write CMD) */
-                            SLAVE_SEND_DATA,              /*!< Slave Send Data to Master (Read CMD) */
-                            SLAVE_H_RD_ADDRESS_ACK,       /*!< Slave send High address ACK */
-                            SLAVE_L_RD_ADDRESS_ACK        /*!< Slave send Low address ACK */
-                          };
+enum UI2C_SLAVE_EVENT
+{
+    SLAVE_ADDRESS_ACK = 100,      /*!< Slave send address ACK */
+    SLAVE_H_WR_ADDRESS_ACK,       /*!< Slave send High address ACK */
+    SLAVE_L_WR_ADDRESS_ACK,       /*!< Slave send Low address ACK */
+    SLAVE_GET_DATA,               /*!< Slave Get Data from Master (Write CMD) */
+    SLAVE_SEND_DATA,              /*!< Slave Send Data to Master (Read CMD) */
+    SLAVE_H_RD_ADDRESS_ACK,       /*!< Slave send High address ACK */
+    SLAVE_L_RD_ADDRESS_ACK        /*!< Slave send Low address ACK */
+};
 
 /*---------------------------------------------------------------------------------------------------------*/
 /*  USCI_CTL constant definitions.                                                                         */
@@ -95,10 +97,10 @@ enum UI2C_SLAVE_EVENT {
 /** @addtogroup Mini57_USCI_I2C_EXPORTED_FUNCTIONS UI2C Exported Functions
   @{
 */
- 
+
 /**
  *    @brief        This macro sets the USCI_I2C protocol control register at one time
- *  
+ *
  *    @param[in]    ui2c      The pointer of the specified USCI_I2C module.
  *    @param[in]    u8Ctrl    Set the register value of USCI_I2C control register.
  *
@@ -149,7 +151,7 @@ enum UI2C_SLAVE_EVENT {
  *
  *    @return       None
  *
- *    @details      Write a byte data value of UI2C_TXDAT register, then sends address or data to USCI I2C bus 
+ *    @details      Write a byte data value of UI2C_TXDAT register, then sends address or data to USCI I2C bus
  */
 #define UI2C_SET_DATA(ui2c, u8Data) ((ui2c)->TXDAT = u8Data)
 
@@ -261,7 +263,7 @@ enum UI2C_SLAVE_EVENT {
  *    @param[in]    u32IntSel Interrupt Type, should be
  *                                  - \ref UI2C_PROTIEN_ACKIEN_Msk
  *                                  - \ref UI2C_PROTIEN_ERRIEN_Msk
- *                                  - \ref UI2C_PROTIEN_ARBLOIEN_Msk  
+ *                                  - \ref UI2C_PROTIEN_ARBLOIEN_Msk
  *                                  - \ref UI2C_PROTIEN_NACKIEN_Msk
  *                                  - \ref UI2C_PROTIEN_STORIEN_Msk
  *                                  - \ref UI2C_PROTIEN_STARIEN_Msk

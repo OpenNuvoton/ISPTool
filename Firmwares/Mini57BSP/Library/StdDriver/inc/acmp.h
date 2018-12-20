@@ -73,7 +73,7 @@ extern "C"
   * @param[in] u32ChNum The ACMP number
   * @return None
   * @details This macro will set POLARITY bit of ACMP_CTL register to enable output inverse function.
-  * \hideinitializer  
+  * \hideinitializer
   */
 #define ACMP_ENABLE_OUTPUT_INVERSE(acmp, u32ChNum) ((acmp)->CTL[u32ChNum] |= ACMP_CTL_POLARITY_Msk)
 
@@ -83,7 +83,7 @@ extern "C"
   * @param[in] u32ChNum The ACMP number
   * @return None
   * @details This macro will clear POLARITY bit of ACMP_CTL register to disable output inverse function.
-  * \hideinitializer  
+  * \hideinitializer
   */
 #define ACMP_DISABLE_OUTPUT_INVERSE(acmp, u32ChNum) ((acmp)->CTL[u32ChNum] &= ~ACMP_CTL_POLARITY_Msk)
 
@@ -92,12 +92,12 @@ extern "C"
   * @param[in] acmp The pointer of the specified ACMP module
   * @param[in] u32ChNum The ACMP number
   * @param[in] u32Src is comparator negative input selection. Including:
-  *                  - \ref ACMP_CTL_NEGSEL_PIN  
+  *                  - \ref ACMP_CTL_NEGSEL_PIN
   *                  - \ref ACMP_CTL_NEGSEL_VBG
   *                  - \ref ACMP_CTL_NEGSEL_CRV
   * @return None
   * @details This macro will set CPNSEL (ACMP_CTL[25:24]) to determine the source of negative input.
-  * \hideinitializer  
+  * \hideinitializer
   */
 #define ACMP_SET_NEG_SRC(acmp, u32ChNum, u32Src) ((acmp)->CTL[u32ChNum] = ((acmp)->CTL[u32ChNum] & ~ACMP_CTL_CPNSEL_Msk) | (u32Src))
 
@@ -107,7 +107,7 @@ extern "C"
   * @param[in] u32ChNum The ACMP number
   * @return None
   * @details This macro will set ACMPHYSEN (ACMP_CTL[3:2]) to enable hysteresis function.
-  * \hideinitializer  
+  * \hideinitializer
   */
 #define ACMP_ENABLE_HYSTERESIS(acmp, u32ChNum) ((acmp)->CTL[u32ChNum] |= (1 << ACMP_CTL_ACMPHYSEN_Pos))
 
@@ -117,7 +117,7 @@ extern "C"
   * @param[in] u32ChNum The ACMP number
   * @return None
   * @details This macro will clear ACMPHYSEN (ACMP_CTL[3:2]) to disable hysteresis function.
-  * \hideinitializer  
+  * \hideinitializer
   */
 #define ACMP_DISABLE_HYSTERESIS(acmp, u32ChNum) ((acmp)->CTL[u32ChNum] &= ~ACMP_CTL_ACMPHYSEN_Msk)
 
@@ -127,7 +127,7 @@ extern "C"
   * @param[in] u32ChNum The ACMP number
   * @return None
   * @details This macro will set ACMPIE bit of ACMP_CTL register to enable interrupt function.
-  * \hideinitializer  
+  * \hideinitializer
   */
 #define ACMP_ENABLE_INT(acmp, u32ChNum) ((acmp)->CTL[u32ChNum] |= ACMP_CTL_ACMPIE_Msk)
 
@@ -137,7 +137,7 @@ extern "C"
   * @param[in] u32ChNum The ACMP number
   * @return None
   * @details This macro will clear ACMPIE bit of ACMP_CTL register to disable interrupt function.
-  * \hideinitializer  
+  * \hideinitializer
   */
 #define ACMP_DISABLE_INT(acmp, u32ChNum) ((acmp)->CTL[u32ChNum] &= ~ACMP_CTL_ACMPIE_Msk)
 
@@ -147,7 +147,7 @@ extern "C"
   * @param[in] u32ChNum The ACMP number
   * @return None
   * @details This macro will set ACMPEN bit of ACMP_CTL register to enable analog comparator.
-  * \hideinitializer  
+  * \hideinitializer
   */
 #define ACMP_ENABLE(acmp, u32ChNum) ((acmp)->CTL[u32ChNum] |= ACMP_CTL_ACMPEN_Msk)
 
@@ -157,7 +157,7 @@ extern "C"
   * @param[in] u32ChNum The ACMP number
   * @return None
   * @details This macro will clear ACMPEN bit of ACMP_CTL register to disable analog comparator.
-  * \hideinitializer  
+  * \hideinitializer
   */
 #define ACMP_DISABLE(acmp, u32ChNum) ((acmp)->CTL[u32ChNum] &= ~ACMP_CTL_ACMPEN_Msk)
 
@@ -167,7 +167,7 @@ extern "C"
   * @param[in] u32ChNum The ACMP number
   * @return  ACMP output value
   * @details This macro will return the ACMP output value.
-  * \hideinitializer  
+  * \hideinitializer
   */
 #define ACMP_GET_OUTPUT(acmp, u32ChNum) (((acmp)->STATUS & (ACMP_STATUS_ACMPO0_Msk<<(u32ChNum)))?1:0)
 
@@ -177,7 +177,7 @@ extern "C"
   * @param[in] u32ChNum The ACMP number
   * @return   ACMP interrupt occurred (1) or not (0)
   * @details This macro will return the ACMP interrupt flag.
-  * \hideinitializer  
+  * \hideinitializer
   */
 #define ACMP_GET_INT_FLAG(acmp, u32ChNum) (((acmp)->STATUS & (ACMP_STATUS_ACMPF0_Msk<<(u32ChNum)))?1:0)
 
@@ -187,7 +187,7 @@ extern "C"
   * @param[in] u32ChNum The ACMP number
   * @return   None
   * @details This macro will write 1 to ACMPFn bit of ACMP_STATUS register to clear interrupt flag.
-  * \hideinitializer  
+  * \hideinitializer
   */
 #define ACMP_CLR_INT_FLAG(acmp, u32ChNum) ((acmp)->STATUS = (ACMP_STATUS_ACMPF0_Msk<<(u32ChNum)))
 
@@ -203,14 +203,14 @@ extern "C"
   *                  - \ref ACMP_CTL_POSSEL_PGA
   * @return None
   * @details This macro will set CPPSEL (ACMP_CTL[30:28]) to determine the comparator positive input pin.
-  * \hideinitializer  
+  * \hideinitializer
   */
 #define ACMP_SELECT_P(acmp, u32ChNum, u32Pin) \
-	do{ \
-	        if((u32ChNum == 1) && (u32Pin == ACMP_CTL_POSSEL_PGA)) \
-			(acmp)->CTL[u32ChNum] = ((acmp)->CTL[u32ChNum] & ~ACMP_CTL_CPPSEL_Msk) | (3 << ACMP_CTL_CPPSEL_Pos); \
-		else \
-			(acmp)->CTL[u32ChNum] = ((acmp)->CTL[u32ChNum] & ~ACMP_CTL_CPPSEL_Msk) | (u32Pin); \
+    do{ \
+            if((u32ChNum == 1) && (u32Pin == ACMP_CTL_POSSEL_PGA)) \
+            (acmp)->CTL[u32ChNum] = ((acmp)->CTL[u32ChNum] & ~ACMP_CTL_CPPSEL_Msk) | (3 << ACMP_CTL_CPPSEL_Pos); \
+        else \
+            (acmp)->CTL[u32ChNum] = ((acmp)->CTL[u32ChNum] & ~ACMP_CTL_CPPSEL_Msk) | (u32Pin); \
     }while(0)
 
 /**
@@ -219,7 +219,7 @@ extern "C"
   * @param[in] u32ChNum The ACMP number
   * @return None
   * @details This macro will clear NFDIS (ACMP_CTL[23]) to enable output filter function.
-  * \hideinitializer  
+  * \hideinitializer
   */
 #define ACMP_ENABLE_FILTER(acmp, u32ChNum) ((acmp)->CTL[u32ChNum] &= ~ACMP_CTL_NFDIS_Msk)
 
@@ -229,7 +229,7 @@ extern "C"
   * @param[in] u32ChNum The ACMP number
   * @return None
   * @details This macro will set NFDIS (ACMP_CTL[12]) to disable output filter function.
-  * \hideinitializer  
+  * \hideinitializer
   */
 #define ACMP_DISABLE_FILTER(acmp, u32ChNum) ((acmp)->CTL[u32ChNum] |= ACMP_CTL_NFDIS_Msk)
 
@@ -244,7 +244,7 @@ extern "C"
   *                  - \ref ACMP_CTL_NFCLKS_PCLKDIV_16
   * @return None
   * @details When ACMP output filter function is enabled, the sampling frequency of the Noise Filter clock is determined by NFCLKS (ACMP_CTL[21:20]).
-  * \hideinitializer  
+  * \hideinitializer
   */
 #define ACMP_SET_FILTER(acmp, u32ChNum, u32Clkdiv) ((acmp)->CTL[u32ChNum] = ((acmp)->CTL[u32ChNum] & ~ACMP_CTL_NFCLKS_Msk) | (u32Clkdiv))
 
@@ -257,7 +257,7 @@ extern "C"
   *             The range of u32Level is 0 ~ 15.
   * @return   None
   * @details  When CRV is selected as ACMP negative input source, the CRV level is determined by CRVCTL (ACMP_VREF[3:0]).
-  * \hideinitializer  
+  * \hideinitializer
   */
 #define ACMP_CRV_SEL(acmp, u32Level) ((acmp)->VREF = ((acmp)->VREF & ~ACMP_VREF_CRVCTL_Msk) | ((u32Level)<<ACMP_VREF_CRVCTL_Pos))
 
@@ -265,13 +265,13 @@ extern "C"
   * @brief This macro is used to select ACMP interrupt condition
   * @param[in] acmp The pointer of the specified ACMP module
   * @param[in] u32ChNum The ACMP number
-  * @param[in] u32Cond Comparator interrupt condition selection. Including:  
+  * @param[in] u32Cond Comparator interrupt condition selection. Including:
   *                  - \ref ACMP_CTL_INTPOL_R
   *                  - \ref ACMP_CTL_INTPOL_F
   *                  - \ref ACMP_CTL_INTPOL_RF
   * @return None
   * @details The ACMP output interrupt condition can be rising edge, falling edge or any edge.
-  * \hideinitializer  
+  * \hideinitializer
   */
 #define ACMP_SELECT_INT_COND(acmp, u32ChNum, u32Cond) ((acmp)->CTL[u32ChNum] = ((acmp)->CTL[u32ChNum] & ~ACMP_CTL_EDGESEL_Msk) | (u32Cond))
 
@@ -294,6 +294,6 @@ void ACMP_Close(ACMP_T *, uint32_t u32ChNum);
 #endif
 
 
-#endif 
+#endif
 
 /*** (C) COPYRIGHT 2017 Nuvoton Technology Corp. ***/

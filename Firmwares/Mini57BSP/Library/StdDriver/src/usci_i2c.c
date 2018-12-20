@@ -22,7 +22,7 @@
 /** @addtogroup Mini57_USCI_I2C_EXPORTED_FUNCTIONS UI2C Exported Functions
   @{
 */
- 
+
 /**
  *    @brief        This function make USCI_I2C module be ready and set the wanted bus clock
  *
@@ -67,7 +67,7 @@ uint32_t UI2C_Open(UI2C_T *ui2c, uint32_t u32BusClock)
  *
  *    @return       None
  *
- *    @details      Close USCI_I2C protocol function. 
+ *    @details      Close USCI_I2C protocol function.
  */
 void UI2C_Close(UI2C_T *ui2c)
 {
@@ -136,7 +136,7 @@ void UI2C_Trigger(UI2C_T *ui2c, uint8_t u8Start, uint8_t u8Stop, uint8_t u8Ptrg,
  *
  *    @return       None
  *
- *    @details      The function is used to disable USCI_I2C bus interrupt events. 
+ *    @details      The function is used to disable USCI_I2C bus interrupt events.
  */
 void UI2C_DisableInt(UI2C_T *ui2c, uint32_t u32Mask)
 {
@@ -168,7 +168,7 @@ void UI2C_DisableInt(UI2C_T *ui2c, uint32_t u32Mask)
     if((u32Mask & UI2C_ACK_INT_MASK) == UI2C_ACK_INT_MASK)
         ui2c->PROTIEN &= ~UI2C_PROTIEN_ACKIEN_Msk;
 }
- 
+
 /**
  *    @brief        This function enables the interrupt of USCI_I2C module.
  *    @param[in]    ui2c            The pointer of the specified USCI_I2C module.

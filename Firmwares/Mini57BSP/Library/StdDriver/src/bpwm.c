@@ -49,7 +49,8 @@ uint32_t BPWM_ConfigOutputChannel(BPWM_T *bpwm,
     SystemCoreClockUpdate();
     u32BPWMClockSrc = SystemCoreClock;
 
-    for(; u8Divider < 17; u8Divider <<= 1) {  /* clk divider could only be 1, 2, 4, 8, 16 */
+    for(; u8Divider < 17; u8Divider <<= 1)    /* clk divider could only be 1, 2, 4, 8, 16 */
+    {
         i = (u32BPWMClockSrc / u32Frequency) / u8Divider;
         /* If target value is larger than CNR * prescale, need to use a larger divider */
         if(i > (0x10000 * 0x100))
@@ -64,7 +65,8 @@ uint32_t BPWM_ConfigOutputChannel(BPWM_T *bpwm,
 
         i /= u8Prescale;
 
-        if(i <= 0x10000) {
+        if(i <= 0x10000)
+        {
             if(i == 1)
                 u16CNR = 1;     /* Too fast, and BPWM cannot generate expected frequency... */
             else
@@ -87,9 +89,12 @@ uint32_t BPWM_ConfigOutputChannel(BPWM_T *bpwm,
     (bpwm)->CTL &= ~(BPWM_CTL_CNTTYPE01_Msk << (u32ChannelNum >> 1));
     (bpwm)->CTL |= BPWM_CTL_CNTMODE0_Msk << (8 * u32ChannelNum);
 
-    if(u32DutyCycle) {
+    if(u32DutyCycle)
+    {
         *((__IO uint32_t *)((((uint32_t) & ((bpwm)->CMPDAT0)) + u32ChannelNum * 12))) = u32DutyCycle * (u16CNR + 1) / 100 - 1;
-    } else {
+    }
+    else
+    {
         *((__IO uint32_t *)((((uint32_t) & ((bpwm)->CMPDAT0)) + u32ChannelNum * 12))) = 0;
     }
     *((__IO uint32_t *)((((uint32_t) & ((bpwm)->PERIOD0)) + (u32ChannelNum) * 12))) = u16CNR;
@@ -109,8 +114,10 @@ uint32_t BPWM_ConfigOutputChannel(BPWM_T *bpwm,
 void BPWM_Start(BPWM_T *bpwm, uint32_t u32ChannelMask)
 {
     uint32_t u32Mask = 0, i;
-    for(i = 0; i < BPWM_CHANNEL_NUM; i ++) {
-        if(u32ChannelMask & (1 << i)) {
+    for(i = 0; i < BPWM_CHANNEL_NUM; i ++)
+    {
+        if(u32ChannelMask & (1 << i))
+        {
             u32Mask |= (BPWM_CTL_CNTEN0_Msk << (i * 8));
         }
     }
@@ -129,8 +136,10 @@ void BPWM_Start(BPWM_T *bpwm, uint32_t u32ChannelMask)
 void BPWM_Stop(BPWM_T *bpwm, uint32_t u32ChannelMask)
 {
     uint32_t i;
-    for(i = 0; i < BPWM_CHANNEL_NUM; i ++) {
-        if(u32ChannelMask & (1 << i)) {
+    for(i = 0; i < BPWM_CHANNEL_NUM; i ++)
+    {
+        if(u32ChannelMask & (1 << i))
+        {
             *((__IO uint32_t *)((((uint32_t) & ((bpwm)->PERIOD0)) + i * 12))) = 0;
         }
     }
@@ -147,8 +156,10 @@ void BPWM_Stop(BPWM_T *bpwm, uint32_t u32ChannelMask)
 void BPWM_ForceStop(BPWM_T *bpwm, uint32_t u32ChannelMask)
 {
     uint32_t u32Mask = 0, i;
-    for(i = 0; i < BPWM_CHANNEL_NUM; i ++) {
-        if(u32ChannelMask & (1 << i)) {
+    for(i = 0; i < BPWM_CHANNEL_NUM; i ++)
+    {
+        if(u32ChannelMask & (1 << i))
+        {
             u32Mask |= (BPWM_CTL_CNTEN0_Msk << (i * 8));
         }
     }

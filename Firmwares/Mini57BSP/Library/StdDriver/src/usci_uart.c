@@ -290,7 +290,8 @@ uint32_t UUART_Open(UUART_T* uuart, uint32_t u32baudrate)
     if(u32Tmp >= u32Tmp2) u32Div = u32Div + 1;
 
     u32Tmp = 0x400 * 0x10;
-    for(u32PDSCnt = 1; u32PDSCnt <= 0x04; u32PDSCnt++) {
+    for(u32PDSCnt = 1; u32PDSCnt <= 0x04; u32PDSCnt++)
+    {
         if(u32Div <= (u32Tmp * u32PDSCnt)) break;
     }
 
@@ -305,30 +306,38 @@ uint32_t UUART_Open(UUART_T* uuart, uint32_t u32baudrate)
 
     u32Tmp = 0;
 
-    for(u32DSCnt = 6; u32DSCnt <= 0x10; u32DSCnt++) { /* DSCNT could be 0x5~0xF */
+    for(u32DSCnt = 6; u32DSCnt <= 0x10; u32DSCnt++)   /* DSCNT could be 0x5~0xF */
+    {
 
         u32ClkDiv = u32Div / u32DSCnt;
 
-        if(u32ClkDiv > 0x400) {
+        if(u32ClkDiv > 0x400)
+        {
             u32ClkDiv = 0x400;
             u32Tmp = u32Div - (u32ClkDiv * u32DSCnt);
             u32Tmp2 = u32Tmp + 1;
-        } else {
+        }
+        else
+        {
             u32Tmp = u32Div - (u32ClkDiv * u32DSCnt);
             u32Tmp2 = ((u32ClkDiv+1) * u32DSCnt) - u32Div;
         }
 
-        if(u32Tmp >= u32Tmp2) {
+        if(u32Tmp >= u32Tmp2)
+        {
             u32ClkDiv = u32ClkDiv + 1;
-        } else u32Tmp2 = u32Tmp;
+        }
+        else u32Tmp2 = u32Tmp;
 
-        if(u32Tmp2 < u32Min) {
+        if(u32Tmp2 < u32Min)
+        {
             u32Min = u32Tmp2;
             u32MinDSCnt = u32DSCnt;
             u32MinClkDiv = u32ClkDiv;
 
             /* Break when get good results */
-            if(u32Min == 0) {
+            if(u32Min == 0)
+            {
                 break;
             }
         }
@@ -368,10 +377,12 @@ uint32_t UUART_Read(UUART_T* uuart, uint8_t *pu8RxBuf, uint32_t u32ReadBytes)
 {
     uint32_t  u32Count, u32delayno;
 
-    for(u32Count = 0; u32Count < u32ReadBytes; u32Count++) {
+    for(u32Count = 0; u32Count < u32ReadBytes; u32Count++)
+    {
         u32delayno = 0;
 
-        while(uuart->BUFSTS & UUART_BUFSTS_RXEMPTY_Msk) { /* Check RX empty => failed */
+        while(uuart->BUFSTS & UUART_BUFSTS_RXEMPTY_Msk)   /* Check RX empty => failed */
+        {
             u32delayno++;
             if(u32delayno >= 0x40000000)
                 return FALSE;
@@ -417,7 +428,8 @@ uint32_t UUART_SetLine_Config(UUART_T* uuart, uint32_t u32baudrate, uint32_t u32
     /* Get PCLK frequency */
     u32PCLKFreq = CLK_GetPCLKFreq();
 
-    if(u32baudrate != 0) {
+    if(u32baudrate != 0)
+    {
         u32Div = u32PCLKFreq / u32baudrate;
         u32Tmp = (u32PCLKFreq / u32Div) - u32baudrate;
         u32Tmp2 = u32baudrate - (u32PCLKFreq / (u32Div+1));
@@ -425,7 +437,8 @@ uint32_t UUART_SetLine_Config(UUART_T* uuart, uint32_t u32baudrate, uint32_t u32
         if(u32Tmp >= u32Tmp2) u32Div = u32Div + 1;
 
         u32Tmp = 0x400 * 0x10;
-        for(u32PDSCnt = 1; u32PDSCnt <= 0x04; u32PDSCnt++) {
+        for(u32PDSCnt = 1; u32PDSCnt <= 0x04; u32PDSCnt++)
+        {
             if(u32Div <= (u32Tmp * u32PDSCnt)) break;
         }
 
@@ -438,30 +451,38 @@ uint32_t UUART_SetLine_Config(UUART_T* uuart, uint32_t u32baudrate, uint32_t u32
         u32MinDSCnt = 0;
         u32MinClkDiv = 0;
 
-        for(u32DSCnt = 6; u32DSCnt <= 0x10; u32DSCnt++) { /* DSCNT could be 0x5~0xF */
+        for(u32DSCnt = 6; u32DSCnt <= 0x10; u32DSCnt++)   /* DSCNT could be 0x5~0xF */
+        {
 
             u32ClkDiv = u32Div / u32DSCnt;
 
-            if(u32ClkDiv > 0x400) {
+            if(u32ClkDiv > 0x400)
+            {
                 u32ClkDiv = 0x400;
                 u32Tmp = u32Div - (u32ClkDiv * u32DSCnt);
                 u32Tmp2 = u32Tmp + 1;
-            } else {
+            }
+            else
+            {
                 u32Tmp = u32Div - (u32ClkDiv * u32DSCnt);
                 u32Tmp2 = ((u32ClkDiv+1) * u32DSCnt) - u32Div;
             }
 
-            if(u32Tmp >= u32Tmp2) {
+            if(u32Tmp >= u32Tmp2)
+            {
                 u32ClkDiv = u32ClkDiv + 1;
-            } else u32Tmp2 = u32Tmp;
+            }
+            else u32Tmp2 = u32Tmp;
 
-            if(u32Tmp2 < u32Min) {
+            if(u32Tmp2 < u32Min)
+            {
                 u32Min = u32Tmp2;
                 u32MinDSCnt = u32DSCnt;
                 u32MinClkDiv = u32ClkDiv;
 
                 /* Break when get good results */
-                if(u32Min == 0) {
+                if(u32Min == 0)
+                {
                     break;
                 }
             }
@@ -471,7 +492,9 @@ uint32_t UUART_SetLine_Config(UUART_T* uuart, uint32_t u32baudrate, uint32_t u32
         uuart->BRGEN = ((u32MinClkDiv-1) << UUART_BRGEN_CLKDIV_Pos) |
                        ((u32MinDSCnt-1) << UUART_BRGEN_DSCNT_Pos) |
                        ((u32PDSCnt-1) << UUART_BRGEN_PDSCNT_Pos);
-    } else {
+    }
+    else
+    {
         u32PDSCnt = ((uuart->BRGEN & UUART_BRGEN_PDSCNT_Msk) >> UUART_BRGEN_PDSCNT_Pos) + 1;
         u32MinDSCnt = ((uuart->BRGEN & UUART_BRGEN_DSCNT_Msk) >> UUART_BRGEN_DSCNT_Pos) + 1;
         u32MinClkDiv = ((uuart->BRGEN & UUART_BRGEN_CLKDIV_Msk) >> UUART_BRGEN_CLKDIV_Pos) + 1;
@@ -521,9 +544,11 @@ uint32_t UUART_Write(UUART_T* uuart, uint8_t *pu8TxBuf, uint32_t u32WriteBytes)
 {
     uint32_t  u32Count, u32delayno;
 
-    for(u32Count = 0; u32Count != u32WriteBytes; u32Count++) {
+    for(u32Count = 0; u32Count != u32WriteBytes; u32Count++)
+    {
         u32delayno = 0;
-        while((uuart->BUFSTS & UUART_BUFSTS_TXEMPTY_Msk) == 0) { /* Wait Tx empty */
+        while((uuart->BUFSTS & UUART_BUFSTS_TXEMPTY_Msk) == 0)   /* Wait Tx empty */
+        {
             u32delayno++;
             if(u32delayno >= 0x40000000)
                 return FALSE;

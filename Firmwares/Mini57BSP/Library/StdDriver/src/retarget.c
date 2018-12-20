@@ -21,7 +21,15 @@
 #pragma import _printf_widthprec
 #endif
 #endif
+/* Uncomment this line to disable all printf and getchar. getchar() will always return 0x00*/
+/* #define DISABLE_UART */
 
+#if defined(DEBUG_ENABLE_SEMIHOST)
+    #ifndef DISABLE_UART
+        #define DISABLE_UART
+    #endif
+#endif
+#define DEBUG_PORT   UUART0
 /*---------------------------------------------------------------------------------------------------------*/
 /* Global variables                                                                                        */
 /*---------------------------------------------------------------------------------------------------------*/
@@ -69,8 +77,41 @@ void Hard_Fault_Handler(uint32_t stack[])
 static char g_buf[16];
 static char g_buf_len = 0;
 
-# if defined(__ICCARM__)
 
+/* Make sure won't goes here only because --gnu is defined , so
+   add !__CC_ARM and !__ICCARM__ checking */
+# if defined ( __GNUC__ ) && !(__CC_ARM) && !(__ICCARM__)
+
+# elif defined(__ICCARM__)      // IAR
+
+
+
+/**
+ *
+ * @brief      The function to process semihosted command
+ * @param[in]  n32In_R0  : semihost register 0
+ * @param[in]  n32In_R1  : semihost register 1
+ * @param[out] pn32Out_R0: semihost register 0
+ * @retval     0: No ICE debug
+ * @retval     1: ICE debug
+ *
+ */
+int32_t SH_DoCommand(int32_t n32In_R0, int32_t n32In_R1, int32_t *pn32Out_R0)
+{
+    asm("BKPT   0xAB    \n"       //; This instruction will cause ICE trap or system HardFault
+        "B      SH_ICE  \n"
+        "SH_HardFault:  \n"       //; Captured by HardFault
+        "MOVS   R0, #0  \n"       //; Set return value to 0
+        "BX     lr      \n"       //; Return
+        "SH_ICE:        \n"       //; Captured by ICE
+        "CMP    R2, #0  \n"
+        "BEQ    SH_End  \n"
+        "STR    R0, [R2]\n"       //; Save the return value to *pn32Out_R0
+        "SH_End:        \n");
+
+    return 1;                 //; Return 1 when it is trap by ICE
+
+}
 
 /**
  * @brief    This HardFault handler is implemented to support semihost
@@ -117,33 +158,6 @@ void HardFault_Handler(void)
 
     /* TODO: Implement your own hard fault handler here. */
     while(1);
-}
-
-/**
- *
- * @brief      The function to process semihosted command
- * @param[in]  n32In_R0  : semihost register 0
- * @param[in]  n32In_R1  : semihost register 1
- * @param[out] pn32Out_R0: semihost register 0
- * @retval     0: No ICE debug
- * @retval     1: ICE debug
- *
- */
-int32_t SH_DoCommand(int32_t n32In_R0, int32_t n32In_R1, int32_t *pn32Out_R0)
-{
-    asm("BKPT   0xAB    \n"       //; This instruction will cause ICE trap or system HardFault
-        "B      SH_ICE  \n"
-        "SH_HardFault:  \n"       //; Captured by HardFault
-        "MOVS   R0, #0  \n"       //; Set return value to 0
-        "BX     lr      \n"       //; Return
-        "SH_ICE:        \n"       //; Captured by ICE
-        "CMP    R2, #0  \n"
-        "BEQ    SH_End  \n"
-        "STR    R0, [R2]\n"       //; Save the return value to *pn32Out_R0
-        "SH_End:        \n");
-
-    return 1;                 //; Return 1 when it is trap by ICE
-
 }
 
 
@@ -238,7 +252,38 @@ SH_End
 
 #else
 
-# if defined(__ICCARM__)
+/* Make sure won't goes here only because --gnu is defined , so
+   add !__CC_ARM and !__ICCARM__ checking */
+# if defined ( __GNUC__ ) && !(__CC_ARM) && !(__ICCARM__)
+
+/**
+ * @brief    This HardFault handler is implemented to show r0, r1, r2, r3, r12, lr, pc, psr
+ *
+ * @param    None
+ *
+ * @returns  None
+ *
+ * @details  This function is implement to print r0, r1, r2, r3, r12, lr, pc, psr.
+ *
+ */
+void HardFault_Handler(void)
+{
+    asm("MOVS    r0, #4                        \n"
+        "MOV     r1, LR                        \n"
+        "TST     r0, r1                        \n" /*; check LR bit 2 */
+        "BEQ     1f                            \n" /*; stack use MSP */
+        "MRS     R0, PSP                       \n" /*; stack use PSP, read PSP */
+        "MOV     R1, LR                        \n" /*; LR current value */
+        "B       Hard_Fault_Handler            \n"
+        "1:                                    \n"
+        "MRS     R0, MSP                       \n" /*; LR current value */
+        "B       Hard_Fault_Handler            \n"
+        ::[Hard_Fault_Handler] "r" (Hard_Fault_Handler) // input
+    );
+    while(1);
+}
+
+# elif defined(__ICCARM__)
 
 /**
  * @brief    This HardFault handler is implemented to show r0, r1, r2, r3, r12, lr, pc, psr 
@@ -300,7 +345,7 @@ Get_LR_and_Branch
 
 #endif
 
-
+#ifndef DISABLE_UART
 /**
  * @brief       Routine to send a char
  *
@@ -310,6 +355,7 @@ Get_LR_and_Branch
  *
  * @details     Send a target char to UART debug port .
  */
+
 #ifndef NONBLOCK_PRINTF
 void SendChar_ToUART(int ch)
 {
@@ -376,7 +422,9 @@ void SendChar_ToUART(int ch)
             break; // FIFO full
     }while(i32Tail != i32Head);
 }
-#endif
+#endif   /* else for NONBLOCK_PRINTF */
+
+#endif   /* if not def DISABLE_UART */
 /**
  * @brief       Routine to send a char
  *
@@ -397,15 +445,19 @@ void SendChar(int ch)
             g_buf_len = 0;
             return;
         } else {
+#ifndef DISABLE_UART
             int i;
 
             for(i=0; i<g_buf_len; i++)
                 SendChar_ToUART(g_buf[i]);
             g_buf_len = 0;
+#endif
         }
     }
 #else
+#ifndef DISABLE_UART
     SendChar_ToUART(ch);
+#endif
 #endif
 }
 
@@ -438,13 +490,15 @@ char GetChar(void)
 # endif
     return (0);
 #else
-
+#ifndef DISABLE_UART
     while (1) {
         if((DEBUG_PORT->BUFSTS & UUART_BUFSTS_RXEMPTY_Msk) == 0)  {
             return (DEBUG_PORT->RXDAT);
         }
     }
-
+#else
+    return 0;
+#endif
 #endif
 }
 
@@ -461,8 +515,11 @@ char GetChar(void)
 
 int kbhit(void)
 {
+#ifndef DISABLE_UART
     return !((DEBUG_PORT->BUFSTS & UUART_BUFSTS_RXEMPTY_Msk) == 0);
-	
+#else
+    return 0;
+#endif
 }
 /**
  * @brief    Check if debug message finished
@@ -477,8 +534,11 @@ int kbhit(void)
 
 int IsDebugFifoEmpty(void)
 {
+#ifndef DISABLE_UART
     return ((DEBUG_PORT->BUFSTS & UUART_BUFSTS_TXEMPTY_Msk) != 0);
-
+#else
+    return 1;
+#endif
 }
 
 /**
@@ -522,7 +582,31 @@ int fputc(int ch, FILE *stream)
     return ch;
 }
 
+#if defined ( __GNUC__ )
 
+int _write (int fd, char *ptr, int len)
+{
+	int i = len;
+    while(i--) {
+        while(DEBUG_PORT->BUFSTS & UUART_BUFSTS_TXFULL_Msk);
+
+        DEBUG_PORT->TXDAT = *ptr++;
+
+        if(*ptr == '\n') {
+            while(DEBUG_PORT->BUFSTS & UUART_BUFSTS_TXFULL_Msk);
+            DEBUG_PORT->TXDAT = '\r';
+        }
+    }
+	return len;
+}
+
+int _read (int fd, char *ptr, int len)
+{
+    while((DEBUG_PORT->BUFSTS & UUART_BUFSTS_RXEMPTY_Msk) != 0);
+    *ptr = DEBUG_PORT->RXDAT;
+	return 1;
+}
+#else
 /**
  * @brief      Get character from UART debug port or semihosting input
  *
@@ -553,7 +637,7 @@ int fgetc(FILE *stream)
  * @note       The above descriptions are copied from http://www.cplusplus.com/reference/clibrary/cstdio/ferror/.
  *
  */
-#if 1
+
 int ferror(FILE *stream)
 {
     return EOF;

@@ -46,14 +46,14 @@ void PGA_Open(PGA_T *pga, uint32_t u32Gain, uint32_t u32OutputMask)
         {
             /* Chip version B: disable PGA output pin by set PC3 MFP to non-PGA mode */
             SYS->GPC_MFP = (SYS->GPC_MFP & ~(SYS_GPC_MFP_PC3MFP_Msk))
-                            | (SYS_GPC_MFP_PC3_GPIO);
+                           | (SYS_GPC_MFP_PC3_GPIO);
         }
     }
     else
     {
         /* Chip version B: enable PGA output pin by set PC3 MFP to PGA mode */
         SYS->GPC_MFP = (SYS->GPC_MFP & ~(SYS_GPC_MFP_PC3MFP_Msk))
-                        | (SYS_GPC_MFP_PC3_PGA_O);
+                       | (SYS_GPC_MFP_PC3_PGA_O);
     }
 
     /* Chip version B: support gain level x1 by disable PGAEN bit */

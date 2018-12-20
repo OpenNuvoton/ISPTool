@@ -63,12 +63,12 @@ uint32_t USPI_Open(USPI_T *uspi, uint32_t u32MasterSlave, uint32_t u32SPIMode,  
     /* MSB data format */
     uspi->LINECTL &= ~USPI_LINECTL_LSB_Msk;
 
-     /* Set slave selection signal active low */	
+    /* Set slave selection signal active low */
     if(u32MasterSlave == USPI_MASTER)
-        uspi->LINECTL |= USPI_LINECTL_CTLOINV_Msk;	
+        uspi->LINECTL |= USPI_LINECTL_CTLOINV_Msk;
     else
         uspi->CTLIN0 |= USPI_CTLIN0_ININV_Msk;
-    
+
     /* Set operating mode and transfer timing */
     uspi->PROTCTL &= ~(USPI_PROTCTL_SCLKMODE_Msk | USPI_PROTCTL_AUTOSS_Msk | USPI_PROTCTL_SLAVE_Msk);
     uspi->PROTCTL |= (u32MasterSlave | u32SPIMode);
