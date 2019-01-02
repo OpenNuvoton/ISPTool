@@ -39,34 +39,34 @@ typedef struct
      * |Bits    |Field     |Descriptions
      * | :----: | :----:   | :---- |
      * |[0]     |PORF      |POR Reset Flag
-     * |        |          |The POR reset flag is set by the ...Reset Signalu201D from the Power-on Reset (POR) Controller or bit CHIPRST (SYS_IPRST0[0]) to indicate the previous reset source.
+     * |        |          |The POR reset flag is set by the "Reset Signal" from the Power-on Reset (POR) Controller or bit CHIPRST (SYS_IPRST0[0]) to indicate the previous reset source.
      * |        |          |0 = No reset from POR or CHIPRST.
      * |        |          |1 = Power-on Reset (POR) or CHIPRST had issued the reset signal to reset the system.
      * |        |          |Note: This bit can be cleared by software writing '1'.
      * |[1]     |PINRF     |NRESET Pin Reset Flag
-     * |        |          |The nRESET pin reset flag is set by the ...Reset Signalu201D from the nRESET Pin to indicate the previous reset source.
+     * |        |          |The nRESET pin reset flag is set by the "Reset Signal" from the nRESET Pin to indicate the previous reset source.
      * |        |          |0 = No reset from nRESET pin.
      * |        |          |1 = Pin nRESET had issued the reset signal to reset the system.
      * |        |          |Note: This bit can be cleared by software writing '1'.
      * |[2]     |WDTRF     |WDT Reset Flag
-     * |        |          |The WDT reset flag is set by the ...Reset Signalu201D from the Watchdog Timer or Window Watchdog Timer to indicate the previous reset source.
+     * |        |          |The WDT reset flag is set by the "Reset Signal" from the Watchdog Timer or Window Watchdog Timer to indicate the previous reset source.
      * |        |          |0 = No reset from watchdog timer or window watchdog timer.
      * |        |          |1 = The watchdog timer or window watchdog timer had issued the reset signal to reset the system.
      * |        |          |Note1: This bit can be cleared by software writing '1'.
      * |        |          |Note2: Watchdog Timer register RSTF(WDT_CTL[2]) bit is set if the system has been reset by WDT time-out reset
      * |        |          |Window Watchdog Timer register WWDTRF(WWDT_STATUS[1]) bit is set if the system has been reset by WWDT time-out reset.
      * |[3]     |LVRF      |LVR Reset Flag
-     * |        |          |The LVR reset flag is set by the ...Reset Signalu201D from the Low Voltage Reset Controller to indicate the previous reset source.
+     * |        |          |The LVR reset flag is set by the "Reset Signal" from the Low Voltage Reset Controller to indicate the previous reset source.
      * |        |          |0 = No reset from LVR.
      * |        |          |1 = LVR controller had issued the reset signal to reset the system.
      * |        |          |Note: This bit can be cleared by software writing '1'.
      * |[4]     |BODRF     |BOD Reset Flag
-     * |        |          |The BOD reset flag is set by the ...Reset Signalu201D from the Brown-Out Detector to indicate the previous reset source.
+     * |        |          |The BOD reset flag is set by the "Reset Signal" from the Brown-Out Detector to indicate the previous reset source.
      * |        |          |0 = No reset from BOD.
      * |        |          |1 = The BOD had issued the reset signal to reset the system.
      * |        |          |Note: This bit can be cleared by software writing '1'.
      * |[5]     |MCURF     |MCU Reset Flag
-     * |        |          |The MCU reset flag is set by the ...Reset Signalu201D from the Cortex-M0 Core to indicate the previous reset source.
+     * |        |          |The MCU reset flag is set by the "Reset Signal" from the Cortex-M0 Core to indicate the previous reset source.
      * |        |          |0 = No reset from Cortex-M0.
      * |        |          |1 = The Cortex-M0 had issued the reset signal to reset the system by writing 1 to the bit SYSRESETREQ(AIRCR[2], Application Interrupt and Reset Control Register, address = 0xE000ED0C) in system control registers of Cortex-M0 core.
      * |        |          |Note: This bit can be cleared by software writing '1'.
@@ -179,8 +179,8 @@ typedef struct
      * |        |          |Note: This bit is write protected. Refer to the SYS_REGLCTL register.
      * |[3]     |BODRSTEN  |Brown-out Reset Enable Bit (Write Protect)
      * |        |          |The default value is set by flash controller user configuration register CBORST(CONFIG0[20]) bit.
-     * |        |          |0 = Brown-out ...INTERRUPTu201D function Enabled.
-     * |        |          |1 = Brown-out ...RESETu201D function Enabled.
+     * |        |          |0 = Brown-out "INTERRUPT" function Enabled.
+     * |        |          |1 = Brown-out "RESET" function Enabled.
      * |        |          |Note1:
      * |        |          |While the Brown-out Detector function is enabled (BODEN high) and BOD reset function is enabled (BODRSTEN high), BOD will assert a signal to reset chip when the detected voltage is lower than the threshold (BODOUT high).
      * |        |          |While the BOD function is enabled (BODEN high) and BOD interrupt function is enabled (BODRSTEN low), BOD will assert an interrupt if BODOUT is high
@@ -461,7 +461,7 @@ typedef struct
      * | :----: | :----:   | :---- |
      * |[7:0]   |REGLCTL   |Register Lock Control Code (Write)
      * |        |          |Some registers have write-protection function
-     * |        |          |Writing these registers have to disable the protected function by writing the sequence value ...59hu201D, ...16hu201D, ...88hu201D to this field
+     * |        |          |Writing these registers have to disable the protected function by writing the sequence value "59h", "16h", "88h" to this field
      * |        |          |After this sequence is completed, the REGLCTL bit will be set to 1 and write-protection registers can be normal write.
      * |        |          |Register Lock Control Disable Index (Read)
      * |        |          |0 = Write-protection Enabled for writing protected registers

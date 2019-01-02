@@ -319,11 +319,11 @@ typedef struct
      * |        |          |The period of the suspend interval is obtained according to the following equation.
      * |        |          |(SUSPITV[3:0] + 0.5) * period of SPI_CLK clock cycle
      * |        |          |Example:
-     * |        |          |SUSPITV = 0x0 ... 0.5 SPI_CLK clock cycle.
-     * |        |          |SUSPITV = 0x1 ... 1.5 SPI_CLK clock cycle.
-     * |        |          |.....
-     * |        |          |SUSPITV = 0xE ... 14.5 SPI_CLK clock cycle.
-     * |        |          |SUSPITV = 0xF ... 15.5 SPI_CLK clock cycle.
+     * |        |          |SUSPITV = 0x0 " 0.5 SPI_CLK clock cycle.
+     * |        |          |SUSPITV = 0x1 " 1.5 SPI_CLK clock cycle.
+     * |        |          |"..
+     * |        |          |SUSPITV = 0xE " 14.5 SPI_CLK clock cycle.
+     * |        |          |SUSPITV = 0xF " 15.5 SPI_CLK clock cycle.
      * |[14:12] |TSMSEL    |Transmit Data Mode Selection
      * |        |          |This bit field describes how receive and transmit data is shifted in and out.
      * |        |          |TSMSEL = 000b: Full-duplex SPI.

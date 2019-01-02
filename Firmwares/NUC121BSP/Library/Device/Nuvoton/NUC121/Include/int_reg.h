@@ -42,7 +42,7 @@ typedef struct
      * |[8]     |NMI_EN    |NMI Interrupt Enable Bit (Write Protect)
      * |        |          |0 = NMI interrupt Disabled.
      * |        |          |1 = NMI interrupt Enabled.
-     * |        |          |Note: This bit is the protected bit, and programming it needs to write ...59hu201D, ...16hu201D, and ...88hu201D to address 0x5000_0100 to disable register protection
+     * |        |          |Note: This bit is the protected bit, and programming it needs to write "59h", "16h", and "88h" to address 0x5000_0100 to disable register protection
      * |        |          |Refer to the register REGWRPROT at address GCR_BA+0x100.
      * @var INT_T::MCU_IRQ
      * Offset: 0x84  MCU Interrupt Request Source Register

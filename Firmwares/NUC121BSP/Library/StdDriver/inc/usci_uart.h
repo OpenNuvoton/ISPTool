@@ -68,7 +68,7 @@ extern "C"
 /**
  *    @brief        Write USCI_UART data
  *
- *    @param[in]    uuart   The pointer of the specified USCI_UART module
+ *    @param[in]    psUUART   The pointer of the specified USCI_UART module
  *    @param[in]    u8Data  Data byte to transmit.
  *
  *    @return       None
@@ -77,13 +77,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UUART_WRITE(uuart, u8Data)    ((uuart)->TXDAT = (u8Data))
+#define UUART_WRITE(psUUART, u8Data)    ((psUUART)->TXDAT = (u8Data))
 
 
 /**
  *    @brief        Read USCI_UART data
  *
- *    @param[in]    uuart    The pointer of the specified USCI_UART module
+ *    @param[in]    psUUART    The pointer of the specified USCI_UART module
  *
  *    @return       The oldest data byte in RX buffer.
  *
@@ -91,13 +91,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UUART_READ(uuart)    ((uuart)->RXDAT)
+#define UUART_READ(psUUART)    ((psUUART)->RXDAT)
 
 
 /**
  *    @brief        Get Tx empty
  *
- *    @param[in]    uuart    The pointer of the specified USCI_UART module
+ *    @param[in]    psUUART    The pointer of the specified USCI_UART module
  *
  *    @retval       0   Tx buffer is not empty
  *    @retval       >=1 Tx buffer is empty
@@ -106,13 +106,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UUART_GET_TX_EMPTY(uuart)    ((uuart)->BUFSTS & UUART_BUFSTS_TXEMPTY_Msk)
+#define UUART_GET_TX_EMPTY(psUUART)    ((psUUART)->BUFSTS & UUART_BUFSTS_TXEMPTY_Msk)
 
 
 /**
  *    @brief        Get Rx empty
  *
- *    @param[in]    uuart    The pointer of the specified USCI_UART module
+ *    @param[in]    psUUART    The pointer of the specified USCI_UART module
  *
  *    @retval       0   Rx buffer is not empty
  *    @retval       >=1 Rx buffer is empty
@@ -121,13 +121,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UUART_GET_RX_EMPTY(uuart)    ((uuart)->BUFSTS & UUART_BUFSTS_RXEMPTY_Msk)
+#define UUART_GET_RX_EMPTY(psUUART)    ((psUUART)->BUFSTS & UUART_BUFSTS_RXEMPTY_Msk)
 
 
 /**
  *    @brief        Check specified usci_uart port transmission is over.
  *
- *    @param[in]    uuart    The pointer of the specified USCI_UART module
+ *    @param[in]    psUUART    The pointer of the specified USCI_UART module
  *
  *    @retval       0 Tx transmission is not over
  *    @retval       1 Tx transmission is over
@@ -137,13 +137,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UUART_IS_TX_EMPTY(uuart)    (((uuart)->BUFSTS & UUART_BUFSTS_TXEMPTY_Msk) >> UUART_BUFSTS_TXEMPTY_Pos)
+#define UUART_IS_TX_EMPTY(psUUART)    (((psUUART)->BUFSTS & UUART_BUFSTS_TXEMPTY_Msk) >> UUART_BUFSTS_TXEMPTY_Pos)
 
 
 /**
  *    @brief        Check specified usci_uart port receiver is empty.
  *
- *    @param[in]    uuart    The pointer of the specified USCI_UART module
+ *    @param[in]    psUUART    The pointer of the specified USCI_UART module
  *
  *    @retval       0 Rx receiver is not empty
  *    @retval       1 Rx receiver is empty
@@ -153,13 +153,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UUART_IS_RX_EMPTY(uuart)    (((uuart)->BUFSTS & UUART_BUFSTS_RXEMPTY_Msk) >> UUART_BUFSTS_RXEMPTY_Pos)
+#define UUART_IS_RX_EMPTY(psUUART)    (((psUUART)->BUFSTS & UUART_BUFSTS_RXEMPTY_Msk) >> UUART_BUFSTS_RXEMPTY_Pos)
 
 
 /**
  *    @brief        Wait specified usci_uart port transmission is over
  *
- *    @param[in]    uuart    The pointer of the specified USCI_UART module
+ *    @param[in]    psUUART    The pointer of the specified USCI_UART module
  *
  *    @return       None
  *
@@ -167,13 +167,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UUART_WAIT_TX_EMPTY(uuart)    while(!((((uuart)->BUFSTS) & UUART_BUFSTS_TXEMPTY_Msk) >> UUART_BUFSTS_TXEMPTY_Pos))
+#define UUART_WAIT_TX_EMPTY(psUUART)    while(!((((psUUART)->BUFSTS) & UUART_BUFSTS_TXEMPTY_Msk) >> UUART_BUFSTS_TXEMPTY_Pos))
 
 
 /**
  *    @brief        Check TX buffer is full or not
  *
- *    @param[in]    uuart    The pointer of the specified USCI_UART module
+ *    @param[in]    psUUART    The pointer of the specified USCI_UART module
  *
  *    @retval       1 TX buffer is full
  *    @retval       0 TX buffer is not full
@@ -182,13 +182,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UUART_IS_TX_FULL(uuart)    (((uuart)->BUFSTS & UUART_BUFSTS_TXFULL_Msk)>>UUART_BUFSTS_TXFULL_Pos)
+#define UUART_IS_TX_FULL(psUUART)    (((psUUART)->BUFSTS & UUART_BUFSTS_TXFULL_Msk)>>UUART_BUFSTS_TXFULL_Pos)
 
 
 /**
  *    @brief        Check RX buffer is full or not
  *
- *    @param[in]    uuart    The pointer of the specified USCI_UART module
+ *    @param[in]    psUUART    The pointer of the specified USCI_UART module
  *
  *    @retval       1 RX buffer is full
  *    @retval       0 RX buffer is not full
@@ -197,13 +197,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UUART_IS_RX_FULL(uuart)    (((uuart)->BUFSTS & UUART_BUFSTS_RXFULL_Msk)>>UUART_BUFSTS_RXFULL_Pos)
+#define UUART_IS_RX_FULL(psUUART)    (((psUUART)->BUFSTS & UUART_BUFSTS_RXFULL_Msk)>>UUART_BUFSTS_RXFULL_Pos)
 
 
 /**
  *    @brief        Get Tx full register value
  *
- *    @param[in]    uuart    The pointer of the specified USCI_UART module
+ *    @param[in]    psUUART    The pointer of the specified USCI_UART module
  *
  *    @retval       0   Tx buffer is not full.
  *    @retval       >=1 Tx buffer is full.
@@ -212,13 +212,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UUART_GET_TX_FULL(uuart)    ((uuart)->BUFSTS & UUART_BUFSTS_TXFULL_Msk)
+#define UUART_GET_TX_FULL(psUUART)    ((psUUART)->BUFSTS & UUART_BUFSTS_TXFULL_Msk)
 
 
 /**
  *    @brief        Get Rx full register value
  *
- *    @param[in]    uuart    The pointer of the specified USCI_UART module
+ *    @param[in]    psUUART    The pointer of the specified USCI_UART module
  *
  *    @retval       0   Rx buffer is not full.
  *    @retval       >=1 Rx buffer is full.
@@ -227,13 +227,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UUART_GET_RX_FULL(uuart)    ((uuart)->BUFSTS & UUART_BUFSTS_RXFULL_Msk)
+#define UUART_GET_RX_FULL(psUUART)    ((psUUART)->BUFSTS & UUART_BUFSTS_RXFULL_Msk)
 
 
 /**
  *    @brief        Enable specified USCI_UART protocol interrupt
  *
- *    @param[in]    uuart      The pointer of the specified USCI_UART module
+ *    @param[in]    psUUART      The pointer of the specified USCI_UART module
  *    @param[in]    u32IntSel  Interrupt type select
  *                             - \ref UUART_PROTIEN_RLSIEN_Msk   : Rx Line status interrupt
  *                             - \ref UUART_PROTIEN_ABRIEN_Msk   : Auto-baud rate interrupt
@@ -244,13 +244,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UUART_ENABLE_PROT_INT(uuart, u32IntSel)    ((uuart)->PROTIEN |= (u32IntSel))
+#define UUART_ENABLE_PROT_INT(psUUART, u32IntSel)    ((psUUART)->PROTIEN |= (u32IntSel))
 
 
 /**
  *    @brief        Disable specified USCI_UART protocol interrupt
  *
- *    @param[in]    uuart      The pointer of the specified USCI_UART module
+ *    @param[in]    psUUART      The pointer of the specified USCI_UART module
  *    @param[in]    u32IntSel  Interrupt type select
  *                             - \ref UUART_PROTIEN_RLSIEN_Msk   : Rx Line status interrupt
  *                             - \ref UUART_PROTIEN_ABRIEN_Msk   : Auto-baud rate interrupt
@@ -261,13 +261,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UUART_DISABLE_PROT_INT(uuart, u32IntSel)    ((uuart)->PROTIEN &= ~(u32IntSel))
+#define UUART_DISABLE_PROT_INT(psUUART, u32IntSel)    ((psUUART)->PROTIEN &= ~(u32IntSel))
 
 
 /**
  *    @brief        Enable specified USCI_UART buffer interrupt
  *
- *    @param[in]    uuart      The pointer of the specified USCI_UART module
+ *    @param[in]    psUUART      The pointer of the specified USCI_UART module
  *    @param[in]    u32IntSel  Interrupt type select
  *                             - \ref UUART_BUFCTL_RXOVIEN_Msk     : Receive buffer overrun error interrupt
  *
@@ -277,13 +277,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UUART_ENABLE_BUF_INT(uuart, u32IntSel)    ((uuart)->BUFCTL |= (u32IntSel))
+#define UUART_ENABLE_BUF_INT(psUUART, u32IntSel)    ((psUUART)->BUFCTL |= (u32IntSel))
 
 
 /**
  *    @brief        Disable specified USCI_UART buffer interrupt
  *
- *    @param[in]    uuart      The pointer of the specified USCI_UART module
+ *    @param[in]    psUUART      The pointer of the specified USCI_UART module
  *    @param[in]    u32IntSel  Interrupt type select
  *                             - \ref UUART_BUFCTL_RXOVIEN_Msk     : Receive buffer overrun error interrupt
  *
@@ -293,13 +293,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UUART_DISABLE_BUF_INT(uuart, u32IntSel)    ((uuart)->BUFCTL &= ~ (u32IntSel))
+#define UUART_DISABLE_BUF_INT(psUUART, u32IntSel)    ((psUUART)->BUFCTL &= ~ (u32IntSel))
 
 
 /**
  *    @brief        Enable specified USCI_UART transfer interrupt
  *
- *    @param[in]    uuart      The pointer of the specified USCI_UART module
+ *    @param[in]    psUUART      The pointer of the specified USCI_UART module
  *    @param[in]    u32IntSel  Interrupt type select
  *                             - \ref UUART_INTEN_RXENDIEN_Msk  : Receive end interrupt
  *                             - \ref UUART_INTEN_RXSTIEN_Msk   : Receive start interrupt
@@ -312,13 +312,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UUART_ENABLE_TRANS_INT(uuart, u32IntSel)    ((uuart)->INTEN |= (u32IntSel))
+#define UUART_ENABLE_TRANS_INT(psUUART, u32IntSel)    ((psUUART)->INTEN |= (u32IntSel))
 
 
 /**
  *    @brief        Disable specified USCI_UART transfer interrupt
  *
- *    @param[in]    uuart      The pointer of the specified USCI_UART module
+ *    @param[in]    psUUART      The pointer of the specified USCI_UART module
  *    @param[in]    u32IntSel  Interrupt type select
  *                             - \ref UUART_INTEN_RXENDIEN_Msk  : Receive end interrupt
  *                             - \ref UUART_INTEN_RXSTIEN_Msk   : Receive start interrupt
@@ -331,13 +331,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UUART_DISABLE_TRANS_INT(uuart, u32IntSel)    ((uuart)->INTEN &= ~(u32IntSel))
+#define UUART_DISABLE_TRANS_INT(psUUART, u32IntSel)    ((psUUART)->INTEN &= ~(u32IntSel))
 
 
 /**
  *    @brief        Get protocol interrupt flag/status
  *
- *    @param[in]    uuart        The pointer of the specified USCI_UART module
+ *    @param[in]    psUUART        The pointer of the specified USCI_UART module
  *
  *    @return       The interrupt flag/status of protocol status register.
  *
@@ -345,13 +345,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UUART_GET_PROT_STATUS(uuart)    ((uuart)->PROTSTS)
+#define UUART_GET_PROT_STATUS(psUUART)    ((psUUART)->PROTSTS)
 
 
 /**
  *    @brief        Clear specified protocol interrupt flag
  *
- *    @param[in]    uuart           The pointer of the specified USCI_UART module
+ *    @param[in]    psUUART         The pointer of the specified USCI_UART module
  *    @param[in]    u32IntTypeFlag  Interrupt Type Flag, should be
  *                                  - \ref UUART_PROTSTS_ABERRSTS_Msk    : Auto-baud Rate Error Interrupt Indicator
  *                                  - \ref UUART_PROTSTS_ABRDETIF_Msk    : Auto-baud Rate Detected Interrupt Flag
@@ -369,13 +369,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UUART_CLR_PROT_INT_FLAG(uuart,u32IntTypeFlag)    ((uuart)->PROTSTS = (u32IntTypeFlag))
+#define UUART_CLR_PROT_INT_FLAG(psUUART,u32IntTypeFlag)    ((psUUART)->PROTSTS = (u32IntTypeFlag))
 
 
 /**
  *    @brief        Get transmit/receive buffer interrupt flag/status
  *
- *    @param[in]    uuart        The pointer of the specified USCI_UART module
+ *    @param[in]    psUUART        The pointer of the specified USCI_UART module
  *
  *    @return       The interrupt flag/status of buffer status register.
  *
@@ -383,13 +383,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UUART_GET_BUF_STATUS(uuart)    ((uuart)->BUFSTS)
+#define UUART_GET_BUF_STATUS(psUUART)    ((psUUART)->BUFSTS)
 
 
 /**
  *    @brief        Clear specified buffer interrupt flag
  *
- *    @param[in]    uuart           The pointer of the specified USCI_UART module
+ *    @param[in]    psUUART         The pointer of the specified USCI_UART module
  *    @param[in]    u32IntTypeFlag  Interrupt Type Flag, should be
  *                                  - \ref UUART_BUFSTS_RXOVIF_Msk : Receive Buffer Over-run Error  Interrupt Indicator
  *
@@ -399,13 +399,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UUART_CLR_BUF_INT_FLAG(uuart,u32IntTypeFlag)    ((uuart)->BUFSTS = (u32IntTypeFlag))
+#define UUART_CLR_BUF_INT_FLAG(psUUART,u32IntTypeFlag)    ((psUUART)->BUFSTS = (u32IntTypeFlag))
 
 
 /**
  *    @brief        Get wakeup flag
  *
- *    @param[in]    uuart    The pointer of the specified USCI_UART module
+ *    @param[in]    psUUART The pointer of the specified USCI_UART module
  *
  *    @retval       0       Chip did not wake up from power-down mode.
  *    @retval       1       Chip waked up from power-down mode.
@@ -414,13 +414,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UUART_GET_WAKEUP_FLAG(uuart)    ((uuart)->WKSTS & UUART_WKSTS_WKF_Msk ? 1: 0 )
+#define UUART_GET_WAKEUP_FLAG(psUUART)    ((psUUART)->WKSTS & UUART_WKSTS_WKF_Msk ? 1: 0 )
 
 
 /**
  *    @brief        Clear wakeup flag
  *
- *    @param[in]    uuart        The pointer of the specified USCI_UART module
+ *    @param[in]    psUUART        The pointer of the specified USCI_UART module
  *
  *    @return       None
  *
@@ -428,13 +428,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UUART_CLR_WAKEUP_FLAG(uuart)    ((uuart)->WKSTS = UUART_WKSTS_WKF_Msk)
+#define UUART_CLR_WAKEUP_FLAG(psUUART)    ((psUUART)->WKSTS = UUART_WKSTS_WKF_Msk)
 
 
 /**
   *   @brief      Enable PDMA transfer.
   *
-  *   @param[in]  uuart    The pointer of the specified USCI_UART module.
+  *   @param[in]  psUUART    The pointer of the specified USCI_UART module.
   *
   *   @return     None
   *
@@ -442,13 +442,13 @@ extern "C"
  *
  *    \hideinitializer
   */
-#define UUART_ENABLE_PDMA(uuart) ((uuart)->PDMACTL |= (UUART_PDMACTL_TXPDMAEN_Msk | UUART_PDMACTL_RXPDMAEN_Msk | UUART_PDMACTL_PDMAEN_Msk))
+#define UUART_ENABLE_PDMA(psUUART) ((psUUART)->PDMACTL |= (UUART_PDMACTL_TXPDMAEN_Msk | UUART_PDMACTL_RXPDMAEN_Msk | UUART_PDMACTL_PDMAEN_Msk))
 
 
 /**
   *   @brief      Disable PDMA transfer.
   *
-  *   @param[in]  uuart    The pointer of the specified USCI_UART module.
+  *   @param[in]  psUUART    The pointer of the specified USCI_UART module.
   *
   *   @return     None
   *
@@ -456,22 +456,22 @@ extern "C"
  *
  *    \hideinitializer
   */
-#define UUART_DISABLE_PDMA(uuart) ((uuart)->PDMACTL &= ~(UUART_PDMACTL_TXPDMAEN_Msk | UUART_PDMACTL_RXPDMAEN_Msk | UUART_PDMACTL_PDMAEN_Msk))
+#define UUART_DISABLE_PDMA(psUUART) ((psUUART)->PDMACTL &= ~(UUART_PDMACTL_TXPDMAEN_Msk | UUART_PDMACTL_RXPDMAEN_Msk | UUART_PDMACTL_PDMAEN_Msk))
 
 
-void UUART_ClearIntFlag(UUART_T *uuart, uint32_t u32Mask);
-uint32_t UUART_GetIntFlag(UUART_T *uuart, uint32_t u32Mask);
-void UUART_Close(UUART_T *uuart);
-void UUART_DisableInt(UUART_T  *uuart, uint32_t u32Mask);
-void UUART_EnableInt(UUART_T  *uuart, uint32_t u32Mask);
-uint32_t UUART_Open(UUART_T *uuart, uint32_t u32baudrate);
-uint32_t UUART_Read(UUART_T *uuart, uint8_t *pu8RxBuf, uint32_t u32ReadBytes);
-uint32_t UUART_SetLine_Config(UUART_T *uuart, uint32_t u32baudrate, uint32_t u32data_width, uint32_t u32parity, uint32_t u32stop_bits);
-uint32_t UUART_Write(UUART_T *uuart, uint8_t *pu8TxBuf, uint32_t u32WriteBytes);
-void UUART_EnableWakeup(UUART_T *uuart, uint32_t u32WakeupMode);
-void UUART_DisableWakeup(UUART_T *uuart);
-void UUART_EnableFlowCtrl(UUART_T *uuart);
-void UUART_DisableFlowCtrl(UUART_T *uuart);
+void UUART_ClearIntFlag(UUART_T *psUUART, uint32_t u32Mask);
+uint32_t UUART_GetIntFlag(UUART_T *psUUART, uint32_t u32Mask);
+void UUART_Close(UUART_T *psUUART);
+void UUART_DisableInt(UUART_T  *psUUART, uint32_t u32Mask);
+void UUART_EnableInt(UUART_T  *psUUART, uint32_t u32Mask);
+uint32_t UUART_Open(UUART_T *psUUART, uint32_t u32Baudrate);
+uint32_t UUART_Read(UUART_T *psUUART, uint8_t *pu8RxBuf, uint32_t u32ReadBytes);
+uint32_t UUART_SetLine_Config(UUART_T *psUUART, uint32_t u32Baudrate, uint32_t u32DataWidth, uint32_t u32Parity, uint32_t u32StopBits);
+uint32_t UUART_Write(UUART_T *psUUART, uint8_t *pu8TxBuf, uint32_t u32WriteBytes);
+void UUART_EnableWakeup(UUART_T *psUUART, uint32_t u32WakeupMode);
+void UUART_DisableWakeup(UUART_T *psUUART);
+void UUART_EnableFlowCtrl(UUART_T *psUUART);
+void UUART_DisableFlowCtrl(UUART_T *psUUART);
 
 
 /*@}*/ /* end of group UUART_EXPORTED_FUNCTIONS */

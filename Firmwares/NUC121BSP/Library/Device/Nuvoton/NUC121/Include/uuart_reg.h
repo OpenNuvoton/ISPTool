@@ -371,27 +371,27 @@ typedef struct
      * |        |          |1 = A receive finish interrupt status has occurred.
      * |        |          |Note: It is cleared by software writing one into this bit.
      * |[5]     |PARITYERR |Parity Error Flag
-     * |        |          |This bit is set to logic 1 whenever the received character does not have a valid ...parity bitu201D.
+     * |        |          |This bit is set to logic 1 whenever the received character does not have a valid "parity bit".
      * |        |          |0 = No parity error is generated.
      * |        |          |1 = Parity error is generated.
-     * |        |          |Note: This bit can be cleared by write ...1u201D among the BREAK, FRMERR and PARITYERR bits.
+     * |        |          |Note: This bit can be cleared by write "1" among the BREAK, FRMERR and PARITYERR bits.
      * |[6]     |FRMERR    |Framing Error Flag
-     * |        |          |This bit is set to logic 1 whenever the received character does not have a valid ...stop bitu201D (that is, the stop bit following the last data bit or parity bit is detected as logic 0).
+     * |        |          |This bit is set to logic 1 whenever the received character does not have a valid "stop bit" (that is, the stop bit following the last data bit or parity bit is detected as logic 0).
      * |        |          |0 = No framing error is generated.
      * |        |          |1 = Framing error is generated.
-     * |        |          |Note: This bit can be cleared by write ...1u201D among the BREAK, FRMERR and PARITYERR bits.
+     * |        |          |Note: This bit can be cleared by write "1" among the BREAK, FRMERR and PARITYERR bits.
      * |[7]     |BREAK     |Break Flag
-     * |        |          |This bit is set to logic 1 whenever the received data input (RX) is held in the ...spacing stateu201D (logic 0) for longer than a full word transmission time (that is, the total time of ...start bitu201D + data bits + parity + stop bits).
+     * |        |          |This bit is set to logic 1 whenever the received data input (RX) is held in the "spacing state" (logic 0) for longer than a full word transmission time (that is, the total time of "start bit" + data bits + parity + stop bits).
      * |        |          |0 = No Break is generated.
      * |        |          |1 = Break is generated in the receiver bus.
-     * |        |          |Note: This bit can be cleared by write ...1u201D among the BREAK, FRMERR and PARITYERR bits.
+     * |        |          |Note: This bit can be cleared by write "1" among the BREAK, FRMERR and PARITYERR bits.
      * |[9]     |ABRDETIF  |Auto-baud Rate Interrupt Flag
      * |        |          |This bit is set when auto-baud rate detection is done among the falling edge of the input data
      * |        |          |If the ABRIEN (UUART_PROTCTL[6]) is set, the auto-baud rate interrupt will be generated
      * |        |          |This bit can be set 4 times when the input data pattern is 0x55 and it is cleared before the next falling edge of the input bus.
      * |        |          |0 = Auto-baud rate detect function is not done.
      * |        |          |1 = One Bit auto-baud rate detect function is done.
-     * |        |          |Note: This bit can be cleared by writing ...1u201D to it.
+     * |        |          |Note: This bit can be cleared by writing "1" to it.
      * |[10]    |RXBUSY    |RX Bus Status Flag (Read Only)
      * |        |          |This bit indicates the busy status of the receiver.
      * |        |          |0 = The receiver is Idle.
@@ -402,7 +402,7 @@ typedef struct
      * |        |          |0 = Auto-baud rate detect counter is not overrun.
      * |        |          |1 = Auto-baud rate detect counter is overrun.
      * |        |          |Note 1: This bit is set at the same time of ABRDETIF.
-     * |        |          |Note 2: This bit can be cleared by writing ...1u201D to ABRDETIF or ABERRSTS.
+     * |        |          |Note 2: This bit can be cleared by writing "1" to ABRDETIF or ABERRSTS.
      * |[16]    |CTSSYNCLV |nCTS Synchronized Level Status (Read Only)
      * |        |          |This bit used to indicate the current status of the internal synchronized nCTS signal.
      * |        |          |0 = The internal synchronized nCTS is low.

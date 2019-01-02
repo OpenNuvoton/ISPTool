@@ -8,6 +8,12 @@
 #ifndef __USBD_H__
 #define __USBD_H__
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
+
 /*!<    Define it to enable Link Power Management(LPM) function.
         LPM related handler will raise after LPM event happen.
         if bcdUSB >= 0x0201, USB version is equal or higher than 2.1,
@@ -49,7 +55,7 @@ extern const S_USBD_INFO_T gsInfo;
   @{
 */
 #define USBD_BUF_BASE   (USBD_BASE+0x100)
-#define USBD_MAX_EP     8
+#define USBD_MAX_EP                     8
 
 #define EP0     0       /*!< Endpoint 0 */
 #define EP1     1       /*!< Endpoint 1 */
@@ -173,9 +179,9 @@ extern const S_USBD_INFO_T gsInfo;
 #define USBD_CFGP_CLRRDY        USBD_CFGP_CLRRDY_Msk
 
 #define USBD_CFG_CSTALL         USBD_CFG_CSTALL_Msk         /*!< Clear Stall */
-#define USBD_CFG_EPMODE_DISABLE (0ul << USBD_CFG_STATE_Pos)/*!< Endpoint Disable */
-#define USBD_CFG_EPMODE_OUT     (1ul << USBD_CFG_STATE_Pos)/*!< Out Endpoint */
-#define USBD_CFG_EPMODE_IN      (2ul << USBD_CFG_STATE_Pos)/*!< In Endpoint */
+#define USBD_CFG_EPMODE_DISABLE (0ul << USBD_CFG_STATE_Pos) /*!< Endpoint Disable */
+#define USBD_CFG_EPMODE_OUT     (1ul << USBD_CFG_STATE_Pos) /*!< Out Endpoint */
+#define USBD_CFG_EPMODE_IN      (2ul << USBD_CFG_STATE_Pos) /*!< In Endpoint */
 #define USBD_CFG_TYPE_ISO       (1ul << USBD_CFG_ISOCH_Pos) /*!< Isochronous */
 
 
@@ -397,9 +403,9 @@ extern const S_USBD_INFO_T gsInfo;
   * \hideinitializer
   */
 #ifdef SUPPORT_LPM
-    #define USBD_GET_BUS_STATE()        ((uint32_t)(USBD->ATTR & 0x300f))
+#define USBD_GET_BUS_STATE()        ((uint32_t)(USBD->ATTR & 0x300f))
 #else
-    #define USBD_GET_BUS_STATE()        ((uint32_t)(USBD->ATTR & 0xf))
+#define USBD_GET_BUS_STATE()        ((uint32_t)(USBD->ATTR & 0xf))
 #endif
 /**
   * @brief    Check cable connection state
@@ -683,7 +689,7 @@ static __INLINE uint32_t USBD_GetStall(uint8_t epnum)
 }
 
 
-extern volatile uint8_t g_usbd_RemoteWakeupEn;
+extern volatile uint8_t g_USBD_u8RemoteWakeupEn;
 
 
 typedef void (*VENDOR_REQ)(void);           /*!< Functional pointer type definition for Vendor class */
@@ -713,6 +719,9 @@ void USBD_LockEpStall(uint32_t u32EpBitmap);
 
 /*@}*/ /* end of group Standard_Driver */
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif //__USBD_H__
 

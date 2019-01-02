@@ -509,7 +509,7 @@ void UI2C_DisableWakeup(UI2C_T *ui2c)
   *
   * @param[in]  *ui2c           Point to UI2C peripheral
   * @param[in]  u8SlaveAddr     Access Slave address(7-bit)
-  * @param[in]  data            Write a byte data to Slave
+  * @param[in]  u8Data          Write a byte data to Slave
   *
   * @retval     0               Write data success
   * @retval     1               Write data fail, or bus occurs error events
@@ -518,7 +518,7 @@ void UI2C_DisableWakeup(UI2C_T *ui2c)
   *
   */
 
-uint8_t UI2C_WriteByte(UI2C_T *ui2c, uint8_t u8SlaveAddr, const uint8_t data)
+uint8_t UI2C_WriteByte(UI2C_T *ui2c, uint8_t u8SlaveAddr, const uint8_t u8Data)
 {
     uint8_t u8Xfering = 1, u8Err = 0, u8Ctrl = 0;
     enum UI2C_MASTER_EVENT eEvent = MASTER_SEND_START;
@@ -543,7 +543,7 @@ uint8_t UI2C_WriteByte(UI2C_T *ui2c, uint8_t u8SlaveAddr, const uint8_t data)
 
             if (eEvent == MASTER_SEND_ADDRESS)
             {
-                UI2C_SET_DATA(ui2c, data);                              /* Write data to UI2C_TXDAT */
+                UI2C_SET_DATA(ui2c, u8Data);                              /* Write data to UI2C_TXDAT */
                 eEvent = MASTER_SEND_DATA;
             }
             else
@@ -578,7 +578,7 @@ uint8_t UI2C_WriteByte(UI2C_T *ui2c, uint8_t u8SlaveAddr, const uint8_t data)
   *
   * @param[in]  *ui2c           Point to UI2C peripheral
   * @param[in]  u8SlaveAddr     Access Slave address(7-bit)
-  * @param[in]  *data           Pointer to array to write data to Slave
+  * @param[in]  *pu8Data        Pointer to array to write data to Slave
   * @param[in]  u32wLen         How many bytes need to write to Slave
   *
   * @return     A length of how many bytes have been transmitted.
@@ -587,7 +587,7 @@ uint8_t UI2C_WriteByte(UI2C_T *ui2c, uint8_t u8SlaveAddr, const uint8_t data)
   *
   */
 
-uint32_t UI2C_WriteMultiBytes(UI2C_T *ui2c, uint8_t u8SlaveAddr, const uint8_t *data, uint32_t u32wLen)
+uint32_t UI2C_WriteMultiBytes(UI2C_T *ui2c, uint8_t u8SlaveAddr, const uint8_t *pu8Data, uint32_t u32wLen)
 {
     uint8_t u8Xfering = 1, u8Err = 0, u8Ctrl = 0;
     uint32_t u32txLen = 0;
@@ -610,7 +610,7 @@ uint32_t UI2C_WriteMultiBytes(UI2C_T *ui2c, uint8_t u8SlaveAddr, const uint8_t *
             UI2C_CLR_PROT_INT_FLAG(UI2C0, UI2C_PROTSTS_ACKIF_Msk);      /* Clear ACK INT Flag */
 
             if (u32txLen < u32wLen)
-                UI2C_SET_DATA(ui2c, data[u32txLen++]);                  /* Write data to UI2C_TXDAT */
+                UI2C_SET_DATA(ui2c, pu8Data[u32txLen++]);                  /* Write data to UI2C_TXDAT */
             else
             {
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STO);                /* Clear SI and send STOP */
@@ -644,7 +644,7 @@ uint32_t UI2C_WriteMultiBytes(UI2C_T *ui2c, uint8_t u8SlaveAddr, const uint8_t *
   * @param[in]  *ui2c           Point to UI2C peripheral
   * @param[in]  u8SlaveAddr     Access Slave address(7-bit)
   * @param[in]  u8DataAddr      Specify a address (1 byte) of data write to
-  * @param[in]  data            A byte data to write it to Slave
+  * @param[in]  u8Data          A byte data to write it to Slave
   *
   * @retval     0               Write data success
   * @retval     1               Write data fail, or bus occurs error events
@@ -653,7 +653,7 @@ uint32_t UI2C_WriteMultiBytes(UI2C_T *ui2c, uint8_t u8SlaveAddr, const uint8_t *
   *
   */
 
-uint8_t UI2C_WriteByteOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8DataAddr, const uint8_t data)
+uint8_t UI2C_WriteByteOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8DataAddr, const uint8_t u8Data)
 {
     uint8_t u8Xfering = 1, u8Err = 0, u8Ctrl = 0;
     uint32_t u32txLen = 0;
@@ -682,7 +682,7 @@ uint8_t UI2C_WriteByteOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8DataAd
             }
             else if (u32txLen == 1)
             {
-                UI2C_SET_DATA(ui2c, data);                              /* Write data to UI2C_TXDAT */
+                UI2C_SET_DATA(ui2c, u8Data);                              /* Write data to UI2C_TXDAT */
                 u32txLen++;
             }
             else
@@ -719,7 +719,7 @@ uint8_t UI2C_WriteByteOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8DataAd
   * @param[in]  *ui2c           Point to UI2C peripheral
   * @param[in]  u8SlaveAddr     Access Slave address(7-bit)
   * @param[in]  u8DataAddr      Specify a address (1 byte) of data write to
-  * @param[in]  *data           Pointer to array to write data to Slave
+  * @param[in]  *pu8Data        Pointer to array to write data to Slave
   * @param[in]  u32wLen         How many bytes need to write to Slave
   *
   * @return     A length of how many bytes have been transmitted.
@@ -728,7 +728,7 @@ uint8_t UI2C_WriteByteOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8DataAd
   *
   */
 
-uint32_t UI2C_WriteMultiBytesOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8DataAddr, const uint8_t *data, uint32_t u32wLen)
+uint32_t UI2C_WriteMultiBytesOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8DataAddr, const uint8_t *pu8Data, uint32_t u32wLen)
 {
     uint8_t u8Xfering = 1, u8Err = 0, u8Ctrl = 0;
     uint32_t u32txLen = 0;
@@ -758,7 +758,7 @@ uint32_t UI2C_WriteMultiBytesOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u
             else
             {
                 if (u32txLen < u32wLen + 1)                             /* TX length = u32wLen + 1(u8DataAddr)*/
-                    UI2C_SET_DATA(ui2c, data[u32txLen++]);              /* Write data to UI2C_TXDAT */
+                    UI2C_SET_DATA(ui2c, pu8Data[u32txLen++]);              /* Write data to UI2C_TXDAT */
                 else
                 {
                     u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STO);            /* Clear SI and send STOP */
@@ -793,7 +793,7 @@ uint32_t UI2C_WriteMultiBytesOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u
   * @param[in]  *ui2c            Point to UI2C peripheral
   * @param[in]  u8SlaveAddr     Access Slave address(7-bit)
   * @param[in]  u16DataAddr     Specify a address (2 byte) of data write to
-  * @param[in]  data            Write a byte data to Slave
+  * @param[in]  u8Data          Write a byte data to Slave
   *
   * @retval     0               Write data success
   * @retval     1               Write data fail, or bus occurs error events
@@ -802,7 +802,7 @@ uint32_t UI2C_WriteMultiBytesOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u
   *
   */
 
-uint8_t UI2C_WriteByteTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16DataAddr, const uint8_t data)
+uint8_t UI2C_WriteByteTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16DataAddr, const uint8_t u8Data)
 {
     uint8_t u8Xfering = 1, u8Err = 0, u8Ctrl = 0;
     uint32_t u32txLen = 0;
@@ -836,7 +836,7 @@ uint8_t UI2C_WriteByteTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16Dat
             }
             else if (u32txLen == 2)
             {
-                UI2C_SET_DATA(ui2c, data);                                  /* Write data to UI2C_TXDAT */
+                UI2C_SET_DATA(ui2c, u8Data);                                  /* Write data to UI2C_TXDAT */
                 u32txLen++;
             }
             else
@@ -873,7 +873,7 @@ uint8_t UI2C_WriteByteTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16Dat
   * @param[in]  *ui2c           Point to UI2C peripheral
   * @param[in]  u8SlaveAddr     Access Slave address(7-bit)
   * @param[in]  u16DataAddr     Specify a address (2 bytes) of data write to
-  * @param[in]  *data           Pointer to array to write data to Slave
+  * @param[in]  *pu8Data        Pointer to array to write data to Slave
   * @param[in]  u32wLen         How many bytes need to write to Slave
   *
   * @return     A length of how many bytes have been transmitted.
@@ -882,7 +882,7 @@ uint8_t UI2C_WriteByteTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16Dat
   *
   */
 
-uint32_t UI2C_WriteMultiBytesTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16DataAddr, const uint8_t *data, uint32_t u32wLen)
+uint32_t UI2C_WriteMultiBytesTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16DataAddr, const uint8_t *pu8Data, uint32_t u32wLen)
 {
     uint8_t u8Xfering = 1, u8Err = 0, u8Ctrl = 0;
     uint32_t u32txLen = 0;
@@ -919,7 +919,7 @@ uint32_t UI2C_WriteMultiBytesTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t
             else
             {
                 if (u32txLen < u32wLen)
-                    UI2C_SET_DATA(ui2c, data[u32txLen++]);                  /* Write data to UI2C_TXDAT */
+                    UI2C_SET_DATA(ui2c, pu8Data[u32txLen++]);                  /* Write data to UI2C_TXDAT */
                 else
                 {
                     u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STO);                /* Clear SI and send STOP */
@@ -961,7 +961,7 @@ uint32_t UI2C_WriteMultiBytesTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t
   */
 uint8_t UI2C_ReadByte(UI2C_T *ui2c, uint8_t u8SlaveAddr)
 {
-    uint8_t u8Xfering = 1, u8Err = 0, rdata = 0, u8Ctrl = 0;
+    uint8_t u8Xfering = 1, u8Err = 0, u8rData = 0, u8Ctrl = 0;
     enum UI2C_MASTER_EVENT eEvent = MASTER_SEND_START;
 
     UI2C_START(ui2c);                                                       /* Send START */
@@ -994,7 +994,7 @@ uint8_t UI2C_ReadByte(UI2C_T *ui2c, uint8_t u8SlaveAddr)
             }
             else
             {
-                rdata = (unsigned char) UI2C_GET_DATA(ui2c);            /* Receive Data */
+                u8rData = (unsigned char) UI2C_GET_DATA(ui2c);            /* Receive Data */
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STO);
                 u8Xfering = 0;
             }
@@ -1012,9 +1012,9 @@ uint8_t UI2C_ReadByte(UI2C_T *ui2c, uint8_t u8SlaveAddr)
     }
 
     if (u8Err)
-        rdata = 0;
+        u8rData = 0;
 
-    return rdata;                                                           /* Return read data */
+    return u8rData;                                                           /* Return read data */
 }
 
 
@@ -1023,7 +1023,7 @@ uint8_t UI2C_ReadByte(UI2C_T *ui2c, uint8_t u8SlaveAddr)
   *
   * @param[in]  *ui2c           Point to UI2C peripheral
   * @param[in]  u8SlaveAddr     Access Slave address(7-bit)
-  * @param[out] *rdata          Point to array to store data from Slave
+  * @param[out] *pu8rData       Point to array to store data from Slave
   * @param[in]  u32rLen         How many bytes need to read from Slave
   *
   * @return     A length of how many bytes have been received
@@ -1032,7 +1032,7 @@ uint8_t UI2C_ReadByte(UI2C_T *ui2c, uint8_t u8SlaveAddr)
   *
   *
   */
-uint32_t UI2C_ReadMultiBytes(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t *rdata, uint32_t u32rLen)
+uint32_t UI2C_ReadMultiBytes(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t *pu8rData, uint32_t u32rLen)
 {
     uint8_t u8Xfering = 1, u8Err = 0, u8Ctrl = 0;
     uint32_t u32rxLen = 0;
@@ -1063,7 +1063,7 @@ uint32_t UI2C_ReadMultiBytes(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t *rdata, 
             }
             else
             {
-                rdata[u32rxLen++] = (unsigned char) UI2C_GET_DATA(ui2c);    /* Receive Data */
+                pu8rData[u32rxLen++] = (unsigned char) UI2C_GET_DATA(ui2c);    /* Receive Data */
 
                 if (u32rxLen < (u32rLen - 1))
                     u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_AA);
@@ -1083,7 +1083,7 @@ uint32_t UI2C_ReadMultiBytes(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t *rdata, 
             }
             else
             {
-                rdata[u32rxLen++] = (unsigned char) UI2C_GET_DATA(ui2c);    /* Receive Data */
+                pu8rData[u32rxLen++] = (unsigned char) UI2C_GET_DATA(ui2c);    /* Receive Data */
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STO);
                 u8Xfering = 0;
             }
@@ -1119,7 +1119,7 @@ uint32_t UI2C_ReadMultiBytes(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t *rdata, 
   */
 uint8_t UI2C_ReadByteOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8DataAddr)
 {
-    uint8_t u8Xfering = 1, u8Err = 0, rdata = 0, u8Ctrl = 0;
+    uint8_t u8Xfering = 1, u8Err = 0, u8rData = 0, u8Ctrl = 0;
     enum UI2C_MASTER_EVENT eEvent = MASTER_SEND_START;
 
     UI2C_START(ui2c);                                                       /* Send START */
@@ -1180,7 +1180,7 @@ uint8_t UI2C_ReadByteOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8DataAdd
             }
             else
             {
-                rdata = (uint8_t) UI2C_GET_DATA(ui2c);                  /* Receive Data */
+                u8rData = (uint8_t) UI2C_GET_DATA(ui2c);                  /* Receive Data */
                 u8Ctrl = I2C_CTL_STO_SI;
                 u8Xfering = 0;
             }
@@ -1198,9 +1198,9 @@ uint8_t UI2C_ReadByteOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8DataAdd
     }
 
     if (u8Err)
-        rdata = 0;                                                 /* If occurs error, return 0 */
+        u8rData = 0;                                                 /* If occurs error, return 0 */
 
-    return rdata;                                                  /* Return read data */
+    return u8rData;                                                  /* Return read data */
 }
 
 /**
@@ -1209,7 +1209,7 @@ uint8_t UI2C_ReadByteOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8DataAdd
   * @param[in]  *ui2c           Point to UI2C peripheral
   * @param[in]  u8SlaveAddr     Access Slave address(7-bit)
   * @param[in]  u8DataAddr      Specify a address (1 bytes) of data read from
-  * @param[out] *rdata          Point to array to store data from Slave
+  * @param[out] *pu8rData       Point to array to store data from Slave
   * @param[in]  u32rLen         How many bytes need to read from Slave
   *
   * @return     A length of how many bytes have been received
@@ -1218,7 +1218,7 @@ uint8_t UI2C_ReadByteOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8DataAdd
   *
   *
   */
-uint32_t UI2C_ReadMultiBytesOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8DataAddr, uint8_t *rdata, uint32_t u32rLen)
+uint32_t UI2C_ReadMultiBytesOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8DataAddr, uint8_t *pu8rData, uint32_t u32rLen)
 {
     uint8_t u8Xfering = 1, u8Err = 0, u8Ctrl = 0;
     uint32_t u32rxLen = 0;
@@ -1271,7 +1271,7 @@ uint32_t UI2C_ReadMultiBytesOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8
             }
             else
             {
-                rdata[u32rxLen++] = (uint8_t) UI2C_GET_DATA(ui2c);      /* Receive Data */
+                pu8rData[u32rxLen++] = (uint8_t) UI2C_GET_DATA(ui2c);      /* Receive Data */
 
                 if (u32rxLen < u32rLen - 1)
                     u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_AA);
@@ -1291,7 +1291,7 @@ uint32_t UI2C_ReadMultiBytesOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8
             }
             else
             {
-                rdata[u32rxLen++] = (uint8_t) UI2C_GET_DATA(ui2c);      /* Receive Data */
+                pu8rData[u32rxLen++] = (uint8_t) UI2C_GET_DATA(ui2c);      /* Receive Data */
                 u8Ctrl = I2C_CTL_STO_SI;
                 u8Xfering = 0;
             }
@@ -1326,7 +1326,7 @@ uint32_t UI2C_ReadMultiBytesOneReg(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint8_t u8
   */
 uint8_t UI2C_ReadByteTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16DataAddr)
 {
-    uint8_t u8Xfering = 1, u8Err = 0, rdata = 0, u8Ctrl = 0;
+    uint8_t u8Xfering = 1, u8Err = 0, u8rData = 0, u8Ctrl = 0;
     enum UI2C_MASTER_EVENT eEvent = MASTER_SEND_START;
 
     UI2C_START(ui2c);                                                       /* Send START */
@@ -1391,7 +1391,7 @@ uint8_t UI2C_ReadByteTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16Data
             }
             else
             {
-                rdata = (uint8_t) UI2C_GET_DATA(ui2c);                  /* Receive Data */
+                u8rData = (uint8_t) UI2C_GET_DATA(ui2c);                  /* Receive Data */
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STO);
                 u8Xfering = 0;
             }
@@ -1409,9 +1409,9 @@ uint8_t UI2C_ReadByteTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16Data
     }
 
     if (u8Err)
-        rdata = 0;                                                 /* If occurs error, return 0 */
+        u8rData = 0;                                                 /* If occurs error, return 0 */
 
-    return rdata;                                                  /* Return read data */
+    return u8rData;                                                  /* Return read data */
 }
 
 /**
@@ -1420,7 +1420,7 @@ uint8_t UI2C_ReadByteTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16Data
   * @param[in]  *ui2c            Point to UI2C peripheral
   * @param[in]  u8SlaveAddr     Access Slave address(7-bit)
   * @param[in]  u16DataAddr     Specify a address (2 bytes) of data read from
-  * @param[out] *rdata          Point to array to store data from Slave
+  * @param[out] *pu8rData       Point to array to store data from Slave
   * @param[in]  u32rLen         How many bytes need to read from Slave
   *
   * @return     A length of how many bytes have been received
@@ -1429,7 +1429,7 @@ uint8_t UI2C_ReadByteTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16Data
   *
   *
   */
-uint32_t UI2C_ReadMultiBytesTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16DataAddr, uint8_t *rdata, uint32_t u32rLen)
+uint32_t UI2C_ReadMultiBytesTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t u16DataAddr, uint8_t *pu8rData, uint32_t u32rLen)
 {
     uint8_t u8Xfering = 1, u8Err = 0, u8Ctrl = 0;
     uint32_t u32rxLen = 0;
@@ -1485,7 +1485,7 @@ uint32_t UI2C_ReadMultiBytesTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t 
             }
             else
             {
-                rdata[u32rxLen++] = (uint8_t) UI2C_GET_DATA(ui2c);      /* Receive Data */
+                pu8rData[u32rxLen++] = (uint8_t) UI2C_GET_DATA(ui2c);      /* Receive Data */
 
                 if (u32rxLen < u32rLen - 1)
                     u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_AA);
@@ -1505,7 +1505,7 @@ uint32_t UI2C_ReadMultiBytesTwoRegs(UI2C_T *ui2c, uint8_t u8SlaveAddr, uint16_t 
             }
             else
             {
-                rdata[u32rxLen++] = (uint8_t) UI2C_GET_DATA(ui2c);                  /* Receive Data */
+                pu8rData[u32rxLen++] = (uint8_t) UI2C_GET_DATA(ui2c);                  /* Receive Data */
                 u8Ctrl = (UI2C_CTL_PTRG | UI2C_CTL_STO);
                 u8Xfering = 0;
             }

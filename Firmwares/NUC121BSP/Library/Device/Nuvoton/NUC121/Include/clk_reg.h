@@ -32,7 +32,7 @@ typedef struct
      * | :----: | :----:   | :---- |
      * |[1:0]   |XTLEN     |External HXT or LXT Crystal Oscillator Enable Bit (Write Protect)
      * |        |          |The default clock source is from HIRC
-     * |        |          |These two bits are default set to ...00u201D and the PF.0 and PF.1 pins are GPIO.
+     * |        |          |These two bits are default set to "00" and the PF.0 and PF.1 pins are GPIO.
      * |        |          |00 = HXT & LXT Disabled (default).
      * |        |          |01 = HXT Enabled.
      * |        |          |10 = LXT Enabled.
@@ -59,7 +59,7 @@ typedef struct
      * |        |          |Note1: The interrupt will occur when both PDWKIF and PDWKIEN are high.
      * |        |          |Note2: This bit is write protected. Refer to the SYS_REGLCTL register.
      * |[6]     |PDWKIF    |Power-down Mode Wake-up Interrupt Status
-     * |        |          |Set by ...Power-down wake-up eventu201D, it indicates that resume from Power-down modeu201D
+     * |        |          |Set by "Power-down wake-up event", it indicates that resume from Power-down mode"
      * |        |          |The flag is set if the EINT0~5, GPIO, USBD, UART0, WDT, BOD, TMR0~3 or I2C0~1 wake-up occurred.
      * |        |          |Note1: Write 1 to clear the bit to 0.
      * |        |          |Note2: This bit works only if PDWKIEN (CLK_PWRCTL[5]) set to 1.

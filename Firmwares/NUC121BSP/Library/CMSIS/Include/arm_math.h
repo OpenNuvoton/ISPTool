@@ -1,41 +1,30 @@
 /* ----------------------------------------------------------------------
-* Copyright (C) 2010-2015 ARM Limited. All rights reserved.
-*
-* $Date: 16/07/18 2:20p $Revision:    V1.4.5 b
-*
-* Project:      CMSIS DSP Library
-* Title:        arm_math.h
-*
-* Description:  Public header file for CMSIS DSP Library
-*
-* Target Processor: Cortex-M7/Cortex-M4/Cortex-M3/Cortex-M0
-*
-* Redistribution and use in source and binary forms, with or without
-* modification, are permitted provided that the following conditions
-* are met:
-*   - Redistributions of source code must retain the above copyright
-*     notice, this list of conditions and the following disclaimer.
-*   - Redistributions in binary form must reproduce the above copyright
-*     notice, this list of conditions and the following disclaimer in
-*     the documentation and/or other materials provided with the
-*     distribution.
-*   - Neither the name of ARM LIMITED nor the names of its contributors
-*     may be used to endorse or promote products derived from this
-*     software without specific prior written permission.
-*
-* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-* COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-* BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-* CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-* LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
-* ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-* POSSIBILITY OF SUCH DAMAGE.
+ * Project:      CMSIS DSP Library
+ * Title:        arm_math.h
+ * Description:  Public header file for CMSIS DSP Library
+ *
+ * $Date:        27. January 2017
+ * $Revision:    V.1.5.1
+ *
+ * Target Processor: Cortex-M cores
  * -------------------------------------------------------------------- */
+/*
+ * Copyright (C) 2010-2017 ARM Limited or its affiliates. All rights reserved.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * Licensed under the Apache License, Version 2.0 (the License); you may
+ * not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an AS IS BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 /**
    \mainpage CMSIS DSP Software Library
@@ -65,26 +54,34 @@
    * ------------
    *
    * The library installer contains prebuilt versions of the libraries in the <code>Lib</code> folder.
-   * - arm_cortexM7lfdp_math.lib (Little endian and Double Precision Floating Point Unit on Cortex-M7)
-   * - arm_cortexM7bfdp_math.lib (Big endian and Double Precision Floating Point Unit on Cortex-M7)
-   * - arm_cortexM7lfsp_math.lib (Little endian and Single Precision Floating Point Unit on Cortex-M7)
-   * - arm_cortexM7bfsp_math.lib (Big endian and Single Precision Floating Point Unit on Cortex-M7)
-   * - arm_cortexM7l_math.lib (Little endian on Cortex-M7)
-   * - arm_cortexM7b_math.lib (Big endian on Cortex-M7)
-   * - arm_cortexM4lf_math.lib (Little endian and Floating Point Unit on Cortex-M4)
-   * - arm_cortexM4bf_math.lib (Big endian and Floating Point Unit on Cortex-M4)
-   * - arm_cortexM4l_math.lib (Little endian on Cortex-M4)
-   * - arm_cortexM4b_math.lib (Big endian on Cortex-M4)
-   * - arm_cortexM3l_math.lib (Little endian on Cortex-M3)
-   * - arm_cortexM3b_math.lib (Big endian on Cortex-M3)
-   * - arm_cortexM0l_math.lib (Little endian on Cortex-M0 / CortexM0+)
-   * - arm_cortexM0b_math.lib (Big endian on Cortex-M0 / CortexM0+)
+   * - arm_cortexM7lfdp_math.lib (Cortex-M7, Little endian, Double Precision Floating Point Unit)
+   * - arm_cortexM7bfdp_math.lib (Cortex-M7, Big endian, Double Precision Floating Point Unit)
+   * - arm_cortexM7lfsp_math.lib (Cortex-M7, Little endian, Single Precision Floating Point Unit)
+   * - arm_cortexM7bfsp_math.lib (Cortex-M7, Big endian and Single Precision Floating Point Unit on)
+   * - arm_cortexM7l_math.lib (Cortex-M7, Little endian)
+   * - arm_cortexM7b_math.lib (Cortex-M7, Big endian)
+   * - arm_cortexM4lf_math.lib (Cortex-M4, Little endian, Floating Point Unit)
+   * - arm_cortexM4bf_math.lib (Cortex-M4, Big endian, Floating Point Unit)
+   * - arm_cortexM4l_math.lib (Cortex-M4, Little endian)
+   * - arm_cortexM4b_math.lib (Cortex-M4, Big endian)
+   * - arm_cortexM3l_math.lib (Cortex-M3, Little endian)
+   * - arm_cortexM3b_math.lib (Cortex-M3, Big endian)
+   * - arm_cortexM0l_math.lib (Cortex-M0 / Cortex-M0+, Little endian)
+   * - arm_cortexM0b_math.lib (Cortex-M0 / Cortex-M0+, Big endian)
+   * - arm_ARMv8MBLl_math.lib (ARMv8M Baseline, Little endian)
+   * - arm_ARMv8MMLl_math.lib (ARMv8M Mainline, Little endian)
+   * - arm_ARMv8MMLlfsp_math.lib (ARMv8M Mainline, Little endian, Single Precision Floating Point Unit)
+   * - arm_ARMv8MMLld_math.lib (ARMv8M Mainline, Little endian, DSP instructions)
+   * - arm_ARMv8MMLldfsp_math.lib (ARMv8M Mainline, Little endian, DSP instructions, Single Precision Floating Point Unit)
    *
    * The library functions are declared in the public file <code>arm_math.h</code> which is placed in the <code>Include</code> folder.
    * Simply include this file and link the appropriate library in the application and begin calling the library functions. The Library supports single
-   * public header file <code> arm_math.h</code> for Cortex-M7/M4/M3/M0/M0+ with little endian and big endian. Same header file will be used for floating point unit(FPU) variants.
+   * public header file <code> arm_math.h</code> for Cortex-M cores with little endian and big endian. Same header file will be used for floating point unit(FPU) variants.
    * Define the appropriate pre processor MACRO ARM_MATH_CM7 or ARM_MATH_CM4 or  ARM_MATH_CM3 or
    * ARM_MATH_CM0 or ARM_MATH_CM0PLUS depending on the target processor in the application.
+   * For ARMv8M cores define pre processor MACRO ARM_MATH_ARMV8MBL or ARM_MATH_ARMV8MML.
+   * Set Pre processor MACRO __DSP_PRESENT if ARMv8M Mainline core supports DSP instructions.
+   * 
    *
    * Examples
    * --------
@@ -133,9 +130,18 @@
    * and ARM_MATH_CM0 for building library on Cortex-M0 target, ARM_MATH_CM0PLUS for building library on Cortex-M0+ target, and
    * ARM_MATH_CM7 for building the library on cortex-M7.
    *
+   * - ARM_MATH_ARMV8MxL:
+   *
+   * Define macro ARM_MATH_ARMV8MBL for building the library on ARMv8M Baseline target, ARM_MATH_ARMV8MBL for building library
+   * on ARMv8M Mainline target.
+   *
    * - __FPU_PRESENT:
    *
-   * Initialize macro __FPU_PRESENT = 1 when building on FPU supported Targets. Enable this macro for M4bf and M4lf libraries
+   * Initialize macro __FPU_PRESENT = 1 when building on FPU supported Targets. Enable this macro for floating point libraries.
+   *
+   * - __DSP_PRESENT:
+   *
+   * Initialize macro __DSP_PRESENT = 1 when ARMv8M Mainline core supports DSP instructions.
    *
    * <hr>
    * CMSIS-DSP in ARM::CMSIS Pack
@@ -287,20 +293,38 @@
 #ifndef _ARM_MATH_H
 #define _ARM_MATH_H
 
-/* ignore some GCC warnings */
-#if defined ( __GNUC__ )
+/* Compiler specific diagnostic adjustment */
+#if   defined ( __CC_ARM )
+
+#elif defined ( __ARMCC_VERSION ) && ( __ARMCC_VERSION >= 6010050 )
+
+#elif defined ( __GNUC__ )
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wsign-conversion"
 #pragma GCC diagnostic ignored "-Wconversion"
 #pragma GCC diagnostic ignored "-Wunused-parameter"
+
+#elif defined ( __ICCARM__ )
+
+#elif defined ( __TI_ARM__ )
+
+#elif defined ( __CSMC__ )
+
+#elif defined ( __TASKING__ )
+
+#else
+  #error Unknown compiler
 #endif
+
 
 #define __CMSIS_GENERIC         /* disable NVIC and Systick functions */
 
 #if defined(ARM_MATH_CM7)
   #include "core_cm7.h"
+  #define ARM_MATH_DSP
 #elif defined (ARM_MATH_CM4)
   #include "core_cm4.h"
+  #define ARM_MATH_DSP
 #elif defined (ARM_MATH_CM3)
   #include "core_cm3.h"
 #elif defined (ARM_MATH_CM0)
@@ -309,8 +333,16 @@
 #elif defined (ARM_MATH_CM0PLUS)
   #include "core_cm0plus.h"
   #define ARM_MATH_CM0_FAMILY
+#elif defined (ARM_MATH_ARMV8MBL)
+  #include "core_armv8mbl.h"
+  #define ARM_MATH_CM0_FAMILY
+#elif defined (ARM_MATH_ARMV8MML)
+  #include "core_armv8mml.h"
+  #if (defined (__DSP_PRESENT) && (__DSP_PRESENT == 1))
+    #define ARM_MATH_DSP
+  #endif
 #else
-  #error "Define according the used Cortex core ARM_MATH_CM7, ARM_MATH_CM4, ARM_MATH_CM3, ARM_MATH_CM0PLUS or ARM_MATH_CM0"
+  #error "Define according the used Cortex core ARM_MATH_CM7, ARM_MATH_CM4, ARM_MATH_CM3, ARM_MATH_CM0PLUS, ARM_MATH_CM0, ARM_MATH_ARMV8MBL, ARM_MATH_ARMV8MML"
 #endif
 
 #undef  __CMSIS_GENERIC         /* enable NVIC and Systick functions */
@@ -330,7 +362,7 @@ extern "C"
 #define DELTA_Q15          0x5
 #define INDEX_MASK         0x0000003F
 #ifndef PI
-#define PI                 3.14159265358979f
+  #define PI               3.14159265358979f
 #endif
 
   /**
@@ -341,7 +373,6 @@ extern "C"
 #define FAST_MATH_Q31_SHIFT   (32 - 10)
 #define FAST_MATH_Q15_SHIFT   (16 - 10)
 #define CONTROLLER_Q31_SHIFT  (32 - 9)
-#define TABLE_SIZE  256
 #define TABLE_SPACING_Q31     0x400000
 #define TABLE_SPACING_Q15     0x80
 
@@ -413,29 +444,40 @@ extern "C"
   /**
    * @brief definition to read/write two 16 bit values.
    */
-#if defined __CC_ARM
+#if   defined ( __CC_ARM )
   #define __SIMD32_TYPE int32_t __packed
   #define CMSIS_UNUSED __attribute__((unused))
+  #define CMSIS_INLINE __attribute__((always_inline))
 
-#elif defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+#elif defined ( __ARMCC_VERSION ) && ( __ARMCC_VERSION >= 6010050 )
   #define __SIMD32_TYPE int32_t
   #define CMSIS_UNUSED __attribute__((unused))
+  #define CMSIS_INLINE __attribute__((always_inline))
 
-#elif defined __GNUC__
+#elif defined ( __GNUC__ )
   #define __SIMD32_TYPE int32_t
   #define CMSIS_UNUSED __attribute__((unused))
+  #define CMSIS_INLINE __attribute__((always_inline))
 
-#elif defined __ICCARM__
+#elif defined ( __ICCARM__ )
   #define __SIMD32_TYPE int32_t __packed
   #define CMSIS_UNUSED
+  #define CMSIS_INLINE
 
-#elif defined __CSMC__
+#elif defined ( __TI_ARM__ )
+  #define __SIMD32_TYPE int32_t
+  #define CMSIS_UNUSED __attribute__((unused))
+  #define CMSIS_INLINE
+
+#elif defined ( __CSMC__ )
   #define __SIMD32_TYPE int32_t
   #define CMSIS_UNUSED
+  #define CMSIS_INLINE
 
-#elif defined __TASKING__
+#elif defined ( __TASKING__ )
   #define __SIMD32_TYPE __unaligned int32_t
   #define CMSIS_UNUSED
+  #define CMSIS_INLINE
 
 #else
   #error Unknown compiler
@@ -446,17 +488,18 @@ extern "C"
 #define _SIMD32_OFFSET(addr)  (*(__SIMD32_TYPE *)  (addr))
 #define __SIMD64(addr)        (*(int64_t **) & (addr))
 
-#if defined (ARM_MATH_CM3) || defined (ARM_MATH_CM0_FAMILY)
+/* #if defined (ARM_MATH_CM3) || defined (ARM_MATH_CM0_FAMILY) */
+#if !defined (ARM_MATH_DSP)
   /**
    * @brief definition to pack two 16 bit values.
    */
-#define __PKHBT(ARG1, ARG2, ARG3)      ( (((int32_t)(ARG1) <<  0) & (int32_t)0x0000FFFF) | \
-                                         (((int32_t)(ARG2) << ARG3) & (int32_t)0xFFFF0000)  )
-#define __PKHTB(ARG1, ARG2, ARG3)      ( (((int32_t)(ARG1) <<  0) & (int32_t)0xFFFF0000) | \
-                                         (((int32_t)(ARG2) >> ARG3) & (int32_t)0x0000FFFF)  )
+#define __PKHBT(ARG1, ARG2, ARG3) ( (((int32_t)(ARG1) <<    0) & (int32_t)0x0000FFFF) | \
+                                    (((int32_t)(ARG2) << ARG3) & (int32_t)0xFFFF0000)  )
+#define __PKHTB(ARG1, ARG2, ARG3) ( (((int32_t)(ARG1) <<    0) & (int32_t)0xFFFF0000) | \
+                                    (((int32_t)(ARG2) >> ARG3) & (int32_t)0x0000FFFF)  )
 
-#endif
-
+/* #endif // defined (ARM_MATH_CM3) || defined (ARM_MATH_CM0_FAMILY) */
+#endif /* !defined (ARM_MATH_DSP) */
 
    /**
    * @brief definition to pack four 8 bit values.
@@ -480,7 +523,7 @@ extern "C"
   /**
    * @brief Clips Q63 to Q31 values.
    */
-  static __INLINE q31_t clip_q63_to_q31(
+  CMSIS_INLINE __STATIC_INLINE q31_t clip_q63_to_q31(
   q63_t x)
   {
     return ((q31_t) (x >> 32) != ((q31_t) x >> 31)) ?
@@ -490,7 +533,7 @@ extern "C"
   /**
    * @brief Clips Q63 to Q15 values.
    */
-  static __INLINE q15_t clip_q63_to_q15(
+  CMSIS_INLINE __STATIC_INLINE q15_t clip_q63_to_q15(
   q63_t x)
   {
     return ((q31_t) (x >> 32) != ((q31_t) x >> 31)) ?
@@ -500,7 +543,7 @@ extern "C"
   /**
    * @brief Clips Q31 to Q7 values.
    */
-  static __INLINE q7_t clip_q31_to_q7(
+  CMSIS_INLINE __STATIC_INLINE q7_t clip_q31_to_q7(
   q31_t x)
   {
     return ((q31_t) (x >> 24) != ((q31_t) x >> 23)) ?
@@ -510,7 +553,7 @@ extern "C"
   /**
    * @brief Clips Q31 to Q15 values.
    */
-  static __INLINE q15_t clip_q31_to_q15(
+  CMSIS_INLINE __STATIC_INLINE q15_t clip_q31_to_q15(
   q31_t x)
   {
     return ((q31_t) (x >> 16) != ((q31_t) x >> 15)) ?
@@ -521,7 +564,7 @@ extern "C"
    * @brief Multiplies 32 X 64 and returns 32 bit result in 2.30 format.
    */
 
-  static __INLINE q63_t mult32x64(
+  CMSIS_INLINE __STATIC_INLINE q63_t mult32x64(
   q63_t x,
   q31_t y)
   {
@@ -536,16 +579,16 @@ extern "C"
  */
 /* note: function can be removed when all toolchain support __CLZ for Cortex-M0 */
 #if defined (ARM_MATH_CM0_FAMILY) && ((defined (__ICCARM__))  )
-  static __INLINE uint32_t __CLZ(
+  CMSIS_INLINE __STATIC_INLINE uint32_t __CLZ(
   q31_t data);
 
-  static __INLINE uint32_t __CLZ(
+  CMSIS_INLINE __STATIC_INLINE uint32_t __CLZ(
   q31_t data)
   {
     uint32_t count = 0;
     uint32_t mask = 0x80000000;
 
-    while((data & mask) == 0)
+    while ((data & mask) == 0)
     {
       count += 1u;
       mask = mask >> 1u;
@@ -559,7 +602,7 @@ extern "C"
    * @brief Function to Calculates 1/in (reciprocal) value of Q31 Data type.
    */
 
-  static __INLINE uint32_t arm_recip_q31(
+  CMSIS_INLINE __STATIC_INLINE uint32_t arm_recip_q31(
   q31_t in,
   q31_t * dst,
   q31_t * pRecipTable)
@@ -569,7 +612,7 @@ extern "C"
     uint32_t index, i;
     uint32_t signBits;
 
-    if(in > 0)
+    if (in > 0)
     {
       signBits = ((uint32_t) (__CLZ( in) - 1));
     }
@@ -610,7 +653,7 @@ extern "C"
   /**
    * @brief Function to Calculates 1/in (reciprocal) value of Q15 Data type.
    */
-  static __INLINE uint32_t arm_recip_q15(
+  CMSIS_INLINE __STATIC_INLINE uint32_t arm_recip_q15(
   q15_t in,
   q15_t * dst,
   q15_t * pRecipTable)
@@ -620,7 +663,7 @@ extern "C"
     uint32_t index = 0, i = 0;
     uint32_t signBits = 0;
 
-    if(in > 0)
+    if (in > 0)
     {
       signBits = ((uint32_t)(__CLZ( in) - 17));
     }
@@ -662,7 +705,7 @@ extern "C"
    * @brief C custom defined intrinisic function for only M0 processors
    */
 #if defined(ARM_MATH_CM0_FAMILY)
-  static __INLINE q31_t __SSAT(
+  CMSIS_INLINE __STATIC_INLINE q31_t __SSAT(
   q31_t x,
   uint32_t y)
   {
@@ -675,11 +718,11 @@ extern "C"
       posMax = posMax * 2;
     }
 
-    if(x > 0)
+    if (x > 0)
     {
       posMax = (posMax - 1);
 
-      if(x > posMax)
+      if (x > posMax)
       {
         x = posMax;
       }
@@ -688,7 +731,7 @@ extern "C"
     {
       negMin = -posMax;
 
-      if(x < negMin)
+      if (x < negMin)
       {
         x = negMin;
       }
@@ -701,12 +744,13 @@ extern "C"
   /*
    * @brief C custom defined intrinsic function for M3 and M0 processors
    */
-#if defined (ARM_MATH_CM3) || defined (ARM_MATH_CM0_FAMILY)
+/* #if defined (ARM_MATH_CM3) || defined (ARM_MATH_CM0_FAMILY) */
+#if !defined (ARM_MATH_DSP)
 
   /*
    * @brief C custom defined QADD8 for M3 and M0 processors
    */
-  static __INLINE uint32_t __QADD8(
+  CMSIS_INLINE __STATIC_INLINE uint32_t __QADD8(
   uint32_t x,
   uint32_t y)
   {
@@ -724,7 +768,7 @@ extern "C"
   /*
    * @brief C custom defined QSUB8 for M3 and M0 processors
    */
-  static __INLINE uint32_t __QSUB8(
+  CMSIS_INLINE __STATIC_INLINE uint32_t __QSUB8(
   uint32_t x,
   uint32_t y)
   {
@@ -742,7 +786,7 @@ extern "C"
   /*
    * @brief C custom defined QADD16 for M3 and M0 processors
    */
-  static __INLINE uint32_t __QADD16(
+  CMSIS_INLINE __STATIC_INLINE uint32_t __QADD16(
   uint32_t x,
   uint32_t y)
   {
@@ -759,7 +803,7 @@ extern "C"
   /*
    * @brief C custom defined SHADD16 for M3 and M0 processors
    */
-  static __INLINE uint32_t __SHADD16(
+  CMSIS_INLINE __STATIC_INLINE uint32_t __SHADD16(
   uint32_t x,
   uint32_t y)
   {
@@ -775,7 +819,7 @@ extern "C"
   /*
    * @brief C custom defined QSUB16 for M3 and M0 processors
    */
-  static __INLINE uint32_t __QSUB16(
+  CMSIS_INLINE __STATIC_INLINE uint32_t __QSUB16(
   uint32_t x,
   uint32_t y)
   {
@@ -791,7 +835,7 @@ extern "C"
   /*
    * @brief C custom defined SHSUB16 for M3 and M0 processors
    */
-  static __INLINE uint32_t __SHSUB16(
+  CMSIS_INLINE __STATIC_INLINE uint32_t __SHSUB16(
   uint32_t x,
   uint32_t y)
   {
@@ -807,7 +851,7 @@ extern "C"
   /*
    * @brief C custom defined QASX for M3 and M0 processors
    */
-  static __INLINE uint32_t __QASX(
+  CMSIS_INLINE __STATIC_INLINE uint32_t __QASX(
   uint32_t x,
   uint32_t y)
   {
@@ -823,7 +867,7 @@ extern "C"
   /*
    * @brief C custom defined SHASX for M3 and M0 processors
    */
-  static __INLINE uint32_t __SHASX(
+  CMSIS_INLINE __STATIC_INLINE uint32_t __SHASX(
   uint32_t x,
   uint32_t y)
   {
@@ -839,7 +883,7 @@ extern "C"
   /*
    * @brief C custom defined QSAX for M3 and M0 processors
    */
-  static __INLINE uint32_t __QSAX(
+  CMSIS_INLINE __STATIC_INLINE uint32_t __QSAX(
   uint32_t x,
   uint32_t y)
   {
@@ -855,7 +899,7 @@ extern "C"
   /*
    * @brief C custom defined SHSAX for M3 and M0 processors
    */
-  static __INLINE uint32_t __SHSAX(
+  CMSIS_INLINE __STATIC_INLINE uint32_t __SHSAX(
   uint32_t x,
   uint32_t y)
   {
@@ -871,7 +915,7 @@ extern "C"
   /*
    * @brief C custom defined SMUSDX for M3 and M0 processors
    */
-  static __INLINE uint32_t __SMUSDX(
+  CMSIS_INLINE __STATIC_INLINE uint32_t __SMUSDX(
   uint32_t x,
   uint32_t y)
   {
@@ -882,7 +926,7 @@ extern "C"
   /*
    * @brief C custom defined SMUADX for M3 and M0 processors
    */
-  static __INLINE uint32_t __SMUADX(
+  CMSIS_INLINE __STATIC_INLINE uint32_t __SMUADX(
   uint32_t x,
   uint32_t y)
   {
@@ -894,7 +938,7 @@ extern "C"
   /*
    * @brief C custom defined QADD for M3 and M0 processors
    */
-  static __INLINE int32_t __QADD(
+  CMSIS_INLINE __STATIC_INLINE int32_t __QADD(
   int32_t x,
   int32_t y)
   {
@@ -905,7 +949,7 @@ extern "C"
   /*
    * @brief C custom defined QSUB for M3 and M0 processors
    */
-  static __INLINE int32_t __QSUB(
+  CMSIS_INLINE __STATIC_INLINE int32_t __QSUB(
   int32_t x,
   int32_t y)
   {
@@ -916,7 +960,7 @@ extern "C"
   /*
    * @brief C custom defined SMLAD for M3 and M0 processors
    */
-  static __INLINE uint32_t __SMLAD(
+  CMSIS_INLINE __STATIC_INLINE uint32_t __SMLAD(
   uint32_t x,
   uint32_t y,
   uint32_t sum)
@@ -930,7 +974,7 @@ extern "C"
   /*
    * @brief C custom defined SMLADX for M3 and M0 processors
    */
-  static __INLINE uint32_t __SMLADX(
+  CMSIS_INLINE __STATIC_INLINE uint32_t __SMLADX(
   uint32_t x,
   uint32_t y,
   uint32_t sum)
@@ -944,7 +988,7 @@ extern "C"
   /*
    * @brief C custom defined SMLSDX for M3 and M0 processors
    */
-  static __INLINE uint32_t __SMLSDX(
+  CMSIS_INLINE __STATIC_INLINE uint32_t __SMLSDX(
   uint32_t x,
   uint32_t y,
   uint32_t sum)
@@ -958,7 +1002,7 @@ extern "C"
   /*
    * @brief C custom defined SMLALD for M3 and M0 processors
    */
-  static __INLINE uint64_t __SMLALD(
+  CMSIS_INLINE __STATIC_INLINE uint64_t __SMLALD(
   uint32_t x,
   uint32_t y,
   uint64_t sum)
@@ -973,7 +1017,7 @@ extern "C"
   /*
    * @brief C custom defined SMLALDX for M3 and M0 processors
    */
-  static __INLINE uint64_t __SMLALDX(
+  CMSIS_INLINE __STATIC_INLINE uint64_t __SMLALDX(
   uint32_t x,
   uint32_t y,
   uint64_t sum)
@@ -988,7 +1032,7 @@ extern "C"
   /*
    * @brief C custom defined SMUAD for M3 and M0 processors
    */
-  static __INLINE uint32_t __SMUAD(
+  CMSIS_INLINE __STATIC_INLINE uint32_t __SMUAD(
   uint32_t x,
   uint32_t y)
   {
@@ -1000,7 +1044,7 @@ extern "C"
   /*
    * @brief C custom defined SMUSD for M3 and M0 processors
    */
-  static __INLINE uint32_t __SMUSD(
+  CMSIS_INLINE __STATIC_INLINE uint32_t __SMUSD(
   uint32_t x,
   uint32_t y)
   {
@@ -1012,14 +1056,52 @@ extern "C"
   /*
    * @brief C custom defined SXTB16 for M3 and M0 processors
    */
-  static __INLINE uint32_t __SXTB16(
+  CMSIS_INLINE __STATIC_INLINE uint32_t __SXTB16(
   uint32_t x)
   {
     return ((uint32_t)(((((q31_t)x << 24) >> 24) & (q31_t)0x0000FFFF) |
                        ((((q31_t)x <<  8) >>  8) & (q31_t)0xFFFF0000)  ));
   }
 
-#endif /* defined (ARM_MATH_CM3) || defined (ARM_MATH_CM0_FAMILY) */
+  /*
+   * @brief C custom defined SMMLA for M3 and M0 processors
+   */
+  CMSIS_INLINE __STATIC_INLINE int32_t __SMMLA(
+  int32_t x,
+  int32_t y,
+  int32_t sum)
+  {
+    return (sum + (int32_t) (((int64_t) x * y) >> 32));
+  }
+
+#if 0
+  /*
+   * @brief C custom defined PKHBT for unavailable DSP extension
+   */
+  CMSIS_INLINE __STATIC_INLINE uint32_t __PKHBT(
+  uint32_t x,
+  uint32_t y,
+  uint32_t leftshift)
+  {
+    return ( ((x             ) & 0x0000FFFFUL) |
+             ((y << leftshift) & 0xFFFF0000UL)  );
+  }
+
+  /*
+   * @brief C custom defined PKHTB for unavailable DSP extension
+   */
+  CMSIS_INLINE __STATIC_INLINE uint32_t __PKHTB(
+  uint32_t x,
+  uint32_t y,
+  uint32_t rightshift)
+  {
+    return ( ((x              ) & 0xFFFF0000UL) |
+             ((y >> rightshift) & 0x0000FFFFUL)  );
+  }
+#endif
+
+/* #endif // defined (ARM_MATH_CM3) || defined (ARM_MATH_CM0_FAMILY) */
+#endif /* !defined (ARM_MATH_DSP) */
 
 
   /**
@@ -1736,7 +1818,7 @@ extern "C"
   typedef struct
   {
     q15_t A0;           /**< The derived gain, A0 = Kp + Ki + Kd . */
-#ifdef ARM_MATH_CM0_FAMILY
+#if !defined (ARM_MATH_DSP)
     q15_t A1;
     q15_t A2;
 #else
@@ -4791,7 +4873,7 @@ void arm_rfft_fast_f32(
    * @param[in]     in  input sample to process
    * @return out processed output sample.
    */
-  static __INLINE float32_t arm_pid_f32(
+  CMSIS_INLINE __STATIC_INLINE float32_t arm_pid_f32(
   arm_pid_instance_f32 * S,
   float32_t in)
   {
@@ -4825,7 +4907,7 @@ void arm_rfft_fast_f32(
    * In order to avoid overflows completely the input signal must be scaled down by 2 bits as there are four additions.
    * After all multiply-accumulates are performed, the 2.62 accumulator is truncated to 1.32 format and then saturated to 1.31 format.
    */
-  static __INLINE q31_t arm_pid_q31(
+  CMSIS_INLINE __STATIC_INLINE q31_t arm_pid_q31(
   arm_pid_instance_q31 * S,
   q31_t in)
   {
@@ -4872,14 +4954,14 @@ void arm_rfft_fast_f32(
    * After all additions have been performed, the accumulator is truncated to 34.15 format by discarding low 15 bits.
    * Lastly, the accumulator is saturated to yield a result in 1.15 format.
    */
-  static __INLINE q15_t arm_pid_q15(
+  CMSIS_INLINE __STATIC_INLINE q15_t arm_pid_q15(
   arm_pid_instance_q15 * S,
   q15_t in)
   {
     q63_t acc;
     q15_t out;
 
-#ifndef ARM_MATH_CM0_FAMILY
+#if defined (ARM_MATH_DSP)
     __SIMD32_TYPE *vstate;
 
     /* Implementation of PID controller */
@@ -4983,7 +5065,7 @@ void arm_rfft_fast_f32(
    * @param[out] pIalpha  points to output two-phase orthogonal vector axis alpha
    * @param[out] pIbeta   points to output two-phase orthogonal vector axis beta
    */
-  static __INLINE void arm_clarke_f32(
+  CMSIS_INLINE __STATIC_INLINE void arm_clarke_f32(
   float32_t Ia,
   float32_t Ib,
   float32_t * pIalpha,
@@ -5010,7 +5092,7 @@ void arm_rfft_fast_f32(
    * The accumulator maintains 1.31 format by truncating lower 31 bits of the intermediate multiplication in 2.62 format.
    * There is saturation on the addition, hence there is no risk of overflow.
    */
-  static __INLINE void arm_clarke_q31(
+  CMSIS_INLINE __STATIC_INLINE void arm_clarke_q31(
   q31_t Ia,
   q31_t Ib,
   q31_t * pIalpha,
@@ -5080,7 +5162,7 @@ void arm_rfft_fast_f32(
    * @param[out] pIa     points to output three-phase coordinate <code>a</code>
    * @param[out] pIb     points to output three-phase coordinate <code>b</code>
    */
-  static __INLINE void arm_inv_clarke_f32(
+  CMSIS_INLINE __STATIC_INLINE void arm_inv_clarke_f32(
   float32_t Ialpha,
   float32_t Ibeta,
   float32_t * pIa,
@@ -5107,7 +5189,7 @@ void arm_rfft_fast_f32(
    * The accumulator maintains 1.31 format by truncating lower 31 bits of the intermediate multiplication in 2.62 format.
    * There is saturation on the subtraction, hence there is no risk of overflow.
    */
-  static __INLINE void arm_inv_clarke_q31(
+  CMSIS_INLINE __STATIC_INLINE void arm_inv_clarke_q31(
   q31_t Ialpha,
   q31_t Ibeta,
   q31_t * pIa,
@@ -5190,7 +5272,7 @@ void arm_rfft_fast_f32(
    * The function implements the forward Park transform.
    *
    */
-  static __INLINE void arm_park_f32(
+  CMSIS_INLINE __STATIC_INLINE void arm_park_f32(
   float32_t Ialpha,
   float32_t Ibeta,
   float32_t * pId,
@@ -5221,7 +5303,7 @@ void arm_rfft_fast_f32(
    * The accumulator maintains 1.31 format by truncating lower 31 bits of the intermediate multiplication in 2.62 format.
    * There is saturation on the addition and subtraction, hence there is no risk of overflow.
    */
-  static __INLINE void arm_park_q31(
+  CMSIS_INLINE __STATIC_INLINE void arm_park_q31(
   q31_t Ialpha,
   q31_t Ibeta,
   q31_t * pId,
@@ -5303,7 +5385,7 @@ void arm_rfft_fast_f32(
    * @param[in]  sinVal   sine value of rotation angle theta
    * @param[in]  cosVal   cosine value of rotation angle theta
    */
-  static __INLINE void arm_inv_park_f32(
+  CMSIS_INLINE __STATIC_INLINE void arm_inv_park_f32(
   float32_t Id,
   float32_t Iq,
   float32_t * pIalpha,
@@ -5334,7 +5416,7 @@ void arm_rfft_fast_f32(
    * The accumulator maintains 1.31 format by truncating lower 31 bits of the intermediate multiplication in 2.62 format.
    * There is saturation on the addition, hence there is no risk of overflow.
    */
-  static __INLINE void arm_inv_park_q31(
+  CMSIS_INLINE __STATIC_INLINE void arm_inv_park_q31(
   q31_t Id,
   q31_t Iq,
   q31_t * pIalpha,
@@ -5429,7 +5511,7 @@ void arm_rfft_fast_f32(
    * @return y processed output sample.
    *
    */
-  static __INLINE float32_t arm_linear_interp_f32(
+  CMSIS_INLINE __STATIC_INLINE float32_t arm_linear_interp_f32(
   arm_linear_interp_instance_f32 * S,
   float32_t x)
   {
@@ -5443,12 +5525,12 @@ void arm_rfft_fast_f32(
     /* Calculation of index */
     i = (int32_t) ((x - S->x1) / xSpacing);
 
-    if(i < 0)
+    if (i < 0)
     {
       /* Iniatilize output for below specified range as least output value of table */
       y = pYData[0];
     }
-    else if((uint32_t)i >= S->nValues)
+    else if ((uint32_t)i >= S->nValues)
     {
       /* Iniatilize output for above specified range as last output value of table */
       y = pYData[S->nValues - 1];
@@ -5486,7 +5568,7 @@ void arm_rfft_fast_f32(
    * This function can support maximum of table size 2^12.
    *
    */
-  static __INLINE q31_t arm_linear_interp_q31(
+  CMSIS_INLINE __STATIC_INLINE q31_t arm_linear_interp_q31(
   q31_t * pYData,
   q31_t x,
   uint32_t nValues)
@@ -5501,11 +5583,11 @@ void arm_rfft_fast_f32(
     /* Index value calculation */
     index = ((x & (q31_t)0xFFF00000) >> 20);
 
-    if(index >= (int32_t)(nValues - 1))
+    if (index >= (int32_t)(nValues - 1))
     {
       return (pYData[nValues - 1]);
     }
-    else if(index < 0)
+    else if (index < 0)
     {
       return (pYData[0]);
     }
@@ -5544,7 +5626,7 @@ void arm_rfft_fast_f32(
    * This function can support maximum of table size 2^12.
    *
    */
-  static __INLINE q15_t arm_linear_interp_q15(
+  CMSIS_INLINE __STATIC_INLINE q15_t arm_linear_interp_q15(
   q15_t * pYData,
   q31_t x,
   uint32_t nValues)
@@ -5559,11 +5641,11 @@ void arm_rfft_fast_f32(
     /* Index value calculation */
     index = ((x & (int32_t)0xFFF00000) >> 20);
 
-    if(index >= (int32_t)(nValues - 1))
+    if (index >= (int32_t)(nValues - 1))
     {
       return (pYData[nValues - 1]);
     }
-    else if(index < 0)
+    else if (index < 0)
     {
       return (pYData[0]);
     }
@@ -5601,7 +5683,7 @@ void arm_rfft_fast_f32(
    * Input sample <code>x</code> is in 12.20 format which contains 12 bits for table index and 20 bits for fractional part.
    * This function can support maximum of table size 2^12.
    */
-  static __INLINE q7_t arm_linear_interp_q7(
+  CMSIS_INLINE __STATIC_INLINE q7_t arm_linear_interp_q7(
   q7_t * pYData,
   q31_t x,
   uint32_t nValues)
@@ -5620,7 +5702,7 @@ void arm_rfft_fast_f32(
     }
     index = (x >> 20) & 0xfff;
 
-    if(index >= (nValues - 1))
+    if (index >= (nValues - 1))
     {
       return (pYData[nValues - 1]);
     }
@@ -5741,11 +5823,11 @@ void arm_rfft_fast_f32(
    * @return The function returns ARM_MATH_SUCCESS if input value is positive value or ARM_MATH_ARGUMENT_ERROR if
    * <code>in</code> is negative value and returns zero output for negative values.
    */
-  static __INLINE arm_status arm_sqrt_f32(
+  CMSIS_INLINE __STATIC_INLINE arm_status arm_sqrt_f32(
   float32_t in,
   float32_t * pOut)
   {
-    if(in >= 0.0f)
+    if (in >= 0.0f)
     {
 
 #if   (__FPU_USED == 1) && defined ( __CC_ARM   )
@@ -5801,7 +5883,7 @@ void arm_rfft_fast_f32(
   /**
    * @brief floating-point Circular write function.
    */
-  static __INLINE void arm_circularWrite_f32(
+  CMSIS_INLINE __STATIC_INLINE void arm_circularWrite_f32(
   int32_t * circBuffer,
   int32_t L,
   uint16_t * writeOffset,
@@ -5820,7 +5902,7 @@ void arm_rfft_fast_f32(
     /* Loop over the blockSize */
     i = blockSize;
 
-    while(i > 0u)
+    while (i > 0u)
     {
       /* copy the input sample to the circular buffer */
       circBuffer[wOffset] = *src;
@@ -5830,7 +5912,7 @@ void arm_rfft_fast_f32(
 
       /* Circularly update wOffset.  Watch out for positive and negative value */
       wOffset += bufferInc;
-      if(wOffset >= L)
+      if (wOffset >= L)
         wOffset -= L;
 
       /* Decrement the loop counter */
@@ -5846,7 +5928,7 @@ void arm_rfft_fast_f32(
   /**
    * @brief floating-point Circular Read function.
    */
-  static __INLINE void arm_circularRead_f32(
+  CMSIS_INLINE __STATIC_INLINE void arm_circularRead_f32(
   int32_t * circBuffer,
   int32_t L,
   int32_t * readOffset,
@@ -5868,7 +5950,7 @@ void arm_rfft_fast_f32(
     /* Loop over the blockSize */
     i = blockSize;
 
-    while(i > 0u)
+    while (i > 0u)
     {
       /* copy the sample from the circular buffer to the destination buffer */
       *dst = circBuffer[rOffset];
@@ -5876,7 +5958,7 @@ void arm_rfft_fast_f32(
       /* Update the input pointer */
       dst += dstInc;
 
-      if(dst == (int32_t *) dst_end)
+      if (dst == (int32_t *) dst_end)
       {
         dst = dst_base;
       }
@@ -5884,7 +5966,7 @@ void arm_rfft_fast_f32(
       /* Circularly update rOffset.  Watch out for positive and negative value  */
       rOffset += bufferInc;
 
-      if(rOffset >= L)
+      if (rOffset >= L)
       {
         rOffset -= L;
       }
@@ -5901,7 +5983,7 @@ void arm_rfft_fast_f32(
   /**
    * @brief Q15 Circular write function.
    */
-  static __INLINE void arm_circularWrite_q15(
+  CMSIS_INLINE __STATIC_INLINE void arm_circularWrite_q15(
   q15_t * circBuffer,
   int32_t L,
   uint16_t * writeOffset,
@@ -5920,7 +6002,7 @@ void arm_rfft_fast_f32(
     /* Loop over the blockSize */
     i = blockSize;
 
-    while(i > 0u)
+    while (i > 0u)
     {
       /* copy the input sample to the circular buffer */
       circBuffer[wOffset] = *src;
@@ -5930,7 +6012,7 @@ void arm_rfft_fast_f32(
 
       /* Circularly update wOffset.  Watch out for positive and negative value */
       wOffset += bufferInc;
-      if(wOffset >= L)
+      if (wOffset >= L)
         wOffset -= L;
 
       /* Decrement the loop counter */
@@ -5945,7 +6027,7 @@ void arm_rfft_fast_f32(
   /**
    * @brief Q15 Circular Read function.
    */
-  static __INLINE void arm_circularRead_q15(
+  CMSIS_INLINE __STATIC_INLINE void arm_circularRead_q15(
   q15_t * circBuffer,
   int32_t L,
   int32_t * readOffset,
@@ -5968,7 +6050,7 @@ void arm_rfft_fast_f32(
     /* Loop over the blockSize */
     i = blockSize;
 
-    while(i > 0u)
+    while (i > 0u)
     {
       /* copy the sample from the circular buffer to the destination buffer */
       *dst = circBuffer[rOffset];
@@ -5976,7 +6058,7 @@ void arm_rfft_fast_f32(
       /* Update the input pointer */
       dst += dstInc;
 
-      if(dst == (q15_t *) dst_end)
+      if (dst == (q15_t *) dst_end)
       {
         dst = dst_base;
       }
@@ -5984,7 +6066,7 @@ void arm_rfft_fast_f32(
       /* Circularly update wOffset.  Watch out for positive and negative value */
       rOffset += bufferInc;
 
-      if(rOffset >= L)
+      if (rOffset >= L)
       {
         rOffset -= L;
       }
@@ -6001,7 +6083,7 @@ void arm_rfft_fast_f32(
   /**
    * @brief Q7 Circular write function.
    */
-  static __INLINE void arm_circularWrite_q7(
+  CMSIS_INLINE __STATIC_INLINE void arm_circularWrite_q7(
   q7_t * circBuffer,
   int32_t L,
   uint16_t * writeOffset,
@@ -6020,7 +6102,7 @@ void arm_rfft_fast_f32(
     /* Loop over the blockSize */
     i = blockSize;
 
-    while(i > 0u)
+    while (i > 0u)
     {
       /* copy the input sample to the circular buffer */
       circBuffer[wOffset] = *src;
@@ -6030,7 +6112,7 @@ void arm_rfft_fast_f32(
 
       /* Circularly update wOffset.  Watch out for positive and negative value */
       wOffset += bufferInc;
-      if(wOffset >= L)
+      if (wOffset >= L)
         wOffset -= L;
 
       /* Decrement the loop counter */
@@ -6045,7 +6127,7 @@ void arm_rfft_fast_f32(
   /**
    * @brief Q7 Circular Read function.
    */
-  static __INLINE void arm_circularRead_q7(
+  CMSIS_INLINE __STATIC_INLINE void arm_circularRead_q7(
   q7_t * circBuffer,
   int32_t L,
   int32_t * readOffset,
@@ -6068,7 +6150,7 @@ void arm_rfft_fast_f32(
     /* Loop over the blockSize */
     i = blockSize;
 
-    while(i > 0u)
+    while (i > 0u)
     {
       /* copy the sample from the circular buffer to the destination buffer */
       *dst = circBuffer[rOffset];
@@ -6076,7 +6158,7 @@ void arm_rfft_fast_f32(
       /* Update the input pointer */
       dst += dstInc;
 
-      if(dst == (q7_t *) dst_end)
+      if (dst == (q7_t *) dst_end)
       {
         dst = dst_base;
       }
@@ -6084,7 +6166,7 @@ void arm_rfft_fast_f32(
       /* Circularly update rOffset.  Watch out for positive and negative value */
       rOffset += bufferInc;
 
-      if(rOffset >= L)
+      if (rOffset >= L)
       {
         rOffset -= L;
       }
@@ -6748,7 +6830,7 @@ void arm_rfft_fast_f32(
   * @param[in]     Y  interpolation coordinate.
   * @return out interpolated value.
   */
-  static __INLINE float32_t arm_bilinear_interp_f32(
+  CMSIS_INLINE __STATIC_INLINE float32_t arm_bilinear_interp_f32(
   const arm_bilinear_interp_instance_f32 * S,
   float32_t X,
   float32_t Y)
@@ -6765,7 +6847,7 @@ void arm_rfft_fast_f32(
 
     /* Care taken for table outside boundary */
     /* Returns zero output when values are outside table boundary */
-    if(xIndex < 0 || xIndex > (S->numRows - 1) || yIndex < 0 || yIndex > (S->numCols - 1))
+    if (xIndex < 0 || xIndex > (S->numRows - 1) || yIndex < 0 || yIndex > (S->numCols - 1))
     {
       return (0);
     }
@@ -6814,7 +6896,7 @@ void arm_rfft_fast_f32(
   * @param[in]     Y  interpolation coordinate in 12.20 format.
   * @return out interpolated value.
   */
-  static __INLINE q31_t arm_bilinear_interp_q31(
+  CMSIS_INLINE __STATIC_INLINE q31_t arm_bilinear_interp_q31(
   arm_bilinear_interp_instance_q31 * S,
   q31_t X,
   q31_t Y)
@@ -6839,7 +6921,7 @@ void arm_rfft_fast_f32(
 
     /* Care taken for table outside boundary */
     /* Returns zero output when values are outside table boundary */
-    if(rI < 0 || rI > (S->numRows - 1) || cI < 0 || cI > (S->numCols - 1))
+    if (rI < 0 || rI > (S->numRows - 1) || cI < 0 || cI > (S->numCols - 1))
     {
       return (0);
     }
@@ -6888,7 +6970,7 @@ void arm_rfft_fast_f32(
   * @param[in]     Y  interpolation coordinate in 12.20 format.
   * @return out interpolated value.
   */
-  static __INLINE q15_t arm_bilinear_interp_q15(
+  CMSIS_INLINE __STATIC_INLINE q15_t arm_bilinear_interp_q15(
   arm_bilinear_interp_instance_q15 * S,
   q31_t X,
   q31_t Y)
@@ -6913,7 +6995,7 @@ void arm_rfft_fast_f32(
 
     /* Care taken for table outside boundary */
     /* Returns zero output when values are outside table boundary */
-    if(rI < 0 || rI > (S->numRows - 1) || cI < 0 || cI > (S->numCols - 1))
+    if (rI < 0 || rI > (S->numRows - 1) || cI < 0 || cI > (S->numCols - 1))
     {
       return (0);
     }
@@ -6966,7 +7048,7 @@ void arm_rfft_fast_f32(
   * @param[in]     Y  interpolation coordinate in 12.20 format.
   * @return out interpolated value.
   */
-  static __INLINE q7_t arm_bilinear_interp_q7(
+  CMSIS_INLINE __STATIC_INLINE q7_t arm_bilinear_interp_q7(
   arm_bilinear_interp_instance_q7 * S,
   q31_t X,
   q31_t Y)
@@ -6991,7 +7073,7 @@ void arm_rfft_fast_f32(
 
     /* Care taken for table outside boundary */
     /* Returns zero output when values are outside table boundary */
-    if(rI < 0 || rI > (S->numRows - 1) || cI < 0 || cI > (S->numCols - 1))
+    if (rI < 0 || rI > (S->numRows - 1) || cI < 0 || cI > (S->numCols - 1))
     {
       return (0);
     }
@@ -7062,7 +7144,7 @@ void arm_rfft_fast_f32(
     a = (q31_t) (((q63_t) x * y ) >> 32)
 
 
-#if defined ( __CC_ARM )
+#if   defined ( __CC_ARM )
   /* Enter low optimization region - place directly above function definition */
   #if defined( ARM_MATH_CM4 ) || defined( ARM_MATH_CM7)
     #define LOW_OPTIMIZATION_ENTER \
@@ -7073,7 +7155,7 @@ void arm_rfft_fast_f32(
   #endif
 
   /* Exit low optimization region - place directly after end of function definition */
-  #if defined( ARM_MATH_CM4 ) || defined( ARM_MATH_CM7)
+  #if defined ( ARM_MATH_CM4 ) || defined ( ARM_MATH_CM7 )
     #define LOW_OPTIMIZATION_EXIT \
        _Pragma ("pop")
   #else
@@ -7086,21 +7168,22 @@ void arm_rfft_fast_f32(
   /* Exit low optimization region - place directly after end of function definition */
   #define IAR_ONLY_LOW_OPTIMIZATION_EXIT
 
-#elif defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+#elif defined (__ARMCC_VERSION ) && ( __ARMCC_VERSION >= 6010050 )
   #define LOW_OPTIMIZATION_ENTER
   #define LOW_OPTIMIZATION_EXIT
   #define IAR_ONLY_LOW_OPTIMIZATION_ENTER
   #define IAR_ONLY_LOW_OPTIMIZATION_EXIT
 
-#elif defined(__GNUC__)
-  #define LOW_OPTIMIZATION_ENTER __attribute__(( optimize("-O1") ))
+#elif defined ( __GNUC__ )
+  #define LOW_OPTIMIZATION_ENTER \
+       __attribute__(( optimize("-O1") ))
   #define LOW_OPTIMIZATION_EXIT
   #define IAR_ONLY_LOW_OPTIMIZATION_ENTER
   #define IAR_ONLY_LOW_OPTIMIZATION_EXIT
 
-#elif defined(__ICCARM__)
+#elif defined ( __ICCARM__ )
   /* Enter low optimization region - place directly above function definition */
-  #if defined( ARM_MATH_CM4 ) || defined( ARM_MATH_CM7)
+  #if defined ( ARM_MATH_CM4 ) || defined ( ARM_MATH_CM7 )
     #define LOW_OPTIMIZATION_ENTER \
        _Pragma ("optimize=low")
   #else
@@ -7111,7 +7194,7 @@ void arm_rfft_fast_f32(
   #define LOW_OPTIMIZATION_EXIT
 
   /* Enter low optimization region - place directly above function definition */
-  #if defined( ARM_MATH_CM4 ) || defined( ARM_MATH_CM7)
+  #if defined ( ARM_MATH_CM4 ) || defined ( ARM_MATH_CM7 )
     #define IAR_ONLY_LOW_OPTIMIZATION_ENTER \
        _Pragma ("optimize=low")
   #else
@@ -7121,13 +7204,19 @@ void arm_rfft_fast_f32(
   /* Exit low optimization region - place directly after end of function definition */
   #define IAR_ONLY_LOW_OPTIMIZATION_EXIT
 
-#elif defined(__CSMC__)
+#elif defined ( __TI_ARM__ )
   #define LOW_OPTIMIZATION_ENTER
   #define LOW_OPTIMIZATION_EXIT
   #define IAR_ONLY_LOW_OPTIMIZATION_ENTER
   #define IAR_ONLY_LOW_OPTIMIZATION_EXIT
 
-#elif defined(__TASKING__)
+#elif defined ( __CSMC__ )
+  #define LOW_OPTIMIZATION_ENTER
+  #define LOW_OPTIMIZATION_EXIT
+  #define IAR_ONLY_LOW_OPTIMIZATION_ENTER
+  #define IAR_ONLY_LOW_OPTIMIZATION_EXIT
+
+#elif defined ( __TASKING__ )
   #define LOW_OPTIMIZATION_ENTER
   #define LOW_OPTIMIZATION_EXIT
   #define IAR_ONLY_LOW_OPTIMIZATION_ENTER
@@ -7140,9 +7229,24 @@ void arm_rfft_fast_f32(
 }
 #endif
 
+/* Compiler specific diagnostic adjustment */
+#if   defined ( __CC_ARM )
 
-#if defined ( __GNUC__ )
+#elif defined ( __ARMCC_VERSION ) && ( __ARMCC_VERSION >= 6010050 )
+
+#elif defined ( __GNUC__ )
 #pragma GCC diagnostic pop
+
+#elif defined ( __ICCARM__ )
+
+#elif defined ( __TI_ARM__ )
+
+#elif defined ( __CSMC__ )
+
+#elif defined ( __TASKING__ )
+
+#else
+  #error Unknown compiler
 #endif
 
 #endif /* _ARM_MATH_H */

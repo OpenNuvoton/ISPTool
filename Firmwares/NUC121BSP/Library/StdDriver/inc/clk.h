@@ -26,6 +26,7 @@ extern "C"
 */
 
 #define FREQ_25MHZ         25000000
+#define FREQ_48MHZ         48000000
 #define FREQ_50MHZ         50000000
 #define FREQ_72MHZ         72000000
 #define FREQ_96MHZ         96000000

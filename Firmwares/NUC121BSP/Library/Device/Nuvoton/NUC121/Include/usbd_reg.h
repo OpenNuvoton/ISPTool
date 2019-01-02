@@ -326,7 +326,7 @@ typedef struct
      * | :----: | :----:   | :---- |
      * |[9:3]   |STBUFSEG  |SETUP Token Buffer Segmentation
      * |        |          |It is used to indicate the offset address for the SETUP token with the USB Device SRAM starting address
-     * |        |          |The effective starting address is ...USBD_SRAM address + offset u201D {offset = BUFSEG[9:3] * 8} .
+     * |        |          |The effective starting address is "USBD_SRAM address + offset " {offset = BUFSEG[9:3] * 8} .
      * |        |          |Where the USBD_SRAM address = USBD_BA+0x100h.
      * |        |          |Note: It is used for SETUP token only.
      * @var USBD_T::LPMATTR

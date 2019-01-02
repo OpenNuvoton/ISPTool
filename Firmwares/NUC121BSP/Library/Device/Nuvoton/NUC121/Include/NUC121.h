@@ -1,17 +1,17 @@
 /**************************************************************************//**
  * @file     NUC121.h
  * @version  V3.00
- * @brief    NUC121 Series Peripheral Access Layer Header File
+ * @brief    NUC121/NUC125 Series Peripheral Access Layer Header File
  *
  * @copyright (C) 2016 Nuvoton Technology Corp. All rights reserved.
  ******************************************************************************/
 
 /**
-  \mainpage NuMicro NUC121 Series CMSIS BSP Driver Reference
+  \mainpage NuMicro NUC121/NUC125 Series CMSIS BSP Driver Reference
   *
   * <b>Introduction</b>
   *
-  * This user manual describes the usage of NUC121 Series MCU device driver
+  * This user manual describes the usage of NUC121/NUC125 Series MCU device driver
   *
   * <b>Disclaimer</b>
   *

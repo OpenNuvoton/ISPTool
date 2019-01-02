@@ -152,10 +152,10 @@ typedef struct
      * |        |          |01 = 6 bits.
      * |        |          |10 = 7 bits.
      * |        |          |11 = 8 bits.
-     * |[2]     |NSB       |Number of ...STOP Bitu201D
-     * |        |          |0 = One ...STOP bitu201D is generated in the transmitted data.
-     * |        |          |1 = When select 5-bit word length, 1.5 ...STOP bitu201D is generated in the transmitted data
-     * |        |          |When select 6-, 7- and 8-bit word length, 2 ...STOP bitu201D is generated in the transmitted data.
+     * |[2]     |NSB       |Number of "STOP Bit"
+     * |        |          |0 = One "STOP bit" is generated in the transmitted data.
+     * |        |          |1 = When select 5-bit word length, 1.5 "STOP bit" is generated in the transmitted data
+     * |        |          |When select 6-, 7- and 8-bit word length, 2 "STOP bit" is generated in the transmitted data.
      * |[3]     |PBE       |Parity Bit Enable Bit
      * |        |          |0 = Parity bit generated Disabled.
      * |        |          |1 = Parity bit generated Enabled.
@@ -225,7 +225,7 @@ typedef struct
      * |        |          |This bit is set whenever nCTS input has change state, and it will generate Modem interrupt to CPU when MODEMIEN (UART_INTEN [3]) is set to 1.
      * |        |          |0 = nCTS input has not change state.
      * |        |          |1 = nCTS input has change state.
-     * |        |          |Note: This bit can be cleared by writing ...1u201D to it.
+     * |        |          |Note: This bit can be cleared by writing "1" to it.
      * |[4]     |CTSSTS    |nCTS Pin Status (Read Only)
      * |        |          |This bit mirror from nCTS pin input of voltage logic status.
      * |        |          |0 = nCTS pin input is low level voltage logic state.
@@ -247,37 +247,37 @@ typedef struct
      * |        |          |If the number of bytes of received data is greater than RX_FIFO (UART_DAT) size 16 bytes, this bit will be set.
      * |        |          |0 = RX FIFO is not overflow.
      * |        |          |1 = RX FIFO is overflow.
-     * |        |          |Note: This bit can be cleared by writing ...1u201D to it.
+     * |        |          |Note: This bit can be cleared by writing "1" to it.
      * |[1]     |ABRDIF    |Auto-baud Rate Detect Interrupt Flag
-     * |        |          |This bit is set to logic ...1u201D when auto-baud rate detect function is finished.
+     * |        |          |This bit is set to logic "1" when auto-baud rate detect function is finished.
      * |        |          |0 = Auto-baud rate detect function is not finished.
      * |        |          |1 = Auto-baud rate detect function is finished.
-     * |        |          |Note: This bit can be cleared by writing ...1u201D to it.
+     * |        |          |Note: This bit can be cleared by writing "1" to it.
      * |[2]     |ABRDTOIF  |Auto-baud Rate Detect Time-out Interrupt Flag
-     * |        |          |This bit is set to logic ...1u201D in Auto-baud Rate Detect mode when the baud rate counter is overflow.
+     * |        |          |This bit is set to logic "1" in Auto-baud Rate Detect mode when the baud rate counter is overflow.
      * |        |          |0 = Auto-baud rate counter is underflow.
      * |        |          |1 = Auto-baud rate counter is overflow.
-     * |        |          |Note: This bit can be cleared by writing ...1u201D to it.
+     * |        |          |Note: This bit can be cleared by writing "1" to it.
      * |[3]     |ADDRDETF  |RS-485 Address Byte Detect Flag
      * |        |          |0 = Receiver detects a data that is not an address bit (bit 9 ='0').
      * |        |          |1 = Receiver detects a data that is an address bit (bit 9 ='1').
      * |        |          |Note1: This field is used for RS-485 function mode and ADDRDEN (UART_ALTCTL[15]) is set to 1 to enable Address detection mode.
-     * |        |          |Note2: This bit can be cleared by writing ...1u201D to it.
+     * |        |          |Note2: This bit can be cleared by writing "1" to it.
      * |[4]     |PEF       |Parity Error Flag
-     * |        |          |This bit is set to logic 1 whenever the received character does not have a valid ...parity bitu201D.
+     * |        |          |This bit is set to logic 1 whenever the received character does not have a valid "parity bit".
      * |        |          |0 = No parity error is generated.
      * |        |          |1 = Parity error is generated.
-     * |        |          |Note: This bit can be cleared by writing ...1u201D to it.
+     * |        |          |Note: This bit can be cleared by writing "1" to it.
      * |[5]     |FEF       |Framing Error Flag
-     * |        |          |This bit is set to logic 1 whenever the received character does not have a valid ...stop bitu201D (that is, the stop bit following the last data bit or parity bit is detected as logic 0).
+     * |        |          |This bit is set to logic 1 whenever the received character does not have a valid "stop bit" (that is, the stop bit following the last data bit or parity bit is detected as logic 0).
      * |        |          |0 = No framing error is generated.
      * |        |          |1 = Framing error is generated.
-     * |        |          |Note: This bit can be cleared by writing ...1u201D to it.
+     * |        |          |Note: This bit can be cleared by writing "1" to it.
      * |[6]     |BIF       |Break Interrupt Flag
-     * |        |          |This bit is set to logic 1 whenever the received data input (RX) is held in the ...spacing stateu201D (logic 0) for longer than a full word transmission time (that is, the total time of ...start bitu201D + data bits + parity + stop bits).
+     * |        |          |This bit is set to logic 1 whenever the received data input (RX) is held in the "spacing state" (logic 0) for longer than a full word transmission time (that is, the total time of "start bit" + data bits + parity + stop bits).
      * |        |          |0 = No Break interrupt is generated.
      * |        |          |1 = Break interrupt is generated.
-     * |        |          |Note: This bit can be cleared by writing ...1u201D to it.
+     * |        |          |Note: This bit can be cleared by writing "1" to it.
      * |[13:8]  |RXPTR     |RX FIFO Pointer (Read Only)
      * |        |          |This field indicates the RX FIFO Buffer Pointer
      * |        |          |When UART receives one byte from external device, RXPTR increases one
@@ -318,7 +318,7 @@ typedef struct
      * |        |          |If TX FIFO (UART_DAT) is full, an additional write to UART_DAT will cause this bit to logic 1.
      * |        |          |0 = TX FIFO is not overflow.
      * |        |          |1 = TX FIFO is overflow.
-     * |        |          |Note: This bit can be cleared by writing ...1u201D to it.
+     * |        |          |Note: This bit can be cleared by writing "1" to it.
      * |[28]    |TXEMPTYF  |Transmitter Empty Flag (Read Only)
      * |        |          |This bit is set by hardware when TX FIFO (UART_DAT) is empty and the STOP bit of the last byte has been transmitted.
      * |        |          |0 = TX FIFO is not empty or the STOP bit of the last byte has been not transmitted.
@@ -357,7 +357,7 @@ typedef struct
      * |        |          |If RLSIEN (UART_INTEN [2]) is enabled, the RLS interrupt will be generated.
      * |        |          |0 = No RLS interrupt flag is generated.
      * |        |          |1 = RLS interrupt flag is generated.
-     * |        |          |Note1: In RS-485 function mode, this field is set include ...receiver detect and received address byte character (bit9 = '1') bit"
+     * |        |          |Note1: In RS-485 function mode, this field is set include "receiver detect and received address byte character (bit9 = '1') bit"
      * |        |          |At the same time, the bit of ADDRDETF (UART_FIFOSTS[3]) is also set.
      * |        |          |Note2: This bit is read only and reset to 0 when all bits of BIF (UART_FIFOSTS[6]), FEF(UART_FIFOSTS[5]) and PEF(UART_FIFOSTS[4]) are cleared.
      * |        |          |Note3: In RS-485 function mode, this bit is read only and reset to 0 when all bits of BIF (UART_FIFOSTS[6]) , FEF(UART_FIFOSTS[5]), PEF(UART_FIFOSTS[4]) and ADDRDETF (UART_FIFOSTS[3]) are cleared.
@@ -429,7 +429,7 @@ typedef struct
      * |        |          |If RLSIEN (UART_INTEN [2]) is enabled, the RLS interrupt will be generated.
      * |        |          |0 = No RLS interrupt flag is generated in PDMA mode.
      * |        |          |1 = RLS interrupt flag is generated in PDMA mode.
-     * |        |          |Note1: In RS-485 function mode, this field include ...receiver detect any address byte received address byte character (bit9 = '1') bit".
+     * |        |          |Note1: In RS-485 function mode, this field include "receiver detect any address byte received address byte character (bit9 = '1') bit".
      * |        |          |Note2: In UART function mode, this bit is read only and reset to 0 when all bits of BIF(UART_FIFOSTS[6]) , FEF(UART_FIFOSTS[5]) and PEF(UART_FIFOSTS[4]) are cleared.
      * |        |          |Note3: In RS-485 function mode, this bit is read only and reset to 0 when all bits of BIF(UART_FIFOSTS[6]), FEF(UART_FIFOSTS[5]), PEF(UART_FIFOSTS[4]) and ADDRDETF (UART_FIFOSTS[3]) are cleared
      * |[19]    |HWMODIF   |PDMA Mode MODEM Interrupt Flag (Read Only)
@@ -576,7 +576,7 @@ typedef struct
      * |        |          |This bit is set when auto-baud rate detection function finished or the auto-baud rate counter was overflow and if ABRIEN(UART_INTEN [18]) is set then the auto-baud rate interrupt will be generated.
      * |        |          |0 = No auto-baud rate interrupt flag is generated.
      * |        |          |1 = Auto-baud rate interrupt flag is generated.
-     * |        |          |Note: This bit is read only, but it can be cleared by writing ...1u201D to ABRDTOIF (UART_FIFOSTS[2]) and ABRDIF(UART_FIFOSTS[1])
+     * |        |          |Note: This bit is read only, but it can be cleared by writing "1" to ABRDTOIF (UART_FIFOSTS[2]) and ABRDIF(UART_FIFOSTS[1])
      * |[18]    |ABRDEN    |Auto-baud Rate Detect Enable Bit
      * |        |          |0 = Auto-baud rate detect function Disabled.
      * |        |          |1 = Auto-baud rate detect function Enabled.
@@ -640,11 +640,11 @@ typedef struct
      * |        |          |1 = LIN mute mode Enabled.
      * |        |          |Note: The exit from mute mode condition and each control and interactions of this field are explained in 6.16.5.10 (LIN slave mode).
      * |[8]     |SENDH     |LIN TX Send Header Enable Bit
-     * |        |          |The LIN TX header can be ...break fieldu201D or ...break and sync fieldu201D or ...break, sync and frame ID fieldu201D, it is depend on setting HSEL (UART_LINCTL[23:22]).
+     * |        |          |The LIN TX header can be "break field" or "break and sync field" or "break, sync and frame ID field", it is depend on setting HSEL (UART_LINCTL[23:22]).
      * |        |          |0 = Send LIN TX header Disabled.
      * |        |          |1 = Send LIN TX header Enabled.
      * |        |          |Note1: This bit is shadow bit of LINTXEN (UART_ALTCTL [7]); user can read/write it by setting LINTXEN (UART_ALTCTL [7]) or SENDH (UART_LINCTL [8]).
-     * |        |          |Note2: When transmitter header field (it may be ...breaku201D or ...break + syncu201D or ...break + sync + frame IDu201D selected by HSEL (UART_LINCTL[23:22]) field) transfer operation finished, this bit will be cleared automatically.
+     * |        |          |Note2: When transmitter header field (it may be "break" or "break + sync" or "break + sync + frame ID" selected by HSEL (UART_LINCTL[23:22]) field) transfer operation finished, this bit will be cleared automatically.
      * |[9]     |IDPEN     |LIN ID Parity Enable Bit
      * |        |          |0 = LIN frame ID parity Disabled.
      * |        |          |1 = LIN frame ID parity Enabled.
@@ -677,9 +677,9 @@ typedef struct
      * |        |          |11 = The LIN break/sync delimiter length is 4-bit time.
      * |        |          |Note: This bit used for LIN master to sending header field.
      * |[23:22] |HSEL      |LIN Header Select
-     * |        |          |00 = The LIN header includes ...break fieldu201D.
-     * |        |          |01 = The LIN header includes ...break fieldu201D and ...sync fieldu201D.
-     * |        |          |10 = The LIN header includes ...break fieldu201D, ...sync fieldu201D and ...frame ID fieldu201D.
+     * |        |          |00 = The LIN header includes "break field".
+     * |        |          |01 = The LIN header includes "break field" and "sync field".
+     * |        |          |10 = The LIN header includes "break field", "sync field" and "frame ID field".
      * |        |          |11 = Reserved.
      * |        |          |Note: This bit is used to master mode for LIN to send header field (SENDH (UART_LINCTL [8]) = 1) or used to slave to indicates exit from mute mode condition (MUTE (UART_LINCTL[4] = 1).
      * |[31:24] |PID       |LIN PID Bits
@@ -698,10 +698,10 @@ typedef struct
      * |        |          |1 = LIN header detected (break + sync + frame ID).
      * |        |          |Note1: This bit can be cleared by writing 1 to it.
      * |        |          |Note2: This bit is only valid when in LIN slave mode (SLVEN (UART_LINCTL [0]) = 1) and enable LIN slave header detection function (SLVHDEN (UART_LINCTL [1])).
-     * |        |          |Note3: When enable ID parity check IDPEN (UART_LINCTL [9]), if hardware detect complete header (...break + sync + frame IDu201D), the SLVHDETF will be set whether the frame ID correct or not.
+     * |        |          |Note3: When enable ID parity check IDPEN (UART_LINCTL [9]), if hardware detect complete header ("break + sync + frame ID"), the SLVHDETF will be set whether the frame ID correct or not.
      * |[1]     |SLVHEF    |LIN Slave Header Error Flag
      * |        |          |This bit is set by hardware when a LIN header error is detected in LIN slave mode and be cleared by writing 1 to it
-     * |        |          |The header errors include ...break delimiter is too short (less than 0.5 bit time)u201D, ...frame error in sync field or Identifier fieldu201D, ...sync field data is not 0x55 in Non-Automatic Resynchronization modeu201D, ...sync field deviation error with Automatic Resynchronization modeu201D, ...sync field measure time-out with ...Automatic Resynchronization modeu201D and ...LIN header reception time-outu201D.
+     * |        |          |The header errors include "break delimiter is too short (less than 0.5 bit time)", "frame error in sync field or Identifier field", "sync field data is not 0x55 in Non-Automatic Resynchronization mode", "sync field deviation error with Automatic Resynchronization mode", "sync field measure time-out with "Automatic Resynchronization mode" and "LIN header reception time-out".
      * |        |          |0 = LIN header error not detected.
      * |        |          |1 = LIN header error detected.
      * |        |          |Note1: This bit can be cleared by writing 1 to it.

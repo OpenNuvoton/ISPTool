@@ -147,7 +147,7 @@ extern "C"
 /**
  *    @brief        Write UART data
  *
- *    @param[in]    uart    The pointer of the specified UART module
+ *    @param[in]    psUART  The pointer of the specified UART module
  *    @param[in]    u8Data  Data byte to transmit.
  *
  *    @return       None
@@ -156,13 +156,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UART_WRITE(uart, u8Data)    ((uart)->DAT = (u8Data))
+#define UART_WRITE(psUART, u8Data)    ((psUART)->DAT = (u8Data))
 
 
 /**
  *    @brief        Read UART data
  *
- *    @param[in]    uart    The pointer of the specified UART module
+ *    @param[in]    psUART    The pointer of the specified UART module
  *
  *    @return       The oldest data byte in RX FIFO.
  *
@@ -170,13 +170,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UART_READ(uart)    ((uart)->DAT)
+#define UART_READ(psUART)    ((psUART)->DAT)
 
 
 /**
  *    @brief        Get Tx empty
  *
- *    @param[in]    uart    The pointer of the specified UART module
+ *    @param[in]    psUART    The pointer of the specified UART module
  *
  *    @retval       0   Tx FIFO is not empty
  *    @retval       >=1 Tx FIFO is empty
@@ -185,13 +185,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UART_GET_TX_EMPTY(uart)    ((uart)->FIFOSTS & UART_FIFOSTS_TXEMPTY_Msk)
+#define UART_GET_TX_EMPTY(psUART)    ((psUART)->FIFOSTS & UART_FIFOSTS_TXEMPTY_Msk)
 
 
 /**
  *    @brief        Get Rx empty
  *
- *    @param[in]    uart    The pointer of the specified UART module
+ *    @param[in]    psUART    The pointer of the specified UART module
  *
  *    @retval       0   Rx FIFO is not empty
  *    @retval       >=1 Rx FIFO is empty
@@ -200,13 +200,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UART_GET_RX_EMPTY(uart)    ((uart)->FIFOSTS & UART_FIFOSTS_RXEMPTY_Msk)
+#define UART_GET_RX_EMPTY(psUART)    ((psUART)->FIFOSTS & UART_FIFOSTS_RXEMPTY_Msk)
 
 
 /**
  *    @brief        Check specified uart port transmission is over.
  *
- *    @param[in]    uart    The pointer of the specified UART module
+ *    @param[in]    psUART    The pointer of the specified UART module
  *
  *    @retval       0 Tx transmission is not over
  *    @retval       1 Tx transmission is over
@@ -216,13 +216,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UART_IS_TX_EMPTY(uart)    (((uart)->FIFOSTS & UART_FIFOSTS_TXEMPTYF_Msk) >> UART_FIFOSTS_TXEMPTYF_Pos)
+#define UART_IS_TX_EMPTY(psUART)    (((psUART)->FIFOSTS & UART_FIFOSTS_TXEMPTYF_Msk) >> UART_FIFOSTS_TXEMPTYF_Pos)
 
 
 /**
  *    @brief        Wait specified uart port transmission is over
  *
- *    @param[in]    uart    The pointer of the specified UART module
+ *    @param[in]    psUART    The pointer of the specified UART module
  *
  *    @return       None
  *
@@ -230,13 +230,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UART_WAIT_TX_EMPTY(uart)    while(!((((uart)->FIFOSTS) & UART_FIFOSTS_TXEMPTYF_Msk) >> UART_FIFOSTS_TXEMPTYF_Pos))
+#define UART_WAIT_TX_EMPTY(psUART)    while(!((((psUART)->FIFOSTS) & UART_FIFOSTS_TXEMPTYF_Msk) >> UART_FIFOSTS_TXEMPTYF_Pos))
 
 
 /**
  *    @brief        Check RX is ready or not
  *
- *    @param[in]    uart    The pointer of the specified UART module
+ *    @param[in]    psUART    The pointer of the specified UART module
  *
  *    @retval       0 The number of bytes in the RX FIFO is less than the RFITL
  *    @retval       1 The number of bytes in the RX FIFO equals or larger than RFITL
@@ -245,13 +245,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UART_IS_RX_READY(uart)    (((uart)->INTSTS & UART_INTSTS_RDAIF_Msk)>>UART_INTSTS_RDAIF_Pos)
+#define UART_IS_RX_READY(psUART)    (((psUART)->INTSTS & UART_INTSTS_RDAIF_Msk)>>UART_INTSTS_RDAIF_Pos)
 
 
 /**
  *    @brief        Check TX FIFO is full or not
  *
- *    @param[in]    uart    The pointer of the specified UART module
+ *    @param[in]    psUART    The pointer of the specified UART module
  *
  *    @retval       1 TX FIFO is full
  *    @retval       0 TX FIFO is not full
@@ -260,13 +260,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UART_IS_TX_FULL(uart)    (((uart)->FIFOSTS & UART_FIFOSTS_TXFULL_Msk)>>UART_FIFOSTS_TXFULL_Pos)
+#define UART_IS_TX_FULL(psUART)    (((psUART)->FIFOSTS & UART_FIFOSTS_TXFULL_Msk)>>UART_FIFOSTS_TXFULL_Pos)
 
 
 /**
  *    @brief        Check RX FIFO is full or not
  *
- *    @param[in]    uart    The pointer of the specified UART module
+ *    @param[in]    psUART    The pointer of the specified UART module
  *
  *    @retval       1 RX FIFO is full
  *    @retval       0 RX FIFO is not full
@@ -275,13 +275,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UART_IS_RX_FULL(uart)    (((uart)->FIFOSTS & UART_FIFOSTS_RXFULL_Msk)>>UART_FIFOSTS_RXFULL_Pos)
+#define UART_IS_RX_FULL(psUART)    (((psUART)->FIFOSTS & UART_FIFOSTS_RXFULL_Msk)>>UART_FIFOSTS_RXFULL_Pos)
 
 
 /**
  *    @brief        Get Tx full register value
  *
- *    @param[in]    uart    The pointer of the specified UART module
+ *    @param[in]    psUART    The pointer of the specified UART module
  *
  *    @retval       0   Tx FIFO is not full.
  *    @retval       >=1 Tx FIFO is full.
@@ -290,13 +290,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UART_GET_TX_FULL(uart)    ((uart)->FIFOSTS & UART_FIFOSTS_TXFULL_Msk)
+#define UART_GET_TX_FULL(psUART)    ((psUART)->FIFOSTS & UART_FIFOSTS_TXFULL_Msk)
 
 
 /**
  *    @brief        Get Rx full register value
  *
- *    @param[in]    uart    The pointer of the specified UART module
+ *    @param[in]    psUART    The pointer of the specified UART module
  *
  *    @retval       0   Rx FIFO is not full.
  *    @retval       >=1 Rx FIFO is full.
@@ -305,13 +305,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UART_GET_RX_FULL(uart)    ((uart)->FIFOSTS & UART_FIFOSTS_RXFULL_Msk)
+#define UART_GET_RX_FULL(psUART)    ((psUART)->FIFOSTS & UART_FIFOSTS_RXFULL_Msk)
 
 
 /**
  *    @brief        Enable specified UART interrupt
  *
- *    @param[in]    uart        The pointer of the specified UART module
+ *    @param[in]    psUART      The pointer of the specified UART module
  *    @param[in]    u32eIntSel  Interrupt type select
  *                              - \ref UART_INTEN_TXENDIEN_Msk   : Transmitter empty interrupt
  *                              - \ref UART_INTEN_ABRIEN_Msk     : Auto baud rate interrupt
@@ -330,13 +330,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UART_ENABLE_INT(uart, u32eIntSel)    ((uart)->INTEN |= (u32eIntSel))
+#define UART_ENABLE_INT(psUART, u32eIntSel)    ((psUART)->INTEN |= (u32eIntSel))
 
 
 /**
  *    @brief        Disable specified UART interrupt
  *
- *    @param[in]    uart        The pointer of the specified UART module
+ *    @param[in]    psUART      The pointer of the specified UART module
  *    @param[in]    u32eIntSel  Interrupt type select
  *                              - \ref UART_INTEN_TXENDIEN_Msk   : Transmitter Empty Interrupt
  *                              - \ref UART_INTEN_ABRIEN_Msk     : Auto-baud Rate Interrupt
@@ -355,13 +355,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UART_DISABLE_INT(uart, u32eIntSel)    ((uart)->INTEN &= ~ (u32eIntSel))
+#define UART_DISABLE_INT(psUART, u32eIntSel)    ((psUART)->INTEN &= ~ (u32eIntSel))
 
 
 /**
  *    @brief        Get specified interrupt flag/status
  *
- *    @param[in]    uart            The pointer of the specified UART module
+ *    @param[in]    psUART          The pointer of the specified UART module
  *    @param[in]    u32eIntTypeFlag Interrupt Type Flag, should be
  *                                  - \ref UART_INTSTS_HWBUFEINT_Msk : PDMA Mode Buffer Error Interrupt Indicator
  *                                  - \ref UART_INTSTS_HWTOINT_Msk   : PDMA Mode Rx Time-out Interrupt Indicator
@@ -398,13 +398,13 @@ extern "C"
  *
  *    \hideinitializer
  */
-#define UART_GET_INT_FLAG(uart,u32eIntTypeFlag)    (((uart)->INTSTS & (u32eIntTypeFlag))?1:0)
+#define UART_GET_INT_FLAG(psUART, u32eIntTypeFlag)    (((psUART)->INTSTS & (u32eIntTypeFlag))?1:0)
 
 
 /**
  *    @brief        Set RTS pin to low
  *
- *    @param[in]    uart    The pointer of the specified UART module
+ *    @param[in]    psUART    The pointer of the specified UART module
  *
  *    @return       None
  *
@@ -412,17 +412,17 @@ extern "C"
  *
  *    \hideinitializer
  */
-__STATIC_INLINE void UART_CLEAR_RTS(UART_T *uart)
+__STATIC_INLINE void UART_CLEAR_RTS(UART_T *psUART)
 {
-    uart->MODEM |= UART_MODEM_RTSACTLV_Msk;
-    uart->MODEM &= ~UART_MODEM_RTS_Msk;
+    psUART->MODEM |= UART_MODEM_RTSACTLV_Msk;
+    psUART->MODEM &= ~UART_MODEM_RTS_Msk;
 }
 
 
 /**
  *    @brief        Set RTS pin to high
  *
- *    @param[in]    uart    The pointer of the specified UART module
+ *    @param[in]    psUART    The pointer of the specified UART module
  *
  *    @return       None
  *
@@ -430,16 +430,16 @@ __STATIC_INLINE void UART_CLEAR_RTS(UART_T *uart)
  *
  *    \hideinitializer
  */
-__STATIC_INLINE void UART_SET_RTS(UART_T *uart)
+__STATIC_INLINE void UART_SET_RTS(UART_T *psUART)
 {
-    uart->MODEM |= UART_MODEM_RTSACTLV_Msk | UART_MODEM_RTS_Msk;
+    psUART->MODEM |= UART_MODEM_RTSACTLV_Msk | UART_MODEM_RTS_Msk;
 }
 
 
 /**
  *    @brief        Clear RS-485 Address Byte Detection Flag
  *
- *    @param[in]    uart    The pointer of the specified UART module
+ *    @param[in]    psUART    The pointer of the specified UART module
  *
  *    @return       None
  *
@@ -447,13 +447,13 @@ __STATIC_INLINE void UART_SET_RTS(UART_T *uart)
  *
  *    \hideinitializer
  */
-#define UART_RS485_CLEAR_ADDR_FLAG(uart)    ((uart)->FIFOSTS = UART_FIFOSTS_ADDRDETF_Msk)
+#define UART_RS485_CLEAR_ADDR_FLAG(psUART)    ((psUART)->FIFOSTS = UART_FIFOSTS_ADDRDETF_Msk)
 
 
 /**
  *    @brief        Get RS-485 Address Byte Detection Flag
  *
- *    @param[in]    uart    The pointer of the specified UART module
+ *    @param[in]    psUART    The pointer of the specified UART module
  *
  *    @retval       0 Receiver detects a data that is not an address bit.
  *    @retval       1 Receiver detects a data that is an address bit.
@@ -462,24 +462,24 @@ __STATIC_INLINE void UART_SET_RTS(UART_T *uart)
  *
  *    \hideinitializer
  */
-#define UART_RS485_GET_ADDR_FLAG(uart)    (((uart)->FIFOSTS  & UART_FIFOSTS_ADDRDETF_Msk) >> UART_FIFOSTS_ADDRDETF_Pos)
+#define UART_RS485_GET_ADDR_FLAG(psUART)    (((psUART)->FIFOSTS  & UART_FIFOSTS_ADDRDETF_Msk) >> UART_FIFOSTS_ADDRDETF_Pos)
 
 
 
-void UART_ClearIntFlag(UART_T *uart, uint32_t u32InterruptFlag);
-void UART_Close(UART_T *uart);
-void UART_DisableFlowCtrl(UART_T *uart);
-void UART_DisableInt(UART_T  *uart, uint32_t u32InterruptFlag);
-void UART_EnableFlowCtrl(UART_T *uart);
-void UART_EnableInt(UART_T  *uart, uint32_t u32InterruptFlag);
-void UART_Open(UART_T *uart, uint32_t u32baudrate);
-uint32_t UART_Read(UART_T *uart, uint8_t *pu8RxBuf, uint32_t u32ReadBytes);
-void UART_SetLine_Config(UART_T *uart, uint32_t u32baudrate, uint32_t u32data_width, uint32_t u32parity, uint32_t  u32stop_bits);
-void UART_SetTimeoutCnt(UART_T *uart, uint32_t u32TOC);
-void UART_SelectIrDAMode(UART_T *uart, uint32_t u32Buadrate, uint32_t u32Direction);
-void UART_SelectRS485Mode(UART_T *uart, uint32_t u32Mode, uint32_t u32Addr);
-void UART_SelectLINMode(UART_T *uart, uint32_t u32Mode, uint32_t u32BreakLength);
-uint32_t UART_Write(UART_T *uart, uint8_t *pu8TxBuf, uint32_t u32WriteBytes);
+void UART_ClearIntFlag(UART_T *psUART, uint32_t u32InterruptFlag);
+void UART_Close(UART_T *psUART);
+void UART_DisableFlowCtrl(UART_T *psUART);
+void UART_DisableInt(UART_T *psUART, uint32_t u32InterruptFlag);
+void UART_EnableFlowCtrl(UART_T *psUART);
+void UART_EnableInt(UART_T *psUART, uint32_t u32InterruptFlag);
+void UART_Open(UART_T *psUART, uint32_t u32Baudrate);
+uint32_t UART_Read(UART_T *psUART, uint8_t *pu8RxBuf, uint32_t u32ReadBytes);
+void UART_SetLine_Config(UART_T *psUART, uint32_t u32Baudrate, uint32_t u32DataWidth, uint32_t u32Parity, uint32_t u32StopBits);
+void UART_SetTimeoutCnt(UART_T *psUART, uint32_t u32TOC);
+void UART_SelectIrDAMode(UART_T *psUART, uint32_t u32Buadrate, uint32_t u32Direction);
+void UART_SelectRS485Mode(UART_T *psUART, uint32_t u32Mode, uint32_t u32Addr);
+void UART_SelectLINMode(UART_T *psUART, uint32_t u32Mode, uint32_t u32BreakLength);
+uint32_t UART_Write(UART_T *psUART, uint8_t *pu8TxBuf, uint32_t u32WriteBytes);
 
 
 /*@}*/ /* end of group UART_EXPORTED_FUNCTIONS */

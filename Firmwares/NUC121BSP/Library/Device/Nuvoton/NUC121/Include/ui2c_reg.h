@@ -190,7 +190,7 @@ typedef struct
      * |        |          |When AA=0 prior to address or data received, a Not acknowledged (high level to SDA) will be returned during the acknowledge clock pulse on the SCL line.
      * |[2]     |STO       |I2C STOP Control
      * |        |          |In Master mode, setting STO to transmit a STOP condition to bus then I2C hardware will check the bus condition if a STOP condition is detected this bit will be cleared by hardware automatically
-     * |        |          |In a slave mode, setting STO resets I2C hardware to the defined ...not addressedu201D slave mode when bus error (UI2C_PROTSTS.ERRIF = 1).
+     * |        |          |In a slave mode, setting STO resets I2C hardware to the defined "not addressed" slave mode when bus error (UI2C_PROTSTS.ERRIF = 1).
      * |[3]     |STA       |I2C START Control
      * |        |          |Setting STA to logic 1 to enter Master mode, the I2C hardware sends a START or repeat START condition to bus when the bus is free.
      * |[4]     |ADDR10EN  |Address 10-bit Function Enable Bit
@@ -301,7 +301,7 @@ typedef struct
      * |        |          |0 = An I2C error has not been detected.
      * |        |          |1 = An I2C error has been detected.
      * |        |          |It is cleared by software writing one into this bit
-     * |        |          |Note: This bit is set when slave mode, user must write one into STO register to the defined ...not addressedu201D slave mode.
+     * |        |          |Note: This bit is set when slave mode, user must write one into STO register to the defined "not addressed" slave mode.
      * |[13]    |ACKIF     |Acknowledge Received Interrupt Flag
      * |        |          |This bit indicates that an acknowledge has been received in master mode
      * |        |          |This bit is not set in slave mode

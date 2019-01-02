@@ -105,7 +105,7 @@ void TIMER_Close(TIMER_T *timer)
 void TIMER_Delay(TIMER_T *timer, uint32_t u32Usec)
 {
     uint32_t u32Clk = TIMER_GetModuleClock(timer);
-    uint32_t u32Prescale = 0, delay = (SystemCoreClock / u32Clk) + 1;
+    uint32_t u32Prescale = 0, u32Delay = (SystemCoreClock / u32Clk) + 1;
     uint32_t u32Cmpr, u32NsecPerTick;
 
     // Clear current timer configuration/
@@ -173,7 +173,7 @@ void TIMER_Delay(TIMER_T *timer, uint32_t u32Usec)
 
     // When system clock is faster than timer clock, it is possible timer active bit cannot set in time while we check it.
     // And the while loop below return immediately, so put a tiny delay here allowing timer start counting and raise active flag.
-    for (; delay > 0; delay--)
+    for (; u32Delay > 0; u32Delay--)
     {
         __NOP();
     }

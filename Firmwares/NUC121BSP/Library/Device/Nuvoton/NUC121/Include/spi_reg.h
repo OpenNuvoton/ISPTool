@@ -54,19 +54,19 @@ typedef struct
      * |        |          |The period of the suspend interval is obtained according to the following equation.
      * |        |          |(SUSPITV[3:0] + 0.5) * period of SPICLK clock cycle
      * |        |          |Example:
-     * |        |          |SUSPITV = 0x0 ... 0.5 SPICLK clock cycle.
-     * |        |          |SUSPITV = 0x1 ... 1.5 SPICLK clock cycle.
-     * |        |          |.....
-     * |        |          |SUSPITV = 0xE ... 14.5 SPICLK clock cycle.
-     * |        |          |SUSPITV = 0xF ... 15.5 SPICLK clock cycle.
+     * |        |          |SUSPITV = 0x0 " 0.5 SPICLK clock cycle.
+     * |        |          |SUSPITV = 0x1 " 1.5 SPICLK clock cycle.
+     * |        |          |"..
+     * |        |          |SUSPITV = 0xE " 14.5 SPICLK clock cycle.
+     * |        |          |SUSPITV = 0xF " 15.5 SPICLK clock cycle.
      * |[12:8]  |DWIDTH    |Data Width
      * |        |          |This field specifies how many bits can be transmitted / received in one transaction
      * |        |          |The minimum bit length is 8 bits and can up to 32 bits.
-     * |        |          |DWIDTH = 0x08 ... 8 bits.
-     * |        |          |DWIDTH = 0x09 ... 9 bits.
-     * |        |          |.....
-     * |        |          |DWIDTH = 0x1F ... 31 bits.
-     * |        |          |DWIDTH = 0x00 ... 32 bits.
+     * |        |          |DWIDTH = 0x08 " 8 bits.
+     * |        |          |DWIDTH = 0x09 " 9 bits.
+     * |        |          |"..
+     * |        |          |DWIDTH = 0x1F " 31 bits.
+     * |        |          |DWIDTH = 0x00 " 32 bits.
      * |[13]    |LSB       |Send LSB First
      * |        |          |0 = The MSB, which bit of transmit/receive register depends on the setting of DWIDTH, is transmitted/received first.
      * |        |          |1 = The LSB, bit 0 of the SPI TX register, is sent first to the SPI data output pin, and the first bit received from the SPI data input pin will be put in the LSB position of the RX register (bit 0 of SPI_RX).

@@ -25,7 +25,7 @@
 /**
  *    @brief        Clear USCI_UART specified interrupt flag
  *
- *    @param[in]    uuart   The pointer of the specified USCI_UART module.
+ *    @param[in]    psUUART The pointer of the specified USCI_UART module.
  *    @param[in]    u32Mask The combination of all related interrupt sources.
  *                          Each bit corresponds to a interrupt source.
  *                          This parameter decides which interrupt flags will be cleared. It could be the combination of:
@@ -42,29 +42,29 @@
  *    @details      The function is used to clear USCI_UART related interrupt flags specified by u32Mask parameter.
  */
 
-void UUART_ClearIntFlag(UUART_T *uuart, uint32_t u32Mask)
+void UUART_ClearIntFlag(UUART_T *psUUART, uint32_t u32Mask)
 {
 
     if (u32Mask & UUART_ABR_INT_MASK) /* Clear Auto-baud Rate Interrupt */
-        uuart->PROTSTS = UUART_PROTSTS_ABRDETIF_Msk;
+        psUUART->PROTSTS = UUART_PROTSTS_ABRDETIF_Msk;
 
     if (u32Mask & UUART_RLS_INT_MASK)  /* Clear Receive Line Status Interrupt */
-        uuart->PROTSTS = (UUART_PROTSTS_BREAK_Msk | UUART_PROTSTS_FRMERR_Msk | UUART_PROTSTS_PARITYERR_Msk);
+        psUUART->PROTSTS = (UUART_PROTSTS_BREAK_Msk | UUART_PROTSTS_FRMERR_Msk | UUART_PROTSTS_PARITYERR_Msk);
 
     if (u32Mask & UUART_BUF_RXOV_INT_MASK)  /* Clear Receive Buffer Over-run Error Interrupt */
-        uuart->BUFSTS = UUART_BUFSTS_RXOVIF_Msk;
+        psUUART->BUFSTS = UUART_BUFSTS_RXOVIF_Msk;
 
     if (u32Mask & UUART_TXST_INT_MASK)  /* Clear Transmit Start Interrupt */
-        uuart->PROTSTS = UUART_PROTSTS_TXSTIF_Msk;
+        psUUART->PROTSTS = UUART_PROTSTS_TXSTIF_Msk;
 
     if (u32Mask & UUART_TXEND_INT_MASK)  /* Clear Transmit End Interrupt */
-        uuart->PROTSTS = UUART_PROTSTS_TXENDIF_Msk;
+        psUUART->PROTSTS = UUART_PROTSTS_TXENDIF_Msk;
 
     if (u32Mask & UUART_RXST_INT_MASK)  /* Clear Receive Start Interrupt */
-        uuart->PROTSTS = UUART_PROTSTS_RXSTIF_Msk;
+        psUUART->PROTSTS = UUART_PROTSTS_RXSTIF_Msk;
 
     if (u32Mask & UUART_RXEND_INT_MASK)  /* Clear Receive End Interrupt */
-        uuart->PROTSTS = UUART_PROTSTS_RXENDIF_Msk;
+        psUUART->PROTSTS = UUART_PROTSTS_RXENDIF_Msk;
 
 }
 
@@ -72,7 +72,7 @@ void UUART_ClearIntFlag(UUART_T *uuart, uint32_t u32Mask)
 /**
  *    @brief        Get USCI_UART specified interrupt flag
  *
- *    @param[in]    uuart   The pointer of the specified USCI_UART module.
+ *    @param[in]    psUUART The pointer of the specified USCI_UART module.
  *    @param[in]    u32Mask The combination of all related interrupt sources.
  *                          Each bit corresponds to a interrupt source.
  *                          This parameter decides which interrupt flags will be read. It is combination of:
@@ -89,36 +89,36 @@ void UUART_ClearIntFlag(UUART_T *uuart, uint32_t u32Mask)
  *    @details      The function is used to get USCI_UART related interrupt flags specified by u32Mask parameter.
  */
 
-uint32_t UUART_GetIntFlag(UUART_T *uuart, uint32_t u32Mask)
+uint32_t UUART_GetIntFlag(UUART_T *psUUART, uint32_t u32Mask)
 {
     uint32_t u32IntFlag = 0;
 
     /* Check Auto-baud Rate Interrupt Flag */
-    if ((u32Mask & UUART_ABR_INT_MASK) && (uuart->PROTSTS & UUART_PROTSTS_ABRDETIF_Msk))
+    if ((u32Mask & UUART_ABR_INT_MASK) && (psUUART->PROTSTS & UUART_PROTSTS_ABRDETIF_Msk))
         u32IntFlag |= UUART_ABR_INT_MASK;
 
     /* Check Receive Line Status Interrupt Flag */
-    if ((u32Mask & UUART_RLS_INT_MASK) && (uuart->PROTSTS & (UUART_PROTSTS_BREAK_Msk | UUART_PROTSTS_FRMERR_Msk | UUART_PROTSTS_PARITYERR_Msk)))
+    if ((u32Mask & UUART_RLS_INT_MASK) && (psUUART->PROTSTS & (UUART_PROTSTS_BREAK_Msk | UUART_PROTSTS_FRMERR_Msk | UUART_PROTSTS_PARITYERR_Msk)))
         u32IntFlag |= UUART_RLS_INT_MASK;
 
     /* Check Receive Buffer Over-run Error Interrupt Flag */
-    if ((u32Mask & UUART_BUF_RXOV_INT_MASK) && (uuart->BUFSTS & UUART_BUFSTS_RXOVIF_Msk))
+    if ((u32Mask & UUART_BUF_RXOV_INT_MASK) && (psUUART->BUFSTS & UUART_BUFSTS_RXOVIF_Msk))
         u32IntFlag |= UUART_BUF_RXOV_INT_MASK;
 
     /* Check Transmit Start Interrupt Flag */
-    if ((u32Mask & UUART_TXST_INT_MASK) && (uuart->PROTSTS & UUART_PROTSTS_TXSTIF_Msk))
+    if ((u32Mask & UUART_TXST_INT_MASK) && (psUUART->PROTSTS & UUART_PROTSTS_TXSTIF_Msk))
         u32IntFlag |= UUART_TXST_INT_MASK;
 
     /* Check Transmit End Interrupt Flag */
-    if ((u32Mask & UUART_TXEND_INT_MASK) && (uuart->PROTSTS & UUART_PROTSTS_TXENDIF_Msk))
+    if ((u32Mask & UUART_TXEND_INT_MASK) && (psUUART->PROTSTS & UUART_PROTSTS_TXENDIF_Msk))
         u32IntFlag |= UUART_TXEND_INT_MASK;
 
     /* Check Receive Start Interrupt Flag */
-    if ((u32Mask & UUART_RXST_INT_MASK) && (uuart->PROTSTS & UUART_PROTSTS_RXSTIF_Msk))
+    if ((u32Mask & UUART_RXST_INT_MASK) && (psUUART->PROTSTS & UUART_PROTSTS_RXSTIF_Msk))
         u32IntFlag |= UUART_RXST_INT_MASK;
 
     /* Check Receive End Interrupt Flag */
-    if ((u32Mask & UUART_RXEND_INT_MASK) && (uuart->PROTSTS & UUART_PROTSTS_RXENDIF_Msk))
+    if ((u32Mask & UUART_RXEND_INT_MASK) && (psUUART->PROTSTS & UUART_PROTSTS_RXENDIF_Msk))
         u32IntFlag |= UUART_RXEND_INT_MASK;
 
     return u32IntFlag;
@@ -129,22 +129,22 @@ uint32_t UUART_GetIntFlag(UUART_T *uuart, uint32_t u32Mask)
 /**
  *  @brief      Disable USCI_UART function mode
  *
- *  @param[in]  uuart The pointer of the specified USCI_UART module.
+ *  @param[in]  psUUART The pointer of the specified USCI_UART module.
  *
  *  @return     None
  *
  *  @details    The function is used to disable USCI_UART function mode.
  */
-void UUART_Close(UUART_T *uuart)
+void UUART_Close(UUART_T *psUUART)
 {
-    uuart->CTL = 0;
+    psUUART->CTL = 0;
 }
 
 
 /**
  *    @brief        Disable interrupt function.
  *
- *    @param[in]    uuart   The pointer of the specified USCI_UART module.
+ *    @param[in]    psUUART The pointer of the specified USCI_UART module.
  *    @param[in]    u32Mask The combination of all related interrupt enable bits.
  *                          Each bit corresponds to a interrupt enable bit.
  *                          This parameter decides which interrupts will be disabled. It is combination of:
@@ -160,43 +160,43 @@ void UUART_Close(UUART_T *uuart)
  *
  *    @details      The function is used to disabled USCI_UART related interrupts specified by u32Mask parameter.
  */
-void UUART_DisableInt(UUART_T *uuart, uint32_t u32Mask)
+void UUART_DisableInt(UUART_T *psUUART, uint32_t u32Mask)
 {
 
     /* Disable Auto-baud rate interrupt flag */
     if ((u32Mask & UUART_ABR_INT_MASK) == UUART_ABR_INT_MASK)
-        uuart->PROTIEN &= ~UUART_PROTIEN_ABRIEN_Msk;
+        psUUART->PROTIEN &= ~UUART_PROTIEN_ABRIEN_Msk;
 
     /* Disable receive line status interrupt flag */
     if ((u32Mask & UUART_RLS_INT_MASK) == UUART_RLS_INT_MASK)
-        uuart->PROTIEN &= ~UUART_PROTIEN_RLSIEN_Msk;
+        psUUART->PROTIEN &= ~UUART_PROTIEN_RLSIEN_Msk;
 
     /* Disable RX overrun interrupt flag */
     if ((u32Mask & UUART_BUF_RXOV_INT_MASK) == UUART_BUF_RXOV_INT_MASK)
-        uuart->BUFCTL &= ~UUART_BUFCTL_RXOVIEN_Msk;
+        psUUART->BUFCTL &= ~UUART_BUFCTL_RXOVIEN_Msk;
 
     /* Disable TX start interrupt flag */
     if ((u32Mask & UUART_TXST_INT_MASK) == UUART_TXST_INT_MASK)
-        uuart->INTEN &= ~UUART_INTEN_TXSTIEN_Msk;
+        psUUART->INTEN &= ~UUART_INTEN_TXSTIEN_Msk;
 
     /* Disable TX end interrupt flag */
     if ((u32Mask & UUART_TXEND_INT_MASK) == UUART_TXEND_INT_MASK)
-        uuart->INTEN &= ~UUART_INTEN_TXENDIEN_Msk;
+        psUUART->INTEN &= ~UUART_INTEN_TXENDIEN_Msk;
 
     /* Disable RX start interrupt flag */
     if ((u32Mask & UUART_RXST_INT_MASK) == UUART_RXST_INT_MASK)
-        uuart->INTEN &= ~UUART_INTEN_RXSTIEN_Msk;
+        psUUART->INTEN &= ~UUART_INTEN_RXSTIEN_Msk;
 
     /* Disable RX end interrupt flag */
     if ((u32Mask & UUART_RXEND_INT_MASK) == UUART_RXEND_INT_MASK)
-        uuart->INTEN &= ~UUART_INTEN_RXENDIEN_Msk;
+        psUUART->INTEN &= ~UUART_INTEN_RXENDIEN_Msk;
 }
 
 
 /**
  *    @brief        Enable interrupt function.
  *
- *    @param[in]    uuart       The pointer of the specified USCI_UART module.
+ *    @param[in]    psUUART     The pointer of the specified USCI_UART module.
  *    @param[in]    u32Mask     The combination of all related interrupt enable bits.
  *                              Each bit corresponds to a interrupt enable bit.
  *                              This parameter decides which interrupts will be enabled. It is combination of:
@@ -212,49 +212,49 @@ void UUART_DisableInt(UUART_T *uuart, uint32_t u32Mask)
  *
  *    @details      The function is used to enable USCI_UART related interrupts specified by u32Mask parameter..
  */
-void UUART_EnableInt(UUART_T  *uuart, uint32_t u32Mask)
+void UUART_EnableInt(UUART_T  *psUUART, uint32_t u32Mask)
 {
     /* Enable Auto-baud rate interrupt flag */
     if ((u32Mask & UUART_ABR_INT_MASK) == UUART_ABR_INT_MASK)
-        uuart->PROTIEN |= UUART_PROTIEN_ABRIEN_Msk;
+        psUUART->PROTIEN |= UUART_PROTIEN_ABRIEN_Msk;
 
     /* Enable receive line status interrupt flag */
     if ((u32Mask & UUART_RLS_INT_MASK) == UUART_RLS_INT_MASK)
-        uuart->PROTIEN |= UUART_PROTIEN_RLSIEN_Msk;
+        psUUART->PROTIEN |= UUART_PROTIEN_RLSIEN_Msk;
 
     /* Enable RX overrun interrupt flag */
     if ((u32Mask & UUART_BUF_RXOV_INT_MASK) == UUART_BUF_RXOV_INT_MASK)
-        uuart->BUFCTL |= UUART_BUFCTL_RXOVIEN_Msk;
+        psUUART->BUFCTL |= UUART_BUFCTL_RXOVIEN_Msk;
 
     /* Enable TX start interrupt flag */
     if ((u32Mask & UUART_TXST_INT_MASK) == UUART_TXST_INT_MASK)
-        uuart->INTEN |= UUART_INTEN_TXSTIEN_Msk;
+        psUUART->INTEN |= UUART_INTEN_TXSTIEN_Msk;
 
     /* Enable TX end interrupt flag */
     if ((u32Mask & UUART_TXEND_INT_MASK) == UUART_TXEND_INT_MASK)
-        uuart->INTEN |= UUART_INTEN_TXENDIEN_Msk;
+        psUUART->INTEN |= UUART_INTEN_TXENDIEN_Msk;
 
     /* Enable RX start interrupt flag */
     if ((u32Mask & UUART_RXST_INT_MASK) == UUART_RXST_INT_MASK)
-        uuart->INTEN |= UUART_INTEN_RXSTIEN_Msk;
+        psUUART->INTEN |= UUART_INTEN_RXSTIEN_Msk;
 
     /* Enable RX end interrupt flag */
     if ((u32Mask & UUART_RXEND_INT_MASK) == UUART_RXEND_INT_MASK)
-        uuart->INTEN |= UUART_INTEN_RXENDIEN_Msk;
+        psUUART->INTEN |= UUART_INTEN_RXENDIEN_Msk;
 }
 
 
 /**
  *    @brief        Open and set USCI_UART function
  *
- *    @param[in]    uuart           The pointer of the specified USCI_UART module.
- *    @param[in]    u32baudrate     The baud rate of USCI_UART module.
+ *    @param[in]    psUUART         The pointer of the specified USCI_UART module.
+ *    @param[in]    u32Baudrate     The baud rate of USCI_UART module.
  *
  *    @return       Real baud rate of USCI_UART module.
  *
  *    @details      This function use to enable USCI_UART function and set baud-rate.
  */
-uint32_t UUART_Open(UUART_T *uuart, uint32_t u32baudrate)
+uint32_t UUART_Open(UUART_T *psUUART, uint32_t u32Baudrate)
 {
     uint32_t u32PCLKFreq, u32PDSCnt, u32DSCnt, u32ClkDiv;
     uint32_t u32Tmp, u32Tmp2, u32Tmp3, u32Min, u32MinClkDiv, u32MinDSCnt;
@@ -264,9 +264,9 @@ uint32_t UUART_Open(UUART_T *uuart, uint32_t u32baudrate)
     /* Get PCLK frequency */
     u32PCLKFreq = CLK_GetPCLK0Freq();
 
-    u32Div = u32PCLKFreq / u32baudrate;
-    u32Tmp = (u32PCLKFreq / u32Div) - u32baudrate;
-    u32Tmp2 = u32baudrate - (u32PCLKFreq / (u32Div + 1));
+    u32Div = u32PCLKFreq / u32Baudrate;
+    u32Tmp = (u32PCLKFreq / u32Div) - u32Baudrate;
+    u32Tmp2 = u32Baudrate - (u32PCLKFreq / (u32Div + 1));
 
     if (u32Tmp >= u32Tmp2)
     {
@@ -307,12 +307,12 @@ uint32_t UUART_Open(UUART_T *uuart, uint32_t u32baudrate)
         if (u32ClkDiv >= 0x400)
         {
             u32ClkDiv = 0x400;
-            u32Tmp = u32Tmp2 = abs((int)(u32PCLKFreq / (u32ClkDiv * u32DSCnt * u32PDSCnt)) - (int)u32baudrate);
+            u32Tmp = u32Tmp2 = abs((int)(u32PCLKFreq / (u32ClkDiv * u32DSCnt * u32PDSCnt)) - (int)u32Baudrate);
         }
         else
         {
-            u32Tmp = abs((int)(u32PCLKFreq / (u32ClkDiv * u32DSCnt * u32PDSCnt)) - (int)u32baudrate);
-            u32Tmp2 = abs((int)(u32PCLKFreq / ((u32ClkDiv + 1) * u32DSCnt * u32PDSCnt)) - (int)u32baudrate);
+            u32Tmp = abs((int)(u32PCLKFreq / (u32ClkDiv * u32DSCnt * u32PDSCnt)) - (int)u32Baudrate);
+            u32Tmp2 = abs((int)(u32PCLKFreq / ((u32ClkDiv + 1) * u32DSCnt * u32PDSCnt)) - (int)u32Baudrate);
         }
 
         if (u32Tmp > u32Tmp2)
@@ -336,19 +336,19 @@ uint32_t UUART_Open(UUART_T *uuart, uint32_t u32baudrate)
     }
 
     /* Enable USCI_UART protocol */
-    uuart->CTL &= ~UUART_CTL_FUNMODE_Msk;
-    uuart->CTL = 2 << UUART_CTL_FUNMODE_Pos;
+    psUUART->CTL &= ~UUART_CTL_FUNMODE_Msk;
+    psUUART->CTL = 2 << UUART_CTL_FUNMODE_Pos;
 
     /* Set USCI_UART line configuration */
-    uuart->LINECTL = UUART_WORD_LEN_8 | UUART_LINECTL_LSB_Msk;
-    uuart->DATIN0 = (2 << UUART_DATIN0_EDGEDET_Pos);  /* Set falling edge detection */
+    psUUART->LINECTL = UUART_WORD_LEN_8 | UUART_LINECTL_LSB_Msk;
+    psUUART->DATIN0 = (2 << UUART_DATIN0_EDGEDET_Pos);  /* Set falling edge detection */
 
     /* Set USCI_UART baud rate */
-    uuart->BRGEN = ((u32MinClkDiv - 1) << UUART_BRGEN_CLKDIV_Pos) |
-                   ((u32MinDSCnt - 1) << UUART_BRGEN_DSCNT_Pos) |
-                   ((u32PDSCnt - 1) << UUART_BRGEN_PDSCNT_Pos);
+    psUUART->BRGEN = ((u32MinClkDiv - 1) << UUART_BRGEN_CLKDIV_Pos) |
+                     ((u32MinDSCnt - 1) << UUART_BRGEN_DSCNT_Pos) |
+                     ((u32PDSCnt - 1) << UUART_BRGEN_PDSCNT_Pos);
 
-    uuart->PROTCTL |= UUART_PROTCTL_PROTEN_Msk;
+    psUUART->PROTCTL |= UUART_PROTCTL_PROTEN_Msk;
 
     return (u32PCLKFreq / u32PDSCnt / u32MinDSCnt / u32MinClkDiv);
 }
@@ -356,7 +356,7 @@ uint32_t UUART_Open(UUART_T *uuart, uint32_t u32baudrate)
 /**
  *    @brief        Read USCI_UART data
  *
- *    @param[in]    uuart           The pointer of the specified USCI_UART module.
+ *    @param[in]    psUUART         The pointer of the specified USCI_UART module.
  *    @param[in]    pu8RxBuf        The buffer to receive the data of receive buffer.
  *    @param[in]    u32ReadBytes    The read bytes number of data.
  *
@@ -364,23 +364,23 @@ uint32_t UUART_Open(UUART_T *uuart, uint32_t u32baudrate)
  *
  *    @details      The function is used to read Rx data from RX buffer and the data will be stored in pu8RxBuf.
  */
-uint32_t UUART_Read(UUART_T *uuart, uint8_t *pu8RxBuf, uint32_t u32ReadBytes)
+uint32_t UUART_Read(UUART_T *psUUART, uint8_t *pu8RxBuf, uint32_t u32ReadBytes)
 {
-    uint32_t  u32Count, u32delayno;
+    uint32_t  u32Count, u32Delayno;
 
     for (u32Count = 0; u32Count < u32ReadBytes; u32Count++)
     {
-        u32delayno = 0;
+        u32Delayno = 0;
 
-        while (uuart->BUFSTS & UUART_BUFSTS_RXEMPTY_Msk)   /* Check RX empty => failed */
+        while (psUUART->BUFSTS & UUART_BUFSTS_RXEMPTY_Msk)   /* Check RX empty => failed */
         {
-            u32delayno++;
+            u32Delayno++;
 
-            if (u32delayno >= 0x40000000)
+            if (u32Delayno >= 0x40000000)
                 return FALSE;
         }
 
-        pu8RxBuf[u32Count] = uuart->RXDAT;    /* Get Data from USCI RX  */
+        pu8RxBuf[u32Count] = psUUART->RXDAT;    /* Get Data from USCI RX  */
     }
 
     return u32Count;
@@ -391,19 +391,19 @@ uint32_t UUART_Read(UUART_T *uuart, uint8_t *pu8RxBuf, uint32_t u32ReadBytes)
 /**
  *    @brief        Set USCI_UART line configuration
  *
- *    @param[in]    uuart           The pointer of the specified USCI_UART module.
- *    @param[in]    u32baudrate     The register value of baud rate of USCI_UART module.
+ *    @param[in]    psUUART         The pointer of the specified USCI_UART module.
+ *    @param[in]    u32Baudrate     The register value of baud rate of USCI_UART module.
  *                                  If u32baudrate = 0, USCI_UART baud rate will not change.
- *    @param[in]    u32data_width   The data length of USCI_UART module.
+ *    @param[in]    u32DataWidth    The data length of USCI_UART module.
  *                                  - \ref UUART_WORD_LEN_6
  *                                  - \ref UUART_WORD_LEN_7
  *                                  - \ref UUART_WORD_LEN_8
  *                                  - \ref UUART_WORD_LEN_9
- *    @param[in]    u32parity       The parity setting (none/odd/even) of USCI_UART module.
+ *    @param[in]    u32Parity       The parity setting (none/odd/even) of USCI_UART module.
  *                                  - \ref UUART_PARITY_NONE
  *                                  - \ref UUART_PARITY_ODD
  *                                  - \ref UUART_PARITY_EVEN
- *    @param[in]    u32stop_bits    The stop bit length (1/2 bit) of USCI_UART module.
+ *    @param[in]    u32StopBits     The stop bit length (1/2 bit) of USCI_UART module.
  *                                  - \ref UUART_STOP_BIT_1
  *                                  - \ref UUART_STOP_BIT_2
  *
@@ -411,7 +411,7 @@ uint32_t UUART_Read(UUART_T *uuart, uint8_t *pu8RxBuf, uint32_t u32ReadBytes)
  *
  *    @details      This function use to config USCI_UART line setting.
  */
-uint32_t UUART_SetLine_Config(UUART_T *uuart, uint32_t u32baudrate, uint32_t u32data_width, uint32_t u32parity, uint32_t u32stop_bits)
+uint32_t UUART_SetLine_Config(UUART_T *psUUART, uint32_t u32Baudrate, uint32_t u32DataWidth, uint32_t u32Parity, uint32_t u32StopBits)
 {
     uint32_t u32PCLKFreq, u32PDSCnt, u32DSCnt, u32ClkDiv;
     uint32_t u32Tmp, u32Tmp2, u32Tmp3, u32Min, u32MinClkDiv, u32MinDSCnt;
@@ -421,11 +421,11 @@ uint32_t UUART_SetLine_Config(UUART_T *uuart, uint32_t u32baudrate, uint32_t u32
     /* Get PCLK frequency */
     u32PCLKFreq = CLK_GetPCLK0Freq();
 
-    if (u32baudrate != 0)
+    if (u32Baudrate != 0)
     {
-        u32Div = u32PCLKFreq / u32baudrate;
-        u32Tmp = (u32PCLKFreq / u32Div) - u32baudrate;
-        u32Tmp2 = u32baudrate - (u32PCLKFreq / (u32Div + 1));
+        u32Div = u32PCLKFreq / u32Baudrate;
+        u32Tmp = (u32PCLKFreq / u32Div) - u32Baudrate;
+        u32Tmp2 = u32Baudrate - (u32PCLKFreq / (u32Div + 1));
 
         if (u32Tmp >= u32Tmp2)
         {
@@ -466,12 +466,12 @@ uint32_t UUART_SetLine_Config(UUART_T *uuart, uint32_t u32baudrate, uint32_t u32
             if (u32ClkDiv >= 0x400)
             {
                 u32ClkDiv = 0x400;
-                u32Tmp = u32Tmp2 = abs((int)(u32PCLKFreq / (u32ClkDiv * u32DSCnt * u32PDSCnt)) - (int)u32baudrate);
+                u32Tmp = u32Tmp2 = abs((int)(u32PCLKFreq / (u32ClkDiv * u32DSCnt * u32PDSCnt)) - (int)u32Baudrate);
             }
             else
             {
-                u32Tmp = abs((int)(u32PCLKFreq / (u32ClkDiv * u32DSCnt * u32PDSCnt)) - (int)u32baudrate);
-                u32Tmp2 = abs((int)(u32PCLKFreq / ((u32ClkDiv + 1) * u32DSCnt * u32PDSCnt)) - (int)u32baudrate);
+                u32Tmp = abs((int)(u32PCLKFreq / (u32ClkDiv * u32DSCnt * u32PDSCnt)) - (int)u32Baudrate);
+                u32Tmp2 = abs((int)(u32PCLKFreq / ((u32ClkDiv + 1) * u32DSCnt * u32PDSCnt)) - (int)u32Baudrate);
             }
 
             if (u32Tmp > u32Tmp2)
@@ -495,22 +495,22 @@ uint32_t UUART_SetLine_Config(UUART_T *uuart, uint32_t u32baudrate, uint32_t u32
         }
 
         /* Set USCI_UART baud rate */
-        uuart->BRGEN = ((u32MinClkDiv - 1) << UUART_BRGEN_CLKDIV_Pos) |
-                       ((u32MinDSCnt - 1) << UUART_BRGEN_DSCNT_Pos) |
-                       ((u32PDSCnt - 1) << UUART_BRGEN_PDSCNT_Pos);
+        psUUART->BRGEN = ((u32MinClkDiv - 1) << UUART_BRGEN_CLKDIV_Pos) |
+                         ((u32MinDSCnt - 1) << UUART_BRGEN_DSCNT_Pos) |
+                         ((u32PDSCnt - 1) << UUART_BRGEN_PDSCNT_Pos);
     }
     else
     {
-        u32PDSCnt = ((uuart->BRGEN & UUART_BRGEN_PDSCNT_Msk) >> UUART_BRGEN_PDSCNT_Pos) + 1;
-        u32MinDSCnt = ((uuart->BRGEN & UUART_BRGEN_DSCNT_Msk) >> UUART_BRGEN_DSCNT_Pos) + 1;
-        u32MinClkDiv = ((uuart->BRGEN & UUART_BRGEN_CLKDIV_Msk) >> UUART_BRGEN_CLKDIV_Pos) + 1;
+        u32PDSCnt = ((psUUART->BRGEN & UUART_BRGEN_PDSCNT_Msk) >> UUART_BRGEN_PDSCNT_Pos) + 1;
+        u32MinDSCnt = ((psUUART->BRGEN & UUART_BRGEN_DSCNT_Msk) >> UUART_BRGEN_DSCNT_Pos) + 1;
+        u32MinClkDiv = ((psUUART->BRGEN & UUART_BRGEN_CLKDIV_Msk) >> UUART_BRGEN_CLKDIV_Pos) + 1;
     }
 
     /* Set USCI_UART line configuration */
-    uuart->LINECTL = (uuart->LINECTL & ~UUART_LINECTL_DWIDTH_Msk) | u32data_width;
-    uuart->PROTCTL = (uuart->PROTCTL & ~(UUART_PROTCTL_STICKEN_Msk | UUART_PROTCTL_EVENPARITY_Msk |
-                                         UUART_PROTCTL_PARITYEN_Msk)) | u32parity;
-    uuart->PROTCTL = (uuart->PROTCTL & ~UUART_PROTCTL_STOPB_Msk) | u32stop_bits;
+    psUUART->LINECTL = (psUUART->LINECTL & ~UUART_LINECTL_DWIDTH_Msk) | u32DataWidth;
+    psUUART->PROTCTL = (psUUART->PROTCTL & ~(UUART_PROTCTL_STICKEN_Msk | UUART_PROTCTL_EVENPARITY_Msk |
+                        UUART_PROTCTL_PARITYEN_Msk)) | u32Parity;
+    psUUART->PROTCTL = (psUUART->PROTCTL & ~UUART_PROTCTL_STOPB_Msk) | u32StopBits;
 
     return (u32PCLKFreq / u32PDSCnt / u32MinDSCnt / u32MinClkDiv);
 }
@@ -519,7 +519,7 @@ uint32_t UUART_SetLine_Config(UUART_T *uuart, uint32_t u32baudrate, uint32_t u32
 /**
  *    @brief        Write USCI_UART data
  *
- *    @param[in]    uuart           The pointer of the specified USCI_UART module.
+ *    @param[in]    psUUART         The pointer of the specified USCI_UART module.
  *    @param[in]    pu8TxBuf        The buffer to send the data to USCI transmission buffer.
  *    @param[out]   u32WriteBytes   The byte number of data.
  *
@@ -527,23 +527,23 @@ uint32_t UUART_SetLine_Config(UUART_T *uuart, uint32_t u32baudrate, uint32_t u32
  *
  *    @details      The function is to write data into TX buffer to transmit data by USCI_UART.
  */
-uint32_t UUART_Write(UUART_T *uuart, uint8_t *pu8TxBuf, uint32_t u32WriteBytes)
+uint32_t UUART_Write(UUART_T *psUUART, uint8_t *pu8TxBuf, uint32_t u32WriteBytes)
 {
-    uint32_t  u32Count, u32delayno;
+    uint32_t  u32Count, u32Delayno;
 
     for (u32Count = 0; u32Count != u32WriteBytes; u32Count++)
     {
-        u32delayno = 0;
+        u32Delayno = 0;
 
-        while ((uuart->BUFSTS & UUART_BUFSTS_TXEMPTY_Msk) == 0)   /* Wait Tx empty */
+        while ((psUUART->BUFSTS & UUART_BUFSTS_TXEMPTY_Msk) == 0)   /* Wait Tx empty */
         {
-            u32delayno++;
+            u32Delayno++;
 
-            if (u32delayno >= 0x40000000)
+            if (u32Delayno >= 0x40000000)
                 return FALSE;
         }
 
-        uuart->TXDAT = pu8TxBuf[u32Count];    /* Send USCI_UART Data to buffer */
+        psUUART->TXDAT = pu8TxBuf[u32Count];    /* Send USCI_UART Data to buffer */
     }
 
     return u32Count;
@@ -554,7 +554,7 @@ uint32_t UUART_Write(UUART_T *uuart, uint8_t *pu8TxBuf, uint32_t u32WriteBytes)
 /**
  *    @brief        Enable USCI_UART Wake-up Function
  *
- *    @param[in]    uuart           The pointer of the specified USCI_UART module.
+ *    @param[in]    psUUART         The pointer of the specified USCI_UART module.
  *    @param[in]    u32WakeupMode   The wakeup mode of USCI_UART module.
 *                                   - \ref UUART_PROTCTL_DATWKEN_Msk    : Data wake-up Mode
 *                                   - \ref UUART_PROTCTL_CTSWKEN_Msk    : nCTS wake-up Mode
@@ -563,62 +563,62 @@ uint32_t UUART_Write(UUART_T *uuart, uint8_t *pu8TxBuf, uint32_t u32WriteBytes)
  *
  *    @details      The function is used to enable Wake-up function of USCI_UART.
  */
-void UUART_EnableWakeup(UUART_T *uuart, uint32_t u32WakeupMode)
+void UUART_EnableWakeup(UUART_T *psUUART, uint32_t u32WakeupMode)
 {
-    uuart->PROTCTL |= u32WakeupMode;
-    uuart->WKCTL |= UUART_WKCTL_WKEN_Msk;
+    psUUART->PROTCTL |= u32WakeupMode;
+    psUUART->WKCTL |= UUART_WKCTL_WKEN_Msk;
 }
 
 
 /**
  *    @brief        Disable USCI_UART Wake-up Function
  *
- *    @param[in]    uuart   The pointer of the specified USCI_UART module.
+ *    @param[in]    psUUART The pointer of the specified USCI_UART module.
  *
  *    @return       None
  *
  *    @details      The function is used to disable Wake-up function of USCI_UART.
  */
-void UUART_DisableWakeup(UUART_T *uuart)
+void UUART_DisableWakeup(UUART_T *psUUART)
 {
-    uuart->PROTCTL &= ~(UUART_PROTCTL_DATWKEN_Msk | UUART_PROTCTL_CTSWKEN_Msk);
-    uuart->WKCTL &= ~UUART_WKCTL_WKEN_Msk;
+    psUUART->PROTCTL &= ~(UUART_PROTCTL_DATWKEN_Msk | UUART_PROTCTL_CTSWKEN_Msk);
+    psUUART->WKCTL &= ~UUART_WKCTL_WKEN_Msk;
 }
 
 /**
  *    @brief        Enable USCI_UART auto flow control
  *
- *    @param[in]    uuart   The pointer of the specified USCI_UART module.
+ *    @param[in]    psUUART The pointer of the specified USCI_UART module.
  *
  *    @return       None
  *
  *    @details      The function is used to enable USCI_UART auto flow control.
  */
-void UUART_EnableFlowCtrl(UUART_T *uuart)
+void UUART_EnableFlowCtrl(UUART_T *psUUART)
 {
     /* Set RTS signal is low level active */
-    uuart->LINECTL &= ~UUART_LINECTL_CTLOINV_Msk;
+    psUUART->LINECTL &= ~UUART_LINECTL_CTLOINV_Msk;
 
     /* Set CTS signal is low level active */
-    uuart->CTLIN0 &= ~UUART_CTLIN0_ININV_Msk;
+    psUUART->CTLIN0 &= ~UUART_CTLIN0_ININV_Msk;
 
     /* Enable CTS and RTS auto flow control function */
-    uuart->PROTCTL |= UUART_PROTCTL_RTSAUTOEN_Msk | UUART_PROTCTL_CTSAUTOEN_Msk;
+    psUUART->PROTCTL |= UUART_PROTCTL_RTSAUTOEN_Msk | UUART_PROTCTL_CTSAUTOEN_Msk;
 }
 
 /**
  *    @brief        Disable USCI_UART auto flow control
  *
- *    @param[in]    uuart    The pointer of the specified USCI_UART module.
+ *    @param[in]    psUUART    The pointer of the specified USCI_UART module.
  *
  *    @return       None
  *
  *    @details      The function is used to disable USCI_UART auto flow control.
  */
-void UUART_DisableFlowCtrl(UUART_T *uuart)
+void UUART_DisableFlowCtrl(UUART_T *psUUART)
 {
     /* Disable CTS and RTS auto flow control function */
-    uuart->PROTCTL &= ~(UUART_PROTCTL_RTSAUTOEN_Msk | UUART_PROTCTL_CTSAUTOEN_Msk);
+    psUUART->PROTCTL &= ~(UUART_PROTCTL_RTSAUTOEN_Msk | UUART_PROTCTL_CTSAUTOEN_Msk);
 }
 
 
