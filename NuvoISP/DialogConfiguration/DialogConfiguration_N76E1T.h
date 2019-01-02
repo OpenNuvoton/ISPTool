@@ -55,8 +55,7 @@ public:
     BOOL	m_bCheckBrownOutIAP;
     BOOL	m_bCheckBrownOutReset;
 
-    unsigned int	m_uPID;
-    unsigned int	m_uDID;
+    unsigned int	m_uPartNo;
     unsigned int	m_uLevel;
     //}}AFX_DATA
 

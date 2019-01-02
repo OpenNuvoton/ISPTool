@@ -10,7 +10,6 @@
 #define FLASH_CONFIG_CWDTEN_ACTIVE		0x00000000
 #define FLASH_CONFIG_CWDTPDEN			0x40000000
 
-
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_M2351 dialog
 IMPLEMENT_DYNAMIC(CDialogConfiguration_M2351, CDialog)

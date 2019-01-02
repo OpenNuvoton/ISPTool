@@ -11,59 +11,13 @@
 #include "DialogConfiguration_N76E1T.h"
 #include <cassert>
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-/* CONFIG 0 */
-#define N76E1T_CONFIG_LOCK			0x02
-#define N76E1T_CONFIG_RPD			0x04
-#define N76E1T_CONFIG_OCDEN			0x10
-#define N76E1T_CONFIG_OCDPWM		0x20
-#define N76E1T_CONFIG_CBS			0x80
-
-/* CONFIG 1 */
-#define N76E1T_CONFIG_LDSIZE		0x07
-#define N76E1T_CONFIG_LDSIZE_0K		0x07
-#define N76E1T_CONFIG_LDSIZE_1K		0x06
-#define N76E1T_CONFIG_LDSIZE_2K		0x05
-#define N76E1T_CONFIG_LDSIZE_3K		0x04
-#define N76E1T_CONFIG_LDSIZE_4K		0x03
-
-/* CONFIG 2 */
-#define N76E1T_CONFIG_CBORST		0x04
-#define N76E1T_CONFIG_BOIAP			0x08
-#define N76E1T_CONFIG_CBOV_8_LEVEL	0x70
-#define N76E1T_CONFIG_CBOV_4_LEVEL	0x30
-#define N76E1T_CONFIG_CBOV_7		0x70
-#define N76E1T_CONFIG_CBOV_6		0x60
-#define N76E1T_CONFIG_CBOV_5		0x50
-#define N76E1T_CONFIG_CBOV_4		0x40
-#define N76E1T_CONFIG_CBOV_3		0x30
-#define N76E1T_CONFIG_CBOV_2		0x20
-#define N76E1T_CONFIG_CBOV_1		0x10
-#define N76E1T_CONFIG_CBOV_0		0x00
-#define N76E1T_CONFIG_CBODEN		0x80
-
-/* CONFIG 3 */
-//XTGS[1:0]
-
-/* CONFIG 4 */
-#define N76E1T_CONFIG_WDT			0xF0
-#define N76E1T_CONFIG_WDT_DIS		0xF0
-#define N76E1T_CONFIG_WDT_STOP		0x50
-#define N76E1T_CONFIG_WDT_RUN		0x00
-
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_N76E1T dialog
 
 CDialogConfiguration_N76E1T::CDialogConfiguration_N76E1T(unsigned int uPartNo,
         CWnd *pParent /*=NULL*/)
     : CDialogResize(CDialogConfiguration_N76E1T::IDD, pParent)
-    , m_uDID(uPartNo & 0xFFFF)
-    , m_uPID((uPartNo >> 16) & 0xFFFF)
+    , m_uPartNo(uPartNo)
 {
     //{{AFX_DATA_INIT(CDialogConfiguration_N76E1T)
     m_nRadio_RPD	= -1;
@@ -163,11 +117,11 @@ BOOL CDialogConfiguration_N76E1T::OnInitDialog()
     //pAccel[0].nInc = 1;
     //pAccel[0].nSec = 0;
     //m_SpinDataFlashSize.SetAccel(1, pAccel);
-    unsigned int uSID = m_uDID & 0xFF00;
+    unsigned int uSID = m_uPartNo & 0xFF00;
 
     switch (uSID) {
         case 0x2100: {
-            m_uLevel = N76E1T_CONFIG_CBOV_8_LEVEL;
+            m_uLevel = OT8051_CONFIG_CBOV_8_LEVEL;
             GetDlgItem(IDC_GROUP_RPD)->SetWindowText(_T("P1.2/RST Pin Function"));
             GetDlgItem(IDC_RADIO_RPD_RESET)->SetWindowText(_T("P1.2 as the external reset pin"));
             GetDlgItem(IDC_RADIO_RPD_INPUT)->SetWindowText(_T("P1.2 as the input-only pin"));
@@ -183,7 +137,7 @@ BOOL CDialogConfiguration_N76E1T::OnInitDialog()
         }
 
         case 0x2F00: {
-            m_uLevel = N76E1T_CONFIG_CBOV_4_LEVEL;
+            m_uLevel = OT8051_CONFIG_CBOV_4_LEVEL;
             GetDlgItem(IDC_GROUP_RPD)->SetWindowText(_T("P3.6/RST Pin Function"));
             GetDlgItem(IDC_RADIO_RPD_RESET)->SetWindowText(_T("P3.6 as the external reset pin"));
             GetDlgItem(IDC_RADIO_RPD_INPUT)->SetWindowText(_T("P3.6 as the input-only pin"));
@@ -203,7 +157,7 @@ BOOL CDialogConfiguration_N76E1T::OnInitDialog()
 
         case 0x3600:
         case 0x4B00: {
-            m_uLevel = N76E1T_CONFIG_CBOV_4_LEVEL;
+            m_uLevel = OT8051_CONFIG_CBOV_4_LEVEL;
             GetDlgItem(IDC_GROUP_RPD)->SetWindowText(_T("P2.0/RST Pin Function"));
             GetDlgItem(IDC_RADIO_RPD_RESET)->SetWindowText(_T("P2.0 as the external reset pin"));
             GetDlgItem(IDC_RADIO_RPD_INPUT)->SetWindowText(_T("P2.0 as the input-only pin"));
@@ -219,7 +173,7 @@ BOOL CDialogConfiguration_N76E1T::OnInitDialog()
         }
 
         case 0x3E00: {
-            m_uLevel = N76E1T_CONFIG_CBOV_8_LEVEL;
+            m_uLevel = OT8051_CONFIG_CBOV_8_LEVEL;
             GetDlgItem(IDC_GROUP_RPD)->SetWindowText(_T("P2.1/RST Pin Function"));
             GetDlgItem(IDC_RADIO_RPD_RESET)->SetWindowText(_T("P2.1 as the external reset pin"));
             GetDlgItem(IDC_RADIO_RPD_INPUT)->SetWindowText(_T("P2.1 as the input-only pin"));
@@ -237,7 +191,7 @@ BOOL CDialogConfiguration_N76E1T::OnInitDialog()
         case 0x4700:
         case 0x4800:
         case 0x4900: {
-            m_uLevel = N76E1T_CONFIG_CBOV_8_LEVEL;
+            m_uLevel = OT8051_CONFIG_CBOV_8_LEVEL;
             GetDlgItem(IDC_GROUP_RPD)->ShowWindow(SW_HIDE);
             GetDlgItem(IDC_RADIO_RPD_RESET)->ShowWindow(SW_HIDE);
             GetDlgItem(IDC_RADIO_RPD_INPUT)->ShowWindow(SW_HIDE);
@@ -269,26 +223,26 @@ void CDialogConfiguration_N76E1T::ConfigToGUI()
     unsigned char ucConfig2 = _GET_BYTE2(m_ConfigValue.m_value[0]);
     unsigned char ucConfig3 = _GET_BYTE3(m_ConfigValue.m_value[0]);
     unsigned char ucConfig4 = _GET_BYTE0(m_ConfigValue.m_value[1]);
-    m_bSecurityLock = ((ucConfig0 & N76E1T_CONFIG_LOCK) == 0 ? TRUE : FALSE);
-    m_nRadio_RPD = ((ucConfig0 & N76E1T_CONFIG_RPD) == 0 ? 1 : 0);
-    m_bOCDEnable = ((ucConfig0 & N76E1T_CONFIG_OCDEN) == 0 ? TRUE : FALSE);
-    m_nRadio_OCDPWM = ((ucConfig0 & N76E1T_CONFIG_OCDPWM) == 0 ? 1 : 0);
-    m_nRadio_CBS = ((ucConfig0 & N76E1T_CONFIG_CBS) == 0 ? 1 : 0);
+    m_bSecurityLock = ((ucConfig0 & OT8051_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    m_nRadio_RPD = ((ucConfig0 & OT8051_CONFIG_RPD) == 0 ? 1 : 0);
+    m_bOCDEnable = ((ucConfig0 & OT8051_CONFIG_OCDEN) == 0 ? TRUE : FALSE);
+    m_nRadio_OCDPWM = ((ucConfig0 & OT8051_CONFIG_OCDPWM) == 0 ? 1 : 0);
+    m_nRadio_CBS = ((ucConfig0 & OT8051_CONFIG_CBS) == 0 ? 1 : 0);
 
-    switch (ucConfig1 & N76E1T_CONFIG_LDSIZE) {
-        case N76E1T_CONFIG_LDSIZE_0K:
+    switch (ucConfig1 & OT8051_CONFIG_LDSIZE) {
+        case OT8051_CONFIG_LDSIZE_0K:
             m_nRadio_LDSIZE = 0;
             break;
 
-        case N76E1T_CONFIG_LDSIZE_1K:
+        case OT8051_CONFIG_LDSIZE_1K:
             m_nRadio_LDSIZE = 1;
             break;
 
-        case N76E1T_CONFIG_LDSIZE_2K:
+        case OT8051_CONFIG_LDSIZE_2K:
             m_nRadio_LDSIZE = 2;
             break;
 
-        case N76E1T_CONFIG_LDSIZE_3K:
+        case OT8051_CONFIG_LDSIZE_3K:
             m_nRadio_LDSIZE = 3;
             break;
 
@@ -297,36 +251,36 @@ void CDialogConfiguration_N76E1T::ConfigToGUI()
             break;
     }
 
-    m_bCheckBrownOutReset = ((ucConfig2 & N76E1T_CONFIG_CBORST) != 0 ? TRUE : FALSE);
-    m_bCheckBrownOutIAP = ((ucConfig2 & N76E1T_CONFIG_BOIAP) != 0 ? TRUE : FALSE);
+    m_bCheckBrownOutReset = ((ucConfig2 & OT8051_CONFIG_CBORST) != 0 ? TRUE : FALSE);
+    m_bCheckBrownOutIAP = ((ucConfig2 & OT8051_CONFIG_BOIAP) != 0 ? TRUE : FALSE);
 
-    if (m_uLevel == N76E1T_CONFIG_CBOV_8_LEVEL) {
-        switch (ucConfig2 & N76E1T_CONFIG_CBOV_8_LEVEL) {
-            case N76E1T_CONFIG_CBOV_7:
+    if (m_uLevel == OT8051_CONFIG_CBOV_8_LEVEL) {
+        switch (ucConfig2 & OT8051_CONFIG_CBOV_8_LEVEL) {
+            case OT8051_CONFIG_CBOV_7:
                 m_nRadio_CBOV = 0;
                 break;
 
-            case N76E1T_CONFIG_CBOV_6:
+            case OT8051_CONFIG_CBOV_6:
                 m_nRadio_CBOV = 1;
                 break;
 
-            case N76E1T_CONFIG_CBOV_5:
+            case OT8051_CONFIG_CBOV_5:
                 m_nRadio_CBOV = 2;
                 break;
 
-            case N76E1T_CONFIG_CBOV_4:
+            case OT8051_CONFIG_CBOV_4:
                 m_nRadio_CBOV = 3;
                 break;
 
-            case N76E1T_CONFIG_CBOV_3:
+            case OT8051_CONFIG_CBOV_3:
                 m_nRadio_CBOV = 4;
                 break;
 
-            case N76E1T_CONFIG_CBOV_2:
+            case OT8051_CONFIG_CBOV_2:
                 m_nRadio_CBOV = 5;
                 break;
 
-            case N76E1T_CONFIG_CBOV_1:
+            case OT8051_CONFIG_CBOV_1:
                 m_nRadio_CBOV = 6;
                 break;
 
@@ -335,16 +289,16 @@ void CDialogConfiguration_N76E1T::ConfigToGUI()
                 break;
         }
     } else {
-        switch (ucConfig2 & N76E1T_CONFIG_CBOV_4_LEVEL) {
-            case N76E1T_CONFIG_CBOV_3:
+        switch (ucConfig2 & OT8051_CONFIG_CBOV_4_LEVEL) {
+            case OT8051_CONFIG_CBOV_3:
                 m_nRadio_CBOV = 0;
                 break;
 
-            case N76E1T_CONFIG_CBOV_2:
+            case OT8051_CONFIG_CBOV_2:
                 m_nRadio_CBOV = 1;
                 break;
 
-            case N76E1T_CONFIG_CBOV_1:
+            case OT8051_CONFIG_CBOV_1:
                 m_nRadio_CBOV = 2;
                 break;
 
@@ -354,18 +308,18 @@ void CDialogConfiguration_N76E1T::ConfigToGUI()
         }
     }
 
-    if (((m_uPID & 0x10) && !(ucConfig2 & N76E1T_CONFIG_CBODEN)) || (!(m_uPID & 0x10) && (ucConfig2 & N76E1T_CONFIG_CBODEN))) {
+    if (((m_uPartNo & 0x00100000) && !(ucConfig2 & OT8051_CONFIG_CBODEN)) || (!(m_uPartNo & 0x00100000) && (ucConfig2 & OT8051_CONFIG_CBODEN))) {
         m_bCheckBrownOutEnable = TRUE;
     } else {
         m_bCheckBrownOutEnable = FALSE;
     }
 
-    switch (ucConfig4 & N76E1T_CONFIG_WDT) {
-        case N76E1T_CONFIG_WDT_DIS:
+    switch (ucConfig4 & OT8051_CONFIG_WDT) {
+        case OT8051_CONFIG_WDT_DIS:
             m_nRadio_WDTEN = 0;
             break;
 
-        case N76E1T_CONFIG_WDT_STOP:
+        case OT8051_CONFIG_WDT_STOP:
             m_nRadio_WDTEN = 1;
             break;
 
@@ -391,83 +345,83 @@ void CDialogConfiguration_N76E1T::GUIToConfig()
 
     /* CONFIG 0 */
     if (m_bSecurityLock) {
-        ucConfig0 &= ~N76E1T_CONFIG_LOCK;
+        ucConfig0 &= ~OT8051_CONFIG_LOCK;
     }
 
     if (m_nRadio_RPD) {
-        ucConfig0 &= ~N76E1T_CONFIG_RPD;
+        ucConfig0 &= ~OT8051_CONFIG_RPD;
     }
 
     if (m_bOCDEnable) {
-        ucConfig0 &= ~N76E1T_CONFIG_OCDEN;
+        ucConfig0 &= ~OT8051_CONFIG_OCDEN;
     }
 
     if (m_nRadio_OCDPWM) {
-        ucConfig0 &= ~N76E1T_CONFIG_OCDPWM;
+        ucConfig0 &= ~OT8051_CONFIG_OCDPWM;
     }
 
     if (m_nRadio_CBS) {
-        ucConfig0 &= ~N76E1T_CONFIG_CBS;
+        ucConfig0 &= ~OT8051_CONFIG_CBS;
     }
 
     /* CONFIG 1 */
     switch (m_nRadio_LDSIZE) {
         case 0:
-            ucConfig1 = N76E1T_CONFIG_LDSIZE_0K;
+            ucConfig1 = OT8051_CONFIG_LDSIZE_0K;
             break;
 
         case 1:
-            ucConfig1 = N76E1T_CONFIG_LDSIZE_1K;
+            ucConfig1 = OT8051_CONFIG_LDSIZE_1K;
             break;
 
         case 2:
-            ucConfig1 = N76E1T_CONFIG_LDSIZE_2K;
+            ucConfig1 = OT8051_CONFIG_LDSIZE_2K;
             break;
 
         case 3:
-            ucConfig1 = N76E1T_CONFIG_LDSIZE_3K;
+            ucConfig1 = OT8051_CONFIG_LDSIZE_3K;
             break;
 
         default:
-            ucConfig1 = N76E1T_CONFIG_LDSIZE_4K;
+            ucConfig1 = OT8051_CONFIG_LDSIZE_4K;
             break;
     }
 
     ucConfig1 |= 0xF8;
 
     /* CONFIG 2 */
-    if (m_uLevel == N76E1T_CONFIG_CBOV_8_LEVEL) {
+    if (m_uLevel == OT8051_CONFIG_CBOV_8_LEVEL) {
         switch (m_nRadio_CBOV) {
             case 0:
-                ucConfig2 = N76E1T_CONFIG_CBOV_7;
+                ucConfig2 = OT8051_CONFIG_CBOV_7;
                 break;
 
             case 1:
-                ucConfig2 = N76E1T_CONFIG_CBOV_6;
+                ucConfig2 = OT8051_CONFIG_CBOV_6;
                 break;
 
             case 2:
-                ucConfig2 = N76E1T_CONFIG_CBOV_5;
+                ucConfig2 = OT8051_CONFIG_CBOV_5;
                 break;
 
             case 3:
-                ucConfig2 = N76E1T_CONFIG_CBOV_4;
+                ucConfig2 = OT8051_CONFIG_CBOV_4;
                 break;
 
             case 4:
-                ucConfig2 = N76E1T_CONFIG_CBOV_3;
+                ucConfig2 = OT8051_CONFIG_CBOV_3;
                 break;
 
             case 5:
-                ucConfig2 = N76E1T_CONFIG_CBOV_2;
+                ucConfig2 = OT8051_CONFIG_CBOV_2;
                 break;
 
             case 6:
-                ucConfig2 = N76E1T_CONFIG_CBOV_1;
+                ucConfig2 = OT8051_CONFIG_CBOV_1;
                 break;
 
             default:
-                ucConfig2 = N76E1T_CONFIG_CBOV_0;
+                ucConfig2 = OT8051_CONFIG_CBOV_0;
                 break;
         }
 
@@ -475,19 +429,19 @@ void CDialogConfiguration_N76E1T::GUIToConfig()
     } else {
         switch (m_nRadio_CBOV) {
             case 0:
-                ucConfig2 = N76E1T_CONFIG_CBOV_3;
+                ucConfig2 = OT8051_CONFIG_CBOV_3;
                 break;
 
             case 1:
-                ucConfig2 = N76E1T_CONFIG_CBOV_2;
+                ucConfig2 = OT8051_CONFIG_CBOV_2;
                 break;
 
             case 2:
-                ucConfig2 = N76E1T_CONFIG_CBOV_1;
+                ucConfig2 = OT8051_CONFIG_CBOV_1;
                 break;
 
             default:
-                ucConfig2 = N76E1T_CONFIG_CBOV_0;
+                ucConfig2 = OT8051_CONFIG_CBOV_0;
                 break;
         }
 
@@ -495,29 +449,29 @@ void CDialogConfiguration_N76E1T::GUIToConfig()
     }
 
     if (!m_bCheckBrownOutReset) {
-        ucConfig2 &= ~N76E1T_CONFIG_CBORST;
+        ucConfig2 &= ~OT8051_CONFIG_CBORST;
     }
 
     if (!m_bCheckBrownOutIAP) {
-        ucConfig2 &= ~N76E1T_CONFIG_BOIAP;
+        ucConfig2 &= ~OT8051_CONFIG_BOIAP;
     }
 
-    if (((m_uPID & 0x10) && m_bCheckBrownOutEnable) || (!(m_uPID & 0x10) && !m_bCheckBrownOutEnable)) {
-        ucConfig2 &= ~N76E1T_CONFIG_CBODEN;
+    if (((m_uPartNo & 0x00100000) && m_bCheckBrownOutEnable) || (!(m_uPartNo & 0x00100000) && !m_bCheckBrownOutEnable)) {
+        ucConfig2 &= ~OT8051_CONFIG_CBODEN;
     }
 
     /* CONFIG 4 */
     switch (m_nRadio_WDTEN) {
         case 0:
-            ucConfig4 = N76E1T_CONFIG_WDT_DIS;
+            ucConfig4 = OT8051_CONFIG_WDT_DIS;
             break;
 
         case 1:
-            ucConfig4 = N76E1T_CONFIG_WDT_STOP;
+            ucConfig4 = OT8051_CONFIG_WDT_STOP;
             break;
 
         default:
-            ucConfig4 = N76E1T_CONFIG_WDT_RUN;
+            ucConfig4 = OT8051_CONFIG_WDT_RUN;
             break;
     }
 
