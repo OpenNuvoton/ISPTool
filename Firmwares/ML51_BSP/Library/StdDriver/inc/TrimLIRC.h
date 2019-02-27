@@ -1,0 +1,1 @@
+extern void Trim_LIRC(void);
