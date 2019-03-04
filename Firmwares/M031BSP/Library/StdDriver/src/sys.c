@@ -1,8 +1,8 @@
 /**************************************************************************//**
  * @file     sys.c
  * @version  V3.00
- * $Revision: 2 $
- * $Date: 18/03/28 3:44p $
+ * $Revision: 3 $
+ * $Date: 18/07/05 4:42p $
  * @brief    M031 Series System Manager (SYS) Driver Source File
  *
  * @note
@@ -116,6 +116,7 @@ void SYS_ResetCPU(void)
   * @param[in]  u32ModuleIndex is module index. Including :
   *             - \ref PDMA_RST
   *             - \ref EBI_RST
+  *             - \ref HDIV_RST
   *             - \ref CRC_RST
   *             - \ref GPIO_RST
   *             - \ref TMR0_RST

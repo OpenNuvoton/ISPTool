@@ -1,8 +1,8 @@
 /**************************************************************************//**
  * @file     m031series.h
  * @version  V3.0
- * $Revision: 9 $
- * $Date: 18/04/24 5:04p $
+ * $Revision: 12 $
+ * $Date: 18/08/16 4:06p $
  * @brief    M031 Series Peripheral Access Layer Header File
  *
  * @note
@@ -153,6 +153,7 @@ extern void SystemInit(void);
 #include "ebi_reg.h"
 #include "fmc_reg.h"
 #include "gpio_reg.h"
+#include "hdiv_reg.h"
 #include "i2c_reg.h"
 #include "pdma_reg.h"
 #include "pwm_reg.h"
@@ -202,6 +203,7 @@ extern void SystemInit(void);
 #define PDMA_BASE           (AHB_BASE       + 0x08000)                  /*!< PDMA Base Address                                */
 #define FMC_BASE            (AHB_BASE       + 0x0C000)                  /*!< Flash Memory Controller Base Address             */
 #define EBI_BASE            (AHB_BASE       + 0x10000)                  /*!< EBI Base Address                                 */
+#define HDIV_BASE           (AHB_BASE       + 0x14000)                  /*!< HDIV Base Address                                */
 #define CRC_BASE            (AHB_BASE       + 0x31000)                  /*!< CRC Base Address                                 */
 
 #define WDT_BASE            (APB1_BASE      + 0x40000)                  /*!< Watch Dog Timer Base Address                     */
@@ -282,6 +284,8 @@ extern void SystemInit(void);
 #define PWM1                ((PWM_T *) PWM1_BASE)                       /*!< PWM1 Configuration Struct                        */
 
 #define EBI                 ((EBI_T *) EBI_BASE)                        /*!< EBI Configuration Struct                         */
+
+#define HDIV                ((HDIV_T *) HDIV_BASE)                      /*!< HDIV Configuration Struct                        */
 
 #define CRC                 ((CRC_T *) CRC_BASE)                        /*!< CRC Configuration Struct                         */
 
@@ -444,7 +448,7 @@ typedef volatile unsigned short vu16;
 #define E_SUCCESS (0)
 
 #ifndef NULL
-    #define NULL      (0)                 ///< NULL pointer
+#define NULL      (0)                 ///< NULL pointer
 #endif
 
 #define TRUE      (1UL)               ///< Boolean true, define to use in API parameters or return value
@@ -516,6 +520,7 @@ typedef volatile unsigned short vu16;
 #include "pdma.h"
 #include "pwm.h"
 #include "spi.h"
+#include "hdiv.h"
 #include "timer.h"
 #include "uart.h"
 #include "usbd.h"

@@ -1,8 +1,8 @@
 /**************************************************************************//**
  * @file     adc.c
  * @version  V3.00
- * $Revision: 3 $
- * $Date: 18/04/03 8:13p $
+ * $Revision: 7 $
+ * $Date: 18/07/24 2:17p $
  * @brief    M031 Series ADC Driver Source File
  *
  * @note
@@ -37,13 +37,29 @@
   * @return  None
   * @note M031 series MCU ADC can only convert 1 channel at a time. If more than 1 channels are enabled, only channel
   *       with smallest number will be convert.
-  * @note This API does not turn on ADC power nor does trigger ADC conversion
+  * @note This API does not turn on ADC power nor does trigger ADC conversion.
+  * @note This API will reset and calibrate ADC if ADC never be calibrated after chip power on.
   */
 void ADC_Open(ADC_T *adc,
               uint32_t u32InputMode,
               uint32_t u32OpMode,
               uint32_t u32ChMask)
 {
+    /* Do calibration for ADC to decrease the effect of electrical random noise. */
+    if ((adc->ADCALSTSR & ADC_ADCALSTSR_CALIF_Msk) == 0)
+    {
+        /* Must reset ADC before ADC calibration */
+        SYS_UnlockReg();
+        adc->ADCR |= ADC_ADCR_RESET_Msk;
+        while((adc->ADCR & ADC_ADCR_RESET_Msk) == ADC_ADCR_RESET_Msk);
+        SYS_LockReg();
+
+        adc->ADCALSTSR |= ADC_ADCALSTSR_CALIF_Msk;  /* Clear Calibration Finish Interrupt Flag */
+        adc->ADCALR |= ADC_ADCALR_CALEN_Msk;        /* Enable Calibration function */
+        ADC_START_CONV(adc);                        /* Start to calibration */
+        while((adc->ADCALSTSR & ADC_ADCALSTSR_CALIF_Msk) != ADC_ADCALSTSR_CALIF_Msk);   /* Wait calibration finish */
+    }
+
     adc->ADCR = (adc->ADCR & (~(ADC_ADCR_DIFFEN_Msk | ADC_ADCR_ADMD_Msk))) | \
                 (u32InputMode) | \
                 (u32OpMode);
@@ -72,8 +88,8 @@ void ADC_Close(ADC_T *adc)
   *                       - \ref ADC_ADCR_TRGS_STADC            :A/D conversion is started by external STADC pin.
   *                       - \ref ADC_ADCR_TRGS_TIMER            :A/D conversion is started by Timer.
   *                       - \ref ADC_ADCR_TRGS_PWM              :A/D conversion is started by PWM.
-  * @param[in] u32Param While ADC trigger by PWM or Timer, this parameter is unused. 
-  *                     While ADC trigger by external pin, this parameter is used to set trigger condition. 
+  * @param[in] u32Param While ADC trigger by PWM or Timer, this parameter is unused.
+  *                     While ADC trigger by external pin, this parameter is used to set trigger condition.
   *                     Valid values are:
   *                      - \ref ADC_ADCR_TRGCOND_LOW_LEVEL     :STADC Low level active
   *                      - \ref ADC_ADCR_TRGCOND_HIGH_LEVEL    :STADC High level active
@@ -86,18 +102,20 @@ void ADC_EnableHWTrigger(ADC_T *adc,
                          uint32_t u32Source,
                          uint32_t u32Param)
 {
-    adc->ADCR &= ~(ADC_ADCR_TRGS_Msk | ADC_ADCR_TRGCOND_Msk | ADC_ADCR_TRGEN_Msk);
     if(u32Source == ADC_ADCR_TRGS_STADC)
     {
-        adc->ADCR = (adc->ADCR) | (u32Source) | (u32Param) | ADC_ADCR_TRGEN_Msk;
+        adc->ADCR = (adc->ADCR & ~(ADC_ADCR_TRGS_Msk | ADC_ADCR_TRGCOND_Msk | ADC_ADCR_TRGEN_Msk)) |
+                    ((adc->ADCR) | (u32Source) | (u32Param) | ADC_ADCR_TRGEN_Msk);
     }
     else if(u32Source == ADC_ADCR_TRGS_TIMER)
     {
-        adc->ADCR = (adc->ADCR) | (u32Source) | ADC_ADCR_TRGEN_Msk;
+        adc->ADCR = (adc->ADCR & ~(ADC_ADCR_TRGS_Msk | ADC_ADCR_TRGCOND_Msk | ADC_ADCR_TRGEN_Msk)) |
+                    ((adc->ADCR) | (u32Source) | ADC_ADCR_TRGEN_Msk);
     }
     else
     {
-        adc->ADCR = (adc->ADCR) | (u32Source) | ADC_ADCR_TRGEN_Msk;
+        adc->ADCR = (adc->ADCR & ~(ADC_ADCR_TRGS_Msk | ADC_ADCR_TRGCOND_Msk | ADC_ADCR_TRGEN_Msk)) |
+                    ((adc->ADCR) | (u32Source) | ADC_ADCR_TRGEN_Msk);
     }
     return;
 }
@@ -170,8 +188,8 @@ void ADC_DisableInt(ADC_T *adc, uint32_t u32Mask)
   */
 void ADC_SetExtendSampleTime(ADC_T *adc, uint32_t u32ModuleNum, uint32_t u32ExtendSampleTime)
 {
-    adc->ESMPCTL &= ~ADC_ESMPCTL_EXTSMPT_Msk;
-    adc->ESMPCTL |= (u32ExtendSampleTime << ADC_ESMPCTL_EXTSMPT_Pos);
+    adc->ESMPCTL = (adc->ESMPCTL & ~ADC_ESMPCTL_EXTSMPT_Msk) |
+                   (u32ExtendSampleTime << ADC_ESMPCTL_EXTSMPT_Pos);
 }
 
 /*@}*/ /* end of group ADC_EXPORTED_FUNCTIONS */

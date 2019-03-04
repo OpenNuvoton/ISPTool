@@ -1,8 +1,8 @@
 /**************************************************************************//**
  * @file     retarget.c
  * @version  V3.00
- * $Revision: 3 $
- * $Date: 18/04/24 7:44p $
+ * $Revision: 4 $
+ * $Date: 18/07/05 1:44p $
  * @brief    M031 Series Debug Port and Semihost Setting Source File
  *
  * @note
@@ -21,12 +21,12 @@
 #pragma import _printf_widthprec
 #endif
 #endif
+
 /* Uncomment this line to disable all printf and getchar. getchar() will always return 0x00*/
 /* #define DISABLE_UART */
-
 #if defined(DEBUG_ENABLE_SEMIHOST)
     #ifndef DISABLE_UART
-        #define DISABLE_UART
+        #define DISABLE_UART    /* Don't printf to UART even if semihost is invalid */
     #endif
 #endif
 
@@ -523,24 +523,27 @@ static void SendChar(int ch)
         /* Send the char */
         if(SH_DoCommand(0x04, (int)g_buf, NULL) != 0)
         {
+            /* Enable SEMIHOST and it is valid (run ICE debug mode) */
             g_buf_len = 0;
             return;
         }
         else
         {
-#ifndef DISABLE_UART
+            /* Enable SEMIHOST but it is invalid (NOT run ICE debug mode) */
+  #ifndef DISABLE_UART
+            /* printf to UART if semihost is invalid */
             int i;
 
             for(i = 0; i < g_buf_len; i++)
                 SendChar_ToUART(g_buf[i]);
-            g_buf_len = 0;
-#endif
+  #endif
+            g_buf_len = 0;            
         }
     }
 #else
-#ifndef DISABLE_UART
+  #ifndef DISABLE_UART
     SendChar_ToUART(ch);
-#endif
+  #endif
 #endif
 }
 

@@ -2,13 +2,13 @@
 /**************************************************************************//**
  * @file     usbd.H
  * @version  V1.00
- * $Revision: 8 $
- * $Date: 18/06/07 9:48a $
+ * $Revision: 9 $
+ * $Date: 18/07/13 3:05p $
  * @brief    M031 series USB driver header file
  *
  * @note
  * Copyright (C) 2018 Nuvoton Technology Corp. All rights reserved.
- *****************************************************************************/
+ *****************************************************************************/ 
 #ifndef __USBD_H__
 #define __USBD_H__
 
@@ -133,7 +133,7 @@ extern const S_USBD_INFO_T gsInfo;
 /******************************************************************************/
 
 #define USBD_WAKEUP_EN          USBD_INTEN_WKEN_Msk         /*!< USB Wake-up Enable                      \hideinitializer */
-#define USBD_DRVSE0             USBD_SE0_SE0_Msk            /*!< Drive SE0                               \hideinitializer */
+#define USBD_DRVSE0             USBD_SE0_SE0_Msk            /*!< Drive SE0                               \hideinitializer */  
 #define USBD_L1RESUME           USBD_ATTR_L1RESUME_Msk      /*!< LPM L1 Resume                           \hideinitializer */
 #define USBD_L1SUSPEND          USBD_ATTR_L1SUSPEND_Msk     /*!< LPM L1 Suspend                          \hideinitializer */
 #define USBD_LPMACK             USBD_ATTR_LPMACK_Msk        /*!< LPM Enable                              \hideinitializer */
@@ -149,6 +149,7 @@ extern const S_USBD_INFO_T gsInfo;
 #define USBD_INT_VBDET          USBD_INTEN_VBDETIEN_Msk     /*!< USB VBUS Detection Interrupt            \hideinitializer */
 #define USBD_INT_WAKEUP         (USBD_INTEN_NEVWKIEN_Msk | USBD_INTEN_WKEN_Msk)     /*!< USB No-Event-Wake-Up Interrupt   \hideinitializer */
 
+#define USBD_INTSTS_SOF         USBD_INTSTS_SOFIF_Msk       /*!< USB Start of Frame Interrupt Status     \hideinitializer */
 #define USBD_INTSTS_WAKEUP      USBD_INTSTS_NEVWKIF_Msk     /*!< USB No-Event-Wake-Up Interrupt Status   \hideinitializer */
 #define USBD_INTSTS_FLDET       USBD_INTSTS_VBDETIF_Msk     /*!< USB Float Detect Interrupt Status       \hideinitializer */
 #define USBD_INTSTS_VBDET       USBD_INTSTS_VBDETIF_Msk     /*!< USB Float Detect Interrupt Status       \hideinitializer */

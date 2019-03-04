@@ -41,7 +41,7 @@ extern "C"
 #define FMC_USER_CONFIG_0       0x00300000UL    /*!< User Config 0 address                 \hideinitializer */
 #define FMC_USER_CONFIG_1       0x00300004UL    /*!< User Config 1 address                 \hideinitializer */
 #define FMC_USER_CONFIG_2       0x00300008UL    /*!< User Config 2 address                 \hideinitializer */
-
+                                                
 #define FMC_FLASH_PAGE_SIZE     0x200           /*!< Flash Page Size (512 bytes)           \hideinitializer */
 #define FMC_PAGE_ADDR_MASK      0xFFFFFE00UL    /*!< Flash page address mask               \hideinitializer */
 

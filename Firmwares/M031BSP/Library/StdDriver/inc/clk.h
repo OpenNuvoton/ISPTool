@@ -1,8 +1,8 @@
 /**************************************************************************//**
  * @file     clk.h
  * @version  V0.10
- * $Revision: 10 $
- * $Date: 18/06/22 9:31a $
+ * $Revision: 12 $
+ * $Date: 18/07/05 4:42p $
  * @brief    M031 Series Clock Controller (CLK) Driver Header File
  *
  * @note
@@ -43,6 +43,18 @@ extern "C"
 #define FREQ_72MHZ         72000000     /*!< Define frequency macro  72MHz  \hideinitializer */
 #define FREQ_96MHZ         96000000     /*!< Define frequency macro  96MHz  \hideinitializer */
 #define FREQ_100MHZ       100000000     /*!< Define frequency macro 100MHz  \hideinitializer */
+
+/*---------------------------------------------------------------------------------------------------------*/
+/*  PWRCTL constant definitions.  (Write-protection)                                                      */
+/*---------------------------------------------------------------------------------------------------------*/
+#define CLK_PWRCTL_HXTGAIN_L0   (0)     /*!< Setting HXT Gain Control to level 0 for lower than 4MHz external crystal   \hideinitializer */
+#define CLK_PWRCTL_HXTGAIN_L1   (1)     /*!< Setting HXT Gain Control to level 1 for  4MHz ~  8MHz external crystal \hideinitializer */
+#define CLK_PWRCTL_HXTGAIN_L2   (2)     /*!< Setting HXT Gain Control to level 2 for  8MHz ~ 12MHz external crystal \hideinitializer */
+#define CLK_PWRCTL_HXTGAIN_L3   (3)     /*!< Setting HXT Gain Control to level 3 for 12MHz ~ 16MHz external crystal \hideinitializer */
+#define CLK_PWRCTL_HXTGAIN_L4   (4)     /*!< Setting HXT Gain Control to level 4 for 16MHz ~ 24MHz external crystal \hideinitializer */
+#define CLK_PWRCTL_HXTGAIN_L5   (5)     /*!< Setting HXT Gain Control to level 5                                    \hideinitializer */
+#define CLK_PWRCTL_HXTGAIN_L6   (6)     /*!< Setting HXT Gain Control to level 6                                    \hideinitializer */
+#define CLK_PWRCTL_HXTGAIN_L7   (7)     /*!< Setting HXT Gain Control to level 7 for 24MHz ~ 32MHz external crystal \hideinitializer */
 
 /*---------------------------------------------------------------------------------------------------------*/
 /*  CLKSEL0 constant definitions.  (Write-protection)                                                      */
@@ -114,12 +126,14 @@ extern "C"
 #define CLK_CLKSEL1_UART0SEL_LXT         (0x2UL<<CLK_CLKSEL1_UART0SEL_Pos)      /*!< Setting UART0 clock source as external X'tal 32.768KHz     \hideinitializer */
 #define CLK_CLKSEL1_UART0SEL_HIRC        (0x3UL<<CLK_CLKSEL1_UART0SEL_Pos)      /*!< Setting UART0 clock source as external internal high speed RC clock    \hideinitializer */
 #define CLK_CLKSEL1_UART0SEL_PCLK0       (0x4UL<<CLK_CLKSEL1_UART0SEL_Pos)      /*!< Setting UART0 clock source as external PCLK0   \hideinitializer */
+#define CLK_CLKSEL1_UART0SEL_LIRC        (0x5UL<<CLK_CLKSEL1_UART0SEL_Pos)      /*!< Setting UART0 clock source as external LIRC    \hideinitializer */
 
 #define CLK_CLKSEL1_UART1SEL_HXT         (0x0UL<<CLK_CLKSEL1_UART1SEL_Pos)      /*!< Setting UART1 clock source as external X'tal   \hideinitializer */
 #define CLK_CLKSEL1_UART1SEL_PLL         (0x1UL<<CLK_CLKSEL1_UART1SEL_Pos)      /*!< Setting UART1 clock source as external PLL     \hideinitializer */
 #define CLK_CLKSEL1_UART1SEL_LXT         (0x2UL<<CLK_CLKSEL1_UART1SEL_Pos)      /*!< Setting UART1 clock source as external X'tal 32.768KHz     \hideinitializer */
 #define CLK_CLKSEL1_UART1SEL_HIRC        (0x3UL<<CLK_CLKSEL1_UART1SEL_Pos)      /*!< Setting UART1 clock source as external internal high speed RC clock    \hideinitializer */
 #define CLK_CLKSEL1_UART1SEL_PCLK1       (0x4UL<<CLK_CLKSEL1_UART1SEL_Pos)      /*!< Setting UART1 clock source as external PCLK1   \hideinitializer */
+#define CLK_CLKSEL1_UART1SEL_LIRC        (0x5UL<<CLK_CLKSEL1_UART1SEL_Pos)      /*!< Setting UART1 clock source as external LIRC    \hideinitializer */
 
 /*---------------------------------------------------------------------------------------------------------*/
 /*  CLKSEL2 constant definitions.                                                                          */
@@ -148,6 +162,7 @@ extern "C"
 #define CLK_CLKSEL3_UART2SEL_LXT         (0x2UL<<CLK_CLKSEL3_UART2SEL_Pos)      /*!< Setting UART2 clock source as external X'tal 32.768KHz \hideinitializer */
 #define CLK_CLKSEL3_UART2SEL_HIRC        (0x3UL<<CLK_CLKSEL3_UART2SEL_Pos)      /*!< Setting UART2 clock source as external internal high speed RC clock    \hideinitializer */
 #define CLK_CLKSEL3_UART2SEL_PCLK0       (0x4UL<<CLK_CLKSEL3_UART2SEL_Pos)      /*!< Setting UART2 clock source as external PCLK0   \hideinitializer */
+#define CLK_CLKSEL3_UART2SEL_LIRC        (0x5UL<<CLK_CLKSEL3_UART2SEL_Pos)      /*!< Setting UART2 clock source as external LIRC    \hideinitializer */
 
 /*---------------------------------------------------------------------------------------------------------*/
 /*  CLKDIV0 constant definitions.                                                                          */
@@ -236,6 +251,10 @@ extern "C"
 #define EBI_MODULE       (MODULE_APBCLK_ENC( 0)|MODULE_IP_EN_Pos_ENC(CLK_AHBCLK_EBICKEN_Pos)|\
                           MODULE_CLKSEL_ENC(NA)|MODULE_CLKSEL_Msk_ENC(NA)|MODULE_CLKSEL_Pos_ENC(NA)|\
                           MODULE_CLKDIV_ENC(NA)|MODULE_CLKDIV_Msk_ENC(NA)|MODULE_CLKDIV_Pos_ENC(NA))     /*!< EBI Module    \hideinitializer */
+
+#define HDIV_MODULE      (MODULE_APBCLK_ENC( 0)|MODULE_IP_EN_Pos_ENC(CLK_AHBCLK_HDIVCKEN_Pos)|\
+                          MODULE_CLKSEL_ENC(NA)|MODULE_CLKSEL_Msk_ENC(NA)|MODULE_CLKSEL_Pos_ENC(NA)|\
+                          MODULE_CLKDIV_ENC(NA)|MODULE_CLKDIV_Msk_ENC(NA)|MODULE_CLKDIV_Pos_ENC(NA))     /*!< HDIV Module   \hideinitializer */
 
 #define CRC_MODULE       (MODULE_APBCLK_ENC( 0)|MODULE_IP_EN_Pos_ENC(CLK_AHBCLK_CRCCKEN_Pos)|\
                           MODULE_CLKSEL_ENC(NA)|MODULE_CLKSEL_Msk_ENC(NA)|MODULE_CLKSEL_Pos_ENC(NA)|\
@@ -352,8 +371,7 @@ static __INLINE uint32_t CLK_GetPLLClockFreq(void)
         if (u32Reg & CLK_PLLCTL_PLLSRC_Msk)
         {
             u32FIN = (__HIRC >> 2);
-        }
-        else
+        } else
             u32FIN = __HXT;
 
         if (u32Reg & CLK_PLLCTL_BP_Msk)
@@ -390,28 +408,23 @@ static __INLINE uint32_t CLK_GetHCLKFreq(void)
     u32ClkSel = CLK->CLKSEL0 & CLK_CLKSEL0_HCLKSEL_Msk;
 
     if (u32ClkSel == CLK_CLKSEL0_HCLKSEL_HXT)
-    {
-        /* external HXT crystal clock */
+    { /* external HXT crystal clock */
         u32Freqout = __HXT;
     }
     else if (u32ClkSel == CLK_CLKSEL0_HCLKSEL_LXT)
-    {
-        /* external LXT crystal clock */
+    {  /* external LXT crystal clock */
         u32Freqout = __LXT;
     }
     else if (u32ClkSel == CLK_CLKSEL0_HCLKSEL_PLL)
-    {
-        /* PLL clock */
+    {  /* PLL clock */
         u32Freqout = CLK_GetPLLClockFreq();
     }
     else if (u32ClkSel == CLK_CLKSEL0_HCLKSEL_LIRC)
-    {
-        /* internal LIRC oscillator clock */
+    { /* internal LIRC oscillator clock */
         u32Freqout = __LIRC;
     }
     else if (u32ClkSel == CLK_CLKSEL0_HCLKSEL_HIRC)
-    {
-        /* internal HIRC oscillator clock */
+    { /* internal HIRC oscillator clock */
         u32Freqout = __HIRC;
     }
 
@@ -478,6 +491,10 @@ static __INLINE uint32_t CLK_GetUARTFreq(void)
     {
         PCLK0Div = (CLK->PCLKDIV & CLK_PCLKDIV_APB0DIV_Msk) >> CLK_PCLKDIV_APB0DIV_Pos;
         u32Freqout = (SystemCoreClock >> PCLK0Div);
+    }
+    else if(u32ClkSel == CLK_CLKSEL1_UART0SEL_LIRC)     /* LIRC clock */
+    {
+        u32Freqout = __LIRC;
     }
 
     u32AHBDivider = (CLK->CLKDIV0 & CLK_CLKDIV0_UART0DIV_Msk) + 1 ;

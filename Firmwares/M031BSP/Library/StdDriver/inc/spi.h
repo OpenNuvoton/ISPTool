@@ -28,19 +28,19 @@ extern "C"
 /** @addtogroup SPI_EXPORTED_CONSTANTS SPI Exported Constants
   @{
 */
-#define SPI_NONE                (0x00ul)                                  /*!< SPI interface not existed \hideinitializer */
-#define SPI_MODE_0              (SPI_CTL_TXNEG_Msk)                       /*!< CLKPOL=0; RXNEG=0; TXNEG=1 \hideinitializer */
-#define SPI_MODE_1              (SPI_CTL_RXNEG_Msk)                       /*!< CLKPOL=0; RXNEG=1; TXNEG=0 \hideinitializer */
-#define SPI_MODE_2              (SPI_CTL_CLKPOL_Msk | SPI_CTL_RXNEG_Msk)  /*!< CLKPOL=1; RXNEG=1; TXNEG=0 \hideinitializer */
-#define SPI_MODE_3              (SPI_CTL_CLKPOL_Msk | SPI_CTL_TXNEG_Msk)  /*!< CLKPOL=1; RXNEG=0; TXNEG=1 \hideinitializer */
-#define SPI_SLAVE               (SPI_CTL_SLAVE_Msk)                       /*!< Set as slave \hideinitializer */
-#define SPI_MASTER              (0x0ul)                                   /*!< Set as master \hideinitializer */
-#define SPI_SS                  (SPI_SSCTL_SS_Msk)                        /*!< Set SS \hideinitializer */
-#define SPI_SS_ACTIVE_HIGH      (SPI_SSCTL_SSACTPOL_Msk)                  /*!< SS active high \hideinitializer */
-#define SPI_SS_ACTIVE_LOW       (0x0ul)                                   /*!< SS active low \hideinitializer */
+#define SPI_NONE		  		(0x00ul)   		   						  /*!< SPI interface not existed \hideinitializer */
+#define SPI_MODE_0        		(SPI_CTL_TXNEG_Msk)    			  		  /*!< CLKPOL=0; RXNEG=0; TXNEG=1 \hideinitializer */
+#define SPI_MODE_1        		(SPI_CTL_RXNEG_Msk)                       /*!< CLKPOL=0; RXNEG=1; TXNEG=0 \hideinitializer */
+#define SPI_MODE_2        		(SPI_CTL_CLKPOL_Msk | SPI_CTL_RXNEG_Msk)  /*!< CLKPOL=1; RXNEG=1; TXNEG=0 \hideinitializer */
+#define SPI_MODE_3        		(SPI_CTL_CLKPOL_Msk | SPI_CTL_TXNEG_Msk)  /*!< CLKPOL=1; RXNEG=0; TXNEG=1 \hideinitializer */
+#define SPI_SLAVE         		(SPI_CTL_SLAVE_Msk)                       /*!< Set as slave \hideinitializer */
+#define SPI_MASTER        		(0x0ul)                                   /*!< Set as master \hideinitializer */
+#define SPI_SS                	(SPI_SSCTL_SS_Msk)                        /*!< Set SS \hideinitializer */
+#define SPI_SS_ACTIVE_HIGH    	(SPI_SSCTL_SSACTPOL_Msk)                  /*!< SS active high \hideinitializer */
+#define SPI_SS_ACTIVE_LOW     	(0x0ul)                                   /*!< SS active low \hideinitializer */
 
 /* SPI Interrupt Mask */
-#define SPI_UNIT_INT_MASK                (0x001ul)                        /*!< Unit transfer interrupt mask \hideinitializer */
+#define SPI_UNIT_INT_MASK                (0x001ul)            	          /*!< Unit transfer interrupt mask \hideinitializer */
 #define SPI_SSACT_INT_MASK               (0x002ul)                        /*!< Slave selection signal active interrupt mask \hideinitializer */
 #define SPI_SSINACT_INT_MASK             (0x004ul)                        /*!< Slave selection signal inactive interrupt mask \hideinitializer */
 #define SPI_SLVUR_INT_MASK               (0x008ul)                        /*!< Slave under run interrupt mask \hideinitializer */
@@ -84,7 +84,7 @@ extern "C"
 
 /* SPII2S TX FIFO Threshold */
 #define SPII2S_FIFO_TX_LEVEL_WORD_0    (0ul)                              /*!< TX threshold is 0 word \hideinitializer */
-#define SPII2S_FIFO_TX_LEVEL_WORD_1    (1ul << SPI_FIFOCTL_TXTH_Pos)      /*!< TX threshold is 1 word \hideinitializer */
+#define SPII2S_FIFO_TX_LEVEL_WORD_1    (1ul << SPI_FIFOCTL_TXTH_Pos)   	  /*!< TX threshold is 1 word \hideinitializer */
 #define SPII2S_FIFO_TX_LEVEL_WORD_2    (2ul << SPI_FIFOCTL_TXTH_Pos)      /*!< TX threshold is 2 words \hideinitializer */
 #define SPII2S_FIFO_TX_LEVEL_WORD_3    (3ul << SPI_FIFOCTL_TXTH_Pos)      /*!< TX threshold is 3 words \hideinitializer */
 /* SPII2S RX FIFO Threshold */
@@ -95,7 +95,7 @@ extern "C"
 
 /* SPII2S Record Channel */
 #define SPII2S_MONO_RIGHT          (0ul)                                  /*!< Record mono right channel \hideinitializer */
-#define SPII2S_MONO_LEFT           SPI_I2SCTL_RXLCH_Msk                   /*!< Record mono left channel \hideinitializer */
+#define SPII2S_MONO_LEFT           SPI_I2SCTL_RXLCH_Msk              	  /*!< Record mono left channel \hideinitializer */
 
 /* SPII2S Channel */
 #define SPII2S_RIGHT               (0ul)                                  /*!< Select right channel \hideinitializer */

@@ -1,8 +1,8 @@
 /**************************************************************************//**
  * @file     clk.c
  * @version  V3.00
- * $Revision: 5 $
- * $Date: 18/04/24 5:55p $
+ * $Revision: 6 $
+ * $Date: 18/07/05 4:42p $
  * @brief    M031 Series Clock Controller (CLK) Driver Source File
  *
  * @note
@@ -73,9 +73,16 @@ void CLK_EnableCKO(uint32_t u32ClkSrc, uint32_t u32ClkDiv, uint32_t u32ClkDivBy1
   * @return     None
   * @details    This function is used to let system enter to Power-down mode. \n
   *             The register write-protection function should be disabled before using this function.
+  * @note       Must be care of HIRC/MIRC auto trim is disabled when using this function.
   */
 void CLK_PowerDown(void)
 {
+    /* Check HIRC/MIRC auto trim function disable */
+    if(SYS->HIRCTRIMCTL & SYS_HIRCTRIMCTL_FREQSEL_Msk)
+    {
+        return;
+    }
+
     /* Set the processor uses deep sleep as its low power mode */
     SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
 
@@ -323,16 +330,19 @@ void CLK_SetHCLK(uint32_t u32ClkSrc, uint32_t u32ClkDiv)
   * |\ref UART0_MODULE   |\ref CLK_CLKSEL1_UART0SEL_LXT         |\ref CLK_CLKDIV0_UART0(x) |
   * |\ref UART0_MODULE   |\ref CLK_CLKSEL1_UART0SEL_HIRC        |\ref CLK_CLKDIV0_UART0(x) |
   * |\ref UART0_MODULE   |\ref CLK_CLKSEL1_UART0SEL_PCLK0       |\ref CLK_CLKDIV0_UART0(x) |
+  * |\ref UART0_MODULE   |\ref CLK_CLKSEL1_UART0SEL_LIRC        |\ref CLK_CLKDIV0_UART0(x) |
   * |\ref UART1_MODULE   |\ref CLK_CLKSEL1_UART1SEL_HXT         |\ref CLK_CLKDIV0_UART1(x) |
   * |\ref UART1_MODULE   |\ref CLK_CLKSEL1_UART1SEL_PLL         |\ref CLK_CLKDIV0_UART1(x) |
   * |\ref UART1_MODULE   |\ref CLK_CLKSEL1_UART1SEL_LXT         |\ref CLK_CLKDIV0_UART1(x) |
   * |\ref UART1_MODULE   |\ref CLK_CLKSEL1_UART1SEL_HIRC        |\ref CLK_CLKDIV0_UART1(x) |
   * |\ref UART1_MODULE   |\ref CLK_CLKSEL1_UART1SEL_PCLK1       |\ref CLK_CLKDIV0_UART1(x) |
+  * |\ref UART1_MODULE   |\ref CLK_CLKSEL1_UART1SEL_LIRC        |\ref CLK_CLKDIV0_UART1(x) |
   * |\ref UART2_MODULE   |\ref CLK_CLKSEL3_UART2SEL_HXT         |\ref CLK_CLKDIV4_UART2(x) |
   * |\ref UART2_MODULE   |\ref CLK_CLKSEL3_UART2SEL_PLL         |\ref CLK_CLKDIV4_UART2(x) |
   * |\ref UART2_MODULE   |\ref CLK_CLKSEL3_UART2SEL_LXT         |\ref CLK_CLKDIV4_UART2(x) |
   * |\ref UART2_MODULE   |\ref CLK_CLKSEL3_UART2SEL_HIRC        |\ref CLK_CLKDIV4_UART2(x) |
   * |\ref UART2_MODULE   |\ref CLK_CLKSEL3_UART2SEL_PCLK0       |\ref CLK_CLKDIV4_UART2(x) |
+  * |\ref UART2_MODULE   |\ref CLK_CLKSEL3_UART2SEL_LIRC        |\ref CLK_CLKDIV4_UART2(x) |
   * |\ref PWM0_MODULE    |\ref CLK_CLKSEL2_PWM0SEL_PLL          | x                        |
   * |\ref PWM0_MODULE    |\ref CLK_CLKSEL2_PWM0SEL_PCLK0        | x                        |
   * |\ref PWM1_MODULE    |\ref CLK_CLKSEL2_PWM1SEL_PLL          | x                        |
@@ -424,6 +434,7 @@ void CLK_DisableXtalRC(uint32_t u32ClkMask)
   *             - \ref PDMA_MODULE
   *             - \ref ISP_MODULE
   *             - \ref EBI_MODULE
+  *             - \ref HDIV_MODULE
   *             - \ref CRC_MODULE
   *             - \ref WDT_MODULE
   *             - \ref WWDT_MODULE
@@ -460,6 +471,7 @@ void CLK_EnableModuleClock(uint32_t u32ModuleIdx)
   *             - \ref PDMA_MODULE
   *             - \ref ISP_MODULE
   *             - \ref EBI_MODULE
+  *             - \ref HDIV_MODULE
   *             - \ref CRC_MODULE
   *             - \ref WDT_MODULE
   *             - \ref WWDT_MODULE
@@ -590,9 +602,9 @@ uint32_t CLK_EnablePLL(uint32_t u32PllClkSrc, uint32_t u32PllFreq)
     }
 
     /* Enable and apply new PLL setting. */
-    CLK->PLLCTL = u32CLK_SRC | 
-                  (u32Outdiv << CLK_PLLCTL_OUTDIV_Pos) | 
-                  ((u32MinNR - 2) << CLK_PLLCTL_INDIV_Pos) | 
+    CLK->PLLCTL = u32CLK_SRC |
+                  (u32Outdiv << CLK_PLLCTL_OUTDIV_Pos) |
+                  ((u32MinNR - 2) << CLK_PLLCTL_INDIV_Pos) |
                   ((u32MinNF - 2) << CLK_PLLCTL_FBDIV_Pos);
 
     /* Wait for PLL clock stable */
@@ -630,7 +642,7 @@ void CLK_DisablePLL(void)
     {
         CLK->PWRCTL |= CLK_PWRCTL_HIRCEN_Msk;
         CLK_WaitClockReady(CLK_STATUS_HIRCSTB_Msk);
-        CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLKSEL_Msk)) | CLK_CLKSEL0_HCLKSEL_HIRC;       
+        CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLKSEL_Msk)) | CLK_CLKSEL0_HCLKSEL_HIRC;
     }
 
     CLK->PLLCTL |= CLK_PLLCTL_PD_Msk;

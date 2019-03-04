@@ -367,7 +367,7 @@ extern "C"
  * @details This macro is used to clear counter of specified channel(s).
  * \hideinitializer
  */
-#define PWM_CLR_COUNTER(pwm, u32ChannelMask) \
+ #define PWM_CLR_COUNTER(pwm, u32ChannelMask) \
     do{ \
         uint32_t i; \
         for(i = 0UL; i < 6UL; i++) { \
@@ -375,7 +375,7 @@ extern "C"
                 ((pwm)->CNTCLR |= (1UL << ((i >> 1UL) << 1UL))); \
         } \
     }while(0)
-
+ 
 /**
  * @brief Set output level at zero, compare up, period(center) and compare down of specified channel(s)
  * @param[in] pwm The pointer of the specified PWM module

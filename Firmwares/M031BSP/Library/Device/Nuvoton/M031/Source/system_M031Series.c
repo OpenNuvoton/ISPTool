@@ -1,8 +1,8 @@
 /**************************************************************************//**
  * @file     system_M031Series.c
  * @version  V2.00
- * $Revision: 4 $
- * $Date: 18/06/22 4:40p $
+ * $Revision: 5 $
+ * $Date: 18/07/19 1:44p $
  * @brief    M031 Series System Setting Source File
  *
  * @note
@@ -21,7 +21,7 @@
 uint32_t SystemCoreClock  = __HSI;              /*!< System Clock Frequency (Core Clock) */
 uint32_t CyclesPerUs      = (__HSI / 1000000);  /*!< Cycles per micro second             */
 uint32_t PllClock         = __HSI;              /*!< PLL Output Clock Frequency          */
-const uint32_t gau32ClkSrcTbl[] = {__HXT, __LXT, __HSI, __LIRC, __HIRC, NULL, NULL, __HIRC};
+const uint32_t gau32ClkSrcTbl[] = {__HXT, __LXT, __HSI, __LIRC, __HIRC, 0UL, 0UL, __HIRC};
 
 
 /**

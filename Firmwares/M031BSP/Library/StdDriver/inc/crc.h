@@ -1,8 +1,8 @@
 /******************************************************************************
  * @file     crc.h
  * @version  V1.00
- * $Revision: 8 $
- * $Date: 18/04/24 3:46p $ 
+ * $Revision: 9 $
+ * $Date: 18/07/09 4:18p $ 
  * @brief    M031 series CRC driver header file
  *
  * @note
@@ -46,11 +46,11 @@ extern "C"
 #define CRC_WDATA_RVS       (CRC_CTL_DATREV_Msk)        /*!<CRC Write Data Reverse \hideinitializer */
 
 /*---------------------------------------------------------------------------------------------------------*/
-/*  CPU Write Data Length Constant Definitions                                                             */
+/*  Write Data Length Constant Definitions                                                             */
 /*---------------------------------------------------------------------------------------------------------*/
-#define CRC_CPU_WDATA_8     (0UL << CRC_CTL_DATLEN_Pos) /*!<CRC CPU Write Data length is 8-bit \hideinitializer */
-#define CRC_CPU_WDATA_16    (1UL << CRC_CTL_DATLEN_Pos) /*!<CRC CPU Write Data length is 16-bit \hideinitializer */
-#define CRC_CPU_WDATA_32    (2UL << CRC_CTL_DATLEN_Pos) /*!<CRC CPU Write Data length is 32-bit \hideinitializer */
+#define CRC_WDATA_8     (0UL << CRC_CTL_DATLEN_Pos) /*!<CRC Write Data length is 8-bit \hideinitializer */
+#define CRC_WDATA_16    (1UL << CRC_CTL_DATLEN_Pos) /*!<CRC Write Data length is 16-bit \hideinitializer */
+#define CRC_WDATA_32    (2UL << CRC_CTL_DATLEN_Pos) /*!<CRC Write Data length is 32-bit \hideinitializer */
 
 /*@}*/ /* end of group CRC_EXPORTED_CONSTANTS */
 

@@ -1,8 +1,8 @@
 /**************************************************************************//**
  * @file     timer.h
  * @version  V0.10
- * $Revision: 5 $
- * $Date: 18/06/07 4:17p $
+ * $Revision: 6 $
+ * $Date: 18/07/13 4:59p $
  * @brief    M031 Series Timer Controller (TIMER) Driver Header File
  *
  * @note
@@ -63,6 +63,8 @@ extern "C"
 #define TIMER_TRG_TO_PWM                        (TIMER_CTL_TRGPWM_Msk)             /*!< Timer trigger PWM   \hideinitializer */
 #define TIMER_TRG_TO_ADC                        (TIMER_CTL_TRGADC_Msk)             /*!< Timer trigger ADC   \hideinitializer */
 #define TIMER_TRG_TO_PDMA                       (TIMER_CTL_TRGPDMA_Msk)            /*!< Timer trigger PDMA  \hideinitializer */
+
+#define TIMER_CMP_MAX_VALUE                     (0xFFFFFFUL)                       /*!< Max Timer compare value \hideinitializer */
 
 /*@}*/ /* end of group TIMER_EXPORTED_CONSTANTS */
 

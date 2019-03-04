@@ -1,8 +1,8 @@
 /**************************************************************************//**
  * @file     sys.h
  * @version  V0.10
- * $Revision: 7 $
- * $Date: 18/06/07 4:17p $
+ * $Revision: 8 $
+ * $Date: 18/07/05 4:42p $
  * @brief    M031 Series SYS Driver Header File
  *
  * @note
@@ -33,6 +33,7 @@ extern "C"
 /*---------------------------------------------------------------------------------------------------------*/
 #define PDMA_RST    ((0x0<<24)|SYS_IPRST0_PDMARST_Pos)      /*!< PDMA  reset is one of the \ref SYS_ResetModule parameter   \hideinitializer */
 #define EBI_RST     ((0x0<<24)|SYS_IPRST0_EBIRST_Pos)       /*!< EBI   reset is one of the \ref SYS_ResetModule parameter   \hideinitializer */
+#define HDIV_RST    ((0x0<<24)|SYS_IPRST0_HDIVRST_Pos)      /*!< HDIV  reset is one of the \ref SYS_ResetModule parameter   \hideinitializer */
 #define CRC_RST     ((0x0<<24)|SYS_IPRST0_CRCRST_Pos)       /*!< CRC   reset is one of the \ref SYS_ResetModule parameter   \hideinitializer */
 
 #define GPIO_RST    ((0x4<<24)|SYS_IPRST1_GPIORST_Pos)      /*!< GPIO  reset is one of the \ref SYS_ResetModule parameter   \hideinitializer */
@@ -841,13 +842,11 @@ Example: If user want to set PD.3 as UART0_TXD and PD.2 as UART0_RXD in initial 
   */
 __STATIC_INLINE void SYS_UnlockReg(void)
 {
-    do
-    {
+    do {
         SYS->REGLCTL = 0x59;
         SYS->REGLCTL = 0x16;
         SYS->REGLCTL = 0x88;
-    }
-    while (SYS->REGLCTL == 0);
+    } while (SYS->REGLCTL == 0);
 }
 
 /**

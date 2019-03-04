@@ -308,8 +308,9 @@ SH_End
 
 #else
 
-# if defined(__ICCARM__)
-
+//# if defined(__ICCARM__)
+# if defined ( __GNUC__ ) && !(__CC_ARM) && !(__ICCARM__) 
+	
 void Get_LR_and_Branch(void)
 {
     asm("MOV     R1, LR                  \n" //; LR current value
@@ -638,7 +639,7 @@ int fgetc(FILE *stream)
  *
  */
 
-int ferror(FILE *stream)
+int (ferror)(FILE *stream)
 {
     return EOF;
 }

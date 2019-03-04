@@ -288,17 +288,17 @@ extern "C"
 #define UART_GET_RX_FULL(uart)    ((uart)->FIFOSTS & UART_FIFOSTS_RXFULL_Msk)
 
 /**
- *    @brief        Rx Idel Status register value
+ *    @brief        Rx Idle Status register value
  *
  *    @param[in]    uart    The pointer of the specified UART module
  *
  *    @retval       0 Rx is busy.
- *    @retval       1 Rx is Idel(Default)
+ *    @retval       1 Rx is Idle(Default)
  *
- *    @details      This macro get Rx Idel Status register value.
+ *    @details      This macro get Rx Idle Status register value.
  *    \hideinitializer
  */
-#define UART_RX_IDEL(uart) (((uart)->FIFOSTS & UART_FIFOSTS_RXIDLE_Msk )>> UART_FIFOSTS_RXIDLE_Pos)
+#define UART_RX_IDLE(uart) (((uart)->FIFOSTS & UART_FIFOSTS_RXIDLE_Msk )>> UART_FIFOSTS_RXIDLE_Pos)
 
 
 /**
@@ -309,6 +309,8 @@ extern "C"
  *                              - \ref UART_INTEN_TXENDIEN_Msk   : Transmitter Empty interrupt
  *                              - \ref UART_INTEN_ABRIEN_Msk     : Auto baud rate interrupt
  *                              - \ref UART_INTEN_SWBEIEN_Msk    : Single-wire bit error detection interrupt
+ *                              - \ref UART_INTEN_RXPDMAEN_Msk   : RX PDMA interrupt
+ *                              - \ref UART_INTEN_TXPDMAEN_Msk   : TX PDMA interrupt 
  *                              - \ref UART_INTEN_WKIEN_Msk      : Wakeup interrupt
  *                              - \ref UART_INTEN_BUFERRIEN_Msk  : Buffer Error interrupt
  *                              - \ref UART_INTEN_RXTOIEN_Msk    : Rx time-out interrupt
@@ -333,6 +335,8 @@ extern "C"
  *                              - \ref UART_INTEN_TXENDIEN_Msk   : Transmitter Empty interrupt
  *                              - \ref UART_INTEN_ABRIEN_Msk     : Auto baud rate interrupt
  *                              - \ref UART_INTEN_SWBEIEN_Msk    : Single-wire bit error detection interrupt
+ *                              - \ref UART_INTEN_RXPDMAEN_Msk   : RX PDMA interrupt
+ *                              - \ref UART_INTEN_TXPDMAEN_Msk   : TX PDMA interrupt  
  *                              - \ref UART_INTEN_WKIEN_Msk      : Wakeup interrupt
  *                              - \ref UART_INTEN_BUFERRIEN_Msk  : Buffer Error interrupt
  *                              - \ref UART_INTEN_RXTOIEN_Msk    : Rx time-out interrupt

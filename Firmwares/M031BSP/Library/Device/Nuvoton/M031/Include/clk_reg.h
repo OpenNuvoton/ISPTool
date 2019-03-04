@@ -113,6 +113,9 @@ typedef struct
      * |[3]     |EBICKEN   |EBI Controller Clock Enable Bit
      * |        |          |0 = EBI peripheral clock Disabled.
      * |        |          |1 = EBI peripheral clock Enabled.Reserved.
+     * |[4]     |HDIVCKEN  |HDIV Controller Clock Enable Bit
+     * |        |          |0 = HDIV peripheral clock Disabled.
+     * |        |          |1 = HDIV peripheral clock Enabled.Reserved.
      * |[7]     |CRCCKEN   |CRC Generator Controller Clock Enable Bit
      * |        |          |0 = CRC peripheral clock Disabled.
      * |        |          |1 = CRC peripheral clock Enabled.
@@ -590,6 +593,9 @@ typedef struct
 
 #define CLK_AHBCLK_EBICKEN_Pos           (3)                                               /*!< CLK_T::AHBCLK: EBICKEN Position        */
 #define CLK_AHBCLK_EBICKEN_Msk           (0x1ul << CLK_AHBCLK_EBICKEN_Pos)                 /*!< CLK_T::AHBCLK: EBICKEN Mask            */
+
+#define CLK_AHBCLK_HDIVCKEN_Pos          (4)                                               /*!< CLK_T::AHBCLK: HDIVCKEN Position       */
+#define CLK_AHBCLK_HDIVCKEN_Msk          (0x1ul << CLK_AHBCLK_HDIVCKEN_Pos)                /*!< CLK_T::AHBCLK: HDIVCKEN Mask           */
 
 #define CLK_AHBCLK_CRCCKEN_Pos           (7)                                               /*!< CLK_T::AHBCLK: CRCCKEN Position        */
 #define CLK_AHBCLK_CRCCKEN_Msk           (0x1ul << CLK_AHBCLK_CRCCKEN_Pos)                 /*!< CLK_T::AHBCLK: CRCCKEN Mask            */

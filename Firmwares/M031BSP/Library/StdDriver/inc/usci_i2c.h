@@ -29,8 +29,7 @@ extern "C"
 /*---------------------------------------------------------------------------------------------------------*/
 /* USCI_I2C master event definitions                                                                       */
 /*---------------------------------------------------------------------------------------------------------*/
-enum UI2C_MASTER_EVENT
-{
+enum UI2C_MASTER_EVENT {
     MASTER_SEND_ADDRESS = 10u,    /*!< Master send address to Slave */
     MASTER_SEND_H_WR_ADDRESS,    /*!< Master send High address to Slave */
     MASTER_SEND_H_RD_ADDRESS,    /*!< Master send address to Slave (Read ADDR) */
@@ -45,8 +44,7 @@ enum UI2C_MASTER_EVENT
 /*---------------------------------------------------------------------------------------------------------*/
 /* USCI_I2C slave event definitions                                                                        */
 /*---------------------------------------------------------------------------------------------------------*/
-enum UI2C_SLAVE_EVENT
-{
+enum UI2C_SLAVE_EVENT {
     SLAVE_ADDRESS_ACK = 100u,      /*!< Slave send address ACK */
     SLAVE_H_WR_ADDRESS_ACK,       /*!< Slave send High address ACK */
     SLAVE_L_WR_ADDRESS_ACK,       /*!< Slave send Low address ACK */

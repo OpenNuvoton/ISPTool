@@ -25,7 +25,7 @@ uint32_t PllClock         = __HSI;              /*!< PLL Output Clock Frequency 
 /**
  * @cond HIDDEN_SYMBOLS
  */
-const uint32_t gau32ClkSrcTbl[] = {__HXT, NULL, __HSI, __LIRC, NULL, NULL, NULL, __HIRC};
+const uint32_t gau32ClkSrcTbl[] = {__HXT, 0, __HSI, __LIRC, 0, 0, 0, __HIRC};
 /**
  * @endcond
  */

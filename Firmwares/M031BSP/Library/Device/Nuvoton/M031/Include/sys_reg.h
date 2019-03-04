@@ -111,6 +111,12 @@ typedef struct
      * |        |          |0 = EBI controller normal operation.
      * |        |          |1 = EBI controller reset.
      * |        |          |Note: This bit is write protected. Refer to the SYS_REGLCTL register.
+     * |[4]     |HDIVRST   |HDIV Controller Reset (Write Protect)
+     * |        |          |Set this bit to 1 will generate a reset signal to the hardware divider.
+     * |        |          |User needs to set this bit to 0 to release from the reset state.
+     * |        |          |0 = Hardware divider controller normal operation.
+     * |        |          |1 = Hardware divider controller reset.
+     * |        |          |Note: This bit is write protected. Refer to the SYS_REGLCTL register.
      * |[7]     |CRCRST    |CRC Calculation Controller Reset (Write Protect)
      * |        |          |Set this bit to 1 will generate a reset signal to the CRC calculation controller
      * |        |          |User needs to set this bit to 0 to release from the reset state.
@@ -756,6 +762,9 @@ typedef struct
 
 #define SYS_IPRST0_EBIRST_Pos            (3)                                               /*!< SYS_T::IPRST0: EBIRST Position         */
 #define SYS_IPRST0_EBIRST_Msk            (0x1ul << SYS_IPRST0_EBIRST_Pos)                  /*!< SYS_T::IPRST0: EBIRST Mask             */
+
+#define SYS_IPRST0_HDIVRST_Pos           (4)                                               /*!< SYS_T::IPRST0: HDIVRST Position        */
+#define SYS_IPRST0_HDIVRST_Msk           (0x1ul << SYS_IPRST0_HDIVRST_Pos)                 /*!< SYS_T::IPRST0: HDIVRST Mask            */
 
 #define SYS_IPRST0_CRCRST_Pos            (7)                                               /*!< SYS_T::IPRST0: CRCRST Position         */
 #define SYS_IPRST0_CRCRST_Msk            (0x1ul << SYS_IPRST0_CRCRST_Pos)                  /*!< SYS_T::IPRST0: CRCRST Mask             */

@@ -1,8 +1,8 @@
 /**************************************************************************//**
  * @file     timer.c
  * @version  V3.00
- * $Revision: 4 $
- * $Date: 18/04/20 1:10p $
+ * $Revision: 5 $
+ * $Date: 18/07/13 5:00p $
  * @brief    M031 Series Timer Controller (TIMER) Driver Source File
  *
  * @note
@@ -45,7 +45,7 @@ uint32_t TIMER_Open(TIMER_T *timer, uint32_t u32Mode, uint32_t u32Freq)
     uint32_t u32Clk = TIMER_GetModuleClock(timer);
     uint32_t u32Cmpr = 0, u32Prescale = 0;
 
-    // Fastest possible timer working freq is (u32Clk / 2). While cmpr = 2, pre-scale = 0.
+    /* Fastest possible timer working freq is (u32Clk / 2). While cmpr = 2, pre-scale = 0. */
     if(u32Freq >= (u32Clk >> 1))
     {
         u32Cmpr = 2;
@@ -97,11 +97,11 @@ void TIMER_Delay(TIMER_T *timer, uint32_t u32Usec)
     uint32_t u32Prescale = 0, delay = (SystemCoreClock / u32Clk) + 1;
     uint32_t u32Cmpr, u32NsecPerTick;
 
-    // Clear current timer configuration/
+    /* Clear current timer configuration */
     timer->CTL = 0;
     timer->EXTCTL = 0;
 
-    if(u32Clk <= 1000000)   // min delay is 1000 us if timer clock source is <= 1 MHz
+    if(u32Clk <= 1000000)   /* min delay is 1000 us if timer clock source is <= 1 MHz */
     {
         if(u32Usec < 1000)
             u32Usec = 1000;
@@ -133,8 +133,8 @@ void TIMER_Delay(TIMER_T *timer, uint32_t u32Usec)
     timer->CMP = u32Cmpr;
     timer->CTL = TIMER_CTL_CNTEN_Msk | TIMER_ONESHOT_MODE | u32Prescale;
 
-    // When system clock is faster than timer clock, it is possible timer active bit cannot set in time while we check it.
-    // And the while loop below return immediately, so put a tiny delay here allowing timer start counting and raise active flag.
+    /* When system clock is faster than timer clock, it is possible timer active bit cannot set in time while we check it. */
+    /* And the while loop below return immediately, so put a tiny delay here allowing timer start counting and raise active flag. */
     for(; delay > 0; delay--)
     {
         __NOP();
@@ -236,7 +236,7 @@ uint32_t TIMER_GetModuleClock(TIMER_T *timer)
         u32Src = (CLK->CLKSEL1 & CLK_CLKSEL1_TMR1SEL_Msk) >> CLK_CLKSEL1_TMR1SEL_Pos;
     else if(timer == TIMER2)
         u32Src = (CLK->CLKSEL1 & CLK_CLKSEL1_TMR2SEL_Msk) >> CLK_CLKSEL1_TMR2SEL_Pos;
-    else  // Timer 3
+    else  /* Timer 3 */
         u32Src = (CLK->CLKSEL1 & CLK_CLKSEL1_TMR3SEL_Msk) >> CLK_CLKSEL1_TMR3SEL_Pos;
 
     if(u32Src == 2)
@@ -268,7 +268,7 @@ uint32_t TIMER_GetModuleClock(TIMER_T *timer)
   */
 void TIMER_EnableFreqCounter(TIMER_T *timer, uint32_t u32DropCount, uint32_t u32Timeout, uint32_t u32EnableInt)
 {
-    TIMER_T *t;    // store the timer base to configure compare value
+    TIMER_T *t;    /* store the timer base to configure compare value */
 
     t = (timer == TIMER0) ? TIMER1 : TIMER3;
 
