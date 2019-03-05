@@ -30,6 +30,8 @@ void SYS_Init(void)
     CLK_EnableXtalRC(CLK_PWRCON_OSC48M_EN_Msk);
     /* Waiting for Internal RC clock ready */
     CLK_WaitClockReady(CLK_CLKSTATUS_OSC48M_STB_Msk);
+    /* Set core clock */
+    CLK_SetCoreClock(72000000);
     /* Select module clock source */
     CLK_SetModuleClock(USBD_MODULE, CLK_CLKSEL0_USB_S_RC48M, CLK_CLKDIV_USB(1));
 #endif
@@ -74,17 +76,25 @@ int32_t main(void)
     while (DetectPin == 0) {
 #if CRYSTAL_LESS
 
-        /* Re-start crystal-less when any error found */
-        if (SYS->HIRCTSTS & (SYS_HIRCTSTS_CLKERIF_Msk | SYS_HIRCTSTS_TFAILIF_Msk)) {
-            SYS->HIRCTSTS = SYS_HIRCTSTS_CLKERIF_Msk | SYS_HIRCTSTS_TFAILIF_Msk;
+        /* Start USB trim if it is not enabled. */
+        if ((SYS->HIRCTCTL & SYS_HIRCTCTL_FREQSEL_Msk) != 1) {
+            /* Re-enable crystal-less */
+            SYS->HIRCTCTL = 0x201 | (31 << SYS_HIRCTCTL_BOUNDARY_Pos);
+        }
 
-            if ((u32TrimInit < 0x1E6) || (u32TrimInit > 0x253)) {
+        /* Disable USB Trim when error */
+        if (SYS->HIRCTSTS & (SYS_HIRCTSTS_CLKERIF_Msk | SYS_HIRCTSTS_TFAILIF_Msk)) {
+            /* Init TRIM */
+            M32(TRIM_INIT) = u32TrimInit;
+
+            if ((u32TrimInit < 0x1E6) || (u32TrimInit > 0x253))
                 /* Re-enable crystal-less */
+            {
                 SYS->HIRCTCTL = 0x201 | (1 << SYS_HIRCTCTL_BOUNDARY_Pos);
-            } else {
-                /* Re-enable crystal-less */
-                SYS->HIRCTCTL = 0x201 | (31 << SYS_HIRCTCTL_BOUNDARY_Pos);
             }
+
+            /* Clear error flags */
+            SYS->HIRCTSTS = SYS_HIRCTSTS_CLKERIF_Msk | SYS_HIRCTSTS_TFAILIF_Msk;
         }
 
 #endif
