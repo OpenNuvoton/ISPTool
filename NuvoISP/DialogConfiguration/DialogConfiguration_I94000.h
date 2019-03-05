@@ -19,7 +19,7 @@ public:
     CDialogConfiguration_I94000(unsigned int uProgramMemorySize = 512 * 1024,
                                 CWnd *pParent = NULL);   // standard constructor
 
-    CAppConfig::TC8226_configs_t m_ConfigValue;
+    CAppConfig::M480_configs_t m_ConfigValue;
 
 // Dialog Data
     //{{AFX_DATA(CDialogConfiguration_I94000)

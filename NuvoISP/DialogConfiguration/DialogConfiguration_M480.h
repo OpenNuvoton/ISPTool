@@ -1,5 +1,5 @@
-#if !defined(AFX_DIALOGCONFIGURATION_TC8226_H__E0CD7A09_C5DC_481E_A871_03B422E615F8__INCLUDED_)
-#define AFX_DIALOGCONFIGURATION_TC8226_H__E0CD7A09_C5DC_481E_A871_03B422E615F8__INCLUDED_
+#if !defined(AFX_DIALOGCONFIGURATION_M480_H__E0CD7A09_C5DC_481E_A871_03B422E615F8__INCLUDED_)
+#define AFX_DIALOGCONFIGURATION_M480_H__E0CD7A09_C5DC_481E_A871_03B422E615F8__INCLUDED_
 
 #if _MSC_VER > 1000
 #pragma once
@@ -10,20 +10,21 @@
 #include "DialogResize.h"
 
 /////////////////////////////////////////////////////////////////////////////
-// CDialogConfiguration_TC8226 dialog
+// CDialogConfiguration_M480 dialog
 
-class CDialogConfiguration_TC8226 : public CDialogResize
+class CDialogConfiguration_M480 : public CDialogResize
 {
 // Construction
 public:
-    CDialogConfiguration_TC8226(unsigned int uProgramMemorySize = 512 * 1024,
-                                CWnd *pParent = NULL);   // standard constructor
+    CDialogConfiguration_M480(unsigned int uProgramMemorySize = 512 * 1024,
+                              UINT nIDTemplate = IDD_DIALOG_CONFIGURATION_M480,
+                              CWnd *pParent = NULL);   // standard constructor
 
-    CAppConfig::TC8226_configs_t m_ConfigValue;
+    CAppConfig::M480_configs_t m_ConfigValue;
 
 // Dialog Data
-    //{{AFX_DATA(CDialogConfiguration_TC8226)
-    enum { IDD = IDD_DIALOG_CONFIGURATION_TC8226 };
+    //{{AFX_DATA(CDialogConfiguration_M480)
+//	enum { IDD = IDD_DIALOG_CONFIGURATION_M480 };
     CNumEdit	m_FlashBaseAddress;
     CEdit	m_DataFlashSize;
     int		m_nRadioBov;
@@ -55,25 +56,25 @@ public:
 
 // Overrides
     // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CDialogConfiguration_TC8226)
+    //{{AFX_VIRTUAL(CDialogConfiguration_M480)
 protected:
     virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
 // Implementation
 protected:
-    void ConfigToGUI(int nEventID);
-    void GUIToConfig(int nEventID);
+    virtual void ConfigToGUI(int nEventID);
+    virtual void GUIToConfig(int nEventID);
     void OnGUIEvent(int nEventID = 0);
 
     // Generated message map functions
-    //{{AFX_MSG(CDialogConfiguration_TC8226)
+    //{{AFX_MSG(CDialogConfiguration_M480)
     virtual BOOL OnInitDialog();
     afx_msg void OnButtonClick();
     afx_msg void OnCheckClickWDTPD();
-    afx_msg void OnKillfocusEditFlashBaseAddress();
+    virtual afx_msg void OnKillfocusEditFlashBaseAddress();
     virtual void OnOK();
-    afx_msg void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult);
+    virtual afx_msg void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()

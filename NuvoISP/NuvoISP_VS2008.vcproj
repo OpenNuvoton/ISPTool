@@ -271,7 +271,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\dialogconfiguration\DialogConfiguration_TC8226.h"
+				RelativePath=".\dialogconfiguration\DialogConfiguration_M480.h"
 				>
 			</File>
 			<File
@@ -503,7 +503,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\dialogconfiguration\DialogConfiguration_TC8226.cpp"
+				RelativePath=".\dialogconfiguration\DialogConfiguration_M480.cpp"
 				>
 			</File>
 			<File

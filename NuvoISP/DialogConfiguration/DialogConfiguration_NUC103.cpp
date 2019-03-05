@@ -405,7 +405,7 @@ void CDialogConfiguration_NUC103::OnKillfocusEditFlashBaseAddress()
             }
 
             uFlashBaseAddress &= ~(NUMICRO_FLASH_PAGE_SIZE_512 - 1);
-            m_sDataFlashSize.Format(_T("%.2fK"), (uFlashBaseAddress < m_uProgramMemorySize) ? ((m_uProgramMemorySize - uFlashBaseAddress) / 1024.) : 0.);
+            m_sDataFlashSize.Format(_T("%.2fK"), (uFlashBaseAddress < (m_uProgramMemorySize + m_uDataFlashSize)) ? ((m_uProgramMemorySize + m_uDataFlashSize - uFlashBaseAddress) / 1024.) : 0.);
         }
     } else {
         m_sDataFlashSize.Format(_T("%.2fK"), m_uDataFlashSize / 1024.);

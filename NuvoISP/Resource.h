@@ -36,6 +36,7 @@
 #define IDI_ICON_VERSION_MISMATCH       156
 #define IDI_ICON_KEY_INPUT              158
 #define IDD_DIALOG_CONFIGURATION_TC8226 349
+#define IDD_DIALOG_CONFIGURATION_M480   349
 #define IDC_FW_FILE                     1000
 #define IDC_BUTTON_BROWSER              1001
 #define IDC_COMBO_SELECT_AREA           1002
@@ -51,7 +52,6 @@
 #define IDC_BUTTON_LDROM                1012
 #define IDC_BUTTON_APROM                1013
 #define IDC_BUTTON_NVM                  1014
-#define IDC_TAB_DATA                    1015
 #define IDC_CHECK_LDROM                 1016
 #define IDC_CHECK_APROM                 1017
 #define IDC_CHECK_NVM                   1018
@@ -63,7 +63,6 @@
 #define IDC_STATIC_PARTNO               1023
 #define IDC_GROUP_FLASH_FILE            1024
 #define IDC_STATIC_FILENAME_0           1025
-#define IDC_STATIC_MTP                  1025
 #define IDC_STATIC_FILENAME_1           1026
 #define IDC_STATIC_FILEINFO_LDROM       1028
 #define IDC_STATIC_FILEINFO_APROM       1029
@@ -71,12 +70,10 @@
 #define IDC_CHECK_NVM2                  1036
 #define IDC_CHECK_EXT                   1036
 #define IDC_GROUP_DATA                  1037
-#define IDC_STATIC_CONFIG_5             1037
 #define IDC_STATIC_FILEINFO_EXT         1037
 #define IDC_GROUP_FILE_DATA             1038
 #define IDC_GROUP_EXT                   1039
 #define IDC_GROUP_PROGRAM               1040
-#define IDC_STATIC_CONFIG_VALUE_7       1041
 #define IDC_LINK_PROGRAM_OPTION         1042
 #define IDC_STATIC_STATUS               1043
 #define IDC_EDIT_FILEPATH_LDROM         1044
@@ -84,11 +81,9 @@
 #define IDC_EDIT_FILEPATH_APROM         1046
 #define IDC_EDIT_FILEPATH_NVM           1047
 #define IDC_EDIT_FILEPATH_EXT           1048
-#define IDC_GROUP_FLASH_DATA            1049
-#define IDC_GROUP_DATA_BACK             1050
-#define IDC_GROUP_FLASH_DATA2           1051
-#define IDC_GROUP_OFFLINE_FLASH_DATA    1052
-#define IDC_STATIC_CONFIG_6             1054
+#define IDC_GROUP_FLASH_DATA            1052
+#define IDC_GROUP_OFFLINE_FLASH_DATA    1053
+#define IDC_TAB_DATA                    1056
 #define IDC_BUTTON_DEFAULT              1057
 #define IDC_STATIC_HEAD_IMAGE           1060
 #define IDC_CHECK_ERASE                 1067
@@ -316,6 +311,7 @@
 #define IDC_EDIT_RESERVE4               1399
 #define IDC_EDIT_RESERVE5               1400
 #define IDC_TAB_CHIP_SETTING            1401
+#define IDC_CHECK_SECURITY_BOOT_LOCK    1485
 #define IDD_DIALOG_CONFIGURATION_M058   5082
 #define IDD_DIALOG_CONFIGURATION_NUC400 5084
 #define IDD_DIALOG_CONFIGURATION_MINI51CN 5085

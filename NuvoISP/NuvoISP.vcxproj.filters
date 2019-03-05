@@ -161,7 +161,7 @@
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M0564.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_TC8226.cpp">
+    <ClCompile Include="DialogConfiguration\DialogConfiguration_M480.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M2351.cpp">

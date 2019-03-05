@@ -120,7 +120,7 @@ BOOL CDialogConfiguration_N76E1T::OnInitDialog()
     unsigned int uSID = m_uPartNo & 0xFF00;
 
     switch (uSID) {
-        case 0x2100: {
+        case OT8051_SID_N76E885: {
             m_uLevel = OT8051_CONFIG_CBOV_8_LEVEL;
             GetDlgItem(IDC_GROUP_RPD)->SetWindowText(_T("P1.2/RST Pin Function"));
             GetDlgItem(IDC_RADIO_RPD_RESET)->SetWindowText(_T("P1.2 as the external reset pin"));
@@ -136,7 +136,7 @@ BOOL CDialogConfiguration_N76E1T::OnInitDialog()
             break;
         }
 
-        case 0x2F00: {
+        case OT8051_SID_N76E616: {
             m_uLevel = OT8051_CONFIG_CBOV_4_LEVEL;
             GetDlgItem(IDC_GROUP_RPD)->SetWindowText(_T("P3.6/RST Pin Function"));
             GetDlgItem(IDC_RADIO_RPD_RESET)->SetWindowText(_T("P3.6 as the external reset pin"));
@@ -155,8 +155,10 @@ BOOL CDialogConfiguration_N76E1T::OnInitDialog()
             break;
         }
 
-        case 0x3600:
-        case 0x4B00: {
+        case OT8051_SID_N76E003:
+        case OT8051_SID_MS51_16K:
+        case OT8051_SID_MS51_8K:
+        case OT8051_SID_MS51_32K: {
             m_uLevel = OT8051_CONFIG_CBOV_4_LEVEL;
             GetDlgItem(IDC_GROUP_RPD)->SetWindowText(_T("P2.0/RST Pin Function"));
             GetDlgItem(IDC_RADIO_RPD_RESET)->SetWindowText(_T("P2.0 as the external reset pin"));
@@ -172,7 +174,7 @@ BOOL CDialogConfiguration_N76E1T::OnInitDialog()
             break;
         }
 
-        case 0x3E00: {
+        case OT8051_SID_N76L151: {
             m_uLevel = OT8051_CONFIG_CBOV_8_LEVEL;
             GetDlgItem(IDC_GROUP_RPD)->SetWindowText(_T("P2.1/RST Pin Function"));
             GetDlgItem(IDC_RADIO_RPD_RESET)->SetWindowText(_T("P2.1 as the external reset pin"));
@@ -188,9 +190,9 @@ BOOL CDialogConfiguration_N76E1T::OnInitDialog()
             break;
         }
 
-        case 0x4700:
-        case 0x4800:
-        case 0x4900: {
+        case OT8051_SID_ML51_16K:
+        case OT8051_SID_ML51_32K:
+        case OT8051_SID_ML51_64K: {
             m_uLevel = OT8051_CONFIG_CBOV_8_LEVEL;
             GetDlgItem(IDC_GROUP_RPD)->ShowWindow(SW_HIDE);
             GetDlgItem(IDC_RADIO_RPD_RESET)->ShowWindow(SW_HIDE);

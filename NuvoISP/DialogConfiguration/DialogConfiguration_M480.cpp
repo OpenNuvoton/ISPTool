@@ -8,7 +8,7 @@
 #include "ChipDefs.h"
 #include "NumEdit.h"
 #include "AppConfig.h"
-#include "DialogConfiguration_TC8226.h"
+#include "DialogConfiguration_M480.h"
 #include <cassert>
 
 #ifdef _DEBUG
@@ -20,14 +20,15 @@ static char THIS_FILE[] = __FILE__;
 #define page_size NUMICRO_FLASH_PAGE_SIZE_4K
 
 /////////////////////////////////////////////////////////////////////////////
-// CDialogConfiguration_TC8226 dialog
+// CDialogConfiguration_M480 dialog
 
-CDialogConfiguration_TC8226::CDialogConfiguration_TC8226(unsigned int uProgramMemorySize,
+CDialogConfiguration_M480::CDialogConfiguration_M480(unsigned int uProgramMemorySize,
+        UINT nIDTemplate,
         CWnd *pParent /*=NULL*/)
-    : CDialogResize(CDialogConfiguration_TC8226::IDD, pParent)
+    : CDialogResize(nIDTemplate, pParent)
     , m_uProgramMemorySize(uProgramMemorySize)
 {
-    //{{AFX_DATA_INIT(CDialogConfiguration_TC8226)
+    //{{AFX_DATA_INIT(CDialogConfiguration_M480)
     m_nRadioBov = -1;
     m_nRadioBS = -1;
     m_nRadioSPIM = -1;
@@ -49,10 +50,10 @@ CDialogConfiguration_TC8226::CDialogConfiguration_TC8226(unsigned int uProgramMe
     //}}AFX_DATA_INIT
 }
 
-void CDialogConfiguration_TC8226::DoDataExchange(CDataExchange *pDX)
+void CDialogConfiguration_M480::DoDataExchange(CDataExchange *pDX)
 {
     CDialogResize::DoDataExchange(pDX);
-    //{{AFX_DATA_MAP(CDialogConfiguration_TC8226)
+    //{{AFX_DATA_MAP(CDialogConfiguration_M480)
     DDX_Control(pDX, IDC_EDIT_FLASH_BASE_ADDRESS, m_FlashBaseAddress);
     DDX_Control(pDX, IDC_EDIT_DATA_FLASH_SIZE, m_DataFlashSize);
     DDX_Control(pDX, IDC_SPIN_DATA_FLASH_SIZE, m_SpinDataFlashSize);
@@ -80,8 +81,8 @@ void CDialogConfiguration_TC8226::DoDataExchange(CDataExchange *pDX)
     //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(CDialogConfiguration_TC8226, CDialog)
-    //{{AFX_MSG_MAP(CDialogConfiguration_TC8226)
+BEGIN_MESSAGE_MAP(CDialogConfiguration_M480, CDialog)
+    //{{AFX_MSG_MAP(CDialogConfiguration_M480)
     ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnButtonClick)
     ON_EN_KILLFOCUS(IDC_EDIT_FLASH_BASE_ADDRESS, OnKillfocusEditFlashBaseAddress)
@@ -98,6 +99,7 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_TC8226, CDialog)
     ON_BN_CLICKED(IDC_CHECK_BOOT_LOADER, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_SECURITY_BOOT_LOCK, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_ICE_LOCK, OnButtonClick)
     ON_BN_CLICKED(IDC_SPROM_LOCK_CACHEABLE, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_WDT_POWER_DOWN, OnCheckClickWDTPD)
@@ -126,9 +128,9 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_TC8226, CDialog)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// CDialogConfiguration_TC8226 message handlers
+// CDialogConfiguration_M480 message handlers
 
-BOOL CDialogConfiguration_TC8226::OnInitDialog()
+BOOL CDialogConfiguration_M480::OnInitDialog()
 {
     CDialog::OnInitDialog();
     // TODO: Add extra initialization here
@@ -145,7 +147,7 @@ BOOL CDialogConfiguration_TC8226::OnInitDialog()
     // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CDialogConfiguration_TC8226::ConfigToGUI(int nEventID)
+void CDialogConfiguration_M480::ConfigToGUI(int nEventID)
 {
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
     unsigned int uConfig1 = m_ConfigValue.m_value[1];
@@ -239,8 +241,9 @@ void CDialogConfiguration_TC8226::ConfigToGUI(int nEventID)
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
     m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable && (uFlashBaseAddress < m_uProgramMemorySize)) ? ((m_uProgramMemorySize - uFlashBaseAddress) / 1024.) : 0.);
     m_SpinDataFlashSize.EnableWindow(m_bDataFlashEnable);
+    GetDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS)->EnableWindow(m_bDataFlashEnable);
     m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
-    m_sConfigValue1.Format(_T("0x%08X"), uConfig1);
+    m_sConfigValue1.Format(_T("0x%08X"), uConfig1);// | 0xFFF00000);
 
     switch (uConfig3 & M480_FLASH_CONFIG_SPIM) {
         case M480_FLASH_CONFIG_SPIM_SEL0:
@@ -298,7 +301,7 @@ void CDialogConfiguration_TC8226::ConfigToGUI(int nEventID)
     m_sConfigValue3.Format(_T("0x%08X"), uConfig3);
 }
 
-void CDialogConfiguration_TC8226::GUIToConfig(int nEventID)
+void CDialogConfiguration_M480::GUIToConfig(int nEventID)
 {
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
     unsigned int uConfig1;
@@ -436,6 +439,7 @@ void CDialogConfiguration_TC8226::GUIToConfig(int nEventID)
         uConfig0 &= ~M480_FLASH_CONFIG_DFEN;
     } else {
         uConfig0 |= M480_FLASH_CONFIG_DFEN;
+        m_sFlashBaseAddress = "FFFFF";
     }
 
     if (m_bSecurityLock) {
@@ -462,7 +466,7 @@ void CDialogConfiguration_TC8226::GUIToConfig(int nEventID)
     m_ConfigValue.m_value[0] = uConfig0;
     TCHAR *pEnd;
     uConfig1 = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
-    m_ConfigValue.m_value[1] = uConfig1;
+    m_ConfigValue.m_value[1] = uConfig1;// | 0xFFF00000;
     uConfig3 &= ~M480_FLASH_CONFIG_SPIM;
 
     switch (m_nRadioSPIM) {
@@ -515,7 +519,7 @@ void CDialogConfiguration_TC8226::GUIToConfig(int nEventID)
     m_ConfigValue.m_value[3] = uConfig3;
 }
 
-void CDialogConfiguration_TC8226::OnGUIEvent(int nEventID)
+void CDialogConfiguration_M480::OnGUIEvent(int nEventID)
 {
     // TODO: Add your control notification handler code here
     UpdateData(TRUE);
@@ -524,19 +528,19 @@ void CDialogConfiguration_TC8226::OnGUIEvent(int nEventID)
     UpdateData(FALSE);
 }
 
-void CDialogConfiguration_TC8226::OnButtonClick()
+void CDialogConfiguration_M480::OnButtonClick()
 {
     // TODO: Add your control notification handler code here
     OnGUIEvent();
 }
 
-void CDialogConfiguration_TC8226::OnCheckClickWDTPD()
+void CDialogConfiguration_M480::OnCheckClickWDTPD()
 {
     // TODO: Add your control notification handler code here
     OnGUIEvent(IDC_CHECK_WDT_POWER_DOWN);
 }
 
-void CDialogConfiguration_TC8226::OnKillfocusEditFlashBaseAddress()
+void CDialogConfiguration_M480::OnKillfocusEditFlashBaseAddress()
 {
     // TODO: If this is a RICHEDIT control, the control will not
     // send this notification unless you override the CDialog::OnInitDialog()
@@ -557,22 +561,20 @@ void CDialogConfiguration_TC8226::OnKillfocusEditFlashBaseAddress()
     }
 
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
-    m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);
+    m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);// | 0xFFF00000);
     UpdateData(FALSE);
 }
 
-void CDialogConfiguration_TC8226::OnOK()
+void CDialogConfiguration_M480::OnOK()
 {
-    // TODO: Add extra validation here
     UpdateData(TRUE);
     GUIToConfig(0);
     CDialog::OnOK();
 }
 
-void CDialogConfiguration_TC8226::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)
+void CDialogConfiguration_M480::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)
 {
     LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
-    // TODO: Add your control notification handler code here
     UpdateData(TRUE);
     TCHAR *pEnd;
     unsigned int uFlashBaseAddress = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
@@ -590,12 +592,12 @@ void CDialogConfiguration_TC8226::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRE
     uFlashBaseAddress = (uFlashBaseAddress & M480_FLASH_CONFIG_DFBA) / page_size * page_size;
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
     m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable && (uFlashBaseAddress < m_uProgramMemorySize)) ? ((m_uProgramMemorySize - uFlashBaseAddress) / 1024.) : 0.);
-    m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);
+    m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);// | 0xFFF00000);
     UpdateData(FALSE);
     *pResult = 0;
 }
 
-void CDialogConfiguration_TC8226::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
+void CDialogConfiguration_M480::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
 {
     if (pScrollBar != NULL && pScrollBar->GetDlgCtrlID() == m_SpinDataFlashSize.GetDlgCtrlID()) {
         return;
