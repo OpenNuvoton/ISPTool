@@ -71,9 +71,7 @@ void HID_ClassRequest(void);
 
 void EP2_Handler(void);
 void EP3_Handler(void);
-void HID_SetInReport(void);
-void HID_GetOutReport(uint8_t *pu8EpBuf, uint32_t u32Size);
 
 #endif  /* __USBD_HID_H_ */
 
-/*** (C) COPYRIGHT 2016 Nuvoton Technology Corp. ***/
+

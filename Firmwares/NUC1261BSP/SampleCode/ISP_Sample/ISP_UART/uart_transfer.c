@@ -11,7 +11,6 @@
 /*!<Includes */
 #include <string.h>
 #include "targetdev.h"
-#include "uart_transfer.h"
 
 __align(4) uint8_t  uart_rcvbuf[MAX_PKT_SIZE] = {0};
 

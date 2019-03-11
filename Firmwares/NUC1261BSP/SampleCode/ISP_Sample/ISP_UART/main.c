@@ -3,10 +3,6 @@
 
 #define PLLCTL_SETTING      CLK_PLLCTL_72MHz_HIRC
 #define PLL_CLOCK           71884800
-/*---------------------------------------------------------------------------------------------------------*/
-/* Define functions prototype                                                                              */
-/*---------------------------------------------------------------------------------------------------------*/
-int32_t main(void);
 
 void SYS_Init(void)
 {
@@ -24,8 +20,6 @@ void SYS_Init(void)
 
     while (!(CLK->STATUS & CLK_STATUS_PLLSTB_Msk));
 
-    //CLK->CLKSEL0 &= (~CLK_CLKSEL0_HCLKSEL_Msk);
-    //CLK->CLKSEL0 |= CLK_CLKSEL0_HCLKSEL_PLL;
     CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLKSEL_Msk)) | CLK_CLKSEL0_HCLKSEL_PLL;
     CLK->CLKDIV0 &= ~CLK_CLKDIV0_HCLKDIV_Msk;
     CLK->CLKDIV0 |= CLK_CLKDIV0_HCLK(1);
@@ -79,7 +73,6 @@ int32_t main(void)
             }
         }
 
-        //if((SysTick->CTRL & (1 << 16)) != 0)//timeout, then goto APROM
         if (SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) {
             goto _APROM;
         }

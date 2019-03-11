@@ -1,12 +1,3 @@
-/******************************************************************************
- * @file     main.c
- * @brief
- *           Demonstrate how to transfer ISP Command between USB device and PC through USB HID interface.
- *           A windows tool is also included in this sample code to connect with USB device.
- *
- * @note
- * Copyright (C) 2016 Nuvoton Technology Corp. All rights reserved.
- ******************************************************************************/
 #include <stdio.h>
 #include "targetdev.h"
 
@@ -26,7 +17,6 @@ void SYS_Init(void)
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init System Clock                                                                                       */
     /*---------------------------------------------------------------------------------------------------------*/
-
     /* Enable Internal RC 22.1184 MHz clock */
     CLK->PWRCTL |= CLK_PWRCTL_HIRCEN_Msk;
 
@@ -64,7 +54,9 @@ void SYS_Init(void)
     /* Waiting for Internal RC clock ready */
     while (!(CLK->STATUS & CLK_STATUS_HIRC48STB_Msk));
 
+    /* Switch HCLK clock source to Internal RC and HCLK source divide 1 */
     CLK->CLKSEL0 = (CLK->CLKSEL0 & ~CLK_CLKSEL0_HCLKSEL_Msk) | CLK_CLKSEL0_HCLKSEL_HIRC48;
+    CLK->CLKDIV0 = (CLK->CLKDIV0 & ~CLK_CLKDIV0_HCLKDIV_Msk) | CLK_CLKDIV0_HCLK(1);
     CLK->CLKSEL3 &= ~CLK_CLKSEL3_USBDSEL_Msk;
     CLK->CLKDIV0 &= ~CLK_CLKDIV0_USBDIV_Msk;
     CLK->CLKDIV0 |= CLK_CLKDIV0_USB(1);
@@ -95,56 +87,47 @@ int32_t main(void)
         goto _APROM;
     }
 
-
     /* Open USB controller */
     USBD_Open(&gsInfo, HID_ClassRequest, NULL);
     /*Init Endpoint configuration for HID */
     HID_Init();
     /* Start USB device */
     USBD_Start();
-
     /* Enable USB device interrupt */
     NVIC_EnableIRQ(USBD_IRQn);
-
 #ifdef CRYSTAL_LESS
     /* Backup default trim */
     u32TrimInit = M32(TRIM_INIT);
 #endif
-
     /* Clear SOF */
     USBD->INTSTS = USBD_INTSTS_SOFIF_Msk;
 
     while (DetectPin == 0) {
 #ifdef CRYSTAL_LESS
+
         /* Start USB trim if it is not enabled. */
-        if((SYS->IRCTCTL1 & SYS_IRCTCTL1_FREQSEL_Msk) != 2)
-        {
+        if ((SYS->IRCTCTL1 & SYS_IRCTCTL1_FREQSEL_Msk) != 2) {
             /* Start USB trim only when SOF */
-            if(USBD->INTSTS & USBD_INTSTS_SOFIF_Msk)
-            {
+            if (USBD->INTSTS & USBD_INTSTS_SOFIF_Msk) {
                 /* Clear SOF */
                 USBD->INTSTS = USBD_INTSTS_SOFIF_Msk;
-
                 /* Re-enable crystal-less */
                 SYS->IRCTCTL1 = HIRC48_AUTO_TRIM;
             }
         }
 
         /* Disable USB Trim when error */
-        if(SYS->IRCTISTS & (SYS_IRCTISTS_CLKERRIF1_Msk | SYS_IRCTISTS_TFAILIF1_Msk))
-        {
+        if (SYS->IRCTISTS & (SYS_IRCTISTS_CLKERRIF1_Msk | SYS_IRCTISTS_TFAILIF1_Msk)) {
             /* Init TRIM */
             M32(TRIM_INIT) = u32TrimInit;
-
             /* Disable crystal-less */
             SYS->IRCTCTL1 = 0;
-
             /* Clear error flags */
             SYS->IRCTISTS = SYS_IRCTISTS_CLKERRIF1_Msk | SYS_IRCTISTS_TFAILIF1_Msk;
-
             /* Clear SOF */
             USBD->INTSTS = USBD_INTSTS_SOFIF_Msk;
         }
+
 #endif
 
         if (bUsbDataReady == TRUE) {
@@ -156,6 +139,7 @@ int32_t main(void)
         }
     }
 
+_APROM:
     SysTick->LOAD = 300000 * CyclesPerUs;
     SysTick->VAL  = (0x00);
     SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
@@ -163,7 +147,6 @@ int32_t main(void)
     /* Waiting for down-count to zero */
     while ((SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) == 0);
 
-_APROM:
     outpw(&SYS->RSTSTS, 3);//clear bit
     outpw(&FMC->ISPCTL, inpw(&FMC->ISPCTL) & 0xFFFFFFFC);
     outpw(&SCB->AIRCR, (V6M_AIRCR_VECTKEY_DATA | V6M_AIRCR_SYSRESETREQ));
@@ -171,7 +154,4 @@ _APROM:
     /* Trap the CPU */
     while (1);
 }
-
-
-/*** (C) COPYRIGHT 2016 Nuvoton Technology Corp. ***/
 

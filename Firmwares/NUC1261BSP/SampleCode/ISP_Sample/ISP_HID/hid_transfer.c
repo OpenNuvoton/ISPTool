@@ -10,7 +10,6 @@
 #include <stdio.h>
 #include <string.h>
 #include "targetdev.h"
-#include "hid_transfer.h"
 
 uint8_t volatile g_u8EP2Ready = 0;
 __align(4) uint8_t usb_rcvbuf[64];

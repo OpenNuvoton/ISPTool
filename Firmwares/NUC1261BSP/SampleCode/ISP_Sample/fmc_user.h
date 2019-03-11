@@ -3,32 +3,51 @@
 
 #include "targetdev.h"
 
-// #define FMC_CONFIG0_ADDR        (FMC_CONFIG_BASE)       /*!< CONFIG 0 Address */
-// #define FMC_CONFIG1_ADDR        (FMC_CONFIG_BASE + 4)   /*!< CONFIG 1 Address */
+extern int FMC_Proc(unsigned int u32Cmd, unsigned int addr_start, unsigned int addr_end, unsigned int *data);
+
 
 #define Config0         FMC_CONFIG_BASE
 #define Config1         (FMC_CONFIG_BASE+4)
 
 #define ISPGO           0x01
 
-/*---------------------------------------------------------------------------------------------------------*/
-/* Define parameter                                                                                        */
-/*---------------------------------------------------------------------------------------------------------*/
 
-/*---------------------------------------------------------------------------------------------------------*/
-/*  FMC Macro Definitions                                                                                  */
-/*---------------------------------------------------------------------------------------------------------*/
-#define _FMC_ENABLE_CFG_UPDATE()   (FMC->ISPCTL |=  FMC_ISPCTL_CFGUEN_Msk) /*!< Enable CONFIG Update Function  */
-#define _FMC_DISABLE_CFG_UPDATE()  (FMC->ISPCTL &= ~FMC_ISPCTL_CFGUEN_Msk) /*!< Disable CONFIG Update Function */
+/**
+ * @brief       Read 32-bit Data from specified address of flash
+ *
+ * @param[in]   u32addr  Flash address include APROM, LDROM, Data Flash, and CONFIG
+ *
+ * @return      The data of specified address
+ *
+ * @details     To read word data from Flash include APROM, LDROM, Data Flash, and CONFIG.
+ *
+ * @note
+ *              Please make sure that Register Write-Protection Function has been disabled
+ *              before using this function. User can check the status of
+ *              Register Write-Protection Function with DrvSYS_IsProtectedRegLocked().
+ */
+#define FMC_Read_User(u32Addr, data) (FMC_Proc(FMC_ISPCMD_READ, u32Addr, (u32Addr) + 4, data))
 
+/**
+ * @brief      Flash page erase
+ *
+ * @param[in]  u32addr  Flash address including APROM, LDROM, Data Flash, and CONFIG
+ *
+ * @details    To do flash page erase. The target address could be APROM, LDROM, Data Flash, or CONFIG.
+ *             The page size is 512 bytes.
+ *
+ * @note
+ *             Please make sure that Register Write-Protection Function has been disabled
+ *             before using this function. User can check the status of
+ *             Register Write-Protection Function with DrvSYS_IsProtectedRegLocked().
+ */
+#define FMC_Erase_User(u32Addr) (FMC_Proc(FMC_ISPCMD_PAGE_ERASE, u32Addr, (u32Addr) + 4, 0))
 
-extern void EraseAP(unsigned int addr_start, unsigned int addr_end);
-extern void ReadData(unsigned int addr_start, unsigned int addr_end, unsigned int *data);
-extern void WriteData(unsigned int addr_start, unsigned int addr_end, unsigned int *data);
-extern void GetDataFlashInfo(uint32_t *addr, uint32_t *size);
-int FMC_Write_User(unsigned int u32Addr, unsigned int u32Data);
-int FMC_Read_User(unsigned int u32Addr, unsigned int *data);
-int FMC_Erase_User(unsigned int u32Addr);
+#define ReadData(addr_start, addr_end, data) (FMC_Proc(FMC_ISPCMD_READ, addr_start, addr_end, data))
+#define WriteData(addr_start, addr_end, data) (FMC_Proc(FMC_ISPCMD_PROGRAM, addr_start, addr_end, data))
+#define EraseAP(addr_start, size) (FMC_Proc(FMC_ISPCMD_PAGE_ERASE, addr_start, (addr_start) + (size), NULL))
+
+extern void UpdateConfig(unsigned int *data, unsigned int *res);
 
 #endif
 
