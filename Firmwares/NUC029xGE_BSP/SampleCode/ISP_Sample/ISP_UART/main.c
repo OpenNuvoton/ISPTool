@@ -9,8 +9,8 @@ void SYS_Init(void)
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init System Clock                                                                                       */
     /*---------------------------------------------------------------------------------------------------------*/
-    /* Enable HIRC clock (Internal RC 22.1184MHz) */
-    CLK->PWRCTL |= CLK_PWRCTL_HIRCEN_Msk;
+    /* Enable HIRC clock (Internal RC 22.1184MHz) and HXT clock (external XTAL 12MHz) */
+    CLK->PWRCTL |= (CLK_PWRCTL_HIRCEN_Msk | CLK_PWRCTL_HXTEN_Msk);
 
     /* Wait for HIRC clock ready */
     while (!(CLK->STATUS & CLK_STATUS_HIRCSTB_Msk));
@@ -21,11 +21,12 @@ void SYS_Init(void)
     while (!(CLK->STATUS & CLK_STATUS_PLLSTB_Msk));
 
     CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLKSEL_Msk)) | CLK_CLKSEL0_HCLKSEL_PLL;
-    CLK->CLKDIV0 = (CLK->CLKDIV0 & (~CLK_CLKDIV0_HCLKDIV_Msk)) | CLK_CLKDIV0_HCLK(1);
+    CLK->CLKDIV0 &= ~CLK_CLKDIV0_HCLKDIV_Msk;
+    CLK->CLKDIV0 |= CLK_CLKDIV0_HCLK(1);
     /* Update System Core Clock */
-    PllClock        = PLL_CLOCK;
-    SystemCoreClock = PLL_CLOCK / 1;
-    CyclesPerUs     = SystemCoreClock / 1000000;
+    PllClock        = PLL_CLOCK;            // PLL
+    SystemCoreClock = PLL_CLOCK / 1;        // HCLK
+    CyclesPerUs     = PLL_CLOCK / 1000000;  // For CLK_SysTickDelay()
     /* Enable UART module clock */
     CLK->APBCLK0 |= CLK_APBCLK0_UART0CKEN_Msk;
     /* Select UART module clock source as HIRC and UART module clock divider as 1 */
@@ -48,6 +49,8 @@ int32_t main(void)
     SYS_UnlockReg();
     /* Init System, peripheral clock and multi-function I/O */
     SYS_Init();
+    WDT->CTL &= ~(WDT_CTL_WDTEN_Msk | WDT_CTL_ICEDEBUG_Msk);
+    WDT->CTL |= (WDT_TIMEOUT_2POW18 | WDT_CTL_RSTEN_Msk);
     /* Init UART0 for printf and test */
     UART_Init();
     FMC->ISPCTL |=  FMC_ISPCTL_ISPEN_Msk;
@@ -70,7 +73,6 @@ int32_t main(void)
             }
         }
 
-        //if((SysTick->CTRL & (1 << 16)) != 0)//timeout, then goto APROM
         if (SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) {
             goto _APROM;
         }
@@ -78,6 +80,8 @@ int32_t main(void)
 
     while (1) {
         if (bUartDataReady == TRUE) {
+            WDT->CTL &= ~(WDT_CTL_WDTEN_Msk | WDT_CTL_ICEDEBUG_Msk);
+            WDT->CTL |= (WDT_TIMEOUT_2POW18 | WDT_CTL_RSTEN_Msk);
             bUartDataReady = FALSE;
             ParseCmd(uart_rcvbuf, 64);
             PutString();

@@ -1,7 +1,7 @@
 #ifndef ISP_USER_H
 #define ISP_USER_H
 
-#define FW_VERSION 0x33	// Revised Ver. Remove useless isp command to reduce code size
+#define FW_VERSION 0x34
 
 #include "fmc_user.h"
 #include <string.h>
@@ -23,13 +23,16 @@
 #define V6M_AIRCR_VECTKEY_DATA    0x05FA0000UL
 #define V6M_AIRCR_SYSRESETREQ     0x00000004UL
 
-
+// targetdev.c
 extern void GetDataFlashInfo(uint32_t *addr, uint32_t *size);
 extern uint32_t GetApromSize(void);
+
+// isp_user.c
 extern int ParseCmd(unsigned char *buffer, uint8_t len);
 extern uint32_t g_apromSize, g_dataFlashAddr, g_dataFlashSize;
+extern __align(4) uint8_t response_buff[64];
+extern volatile uint8_t bISPDataReady;
 
 extern __align(4) uint8_t usb_rcvbuf[];
-extern __align(4) uint8_t usb_sendbuf[];
-extern __align(4) uint8_t response_buff[64];
+
 #endif	// #ifndef ISP_USER_H

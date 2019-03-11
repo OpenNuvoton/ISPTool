@@ -10,3 +10,5 @@
 #define UART_T					UART0
 #define UART_T_IRQHandler		UART02_IRQHandler
 #define UART_T_IRQn				UART02_IRQn
+
+#define CONFIG_SIZE 8 // in bytes

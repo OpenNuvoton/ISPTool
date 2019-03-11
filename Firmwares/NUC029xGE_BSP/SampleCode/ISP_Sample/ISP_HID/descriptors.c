@@ -16,13 +16,13 @@ const uint8_t HID_DeviceReportDescriptor[] = {
     0xA1, 0x01, // COLLECTION (Application)
     0x15, 0x00, //     LOGICAL_MINIMUM (0)
     0x25, 0xFF, //     LOGICAL_MAXIMUM (255)
-    0x19, 0x01, //     USAGE_MINIMUM (1)
-    0x29, 0x08, //     USAGE_MAXIMUM (8)
+    0x19, 0x00, // USAGE_MINIMUM (0x00)
+    0x29, 0xFF, // USAGE_MAXIMUM (0xFF)
     0x95, 0x40, //     REPORT_COUNT (8)
     0x75, 0x08, //     REPORT_SIZE (8)
     0x81, 0x02, //     INPUT (Data,Var,Abs)
-    0x19, 0x01, //     USAGE_MINIMUM (1)
-    0x29, 0x08, //     USAGE_MAXIMUM (8)
+    0x19, 0x00, // USAGE_MINIMUM (0x00)
+    0x29, 0xFF, // USAGE_MAXIMUM (0xFF)
     0x91, 0x02, //   OUTPUT (Data,Var,Abs)
     0xC0        // END_COLLECTION
 };
@@ -123,8 +123,8 @@ const uint8_t gu8VendorStringDesc[] = {
 
 /*!<USB Product String Descriptor */
 const uint8_t gu8ProductStringDesc[] = {
-    16,             /* bLength          */
-    DESC_STRING,    /* bDescriptorType  */
+    16,
+    DESC_STRING,
     'W', 0, 'P', 0, 'M', 0, ' ', 0, 'U', 0, 'S', 0, 'B', 0
 };
 

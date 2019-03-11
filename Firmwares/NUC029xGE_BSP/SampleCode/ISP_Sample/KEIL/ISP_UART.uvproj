@@ -13,9 +13,9 @@
       <pCCUsed>5060528::V5.06 update 5 (build 528)::ARMCC</pCCUsed>
       <TargetOption>
         <TargetCommonOption>
-          <Device>NUC126VG4AE</Device>
+          <Device>NUC029SGE</Device>
           <Vendor>Nuvoton</Vendor>
-          <Cpu>IRAM(0x20000000-0x20004FFF) IROM(0-0x3FFFF) CLOCK(50000000) CPUTYPE("Cortex-M0")</Cpu>
+          <Cpu>IRAM(0x20000000-0x20004FFF) IROM(0-0x3FFFF) CLOCK(72000000) CPUTYPE("Cortex-M0")</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile>undefined</StartupFile>
           <FlashDriverDll></FlashDriverDll>
@@ -30,7 +30,7 @@
           <SLE66CMisc></SLE66CMisc>
           <SLE66AMisc></SLE66AMisc>
           <SLE66LinkerMisc></SLE66LinkerMisc>
-          <SFDFile>SFD\Nuvoton\M0564AE_v1.SFR</SFDFile>
+          <SFDFile>SFD\Nuvoton\NUC029GE_v1.SFR</SFDFile>
           <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
           <BinPath></BinPath>
@@ -176,7 +176,7 @@
           </Flash1>
           <bUseTDR>0</bUseTDR>
           <Flash2>Bin\Nu_Link.dll</Flash2>
-          <Flash3>"" ()</Flash3>
+          <Flash3></Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>

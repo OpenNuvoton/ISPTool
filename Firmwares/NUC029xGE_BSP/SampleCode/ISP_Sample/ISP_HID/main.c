@@ -22,12 +22,14 @@ void SYS_Init(void)
 
     /* Waiting for Internal RC clock ready */
     while (!(CLK->STATUS & CLK_STATUS_HIRCSTB_Msk));
+
     /* Switch HCLK clock source to Internal RC and HCLK source divide 1 */
-    CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLKSEL_Msk)) | CLK_CLKSEL0_HCLKSEL_HIRC;
-    CLK->CLKDIV0 = (CLK->CLKDIV0 & (~CLK_CLKDIV0_HCLKDIV_Msk)) | CLK_CLKDIV0_HCLK(1);
+    CLK->CLKSEL0 = (CLK->CLKSEL0 & ~CLK_CLKSEL0_HCLKSEL_Msk) | CLK_CLKSEL0_HCLKSEL_HIRC;
+    CLK->CLKDIV0 = (CLK->CLKDIV0 & ~CLK_CLKDIV0_HCLKDIV_Msk) | CLK_CLKDIV0_HCLK(1);
 #ifndef CRYSTAL_LESS
     /* Enable external XTAL 12 MHz clock */
     CLK->PWRCTL |= CLK_PWRCTL_HXTEN_Msk;
+
     /* Waiting for external XTAL clock ready */
     while (!(CLK->STATUS & CLK_STATUS_HXTSTB_Msk));
 
@@ -53,10 +55,11 @@ void SYS_Init(void)
     while (!(CLK->STATUS & CLK_STATUS_HIRC48STB_Msk));
 
     /* Switch HCLK clock source to Internal RC and HCLK source divide 1 */
-    /* Use HIRC48 as USB clock source */
     CLK->CLKSEL0 = (CLK->CLKSEL0 & ~CLK_CLKSEL0_HCLKSEL_Msk) | CLK_CLKSEL0_HCLKSEL_HIRC48;
+    CLK->CLKDIV0 = (CLK->CLKDIV0 & ~CLK_CLKDIV0_HCLKDIV_Msk) | CLK_CLKDIV0_HCLK(1);
     CLK->CLKSEL3 &= ~CLK_CLKSEL3_USBDSEL_Msk;
-    CLK->CLKDIV0 = (CLK->CLKDIV0 & ~CLK_CLKDIV0_USBDIV_Msk) | CLK_CLKDIV0_USB(1);
+    CLK->CLKDIV0 &= ~CLK_CLKDIV0_USBDIV_Msk;
+    CLK->CLKDIV0 |= CLK_CLKDIV0_USB(1);
     SystemCoreClock = 48000000;        // HCLK
     CyclesPerUs     = SystemCoreClock / 1000000;  // For SYS_SysTickDelay()
 #endif
@@ -72,6 +75,8 @@ int32_t main(void)
     uint32_t u32TrimInit;
     /* Unlock write-protected registers */
     SYS_UnlockReg();
+    WDT->CTL &= ~(WDT_CTL_WDTEN_Msk | WDT_CTL_ICEDEBUG_Msk);
+    WDT->CTL |= (WDT_TIMEOUT_2POW18 | WDT_CTL_RSTEN_Msk);
     /* Init system and multi-funcition I/O */
     SYS_Init();
     FMC->ISPCTL |= FMC_ISPCTL_ISPEN_Msk;	// (1ul << 0)
@@ -135,6 +140,13 @@ int32_t main(void)
     }
 
 _APROM:
+    SysTick->LOAD = 300000 * CyclesPerUs;
+    SysTick->VAL  = (0x00);
+    SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
+
+    /* Waiting for down-count to zero */
+    while ((SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) == 0);
+
     outpw(&SYS->RSTSTS, 3);//clear bit
     outpw(&FMC->ISPCTL, inpw(&FMC->ISPCTL) & 0xFFFFFFFC);
     outpw(&SCB->AIRCR, (V6M_AIRCR_VECTKEY_DATA | V6M_AIRCR_SYSRESETREQ));
@@ -142,3 +154,4 @@ _APROM:
     /* Trap the CPU */
     while (1);
 }
+
