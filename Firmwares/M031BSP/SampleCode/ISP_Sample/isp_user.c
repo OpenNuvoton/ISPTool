@@ -1,22 +1,21 @@
-/******************************************************************************
- * @file     isp_user.c
- * @brief    ISP Command source file
- * @version  0x32
- * @date     14, June, 2017
- *
- * @note
- * Copyright (C) 2017-2018 Nuvoton Technology Corp. All rights reserved.
- ******************************************************************************/
 #include <stdio.h>
-#include "string.h"
 #include "isp_user.h"
+#include "fmc_user.h"
+
+#if 0
+#define RSTSTS		RSTSRC
+#define ISPCTL		ISPCON
+#endif
+
+
+volatile uint8_t bISPDataReady;
 
 __align(4) uint8_t response_buff[64];
 __align(4) static uint8_t aprom_buf[FMC_FLASH_PAGE_SIZE];
 uint32_t bUpdateApromCmd;
 uint32_t g_apromSize, g_dataFlashAddr, g_dataFlashSize;
 
-static uint16_t Checksum(unsigned char *buf, int len)
+__STATIC_INLINE uint16_t Checksum(unsigned char *buf, int len)
 {
     int i;
     uint16_t c;
@@ -61,7 +60,7 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
         outpw(response + 8, SYS->PDID);
         goto out;
     } else if (lcmd == CMD_RUN_APROM || lcmd == CMD_RUN_LDROM || lcmd == CMD_RESET) {
-        outpw(&SYS->RSTSTS, 3);//clear bit
+        SYS->RSTSTS = 3; //clear bit
 
         /* Set BS */
         if (lcmd == CMD_RUN_APROM) {
@@ -72,9 +71,9 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
         } else {
             i = (FMC->ISPCTL & 0xFFFFFFFE);//ISP disable
         }
-
-        outpw(&FMC->ISPCTL, i);
-        outpw(&SCB->AIRCR, (V6M_AIRCR_VECTKEY_DATA | V6M_AIRCR_SYSRESETREQ));
+        
+        FMC->ISPCTL = i;
+        SCB->AIRCR = (V6M_AIRCR_VECTKEY_DATA | V6M_AIRCR_SYSRESETREQ);
 
         /* Trap the CPU */
         while (1);
@@ -84,7 +83,7 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
     } else if ((lcmd == CMD_UPDATE_APROM) || (lcmd == CMD_ERASE_ALL)) {
         EraseAP(FMC_APROM_BASE, (g_apromSize < g_dataFlashAddr) ? g_apromSize : g_dataFlashAddr); // erase APROM // g_dataFlashAddr, g_apromSize
 
-        if (lcmd == CMD_ERASE_ALL) { //erase data flash
+        if (lcmd == CMD_ERASE_ALL) {
             EraseAP(g_dataFlashAddr, g_dataFlashSize);
             *(uint32_t *)(response + 8) = regcnf0 | 0x02;
             UpdateConfig((uint32_t *)(response + 8), NULL);
@@ -145,7 +144,7 @@ int ParseCmd(unsigned char *buffer, uint8_t len)
         }
 
         TotalLen -= srclen;
-        WriteData(StartAddress, StartAddress + srclen, (uint32_t *)pSrc); //WriteData(StartAddress, StartAddress + srclen, (uint32_t*)pSrc);
+        WriteData(StartAddress, StartAddress + srclen, (uint32_t *)pSrc);
         memset(pSrc, 0, srclen);
         ReadData(StartAddress, StartAddress + srclen, (uint32_t *)pSrc);
         StartAddress += srclen;

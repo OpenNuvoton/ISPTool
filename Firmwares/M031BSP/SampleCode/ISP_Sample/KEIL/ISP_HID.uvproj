@@ -7,7 +7,7 @@
 
   <Targets>
     <Target>
-      <TargetName>ISP_UART</TargetName>
+      <TargetName>ISP_HID</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pCCUsed>5060528::V5.06 update 5 (build 528)::ARMCC</pCCUsed>
@@ -46,7 +46,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\obj\</OutputDirectory>
-          <OutputName>M031_ISP_UART_PB12_B13</OutputName>
+          <OutputName>M031_ISP_HID_PB12</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>0</CreateHexFile>
@@ -86,7 +86,7 @@
             <nStopA1X>0</nStopA1X>
             <nStopA2X>0</nStopA2X>
           </AfterMake>
-          <SelectedForBatchBuild>1</SelectedForBatchBuild>
+          <SelectedForBatchBuild>0</SelectedForBatchBuild>
           <SVCSIdString></SVCSIdString>
         </TargetCommonOption>
         <CommonProperty>
@@ -203,14 +203,14 @@
             <AdsANot>0</AdsANot>
             <AdsLLst>1</AdsLLst>
             <AdsLmap>1</AdsLmap>
-            <AdsLcgr>1</AdsLcgr>
-            <AdsLsym>1</AdsLsym>
+            <AdsLcgr>0</AdsLcgr>
+            <AdsLsym>0</AdsLsym>
             <AdsLszi>1</AdsLszi>
             <AdsLtoi>1</AdsLtoi>
-            <AdsLsun>1</AdsLsun>
-            <AdsLven>1</AdsLven>
-            <AdsLsxf>1</AdsLsxf>
-            <RvctClst>0</RvctClst>
+            <AdsLsun>0</AdsLsun>
+            <AdsLven>0</AdsLven>
+            <AdsLsxf>0</AdsLsxf>
+            <RvctClst>1</RvctClst>
             <GenPPlst>1</GenPPlst>
             <AdsCpuType>"Cortex-M0"</AdsCpuType>
             <RvctDeviceName></RvctDeviceName>
@@ -229,8 +229,8 @@
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
             <nSecure>0</nSecure>
-            <RoSelD>3</RoSelD>
-            <RwSelD>3</RwSelD>
+            <RoSelD>4</RoSelD>
+            <RwSelD>4</RwSelD>
             <CodeSel>0</CodeSel>
             <OptFeed>0</OptFeed>
             <NoZi1>0</NoZi1>
@@ -349,7 +349,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>4</Optim>
+            <Optim>3</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -358,10 +358,10 @@
             <PlainCh>0</PlainCh>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
-            <wLevel>2</wLevel>
+            <wLevel>0</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
-            <uC99>0</uC99>
+            <uC99>1</uC99>
             <useXO>0</useXO>
             <v6Lang>1</v6Lang>
             <v6LangP>1</v6LangP>
@@ -374,14 +374,14 @@
               <MiscControls></MiscControls>
               <Define></Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\..\..\Library\Device\Nuvoton\M031\Include;..\..\..\..\Library\StdDriver\inc;..\..\..\..\Library\CMSIS\Include</IncludePath>
+              <IncludePath>..\;..\..\..\Library\CMSIS\Include;..\..\..\Library\Device\Nuvoton\M031\Include;..\..\..\Library\StdDriver\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
             <interw>1</interw>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
-            <thumb>1</thumb>
+            <thumb>0</thumb>
             <SplitLS>0</SplitLS>
             <SwStkChk>0</SwStkChk>
             <NoWarn>0</NoWarn>
@@ -421,23 +421,18 @@
             <File>
               <FileName>system_M031Series.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\..\..\..\Library\Device\Nuvoton\M031\Source\system_M031Series.c</FilePath>
+              <FilePath>..\..\..\Library\Device\Nuvoton\M031\Source\system_M031Series.c</FilePath>
             </File>
             <File>
               <FileName>startup_M031Series.s</FileName>
               <FileType>2</FileType>
-              <FilePath>..\..\..\..\Library\Device\Nuvoton\M031\Source\ARM\startup_M031Series.s</FilePath>
+              <FilePath>..\..\..\Library\Device\Nuvoton\M031\Source\ARM\startup_M031Series.s</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
           <GroupName>User</GroupName>
           <Files>
-            <File>
-              <FileName>main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\main.c</FilePath>
-            </File>
             <File>
               <FileName>fmc_user.c</FileName>
               <FileType>1</FileType>
@@ -449,19 +444,36 @@
               <FilePath>..\isp_user.c</FilePath>
             </File>
             <File>
-              <FileName>uart_transfer.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\uart_transfer.c</FilePath>
-            </File>
-            <File>
               <FileName>targetdev.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\targetdev.c</FilePath>
+            </File>
+            <File>
+              <FileName>descriptors.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\ISP_HID\descriptors.c</FilePath>
+            </File>
+            <File>
+              <FileName>hid_transfer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\ISP_HID\hid_transfer.c</FilePath>
+            </File>
+            <File>
+              <FileName>main.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\ISP_HID\main.c</FilePath>
             </File>
           </Files>
         </Group>
         <Group>
           <GroupName>Library</GroupName>
+          <Files>
+            <File>
+              <FileName>usbd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\Library\StdDriver\src\usbd.c</FilePath>
+            </File>
+          </Files>
         </Group>
       </Groups>
     </Target>

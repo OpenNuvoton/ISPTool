@@ -1,7 +1,5 @@
 #include <stdio.h>
-#include "NuMicro.h"
-#include "uart_transfer.h"
-#include "isp_user.h"
+#include "targetdev.h"
 
 
 void SYS_Init(void)
@@ -11,34 +9,28 @@ void SYS_Init(void)
     /*---------------------------------------------------------------------------------------------------------*/
     /* Unlock protected registers */
     SYS_UnlockReg();
-	
     /* Enable HIRC clock (Internal RC 48MHz) */
     CLK->PWRCTL |= CLK_PWRCTL_HIRCEN_Msk;
 
     /* Wait for HIRC clock ready */
-    while(!(CLK->STATUS & CLK_STATUS_HIRCSTB_Msk));
+    while (!(CLK->STATUS & CLK_STATUS_HIRCSTB_Msk));
 
     /* Select HCLK clock source as HIRC and HCLK clock divider as 1 */
     CLK->CLKSEL0 = (CLK->CLKSEL0 & (~CLK_CLKSEL0_HCLKSEL_Msk)) | CLK_CLKSEL0_HCLKSEL_HIRC;
     CLK->CLKDIV0 = (CLK->CLKDIV0 & (~CLK_CLKDIV0_HCLKDIV_Msk)) | CLK_CLKDIV0_HCLK(1);
-
     /* Set PLL to Power-down mode */
     CLK->PLLCTL |= CLK_PLLCTL_PD_Msk;
-
     /* Enable UART module clock */
     CLK->APBCLK0 |= CLK_APBCLK0_UART0CKEN_Msk;
-
     /* Select UART module clock source as HXT and UART module clock divider as 1 */
     CLK->CLKSEL1 = (CLK->CLKSEL1 & (~CLK_CLKSEL1_UART0SEL_Msk)) | CLK_CLKSEL1_UART0SEL_HIRC;
     CLK->CLKDIV0 = (CLK->CLKDIV0 & (~CLK_CLKDIV0_UART0DIV_Msk)) | CLK_CLKDIV0_UART0(1);
-
     /*---------------------------------------------------------------------------------------------------------*/
     /* Init I/O Multi-function                                                                                 */
     /*---------------------------------------------------------------------------------------------------------*/
-
     /* Set PB multi-function pins for UART0 RXD=PB.12 and TXD=PB.13 */
     SYS->GPB_MFPH &= ~(SYS_GPB_MFPH_PB12MFP_Msk | SYS_GPB_MFPH_PB13MFP_Msk);
-    SYS->GPB_MFPH |= (SYS_GPB_MFPH_PB12MFP_UART0_RXD | SYS_GPB_MFPH_PB13MFP_UART0_TXD);		
+    SYS->GPB_MFPH |= (SYS_GPB_MFPH_PB12MFP_UART0_RXD | SYS_GPB_MFPH_PB13MFP_UART0_TXD);
 }
 
 /*---------------------------------------------------------------------------------------------------------*/
@@ -46,7 +38,6 @@ void SYS_Init(void)
 /*---------------------------------------------------------------------------------------------------------*/
 int32_t main(void)
 {
-
     /* Init System, peripheral clock and multi-function I/O */
     SYS_Init();
     /* Init UART to 115200-8n1 */
@@ -55,7 +46,6 @@ int32_t main(void)
     FMC->ISPCTL |= (FMC_ISPCTL_ISPEN_Msk | FMC_ISPCTL_APUEN_Msk);
     g_apromSize = GetApromSize();
     GetDataFlashInfo(&g_dataFlashAddr, &g_dataFlashSize);
-
     SysTick->LOAD = 300000 * CyclesPerUs;
     SysTick->VAL   = (0x00);
     SysTick->CTRL = SysTick->CTRL | SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
@@ -73,7 +63,6 @@ int32_t main(void)
             }
         }
 
-        //if((SysTick->CTRL & (1 << 16)) != 0)//timeout, then goto APROM
         if (SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) {
             goto _APROM;
         }
