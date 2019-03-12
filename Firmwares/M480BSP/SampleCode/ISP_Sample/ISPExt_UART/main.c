@@ -15,7 +15,7 @@ uint32_t CLK_GetPLLClockFreq(void)
 void SYS_Init(void)
 {
     /* Enable Internal and External RC clock */
-    CLK->PWRCTL |= PLLCON_SETTING;
+    CLK->PWRCTL |= CLK_PWRCTL_HIRCEN_Msk;
 
     /* Waiting for Internal RC clock ready */
     while (!(CLK->STATUS & CLK_STATUS_HIRCSTB_Msk));
