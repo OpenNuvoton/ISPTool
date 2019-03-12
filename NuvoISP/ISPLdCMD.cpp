@@ -109,7 +109,7 @@ BOOL ISPLdCMD::ReadFile(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, B
                 break;
 
             case 2:
-                if (!m_comIO.ReadFile(m_acBuffer + 1, m_uUartAckSize, &dwLength, dwMilliseconds)) {
+                if (!m_comIO.ReadFile(m_acBuffer + 1, 64, &dwLength, dwMilliseconds)) {
                     printf("NG in m_comIO.ReadFile\n");
                     return FALSE;
                 }
@@ -366,7 +366,6 @@ void ISPLdCMD::Test()
 
 BOOL ISPLdCMD::EraseAll()
 {
-    m_uUartAckSize = 64;
     BOOL ret = FALSE;
 
     if (WriteFile(CMD_ERASE_ALL, NULL,	0, USBCMD_TIMEOUT_LONG)) {
@@ -378,8 +377,6 @@ BOOL ISPLdCMD::EraseAll()
 
 BOOL ISPLdCMD::CMD_Connect(DWORD dwMilliseconds)
 {
-    m_uUartAckSize = 64;
-
     if (m_uUSB_PID == 0xA316) {
         m_uCmdIndex = 1;
     }
@@ -417,24 +414,3 @@ BOOL ISPLdCMD::RunLDROM()
 {
     return WriteFile(CMD_RUN_LDROM, NULL, 0, USBCMD_TIMEOUT_LONG);
 }
-
-BOOL ISPLdCMD::CMDEx_SetAckSize(const char ucAckSize)
-{
-    BOOL ret = FALSE;
-    m_uUartAckSize = 64;
-    return ret; // Comment this line to use CMDEx_SetAckSize
-    char ucRetAckSize = 0;
-
-    if (WriteFile(CMD_SET_ACKSIZE, &ucAckSize, 4, USBCMD_TIMEOUT)) {
-        ret = ReadFile(&ucRetAckSize, 1, USBCMD_TIMEOUT, TRUE);
-
-        if (ret && (ucRetAckSize == ucAckSize)) {
-            m_uUartAckSize = ucRetAckSize;
-        } else {
-            ret = FALSE;
-        }
-    }
-
-    return ret;
-}
-

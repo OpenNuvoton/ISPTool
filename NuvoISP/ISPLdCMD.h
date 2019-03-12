@@ -13,7 +13,6 @@ class ISPLdCMD
 protected:
     CHAR	m_acBuffer[HID_MAX_PACKET_SIZE_EP + 1];
     unsigned long m_uCmdIndex;
-    unsigned long m_uUartAckSize;
     USHORT	m_usCheckSum;
 
     // Interface
@@ -66,8 +65,6 @@ public:
         CMD_CONNECT			= 0x000000AE,
         CMD_UPDATE_DATAFLASH = 0x000000C3,
         CMD_RESEND_PACKET   = 0x000000FF,
-        // ISP Extension Command
-        CMD_SET_ACKSIZE     = 0x00000100,
     };
 
     BOOL CMD_Connect(DWORD dwMilliseconds = 30);
@@ -94,8 +91,6 @@ public:
 
     BOOL RunAPROM();
     BOOL RunLDROM();
-    BOOL CMDEx_SetAckSize(const char ucAckSize = 64);
-
 
     void Test();
     void SetInterface(unsigned int it, CString str)

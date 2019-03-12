@@ -208,7 +208,6 @@ void CISPProc::Thread_ProgramFlash()
 
     try {
         time_t start = time(NULL);
-        m_ISPLdDev.CMDEx_SetAckSize(64);
 
         if (m_bErase) {
             if (m_ISPLdDev.EraseAll()) {
@@ -241,8 +240,6 @@ void CISPProc::Thread_ProgramFlash()
                            &m_uNVM_Addr,
                            &m_uAPROM_Size, &m_uNVM_Size);
         }
-
-        m_ISPLdDev.CMDEx_SetAckSize(8);
 
         if (m_bProgram_APROM) {
             uAddr = m_uAPROM_Addr;
@@ -333,8 +330,6 @@ void CISPProc::Thread_ProgramFlash()
                 PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_WRITE_STATUS, (i * 100) / uSize);
             }
         }
-
-        m_ISPLdDev.CMDEx_SetAckSize(64);
 
         if (m_bRunAPROM) {
             m_ISPLdDev.RunAPROM();
