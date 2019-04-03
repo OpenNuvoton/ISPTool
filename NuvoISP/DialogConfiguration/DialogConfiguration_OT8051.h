@@ -1,10 +1,10 @@
-#if !defined(AFX_DIALOGCONFIGURATION_N76E1T_H__E0CD7A09_C5DC_481E_A871_03B423E615F8__INCLUDED_)
-#define AFX_DIALOGCONFIGURATION_N76E1T_H__E0CD7A09_C5DC_481E_A871_03B423E615F8__INCLUDED_
+#if !defined(AFX_DIALOGCONFIGURATION_OT8051_H__E0CD7A09_C5DC_481E_A871_03B423E615F8__INCLUDED_)
+#define AFX_DIALOGCONFIGURATION_OT8051_H__E0CD7A09_C5DC_481E_A871_03B423E615F8__INCLUDED_
 
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
-// DialogConfiguration_N76E1T.h : header file
+// DialogConfiguration_OT8051.h : header file
 //
 
 #include "DialogResize.h"
@@ -21,20 +21,20 @@
 #define _GET_BYTE3(u32Param)	(((u32Param) & BYTE3_Msk) >> 24)	/*!< Extract Byte 3 (Bit 24~31) from parameter u32Param */
 
 /////////////////////////////////////////////////////////////////////////////
-// CDialogConfiguration_N76E1T dialog
+// CDialogConfiguration_OT8051 dialog
 
-class CDialogConfiguration_N76E1T : public CDialogResize
+class CDialogConfiguration_OT8051 : public CDialogResize
 {
 // Construction
 public:
-    CDialogConfiguration_N76E1T(unsigned int uPartNo = 0x3650,
+    CDialogConfiguration_OT8051(unsigned int uPartNo = 0x3650,
                                 CWnd *pParent = NULL);
 
     CAppConfig::N76E1T_configs_t m_ConfigValue;
 
 // Dialog Data
-    //{{AFX_DATA(CDialogConfiguration_N76E1T)
-    enum { IDD = IDD_DIALOG_CONFIGURATION_N76E1T };
+    //{{AFX_DATA(CDialogConfiguration_OT8051)
+    enum { IDD = IDD_DIALOG_CONFIGURATION_OT8051 };
 
     int		m_nRadio_RPD;
     int		m_nRadio_OCDPWM;
@@ -61,7 +61,7 @@ public:
 
 // Overrides
     // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CDialogConfiguration_N76E1T)
+    //{{AFX_VIRTUAL(CDialogConfiguration_OT8051)
 protected:
     virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
@@ -72,7 +72,7 @@ protected:
     void GUIToConfig();
 
     // Generated message map functions
-    //{{AFX_MSG(CDialogConfiguration_N76E1T)
+    //{{AFX_MSG(CDialogConfiguration_OT8051)
     virtual BOOL OnInitDialog();
     afx_msg void OnRadioClick();
     afx_msg void OnCheckClick();
@@ -85,4 +85,4 @@ protected:
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
-#endif // !defined(AFX_DIALOGCONFIGURATION_H__E0CD7A09_C5DC_481E_A871_03B422E615F8__INCLUDED_)
+#endif // !defined(AFX_DIALOGCONFIGURATION_OT8051_H__E0CD7A09_C5DC_481E_A871_03B423E615F8__INCLUDED_)

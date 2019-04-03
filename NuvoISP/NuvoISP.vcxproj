@@ -138,7 +138,6 @@
     <ClCompile Include="DialogConfiguration\DialogConfiguration_Mini51CN.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_MT500.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_N570.cpp" />
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_N76E1T.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_Nano100.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_Nano103.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_Nano112.cpp" />
@@ -150,6 +149,7 @@
     <ClCompile Include="DialogConfiguration\DialogConfiguration_NUC2xx.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_NUC4xx.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M480.cpp" />
+    <ClCompile Include="DialogConfiguration\DialogConfiguration_OT8051.cpp" />
     <ClCompile Include="DialogConfiguration\DialogResize.cpp" />
     <ClCompile Include="ISPProc.cpp" />
     <ClCompile Include="DialogHex.cpp" />

@@ -215,6 +215,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\dialogconfiguration\DialogConfiguration_M480.h"
+				>
+			</File>
+			<File
 				RelativePath=".\dialogconfiguration\DialogConfiguration_Mini51.h"
 				>
 			</File>
@@ -268,10 +272,6 @@
 			</File>
 			<File
 				RelativePath=".\dialogconfiguration\DialogConfiguration_NUC4xx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\dialogconfiguration\DialogConfiguration_M480.h"
 				>
 			</File>
 			<File
@@ -443,6 +443,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\dialogconfiguration\DialogConfiguration_M480.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\dialogconfiguration\DialogConfiguration_Mini51.cpp"
 				>
 			</File>
@@ -456,10 +460,6 @@
 			</File>
 			<File
 				RelativePath=".\DialogConfiguration\DialogConfiguration_N570.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\dialogconfiguration\DialogConfiguration_N76E1T.cpp"
 				>
 			</File>
 			<File
@@ -503,7 +503,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\dialogconfiguration\DialogConfiguration_M480.cpp"
+				RelativePath=".\DialogConfiguration\DialogConfiguration_OT8051.cpp"
 				>
 			</File>
 			<File

@@ -1,4 +1,4 @@
-// DialogConfiguration_N76E1T.cpp : implementation file
+// DialogConfiguration_OT8051.cpp : implementation file
 //
 
 #include "stdafx.h"
@@ -8,18 +8,18 @@
 #include "ChipDefs.h"
 #include "NumEdit.h"
 #include "AppConfig.h"
-#include "DialogConfiguration_N76E1T.h"
+#include "DialogConfiguration_OT8051.h"
 #include <cassert>
 
 /////////////////////////////////////////////////////////////////////////////
-// CDialogConfiguration_N76E1T dialog
+// CDialogConfiguration_OT8051 dialog
 
-CDialogConfiguration_N76E1T::CDialogConfiguration_N76E1T(unsigned int uPartNo,
+CDialogConfiguration_OT8051::CDialogConfiguration_OT8051(unsigned int uPartNo,
         CWnd *pParent /*=NULL*/)
-    : CDialogResize(CDialogConfiguration_N76E1T::IDD, pParent)
+    : CDialogResize(CDialogConfiguration_OT8051::IDD, pParent)
     , m_uPartNo(uPartNo)
 {
-    //{{AFX_DATA_INIT(CDialogConfiguration_N76E1T)
+    //{{AFX_DATA_INIT(CDialogConfiguration_OT8051)
     m_nRadio_RPD	= -1;
     m_nRadio_OCDPWM	= -1;
     m_nRadio_CBS	= -1;
@@ -39,10 +39,10 @@ CDialogConfiguration_N76E1T::CDialogConfiguration_N76E1T(unsigned int uPartNo,
     //}}AFX_DATA_INIT
 }
 
-void CDialogConfiguration_N76E1T::DoDataExchange(CDataExchange *pDX)
+void CDialogConfiguration_OT8051::DoDataExchange(CDataExchange *pDX)
 {
     CDialogResize::DoDataExchange(pDX);
-    //{{AFX_DATA_MAP(CDialogConfiguration_N76E1T)
+    //{{AFX_DATA_MAP(CDialogConfiguration_OT8051)
     DDX_Radio(pDX, IDC_RADIO_RPD_RESET, m_nRadio_RPD);
     DDX_Radio(pDX, IDC_RADIO_OCDPWM_TRI, m_nRadio_OCDPWM);
     DDX_Radio(pDX, IDC_RADIO_BS_APROM, m_nRadio_CBS);
@@ -62,8 +62,8 @@ void CDialogConfiguration_N76E1T::DoDataExchange(CDataExchange *pDX)
     //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(CDialogConfiguration_N76E1T, CDialog)
-    //{{AFX_MSG_MAP(CDialogConfiguration_N76E1T)
+BEGIN_MESSAGE_MAP(CDialogConfiguration_OT8051, CDialog)
+    //{{AFX_MSG_MAP(CDialogConfiguration_OT8051)
     ON_BN_CLICKED(IDC_RADIO_RPD_RESET, OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_RPD_INPUT, OnRadioClick)
 
@@ -107,9 +107,9 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_N76E1T, CDialog)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// CDialogConfiguration_N76E1T message handlers
+// CDialogConfiguration_OT8051 message handlers
 
-BOOL CDialogConfiguration_N76E1T::OnInitDialog()
+BOOL CDialogConfiguration_OT8051::OnInitDialog()
 {
     CDialog::OnInitDialog();
     // TODO: Add extra initialization here
@@ -218,7 +218,7 @@ BOOL CDialogConfiguration_N76E1T::OnInitDialog()
     // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CDialogConfiguration_N76E1T::ConfigToGUI()
+void CDialogConfiguration_OT8051::ConfigToGUI()
 {
     unsigned char ucConfig0 = _GET_BYTE0(m_ConfigValue.m_value[0]);
     unsigned char ucConfig1 = _GET_BYTE1(m_ConfigValue.m_value[0]);
@@ -337,7 +337,7 @@ void CDialogConfiguration_N76E1T::ConfigToGUI()
     m_sConfigValue4.Format(_T("0x%02X"), ucConfig4);
 }
 
-void CDialogConfiguration_N76E1T::GUIToConfig()
+void CDialogConfiguration_OT8051::GUIToConfig()
 {
     unsigned char ucConfig0 = 0xFF;
     unsigned char ucConfig1 = 0xFF;
@@ -482,7 +482,7 @@ void CDialogConfiguration_N76E1T::GUIToConfig()
     m_ConfigValue.m_value[1] = 0xFFFFFF00 | ucConfig4;
 }
 
-void CDialogConfiguration_N76E1T::OnRadioClick()
+void CDialogConfiguration_OT8051::OnRadioClick()
 {
     // TODO: Add your control notification handler code here
     UpdateData(TRUE);
@@ -491,7 +491,7 @@ void CDialogConfiguration_N76E1T::OnRadioClick()
     UpdateData(FALSE);
 }
 
-void CDialogConfiguration_N76E1T::OnCheckClick()
+void CDialogConfiguration_OT8051::OnCheckClick()
 {
     // TODO: Add your control notification handler code here
     UpdateData(TRUE);
@@ -500,7 +500,7 @@ void CDialogConfiguration_N76E1T::OnCheckClick()
     UpdateData(FALSE);
 }
 
-void CDialogConfiguration_N76E1T::OnOK()
+void CDialogConfiguration_OT8051::OnOK()
 {
     // TODO: Add extra validation here
     UpdateData(TRUE);
@@ -508,7 +508,7 @@ void CDialogConfiguration_N76E1T::OnOK()
     CDialog::OnOK();
 }
 
-void CDialogConfiguration_N76E1T::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
+void CDialogConfiguration_OT8051::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
 {
     //if (pScrollBar != NULL && pScrollBar->GetDlgCtrlID() == m_SpinDataFlashSize.GetDlgCtrlID())
     //	return;

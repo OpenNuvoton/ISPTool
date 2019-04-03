@@ -143,9 +143,6 @@
     <ClCompile Include="NuvoISPTool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_N76E1T.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
     <ClCompile Include="DataBase\FlashInfo.cpp">
       <Filter>External\DataBase</Filter>
     </ClCompile>
@@ -184,6 +181,9 @@
     </ClCompile>
     <ClCompile Include="DataBase\NuDataBase.cpp">
       <Filter>External\DataBase</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogConfiguration\DialogConfiguration_OT8051.cpp">
+      <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
