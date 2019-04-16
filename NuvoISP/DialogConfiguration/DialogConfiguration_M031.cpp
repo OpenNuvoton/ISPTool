@@ -17,15 +17,20 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#define page_size NUMICRO_FLASH_PAGE_SIZE_512
+#define M031_CONFIG_WDTEN				0x80000000UL
+#	define M031_CONFIG_WDTEN_BIT1		0x00000010UL
+#	define M031_CONFIG_WDTEN_BIT0		0x00000008UL
+#define M031_CONFIG_WDTPDEN				0x40000000UL
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_M031 dialog
 
 CDialogConfiguration_M031::CDialogConfiguration_M031(unsigned int uProgramMemorySize,
+        unsigned int uPageSize,
         CWnd *pParent /*=NULL*/)
     : CDialogResize(IDD, pParent)
     , m_uProgramMemorySize(uProgramMemorySize)
+    , m_uPageSize(uPageSize)
 {
     //{{AFX_DATA_INIT(CDialogConfiguration_M031)
     m_nRadioLVR = -1;
@@ -43,6 +48,8 @@ CDialogConfiguration_M031::CDialogConfiguration_M031(unsigned int uProgramMemory
     m_bCheckBrownOutDetect = FALSE;
     m_bCheckBrownOutReset = FALSE;
     m_bDisableICE = FALSE;
+    m_bWDTEnable = FALSE;
+    m_bWDTPowerDown = FALSE;
     //}}AFX_DATA_INIT
 }
 
@@ -65,6 +72,8 @@ void CDialogConfiguration_M031::DoDataExchange(CDataExchange *pDX)
     DDX_Check(pDX, IDC_CHECK_DATA_FLASH_ENABLE, m_bDataFlashEnable);
     DDX_Check(pDX, IDC_CHECK_SECURITY_LOCK, m_bSecurityLock);
     DDX_Check(pDX, IDC_CHECK_ICE_LOCK, m_bDisableICE);
+    DDX_Check(pDX, IDC_CHECK_WDT_ENABLE, m_bWDTEnable);
+    DDX_Check(pDX, IDC_CHECK_WDT_POWER_DOWN, m_bWDTPowerDown);
     DDX_Text(pDX, IDC_EDIT_FLASH_BASE_ADDRESS, m_sFlashBaseAddress);
     DDX_Text(pDX, IDC_EDIT_DATA_FLASH_SIZE, m_sDataFlashSize);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_0, m_sConfigValue0);
@@ -88,6 +97,8 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_M031, CDialog)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_ICE_LOCK, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_WDT_POWER_DOWN, OnCheckClickWDTPD)
+    ON_BN_CLICKED(IDC_CHECK_WDT_ENABLE, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_LVR_LEVEL_0, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_LVR_LEVEL_1, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_HXT_MODE_0, OnButtonClick)
@@ -169,6 +180,8 @@ void CDialogConfiguration_M031::ConfigToGUI(int nEventID)
     m_nRadioLVR = ((uConfig0 & M031_FLASH_CONFIG_LVRLVSEL) ? 1 : 0);
     m_nRadioXT1 = ((uConfig0 & M031_FLASH_CONFIG_CFGXT1) ? 1 : 0);
     m_nRadioIO = ((uConfig0 & M031_FLASH_CONFIG_CIOINI) ? 1 : 0);
+    m_bWDTPowerDown = ((uConfig0 & M031_CONFIG_WDTPDEN) == 0 ? TRUE : FALSE);
+    m_bWDTEnable = ((uConfig0 & M031_CONFIG_WDTEN) == 0 ? TRUE : FALSE);;
     m_nRadioRstExt = ((uConfig0 & M031_FLASH_CONFIG_RSTEXT) ? 1 : 0);
     m_nRadioRstWSel = ((uConfig0 & M031_FLASH_CONFIG_RSTWSEL) ? 1 : 0);
     m_bCheckBrownOutDetect = ((uConfig0 & M031_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
@@ -178,9 +191,9 @@ void CDialogConfiguration_M031::ConfigToGUI(int nEventID)
     m_bSecurityLock = ((uConfig0 & MINI51_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
     unsigned int uFlashBaseAddress = uConfig1 & 0xFFFFF;
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
-    unsigned int uPageNum = uFlashBaseAddress / NUMICRO_FLASH_PAGE_SIZE_512;
-    unsigned int uLimitNum = m_uProgramMemorySize / NUMICRO_FLASH_PAGE_SIZE_512;
-    unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * NUMICRO_FLASH_PAGE_SIZE_512) : 0;
+    unsigned int uPageNum = uFlashBaseAddress / m_uPageSize;
+    unsigned int uLimitNum = m_uProgramMemorySize / m_uPageSize;
+    unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * m_uPageSize) : 0;
     m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uDataFlashSize : 0) / 1024.);
     m_SpinDataFlashSize.EnableWindow(m_bDataFlashEnable ? TRUE : FALSE);
     GetDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS)->EnableWindow(m_bDataFlashEnable);
@@ -293,10 +306,50 @@ void CDialogConfiguration_M031::GUIToConfig(int nEventID)
         uConfig0 |= MINI51_FLASH_CONFIG_LOCK;
     }
 
+    if (m_bWDTPowerDown) {
+        uConfig0 &= ~M031_CONFIG_WDTPDEN;
+    } else {
+        uConfig0 |= M031_CONFIG_WDTPDEN;
+    }
+
+    if (m_bWDTEnable) {
+        uConfig0 &= ~M031_CONFIG_WDTEN;
+
+        if (!m_bWDTPowerDown) {
+            uConfig0 &= ~M031_CONFIG_WDTEN_BIT1;
+            uConfig0 &= ~M031_CONFIG_WDTEN_BIT0;
+        }
+    } else {
+        uConfig0 |= M031_CONFIG_WDTEN;
+    }
+
+    if (nEventID == IDC_CHECK_WDT_POWER_DOWN) {
+        if (m_bWDTPowerDown) {
+            uConfig0 &= ~M031_CONFIG_WDTEN;
+            uConfig0 |= M031_CONFIG_WDTEN_BIT1;
+            uConfig0 |= M031_CONFIG_WDTEN_BIT0;
+        }
+    } else {
+        if (!m_bWDTEnable) {
+            uConfig0 |= M031_CONFIG_WDTPDEN;
+            uConfig0 |= M031_CONFIG_WDTEN_BIT1;
+            uConfig0 |= M031_CONFIG_WDTEN_BIT0;
+        }
+    }
+
     m_ConfigValue.m_value[0] = uConfig0;
     TCHAR *pEnd;
     uConfig1 = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
     m_ConfigValue.m_value[1] = uConfig1;// | 0xFFF00000;
+}
+
+void CDialogConfiguration_M031::OnGUIEvent(int nEventID)
+{
+    // TODO: Add your control notification handler code here
+    UpdateData(TRUE);
+    GUIToConfig(nEventID);
+    ConfigToGUI(nEventID);
+    UpdateData(FALSE);
 }
 
 void CDialogConfiguration_M031::OnButtonClick()
@@ -306,6 +359,12 @@ void CDialogConfiguration_M031::OnButtonClick()
     GUIToConfig();
     ConfigToGUI();
     UpdateData(FALSE);
+}
+
+void CDialogConfiguration_M031::OnCheckClickWDTPD()
+{
+    // TODO: Add your control notification handler code here
+    OnGUIEvent(IDC_CHECK_WDT_POWER_DOWN);
 }
 
 void CDialogConfiguration_M031::OnKillfocusEditFlashBaseAddress()
@@ -320,11 +379,11 @@ void CDialogConfiguration_M031::OnKillfocusEditFlashBaseAddress()
     unsigned int uFlashBaseAddress = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
 
     if (m_bDataFlashEnable) {
-        if (!((uFlashBaseAddress >= page_size) && (uFlashBaseAddress < m_uProgramMemorySize))) {
-            uFlashBaseAddress = m_uProgramMemorySize - page_size;
+        if (!((uFlashBaseAddress >= m_uPageSize) && (uFlashBaseAddress < m_uProgramMemorySize))) {
+            uFlashBaseAddress = m_uProgramMemorySize - m_uPageSize;
         }
 
-        uFlashBaseAddress &= ~(page_size - 1);
+        uFlashBaseAddress &= ~(m_uPageSize - 1);
         m_sDataFlashSize.Format(_T("%.2fK"), (uFlashBaseAddress < m_uProgramMemorySize) ? ((m_uProgramMemorySize - uFlashBaseAddress) / 1024.) : 0.);
     }
 
@@ -348,8 +407,8 @@ void CDialogConfiguration_M031::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESU
     UpdateData(TRUE);
     TCHAR *pEnd;
     unsigned int uFlashBaseAddress = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
-    unsigned int uPageNum = uFlashBaseAddress / NUMICRO_FLASH_PAGE_SIZE_512;
-    unsigned int uLimitNum = m_uProgramMemorySize / NUMICRO_FLASH_PAGE_SIZE_512;
+    unsigned int uPageNum = uFlashBaseAddress / m_uPageSize;
+    unsigned int uLimitNum = m_uProgramMemorySize / m_uPageSize;
 
     if (pNMUpDown->iDelta == 1) {
         uPageNum += 1;
@@ -357,10 +416,10 @@ void CDialogConfiguration_M031::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESU
         uPageNum -= 1;
     }
 
-    uFlashBaseAddress = 0 + min(uPageNum, uLimitNum) * NUMICRO_FLASH_PAGE_SIZE_512;
+    uFlashBaseAddress = 0 + min(uPageNum, uLimitNum) * m_uPageSize;
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
     m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);// | 0xFFF00000);
-    unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * NUMICRO_FLASH_PAGE_SIZE_512) : 0;
+    unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * m_uPageSize) : 0;
     m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uDataFlashSize : 0) / 1024.);
     UpdateData(FALSE);
     *pResult = 0;

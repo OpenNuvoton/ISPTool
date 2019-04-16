@@ -17,6 +17,7 @@ class CDialogConfiguration_M031 : public CDialogResize
 // Construction
 public:
     CDialogConfiguration_M031(unsigned int uProgramMemorySize = 128 * 1024,
+                              unsigned int uPageSize = NUMICRO_FLASH_PAGE_SIZE_512,
                               CWnd *pParent = NULL);   // standard constructor
 
     CAppConfig::Mini51_configs_t m_ConfigValue;
@@ -42,19 +43,24 @@ public:
     BOOL	m_bDisableICE;
     BOOL	m_bDataFlashEnable;
     BOOL	m_bSecurityLock;
+    BOOL	m_bWDTEnable;
+    BOOL	m_bWDTPowerDown;
     CSpinButtonCtrl	m_SpinDataFlashSize;
 
     unsigned int	m_uProgramMemorySize;
+    unsigned int	m_uPageSize;
     //}}AFX_DATA
 
 protected:
     void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
     void ConfigToGUI(int nEventID = 0);
     void GUIToConfig(int nEventID = 0);
+    void OnGUIEvent(int nEventID = 0);
     virtual BOOL OnInitDialog();
     virtual void OnOK();
 
     afx_msg void OnButtonClick();
+    afx_msg void OnCheckClickWDTPD();
     afx_msg void OnKillfocusEditFlashBaseAddress();
     afx_msg void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);

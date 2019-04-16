@@ -289,7 +289,7 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 }
 
 #ifndef _NO_CONFIGURATION_DLG
-
+#include "ChipDefs.h"
 #include "DialogConfiguration_M05x.h"
 #include "DialogConfiguration_M451.h"
 #include "DialogConfiguration_Mini51.h"
