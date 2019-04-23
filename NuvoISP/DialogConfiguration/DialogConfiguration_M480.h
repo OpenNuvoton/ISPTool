@@ -80,6 +80,28 @@ protected:
     DECLARE_MESSAGE_MAP()
 };
 
+/////////////////////////////////////////////////////////////////////////////
+// CDialogChipSetting_CFG_M480LD dialog
+
+class CDialogChipSetting_CFG_M480LD : public CDialogConfiguration_M480
+{
+// Construction
+public:
+    CDialogChipSetting_CFG_M480LD(unsigned int uProgramMemorySize = 256 * 1024,
+                                  UINT nIDTemplate = IDD_DIALOG_CONFIGURATION_M480LD,
+                                  CWnd *pParent = NULL);   // standard constructor
+
+    enum { IDD = IDD_DIALOG_CONFIGURATION_M480LD };
+    unsigned int m_uConfigValue[4];
+
+protected:
+    virtual void DoDataExchange(CDataExchange *pDX);   // DDX/DDV support
+    void ConfigToGUI(int nEventID);
+    void GUIToConfig(int nEventID);
+    afx_msg void OnKillfocusEditFlashBaseAddress();
+    afx_msg void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult);
+};
+
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 

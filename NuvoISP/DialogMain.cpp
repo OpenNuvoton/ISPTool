@@ -567,6 +567,16 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 Config = (((CDialogConfiguration_M480 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
+            case IDD_DIALOG_CONFIGURATION_M480LD:
+                if (uProgramMemorySize) {
+                    pConfigDlg = new CDialogChipSetting_CFG_M480LD(uProgramMemorySize);
+                } else {
+                    pConfigDlg = new CDialogChipSetting_CFG_M480LD();
+                }
+
+                Config = (((CDialogChipSetting_CFG_M480LD *)pConfigDlg)->m_uConfigValue);
+                break;
+
             case IDD_DIALOG_CONFIGURATION_M2351:
                 pConfigDlg = new CDialogConfiguration_M2351;
                 Config = (((CDialogConfiguration_M2351 *)pConfigDlg)->m_uConfigValue);
@@ -820,6 +830,7 @@ UINT DialogTemplate[] = {
     IDD_DIALOG_CONFIGURATION_NUC200,
     IDD_DIALOG_CONFIGURATION_NUC400,
     IDD_DIALOG_CONFIGURATION_TC8226,
+    IDD_DIALOG_CONFIGURATION_M480LD,
     IDD_DIALOG_CONFIGURATION_M2351,
     IDD_DIALOG_CONFIGURATION_I94000,
     IDD_DIALOG_CONFIGURATION_AU9100,
@@ -891,6 +902,7 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
         subM234->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M451, _T("M451 Series"));
         subM234->AppendMenu(MF_STRING, 0x00E45200, _T("M4521 Series"));
         subM234->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_TC8226, _T("M480 Series"));
+        subM234->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M480LD, _T("M480LD Series"));
         subM234->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M2351, _T("M2351 Series"));
         menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subM234->m_hMenu, _T("M23 and M4"));
         menu.AppendMenu(MF_SEPARATOR);
