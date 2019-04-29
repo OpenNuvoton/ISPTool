@@ -750,6 +750,8 @@ void CDialogMain::InitComboBox()
 {
     m_SelInterface.AddString(_T("USB"));
     m_SelInterface.AddString(_T("UART"));
+    m_SelInterface.AddString(_T("HID to SPI"));
+    m_SelInterface.AddString(_T("HID to I2C"));
     m_SelInterface.SetCurSel(0);
     OnSelchangeInterface();
 
@@ -762,7 +764,7 @@ void CDialogMain::OnSelchangeInterface()
 {
     m_SelComPort.EnableWindow(m_SelInterface.GetCurSel() == 1);
 
-    if (m_SelInterface.GetCurSel() == 0) {
+    if (m_SelInterface.GetCurSel() != 1) {
         EnableDlgItem(IDC_BUTTON_CONNECT, true);
     } else {
         OnComboChange();

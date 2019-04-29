@@ -31,6 +31,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{6ddac39f-d442-4e8d-9d8e-5835e40c6fda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\hidapi">
+      <UniqueIdentifier>{35677c9e-82b3-4c4d-84ce-6bc6d4c369ee}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -184,6 +190,12 @@
     </ClCompile>
     <ClCompile Include="DialogConfiguration\DialogConfiguration_OT8051.cpp">
       <Filter>External\DialogConfiguration</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\hidapi\windows\hid.c">
+      <Filter>ThirdParty\hidapi</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\CHidIO2.cpp">
+      <Filter>ISPTool\Interface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

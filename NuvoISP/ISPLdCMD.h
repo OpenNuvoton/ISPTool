@@ -4,6 +4,7 @@
 
 #include "CScopedMutex.hpp"
 #include "Interface\CHidIO.h"
+#include "Interface\CHidIO2.h"
 #include "Interface\CUartIO.h"
 #define HID_MAX_PACKET_SIZE_EP 64
 class CUartIO;
@@ -20,6 +21,7 @@ protected:
     ULONG			m_uUSB_PID;		// for compatibility
     CString			m_strComNum;
     CHidIO			m_hidIO;
+    CHidIO2			m_hidIO2;
     CUartIO			m_comIO;
     BOOL			m_bOpenPort;
     CMutex2			m_Mutex;
@@ -38,6 +40,7 @@ public:
     bool Check_USB_Link();
     bool Open_Port(BOOL bErrorMsg = FALSE);
     void Close_Port();
+    void ReOpen_Port(BOOL bForce = FALSE);
 
     unsigned short Checksum(const unsigned char *buf, int len)
     {

@@ -20,13 +20,13 @@ ISPLdCMD::~ISPLdCMD()
 
 bool ISPLdCMD::Open_Port(BOOL bErrorMsg)
 {
-    m_uUSB_PID = 0;
-    m_strDevPathName = _T("");
-    ScopedMutex scopedLock(m_Mutex);
-
     if (m_bOpenPort) {
         return true;
     }
+
+    m_uUSB_PID = 0;
+    m_strDevPathName = _T("");
+    ScopedMutex scopedLock(m_Mutex);
 
     switch (m_uInterface) {
         case 1:
@@ -48,6 +48,19 @@ bool ISPLdCMD::Open_Port(BOOL bErrorMsg)
                 return false;
             }
 
+            break;
+
+        case 3:
+        case 4:
+            if (m_hidIO2.OpenDevice(0x0416, 0x5201, 5)) {	// Nu-Link2 with ISP-Bridge
+                m_uUSB_PID = 0x5201;
+            } else if (m_hidIO2.OpenDevice(0x0416, 0x3F10, -1)) {	// ISP-Bridge
+                m_uUSB_PID = 0x3F10;
+            } else {
+                return false;
+            }
+
+            m_strDevPathName = m_hidIO2.GetDevicePath().c_str();
             break;
 
         default:
@@ -78,8 +91,22 @@ void ISPLdCMD::Close_Port()
             m_comIO.CloseDevice();
             break;
 
+        case 3:
+        case 4:
+            m_hidIO2.CloseDevice();
+            break;
+
         default:
             break;
+    }
+}
+
+void ISPLdCMD::ReOpen_Port(BOOL bForce)
+{
+    // Re-Open COM Port to clear previous status
+    if (bForce || (m_uInterface == 2)) {
+        Close_Port();
+        Open_Port();
     }
 }
 
@@ -111,6 +138,14 @@ BOOL ISPLdCMD::ReadFile(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, B
             case 2:
                 if (!m_comIO.ReadFile(m_acBuffer + 1, 64, &dwLength, dwMilliseconds)) {
                     printf("NG in m_comIO.ReadFile\n");
+                    return FALSE;
+                }
+
+                break;
+
+            case 3:
+            case 4:
+                if (!m_hidIO2.ReadFile(m_acBuffer, 65, &dwLength, dwMilliseconds)) {
                     return FALSE;
                 }
 
@@ -183,6 +218,12 @@ BOOL ISPLdCMD::WriteFile(unsigned long uCmd, const char *pcBuffer, DWORD dwLen, 
 
         case 2:
             bRet = m_comIO.WriteFile(m_acBuffer + 1, 64, &dwLength, dwMilliseconds);
+            break;
+
+        case 3:
+        case 4:
+            m_acBuffer[2] = m_uInterface;
+            bRet = m_hidIO2.WriteFile(m_acBuffer, 65, &dwLength, dwMilliseconds);
             break;
 
         default:
@@ -383,7 +424,7 @@ BOOL ISPLdCMD::CMD_Connect(DWORD dwMilliseconds)
 
     BOOL ret = FALSE;
 
-    if (WriteFile(CMD_CONNECT, NULL, 0, USBCMD_TIMEOUT_LONG)) {
+    if (WriteFile(CMD_CONNECT, NULL, 0)) {
         ret = ReadFile((char *)m_ConnectInfo, 16, dwMilliseconds, FALSE);
     }
 

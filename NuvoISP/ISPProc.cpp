@@ -129,6 +129,7 @@ void CISPProc::Thread_CheckUSBConnect()
     PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_CONNECT_STATUS, CONNECT_STATUS_USB);
     m_ISPLdDev.Close_Port();
     DWORD dwWait = 0;
+    DWORD dwStart = GetTickCount();
 
     while (m_fnThreadProcStatus == &CISPProc::Thread_CheckUSBConnect) {
         if (m_ISPLdDev.Open_Port(false)) {
@@ -141,9 +142,17 @@ void CISPProc::Thread_CheckUSBConnect()
             } catch (...) {
                 Set_ThreadAction(&CISPProc::Thread_Idle);
             }
+
+            dwStart = GetTickCount();
         } else {
             m_eProcSts = EPS_ERR_OPENPORT;
-            Sleep(1000);
+            dwStart = GetTickCount();
+
+            while (m_fnThreadProcStatus == &CISPProc::Thread_CheckUSBConnect) {
+                if ((GetTickCount() - dwStart) > 1000) {
+                    break;
+                }
+            }
         }
     }
 }
@@ -160,8 +169,7 @@ void CISPProc::Thread_CheckDeviceConnect()
         while (m_fnThreadProcStatus == &CISPProc::Thread_CheckDeviceConnect) {
             if (m_ISPLdDev.Check_USB_Link()) {
                 // Re-Open COM Port to clear previous status
-                m_ISPLdDev.Close_Port();
-                m_ISPLdDev.Open_Port();
+                m_ISPLdDev.ReOpen_Port();
                 m_ISPLdDev.SyncPackno();
                 m_ucFW_VER = m_ISPLdDev.GetVersion();
                 //printf("GetVersion: %X\n", m_ucFW_VER);

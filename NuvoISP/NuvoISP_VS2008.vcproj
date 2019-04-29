@@ -42,7 +42,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\;.\DataBase;.\DialogConfiguration;.\Interface"
+				AdditionalIncludeDirectories=".\;.\DataBase;.\DialogConfiguration;.\Interface;.\ThirdParty\hidapi\hidapi\"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -116,7 +116,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories=".\;.\DataBase;.\DialogConfiguration;.\Interface"
+				AdditionalIncludeDirectories=".\;.\DataBase;.\DialogConfiguration;.\Interface;.\ThirdParty\hidapi\hidapi\"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -407,6 +407,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Interface\CHidIO2.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\interface\CUartIO.cpp"
 				>
 			</File>
@@ -562,6 +566,18 @@
 				RelativePath=".\stdafx.cpp"
 				>
 			</File>
+		</Filter>
+		<Filter
+			Name="ThirdParty"
+			>
+			<Filter
+				Name="hidapi"
+				>
+				<File
+					RelativePath=".\ThirdParty\hidapi\windows\hid.c"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\res\xp_style.xml"
