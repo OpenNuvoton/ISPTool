@@ -30,9 +30,9 @@ bool ISPLdCMD::Open_Port(BOOL bErrorMsg)
 
     switch (m_uInterface) {
         case 1:
-            if (m_hidIO.OpenDevice(FALSE, 0x0416, 0x3F00)) {	// ISP FW >= 0x30
+            if (m_hidIO.OpenDevice(0x0416, 0x3F00)) {	// ISP FW >= 0x30
                 m_uUSB_PID = 0x3F00;
-            } else if (m_hidIO.OpenDevice(FALSE, 0x0416, 0xA316)) {	// ISP FW < 0x30
+            } else if (m_hidIO.OpenDevice(0x0416, 0xA316)) {	// ISP FW < 0x30
                 m_uUSB_PID = 0xA316;
             } else {
                 return false;

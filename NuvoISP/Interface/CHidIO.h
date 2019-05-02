@@ -25,13 +25,11 @@ struct CHidShare {
 class CHidIO
 {
 protected:
-    BOOL m_bUseTwoHandle;
     HANDLE m_hReadEvent;
     HANDLE m_hWriteEvent;
     HANDLE m_hAbordEvent;
     size_t m_szActiveDeviceIndex;
-    std::vector<HANDLE> m_hReadHandle;
-    std::vector<HANDLE> m_hWriteHandle;
+    std::vector<HANDLE> m_hDeviceHandle;
     std::vector<std::basic_string<TCHAR>> m_sNames;
     ShareArea<CHidShare> m_DeviceData;		/* Mutext for this object */
 public:
@@ -44,7 +42,7 @@ public:
     ShareArea<CHidShare> &GetActiveDeviceData();
     void CloseDevice();
     void CloseInactiveDevice();
-    BOOL OpenDevice(BOOL bUseTwoHandle, USHORT usVID, USHORT usPID0, USHORT usPID1 = NULL, USHORT usPID2 = NULL);
+    BOOL OpenDevice(USHORT usVID, USHORT usPID0);
     BOOL ReadFile(char *pcBuffer, size_t szMaxLen, DWORD *pdwLength, DWORD dwMilliseconds);
     BOOL WriteFile(const char *pcBuffer, size_t szLen, DWORD *pdwLength, DWORD dwMilliseconds);
 

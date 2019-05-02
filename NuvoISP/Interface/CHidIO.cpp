@@ -13,17 +13,15 @@ extern "C" {
 
 HANDLE CHidIO::GetActiveHandle() const
 {
-    return m_hWriteHandle[m_szActiveDeviceIndex];
+    return m_hDeviceHandle[m_szActiveDeviceIndex];
 }
 
 CHidIO::CHidIO()
-    : m_bUseTwoHandle(TRUE)
-    , m_hAbordEvent(CreateEvent(NULL, TRUE, FALSE, NULL))
+    : m_hAbordEvent(CreateEvent(NULL, TRUE, FALSE, NULL))
     , m_hReadEvent(CreateEvent(NULL, TRUE, FALSE, NULL))
     , m_hWriteEvent(CreateEvent(NULL, TRUE, FALSE, NULL))
     , m_szActiveDeviceIndex(0)
-    , m_hReadHandle()
-    , m_hWriteHandle()
+    , m_hDeviceHandle()
 {
 }
 CHidIO::~CHidIO()
@@ -36,7 +34,7 @@ CHidIO::~CHidIO()
 
 size_t CHidIO::GetDeviceLength() const
 {
-    return m_hReadHandle.size();
+    return m_hDeviceHandle.size();
 }
 
 size_t CHidIO::SetActiveDevice(size_t szIndex)
@@ -45,7 +43,7 @@ size_t CHidIO::SetActiveDevice(size_t szIndex)
     size_t szOldIndex = m_szActiveDeviceIndex;
     m_szActiveDeviceIndex = szIndex;
 
-    if (m_szActiveDeviceIndex < m_hReadHandle.size()) {
+    if (m_szActiveDeviceIndex < m_hDeviceHandle.size()) {
         std::basic_string<TCHAR> path = m_sNames[m_szActiveDeviceIndex].c_str();
 
         for (size_t i = 0; i < path.size(); ++i) {
@@ -73,113 +71,47 @@ ShareArea<CHidShare> &CHidIO::GetActiveDeviceData()
 
 void CHidIO::CloseDevice()
 {
-    if (m_bUseTwoHandle) {
-        size_t i;
+    size_t i;
 
-        for (i = 0; i < m_hReadHandle.size(); ++i) {
-            if (m_hReadHandle[i] != INVALID_HANDLE_VALUE) {
-                CancelIo(m_hReadHandle[i]);
-            }
-        }
-
-        for (i = 0; i < m_hWriteHandle.size(); ++i) {
-            if (m_hWriteHandle[i] != INVALID_HANDLE_VALUE) {
-                CancelIo(m_hWriteHandle[i]);
-            }
-        }
-
-        for (i = 0; i < m_hReadHandle.size(); ++i) {
-            if (m_hReadHandle[i] != INVALID_HANDLE_VALUE) {
-                CloseHandle(m_hReadHandle[i]);
-                m_hReadHandle[i] = INVALID_HANDLE_VALUE;
-            }
-        }
-
-        for (i = 0; i < m_hWriteHandle.size(); ++i) {
-            if (m_hWriteHandle[i] != INVALID_HANDLE_VALUE) {
-                CloseHandle(m_hWriteHandle[i]);
-                m_hWriteHandle[i] = INVALID_HANDLE_VALUE;
-            }
-        }
-    } else {
-        size_t i;
-
-        for (i = 0; i < m_hReadHandle.size(); ++i) {
-            if (m_hReadHandle[i] != INVALID_HANDLE_VALUE) {
-                CancelIo(m_hReadHandle[i]);
-            }
-        }
-
-        for (i = 0; i < m_hReadHandle.size(); ++i) {
-            if (m_hReadHandle[i] != INVALID_HANDLE_VALUE) {
-                CloseHandle(m_hReadHandle[i]);
-                m_hReadHandle[i] = INVALID_HANDLE_VALUE;
-            }
+    for (i = 0; i < m_hDeviceHandle.size(); ++i) {
+        if (m_hDeviceHandle[i] != INVALID_HANDLE_VALUE) {
+            CancelIo(m_hDeviceHandle[i]);
         }
     }
 
-    m_hReadHandle.clear();
-    m_hWriteHandle.clear();
+    for (i = 0; i < m_hDeviceHandle.size(); ++i) {
+        if (m_hDeviceHandle[i] != INVALID_HANDLE_VALUE) {
+            CloseHandle(m_hDeviceHandle[i]);
+            m_hDeviceHandle[i] = INVALID_HANDLE_VALUE;
+        }
+    }
+
+    m_hDeviceHandle.clear();
     m_sNames.clear();
 }
 
 void CHidIO::CloseInactiveDevice()
 {
-    if (m_bUseTwoHandle) {
-        size_t i;
+    size_t i;
 
-        for (i = 0; i < m_hReadHandle.size(); ++i) {
-            if (m_hReadHandle[i] != INVALID_HANDLE_VALUE
-                    && m_szActiveDeviceIndex != i) {
-                CancelIo(m_hReadHandle[i]);
-            }
+    for (i = 0; i < m_hDeviceHandle.size(); ++i
+            && m_szActiveDeviceIndex != i) {
+        if (m_hDeviceHandle[i] != INVALID_HANDLE_VALUE) {
+            CancelIo(m_hDeviceHandle[i]);
         }
+    }
 
-        for (i = 0; i < m_hWriteHandle.size(); ++i) {
-            if (m_hWriteHandle[i] != INVALID_HANDLE_VALUE
-                    && m_szActiveDeviceIndex != i) {
-                CancelIo(m_hWriteHandle[i]);
-            }
-        }
-
-        for (i = 0; i < m_hReadHandle.size(); ++i) {
-            if (m_hReadHandle[i] != INVALID_HANDLE_VALUE
-                    && m_szActiveDeviceIndex != i) {
-                CloseHandle(m_hReadHandle[i]);
-                m_hReadHandle[i] = INVALID_HANDLE_VALUE;
-            }
-        }
-
-        for (i = 0; i < m_hWriteHandle.size(); ++i) {
-            if (m_hWriteHandle[i] != INVALID_HANDLE_VALUE
-                    && m_szActiveDeviceIndex != i) {
-                CloseHandle(m_hWriteHandle[i]);
-                m_hWriteHandle[i] = INVALID_HANDLE_VALUE;
-            }
-        }
-    } else {
-        size_t i;
-
-        for (i = 0; i < m_hReadHandle.size(); ++i
-                && m_szActiveDeviceIndex != i) {
-            if (m_hReadHandle[i] != INVALID_HANDLE_VALUE) {
-                CancelIo(m_hReadHandle[i]);
-            }
-        }
-
-        for (i = 0; i < m_hReadHandle.size(); ++i
-                && m_szActiveDeviceIndex != i) {
-            if (m_hReadHandle[i] != INVALID_HANDLE_VALUE) {
-                CloseHandle(m_hReadHandle[i]);
-                m_hReadHandle[i] = INVALID_HANDLE_VALUE;
-            }
+    for (i = 0; i < m_hDeviceHandle.size(); ++i
+            && m_szActiveDeviceIndex != i) {
+        if (m_hDeviceHandle[i] != INVALID_HANDLE_VALUE) {
+            CloseHandle(m_hDeviceHandle[i]);
+            m_hDeviceHandle[i] = INVALID_HANDLE_VALUE;
         }
     }
 }
 
-BOOL CHidIO::OpenDevice(BOOL bUseTwoHandle, USHORT usVID, USHORT usPID0, USHORT usPID1, USHORT usPID2)
+BOOL CHidIO::OpenDevice(USHORT usVID, USHORT usPID0)
 {
-    m_bUseTwoHandle = bUseTwoHandle;
     //CString MyDevPathName="";
     TCHAR MyDevPathName[MAX_PATH];
     //﹚竡GUID挡篶砰HidGuidㄓ玂HID砞称钡摸GUID
@@ -198,15 +130,12 @@ BOOL CHidIO::OpenDevice(BOOL bUseTwoHandle, USHORT usVID, USHORT usPID0, USHORT 
     PSP_DEVICE_INTERFACE_DETAIL_DATA	pDevDetailData;
     //﹚竡ノㄓ玂ゴ秨砞称琡
     HANDLE hDevHandle;
-    HANDLE hReadHandle;
-    HANDLE hWriteHandle;
     //﹚竡HIDD_ATTRIBUTES挡篶砰跑秖玂砞称妮┦
     HIDD_ATTRIBUTES DevAttributes;
     //﹍て砞称ゼт
     BOOL MyDevFound = FALSE;
     //﹍て弄糶琡礚琡
-    m_hReadHandle.clear();
-    m_hWriteHandle.clear();
+    m_hDeviceHandle.clear();
     m_sNames.clear();
     //癸DevInterfaceData挡篶砰cbSize﹍て挡篶砰
     DevInterfaceData.cbSize = sizeof(DevInterfaceData);
@@ -315,86 +244,37 @@ BOOL CHidIO::OpenDevice(BOOL bUseTwoHandle, USHORT usVID, USHORT usPID0, USHORT 
             //狦莉Θ玥盢妮┦いVIDPIDの砞称セ腹籔и惠璶
             //秈︽ゑ耕狦常璓杠玥弧ウ碞琌и璶т砞称
             if (DevAttributes.VendorID == usVID
-                    && ((DevAttributes.ProductID == usPID0)
-                        || (DevAttributes.ProductID == usPID1)
-                        || (DevAttributes.ProductID == usPID2))) {
+                    && (DevAttributes.ProductID == usPID0)) {
                 MyDevFound = TRUE; //砞竚砞称竒т
-                //AddToInfOut("砞称竒т");
-
-                if (bUseTwoHandle) {
-                    //那么就是我们要找的设备，分别使用读写方式打开之，并保存其句柄
-                    //并且选择为异步访问方式。
-                    //读方式打开设备
-                    hReadHandle = CreateFile(MyDevPathName,
-                                             GENERIC_READ,
-                                             FILE_SHARE_READ | FILE_SHARE_WRITE,
-                                             NULL,
-                                             OPEN_EXISTING,
-                                             //FILE_ATTRIBUTE_NORMAL|FILE_FLAG_OVERLAPPED,
-                                             FILE_ATTRIBUTE_NORMAL,
-                                             NULL);
-                    //if(hReadHandle!=INVALID_HANDLE_VALUE)AddToInfOut("读访问打开设备成功");
-                    //else AddToInfOut("读访问打开设备失败");
-                    //写方式打开设备
-                    hWriteHandle = CreateFile(MyDevPathName,
-                                              GENERIC_WRITE,
-                                              FILE_SHARE_READ | FILE_SHARE_WRITE,
-                                              NULL,
-                                              OPEN_EXISTING,
-                                              //FILE_ATTRIBUTE_NORMAL|FILE_FLAG_OVERLAPPED,
-                                              FILE_ATTRIBUTE_NORMAL,
-                                              NULL);
-                    //if(hWriteHandle!=INVALID_HANDLE_VALUE)AddToInfOut("写访问打开设备成功");
-                    //else AddToInfOut("写访问打开设备失败");
-                } else {
-                    hWriteHandle =
-                        hReadHandle = CreateFile(MyDevPathName,
-                                                 GENERIC_READ | GENERIC_WRITE,
-                                                 FILE_SHARE_READ | FILE_SHARE_WRITE,
-                                                 NULL,
-                                                 OPEN_EXISTING,
-                                                 //FILE_ATTRIBUTE_NORMAL|FILE_FLAG_OVERLAPPED,
-                                                 FILE_ATTRIBUTE_NORMAL,
-                                                 NULL);
-                }
-
-                m_hReadHandle.push_back(hReadHandle);
-                m_hWriteHandle.push_back(hWriteHandle);
+                hDevHandle = CreateFile(MyDevPathName,
+                                        GENERIC_READ | GENERIC_WRITE,
+                                        FILE_SHARE_READ | FILE_SHARE_WRITE,
+                                        NULL,
+                                        OPEN_EXISTING,
+                                        //FILE_ATTRIBUTE_NORMAL|FILE_FLAG_OVERLAPPED,
+                                        FILE_ATTRIBUTE_NORMAL,
+                                        NULL);
+                m_hDeviceHandle.push_back(hDevHandle);
                 m_sNames.push_back(MyDevPathName);
-                //手动触发事件，让读报告线程恢复运行。因为在这之前并没有调用
-                //读数据的函数，也就不会引起事件的产生，所以需要先手动触发一
-                //次事件，让读报告线程恢复运行。
-                //	SetEvent(ReadOverlapped.hEvent);
-                //显示设备的状态。
-                //SetDlgItemText(IDC_DS,"设备已打开");
-                //找到设备，退出循环。本程序只检测一个目标设备，查找到后就退出
-                //查找了。如果你需要将所有的目标设备都列出来的话，可以设置一个
-                //数组，找到后就保存在数组中，直到所有设备都查找完毕才退出查找
-                //break;
-                //继续查找
             }
-        }
-        //狦ゴ秨ア毖玥琩т砞称
-        else {
+        } else {
             continue;
         }
     }
 
-    //秸ノSetupDiDestroyDeviceInfoListㄧ计綪反砞称獺栋
     SetupDiDestroyDeviceInfoList(hDevInfoSet);
     this->SetActiveDevice(0);
-    //狦砞称竒тê或莱赣ㄏ巨秙窽ゎゴ秨砞称秙
     return MyDevFound;
 }
 
 
 BOOL CHidIO::ReadFile(char *pcBuffer, size_t szMaxLen, DWORD *pdwLength, DWORD dwMilliseconds)
 {
-    if (m_szActiveDeviceIndex >= m_hReadHandle.size()) {
+    if (m_szActiveDeviceIndex >= m_hDeviceHandle.size()) {
         return FALSE;
     }
 
-    HANDLE hReadHandle = m_hReadHandle[m_szActiveDeviceIndex];
+    HANDLE hReadHandle = m_hDeviceHandle[m_szActiveDeviceIndex];
     HANDLE events[2] = {m_hAbordEvent, m_hReadEvent};
     OVERLAPPED overlapped;
     memset(&overlapped, 0, sizeof(overlapped));
@@ -439,11 +319,11 @@ BOOL CHidIO::ReadFile(char *pcBuffer, size_t szMaxLen, DWORD *pdwLength, DWORD d
 
 BOOL CHidIO::WriteFile(const char *pcBuffer, size_t szLen, DWORD *pdwLength, DWORD dwMilliseconds)
 {
-    if (m_szActiveDeviceIndex >= m_hWriteHandle.size()) {
+    if (m_szActiveDeviceIndex >= m_hDeviceHandle.size()) {
         return FALSE;
     }
 
-    HANDLE hWriteHandle = m_hWriteHandle[m_szActiveDeviceIndex];
+    HANDLE hWriteHandle = m_hDeviceHandle[m_szActiveDeviceIndex];
     HANDLE events[2] = {m_hAbordEvent, m_hWriteEvent};
     OVERLAPPED overlapped;
     memset(&overlapped, 0, sizeof(overlapped));
