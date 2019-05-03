@@ -273,7 +273,6 @@ void CNuvoISPDlg::OnButtonConnect()
         Set_ThreadAction(&CISPProc::Thread_CheckUSBConnect);
     } else if (m_fnThreadProcStatus != NULL) {
         /* Disconnect */
-        m_ISPLdDev.Close_Port();
         Set_ThreadAction(&CISPProc::Thread_Idle);
     }
 }
@@ -769,7 +768,6 @@ LRESULT CNuvoISPDlg::OnDeviceChange(WPARAM  nEventType, LPARAM  dwData)
             //¡K
             if (pdbi->dbcc_devicetype == DBT_DEVTYP_DEVICEINTERFACE) {
                 if (DevPathName.CompareNoCase(m_ISPLdDev.m_strDevPathName) == 0) {
-                    m_ISPLdDev.Close_Port();
                     Set_ThreadAction(&CISPProc::Thread_Idle);
                 }
             }
