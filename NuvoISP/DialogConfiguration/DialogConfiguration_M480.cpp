@@ -734,6 +734,7 @@ void CDialogChipSetting_CFG_M480LD::ConfigToGUI(int nEventID)
         uFlashBaseAddress = ((uFlashBaseAddress >= page_size) && (uFlashBaseAddress < m_uProgramMemorySize)) ? uFlashBaseAddress : (m_uProgramMemorySize - page_size);
         uFlashBaseAddress = (uFlashBaseAddress & M480_FLASH_CONFIG_DFBA) / page_size * page_size;
         uConfig1 = uFlashBaseAddress;
+        m_uConfigValue[1] = uConfig1;
     }
 
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
