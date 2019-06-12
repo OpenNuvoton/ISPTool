@@ -69,15 +69,6 @@ void SPI1_IRQHandler(void)
             {
                 g_u32RxDataCount &= 0x0F;
                 spi_rcvbuf[g_u32RxDataCount++] = SPI_READ_RX(SPI1);    /* Read RX FIFO */
-#ifdef ReadyPin
-
-                // If hardware flow control pin is used, the slave side needs to pull this pin to high status before exiting irq.
-                if ((g_u32RxDataCount == 1) && ((spi_rcvbuf[0] & 0xFFFFFF00) == 0x53504900))
-                {
-                    ReadyPin = 1;
-                }
-
-#endif
             }
 
             if (SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk)

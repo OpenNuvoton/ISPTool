@@ -5,11 +5,13 @@ int FMC_Proc(unsigned int u32Cmd, unsigned int addr_start, unsigned int addr_end
 {
     unsigned int u32Addr, Reg;
 
-    for (u32Addr = addr_start; u32Addr < addr_end; data++) {
+    for (u32Addr = addr_start; u32Addr < addr_end; data++)
+    {
         FMC->ISPCMD = u32Cmd;
         FMC->ISPADDR = u32Addr;
 
-        if (u32Cmd == FMC_ISPCMD_PROGRAM) {
+        if (u32Cmd == FMC_ISPCMD_PROGRAM)
+        {
             FMC->ISPDAT = *data;
         }
 
@@ -20,18 +22,23 @@ int FMC_Proc(unsigned int u32Cmd, unsigned int addr_start, unsigned int addr_end
 
         Reg = FMC->ISPCTL;
 
-        if (Reg & FMC_ISPCTL_ISPFF_Msk) {
+        if (Reg & FMC_ISPCTL_ISPFF_Msk)
+        {
             FMC->ISPCTL = Reg;
             return -1;
         }
 
-        if (u32Cmd == FMC_ISPCMD_READ) {
+        if (u32Cmd == FMC_ISPCMD_READ)
+        {
             *data = FMC->ISPDAT;
         }
 
-        if (u32Cmd == FMC_ISPCMD_PAGE_ERASE) {
+        if (u32Cmd == FMC_ISPCMD_PAGE_ERASE)
+        {
             u32Addr += FMC_FLASH_PAGE_SIZE;
-        } else {
+        }
+        else
+        {
             u32Addr += 4;
         }
     }
@@ -46,7 +53,8 @@ void UpdateConfig(unsigned int *data, unsigned int *res)
     FMC_Proc(FMC_ISPCMD_PAGE_ERASE, Config0, Config0 + 8, 0);
     FMC_Proc(FMC_ISPCMD_PROGRAM, Config0, Config0 + u32Size, data);
 
-    if (res) {
+    if (res)
+    {
         FMC_Proc(FMC_ISPCMD_READ, Config0, Config0 + u32Size, res);
     }
 

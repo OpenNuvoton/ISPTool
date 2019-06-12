@@ -29,10 +29,6 @@ void SYS_Init(void)
     /* Set I2C0 multi-function pins */
     SYS->GPB_MFPL = (SYS->GPB_MFPL & ~(SYS_GPB_MFPL_PB4MFP_Msk | SYS_GPB_MFPL_PB5MFP_Msk)) |
                     (SYS_GPB_MFPL_PB4MFP_I2C0_SDA | SYS_GPB_MFPL_PB5MFP_I2C0_SCL);
-#ifdef ReadyPin
-    PB->MODE = (PB->MODE & ~(GPIO_MODE_MODE0_Msk << (6 << 1))) | (GPIO_MODE_OUTPUT << (6 << 1));
-    ReadyPin = 1;
-#endif
 }
 
 int main(void)
@@ -46,29 +42,30 @@ int main(void)
     I2C_Init();
     SysTick->LOAD = 300000 * CyclesPerUs;
     SysTick->VAL   = (0x00);
-    SysTick->CTRL = SysTick->CTRL | SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;//using cpu clock
+    SysTick->CTRL = SysTick->CTRL | SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
 
-    while (1) {
-        if (bI2cDataReady == 1) {
+    while (1)
+    {
+        if (bI2cDataReady == 1)
+        {
             goto _ISP;
         }
 
-        if (SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) {
+        if (SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk)
+        {
             goto _APROM;
         }
     }
 
 _ISP:
 
-    while (1) {
-        if (bI2cDataReady == 1) {
+    while (1)
+    {
+        if (bI2cDataReady == 1)
+        {
             memcpy(cmd_buff, i2c_rcvbuf, 64);
             bI2cDataReady = 0;
             ParseCmd((unsigned char *)cmd_buff, 64);
-            bISPDataReady = 1;
-#ifdef ReadyPin
-            ReadyPin = 0;
-#endif
         }
     }
 

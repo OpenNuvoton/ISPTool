@@ -87,11 +87,6 @@ void SYS_Init(void)
                     | (SYS_GPH_MFPH_PH8MFP_SPI1_CLK | SYS_GPH_MFPH_PH9MFP_SPI1_SS);
     /* Enable SPI1 clock pin (PH8) schmitt trigger */
     PH->SMTEN |= GPIO_SMTEN_SMTEN8_Msk;
-
-#ifdef ReadyPin
-    PC->MODE = (PC->MODE & ~(0x3ul << (12 << 1))) | (GPIO_MODE_OUTPUT << (12 << 1));
-    ReadyPin = 1;
-#endif
 }
 
 int main(void)
@@ -127,9 +122,6 @@ _ISP:
             memcpy(cmd_buff, spi_rcvbuf, 64);
             bSpiDataReady = 0;
             ParseCmd((unsigned char *)cmd_buff, 64);
-#ifdef ReadyPin
-            ReadyPin = 0;
-#endif
         }
     }
 

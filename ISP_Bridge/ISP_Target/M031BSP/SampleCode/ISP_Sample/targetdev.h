@@ -4,6 +4,6 @@
 #include "ISP_SPI\spi_transfer.h"
 #include "isp_user.h"
 
-#define ReadyPin  (PB6)
+#define I2C_ADDR 0x60
 
 #define CONFIG_SIZE 8 // in bytes

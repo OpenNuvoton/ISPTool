@@ -19,6 +19,8 @@ extern "C"
 #include "M480.h"
 #include "isp_user.h"
 
+#define I2C_ADDR 0x60
+
 #ifdef __cplusplus
 }
 #endif

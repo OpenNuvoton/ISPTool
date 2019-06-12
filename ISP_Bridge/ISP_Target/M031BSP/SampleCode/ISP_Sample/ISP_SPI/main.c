@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "targetdev.h"
 uint32_t Pclk0;
 uint32_t Pclk1;
@@ -53,10 +54,6 @@ void SYS_Init(void)
                      SYS_GPA_MFPL_PA2MFP_SPI0_CLK |
                      SYS_GPA_MFPL_PA1MFP_SPI0_MISO |
                      SYS_GPA_MFPL_PA0MFP_SPI0_MOSI);
-#ifdef ReadyPin
-    PB->MODE = (PB->MODE & ~(GPIO_MODE_MODE0_Msk << (6 << 1))) | (GPIO_MODE_OUTPUT << (6 << 1));
-    ReadyPin = 1;
-#endif
 }
 
 int main(void)
@@ -71,27 +68,28 @@ int main(void)
     SPI_Init();
     TIMER_Init();
 
-    while (1) {
-        if (bSpiDataReady == 1) {
+    while (1)
+    {
+        if (bSpiDataReady == 1)
+        {
             goto _ISP;
         }
 
-        if (TIMER0->INTSTS & TIMER_INTSTS_TIF_Msk) {
+        if (TIMER0->INTSTS & TIMER_INTSTS_TIF_Msk)
+        {
             goto _APROM;
         }
     }
 
 _ISP:
 
-    while (1) {
-        if (bSpiDataReady == 1) {
+    while (1)
+    {
+        if (bSpiDataReady == 1)
+        {
             memcpy(cmd_buff, spi_rcvbuf, 64);
             bSpiDataReady = 0;
             ParseCmd((unsigned char *)cmd_buff, 64);
-            bISPDataReady = 1;
-#ifdef ReadyPin
-            ReadyPin = 0;
-#endif
         }
     }
 

@@ -41,16 +41,19 @@ void SPI0_IRQHandler(void)
     uint32_t *_response_buff;
     _response_buff = (uint32_t *)response_buff; // in isp_user.c
 
-    if (SPI0->STATUS & SPI_STATUS_SSACTIF_Msk) {
+    if (SPI0->STATUS & SPI_STATUS_SSACTIF_Msk)
+    {
         SPI0->STATUS |= SPI_STATUS_SSACTIF_Msk;
         SPI0->FIFOCTL |= (SPI_FIFOCTL_RXFBCLR_Msk | SPI_FIFOCTL_TXFBCLR_Msk);
         g_u32TxDataCount = 0;
         g_u32RxDataCount = 0;
 
         // Active
-        while (!(SPI0->STATUS & SPI_STATUS_SSINAIF_Msk)) {
+        while (!(SPI0->STATUS & SPI_STATUS_SSINAIF_Msk))
+        {
             /* Check TX FULL flag and TX data count */
-            if ((SPI_GET_TX_FIFO_FULL_FLAG(SPI0) == 0) && (g_u32TxDataCount < TEST_COUNT)) {
+            if ((SPI_GET_TX_FIFO_FULL_FLAG(SPI0) == 0) && (g_u32TxDataCount < TEST_COUNT))
+            {
                 SPI_WRITE_TX(SPI0, _response_buff[g_u32TxDataCount]);    /* Write to TX FIFO */
                 g_u32TxDataCount++;
                 /* Disable SysTick counter */
@@ -61,28 +64,26 @@ void SPI0_IRQHandler(void)
             }
 
             /* Check RX EMPTY flag */
-            if (SPI_GET_RX_FIFO_EMPTY_FLAG(SPI0) == 0) {
+            if (SPI_GET_RX_FIFO_EMPTY_FLAG(SPI0) == 0)
+            {
                 g_u32RxDataCount &= 0x0F;
                 spi_rcvbuf[g_u32RxDataCount++] = SPI_READ_RX(SPI0);    /* Read RX FIFO */
-#ifdef ReadyPin
-                // If hardware flow control pin is used, the slave side needs to pull this pin to high status before exiting irq.
-                if ((g_u32RxDataCount == 1) && ((spi_rcvbuf[0] & 0xFFFFFF00) == 0x53504900)) {
-                    ReadyPin = 1;
-                }
-#endif
             }
 
-            if (SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) {
+            if (SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk)
+            {
                 /* Disable SysTick counter */
                 SysTick->CTRL = 0UL;
                 break;
             }
         }
 
-        if (SPI0->STATUS & SPI_STATUS_SSINAIF_Msk) {
+        if (SPI0->STATUS & SPI_STATUS_SSINAIF_Msk)
+        {
             SPI0->STATUS |= SPI_STATUS_SSINAIF_Msk;
 
-            if ((g_u32RxDataCount == 16) && ((spi_rcvbuf[0] & 0xFFFFFF00) == 0x53504900)) {
+            if ((g_u32RxDataCount == 16) && ((spi_rcvbuf[0] & 0xFFFFFF00) == 0x53504900))
+            {
                 bSpiDataReady = 1;
             }
 
@@ -90,10 +91,13 @@ void SPI0_IRQHandler(void)
             g_u32TxDataCount = 0;
             g_u32RxDataCount = 0;
 
-            if (SPI_GET_TX_FIFO_FULL_FLAG(SPI0) == 0) {
+            if (SPI_GET_TX_FIFO_FULL_FLAG(SPI0) == 0)
+            {
                 SPI_WRITE_TX(SPI0, 0xFFFFFFFF);    /* Write to TX FIFO */
             }
         }
-    } else {
+    }
+    else
+    {
     }
 }

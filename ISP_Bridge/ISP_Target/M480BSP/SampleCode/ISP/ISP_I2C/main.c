@@ -43,12 +43,6 @@ void SYS_Init(void)
                     (SYS_GPE_MFPL_PE0MFP_I2C1_SDA | SYS_GPE_MFPL_PE1MFP_I2C1_SCL);
     /* I2C clock pin enable schmitt trigger */
     PE->SMTEN |= GPIO_SMTEN_SMTEN1_Msk;
-
-#ifdef ReadyPin
-    PC->SMTEN |= GPIO_SMTEN_SMTEN12_Msk;
-    PC->MODE = (PC->MODE & ~(0x3ul << (12 << 1))) | (GPIO_MODE_OUTPUT << (12 << 1));
-    ReadyPin = 1;
-#endif
 }
 
 int main(void)
@@ -86,9 +80,6 @@ _ISP:
             memcpy(cmd_buff, i2c_rcvbuf, 64);
             bI2cDataReady = 0;
             ParseCmd((unsigned char *)cmd_buff, 64);
-#ifdef ReadyPin
-            ReadyPin = 0;
-#endif
         }
     }
 

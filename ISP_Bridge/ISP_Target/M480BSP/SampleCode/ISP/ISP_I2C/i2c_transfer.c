@@ -23,7 +23,7 @@ void I2C_Init(void)
     I2C1->CLKDIV = (uint32_t)(((Pclk1 * 10U) / (100000 * 4U) + 5U) / 10U - 1U); /* Compute proper divider for I2C clock */;
     I2C1->CTL0 |= I2C_CTL0_I2CEN_Msk;
     /* Set I2C1 ADDR0 Slave Addresses */
-    I2C1->ADDR0  = (0x60 << 1U) | I2C_GCMODE_DISABLE;
+    I2C1->ADDR0  = (I2C_ADDR << 1U) | I2C_GCMODE_DISABLE;
     I2C1->CTL0 |= I2C_CTL0_INTEN_Msk;
     /* I2C enter no address SLV mode */
     I2C_SET_CONTROL_REG(I2C1, I2C_CTL_SI_AA);
@@ -58,9 +58,6 @@ void I2C_SlaveTRx(I2C_T *i2c, uint32_t u32Status)
 
     if (u32Status == 0x60)                      /* Own SLA+W has been receive; ACK has been return */
     {
-#ifdef ReadyPin
-        ReadyPin = 1;
-#endif
         bI2cDataReady = 0;
         g_u8SlvDataLen = 0;
         I2C_SET_CONTROL_REG(i2c, I2C_CTL_SI_AA);
