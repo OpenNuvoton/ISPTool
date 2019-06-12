@@ -88,7 +88,8 @@ public:
     BOOL	m_bErase;
     BOOL	m_bRunAPROM;
 
-    ISPLdCMD	m_ISPLdDev;
+    // ISPLdCMD2 supports different protocol for CAN interface
+    ISPLdCMD2	m_ISPLdDev;
     void SetInterface(unsigned int it, CString str)
     {
         m_ISPLdDev.SetInterface(it, str);

@@ -107,4 +107,43 @@ public:
 
 };
 
+class ISPLdCMD2 : public ISPLdCMD
+{
+protected:
+    ULONG			m_uCMD;
+    ULONG			m_uDAT;
+public:
+    BOOL ReadFile(DWORD dwMilliseconds = 5000);
+    BOOL WriteFile(ULONG uCMD, ULONG uDAT, DWORD dwMilliseconds = 20/*USBCMD_TIMEOUT*/);
+
+    ISPLdCMD2();
+    virtual ~ISPLdCMD2();
+
+    BOOL CMD_Connect(DWORD dwMilliseconds = 30);
+    BOOL CMD_Resend();
+
+
+    void SyncPackno();
+    unsigned char GetVersion();
+    unsigned long GetDeviceID();
+    void ReadConfig(unsigned int config[]);
+    void UpdateConfig(unsigned int config[], unsigned int response[]);
+    void UpdateAPROM(unsigned long start_addr,
+                     unsigned long total_len,
+                     unsigned long cur_addr,
+                     const char *buffer,
+                     unsigned long *update_len);
+    void UpdateNVM(unsigned long start_addr,
+                   unsigned long total_len,
+                   unsigned long cur_addr,
+                   const char *buffer,
+                   unsigned long *update_len);
+
+    BOOL EraseAll();
+
+    BOOL RunAPROM();
+    BOOL RunLDROM();
+
+
+};
 #endif

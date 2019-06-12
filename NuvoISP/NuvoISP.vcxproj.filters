@@ -197,6 +197,9 @@
     <ClCompile Include="Interface\CHidIO2.cpp">
       <Filter>ISPTool\Interface</Filter>
     </ClCompile>
+    <ClCompile Include="ISPLdCMD2.cpp">
+      <Filter>ISPTool\NuvoISP</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\k-cm-memory.ico">

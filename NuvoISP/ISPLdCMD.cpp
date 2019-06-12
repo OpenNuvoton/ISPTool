@@ -52,6 +52,8 @@ bool ISPLdCMD::Open_Port(BOOL bErrorMsg)
 
         case 3:
         case 4:
+        case 5:
+        case 6:
             if (m_hidIO2.OpenDevice(0x0416, 0x5201, 5)) {	// Nu-Link2 with ISP-Bridge
                 m_uUSB_PID = 0x5201;
             } else if (m_hidIO2.OpenDevice(0x0416, 0x3F10, -1)) {	// ISP-Bridge
@@ -93,6 +95,8 @@ void ISPLdCMD::Close_Port()
 
         case 3:
         case 4:
+        case 5:
+        case 6:
             m_hidIO2.CloseDevice();
             break;
 
@@ -145,6 +149,7 @@ BOOL ISPLdCMD::ReadFile(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, B
 
             case 3:
             case 4:
+            case 5:
                 if (!m_hidIO2.ReadFile(m_acBuffer, 65, &dwLength, dwMilliseconds)) {
                     return FALSE;
                 }
@@ -222,6 +227,7 @@ BOOL ISPLdCMD::WriteFile(unsigned long uCmd, const char *pcBuffer, DWORD dwLen, 
 
         case 3:
         case 4:
+        case 5:
             m_acBuffer[2] = m_uInterface;
             bRet = m_hidIO2.WriteFile(m_acBuffer, 65, &dwLength, dwMilliseconds);
             break;

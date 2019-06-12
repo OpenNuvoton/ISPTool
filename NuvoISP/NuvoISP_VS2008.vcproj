@@ -543,6 +543,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ISPLdCMD2.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ISPProc.cpp"
 				>
 			</File>

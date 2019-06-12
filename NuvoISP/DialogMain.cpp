@@ -750,8 +750,11 @@ void CDialogMain::InitComboBox()
 {
     m_SelInterface.AddString(_T("USB"));
     m_SelInterface.AddString(_T("UART"));
+    // Nu-Link2 ISP Bridge interfaces
     m_SelInterface.AddString(_T("HID to SPI"));
     m_SelInterface.AddString(_T("HID to I2C"));
+    m_SelInterface.AddString(_T("HID to RS485"));
+    m_SelInterface.AddString(_T("HID to CAN"));
     m_SelInterface.SetCurSel(0);
     OnSelchangeInterface();
 

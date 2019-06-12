@@ -134,6 +134,7 @@ void CISPProc::Thread_CheckUSBConnect()
     while (m_fnThreadProcStatus == &CISPProc::Thread_CheckUSBConnect) {
         if (m_ISPLdDev.Open_Port(false)) {
             m_eProcSts = EPS_ERR_CONNECT;
+            dwStart = GetTickCount();
 
             try {
                 if (m_ISPLdDev.CMD_Connect(40)) {
@@ -142,8 +143,6 @@ void CISPProc::Thread_CheckUSBConnect()
             } catch (...) {
                 Set_ThreadAction(&CISPProc::Thread_Idle);
             }
-
-            dwStart = GetTickCount();
         } else {
             m_eProcSts = EPS_ERR_OPENPORT;
             dwStart = GetTickCount();
