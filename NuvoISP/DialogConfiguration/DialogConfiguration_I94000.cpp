@@ -406,7 +406,7 @@ void CDialogConfiguration_I94000::GUIToConfig(int nEventID)
     m_ConfigValue.m_value[0] = uConfig0;
     TCHAR *pEnd;
     uConfig1 = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
-    m_ConfigValue.m_value[1] = uConfig1 | 0xFFF00000;
+    m_ConfigValue.m_value[1] = uConfig1;// | 0xFFF00000;
 }
 
 void CDialogConfiguration_I94000::OnGUIEvent(int nEventID)
@@ -452,7 +452,7 @@ void CDialogConfiguration_I94000::OnKillfocusEditFlashBaseAddress()
     }
 
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
-    m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress | 0xFFF00000);
+    m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);// | 0xFFF00000);
     UpdateData(FALSE);
 }
 
@@ -483,7 +483,7 @@ void CDialogConfiguration_I94000::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRE
 
     uFlashBaseAddress = 0 + min(uPageNum, uLimitNum) * page_size;
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
-    m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress | 0xFFF00000);
+    m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);// | 0xFFF00000);
     unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * page_size) : 0;
     m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uDataFlashSize : 0) / 1024.);
     UpdateData(FALSE);
