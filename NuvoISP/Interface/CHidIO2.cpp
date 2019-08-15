@@ -3,6 +3,8 @@
 #include <tchar.h>
 #include <vector>
 
+#pragma comment(lib, "Setupapi.lib")
+
 // Copy from hid.c
 hid_device *CHidIO2::hid_open(unsigned short vendor_id, unsigned short product_id, int interface_number)
 {

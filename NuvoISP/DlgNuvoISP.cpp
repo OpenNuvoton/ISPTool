@@ -157,7 +157,7 @@ BOOL CNuvoISPDlg::OnInitDialog()
     m_sConnect = _T("Disconnected");
     UpdateData(FALSE);
     // Title
-    SetWindowText(_T("Nuvoton NuMicro ISP Programming Tool 3.01"));
+    SetWindowText(_T("Nuvoton NuMicro ISP Programming Tool 3.02"));
 
     // Set data view area
     // Btn Text --> Tab Text
@@ -735,8 +735,8 @@ void CNuvoISPDlg::UpdateAddrOffset()
 void CNuvoISPDlg::RegisterNotification()
 {
     DEV_BROADCAST_DEVICEINTERFACE devIF = {0};
-    GUID hidGuid;
-    HidD_GetHidGuid(&hidGuid);
+    // Globally Unique Identifier (GUID) for HID class devices.  Windows uses GUIDs to identify things.
+    GUID hidGuid = {0x4d1e55b2, 0xf16f, 0x11cf, 0x88, 0xcb, 0x00, 0x11, 0x11, 0x00, 0x00, 0x30};
     devIF.dbcc_size = sizeof(devIF);
     devIF.dbcc_devicetype = DBT_DEVTYP_DEVICEINTERFACE;
     devIF.dbcc_classguid = hidGuid;

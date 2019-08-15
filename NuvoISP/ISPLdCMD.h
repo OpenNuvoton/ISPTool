@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CScopedMutex.hpp"
-#include "Interface\CHidIO.h"
 #include "Interface\CHidIO2.h"
 #include "Interface\CUartIO.h"
 #define HID_MAX_PACKET_SIZE_EP 64
@@ -20,7 +19,7 @@ protected:
     ULONG			m_uInterface;
     ULONG			m_uUSB_PID;		// for compatibility
     CString			m_strComNum;
-    CHidIO			m_hidIO;
+    CHidIO2			m_hidIO;
     CHidIO2			m_hidIO2;
     CUartIO			m_comIO;
     BOOL			m_bOpenPort;

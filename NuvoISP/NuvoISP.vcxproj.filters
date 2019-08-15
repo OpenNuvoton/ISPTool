@@ -77,9 +77,6 @@
     <ClCompile Include="DialogHex.cpp">
       <Filter>ISPTool</Filter>
     </ClCompile>
-    <ClCompile Include="Interface\CHidIO.cpp">
-      <Filter>ISPTool\Interface</Filter>
-    </ClCompile>
     <ClCompile Include="Interface\CUartIO.cpp">
       <Filter>ISPTool\Interface</Filter>
     </ClCompile>

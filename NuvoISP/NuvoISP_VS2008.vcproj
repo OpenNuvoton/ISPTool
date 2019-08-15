@@ -64,7 +64,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories=".\Interface\"
+				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				TargetMachine="1"
@@ -136,7 +136,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories=".\Interface\"
+				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -400,10 +400,6 @@
 			</File>
 			<File
 				RelativePath=".\dialogconfiguration\AppConfig.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\interface\CHidIO.cpp"
 				>
 			</File>
 			<File

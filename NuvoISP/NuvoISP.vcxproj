@@ -60,7 +60,8 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>Interface\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateMapFile>true</GenerateMapFile>
     </Link>
@@ -93,7 +94,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>Interface\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
       <AdditionalDependencies>
       </AdditionalDependencies>
       <LinkTimeCodeGeneration>
@@ -159,10 +161,6 @@
     <ClCompile Include="DlgNuvoISP.cpp" />
     <ClCompile Include="fileinfo.cpp" />
     <ClCompile Include="HyperLink.cpp" />
-    <ClCompile Include="Interface\CHidIO.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="Interface\CUartIO.cpp" />
     <ClCompile Include="ISPLdCMD.cpp" />
     <ClCompile Include="NumEdit.cpp" />
