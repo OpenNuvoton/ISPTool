@@ -641,8 +641,42 @@ void CNuvoISPDlg::OnPaint()
     }
 }
 
+// NUC505: No CONFIG, only SPI Flash, Don't need to query flash size
+void CNuvoISPDlg::ShowChipInfo_NUC505(void)
+{
+    SetDlgItemText(IDC_EDIT_PARTNO, _T("NUC505"));
+    SetDlgItemText(IDC_BUTTON_APROM, _T("Code"));
+    SetDlgItemText(IDC_CHECK_APROM, _T("Code"));
+    SetDlgItemText(IDC_BUTTON_NVM, _T("Data"));
+    SetDlgItemText(IDC_CHECK_NVM, _T("Data"));
+    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, _T("NA"));
+    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, _T("NA"));
+    m_bProgram_Config = 0;
+    m_bErase = 0;
+    EnableDlgItem(IDC_CHECK_CONFIG, 0);
+    EnableDlgItem(IDC_CHECK_ERASE, 0);
+    EnableDlgItem(IDC_BUTTON_CONFIG, 0);
+    ShowDlgItem(IDC_STATIC_APOFFSET, 1);
+    ShowDlgItem(IDC_STATIC_FLASH_BASE_ADDRESS, 1);
+    ShowDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS, 1);
+    std::ostringstream os;
+    os << "RAM:128K, SPI Flash:2M";
+    std::string cstr = os.str();
+    std::wstring wcstr(cstr.begin(), cstr.end());
+    CString str = wcstr.c_str();
+    CString info;
+    info.Format(_T("%s\nFW Ver: 0x%X"), wcstr.c_str(), int(m_ucFW_VER));
+    SetDlgItemText(IDC_STATIC_PARTNO, info);
+    UpdateAddrOffset();
+}
+
 void CNuvoISPDlg::ShowChipInfo()
 {
+    if (0x00550505 == m_ulDeviceID) {
+        ShowChipInfo_NUC505();
+        return;
+    }
+
     if (ResetUI(m_ulDeviceID)) {
         return;
     }
@@ -781,7 +815,6 @@ LRESULT CNuvoISPDlg::OnDeviceChange(WPARAM  nEventType, LPARAM  dwData)
     return TRUE;
 }
 
-// NUC505: No CONFIG, only SPI Flash, return "TRUE" to skip query flash size
 // M480: Show CONFIG0 ~ CONFIG3
 // M2351: Show CONFIG0 ~ CONFIG3. Rename Data Flash to APROM_NS, return "TRUE" to skip query flash size
 // Default: CONIFG0, CONFIG1, APROM, and Data Flash. Return "FALSE" to query flash size
@@ -790,29 +823,7 @@ LRESULT CNuvoISPDlg::OnDeviceChange(WPARAM  nEventType, LPARAM  dwData)
 // Offline mode is used for debug purpose only.
 BOOL CNuvoISPDlg::ResetUI(unsigned int ulDeviceID)
 {
-    if (0x00550505 == ulDeviceID) {
-        SetDlgItemText(IDC_EDIT_PARTNO, _T("NUC505"));
-        SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, _T("NA"));
-        SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, _T("NA"));
-        m_bProgram_Config = 0;
-        m_bErase = 0;
-        ShowDlgItem(IDC_CHECK_CONFIG, 0);
-        ShowDlgItem(IDC_CHECK_ERASE, 0);
-        EnableDlgItem(IDC_BUTTON_CONFIG, 0);
-        ShowDlgItem(IDC_STATIC_APOFFSET, 1);
-        ShowDlgItem(IDC_STATIC_FLASH_BASE_ADDRESS, 1);
-        ShowDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS, 1);
-        std::ostringstream os;
-        os << "RAM:128K, SPI Flash:2M";
-        std::string cstr = os.str();
-        std::wstring wcstr(cstr.begin(), cstr.end());
-        CString str = wcstr.c_str();
-        CString info;
-        info.Format(_T("%s\nFW Ver: 0x%X"), wcstr.c_str(), int(m_ucFW_VER));
-        SetDlgItemText(IDC_STATIC_PARTNO, info);
-        UpdateAddrOffset();
-        return TRUE;
-    } else if ((ulDeviceID & 0xFFFFF000) == 0x00D48000) { // M480
+    if ((ulDeviceID & 0xFFFFF000) == 0x00D48000) { // M480
         SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0-3:"));
         ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 1);
         ShowDlgItem(IDC_STATIC_CONFIG_VALUE_3, 1);
@@ -871,6 +882,8 @@ BOOL CNuvoISPDlg::ResetUI(unsigned int ulDeviceID)
         SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, _T(""));
         SetDlgItemText(IDC_STATIC_CONFIG_VALUE_2, _T(""));
         SetDlgItemText(IDC_STATIC_CONFIG_VALUE_3, _T(""));
+        SetDlgItemText(IDC_BUTTON_APROM, _T("APROM"));
+        SetDlgItemText(IDC_CHECK_APROM, _T("APROM"));
         SetDlgItemText(IDC_BUTTON_NVM, _T("Data Flash"));
         SetDlgItemText(IDC_CHECK_NVM, _T("Data Flash"));
         ShowDlgItem(IDC_CHECK_CONFIG, 1);

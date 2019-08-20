@@ -651,9 +651,6 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 Config = (((CDialogConfiguration_M251 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case 0x505:	// "NUC505";
-                printf("NUC505 ");
-
             default:
                 printf("or Unknow Configuration Dialog %X\n", uSeriesCode);
                 return false;

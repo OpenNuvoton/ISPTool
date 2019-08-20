@@ -66,6 +66,7 @@ protected:
     DECLARE_MESSAGE_MAP()
 
     void ShowChipInfo();
+    void ShowChipInfo_NUC505(void);
 
 public:
     FLASH_PID_INFO_BASE_T m_sPidInfoBase;
