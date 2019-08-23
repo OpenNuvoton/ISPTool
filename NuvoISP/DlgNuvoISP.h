@@ -65,8 +65,10 @@ protected:
     afx_msg LRESULT  OnDeviceChange(WPARAM  nEventType, LPARAM  dwData);
     DECLARE_MESSAGE_MAP()
 
-    void ShowChipInfo();
+    void ShowChipInfo_OffLine(void);
+    void ShowChipInfo_OnLine(void);
     void ShowChipInfo_NUC505(void);
+    void ShowChipInfo_M2351(void);
 
 public:
     FLASH_PID_INFO_BASE_T m_sPidInfoBase;
