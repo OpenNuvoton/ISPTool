@@ -656,6 +656,7 @@ void CNuvoISPDlg::ShowChipInfo_OffLine(void)
     ShowDlgItem(IDC_CHECK_ERASE, 1);
     EnableDlgItem(IDC_BUTTON_CONFIG, 1);	// For Debug CONFIG dialog
     ShowDlgItem(IDC_STATIC_APOFFSET, 0);
+    ShowDlgItem(IDC_EDIT_APROM_BASE_ADDRESS, 0);
     ShowDlgItem(IDC_STATIC_FLASH_BASE_ADDRESS, 0);
     ShowDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS, 0);
     SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0,1:"));
@@ -680,6 +681,8 @@ void CNuvoISPDlg::ShowChipInfo_NUC505(void)
     EnableDlgItem(IDC_CHECK_ERASE, 0);
     EnableDlgItem(IDC_BUTTON_CONFIG, 0);
     ShowDlgItem(IDC_STATIC_APOFFSET, 1);
+    ShowDlgItem(IDC_EDIT_APROM_BASE_ADDRESS, 1);
+    EnableDlgItem(IDC_EDIT_APROM_BASE_ADDRESS, 0);
     ShowDlgItem(IDC_STATIC_FLASH_BASE_ADDRESS, 1);
     ShowDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS, 1);
     std::ostringstream os;
@@ -700,21 +703,48 @@ void CNuvoISPDlg::ShowChipInfo_M2351(void)
     ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 1);
     ShowDlgItem(IDC_STATIC_CONFIG_VALUE_3, 1);
     ChangeBtnText(1, _T("APROM_NS"));
-    m_uAPROM_Size = m_ISPLdDev.m_ConnectInfo[0];
-    m_uNVM_Addr = m_ISPLdDev.m_ConnectInfo[1];
+    m_uAPROM_Size = gsChipCfgInfo.uProgramMemorySize; // m_ISPLdDev.m_ConnectInfo[0];
 
-    if (m_uNVM_Addr < m_uAPROM_Size) {
-        m_uNVM_Size = (m_uAPROM_Size - m_uNVM_Addr);
-        m_uAPROM_Size = m_uNVM_Addr;
-    } else {
+    if (m_SelInterface.GetCurSel() == 5) { // CAN interface
+        ShowDlgItem(IDC_STATIC_APOFFSET, 1);
+        ShowDlgItem(IDC_EDIT_APROM_BASE_ADDRESS, 1);
+        EnableDlgItem(IDC_EDIT_APROM_BASE_ADDRESS, 1);
+        CString strAddr;
+        GetDlgItemText(IDC_EDIT_APROM_BASE_ADDRESS, strAddr);
+        m_uAPROM_Addr = ::_tcstoul(strAddr, 0, 16);
+        m_uAPROM_Addr &= 0xFF800; // 2K page alignment
+
+        if (m_uAPROM_Addr > m_uAPROM_Size) {
+            m_uAPROM_Addr = 0;
+        }
+
+        m_uAPROM_Size -= m_uAPROM_Addr;
+        strAddr.Format(_T("%06X"), m_uAPROM_Addr);
+        SetDlgItemText(IDC_EDIT_APROM_BASE_ADDRESS, strAddr);
         m_uNVM_Size = 0;
         m_bProgram_NVM = 0;
+    } else {
+        m_uNVM_Addr = m_ISPLdDev.m_ConnectInfo[1];
+
+        if (m_uNVM_Addr < m_uAPROM_Size) {
+            m_uNVM_Size = (m_uAPROM_Size - m_uNVM_Addr);
+            m_uAPROM_Size = m_uNVM_Addr;
+        } else {
+            m_uNVM_Size = 0;
+            m_bProgram_NVM = 0;
+        }
     }
 
     EnableDlgItem(IDC_CHECK_NVM, (m_uNVM_Size != 0));
     std::ostringstream os;
-    os << "APROM: " << size_str(m_uAPROM_Size) << ","
-       " APROM_NS: " << size_str(m_uNVM_Size);
+
+    if (m_SelInterface.GetCurSel() == 5) { // CAN interface
+        os << "APROM + APROM_NS: " << size_str(gsChipCfgInfo.uProgramMemorySize);
+    } else {
+        os << "APROM: " << size_str(m_uAPROM_Size) << ","
+           " APROM_NS: " << size_str(m_uNVM_Size);
+    }
+
     std::string cstr = os.str();
     std::wstring wcstr(cstr.begin(), cstr.end());
     CString str = wcstr.c_str();
@@ -749,6 +779,12 @@ void CNuvoISPDlg::ShowChipInfo_OnLine()
     SetDlgItemText(IDC_STATIC_CONFIG_VALUE_2, strTmp);
     strTmp.Format(_T("0x%08X"), m_CONFIG_User[3]);
     SetDlgItemText(IDC_STATIC_CONFIG_VALUE_3, strTmp);
+
+    // Erase All command is not suppoted for CAN interface
+    if (m_SelInterface.GetCurSel() == 5) { // CAN interface
+        m_bErase = 0;
+        EnableDlgItem(IDC_CHECK_ERASE, 0);
+    }
 
     if (gsChipCfgInfo.uSeriesCode == IDD_DIALOG_CONFIGURATION_M2351) {
         ShowChipInfo_M2351();
@@ -836,10 +872,28 @@ void CNuvoISPDlg::UpdateAddrOffset()
             m_uNVM_Addr = uAddr;
             m_uNVM_Size = 0x200000 - m_uNVM_Addr;
         }
-    }
 
-    strAddr.Format(_T("%06X"), uAddr);
-    SetDlgItemText(IDC_EDIT_FLASH_BASE_ADDRESS, strAddr);
+        SetDlgItemText(IDC_EDIT_APROM_BASE_ADDRESS, _T("4000"));
+        strAddr.Format(_T("%06X"), uAddr);
+        SetDlgItemText(IDC_EDIT_FLASH_BASE_ADDRESS, strAddr);
+    } else if (gsChipCfgInfo.uSeriesCode == IDD_DIALOG_CONFIGURATION_M2351) {
+        if (m_SelInterface.GetCurSel() == 5) { // CAN interface
+            GetDlgItemText(IDC_EDIT_APROM_BASE_ADDRESS, strAddr);
+            m_uAPROM_Addr = ::_tcstoul(strAddr, 0, 16);
+            m_uAPROM_Addr &= 0xFF800; // 2K page alignment
+            m_uAPROM_Size = gsChipCfgInfo.uProgramMemorySize;
+
+            if (m_uAPROM_Addr > m_uAPROM_Size) {
+                m_uAPROM_Addr = 0;
+            }
+
+            m_uAPROM_Size -= m_uAPROM_Addr;
+            strAddr.Format(_T("%06X"), m_uAPROM_Addr);
+            SetDlgItemText(IDC_EDIT_APROM_BASE_ADDRESS, strAddr);
+        }
+    } else {
+        return;
+    }
 }
 
 void CNuvoISPDlg::RegisterNotification()
