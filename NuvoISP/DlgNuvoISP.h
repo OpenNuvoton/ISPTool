@@ -69,13 +69,12 @@ protected:
     void ShowChipInfo_OnLine(void);
     void ShowChipInfo_NUC505(void);
     void ShowChipInfo_M2351(void);
+    void ChangeBtnText(int nBtn, LPTSTR pszText);
 
 public:
     FLASH_PID_INFO_BASE_T m_sPidInfoBase;
     afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
     void UpdateAddrOffset();
-    // Reset UI Layout according to the PDID
-    BOOL ResetUI(unsigned int ulDeviceID = 0);
 
 private:
     void RegisterNotification();

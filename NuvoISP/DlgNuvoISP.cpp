@@ -650,10 +650,8 @@ void CNuvoISPDlg::ShowChipInfo_OffLine(void)
     SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, _T(""));
     SetDlgItemText(IDC_STATIC_CONFIG_VALUE_2, _T(""));
     SetDlgItemText(IDC_STATIC_CONFIG_VALUE_3, _T(""));
-    SetDlgItemText(IDC_BUTTON_APROM, _T("APROM"));
-    SetDlgItemText(IDC_CHECK_APROM, _T("APROM"));
-    SetDlgItemText(IDC_BUTTON_NVM, _T("Data Flash"));
-    SetDlgItemText(IDC_CHECK_NVM, _T("Data Flash"));
+    ChangeBtnText(0, _T("APROM"));
+    ChangeBtnText(1, _T("Data Flash"));
     ShowDlgItem(IDC_CHECK_CONFIG, 1);
     ShowDlgItem(IDC_CHECK_ERASE, 1);
     EnableDlgItem(IDC_BUTTON_CONFIG, 1);	// For Debug CONFIG dialog
@@ -665,16 +663,15 @@ void CNuvoISPDlg::ShowChipInfo_OffLine(void)
     ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 0);
     ShowDlgItem(IDC_STATIC_CONFIG_VALUE_3, 0);
     EnableProgramOption(TRUE);
+    Invalidate(1);
 }
 
 // NUC505: No CONFIG, only SPI Flash, Don't need to query flash size
 void CNuvoISPDlg::ShowChipInfo_NUC505(void)
 {
     SetDlgItemText(IDC_EDIT_PARTNO, _T("NUC505"));
-    SetDlgItemText(IDC_BUTTON_APROM, _T("Code"));
-    SetDlgItemText(IDC_CHECK_APROM, _T("Code"));
-    SetDlgItemText(IDC_BUTTON_NVM, _T("Data"));
-    SetDlgItemText(IDC_CHECK_NVM, _T("Data"));
+    ChangeBtnText(0,  _T("Code"));
+    ChangeBtnText(1,  _T("Data"));
     SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, _T("NA"));
     SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, _T("NA"));
     m_bProgram_Config = 0;
@@ -694,6 +691,7 @@ void CNuvoISPDlg::ShowChipInfo_NUC505(void)
     info.Format(_T("%s\nFW Ver: 0x%X"), wcstr.c_str(), int(m_ucFW_VER));
     SetDlgItemText(IDC_STATIC_PARTNO, info);
     UpdateAddrOffset();
+    Invalidate(1);
 }
 
 void CNuvoISPDlg::ShowChipInfo_M2351(void)
@@ -701,8 +699,7 @@ void CNuvoISPDlg::ShowChipInfo_M2351(void)
     SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0-3:"));
     ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 1);
     ShowDlgItem(IDC_STATIC_CONFIG_VALUE_3, 1);
-    SetDlgItemText(IDC_BUTTON_NVM, _T("APROM_NS"));
-    SetDlgItemText(IDC_CHECK_NVM, _T("APROM_NS"));
+    ChangeBtnText(1, _T("APROM_NS"));
     m_uAPROM_Size = m_ISPLdDev.m_ConnectInfo[0];
     m_uNVM_Addr = m_ISPLdDev.m_ConnectInfo[1];
 
@@ -770,11 +767,12 @@ void CNuvoISPDlg::ShowChipInfo_OnLine()
         EnableDlgItem(IDC_CHECK_NVM, 0);
         EnableDlgItem(IDC_BUTTON_NVM, 0);
     } else if (gsChipCfgInfo.uSeriesCode == IDD_DIALOG_CONFIGURATION_M251) {
+        SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0:"));
         m_bProgram_NVM = 0;
         EnableDlgItem(IDC_CHECK_NVM, 0);
         EnableDlgItem(IDC_BUTTON_NVM, 0);
         ShowDlgItem(IDC_STATIC_CONFIG_VALUE_1, 0);
-	}
+    }
 
     m_bSkipSizeCheck = FALSE;
 
@@ -891,4 +889,22 @@ LRESULT CNuvoISPDlg::OnDeviceChange(WPARAM  nEventType, LPARAM  dwData)
     }
 
     return TRUE;
+}
+
+void CNuvoISPDlg::ChangeBtnText(int nBtn, LPTSTR pszText)
+{
+    if (0 == nBtn) {
+        SetDlgItemText(IDC_BUTTON_APROM, pszText);
+        SetDlgItemText(IDC_CHECK_APROM, pszText);
+    } else if (1 == nBtn) {
+        SetDlgItemText(IDC_BUTTON_NVM, pszText);
+        SetDlgItemText(IDC_CHECK_NVM, pszText);
+    } else {
+        return;
+    }
+
+    TC_ITEM ti;
+    ti.mask = TCIF_TEXT;
+    ti.pszText = pszText;
+    VERIFY(m_TabData.SetItem(nBtn, &ti));
 }
