@@ -532,7 +532,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
             case 0x06004721:
                 uID = uSeriesCode;
 
-            case IDD_DIALOG_CONFIGURATION_N76E1T: // IDD_DIALOG_CONFIGURATION_OT8051
+            case NUC_CHIP_TYPE_GENERAL_1T:
                 pConfigDlg = new CDialogConfiguration_OT8051(uID);
                 Config = (((CDialogConfiguration_OT8051 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;

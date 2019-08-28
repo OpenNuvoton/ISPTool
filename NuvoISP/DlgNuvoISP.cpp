@@ -798,7 +798,7 @@ void CNuvoISPDlg::ShowChipInfo_OnLine()
     } else if ((m_ulDeviceID & 0xFFFFF000) == 0x01348000) { // M480LD
         SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0-2:"));
         ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 1);
-    } else if (gsChipCfgInfo.uSeriesCode == IDD_DIALOG_CONFIGURATION_N76E1T) {
+    } else if (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_GENERAL_1T) {
         m_bProgram_NVM = 0;
         EnableDlgItem(IDC_CHECK_NVM, 0);
         EnableDlgItem(IDC_BUTTON_NVM, 0);
