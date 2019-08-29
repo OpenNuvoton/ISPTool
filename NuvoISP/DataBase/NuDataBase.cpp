@@ -60,6 +60,11 @@ bool GetChipConfigInfo(unsigned int uID)
         i++;
     }
 
+    // skip time-consuming dummy search flow for 8051 1T series
+    if ((gsChipCfgInfo.uID == uID) && (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_GENERAL_1T)) {
+        return true;
+    }
+
     FLASH_PID_INFO_BASE_T flashInfo;
 
     if (GetInfo(uID, &flashInfo) != NULL) {
@@ -94,21 +99,11 @@ bool UpdateSizeInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfi
                     unsigned int *puNVM_Addr,
                     unsigned int *puAPROM_Size, unsigned int *puNVM_Size)
 {
-    if (GetInfo(uID, uConfig0, uConfig1, puNVM_Addr, puAPROM_Size, puNVM_Size)) {
-        return true;
-    } else {
-        // NuVoice Chip Series (ISDXXX, I9XXX, N57XXX ...)
-        DWORD pConfig[4];
-        pConfig[0] = uConfig0;
-        pConfig[1] = uConfig1;
+    // just make sure GetChipConfigInfo is called, so gsChipCfgInfo is valid
+    GetChipConfigInfo(uID);
 
-        if (GetInfo_NuVoice(uID, pConfig)) {
-            *puNVM_Addr = gNuVoiceChip.dwDataFlashAddress;
-            *puNVM_Size = gNuVoiceChip.dwDataFlashSize;
-            *puAPROM_Size = gNuVoiceChip.dwAPROMSize;
-            return true;
-        }
-
+    // skip time-consuming dummy search flow for 8051 1T series
+    if ((gsChipCfgInfo.uID == uID) && (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_GENERAL_1T)) {
         // internal ref. to Flash_N76E1T.h
         FLASH_INFO_BY_DID_T fInfo, *pInfo = &fInfo;
 
@@ -128,6 +123,24 @@ bool UpdateSizeInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfi
             puNVM_Size);
         *puNVM_Addr	= *puAPROM_Size;
         return true;
+    }
+
+    if (GetInfo(uID, uConfig0, uConfig1, puNVM_Addr, puAPROM_Size, puNVM_Size)) {
+        return true;
+    } else {
+        // NuVoice Chip Series (ISDXXX, I9XXX, N57XXX ...)
+        DWORD pConfig[4];
+        pConfig[0] = uConfig0;
+        pConfig[1] = uConfig1;
+
+        if (GetInfo_NuVoice(uID, pConfig)) {
+            *puNVM_Addr = gNuVoiceChip.dwDataFlashAddress;
+            *puNVM_Size = gNuVoiceChip.dwDataFlashSize;
+            *puAPROM_Size = gNuVoiceChip.dwAPROMSize;
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 
