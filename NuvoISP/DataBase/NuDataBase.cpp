@@ -1,11 +1,14 @@
 #include "stdafx.h"
 #include "NuDataBase.h"
 
-#include "PartNumID.h"
 #include "FlashInfo.h"
 
 CChipConfigInfo gsChipCfgInfo;
 struct sChipInfo gNuVoiceChip;
+
+std::vector<CPartNumID> g_NuMicroChipSeries;
+std::vector<CPartNumID> g_AudioChipSeries;
+
 
 bool GetInfo_NuVoice(DWORD dwChipID, DWORD *pConfig)
 {
@@ -151,3 +154,50 @@ std::string GetPartNumber(unsigned int uID)
     return gsChipCfgInfo.szPartNumber;
 }
 
+struct CPartNumID g_AudioPartNumIDs[] = {
+    /* Audio Part Number */
+    {"I94133A", 0x1D010588, ISD_94000_SERIES},
+    {"I91230G", 0x1D0A0463, ISD_91200_SERIES},
+    {"ISD9130", 0x1D060163, ISD_9160_SERIES},
+    {"I91361", 0x1D010284, ISD_91300_SERIES},
+    {"I91032F", 0x1D010362, ISD_91000_SERIES},
+    {"I94124A", 0x1D0105BA, NPCx_SERIES},
+    {"I96100", 0x1D010800, ISD_96000_SERIES},
+    {"N572U130", 0x0BB2FF0F, NUVOICE_N572F064_SERIES},
+    {"N572S08B", 0x0BB10004, NUVOICE_N572F072_SERIES},
+    {"N571P032", 0x0B320000, NUVOICE_N571_SERIES},
+    {"N569S250", 0x0BA00301, NUVOICE_N569_SERIES},
+    {"N570SCA2", 0x0BB0037F, NUVOICE_N570_SERIES},
+    {"N570H064", 0x0B010762, NUVOICE_N570H_SERIES},
+    {"N575S08A", 0x0BB00104, NUVOICE_N575_SERIES},
+    {"N576F145", 0x0B600000, NUVOICE_N576_SERIES},
+    {"JNK561F064", 0x0B800300, NUVOICE_JNK561_SERIES},
+    {"---------", 0xFFFFFFFF, 0},
+};
+
+int LoadChipSeries(void)
+{
+    unsigned int i = 0, uProjectCode = 0;
+
+    while (g_PartNumIDs[i].uID != 0xFFFFFFFF) {
+        if (g_PartNumIDs[i].uProjectCode != uProjectCode) {
+            uProjectCode = g_PartNumIDs[i].uProjectCode;
+            g_NuMicroChipSeries.push_back(g_PartNumIDs[i]);
+        }
+
+        i++;
+    }
+
+    i = 0;
+
+    while (g_AudioPartNumIDs[i].uID != 0xFFFFFFFF) {
+        if (g_AudioPartNumIDs[i].uProjectCode != uProjectCode) {
+            uProjectCode = g_AudioPartNumIDs[i].uProjectCode;
+            g_AudioChipSeries.push_back(g_AudioPartNumIDs[i]);
+        }
+
+        i++;
+    }
+
+    return (g_NuMicroChipSeries.size() + g_AudioChipSeries.size());
+}

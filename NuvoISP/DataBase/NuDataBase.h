@@ -4,6 +4,11 @@
 
 #include <stdio.h>
 #include <string> // std::string
+#include <vector> // std::vector
+
+/* NuMicro Series */
+#include "ChipDefs.h" // for enum NUC_CHIP_TYPE_E
+#include "PartNumID.h"
 
 /* NuVoice Series */
 #include "IGetChipInformation.h"
@@ -25,4 +30,9 @@ bool UpdateSizeInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfi
                     unsigned int *puNVM_Addr, unsigned int *puNVM_Size);
 
 bool GetInfo_NuVoice(DWORD dwChipID, DWORD *pConfig = NULL);
+
+extern std::vector<CPartNumID> g_NuMicroChipSeries;
+extern std::vector<CPartNumID> g_AudioChipSeries;
+int LoadChipSeries(void);
+
 #endif

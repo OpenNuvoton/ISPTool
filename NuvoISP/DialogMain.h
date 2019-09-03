@@ -1,7 +1,5 @@
 #pragma once
 
-struct CPartNumID;
-
 struct WINCTRLID {
     int         btn;
     int         path;
@@ -29,7 +27,6 @@ public:
     // uSeriesCode = 0; online mode (auto detection)
     // uSeriesCode != 0; offline mode (assigned by user using pop up menu)
     bool ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigned int uSeriesCode = 0);
-    bool ConfigSetting(unsigned int id, unsigned int *pConfig, unsigned int size);
 #endif
 
     void ShowDlgItem(int nID, int nCmdShow);

@@ -16,6 +16,11 @@ CDialogMain::CDialogMain(UINT nIDTemplate, CWnd *pParent /*=NULL*/)
     m_bIsInitialized = false;
     m_bShowScrollBar = false;
     m_ScrollBarWidth = 15;
+#ifdef _DEBUG
+    // offline test mode
+    // get chip series from database
+    LoadChipSeries();
+#endif
 }
 
 CDialogMain::~CDialogMain()
@@ -289,7 +294,6 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 }
 
 #ifndef _NO_CONFIGURATION_DLG
-#include "ChipDefs.h"
 #include "DialogConfiguration_M05x.h"
 #include "DialogConfiguration_M451.h"
 #include "DialogConfiguration_Mini51.h"
@@ -673,16 +677,6 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
     return ret;
 }
 
-/* called by void CNuvoISPDlg::OnButtonConfig() */
-bool CDialogMain::ConfigSetting(unsigned int id, unsigned int *pConfig, unsigned int size)
-{
-    if (GetChipConfigInfo(id)) {
-        return ConfigDlgSel(pConfig, size);
-    }
-
-    return false;
-}
-
 #endif // #ifndef _NO_CONFIGURATION_DLG
 
 BOOL CDialogMain::OnInitDialog()
@@ -792,57 +786,7 @@ void CDialogMain::EnableInterface(bool bEnable)
     }
 }
 
-UINT DialogTemplate[] = {
-    IDD_DIALOG_CONFIGURATION_M051,
-    IDD_DIALOG_CONFIGURATION_M051BN,
-    IDD_DIALOG_CONFIGURATION_M051CN,
-    IDD_DIALOG_CONFIGURATION_M058,
-    0x00012100, // NUC121, NUC125
-    IDD_DIALOG_CONFIGURATION_M0564,	// M0564, NUC126
-    IDD_DIALOG_CONFIGURATION_M451,
-    0x00E45200,
-    IDD_DIALOG_CONFIGURATION_MINI51,
-    IDD_DIALOG_CONFIGURATION_MINI51CN,
-    IDD_DIALOG_CONFIGURATION_MT500,
-
-    // IDD_DIALOG_CONFIGURATION_N76E1T,
-    //{"N76E884", 0x00002140, IDD_DIALOG_CONFIGURATION_N76E1T},
-    //{"N76E616", 0x00002F50, IDD_DIALOG_CONFIGURATION_N76E1T},
-    //{"N76E003", 0x00003650, IDD_DIALOG_CONFIGURATION_N76E1T},
-    //{"N76L151", 0x00003E61, IDD_DIALOG_CONFIGURATION_N76E1T},
-    //{"ML51BB9AE", 0x06004721, IDD_DIALOG_CONFIGURATION_N76E1T},
-
-    0x00002140,
-    0x00002F50,
-    0x00003650,
-    0x00003E61,
-    0x06004721,
-
-    IDD_DIALOG_CONFIGURATION_NANO100,
-    IDD_DIALOG_CONFIGURATION_NANO100BN,
-    IDD_DIALOG_CONFIGURATION_NANO103,
-    IDD_DIALOG_CONFIGURATION_NANO112,
-    IDD_DIALOG_CONFIGURATION_NM1120,
-    IDD_DIALOG_CONFIGURATION_NM1200,
-    IDD_DIALOG_CONFIGURATION_NUC100,
-    IDD_DIALOG_CONFIGURATION_NUC102,
-    IDD_DIALOG_CONFIGURATION_NUC103,
-    IDD_DIALOG_CONFIGURATION_NUC103BN,
-    IDD_DIALOG_CONFIGURATION_NUC131,
-    IDD_DIALOG_CONFIGURATION_NUC200,
-    IDD_DIALOG_CONFIGURATION_NUC400,
-    IDD_DIALOG_CONFIGURATION_M480,
-    IDD_DIALOG_CONFIGURATION_M480LD,
-    IDD_DIALOG_CONFIGURATION_M2351,
-    IDD_DIALOG_CONFIGURATION_M251,
-    IDD_DIALOG_CONFIGURATION_I94000,
-    IDD_DIALOG_CONFIGURATION_AU9100,
-    IDD_DIALOG_CONFIGURATION_N570,
-    ISD_91200_SERIES,
-    IDD_DIALOG_CONFIGURATION_M031,
-    IDD_DIALOG_CONFIGURATION_M251,
-};
-
+#define SERIES_NUM 8
 bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
 {
     unsigned int CFG[4] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
@@ -850,96 +794,58 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
     if (Template == 0) {
         CMenu menu;
         menu.CreatePopupMenu();
-        // 8051 1T Series
-        CMenu *sub8051 = new CMenu;
-        sub8051->CreatePopupMenu();
-        sub8051->AppendMenu(MF_STRING, 0x00002140, _T("N76E884"));
-        sub8051->AppendMenu(MF_STRING, 0x00002F50, _T("N76E616"));
-        sub8051->AppendMenu(MF_STRING, 0x00003650, _T("N76E003"));
-        sub8051->AppendMenu(MF_STRING, 0x00003E61, _T("N76L151"));
-        sub8051->AppendMenu(MF_STRING, 0x00003E61, _T("ML51"));
-        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)sub8051->m_hMenu, _T("8051 1T Series"));
-        menu.AppendMenu(MF_SEPARATOR);
-        // M051 Series
-        CMenu *subM051 = new CMenu;
-        subM051->CreatePopupMenu();
-        subM051->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M051, _T("M051AN Series"));
-        subM051->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M051BN, _T("M051BN Series"));
-        subM051->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M051CN, _T("M051DN/DE Series"));
-        subM051->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M058, _T("M058SAN Series"));
-        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subM051->m_hMenu, _T("M051 Series"));
-        menu.AppendMenu(MF_SEPARATOR);
-        // Mini Series
-        CMenu *subMini = new CMenu;
-        subMini->CreatePopupMenu();
-        subMini->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_MINI51, _T("Mini51AN Series"));
-        subMini->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_MINI51CN, _T("Mini51DE Series"));
-        subMini->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_NM1200, _T("Mini55 Series"));
-        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMini->m_hMenu, _T("Mini Series"));
-        menu.AppendMenu(MF_SEPARATOR);
-        // NANO Series
-        CMenu *subNano = new CMenu;
-        subNano->CreatePopupMenu();
-        subNano->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_NANO100, _T("NANO100AN Series"));
-        subNano->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_NANO100BN, _T("NANO100BN Series"));
-        subNano->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_NANO112, _T("NANO112AN Series"));
-        subNano->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_NANO103, _T("NANO103 Series"));
-        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subNano->m_hMenu, _T("NANO Series"));
-        menu.AppendMenu(MF_SEPARATOR);
-        // NUC100 and NUC200 Series
-        CMenu *subNUC1xx = new CMenu;
-        subNUC1xx->CreatePopupMenu();
-        subNUC1xx->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_NUC100, _T("NUC100AN/BN/CN Series"));
-        subNUC1xx->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_NUC200, _T("NUC100DN Series"));
-        subNUC1xx->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M0564, _T("NUC121 Series"));
-        subNUC1xx->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_NUC102, _T("NUC122AN Series"));
-        subNUC1xx->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_NUC103, _T("NUC123AN Series"));
-        subNUC1xx->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_NUC103BN, _T("NUC123AE Series"));
-        subNUC1xx->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_NUC131, _T("NUC131 Series"));
-        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subNUC1xx->m_hMenu, _T("NUC100 Series"));
-        menu.AppendMenu(MF_SEPARATOR);
-        // M23, M4 Series
-        CMenu *subM234 = new CMenu;
-        subM234->CreatePopupMenu();
-        subM234->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_NUC400, _T("NUC4XX Series"));
-        subM234->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M451, _T("M451 Series"));
-        subM234->AppendMenu(MF_STRING, 0x00E45200, _T("M4521 Series"));
-        subM234->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M480, _T("M480 Series"));
-        subM234->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M480LD, _T("M480LD Series"));
-        subM234->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M2351, _T("M2351 Series"));
-        subM234->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M251, _T("M251 Series"));
-        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subM234->m_hMenu, _T("M23 and M4"));
-        menu.AppendMenu(MF_SEPARATOR);
-        // NuVoice Series
-        CMenu *subVoice = new CMenu;
-        subVoice->CreatePopupMenu();
-        subVoice->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_AU9100, _T("AU9100 Series"));
-        subVoice->AppendMenu(MF_STRING, ISD_91200_SERIES, _T("I91200 Series"));
-        subVoice->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_I94000, _T("I94000 Series"));
-        subVoice->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_N570, _T("I91000 Series"));
-        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subVoice->m_hMenu, _T("NuVoice"));
-        menu.AppendMenu(MF_SEPARATOR);
-        // Others Series
-        CMenu *subOthers = new CMenu;
-        subOthers->CreatePopupMenu();
-        subOthers->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_MT500, _T("MT500"));
-        subOthers->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_NM1120, _T("NM1120"));
-        subOthers->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M031, _T("M031"));
-        subOthers->AppendMenu(MF_STRING, IDD_DIALOG_CONFIGURATION_M251, _T("M251AE"));
-        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subOthers->m_hMenu, _T("Others"));
-        menu.AppendMenu(MF_SEPARATOR);
+        CMenu *subMenu[SERIES_NUM];
+        unsigned int i;
+
+        for (i = 0; i < SERIES_NUM; i++) {
+            subMenu[i] = new CMenu;
+            subMenu[i]->CreatePopupMenu();
+        }
+
+        for (i = 0; i < g_NuMicroChipSeries.size(); i++) {
+            std::string str(g_NuMicroChipSeries[i].szPartNumber);
+
+            if (str.find("NUC1") != std::string::npos) {
+                subMenu[0]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
+            } else if (str.find("MINI") != std::string::npos) {
+                subMenu[1]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
+            } else if (str.find("Nano") != std::string::npos) {
+                subMenu[2]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
+            } else if (str.find("M05") != std::string::npos) {
+                subMenu[3]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
+            } else if (str.find("NUC029") != std::string::npos) {
+                subMenu[4]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
+            } else if (str.find("M4") != std::string::npos) {
+                subMenu[5]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
+            } else {
+                subMenu[6]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
+            }
+        }
+
+        for (i = 0; i < g_AudioChipSeries.size(); i++) {
+            std::string str(g_AudioChipSeries[i].szPartNumber);
+            subMenu[7]->AppendMenu(MF_STRING, g_AudioChipSeries[i].uProjectCode, CString(g_AudioChipSeries[i].szPartNumber));
+        }
+
+        i = 0;
+        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[i++]->m_hMenu, _T("NUC1xx Series"));
+        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[i++]->m_hMenu, _T("MINI Series"));
+        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[i++]->m_hMenu, _T("NANO Series"));
+        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[i++]->m_hMenu, _T("M05x Series"));
+        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[i++]->m_hMenu, _T("NUC029 Series"));
+        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[i++]->m_hMenu, _T("M4 Series"));
+        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[7]->m_hMenu, _T("Audio Series"));
+        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[i++]->m_hMenu, _T("Others"));
+
+        for (i = 0; i < SERIES_NUM; i++) {
+            delete subMenu[i];
+        }
+
         POINT point;
         GetCursorPos(&point);
         menu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this);
         menu.DestroyMenu();
-        delete sub8051;
-        delete subM051;
-        delete subMini;
-        delete subNano;
-        delete subNUC1xx;
-        delete subM234;
-        delete subVoice;
-        delete subOthers;
+        //menu.AppendMenu(MF_SEPARATOR);
     }
 
     return true;
@@ -947,10 +853,19 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
 
 LRESULT CDialogMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
-    // TODO: Add your specialized code here and/or call the base class
     if (message == WM_COMMAND) {
-        for (int i = 0; i < _countof(DialogTemplate); ++i) {
-            if (DialogTemplate[i] == wParam) {
+        unsigned int i;
+
+        for (i = 0; i < g_NuMicroChipSeries.size(); ++i) {
+            if (g_NuMicroChipSeries[i].uProjectCode == wParam) {
+                unsigned int CFG[4] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
+                ConfigDlgSel(CFG, sizeof(CFG), wParam);
+                return 1;
+            }
+        }
+
+        for (i = 0; i < g_AudioChipSeries.size(); ++i) {
+            if (g_AudioChipSeries[i].uProjectCode == wParam) {
                 unsigned int CFG[4] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
                 ConfigDlgSel(CFG, sizeof(CFG), wParam);
                 return 1;

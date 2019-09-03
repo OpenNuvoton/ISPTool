@@ -571,6 +571,8 @@ void CNuvoISPDlg::OnButtonConfig()
 {
 #ifdef _DEBUG
 
+    // offline test mode
+    // user can select test chip from popup menu
     if (m_fnThreadProcStatus == &CISPProc::Thread_Idle
             || m_fnThreadProcStatus == &CISPProc::Thread_Pause) {
         DemoConfigDlg();
@@ -579,7 +581,8 @@ void CNuvoISPDlg::OnButtonConfig()
 
 #endif
 
-    if (ConfigSetting(m_ulDeviceID, m_CONFIG_User, sizeof(m_CONFIG_User))) {
+    // online mode - must connect to real chip. gsChipCfgInfo must be valid
+    if (ConfigDlgSel(m_CONFIG_User, sizeof(m_CONFIG_User))) {
         CString strTmp = _T("");
         strTmp.Format(_T("0x%08X"), m_CONFIG_User[0]);
         SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, strTmp);
@@ -685,13 +688,8 @@ void CNuvoISPDlg::ShowChipInfo_NUC505(void)
     EnableDlgItem(IDC_EDIT_APROM_BASE_ADDRESS, 0);
     ShowDlgItem(IDC_STATIC_FLASH_BASE_ADDRESS, 1);
     ShowDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS, 1);
-    std::ostringstream os;
-    os << "RAM:128K, SPI Flash:2M";
-    std::string cstr = os.str();
-    std::wstring wcstr(cstr.begin(), cstr.end());
-    CString str = wcstr.c_str();
     CString info;
-    info.Format(_T("%s\nFW Ver: 0x%X"), wcstr.c_str(), int(m_ucFW_VER));
+    info.Format(_T("RAM:128K, SPI Flash:2M\nFW Ver: 0x%X"), int(m_ucFW_VER));
     SetDlgItemText(IDC_STATIC_PARTNO, info);
     UpdateAddrOffset();
     Invalidate(1);

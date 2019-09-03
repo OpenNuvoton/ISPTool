@@ -12,7 +12,6 @@
 #include "DialogHex.h"
 #include "DialogMain.h"
 #include "ISPProc.h"
-#include "FlashInfo.h"	// Size & Addres of APROM, LDROM, SPROM
 
 #define NUM_VIEW 2
 /////////////////////////////////////////////////////////////////////////////
@@ -72,7 +71,6 @@ protected:
     void ChangeBtnText(int nBtn, LPTSTR pszText);
 
 public:
-    FLASH_PID_INFO_BASE_T m_sPidInfoBase;
     afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
     void UpdateAddrOffset();
 
