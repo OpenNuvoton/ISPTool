@@ -385,21 +385,7 @@ void CDialogConfiguration_NUC4xx::OnCheckClickWDTPD()
 void CDialogConfiguration_NUC4xx::OnKillfocusEditFlashBaseAddress()
 {
     UpdateData(TRUE);
-    TCHAR *pEnd;
-    unsigned int uFlashBaseAddress = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
-
-    if (m_bDataFlashEnable) {
-        if (!((uFlashBaseAddress >= NUMICRO_FLASH_PAGE_SIZE_2K) && (uFlashBaseAddress < m_uProgramMemorySize))) {
-            uFlashBaseAddress = m_uProgramMemorySize - NUMICRO_FLASH_PAGE_SIZE_2K;
-        }
-
-        uFlashBaseAddress &= ~(NUMICRO_FLASH_PAGE_SIZE_2K - 1);
-        m_sDataFlashSize.Format(_T("%.2fK"), (uFlashBaseAddress < m_uProgramMemorySize) ? ((m_uProgramMemorySize - uFlashBaseAddress) / 1024.) : 0.);
-    }
-
-    m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
-    m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);// | 0xFFF00000);
-    UpdateData(FALSE);
+    CDialogResize::OnKillfocusEditFlashBaseAddress(m_bDataFlashEnable, m_uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_2K);
 }
 
 void CDialogConfiguration_NUC4xx::OnOK()

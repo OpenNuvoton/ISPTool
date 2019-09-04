@@ -386,30 +386,10 @@ void CDialogConfiguration_NUC2xx::OnCheckClickWDTPD()
     OnGUIEvent(IDC_CHECK_WDT_POWER_DOWN);
 }
 
-//void CDialogConfiguration_NUC2xx::OnChangeEditFlashBaseAddress()
 void CDialogConfiguration_NUC2xx::OnKillfocusEditFlashBaseAddress()
 {
-    // TODO: If this is a RICHEDIT control, the control will not
-    // send this notification unless you override the CDialog::OnInitDialog()
-    // function and call CRichEditCtrl().SetEventMask()
-    // with the ENM_CHANGE flag ORed into the mask.
-    // TODO: Add your control notification handler code here
     UpdateData(TRUE);
-    TCHAR *pEnd;
-    unsigned int uFlashBaseAddress = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
-
-    if (m_bDataFlashEnable) {
-        if (!((uFlashBaseAddress >= NUMICRO_FLASH_PAGE_SIZE_512) && (uFlashBaseAddress < m_uProgramMemorySize))) {
-            uFlashBaseAddress = m_uProgramMemorySize - NUMICRO_FLASH_PAGE_SIZE_512;
-        }
-
-        uFlashBaseAddress &= ~(NUMICRO_FLASH_PAGE_SIZE_512 - 1);
-        m_sDataFlashSize.Format(_T("%.2fK"), (uFlashBaseAddress < m_uProgramMemorySize) ? ((m_uProgramMemorySize - uFlashBaseAddress) / 1024.) : 0.);
-    }
-
-    m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
-    m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);// | 0xFFF00000);
-    UpdateData(FALSE);
+    CDialogResize::OnKillfocusEditFlashBaseAddress(m_bDataFlashEnable, m_uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_512);
 }
 
 void CDialogConfiguration_NUC2xx::OnOK()

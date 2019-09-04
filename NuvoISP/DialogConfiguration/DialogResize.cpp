@@ -291,3 +291,34 @@ void CDialogResize::AdjustDPI()
         MoveWindow(m_rect.left, m_rect.top, m_rect.Width(), nScreenHeight);
     }
 }
+
+void CDialogResize::OnKillfocusEditFlashBaseAddress(BOOL bDataFlashEnable, unsigned int	uProgramMemorySize, unsigned int uPageSize)
+{
+    if (!bDataFlashEnable) {
+        return;
+    }
+
+    CString sFlashBaseAddress, sDataFlashSize, sConfigValue1;
+    GetDlgItemText(IDC_EDIT_FLASH_BASE_ADDRESS, sFlashBaseAddress);
+    TCHAR *pEnd;
+    unsigned int uFlashBaseAddress = ::_tcstoul(sFlashBaseAddress, &pEnd, 16);
+
+    if (bDataFlashEnable) {
+        if (uFlashBaseAddress < uPageSize) {
+            uFlashBaseAddress = uPageSize;
+        } else if (uFlashBaseAddress >= uProgramMemorySize) {
+            uFlashBaseAddress = uProgramMemorySize - uPageSize;
+        } else {
+            uFlashBaseAddress &= ~(uPageSize - 1);
+        }
+
+        sDataFlashSize.Format(_T("%.2fK"), (uFlashBaseAddress < uProgramMemorySize) ? ((uProgramMemorySize - uFlashBaseAddress) / 1024.) : 0.);
+        SetDlgItemText(IDC_EDIT_DATA_FLASH_SIZE, sDataFlashSize);
+    }
+
+    sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
+    SetDlgItemText(IDC_EDIT_FLASH_BASE_ADDRESS, sFlashBaseAddress);
+    sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);// | 0xFFF00000);
+    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, sConfigValue1);
+    UpdateData(TRUE); // "MUST" use TRUE, not FALSE
+}

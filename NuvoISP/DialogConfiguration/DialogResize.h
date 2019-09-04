@@ -29,4 +29,7 @@ protected:
     afx_msg void OnGetMinMaxInfo(MINMAXINFO *lpMMI);
     afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
     DECLARE_MESSAGE_MAP()
+
+public:
+    void OnKillfocusEditFlashBaseAddress(BOOL bDataFlashEnable, unsigned int uProgramMemorySize, unsigned int uPageSize);
 };

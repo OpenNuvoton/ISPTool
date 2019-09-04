@@ -363,31 +363,8 @@ void CDialogConfiguration_M451::OnCheckClickWDTPD()
 
 void CDialogConfiguration_M451::OnKillfocusEditFlashBaseAddress()
 {
-    //UpdateData(TRUE);
-    //TCHAR *pEnd;
-    //unsigned int uFlashBaseAddress = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
-    //m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);
-    //unsigned int uPageNum = uFlashBaseAddress / NUMICRO_FLASH_PAGE_SIZE_2K;
-    //unsigned int uLimitNum = m_uProgramMemorySize / NUMICRO_FLASH_PAGE_SIZE_2K;
-    //unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * NUMICRO_FLASH_PAGE_SIZE_2K) : 0;
-    //m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uDataFlashSize : 0) / 1024.);
-    //UpdateData(FALSE);
     UpdateData(TRUE);
-    TCHAR *pEnd;
-    unsigned int uFlashBaseAddress = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
-
-    if (m_bDataFlashEnable) {
-        if (!((uFlashBaseAddress >= NUMICRO_FLASH_PAGE_SIZE_2K) && (uFlashBaseAddress < m_uProgramMemorySize))) {
-            uFlashBaseAddress = m_uProgramMemorySize - NUMICRO_FLASH_PAGE_SIZE_2K;
-        }
-
-        uFlashBaseAddress &= ~(NUMICRO_FLASH_PAGE_SIZE_2K - 1);
-        m_sDataFlashSize.Format(_T("%.2fK"), (uFlashBaseAddress < m_uProgramMemorySize) ? ((m_uProgramMemorySize - uFlashBaseAddress) / 1024.) : 0.);
-    }
-
-    m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
-    m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);// | 0xFFF00000);
-    UpdateData(FALSE);
+    CDialogResize::OnKillfocusEditFlashBaseAddress(m_bDataFlashEnable, m_uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_2K);
 }
 
 void CDialogConfiguration_M451::OnOK()
