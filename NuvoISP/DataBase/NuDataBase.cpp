@@ -74,6 +74,7 @@ bool GetChipConfigInfo(unsigned int uID)
         gsChipCfgInfo.uID = uID;
         gsChipCfgInfo.uProgramMemorySize = flashInfo.uProgramMemorySize;
         gsChipCfgInfo.uDataFlashSize =	flashInfo.uDataFlashSize;
+        gsChipCfgInfo.uFlashType = flashInfo.uFlashType;
         return true;
     }
 

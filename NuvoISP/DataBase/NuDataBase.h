@@ -19,6 +19,7 @@ struct CChipConfigInfo {
     unsigned int uProgramMemorySize;
     unsigned int uDataFlashSize;
     char szPartNumber[100];
+    unsigned int uFlashType;
 };
 
 extern CChipConfigInfo gsChipCfgInfo;

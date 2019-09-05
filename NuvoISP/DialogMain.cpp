@@ -328,13 +328,17 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
     unsigned int uProgramMemorySize = 0;
     unsigned int uDataFlashSize = 0;
     unsigned int uID = 0;
+    unsigned int uPage_Size = NUMICRO_FLASH_PAGE_SIZE_512;
 
     if (uSeriesCode == 0) {
+        // uSeriesCode = 0; online mode (load chip info. from gsChipCfgInfo)
         uSeriesCode = gsChipCfgInfo.uSeriesCode;
         bIsDataFlashFixed = gsChipCfgInfo.uDataFlashSize;
         uProgramMemorySize = gsChipCfgInfo.uProgramMemorySize;
         uDataFlashSize = gsChipCfgInfo.uDataFlashSize;
         uID = gsChipCfgInfo.uID;
+        // (FlashInfo.cpp) Page Size Type: 0x000 (512 Bytes, default), 0x200 (2K), 0x300 (4K)
+        uPage_Size = 1 << (((gsChipCfgInfo.uFlashType & 0x0000FF00) >>  8) + 9);
     }
 
     if (1) {
@@ -637,7 +641,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
 
             case IDD_DIALOG_CONFIGURATION_M031:
                 if (uProgramMemorySize) {
-                    pConfigDlg = new CDialogConfiguration_M031(uProgramMemorySize);
+                    pConfigDlg = new CDialogConfiguration_M031(uProgramMemorySize, uPage_Size);
                 } else {
                     pConfigDlg = new CDialogConfiguration_M031();
                 }
