@@ -11,7 +11,7 @@
 #include "PartNumID.h"
 
 /* NuVoice Series */
-#include "IGetChipInformation.h"
+#include "IGetChipInformation.h" // for enum eAllChipSeries
 
 struct CChipConfigInfo {
     unsigned int uID;
@@ -20,17 +20,23 @@ struct CChipConfigInfo {
     unsigned int uDataFlashSize;
     char szPartNumber[100];
     unsigned int uFlashType;
+    unsigned int uProductLine; // 0: Unknown, 1: 8051-1T, 2: NuMicro, 3: Audio
+    unsigned int uConfig0;
+    unsigned int uConfig1;
+    unsigned int uAPROM_Addr;
+    unsigned int uAPROM_Size;
+    unsigned int uNVM_Addr;
+    unsigned int uNVM_Size;
+    unsigned int uLDROM_Addr;
+    unsigned int uLDROM_Size;
 };
 
 extern CChipConfigInfo gsChipCfgInfo;
-bool GetChipConfigInfo(unsigned int uID);
 std::string GetPartNumber(unsigned int uID);
 
 bool UpdateSizeInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfig1,
                     unsigned int *puAPROM_Size,
                     unsigned int *puNVM_Addr, unsigned int *puNVM_Size);
-
-bool GetInfo_NuVoice(DWORD dwChipID, DWORD *pConfig = NULL);
 
 extern std::vector<CPartNumID> g_NuMicroChipSeries;
 extern std::vector<CPartNumID> g_AudioChipSeries;

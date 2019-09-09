@@ -2,13 +2,13 @@
 #include "NuDataBase.h"
 
 #include "FlashInfo.h"
+extern struct CPartNumID g_PartNumIDs[];
 
 CChipConfigInfo gsChipCfgInfo;
 struct sChipInfo gNuVoiceChip;
 
 std::vector<CPartNumID> g_NuMicroChipSeries;
 std::vector<CPartNumID> g_AudioChipSeries;
-
 
 bool GetInfo_NuVoice(DWORD dwChipID, DWORD *pConfig)
 {
@@ -39,8 +39,7 @@ bool GetInfo_NuVoice(DWORD dwChipID, DWORD *pConfig)
     return ret;
 }
 
-extern struct CPartNumID g_PartNumIDs[];
-bool GetChipConfigInfo(unsigned int uID)
+bool GetChipStaticInfo(unsigned int uID)
 {
     if (gsChipCfgInfo.uID == uID) {
         return true;
@@ -48,6 +47,7 @@ bool GetChipConfigInfo(unsigned int uID)
         char pName[] = "Unknown Chip";
         memset(&gsChipCfgInfo, 0, sizeof(gsChipCfgInfo));
         memcpy(gsChipCfgInfo.szPartNumber, pName, sizeof(pName));
+        gsChipCfgInfo.uProductLine = 0; // Unknown
     }
 
     int i = 0;
@@ -63,38 +63,114 @@ bool GetChipConfigInfo(unsigned int uID)
         i++;
     }
 
-    // skip time-consuming dummy search flow for 8051 1T series
-    if ((gsChipCfgInfo.uID == uID) && (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_GENERAL_1T)) {
-        return true;
-    }
+    if (gsChipCfgInfo.uID == uID) {
+        if ((gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_GENERAL_1T)) {
+            // internal ref. to Flash_N76E1T.h
+            FLASH_INFO_BY_DID_T flashInfo;
 
-    FLASH_PID_INFO_BASE_T flashInfo;
+            if (GetInfo_8051_1T(uID & 0x0000FFFF, &flashInfo) == NULL) {
+                return false;
+            }
 
-    if (GetInfo(uID, &flashInfo) != NULL) {
-        gsChipCfgInfo.uID = uID;
-        gsChipCfgInfo.uProgramMemorySize = flashInfo.uProgramMemorySize;
-        gsChipCfgInfo.uDataFlashSize =	flashInfo.uDataFlashSize;
-        gsChipCfgInfo.uFlashType = flashInfo.uFlashType;
-        return true;
-    }
-
-    if (GetInfo_NuVoice(uID)) {
-        gsChipCfgInfo.uID = uID;
-        gsChipCfgInfo.uSeriesCode = gNuVoiceChip.dwSeriesEnum;
-        memcpy(gsChipCfgInfo.szPartNumber, gNuVoiceChip.sChipName, 100);
-
-        if (gsChipCfgInfo.uSeriesCode == ISD_9160_SERIES) {
-            gsChipCfgInfo.uProgramMemorySize = gNuVoiceChip.dwAPROMSize + gNuVoiceChip.dwDataFlashSize + gNuVoiceChip.dwLDROMSize - 4096;
-        } else if (gsChipCfgInfo.uSeriesCode == ISD_91300_SERIES) {
-            gsChipCfgInfo.uProgramMemorySize = gNuVoiceChip.dwAPROMSize + gNuVoiceChip.dwDataFlashSize + gNuVoiceChip.dwLDROMSize - 4096;
+            gsChipCfgInfo.uProductLine = 1; // 8051-1T
+            gsChipCfgInfo.uProgramMemorySize = flashInfo.uProgramMemorySize;
+            gsChipCfgInfo.uFlashType = flashInfo.uFlashType;
+            return true;
         } else {
-            gsChipCfgInfo.uProgramMemorySize = gNuVoiceChip.dwAPROMSize + gNuVoiceChip.dwDataFlashSize;
+            FLASH_PID_INFO_BASE_T flashInfo;
+
+            if (GetInfo(uID, &flashInfo) == NULL) {
+                return false;
+            }
+
+            gsChipCfgInfo.uProductLine = 2; // NuMicro
+            gsChipCfgInfo.uProgramMemorySize = flashInfo.uProgramMemorySize;
+            gsChipCfgInfo.uFlashType = flashInfo.uFlashType;
+            gsChipCfgInfo.uLDROM_Size = flashInfo.uISPFlashSize;
+            return true;
+        }
+    } else {
+        return false;
+    }
+}
+
+static bool GetChipDynamicInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfig1)
+{
+    if (gsChipCfgInfo.uID == uID) {
+        if ((gsChipCfgInfo.uConfig0 == uConfig0) && (gsChipCfgInfo.uConfig1 == uConfig1)) {
+            return true;
+        }
+    }
+
+    unsigned int uProductLine = 0;
+    unsigned int uProgramMemorySize = 0, uFlashType = 0;
+
+    if (GetChipStaticInfo(uID)) {
+        uProductLine = gsChipCfgInfo.uProductLine;
+        uProgramMemorySize = gsChipCfgInfo.uProgramMemorySize;
+        uFlashType = gsChipCfgInfo.uFlashType;
+    }
+
+    unsigned int uAPROM_Size;
+    unsigned int uNVM_Addr, uNVM_Size;
+    unsigned int uLDROM_Addr, uLDROM_Size;
+
+    if (uProductLine == 1) {
+        GetInfo_8051_1T(//uDID,
+            uConfig0,
+            uProgramMemorySize,
+            uFlashType,
+            &uLDROM_Addr,
+            &uLDROM_Size,
+            &uAPROM_Size,
+            &uNVM_Size);
+        gsChipCfgInfo.uConfig0 = uConfig0;
+        gsChipCfgInfo.uConfig1 = uConfig1;
+        gsChipCfgInfo.uLDROM_Addr = uLDROM_Addr;
+        gsChipCfgInfo.uLDROM_Size = uLDROM_Size;
+        gsChipCfgInfo.uAPROM_Size = uAPROM_Size;
+        gsChipCfgInfo.uNVM_Addr = uAPROM_Size;
+        gsChipCfgInfo.uNVM_Size = uNVM_Size;
+        return true;
+    } else if (uProductLine == 2) {
+        GetInfo_NuMicro(uConfig0, uConfig1,
+                        uProgramMemorySize, uFlashType,
+                        &uNVM_Addr, &uAPROM_Size, &uNVM_Size);
+        gsChipCfgInfo.uConfig0 = uConfig0;
+        gsChipCfgInfo.uConfig1 = uConfig1;
+        gsChipCfgInfo.uAPROM_Size = uAPROM_Size;
+        gsChipCfgInfo.uNVM_Addr = uNVM_Addr;
+        gsChipCfgInfo.uNVM_Size = uNVM_Size;
+        return true;
+    } else {
+        DWORD pConfig[4];
+        pConfig[0] = uConfig0;
+        pConfig[1] = uConfig1;
+
+        if (GetInfo_NuVoice(uID, pConfig)) {
+            uProductLine = 3; // Audio
+            gsChipCfgInfo.uID = uID;
+            gsChipCfgInfo.uConfig0 = uConfig0;
+            gsChipCfgInfo.uConfig1 = uConfig1;
+            gsChipCfgInfo.uSeriesCode = gNuVoiceChip.dwSeriesEnum;
+            memcpy(gsChipCfgInfo.szPartNumber, gNuVoiceChip.sChipName, 100);
+            gsChipCfgInfo.uNVM_Addr = gNuVoiceChip.dwDataFlashAddress;
+            gsChipCfgInfo.uNVM_Size = gNuVoiceChip.dwDataFlashSize;
+            gsChipCfgInfo.uAPROM_Size = gNuVoiceChip.dwAPROMSize;
+
+            if (gsChipCfgInfo.uSeriesCode == ISD_9160_SERIES) {
+                gsChipCfgInfo.uProgramMemorySize = gNuVoiceChip.dwAPROMSize + gNuVoiceChip.dwDataFlashSize + gNuVoiceChip.dwLDROMSize - 4096;
+            } else if (gsChipCfgInfo.uSeriesCode == ISD_91300_SERIES) {
+                gsChipCfgInfo.uProgramMemorySize = gNuVoiceChip.dwAPROMSize + gNuVoiceChip.dwDataFlashSize + gNuVoiceChip.dwLDROMSize - 4096;
+            } else {
+                gsChipCfgInfo.uProgramMemorySize = gNuVoiceChip.dwAPROMSize + gNuVoiceChip.dwDataFlashSize;
+            }
+
+            return true;
         }
 
-        return true;
+        return false;
     }
-
-    return false;
 }
 
 // call by CNuvoISPDlg::ShowChipInfo(): Show Chip Info. after connection
@@ -103,55 +179,20 @@ bool UpdateSizeInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfi
                     unsigned int *puNVM_Addr,
                     unsigned int *puAPROM_Size, unsigned int *puNVM_Size)
 {
-    // just make sure GetChipConfigInfo is called, so gsChipCfgInfo is valid
-    GetChipConfigInfo(uID);
-
-    // skip time-consuming dummy search flow for 8051 1T series
-    if ((gsChipCfgInfo.uID == uID) && (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_GENERAL_1T)) {
-        // internal ref. to Flash_N76E1T.h
-        FLASH_INFO_BY_DID_T fInfo, *pInfo = &fInfo;
-
-        if (GetInfo_8051_1T(uID & 0x0000FFFF, pInfo) == NULL) {
-            return false;
-        }
-
-        unsigned int uLDROM_Addr;
-        unsigned int uLDROM_Size;
-        GetInfo_8051_1T(//uDID,
-            uConfig0,
-            pInfo->uProgramMemorySize,
-            pInfo->uFlashType,
-            &uLDROM_Addr,
-            &uLDROM_Size,
-            puAPROM_Size,
-            puNVM_Size);
-        *puNVM_Addr	= *puAPROM_Size;
-        return true;
-    }
-
-    if (GetInfo(uID, uConfig0, uConfig1, puNVM_Addr, puAPROM_Size, puNVM_Size)) {
+    if (GetChipDynamicInfo(uID, uConfig0, uConfig1)) {
+        *puNVM_Addr = gsChipCfgInfo.uNVM_Addr;
+        *puNVM_Size = gsChipCfgInfo.uNVM_Size;
+        *puAPROM_Size = gsChipCfgInfo.uAPROM_Size;
         return true;
     } else {
-        // NuVoice Chip Series (ISDXXX, I9XXX, N57XXX ...)
-        DWORD pConfig[4];
-        pConfig[0] = uConfig0;
-        pConfig[1] = uConfig1;
-
-        if (GetInfo_NuVoice(uID, pConfig)) {
-            *puNVM_Addr = gNuVoiceChip.dwDataFlashAddress;
-            *puNVM_Size = gNuVoiceChip.dwDataFlashSize;
-            *puAPROM_Size = gNuVoiceChip.dwAPROMSize;
-            return true;
-        } else {
-            return false;
-        }
+        return false;
     }
 }
 
 // call by CNuvoISPDlg::ShowChipInfo()
 std::string GetPartNumber(unsigned int uID)
 {
-    GetChipConfigInfo(uID);
+    GetChipDynamicInfo(uID, 0xFFFFFFFF, 0xFFFFFFFF);
     return gsChipCfgInfo.szPartNumber;
 }
 

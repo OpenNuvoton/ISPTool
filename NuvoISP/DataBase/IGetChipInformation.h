@@ -1,5 +1,7 @@
 #pragma once
 
+#include <windows.h>
+
 #define GETCHIPINFO_LIBRARY_NAME	_T("GetChipInformation.dll")
 #define CREATE_CHIP_MANAGER_NAME	_T("CreateChipInfoManager")
 #define CHIP_NAME_LEN				100
@@ -88,8 +90,8 @@ public:
     virtual void ReleaseDLL() = 0;
     virtual eChipInfoError GetChipInfo(DWORD dwChipID, sChipInfo &GetChipInfo, DWORD *dwCfg = NULL) = 0;
     virtual eChipInfoError GetChipInfoByFindInfo(const sFindChipInfo &FindChipInfo, sChipInfo &GetChipInfo, DWORD dwDID = 0) = 0;
-    virtual eChipInfoError ExportChipInfo(CString csPath) = 0;
-    virtual eChipInfoError CheckChipFromXLS(CString csXLSPath) = 0;
+    // virtual eChipInfoError ExportChipInfo(CString csPath) = 0;
+    // virtual eChipInfoError CheckChipFromXLS(CString csXLSPath) = 0;
 };
 
 typedef BOOL (FAR WINAPI *CREATE_CHIPINFO_MANAGER)(I_ChipInfoManager **pIGetChipInfoManager);

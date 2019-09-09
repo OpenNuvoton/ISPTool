@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "ChipDefs.h"
 #include "PartNumID.h"
-#include "resource.h"
+#include "..\resource.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
