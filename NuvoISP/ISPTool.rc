@@ -96,7 +96,7 @@ BEGIN
     LTEXT           "File Name:",IDC_STATIC_FILENAME_0,75,85,41,8
     EDITTEXT        IDC_EDIT_FILEPATH_APROM,121,82,257,14,ES_AUTOHSCROLL | ES_READONLY,WS_EX_TRANSPARENT
     LTEXT           "File not load.",IDC_STATIC_FILEINFO_APROM,121,100,140,8
-    LTEXT           "Base Address: 0x",IDC_STATIC_APOFFSET,268,100,56,8,NOT WS_VISIBLE
+    LTEXT           "Offset: 0x",IDC_STATIC_APOFFSET,293,100,31,8,NOT WS_VISIBLE
     EDITTEXT        IDC_EDIT_APROM_BASE_ADDRESS,325,98,54,14,ES_AUTOHSCROLL | NOT WS_VISIBLE
     PUSHBUTTON      "Data Flash",IDC_BUTTON_NVM,16,115,50,14
     LTEXT           "File Name:",IDC_STATIC_FILENAME_1,75,117,41,8
@@ -1447,8 +1447,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 3,0,0,0
- PRODUCTVERSION 3,0,0,0
+ FILEVERSION 3,0,4,0
+ PRODUCTVERSION 3,0,4,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1464,12 +1464,12 @@ BEGIN
         BLOCK "040004b0"
         BEGIN
             VALUE "FileDescription", "ISP Programming Tool"
-            VALUE "FileVersion", "3.03"
+            VALUE "FileVersion", "3.04"
             VALUE "InternalName", "ISPTool"
             VALUE "LegalCopyright", "Copyright (C) 2019"
             VALUE "OriginalFilename", "NuvoISP.EXE"
             VALUE "ProductName", "ISP Programming Tool"
-            VALUE "ProductVersion", "3.03"
+            VALUE "ProductVersion", "3.04"
         END
     END
     BLOCK "VarFileInfo"

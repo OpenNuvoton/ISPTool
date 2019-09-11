@@ -247,11 +247,11 @@ void CISPProc::Thread_ProgramFlash()
         }
 
         if (m_bProgram_APROM) {
-            uAddr = m_uAPROM_Addr;
+            uAddr = m_uAPROM_Addr + m_uAPROM_Offset;
             uSize = m_sFileInfo[0].st_size;
             pBuffer = vector_ptr(m_sFileInfo[0].vbuf);
 
-            if (m_uAPROM_Size < uSize) {
+            if (m_uAPROM_Size < m_uAPROM_Offset + uSize) {
                 m_eProcSts = EPS_ERR_SIZE;
                 Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
                 return;

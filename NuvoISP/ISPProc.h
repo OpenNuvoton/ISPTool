@@ -77,6 +77,8 @@ public:
     unsigned int m_uNVM_Addr;
     unsigned int m_uNVM_Size;
 
+    unsigned int m_uAPROM_Offset;
+
     bool UpdateSizeInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfig1);
 
     // Programming Option is binding with UI

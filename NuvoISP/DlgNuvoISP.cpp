@@ -129,6 +129,7 @@ BEGIN_MESSAGE_MAP(CNuvoISPDlg, CDialog)
     ON_CBN_SELCHANGE(IDC_COMBO_COM_PORT, OnComboChange)
     //ON_WM_DEVICECHANGE()
     ON_MESSAGE(WM_DEVICECHANGE, OnDeviceChange)
+    ON_EN_KILLFOCUS(IDC_EDIT_APROM_BASE_ADDRESS, OnKillfocusEditAPRomOffset)
 END_MESSAGE_MAP()
 
 BOOL CNuvoISPDlg::OnInitDialog()
@@ -157,7 +158,7 @@ BOOL CNuvoISPDlg::OnInitDialog()
     m_sConnect = _T("Disconnected");
     UpdateData(FALSE);
     // Title
-    SetWindowText(_T("Nuvoton NuMicro ISP Programming Tool 3.03"));
+    SetWindowText(_T("Nuvoton NuMicro ISP Programming Tool 3.04"));
 
     // Set data view area
     // Btn Text --> Tab Text
@@ -498,6 +499,8 @@ void CNuvoISPDlg::OnButtonStart()
             }
         }
 
+        // In case user press "Enter" after typing offset, need to call OnKillfocusEditAPRomOffset manually
+        OnKillfocusEditAPRomOffset();
         UpdateAddrOffset();
 
         if (strErr.IsEmpty()) {
@@ -646,6 +649,8 @@ void CNuvoISPDlg::OnPaint()
 
 void CNuvoISPDlg::ShowChipInfo_OffLine(void)
 {
+    m_uAPROM_Offset = 0;
+    SetDlgItemText(IDC_EDIT_APROM_BASE_ADDRESS, _T("0"));
     m_ButtonConnect.SetWindowText(_T("Connect"));
     SetDlgItemText(IDC_EDIT_PARTNO, _T(""));
     SetDlgItemText(IDC_STATIC_PARTNO, _T(""));
@@ -702,23 +707,14 @@ void CNuvoISPDlg::ShowChipInfo_M2351(void)
     ShowDlgItem(IDC_STATIC_CONFIG_VALUE_3, 1);
     ChangeBtnText(1, _T("APROM_NS"));
     m_uAPROM_Size = gsChipCfgInfo.uProgramMemorySize; // m_ISPLdDev.m_ConnectInfo[0];
+    ShowDlgItem(IDC_STATIC_APOFFSET, 1);
+    ShowDlgItem(IDC_EDIT_APROM_BASE_ADDRESS, 1);
+    EnableDlgItem(IDC_EDIT_APROM_BASE_ADDRESS, 1);
 
     if (m_SelInterface.GetCurSel() == 5) { // CAN interface
         ShowDlgItem(IDC_STATIC_APOFFSET, 1);
         ShowDlgItem(IDC_EDIT_APROM_BASE_ADDRESS, 1);
         EnableDlgItem(IDC_EDIT_APROM_BASE_ADDRESS, 1);
-        CString strAddr;
-        GetDlgItemText(IDC_EDIT_APROM_BASE_ADDRESS, strAddr);
-        m_uAPROM_Addr = ::_tcstoul(strAddr, 0, 16);
-        m_uAPROM_Addr &= 0xFF800; // 2K page alignment
-
-        if (m_uAPROM_Addr > m_uAPROM_Size) {
-            m_uAPROM_Addr = 0;
-        }
-
-        m_uAPROM_Size -= m_uAPROM_Addr;
-        strAddr.Format(_T("%06X"), m_uAPROM_Addr);
-        SetDlgItemText(IDC_EDIT_APROM_BASE_ADDRESS, strAddr);
         m_uNVM_Size = 0;
         m_bProgram_NVM = 0;
     } else {
@@ -733,6 +729,7 @@ void CNuvoISPDlg::ShowChipInfo_M2351(void)
         }
     }
 
+    EnableDlgItem(IDC_BUTTON_NVM, (m_uNVM_Size != 0));
     EnableDlgItem(IDC_CHECK_NVM, (m_uNVM_Size != 0));
     std::ostringstream os;
 
@@ -870,21 +867,6 @@ void CNuvoISPDlg::UpdateAddrOffset()
         SetDlgItemText(IDC_EDIT_APROM_BASE_ADDRESS, _T("4000"));
         strAddr.Format(_T("%06X"), uAddr);
         SetDlgItemText(IDC_EDIT_FLASH_BASE_ADDRESS, strAddr);
-    } else if (gsChipCfgInfo.uSeriesCode == IDD_DIALOG_CONFIGURATION_M2351) {
-        if (m_SelInterface.GetCurSel() == 5) { // CAN interface
-            GetDlgItemText(IDC_EDIT_APROM_BASE_ADDRESS, strAddr);
-            m_uAPROM_Addr = ::_tcstoul(strAddr, 0, 16);
-            m_uAPROM_Addr &= 0xFF800; // 2K page alignment
-            m_uAPROM_Size = gsChipCfgInfo.uProgramMemorySize;
-
-            if (m_uAPROM_Addr > m_uAPROM_Size) {
-                m_uAPROM_Addr = 0;
-            }
-
-            m_uAPROM_Size -= m_uAPROM_Addr;
-            strAddr.Format(_T("%06X"), m_uAPROM_Addr);
-            SetDlgItemText(IDC_EDIT_APROM_BASE_ADDRESS, strAddr);
-        }
     } else {
         return;
     }
@@ -955,4 +937,24 @@ void CNuvoISPDlg::ChangeBtnText(int nBtn, LPTSTR pszText)
     ti.mask = TCIF_TEXT;
     ti.pszText = pszText;
     VERIFY(m_TabData.SetItem(nBtn, &ti));
+}
+
+void CNuvoISPDlg::OnKillfocusEditAPRomOffset()
+{
+    if (gsChipCfgInfo.uSeriesCode != IDD_DIALOG_CONFIGURATION_M2351) {
+        return;
+    }
+
+    CString strAddr;
+    GetDlgItemText(IDC_EDIT_APROM_BASE_ADDRESS, strAddr);
+    m_uAPROM_Offset = ::_tcstoul(strAddr, 0, 16);
+    m_uAPROM_Offset &= 0xFF800; // 2K page alignment
+
+    if (m_uAPROM_Offset >= m_uAPROM_Size) {
+        m_uAPROM_Offset = 0;
+    }
+
+    strAddr.Format(_T("%06X"), m_uAPROM_Offset);
+    SetDlgItemText(IDC_EDIT_APROM_BASE_ADDRESS, strAddr);
+    TRACE(_T("OnKillfocusEditAPRomOffset\n"));
 }
