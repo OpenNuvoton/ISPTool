@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "NuDataBase.h"
+#include "..\resource.h"
 
 #include "FlashInfo.h"
 extern struct CPartNumID g_PartNumIDs[];
@@ -42,6 +43,16 @@ bool GetInfo_NuVoice(DWORD dwChipID, DWORD *pConfig)
 bool GetChipStaticInfo(unsigned int uID)
 {
     if (gsChipCfgInfo.uID == uID) {
+        return true;
+    }
+
+    if (0x00550505 == uID) {
+        char pName[] = "NUC505";
+        memset(&gsChipCfgInfo, 0, sizeof(gsChipCfgInfo));
+        memcpy(gsChipCfgInfo.szPartNumber, pName, sizeof(pName));
+        gsChipCfgInfo.uID = uID;
+        gsChipCfgInfo.uSeriesCode = NUC_CHIP_TYPE_NUC505;
+        gsChipCfgInfo.uProductLine = 2;
         return true;
     } else {
         char pName[] = "Unknown Chip";
@@ -94,11 +105,28 @@ bool GetChipStaticInfo(unsigned int uID)
     }
 }
 
-static bool GetChipDynamicInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfig1)
+static bool SkipDynamicInfo()
+{
+    if (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_NUC505) {
+        return true;
+    }
+
+    if (gsChipCfgInfo.uSeriesCode == IDD_DIALOG_CONFIGURATION_M2351) {
+        return true;
+    }
+
+    return false;
+}
+
+bool GetChipDynamicInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfig1)
 {
     if (gsChipCfgInfo.uID == uID) {
         if ((gsChipCfgInfo.uConfig0 == uConfig0) && (gsChipCfgInfo.uConfig1 == uConfig1)) {
             return true;
+        }
+
+        if (SkipDynamicInfo()) {
+            return false;
         }
     }
 
@@ -109,6 +137,10 @@ static bool GetChipDynamicInfo(unsigned int uID, unsigned int uConfig0, unsigned
         uProductLine = gsChipCfgInfo.uProductLine;
         uProgramMemorySize = gsChipCfgInfo.uProgramMemorySize;
         uFlashType = gsChipCfgInfo.uFlashType;
+
+        if (SkipDynamicInfo()) {
+            return false;
+        }
     }
 
     unsigned int uAPROM_Size;
@@ -171,29 +203,6 @@ static bool GetChipDynamicInfo(unsigned int uID, unsigned int uConfig0, unsigned
 
         return false;
     }
-}
-
-// call by CNuvoISPDlg::ShowChipInfo(): Show Chip Info. after connection
-// call by CISPProc::Thread_ProgramFlash(): Update Size Info. if CONFIG is changed
-bool UpdateSizeInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfig1,
-                    unsigned int *puNVM_Addr,
-                    unsigned int *puAPROM_Size, unsigned int *puNVM_Size)
-{
-    if (GetChipDynamicInfo(uID, uConfig0, uConfig1)) {
-        *puNVM_Addr = gsChipCfgInfo.uNVM_Addr;
-        *puNVM_Size = gsChipCfgInfo.uNVM_Size;
-        *puAPROM_Size = gsChipCfgInfo.uAPROM_Size;
-        return true;
-    } else {
-        return false;
-    }
-}
-
-// call by CNuvoISPDlg::ShowChipInfo()
-std::string GetPartNumber(unsigned int uID)
-{
-    GetChipDynamicInfo(uID, 0xFFFFFFFF, 0xFFFFFFFF);
-    return gsChipCfgInfo.szPartNumber;
 }
 
 struct CPartNumID g_AudioPartNumIDs[] = {

@@ -242,10 +242,8 @@ void CISPProc::Thread_ProgramFlash()
             }
         }
 
-        if ((m_bErase || m_bProgram_Config) && (m_bProgram_APROM || m_bProgram_NVM) && (m_bSkipSizeCheck == FALSE)) {
-            UpdateSizeInfo(m_ulDeviceID, m_CONFIG[0], m_CONFIG[1],
-                           &m_uNVM_Addr,
-                           &m_uAPROM_Size, &m_uNVM_Size);
+        if ((m_bErase || m_bProgram_Config) && (m_bProgram_APROM || m_bProgram_NVM)) {
+            UpdateSizeInfo(m_ulDeviceID, m_CONFIG[0], m_CONFIG[1]);
         }
 
         if (m_bProgram_APROM) {
@@ -374,4 +372,16 @@ void CISPProc::LockGUI()
 void CISPProc::UnlockGUI()
 {
     ::ReleaseMutex(m_hThreadMutex);
+}
+
+bool CISPProc::UpdateSizeInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfig1)
+{
+    if (GetChipDynamicInfo(uID, uConfig0, uConfig1)) {
+        m_uNVM_Addr = gsChipCfgInfo.uNVM_Addr;
+        m_uNVM_Size = gsChipCfgInfo.uNVM_Size;
+        m_uAPROM_Size = gsChipCfgInfo.uAPROM_Size;
+        return true;
+    } else {
+        return false;
+    }
 }

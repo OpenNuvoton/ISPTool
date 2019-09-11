@@ -13,7 +13,9 @@
 /* NuVoice Series */
 #include "IGetChipInformation.h" // for enum eAllChipSeries
 
+// Note: There is no dynamic info. for NUC505 & M2351.
 struct CChipConfigInfo {
+    // Static Info.
     unsigned int uID;
     unsigned int uSeriesCode;
     unsigned int uProgramMemorySize;
@@ -21,6 +23,7 @@ struct CChipConfigInfo {
     char szPartNumber[100];
     unsigned int uFlashType;
     unsigned int uProductLine; // 0: Unknown, 1: 8051-1T, 2: NuMicro, 3: Audio
+    // Dynamic info. according to user configuration (CONFIG0, CONFIG1)
     unsigned int uConfig0;
     unsigned int uConfig1;
     unsigned int uAPROM_Addr;
@@ -32,11 +35,7 @@ struct CChipConfigInfo {
 };
 
 extern CChipConfigInfo gsChipCfgInfo;
-std::string GetPartNumber(unsigned int uID);
-
-bool UpdateSizeInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfig1,
-                    unsigned int *puAPROM_Size,
-                    unsigned int *puNVM_Addr, unsigned int *puNVM_Size);
+bool GetChipDynamicInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfig1);
 
 extern std::vector<CPartNumID> g_NuMicroChipSeries;
 extern std::vector<CPartNumID> g_AudioChipSeries;

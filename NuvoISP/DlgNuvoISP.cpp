@@ -756,8 +756,7 @@ void CNuvoISPDlg::ShowChipInfo_M2351(void)
 
 void CNuvoISPDlg::ShowChipInfo_OnLine()
 {
-    // There is no need to check flash size for NUC505 & M2351 series
-    m_bSkipSizeCheck = TRUE;
+    bool bSizeValid = UpdateSizeInfo(m_ulDeviceID, m_CONFIG[0], m_CONFIG[1]);
 
     // There is no specific part number for NUC505
     if (0x00550505 == m_ulDeviceID) {
@@ -767,7 +766,7 @@ void CNuvoISPDlg::ShowChipInfo_OnLine()
 
     // Update Part Number & CONFIG0 ~ CONFIG3 for all series
     CString strTmp = _T("");
-    strTmp = GetPartNumber(m_ulDeviceID).c_str();
+    strTmp = gsChipCfgInfo.szPartNumber;
     SetDlgItemText(IDC_EDIT_PARTNO, strTmp);
     strTmp.Format(_T("0x%08X"), m_CONFIG_User[0]);
     SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, strTmp);
@@ -808,10 +807,7 @@ void CNuvoISPDlg::ShowChipInfo_OnLine()
         ShowDlgItem(IDC_STATIC_CONFIG_VALUE_1, 0);
     }
 
-    m_bSkipSizeCheck = FALSE;
-
-    if (UpdateSizeInfo(m_ulDeviceID, m_CONFIG[0], m_CONFIG[1],
-                       &m_uNVM_Addr, &m_uAPROM_Size, &m_uNVM_Size)) {
+    if (bSizeValid) {
         std::ostringstream os;
         os << "APROM: " << size_str(m_uAPROM_Size) << ","
            " Data: " << size_str(m_uNVM_Size);
