@@ -65,7 +65,7 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_AU9100, CDialog)
     //{{AFX_MSG_MAP(CDialogConfiguration_AU9100)
     ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnButtonClick)
-    ON_EN_CHANGE(IDC_EDIT_FLASH_BASE_ADDRESS, OnChangeEditFlashBaseAddress)
+    ON_EN_KILLFOCUS(IDC_EDIT_FLASH_BASE_ADDRESS, OnKillfocusEditFlashBaseAddress)
     ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnButtonClick)
@@ -172,55 +172,25 @@ void CDialogConfiguration_AU9100::OnButtonClick()
     UpdateData(FALSE);
 }
 
-void CDialogConfiguration_AU9100::OnChangeEditFlashBaseAddress()
+void CDialogConfiguration_AU9100::OnKillfocusEditFlashBaseAddress()
 {
-    // TODO: If this is a RICHEDIT control, the control will not
-    // send this notification unless you override the CDialog::OnInitDialog()
-    // function and call CRichEditCtrl().SetEventMask()
-    // with the ENM_CHANGE flag ORed into the mask.
-    // TODO: Add your control notification handler code here
     UpdateData(TRUE);
-    TCHAR *pEnd;
-    unsigned int uFlashBaseAddress = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
-    m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);// | 0xFFF00000);
-    unsigned int uPageNum = uFlashBaseAddress / m_uPageSize;
-    unsigned int uLimitNum = (m_bLDROM_EN ? m_uProgramMemorySize : (m_uProgramMemorySize + m_uLDROM_Size)) / m_uPageSize;
-    unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * m_uPageSize) : 0;
-    m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uDataFlashSize : 0) / 1024.);
-    UpdateData(FALSE);
+    CDialogResize::OnKillfocusEditFlashBaseAddress(m_bDataFlashEnable, (m_bLDROM_EN ? m_uProgramMemorySize : (m_uProgramMemorySize + m_uLDROM_Size)), m_uPageSize);
 }
 
 void CDialogConfiguration_AU9100::OnOK()
 {
     // TODO: Add extra validation here
     UpdateData(TRUE);
+    OnKillfocusEditFlashBaseAddress();
     GUIToConfig();
     CDialog::OnOK();
 }
 
 void CDialogConfiguration_AU9100::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)
 {
-    LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
-    // TODO: Add your control notification handler code here
     UpdateData(TRUE);
-    TCHAR *pEnd;
-    unsigned int uFlashBaseAddress = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
-    unsigned int uPageNum = uFlashBaseAddress / m_uPageSize;
-    unsigned int uLimitNum = (m_bLDROM_EN ? m_uProgramMemorySize : (m_uProgramMemorySize + m_uLDROM_Size)) / m_uPageSize;
-
-    if (pNMUpDown->iDelta == 1) {
-        uPageNum += 1;
-    } else if (pNMUpDown->iDelta == -1 && uPageNum > 0) {
-        uPageNum -= 1;
-    }
-
-    uFlashBaseAddress = 0 + min(uPageNum, uLimitNum) * m_uPageSize;
-    m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
-    m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);// | 0xFFF00000);
-    unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * m_uPageSize) : 0;
-    m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uDataFlashSize : 0) / 1024.);
-    UpdateData(FALSE);
-    *pResult = 0;
+    CDialogResize::OnDeltaposSpinDataFlashSize(pNMHDR, pResult, m_bDataFlashEnable, (m_bLDROM_EN ? m_uProgramMemorySize : (m_uProgramMemorySize + m_uLDROM_Size)), m_uPageSize);
 }
 
 void CDialogConfiguration_AU9100::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)

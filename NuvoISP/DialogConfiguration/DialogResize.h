@@ -32,4 +32,5 @@ protected:
 
 public:
     void OnKillfocusEditFlashBaseAddress(BOOL bDataFlashEnable, unsigned int uProgramMemorySize, unsigned int uPageSize);
+    void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult, BOOL bDataFlashEnable, unsigned int uProgramMemorySize, unsigned int uPageSize);
 };

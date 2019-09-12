@@ -294,6 +294,10 @@ void CDialogResize::AdjustDPI()
 
 void CDialogResize::OnKillfocusEditFlashBaseAddress(BOOL bDataFlashEnable, unsigned int	uProgramMemorySize, unsigned int uPageSize)
 {
+    ASSERT(GetDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS) != NULL);
+    ASSERT(GetDlgItem(IDC_EDIT_DATA_FLASH_SIZE) != NULL);
+    ASSERT(GetDlgItem(IDC_STATIC_CONFIG_VALUE_1) != NULL);
+
     if (!bDataFlashEnable) {
         return;
     }
@@ -322,3 +326,50 @@ void CDialogResize::OnKillfocusEditFlashBaseAddress(BOOL bDataFlashEnable, unsig
     SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, sConfigValue1);
     UpdateData(TRUE); // "MUST" use TRUE, not FALSE
 }
+
+void CDialogResize::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult, BOOL bDataFlashEnable, unsigned int uProgramMemorySize, unsigned int uPageSize)
+{
+    ASSERT(GetDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS) != NULL);
+    ASSERT(GetDlgItem(IDC_EDIT_DATA_FLASH_SIZE) != NULL);
+    ASSERT(GetDlgItem(IDC_STATIC_CONFIG_VALUE_1) != NULL);
+
+    if (!bDataFlashEnable) {
+        return;
+    }
+
+    CString sFlashBaseAddress, sDataFlashSize, sConfigValue1;
+    GetDlgItemText(IDC_EDIT_FLASH_BASE_ADDRESS, sFlashBaseAddress);
+    TCHAR *pEnd;
+    LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+    unsigned int uFlashBaseAddress = ::_tcstoul(sFlashBaseAddress, &pEnd, 16);
+
+    if (pNMUpDown->iDelta == 1) {
+        if ((uFlashBaseAddress + uPageSize) < uProgramMemorySize) {
+            uFlashBaseAddress += uPageSize;
+        }
+    } else if (pNMUpDown->iDelta == -1) {
+        if (!(uFlashBaseAddress <= uPageSize)) {
+            uFlashBaseAddress -= uPageSize;
+        }
+    }
+
+    if (uFlashBaseAddress < uPageSize) {
+        uFlashBaseAddress = uPageSize;
+    } else if (uFlashBaseAddress >= uProgramMemorySize) {
+        uFlashBaseAddress = uProgramMemorySize - uPageSize;
+    } else {
+        uFlashBaseAddress &= ~(uPageSize - 1);
+    }
+
+    //uFlashBaseAddress &= ~(uPageSize - 1); //(uFlashBaseAddress /*& (uProgramMemorySize - uPageSize)*/) / uPageSize * uPageSize;
+    sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
+    SetDlgItemText(IDC_EDIT_FLASH_BASE_ADDRESS, sFlashBaseAddress);
+    sDataFlashSize.Format(_T("%.2fK"), (bDataFlashEnable && (uFlashBaseAddress < uProgramMemorySize)) ? ((uProgramMemorySize - uFlashBaseAddress) / 1024.) : 0.);
+    SetDlgItemText(IDC_EDIT_DATA_FLASH_SIZE, sDataFlashSize);
+    sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);// | 0xFFF00000);
+    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, sConfigValue1);
+    UpdateData(TRUE); // "MUST" use TRUE, not FALSE
+//	UpdateData(FALSE);
+    *pResult = 0;
+}
+

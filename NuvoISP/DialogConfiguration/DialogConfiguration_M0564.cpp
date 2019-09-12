@@ -388,33 +388,15 @@ void CDialogConfiguration_M0564::OnOK()
 {
     // TODO: Add extra validation here
     UpdateData(TRUE);
+    OnKillfocusEditFlashBaseAddress();
     GUIToConfig(0);
     CDialog::OnOK();
 }
 
 void CDialogConfiguration_M0564::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)
 {
-    LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
-    // TODO: Add your control notification handler code here
     UpdateData(TRUE);
-    TCHAR *pEnd;
-    unsigned int uFlashBaseAddress = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
-    unsigned int uPageNum = uFlashBaseAddress / m_uPageSize; //APROM
-    unsigned int uLimitNum = m_uProgramMemorySize / m_uPageSize;
-
-    if (pNMUpDown->iDelta == 1) {
-        uPageNum += 1;
-    } else if (pNMUpDown->iDelta == -1 && uPageNum > 0) {
-        uPageNum -= 1;
-    }
-
-    uFlashBaseAddress = 0 + min(uPageNum, uLimitNum) * m_uPageSize;
-    m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
-    m_sConfigValue1.Format(_T("0x%08X"), uFlashBaseAddress);// | 0xFFF00000);
-    unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * m_uPageSize) : 0;
-    m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uDataFlashSize : 0) / 1024.);
-    UpdateData(FALSE);
-    *pResult = 0;
+    CDialogResize::OnDeltaposSpinDataFlashSize(pNMHDR, pResult, m_bDataFlashEnable, m_uProgramMemorySize, m_uPageSize);
 }
 
 void CDialogConfiguration_M0564::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
