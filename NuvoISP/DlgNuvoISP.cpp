@@ -705,41 +705,17 @@ void CNuvoISPDlg::ShowChipInfo_M2351(void)
     SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0-3:"));
     ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 1);
     ShowDlgItem(IDC_STATIC_CONFIG_VALUE_3, 1);
-    ChangeBtnText(1, _T("APROM_NS"));
+    // ChangeBtnText(1, _T("APROM_NS"));
     m_uAPROM_Size = gsChipCfgInfo.uProgramMemorySize; // m_ISPLdDev.m_ConnectInfo[0];
     ShowDlgItem(IDC_STATIC_APOFFSET, 1);
     ShowDlgItem(IDC_EDIT_APROM_BASE_ADDRESS, 1);
     EnableDlgItem(IDC_EDIT_APROM_BASE_ADDRESS, 1);
-
-    if (m_SelInterface.GetCurSel() == 5) { // CAN interface
-        ShowDlgItem(IDC_STATIC_APOFFSET, 1);
-        ShowDlgItem(IDC_EDIT_APROM_BASE_ADDRESS, 1);
-        EnableDlgItem(IDC_EDIT_APROM_BASE_ADDRESS, 1);
-        m_uNVM_Size = 0;
-        m_bProgram_NVM = 0;
-    } else {
-        m_uNVM_Addr = m_ISPLdDev.m_ConnectInfo[1];
-
-        if (m_uNVM_Addr < m_uAPROM_Size) {
-            m_uNVM_Size = (m_uAPROM_Size - m_uNVM_Addr);
-            m_uAPROM_Size = m_uNVM_Addr;
-        } else {
-            m_uNVM_Size = 0;
-            m_bProgram_NVM = 0;
-        }
-    }
-
+    m_uNVM_Size = 0;
+    m_bProgram_NVM = 0;
     EnableDlgItem(IDC_BUTTON_NVM, (m_uNVM_Size != 0));
     EnableDlgItem(IDC_CHECK_NVM, (m_uNVM_Size != 0));
     std::ostringstream os;
-
-    if (m_SelInterface.GetCurSel() == 5) { // CAN interface
-        os << "APROM + APROM_NS: " << size_str(gsChipCfgInfo.uProgramMemorySize);
-    } else {
-        os << "APROM: " << size_str(m_uAPROM_Size) << ","
-           " APROM_NS: " << size_str(m_uNVM_Size);
-    }
-
+    os << "APROM: " << size_str(gsChipCfgInfo.uProgramMemorySize);
     std::string cstr = os.str();
     std::wstring wcstr(cstr.begin(), cstr.end());
     CString str = wcstr.c_str();
