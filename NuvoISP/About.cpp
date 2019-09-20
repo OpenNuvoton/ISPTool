@@ -30,6 +30,7 @@ void CAboutDlg::DoDataExchange(CDataExchange *pDX)
     DDX_Control(pDX, IDC_LINK_NUVOTON, m_LinkNuvoton);
     DDX_Control(pDX, IDC_LINK_GITHUB, m_LinkGitHub);
     DDX_Control(pDX, IDC_LINK_GITEE, m_LinkGITEE);
+    DDX_Control(pDX, IDC_LINK_GITLAB, m_LinkGitLab);
     //}}AFX_DATA_MAP
 }
 
@@ -38,6 +39,7 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
     ON_BN_CLICKED(IDC_LINK_NUVOTON, OnLinkNuvoton)
     ON_BN_CLICKED(IDC_LINK_GITHUB, OnLinkGitHub)
     ON_BN_CLICKED(IDC_LINK_GITEE, OnLinkGITEE)
+    ON_BN_CLICKED(IDC_LINK_GITLAB, OnLinkGitLab)
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -69,4 +71,9 @@ void CAboutDlg::OnLinkGitHub()
 void CAboutDlg::OnLinkGITEE()
 {
     m_LinkGITEE.VisitURL();
+}
+
+void CAboutDlg::OnLinkGitLab()
+{
+    m_LinkGitLab.VisitURL();
 }

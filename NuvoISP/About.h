@@ -17,6 +17,7 @@ public:
     CHyperLink	m_LinkNuvoton;
     CHyperLink	m_LinkGitHub;
     CHyperLink	m_LinkGITEE;
+    CHyperLink	m_LinkGitLab;
     //}}AFX_DATA
 
     // ClassWizard generated virtual function overrides
@@ -35,6 +36,7 @@ protected:
     afx_msg void OnLinkNuvoton();
     afx_msg void OnLinkGitHub();
     afx_msg void OnLinkGITEE();
+    afx_msg void OnLinkGitLab();
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 };
