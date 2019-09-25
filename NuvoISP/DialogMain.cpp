@@ -19,7 +19,7 @@ CDialogMain::CDialogMain(UINT nIDTemplate, CWnd *pParent /*=NULL*/)
 #ifdef _DEBUG
     // offline test mode
     // get chip series from database
-    LoadChipSeries();
+    int ret = LoadChipSeries();
 #endif
 }
 
@@ -532,12 +532,12 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 Config = (((CDialogConfiguration_NM1120 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            // IDD_DIALOG_CONFIGURATION_N76E1T offline mode
-            case 0x00002140:
-            case 0x00002F50:
-            case 0x00003650:
-            case 0x00003E61:
-            case 0x06004721:
+            // case for NUC_CHIP_TYPE_GENERAL_1T offline test mode
+            case 0x00002150: // N76E885
+            case 0x00002F50: // N76E616
+            case 0x00003650: // N76E003
+            case 0x00104832: // ML51LC0XX
+            case 0x0B004B21: // MS51FB9AE
                 uID = uSeriesCode;
 
             case NUC_CHIP_TYPE_GENERAL_1T:
@@ -790,7 +790,7 @@ void CDialogMain::EnableInterface(bool bEnable)
     }
 }
 
-#define SERIES_NUM 8
+#define SERIES_NUM 9
 bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
 {
     unsigned int CFG[4] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
@@ -808,6 +808,12 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
 
         for (i = 0; i < g_NuMicroChipSeries.size(); i++) {
             std::string str(g_NuMicroChipSeries[i].szPartNumber);
+
+            // NuDataBase.cpp: int LoadChipSeries(void)
+            if (g_NuMicroChipSeries[i].uID == NUC_CHIP_TYPE_GENERAL_1T) {
+                subMenu[7]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
+                continue;
+            }
 
             if (str.find("NUC1") != std::string::npos) {
                 subMenu[0]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
@@ -828,7 +834,7 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
 
         for (i = 0; i < g_AudioChipSeries.size(); i++) {
             std::string str(g_AudioChipSeries[i].szPartNumber);
-            subMenu[7]->AppendMenu(MF_STRING, g_AudioChipSeries[i].uProjectCode, CString(g_AudioChipSeries[i].szPartNumber));
+            subMenu[SERIES_NUM - 1]->AppendMenu(MF_STRING, g_AudioChipSeries[i].uProjectCode, CString(g_AudioChipSeries[i].szPartNumber));
         }
 
         i = 0;
@@ -838,8 +844,9 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
         menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[i++]->m_hMenu, _T("M05x Series"));
         menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[i++]->m_hMenu, _T("NUC029 Series"));
         menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[i++]->m_hMenu, _T("M4 Series"));
-        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[7]->m_hMenu, _T("Audio Series"));
         menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[i++]->m_hMenu, _T("Others"));
+        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[i++]->m_hMenu, _T("8051 1T Series"));
+        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[i++]->m_hMenu, _T("Audio Series"));
 
         for (i = 0; i < SERIES_NUM; i++) {
             delete subMenu[i];

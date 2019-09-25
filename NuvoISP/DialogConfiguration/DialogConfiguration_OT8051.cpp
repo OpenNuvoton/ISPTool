@@ -197,7 +197,7 @@ BOOL CDialogConfiguration_OT8051::OnInitDialog()
             GetDlgItem(IDC_GROUP_RPD)->ShowWindow(SW_HIDE);
             GetDlgItem(IDC_RADIO_RPD_RESET)->ShowWindow(SW_HIDE);
             GetDlgItem(IDC_RADIO_RPD_INPUT)->ShowWindow(SW_HIDE);
-            GetDlgItem(IDC_RADIO_BOV_7)->SetWindowText(_T("1.8V"));
+            GetDlgItem(IDC_RADIO_BOV_7)->SetWindowText(_T("Default 1.8V"));
             GetDlgItem(IDC_RADIO_BOV_6)->SetWindowText(_T("1.8V"));
             GetDlgItem(IDC_RADIO_BOV_5)->SetWindowText(_T("2.0V"));
             GetDlgItem(IDC_RADIO_BOV_4)->SetWindowText(_T("2.4V"));

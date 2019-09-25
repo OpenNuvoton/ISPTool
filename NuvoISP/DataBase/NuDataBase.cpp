@@ -226,16 +226,42 @@ struct CPartNumID g_AudioPartNumIDs[] = {
     {"---------", 0xFFFFFFFF, 0},
 };
 
+struct CPartNumID g_80511TPartNumIDs[] = {
+    /* 8051 1T N76 & ML51 & MS51 series */
+    {"N76E885", 0x00002150, NUC_CHIP_TYPE_GENERAL_1T},
+    {"N76E616", 0x00002F50, NUC_CHIP_TYPE_GENERAL_1T},
+    {"N76E003", 0x00003650, NUC_CHIP_TYPE_GENERAL_1T},
+
+    // For ML51, Version A (PID0 = 0x00), Version B (PID0 = 0x10)
+    {"ML51LC0XX", 0x00104832, NUC_CHIP_TYPE_GENERAL_1T},
+    {"MS51FB9AE", 0x0B004B21, NUC_CHIP_TYPE_GENERAL_1T},
+    {"---------", 0xFFFFFFFF, 0},
+};
+
 int LoadChipSeries(void)
 {
     unsigned int i = 0, uProjectCode = 0;
 
     while (g_PartNumIDs[i].uID != 0xFFFFFFFF) {
+        if (g_PartNumIDs[i].uProjectCode == NUC_CHIP_TYPE_GENERAL_1T) {
+            break;
+        }
+
         if (g_PartNumIDs[i].uProjectCode != uProjectCode) {
             uProjectCode = g_PartNumIDs[i].uProjectCode;
             g_NuMicroChipSeries.push_back(g_PartNumIDs[i]);
         }
 
+        i++;
+    }
+
+    i = 0;
+
+    while (g_80511TPartNumIDs[i].uID != 0xFFFFFFFF) {
+        struct CPartNumID tmp = g_80511TPartNumIDs[i];
+        tmp.uProjectCode = g_80511TPartNumIDs[i].uID;
+        tmp.uID = g_80511TPartNumIDs[i].uProjectCode;
+        g_NuMicroChipSeries.push_back(tmp);
         i++;
     }
 
