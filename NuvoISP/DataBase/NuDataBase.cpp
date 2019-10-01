@@ -96,6 +96,7 @@ bool GetChipStaticInfo(unsigned int uID)
 
             gsChipCfgInfo.uProductLine = 2; // NuMicro
             gsChipCfgInfo.uProgramMemorySize = flashInfo.uProgramMemorySize;
+            gsChipCfgInfo.uDataFlashSize = flashInfo.uDataFlashSize;
             gsChipCfgInfo.uFlashType = flashInfo.uFlashType;
             gsChipCfgInfo.uLDROM_Size = flashInfo.uISPFlashSize;
             return true;
