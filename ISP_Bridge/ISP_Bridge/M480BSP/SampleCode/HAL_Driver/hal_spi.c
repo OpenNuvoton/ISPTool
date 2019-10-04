@@ -30,8 +30,8 @@ void SPI1_Init(uint32_t Pclk0)
     SPI1->I2SCTL &= ~SPI_I2SCTL_I2SEN_Msk;
     /* Default setting: slave selection signal is active low; disable automatic slave selection function. */
     SPI1->SSCTL = SPI_SS_ACTIVE_LOW;
-    /* Default setting: MSB first, disable unit transfer interrupt, SP_CYCLE = 0. */
-    SPI1->CTL = SPI_MASTER | ((32 & 0x1F) << SPI_CTL_DWIDTH_Pos) | (SPI_MODE_0) | SPI_CTL_SPIEN_Msk;
+    /* Default setting: MSB first, disable unit transfer interrupt, SP_CYCLE = 8. */
+    SPI1->CTL = SPI_MASTER | ((32 & 0x1F) << SPI_CTL_DWIDTH_Pos) | (SPI_MODE_0) | SPI_CTL_SPIEN_Msk | (0x8 << SPI_CTL_SUSPITV_Pos);
     CLK->CLKSEL2 = (CLK->CLKSEL2 & (~CLK_CLKSEL2_SPI1SEL_Msk)) | CLK_CLKSEL2_SPI1SEL_PCLK0;
     SPI1->CLKDIV = (SPI1->CLKDIV & (~SPI_CLKDIV_DIVIDER_Msk)) | (u32Div << SPI_CLKDIV_DIVIDER_Pos);
     /* Enable the automatic hardware slave select function. Select the SS pin and configure as low-active. */
