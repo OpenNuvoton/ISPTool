@@ -106,8 +106,7 @@ typedef struct s_hsusbd_info
     uint8_t *gu8FSOtherConfigDesc;  /*!< Other Speed Config descriptor */
     uint8_t **gu8HidReportDesc;     /*!< Pointer for HID Report descriptor */
     uint32_t *gu32HidReportSize;    /*!< Pointer for HID Report descriptor Size */
-    uint8_t **gu8FSHidReportDesc;   /*!< Pointer for HID Report descriptor */
-    uint32_t *gu32FSHidReportSize;  /*!< Pointer for HID Report descriptor Size */
+    uint32_t *gu32ConfigHidDescIdx; /*!< Pointer for HID Descriptor start index */
 
 } S_HSUSBD_INFO_T; /*!<USB Information Structure */
 
@@ -116,7 +115,7 @@ typedef struct s_hsusbd_info
 
 /** @cond HIDDEN_SYMBOLS */
 extern uint32_t g_u32HsEpStallLock;
-extern uint8_t g_hsusbd_Configured;
+extern uint8_t volatile g_hsusbd_Configured;
 extern uint8_t g_hsusbd_ShortPacket;
 extern uint8_t g_hsusbd_CtrlZero;
 extern uint8_t g_hsusbd_UsbAddr;

@@ -139,20 +139,6 @@ static uint32_t EMAC_Nsec2Subsec(uint32_t nsec);
   @{
 */
 
-/**
-  * @brief  Trigger EMAC Rx function
-  * @param  None
-  * @return None
-  */
-//#define EMAC_TRIGGER_RX() do{EMAC->RXST = 0UL;}while(0)
-
-/**
-  * @brief  Trigger EMAC Tx function
-  * @param  None
-  * @return None
-  */
-#define EMAC_TRIGGER_TX() do{EMAC->TXST = 0UL;}while(0)
-
 
 /**
   * @brief  Write PHY register
@@ -619,14 +605,14 @@ void EMAC_RecvPktDone(void)
     desc->u32Data = desc->u32Backup1;
     desc->u32Next = desc->u32Backup2;
 
+    /* Change ownership to DMA for next use */
+    desc->u32Status1 |= EMAC_DESC_OWN_EMAC;
+
     /* Get Next Frame Descriptor pointer to process */
     desc = (EMAC_DESCRIPTOR_T *)desc->u32Next;
 
     /* Save last processed Rx descriptor */
     u32CurrentRxDesc = (uint32_t)desc;
-
-    /* Change ownership to DMA for next use */
-    desc->u32Status1 |= EMAC_DESC_OWN_EMAC;
 
     EMAC_TRIGGER_RX();
 }
