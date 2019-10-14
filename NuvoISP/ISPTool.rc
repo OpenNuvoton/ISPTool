@@ -1449,8 +1449,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 3,0,4,0
- PRODUCTVERSION 3,0,4,0
+ FILEVERSION 3,0,5,1014
+ PRODUCTVERSION 3,0,5,1014
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1466,12 +1466,12 @@ BEGIN
         BLOCK "040004b0"
         BEGIN
             VALUE "FileDescription", "ISP Programming Tool"
-            VALUE "FileVersion", "3.04"
+            VALUE "FileVersion", "3.05"
             VALUE "InternalName", "ISPTool"
-            VALUE "LegalCopyright", "Copyright (C) 2019"
+            VALUE "LegalCopyright", "Copyright (C) 2019~2020"
             VALUE "OriginalFilename", "NuvoISP.EXE"
             VALUE "ProductName", "ISP Programming Tool"
-            VALUE "ProductVersion", "3.04"
+            VALUE "ProductVersion", "3.05"
         END
     END
     BLOCK "VarFileInfo"
