@@ -100,7 +100,6 @@ protected:
     void GUIToConfig(int nEventID);
     afx_msg void OnKillfocusEditFlashBaseAddress();
     afx_msg void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnOK();
 };
 
 //{{AFX_INSERT_LOCATION}}
