@@ -369,7 +369,5 @@ CDialogConfiguration_M4521::CDialogConfiguration_M4521(unsigned int uProgramMemo
 
 BOOL CDialogConfiguration_M4521::OnInitDialog()
 {
-    GetDlgItem(IDC_RADIO_CLK_E12M)->SetWindowText(_T("External Crystal Clock (4~24MHz)"));
-    GetDlgItem(IDC_RADIO_GPF_CRYSTAL)->SetWindowText(_T("External Crystal Clock (4~24MHz)"));
     return CDialogConfiguration_M451::OnInitDialog();
 }

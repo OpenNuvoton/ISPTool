@@ -387,7 +387,6 @@ CDialogConfiguration_NUC121::CDialogConfiguration_NUC121(unsigned int uProgramMe
 
 BOOL CDialogConfiguration_NUC121::OnInitDialog()
 {
-    GetDlgItem(IDC_RADIO_CLK_I22M)->SetWindowText(_T("Internal high speed RC oscillator divided by 2 (24MHz)"));
     m_uPageSize = NUMICRO_FLASH_PAGE_SIZE_512;
     return CDialogConfiguration_M0564::OnInitDialog();
 }
