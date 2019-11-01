@@ -24,7 +24,6 @@ public:
     //{{AFX_DATA(CDialogConfiguration_NUC102)
     enum { IDD = IDD_DIALOG_CONFIGURATION_NUC102 };
     CNumEdit	m_FlashBaseAddress;
-    int		m_nRadioClk;
     int		m_nRadioBov;
     int		m_nRadioBS;
     CString	m_sConfigValue0;

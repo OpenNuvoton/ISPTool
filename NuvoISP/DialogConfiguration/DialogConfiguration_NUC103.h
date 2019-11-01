@@ -27,7 +27,6 @@ public:
     //{{AFX_DATA(CDialogConfiguration_NUC103)
     CNumEdit	m_FlashBaseAddress;
     CEdit	m_DataFlashSize;
-    int		m_nRadioClk;
     int		m_nRadioBov;
     int		m_nRadioBS;
     CString	m_sConfigValue0;

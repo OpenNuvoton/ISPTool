@@ -29,7 +29,6 @@ CDialogConfiguration_NUC103::CDialogConfiguration_NUC103(UINT nIDTemplate,
     , m_uDataFlashSize(uDataFlashSize)
 {
     //{{AFX_DATA_INIT(CDialogConfiguration_NUC103)
-    m_nRadioClk = -1;
     m_nRadioBov = -1;
     m_nRadioBS = -1;
     m_sConfigValue0 = _T("");
@@ -55,7 +54,6 @@ void CDialogConfiguration_NUC103::DoDataExchange(CDataExchange *pDX)
     DDX_Control(pDX, IDC_EDIT_FLASH_BASE_ADDRESS, m_FlashBaseAddress);
     DDX_Control(pDX, IDC_EDIT_DATA_FLASH_SIZE, m_DataFlashSize);
     DDX_Control(pDX, IDC_SPIN_DATA_FLASH_SIZE, m_SpinDataFlashSize);
-    DDX_Radio(pDX, IDC_RADIO_CLK_E12M, m_nRadioClk);
     DDX_Radio(pDX, IDC_RADIO_BOV_0, m_nRadioBov);
     DDX_Radio(pDX, IDC_RADIO_BS_LDROM, m_nRadioBS);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_0, m_sConfigValue0);
@@ -82,13 +80,11 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_NUC103, CDialog)
     ON_BN_CLICKED(IDC_RADIO_BOV_2, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BOV_3, OnButtonClick)
 
-    ON_BN_CLICKED(IDC_RADIO_CLK_E12M, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_WDT_POWER_DOWN, OnCheckClickWDTPD)
     ON_BN_CLICKED(IDC_CHECK_WDT_ENABLE, OnButtonClick)
     ON_EN_KILLFOCUS(IDC_EDIT_FLASH_BASE_ADDRESS, OnKillfocusEditFlashBaseAddress)
-    ON_BN_CLICKED(IDC_RADIO_CLK_I22M, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_CLOCK_FILTER_ENABLE, OnButtonClick)
@@ -134,17 +130,6 @@ void CDialogConfiguration_NUC103::ConfigToGUI(int nEventID)
 {
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
     unsigned int uConfig1 = m_ConfigValue.m_value[1];
-
-    switch (uConfig0 & NUC1XX_FLASH_CONFIG_CFOSC) {
-        case NUC1XX_FLASH_CONFIG_E12M:
-            m_nRadioClk = 0;
-            break;
-
-        case NUC1XX_FLASH_CONFIG_CFOSC:
-        default:
-            m_nRadioClk = 1;
-            break;
-    }
 
     switch (uConfig0 & NUC1XX_FLASH_CONFIG_CBOV) {
         case NUC1XX_FLASH_CONFIG_CBOV_45:
@@ -222,22 +207,6 @@ void CDialogConfiguration_NUC103::GUIToConfig(int nEventID)
 {
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
     unsigned int uConfig1;
-    uConfig0 &= ~NUC1XX_FLASH_CONFIG_CFOSC;
-
-    switch (m_nRadioClk) {
-        case 0:
-            uConfig0 |= NUC1XX_FLASH_CONFIG_E12M;
-            break;
-
-        case 1:
-            uConfig0 |= NUC1XX_FLASH_CONFIG_CFOSC;	/* New spec! */
-            break;
-
-        default:
-            /* Keep old value */
-            uConfig0 |= (m_ConfigValue.m_value[0] & NUC1XX_FLASH_CONFIG_CFOSC);
-    }
-
     uConfig0 &= ~NUC1XX_FLASH_CONFIG_CBOV;
 
     switch (m_nRadioBov) {

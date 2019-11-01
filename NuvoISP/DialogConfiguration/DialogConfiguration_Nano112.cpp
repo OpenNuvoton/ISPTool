@@ -26,10 +26,8 @@ CDialogConfiguration_Nano112::CDialogConfiguration_Nano112(unsigned int uProgram
     , m_uProgramMemorySize(uProgramMemorySize)
 {
     //{{AFX_DATA_INIT(CDialogConfiguration_Nano112)
-    m_nRadioClk = -1;
     m_nRadioBor = -1;
     m_nRadioBS = -1;
-    m_nRadioHXT = -1;
     m_sConfigValue0 = _T("");
     m_sConfigValue1 = _T("");
     m_bClockFilterEnable = FALSE;
@@ -47,9 +45,7 @@ void CDialogConfiguration_Nano112::DoDataExchange(CDataExchange *pDX)
     DDX_Control(pDX, IDC_EDIT_FLASH_BASE_ADDRESS, m_FlashBaseAddress);
     DDX_Control(pDX, IDC_EDIT_DATA_FLASH_SIZE, m_DataFlashSize);
     DDX_Control(pDX, IDC_SPIN_DATA_FLASH_SIZE, m_SpinDataFlashSize);
-    DDX_Radio(pDX, IDC_RADIO_CLK_E12M, m_nRadioClk);
     DDX_Radio(pDX, IDC_RADIO_BOV_DISABLE, m_nRadioBor);
-    DDX_Radio(pDX, IDC_RADIO_HXT_H16, m_nRadioHXT);
     DDX_Radio(pDX, IDC_RADIO_BS_LDROM, m_nRadioBS);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_0, m_sConfigValue0);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_1, m_sConfigValue1);
@@ -64,7 +60,6 @@ void CDialogConfiguration_Nano112::DoDataExchange(CDataExchange *pDX)
 
 BEGIN_MESSAGE_MAP(CDialogConfiguration_Nano112, CDialog)
     //{{AFX_MSG_MAP(CDialogConfiguration_Nano112)
-    ON_BN_CLICKED(IDC_RADIO_CLK_E12M, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnButtonClick)
     ON_EN_KILLFOCUS(IDC_EDIT_FLASH_BASE_ADDRESS, OnKillfocusEditFlashBaseAddress)
@@ -74,7 +69,6 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_Nano112, CDialog)
     ON_BN_CLICKED(IDC_RADIO_BOV_1, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BOV_2, OnButtonClick)
 
-    ON_BN_CLICKED(IDC_RADIO_CLK_I22M, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_CLOCK_FILTER_ENABLE, OnButtonClick)
@@ -83,10 +77,6 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_Nano112, CDialog)
     ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_WDT_ENABLE, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_HXT_H16, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_HXT_12_16, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_HXT_8_12, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_HXT_L8, OnButtonClick)
     ON_WM_SIZE()
     ON_WM_VSCROLL()
     ON_WM_HSCROLL()
@@ -120,17 +110,6 @@ void CDialogConfiguration_Nano112::ConfigToGUI()
 {
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
     unsigned int uConfig1 = m_ConfigValue.m_value[1];
-
-    switch (uConfig0 & NANO100_FLASH_CONFIG_CFOSC) {
-        case NANO100_FLASH_CONFIG_E12M:
-            m_nRadioClk = 0;
-            break;
-
-        case NANO100_FLASH_CONFIG_I12M:
-        default:
-            m_nRadioClk = 1;
-            break;
-    }
 
     switch (uConfig0 & NANO100_FLASH_CONFIG_CBORST) {
         case NANO100_FLASH_CONFIG_CBORST_RESERVED:
@@ -170,32 +149,6 @@ void CDialogConfiguration_Nano112::ConfigToGUI()
             break;
     }
 
-    switch (uConfig0 & NANO100_FLASH_CONFIG_HXT_GAIN) {
-        case NANO100_FLASH_CONFIG_HXT_RESERVED:
-            m_nRadioHXT = -1;
-            break;
-
-        case NANO100_FLASH_CONFIG_HXT_H16:
-            m_nRadioHXT = 0;
-            break;
-
-        case NANO100_FLASH_CONFIG_HXT_12_16:
-            m_nRadioHXT = 1;
-            break;
-
-        case NANO100_FLASH_CONFIG_HXT_8_12:
-            m_nRadioHXT = 2;
-            break;
-
-        case NANO100_FLASH_CONFIG_HXT_L8:
-            m_nRadioHXT = 3;
-            break;
-
-        default:
-            m_nRadioHXT = 1;
-            break;
-    }
-
     m_bClockFilterEnable = ((uConfig0 & NANO100_FLASH_CONFIG_CKF) == NANO100_FLASH_CONFIG_CKF ? TRUE : FALSE);
     m_bDataFlashEnable = ((uConfig0 & NANO100_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
     m_bWDTEnable = ((uConfig0 & NANO100_FLASH_CONFIG_CWDTEN) == 0 ? TRUE : FALSE);;
@@ -215,22 +168,6 @@ void CDialogConfiguration_Nano112::GUIToConfig()
 {
     unsigned int uConfig0 = 0xFFFFFFFF;
     unsigned int uConfig1;
-    uConfig0 &= ~NANO100_FLASH_CONFIG_CFOSC;
-
-    switch (m_nRadioClk) {
-        case 0:
-            uConfig0 |= NANO100_FLASH_CONFIG_E12M;
-            break;
-
-        case 1:
-            uConfig0 |= NANO100_FLASH_CONFIG_I12M;	/* New spec! */
-            break;
-
-        default:
-            /* Keep old value */
-            uConfig0 |= (m_ConfigValue.m_value[0] & NANO100_FLASH_CONFIG_CFOSC);
-    }
-
     uConfig0 &= ~NANO100_FLASH_CONFIG_CBS;
 
     switch (m_nRadioBS) {
@@ -277,31 +214,6 @@ void CDialogConfiguration_Nano112::GUIToConfig()
         default:
             /* Keep old value */
             uConfig0 |= (m_ConfigValue.m_value[0] & NANO100_FLASH_CONFIG_CBORST);
-    }
-
-    uConfig0 &= ~NANO100_FLASH_CONFIG_HXT_GAIN;
-
-    switch (m_nRadioHXT) {
-        case 0:
-            uConfig0 |= NANO100_FLASH_CONFIG_HXT_H16;
-            break;
-
-        case 1:
-            uConfig0 |= NANO100_FLASH_CONFIG_HXT_12_16;
-            break;
-
-        case 2:
-            uConfig0 |= NANO100_FLASH_CONFIG_HXT_8_12;
-            break;
-
-        case 3:
-            uConfig0 |= NANO100_FLASH_CONFIG_HXT_L8;
-            break;
-
-        //case -1: break;
-        default:
-            /* Keep old value */
-            uConfig0 |= (m_ConfigValue.m_value[0] & NANO100_FLASH_CONFIG_HXT_GAIN);
     }
 
     if (false && m_bWDTEnable) { //disable CWDTEN

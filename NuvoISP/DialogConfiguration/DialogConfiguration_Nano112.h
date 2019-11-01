@@ -26,10 +26,8 @@ public:
     enum { IDD = IDD_DIALOG_CONFIGURATION_NANO112 };
     CNumEdit	m_FlashBaseAddress;
     CEdit	m_DataFlashSize;
-    int		m_nRadioClk;
     int		m_nRadioBor;
     int		m_nRadioBS;
-    int		m_nRadioHXT;
     CString	m_sConfigValue0;
     CString	m_sConfigValue1;
     CString	m_sFlashBaseAddress;

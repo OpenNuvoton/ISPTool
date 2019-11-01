@@ -26,7 +26,6 @@ CDialogConfiguration_M0564::CDialogConfiguration_M0564(unsigned int uProgramMemo
     , m_uProgramMemorySize(uProgramMemorySize)
 {
     //{{AFX_DATA_INIT(CDialogConfiguration_M0564)
-    m_nRadioClk = -1;
     m_nRadioBov = -1;
     m_nRadioBS = -1;
     m_sConfigValue0 = _T("");
@@ -52,7 +51,6 @@ void CDialogConfiguration_M0564::DoDataExchange(CDataExchange *pDX)
     DDX_Control(pDX, IDC_EDIT_FLASH_BASE_ADDRESS, m_FlashBaseAddress);
     DDX_Control(pDX, IDC_EDIT_DATA_FLASH_SIZE, m_DataFlashSize);
     DDX_Control(pDX, IDC_SPIN_DATA_FLASH_SIZE, m_SpinDataFlashSize);
-    DDX_Radio(pDX, IDC_RADIO_CLK_E12M, m_nRadioClk);
     DDX_Radio(pDX, IDC_RADIO_BOV_0, m_nRadioBov);
     DDX_Radio(pDX, IDC_RADIO_BS_LDROM, m_nRadioBS);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_0, m_sConfigValue0);
@@ -78,11 +76,9 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_M0564, CDialog)
     ON_BN_CLICKED(IDC_RADIO_BOV_2, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BOV_3, OnButtonClick)
 
-    ON_BN_CLICKED(IDC_RADIO_CLK_E12M, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnButtonClick)
     ON_EN_KILLFOCUS(IDC_EDIT_FLASH_BASE_ADDRESS, OnKillfocusEditFlashBaseAddress)
-    ON_BN_CLICKED(IDC_RADIO_CLK_I22M, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_CLOCK_FILTER_ENABLE, OnButtonClick)
@@ -130,17 +126,6 @@ void CDialogConfiguration_M0564::ConfigToGUI(int nEventID)
 {
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
     unsigned int uConfig1 = m_ConfigValue.m_value[1];
-
-    switch (uConfig0 & M0564_FLASH_CONFIG_CFOSC) {
-        case M0564_FLASH_CONFIG_E12M:
-            m_nRadioClk = 0;
-            break;
-
-        case M0564_FLASH_CONFIG_I22M:
-        default:
-            m_nRadioClk = 1;
-            break;
-    }
 
     switch (uConfig0 & M0564_FLASH_CONFIG_CBOV) {
         case M0564_FLASH_CONFIG_CBOV_45:
@@ -213,22 +198,6 @@ void CDialogConfiguration_M0564::GUIToConfig(int nEventID)
 {
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
     unsigned int uConfig1;
-    uConfig0 &= ~M0564_FLASH_CONFIG_CFOSC;
-
-    switch (m_nRadioClk) {
-        case 0:
-            uConfig0 |= M0564_FLASH_CONFIG_E12M;
-            break;
-
-        case 1:
-            uConfig0 |= M0564_FLASH_CONFIG_I22M;
-            break;
-
-        default:
-            /* Keep old value */
-            uConfig0 |= (m_ConfigValue.m_value[0] & M0564_FLASH_CONFIG_CFOSC);
-    }
-
     uConfig0 &= ~M0564_FLASH_CONFIG_CBOV;
 
     switch (m_nRadioBov) {

@@ -23,7 +23,6 @@ public:
 // Dialog Data
     //{{AFX_DATA(CDialogConfiguration_M05x)
     enum { IDD = IDD_DIALOG_CONFIGURATION_M051 };
-    int		m_nRadioClk;
     int		m_nRadioBov;
     int		m_nRadioBS;
     CString	m_sConfigValue0;

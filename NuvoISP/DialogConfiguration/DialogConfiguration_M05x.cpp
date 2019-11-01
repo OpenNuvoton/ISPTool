@@ -23,7 +23,6 @@ CDialogConfiguration_M05x::CDialogConfiguration_M05x(UINT nIDTemplate, CWnd *pPa
     : CDialogResize(nIDTemplate, pParent)
 {
     //{{AFX_DATA_INIT(CDialogConfiguration_M05x)
-    m_nRadioClk = -1;
     m_nRadioBov = -1;
     m_nRadioBS = -1;
     m_sConfigValue0 = _T("");
@@ -38,7 +37,6 @@ void CDialogConfiguration_M05x::DoDataExchange(CDataExchange *pDX)
 {
     CDialogResize::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CDialogConfiguration_M05x)
-    DDX_Radio(pDX, IDC_RADIO_CLK_E12M, m_nRadioClk);
     DDX_Radio(pDX, IDC_RADIO_BOV_0, m_nRadioBov);
     DDX_Radio(pDX, IDC_RADIO_BS_LDROM, m_nRadioBS);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_0, m_sConfigValue0);
@@ -56,10 +54,8 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_M05x, CDialog)
     ON_BN_CLICKED(IDC_RADIO_BOV_2, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BOV_3, OnButtonClick)
 
-    ON_BN_CLICKED(IDC_RADIO_CLK_E12M, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_CLK_I22M, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_CLOCK_FILTER_ENABLE, OnButtonClick)
@@ -92,17 +88,6 @@ void CDialogConfiguration_M05x::ConfigToGUI(int nEventID)
 {
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
 
-    switch (uConfig0 & M05X_FLASH_CONFIG_CFOSC) {
-        case M05X_FLASH_CONFIG_E12M:
-            m_nRadioClk = 0;
-            break;
-
-        case M05X_FLASH_CONFIG_CFOSC:
-        default:
-            m_nRadioClk = 1;
-            break;
-    }
-
     switch (uConfig0 & M05X_FLASH_CONFIG_CBOV) {
         case M05X_FLASH_CONFIG_CBOV_45:
             m_nRadioBov = 0;
@@ -133,22 +118,6 @@ void CDialogConfiguration_M05x::ConfigToGUI(int nEventID)
 void CDialogConfiguration_M05x::GUIToConfig(int nEventID)
 {
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
-    uConfig0 &= ~M05X_FLASH_CONFIG_CFOSC;
-
-    switch (m_nRadioClk) {
-        case 0:
-            uConfig0 |= M05X_FLASH_CONFIG_E12M;
-            break;
-
-        case 1:
-            uConfig0 |= M05X_FLASH_CONFIG_CFOSC;	/* New spec! */
-            break;
-
-        default:
-            /* Keep old value */
-            uConfig0 |= (m_ConfigValue.m_value[0] & M05X_FLASH_CONFIG_CFOSC);
-    }
-
     uConfig0 &= ~M05X_FLASH_CONFIG_CBOV;
 
     switch (m_nRadioBov) {
@@ -325,22 +294,6 @@ void CDialogConfiguration_M05XDN::ConfigToGUI(int nEventID)
 void CDialogConfiguration_M05XDN::GUIToConfig(int nEventID)
 {
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
-    uConfig0 &= ~M05X_FLASH_CONFIG_CFOSC;
-
-    switch (m_nRadioClk) {
-        case 0:
-            uConfig0 |= M05X_FLASH_CONFIG_E12M;
-            break;
-
-        case 1:
-            uConfig0 |= M05X_FLASH_CONFIG_CFOSC;	/* New spec! */
-            break;
-
-        default:
-            /* Keep old value */
-            uConfig0 |= (m_ConfigValue.m_value[0] & M05X_FLASH_CONFIG_CFOSC);
-    }
-
     uConfig0 &= ~M05X_FLASH_CONFIG_CBOV;
 
     switch (m_nRadioBov) {
