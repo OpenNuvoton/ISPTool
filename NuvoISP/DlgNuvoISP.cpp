@@ -761,11 +761,11 @@ void CNuvoISPDlg::ShowChipInfo_OnLine()
         return;
     }
 
-    if ((m_ulDeviceID & 0xFFFFF000) == 0x00D48000) { // M480
+    if (gsChipCfgInfo.uSeriesCode == IDD_DIALOG_CONFIGURATION_M480) {
         SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0-3:"));
         ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 1);
         ShowDlgItem(IDC_STATIC_CONFIG_VALUE_3, 1);
-    } else if ((m_ulDeviceID & 0xFFFFF000) == 0x01348000) { // M480LD
+    } else if (gsChipCfgInfo.uSeriesCode == IDD_DIALOG_CONFIGURATION_M480LD) { // M480LD, M479
         SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0-2:"));
         ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 1);
     } else if (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_GENERAL_1T) {
