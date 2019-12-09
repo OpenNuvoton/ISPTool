@@ -67,6 +67,12 @@ protected:
     DECLARE_MESSAGE_MAP()
 };
 
+class CDialogConfiguration_M031G : public CDialogConfiguration_M031
+{
+public:
+    CDialogConfiguration_M031G(unsigned int uProgramMemorySize = 512 * 1024, unsigned int uPageSize = NUMICRO_FLASH_PAGE_SIZE_2K, CWnd *pParent = NULL);   // standard constructor
+};
+
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 

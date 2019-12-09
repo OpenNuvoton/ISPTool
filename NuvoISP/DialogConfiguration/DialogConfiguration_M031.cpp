@@ -396,3 +396,11 @@ void CDialogConfiguration_M031::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *p
 
     CDialogResize::OnVScroll(nSBCode, nPos, pScrollBar);
 }
+
+/////////////////////////////////////////////////////////////////////////////
+// CDialogConfiguration_M031G
+/////////////////////////////////////////////////////////////////////////////
+CDialogConfiguration_M031G::CDialogConfiguration_M031G(unsigned int uProgramMemorySize, unsigned int uPageSize, CWnd *pParent)
+    : CDialogConfiguration_M031(uProgramMemorySize, uPageSize, pParent)
+{
+}
