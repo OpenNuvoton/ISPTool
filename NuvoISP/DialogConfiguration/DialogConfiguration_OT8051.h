@@ -36,6 +36,7 @@ public:
     //{{AFX_DATA(CDialogConfiguration_OT8051)
     enum { IDD = IDD_DIALOG_CONFIGURATION_OT8051 };
 
+    int		m_nRadio_FSYS;
     int		m_nRadio_RPD;
     int		m_nRadio_OCDPWM;
     int		m_nRadio_CBS;

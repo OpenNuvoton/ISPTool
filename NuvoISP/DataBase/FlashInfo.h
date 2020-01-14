@@ -32,7 +32,19 @@ typedef struct {
     unsigned int uLDSize;
     unsigned int uRAMSize;
     unsigned int uDID;
-    unsigned int uFlashType;
+    union {
+        unsigned int uFlashType;
+        struct {
+            unsigned int uFlashMode : 4;
+            unsigned int bSupportPID : 1;
+            unsigned int bSupportUID : 1;
+            unsigned int bSupportUCID : 1;
+            unsigned int bLowPower : 1;
+            unsigned int uReserved0 : 16;
+            unsigned int bSupportSCode : 1;
+            unsigned int uReserved1 : 7;
+        } feature;
+    };
 } FLASH_INFO_BY_DID_T;
 
 bool GetInfo_NuMicro(//unsigned int uDID,

@@ -545,6 +545,7 @@ typedef enum {
 #define OT8051_CONFIG_RPD				0x04
 #define OT8051_CONFIG_OCDEN				0x10
 #define OT8051_CONFIG_OCDPWM			0x20
+#define OT8051_CONFIG_FSYS				0x40
 #define OT8051_CONFIG_CBS				0x80
 
 /* CONFIG 1 */
@@ -592,5 +593,7 @@ typedef enum {
 #define OT8051_SID_MS51_16K				0x4B00
 #define OT8051_SID_MS51_8K				0x5200
 #define OT8051_SID_MS51_32K				0x5300
+
+#define OT8051_SID_ML56_64K				0x5700
 
 #endif

@@ -156,16 +156,19 @@ Reasons for these range limits:
 #define IDC_RADIO_RC_24M                    3113
 
 // EMAC Interface Options
-#define IDC_RADIO_MII_MODE                  3115
-#define IDC_RADIO_RMII_MODE                 3116
+#define IDC_RADIO_MII_MODE                  3114
+#define IDC_RADIO_RMII_MODE                 3115
 
 // SPIM CLK/SS/MISO/MOSI Multi-function Pin Select
-#define IDC_RADIO_SPIM_SEL0                 3117
-#define IDC_RADIO_SPIM_SEL1                 3118
-#define IDC_RADIO_SPIM_SEL2                 3119
-#define IDC_RADIO_SPIM_SEL3                 3120
+#define IDC_RADIO_SPIM_SEL0                 3116
+#define IDC_RADIO_SPIM_SEL1                 3117
+#define IDC_RADIO_SPIM_SEL2                 3118
+#define IDC_RADIO_SPIM_SEL3                 3119
 
 // 8051 1T
+#define IDC_GROUP_FSYS                      3120
+#define IDC_RADIO_FSYS_HIRC                 3121
+#define IDC_RADIO_FSYS_LIRC                 3122
 #define IDC_GROUP_RPD                       3123
 #define IDC_RADIO_RPD_RESET                 3124
 #define IDC_RADIO_RPD_INPUT                 3125
@@ -198,7 +201,7 @@ Reasons for these range limits:
 #define IDC_STATIC_GPA4                     3154
 #define IDC_STATIC_GPA5                     3155
 
-// UART1 TXD/RXD Multi-function Pin Selec
+// UART1 TXD/RXD Multi-function Pin Select
 #define IDC_RADIO_UART1_SEL0                3160
 #define IDC_RADIO_UART1_SEL1                3161
 #define IDC_RADIO_UART1_SEL2                3162
