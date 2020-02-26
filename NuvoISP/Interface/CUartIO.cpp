@@ -25,8 +25,6 @@ void CUartIO::CloseDevice()
 
 BOOL CUartIO::OpenDevice(CString strComNum)
 {
-    //printf("OpenDevice COM - ");
-    //CommTimeOuts.ReadIntervalTimeout = 200;
     strComNum = _T("\\\\.\\") + strComNum;
 
     if (m_hCOMHandle != INVALID_HANDLE_VALUE) {
@@ -42,11 +40,6 @@ BOOL CUartIO::OpenDevice(CString strComNum)
                               NULL);
 
     if (m_hCOMHandle == INVALID_HANDLE_VALUE) {
-        //LastErrorNum = GetLastError();
-        //CString tmp;
-        //tmp.Format(_T("%d"),LastErrorNum);
-        //AddToInfOut(_T("Failed to open ")+strComNum+_T(";Error code:")+tmp,1,1);
-        //AddToInfOut(ConvertErrorCodeToString(LastErrorNum),0,1);
         return FALSE;
     } else {
         //printf("CreateFile OK - ");
@@ -68,19 +61,16 @@ BOOL CUartIO::OpenDevice(CString strComNum)
         dcb.StopBits = ONESTOPBIT ;
         dcb.fBinary = TRUE ;
         dcb.fParity = FALSE;
+        // Nulink ver.2.05.6807, 2018.09.05
+        // Nu-Link VCOM firmware flow has been updated, PC software has to "Set Control Line State" to indicate DTE is present.
         dcb.fDtrControl = DTR_CONTROL_ENABLE;
-        //printf("SetCommState - ");
         SetCommState(m_hCOMHandle, &dcb);					//串口參數配置
-        //printf("SetCommMask - ");
         SetCommMask(m_hCOMHandle, EV_RXCHAR | EV_TXEMPTY);	//設置事件驅動的類型
-        //printf("SetupComm - ");
         SetupComm(m_hCOMHandle, 1024, 128) ;				//設置輸入,輸出緩衝區的大小
-        //printf("PurgeComm - ");
         PurgeComm(m_hCOMHandle, PURGE_TXABORT | PURGE_RXABORT | PURGE_TXCLEAR
                   | PURGE_RXCLEAR);                //清乾淨輸入、輸出緩衝區
     }
 
-    //printf("Return True\n");
     return TRUE;
 }
 

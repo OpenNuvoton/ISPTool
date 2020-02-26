@@ -28,7 +28,7 @@ BOOL ISPLdCMD2::WriteFile(ULONG uCMD, ULONG uDAT, DWORD dwMilliseconds)
     m_uCMD = uCMD;
     m_uDAT = uDAT;
     memset(m_acBuffer, 0, sizeof(m_acBuffer));
-    m_acBuffer[2] = m_uInterface;
+    m_acBuffer[2] = static_cast<CHAR>(m_uInterface);
     *((ULONG *)&m_acBuffer[3]) = uCMD;
     *((ULONG *)&m_acBuffer[7]) = uDAT;
     DWORD dwLength;

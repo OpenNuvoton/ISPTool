@@ -228,7 +228,7 @@ BOOL ISPLdCMD::WriteFile(unsigned long uCmd, const char *pcBuffer, DWORD dwLen, 
         case 3:
         case 4:
         case 5:
-            m_acBuffer[2] = m_uInterface;
+            m_acBuffer[2] = static_cast<CHAR>(m_uInterface);
             bRet = m_hidIO2.WriteFile(m_acBuffer, 65, &dwLength, dwMilliseconds);
             break;
 
