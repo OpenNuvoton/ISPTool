@@ -17,6 +17,7 @@ class CDialogConfiguration_M480 : public CDialogResize
 // Construction
 public:
     CDialogConfiguration_M480(unsigned int uProgramMemorySize = 512 * 1024,
+                              unsigned int uPID = 0,
                               UINT nIDTemplate = IDD_DIALOG_CONFIGURATION_M480,
                               CWnd *pParent = NULL);   // standard constructor
 
@@ -52,6 +53,7 @@ public:
     CSpinButtonCtrl	m_SpinDataFlashSize;
 
     unsigned int	m_uProgramMemorySize;
+    unsigned int	m_uPID;
     //}}AFX_DATA
 
 // Overrides

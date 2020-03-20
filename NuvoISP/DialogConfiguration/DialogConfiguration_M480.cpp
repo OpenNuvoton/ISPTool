@@ -23,10 +23,12 @@ static char THIS_FILE[] = __FILE__;
 // CDialogConfiguration_M480 dialog
 
 CDialogConfiguration_M480::CDialogConfiguration_M480(unsigned int uProgramMemorySize,
+        unsigned int uPID,
         UINT nIDTemplate,
         CWnd *pParent /*=NULL*/)
     : CDialogResize(nIDTemplate, pParent)
     , m_uProgramMemorySize(uProgramMemorySize)
+    , m_uPID(uPID)
 {
     //{{AFX_DATA_INIT(CDialogConfiguration_M480)
     m_nRadioBov = -1;
@@ -295,6 +297,13 @@ void CDialogConfiguration_M480::ConfigToGUI(int nEventID)
         default:
             m_nRadioUART = 3;
             break;
+    }
+
+    if (m_uPID == 0x00D4874E) {
+        GetDlgItem(IDC_RADIO_SPIM_SEL0)->EnableWindow(FALSE);
+        GetDlgItem(IDC_RADIO_SPIM_SEL1)->EnableWindow(FALSE);
+        GetDlgItem(IDC_RADIO_SPIM_SEL2)->EnableWindow(FALSE);
+        GetDlgItem(IDC_RADIO_SPIM_SEL3)->EnableWindow(FALSE);
     }
 
     m_sConfigValue2.Format(_T("0x%08X"), uConfig2);
@@ -575,7 +584,7 @@ void CDialogConfiguration_M480::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *p
 CDialogChipSetting_CFG_M480LD::CDialogChipSetting_CFG_M480LD(unsigned int uProgramMemorySize,
         UINT nIDTemplate,
         CWnd *pParent /*=NULL*/)
-    : CDialogConfiguration_M480(uProgramMemorySize, nIDTemplate, pParent)
+    : CDialogConfiguration_M480(uProgramMemorySize, 0, nIDTemplate, pParent)
 {
 }
 
@@ -894,3 +903,4 @@ void CDialogChipSetting_CFG_M480LD::OnKillfocusEditFlashBaseAddress()
     unsigned int uConfig1 = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
     m_uConfigValue[1] = uConfig1;// | 0xFFF00000;
 }
+

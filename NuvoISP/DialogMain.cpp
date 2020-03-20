@@ -567,7 +567,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
 
             case IDD_DIALOG_CONFIGURATION_M480:
                 if (uProgramMemorySize) {
-                    pConfigDlg = new CDialogConfiguration_M480(uProgramMemorySize);
+                    pConfigDlg = new CDialogConfiguration_M480(uProgramMemorySize, uID);
                 } else {
                     pConfigDlg = new CDialogConfiguration_M480();
                 }
