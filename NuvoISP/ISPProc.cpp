@@ -111,7 +111,10 @@ void CISPProc::Thread_Idle()
         return;
     }
 
-    PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_CONNECT_STATUS, CONNECT_STATUS_NONE);
+    if (MainHWND != NULL) {
+        PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_CONNECT_STATUS, CONNECT_STATUS_NONE);
+    }
+
     m_ISPLdDev.Close_Port();
     m_eProcSts = EPS_OK;
 
@@ -126,7 +129,10 @@ void CISPProc::Thread_CheckUSBConnect()
         return;
     }
 
-    PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_CONNECT_STATUS, CONNECT_STATUS_USB);
+    if (MainHWND != NULL) {
+        PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_CONNECT_STATUS, CONNECT_STATUS_USB);
+    }
+
     m_ISPLdDev.Close_Port();
     DWORD dwWait = 0;
     DWORD dwStart = GetTickCount();
@@ -162,7 +168,9 @@ void CISPProc::Thread_CheckDeviceConnect()
         return;
     }
 
-    PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_CONNECT_STATUS, CONNECT_STATUS_CONNECTING);
+    if (MainHWND != NULL) {
+        PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_CONNECT_STATUS, CONNECT_STATUS_CONNECTING);
+    }
 
     try {
         while (m_fnThreadProcStatus == &CISPProc::Thread_CheckDeviceConnect) {
@@ -178,7 +186,12 @@ void CISPProc::Thread_CheckDeviceConnect()
                 //printf("ReadConfig: %X, %X\n", m_CONFIG[0], m_CONFIG[1]);
                 memcpy(m_CONFIG_User, m_CONFIG, sizeof(m_CONFIG));
                 m_eProcSts = EPS_OK;
-                Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
+
+                if (MainHWND != NULL) { // UI Mode
+                    Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
+                } else { // Command Line Mode
+                    Set_ThreadAction(&CISPProc::Thread_ProgramFlash);
+                }
             } else {
                 Set_ThreadAction(&CISPProc::Thread_CheckUSBConnect);
             }
@@ -195,7 +208,9 @@ void CISPProc::Thread_CheckDisconnect()
         return;
     }
 
-    PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_CONNECT_STATUS, CONNECT_STATUS_OK);
+    if (MainHWND != NULL) {
+        PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_CONNECT_STATUS, CONNECT_STATUS_OK);
+    }
 
     while (m_fnThreadProcStatus == &CISPProc::Thread_CheckDisconnect) {
         Sleep(100);
@@ -257,7 +272,10 @@ void CISPProc::Thread_ProgramFlash()
                 return;
             }
 
-            PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_WRITE_STATUS, 0);
+            if (MainHWND != NULL) {
+                PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_WRITE_STATUS, 0);
+            }
+
             m_ISPLdDev.SyncPackno();
 
             for (unsigned long i = 0; i < uSize;) {
@@ -287,7 +305,10 @@ void CISPProc::Thread_ProgramFlash()
                 }
 
                 i += uLen;
-                PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_WRITE_STATUS, (i * 100) / uSize);
+
+                if (MainHWND != NULL) {
+                    PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_WRITE_STATUS, (i * 100) / uSize);
+                }
             }
         }
 
@@ -302,7 +323,10 @@ void CISPProc::Thread_ProgramFlash()
                 return;
             }
 
-            PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_WRITE_STATUS, 0);
+            if (MainHWND != NULL) {
+                PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_WRITE_STATUS, 0);
+            }
+
             m_ISPLdDev.SyncPackno();
 
             for (unsigned long i = 0; i < uSize;) {
@@ -332,7 +356,10 @@ void CISPProc::Thread_ProgramFlash()
                 }
 
                 i += uLen;
-                PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_WRITE_STATUS, (i * 100) / uSize);
+
+                if (MainHWND != NULL) {
+                    PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_WRITE_STATUS, (i * 100) / uSize);
+                }
             }
         }
 
@@ -343,7 +370,11 @@ void CISPProc::Thread_ProgramFlash()
             m_uProgTime = unsigned int(end - start);
             CString str;
             str.Format(_T("Programming flash, OK! Run to APROM (%d secs)"), m_uProgTime);
-            MessageBox(*MainHWND, str, NULL, MB_ICONINFORMATION);
+
+            if (MainHWND != NULL) {
+                MessageBox(*MainHWND, str, NULL, MB_ICONINFORMATION);
+            }
+
             // For Virtual Com Port device, it takes more than 5ms to convert USB signals to UART signals. (64 * 10 * 1000 / 115200 )
             // After sending Reset Command by PC Tool, we must wait for a little time to make sure the target device will receive Reset Command.
             // Without this latency, the Close Port operation will cancel the transmission immediately.
@@ -359,7 +390,10 @@ void CISPProc::Thread_ProgramFlash()
             Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
         }
     } catch (...) {
-        MessageBox(*MainHWND, _T("Lost connection!!!"), NULL, MB_ICONSTOP);
+        if (MainHWND != NULL) {
+            MessageBox(*MainHWND, _T("Lost connection!!!"), NULL, MB_ICONSTOP);
+        }
+
         Set_ThreadAction(&CISPProc::Thread_Idle);
     }
 }

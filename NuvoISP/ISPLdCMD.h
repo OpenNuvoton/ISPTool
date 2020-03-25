@@ -95,6 +95,8 @@ public:
     BOOL RunLDROM();
 
     void Test();
+    // it = 1 for HID, str is ignored.
+    // it = 2 for UART, str as "COM5".
     void SetInterface(unsigned int it, CString str)
     {
         m_uInterface = it;

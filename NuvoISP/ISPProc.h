@@ -46,12 +46,23 @@ public:
     CISPProc(HWND *pWnd);	// standard constructor
     virtual ~CISPProc();
     fileinfo m_sFileInfo[NUM_VIEW];
+    bool UpdateBinFile(int idx, CString fileName)
+    {
+        if (idx < NUM_VIEW) {
+            return UpdateFileInfo(fileName, &m_sFileInfo[idx]);
+        } else {
+            return false;
+        }
+    }
+
+    void Set_ThreadAction(void (CISPProc::*fnThreadProcStatus)());
+    void (CISPProc::*m_fnThreadProcStatus)();
+
 protected:
     HWND *MainHWND;
     /* State machine */
-    void Set_ThreadAction(void (CISPProc::*fnThreadProcStatus)());
+    //void Set_ThreadAction(void (CISPProc::*fnThreadProcStatus)());
     void Call_ThreadAction(void (CISPProc::*fnThreadProcStatus)());
-    void (CISPProc::*m_fnThreadProcStatus)();
     void (CISPProc::*m_fnThreadProcStatus_backup)();
 public:
     HANDLE m_hThreadMutex;
