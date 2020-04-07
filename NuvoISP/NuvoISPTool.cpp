@@ -116,50 +116,51 @@ BOOL CISPToolApp::InitInstance()
         AttachConsole(ATTACH_PARENT_PROCESS);
         freopen("CONIN$", "r+t", stdin);
         freopen("CONOUT$", "w+t", stdout);
+        setbuf(stdout, NULL);
         /* Parse command line */
         CMyCommandLineInfo rCmdInfo;
         ParseCommandLine(rCmdInfo);
 
         do {
+            void (CISPProc::*fnThreadProcStatus)() = &CISPProc::Thread_Pause;
+            void (CISPProc::*fnThreadProcStatus_backup)() = &CISPProc::Thread_Pause;
             rCmdInfo.Set_ThreadAction(&CISPProc::Thread_CheckUSBConnect);
-            _tprintf(_T("\n\nCheckUSBConnect:"));
+            _tprintf(_T("\n --------------------------------"));
 
-            while (rCmdInfo.m_fnThreadProcStatus == &CISPProc::Thread_CheckUSBConnect) {
-                //_tprintf(_T("."));
-            }
-
-            if (rCmdInfo.m_fnThreadProcStatus == &CISPProc::Thread_CheckDeviceConnect) {
-                _tprintf(_T("\nCheckDeviceConnect:"));
-
-                while (rCmdInfo.m_fnThreadProcStatus == &CISPProc::Thread_CheckDeviceConnect) {
-                    //printf(".");
-                }
-            }
-
-            if (rCmdInfo.m_fnThreadProcStatus == &CISPProc::Thread_ProgramFlash) {
-                printf("\nProgramFlash:");
-
-                while (rCmdInfo.m_fnThreadProcStatus == &CISPProc::Thread_ProgramFlash) {
-                    //printf(".");
-                }
-            }
-
-            if (rCmdInfo.m_fnThreadProcStatus == &CISPProc::Thread_Idle) {
-                if (rCmdInfo.m_eProcSts == EPS_OK) {
-                    printf("\nProgram OK.");
-                } else {
-                    printf("\nProgram NG.");
-                }
-
-                if (rCmdInfo.m_bBatch) {
+            while (fnThreadProcStatus != &CISPProc::Thread_Idle) {
+                if (fnThreadProcStatus == fnThreadProcStatus_backup) { // status not changed, check again
+                    fnThreadProcStatus = rCmdInfo.m_fnThreadProcStatus;
                     continue;
-                } else {
-                    break;
+                } else { // status changed
+                    fnThreadProcStatus_backup = fnThreadProcStatus;
+
+                    if (fnThreadProcStatus == &CISPProc::Thread_CheckUSBConnect) {
+                        _tprintf(_T("\n CheckUSBConnect."));
+                    } else if (fnThreadProcStatus == &CISPProc::Thread_CheckDeviceConnect) {
+                        _tprintf(_T("\n CheckDeviceConnect."));
+                    } else if (fnThreadProcStatus == &CISPProc::Thread_ProgramFlash) {
+                        _tprintf(_T("\n ProgramFlash."));
+                    } else {
+                        _tprintf(_T("\n UnKnown Stage."));
+                    }
                 }
+            }
+
+            if (rCmdInfo.m_eProcSts == EPS_OK) {
+                printf("\nProgram OK.");
+            } else {
+                printf("\nProgram NG.");
+            }
+
+            if (rCmdInfo.m_bBatch) {
+                continue;
+            } else {
+                break;
             }
         } while (rCmdInfo.m_bBatch);
 
-        printf("\nBye~.");
+        _tprintf(_T("\n Bye. \n\n"));
+        fflush(stdout);
         return FALSE;
     }
 _UI_MODE:
