@@ -40,7 +40,8 @@ typedef struct {
             unsigned int bSupportUID : 1;
             unsigned int bSupportUCID : 1;
             unsigned int bLowPower : 1;
-            unsigned int uReserved0 : 16;
+            unsigned int bSupportHIRCOff : 1;
+            unsigned int uReserved0 : 15;
             unsigned int bSupportSCode : 1;
             unsigned int uReserved1 : 7;
         } feature;
@@ -57,8 +58,7 @@ bool GetInfo_NuMicro(//unsigned int uDID,
     unsigned int *puNVM_Size);
 
 /* 8051 1T Series */
-void *GetInfo_8051_1T(unsigned int uDID,
-                      FLASH_INFO_BY_DID_T *pInfo);
+void *GetInfo_8051_1T(unsigned int uDID, FLASH_INFO_BY_DID_T *pInfo);
 
 bool GetInfo_8051_1T(//unsigned int uDID,
     unsigned int uConfig0,
