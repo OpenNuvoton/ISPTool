@@ -125,48 +125,48 @@ void CDialogConfiguration_M2351::ConfigToGUI()
     unsigned int uConfig0 = m_uConfigValue[0];
     unsigned int uConfig3 = m_uConfigValue[3];
 
-    switch (uConfig0 & M2351_FLASH_CONFIG_CBOV) {
-        case M2351_FLASH_CONFIG_CBOV_7:
+    switch (uConfig0 & NUMICRO_FLASH_CONFIG_CBOV_8_LEVEL) {
+        case NUMICRO_FLASH_CONFIG_CBOV_7:
             m_nRadioBov = 0;
             break;
 
-        case M2351_FLASH_CONFIG_CBOV_6:
+        case NUMICRO_FLASH_CONFIG_CBOV_6:
             m_nRadioBov = 1;
             break;
 
-        case M2351_FLASH_CONFIG_CBOV_5:
+        case NUMICRO_FLASH_CONFIG_CBOV_5:
             m_nRadioBov = 2;
             break;
 
-        case M2351_FLASH_CONFIG_CBOV_4:
+        case NUMICRO_FLASH_CONFIG_CBOV_4:
             m_nRadioBov = 3;
             break;
 
-        case M2351_FLASH_CONFIG_CBOV_3:
+        case NUMICRO_FLASH_CONFIG_CBOV_3:
             m_nRadioBov = 4;
             break;
 
-        case M2351_FLASH_CONFIG_CBOV_2:
+        case NUMICRO_FLASH_CONFIG_CBOV_2:
             m_nRadioBov = 5;
             break;
 
-        case M2351_FLASH_CONFIG_CBOV_1:
+        case NUMICRO_FLASH_CONFIG_CBOV_1:
             m_nRadioBov = 6;
             break;
 
-        case M2351_FLASH_CONFIG_CBOV_0:
+        case NUMICRO_FLASH_CONFIG_CBOV_0:
         default:
             m_nRadioBov = 7;
             break;
     }
 
-    switch (uConfig0 & M2351_FLASH_CONFIG_CWDTEN) {
-        case M2351_FLASH_CONFIG_CWDTEN_INACTIVE:
+    switch (uConfig0 & NUMICRO_FLASH_CONFIG_CWDTEN) {
+        case NUMICRO_FLASH_CONFIG_CWDTEN_INACTIVE:
             m_nRadioWDT = 0;
             break;
 
-        case M2351_FLASH_CONFIG_CWDTEN_BY_LIRCEN:
-            if (uConfig0 & M2351_FLASH_CONFIG_CWDTPDEN) {
+        case NUMICRO_FLASH_CONFIG_CWDTEN_BY_LIRCEN:
+            if (uConfig0 & NUMICRO_FLASH_CONFIG_CWDTPDEN) {
                 m_nRadioWDT = 2;
             } else {
                 m_nRadioWDT = 1;
@@ -180,10 +180,10 @@ void CDialogConfiguration_M2351::ConfigToGUI()
 
     m_nRadioBS = ((uConfig0 & M2351_FLASH_CONFIG_CBS) ? 0 : 1);
     m_nRadioGPG = ((uConfig0 & M2351_FLASH_CONFIG_CFGXT1) ? 0 : 1);
-    m_nRadioIO = ((uConfig0 & M2351_FLASH_CONFIG_CIOINI) ? 0 : 1);
+    m_nRadioIO = ((uConfig0 & NUMICRO_FLASH_CONFIG_CIOINI) ? 0 : 1);
     m_bCheckMBS = ((uConfig0 & M2351_FLASH_CONFIG_MBS) == 0 ? TRUE : FALSE);
-    m_bCheckBrownOutDetect = ((uConfig0 & M2351_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
-    m_bCheckBrownOutReset = ((uConfig0 & M2351_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
+    m_bCheckBrownOutDetect = ((uConfig0 & NUMICRO_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
+    m_bCheckBrownOutReset = ((uConfig0 & NUMICRO_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
     m_bDisableICE = ((uConfig0 & M2351_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
 
     switch (uConfig3 & M2351_FLASH_CONFIG_UART1PSL) {
@@ -217,59 +217,59 @@ void CDialogConfiguration_M2351::GUIToConfig()
     UpdateData(TRUE);
     unsigned int uConfig0 = m_uConfigValue[0];
     unsigned int uConfig3 = m_uConfigValue[3];
-    uConfig0 &= ~M2351_FLASH_CONFIG_CBOV;
+    uConfig0 &= ~NUMICRO_FLASH_CONFIG_CBOV_8_LEVEL;
 
     switch (m_nRadioBov) {
         case 0:
-            uConfig0 |= M2351_FLASH_CONFIG_CBOV_7;
+            uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_7;
             break;
 
         case 1:
-            uConfig0 |= M2351_FLASH_CONFIG_CBOV_6;
+            uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_6;
             break;
 
         case 2:
-            uConfig0 |= M2351_FLASH_CONFIG_CBOV_5;
+            uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_5;
             break;
 
         case 3:
-            uConfig0 |= M2351_FLASH_CONFIG_CBOV_4;
+            uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_4;
             break;
 
         case 4:
-            uConfig0 |= M2351_FLASH_CONFIG_CBOV_3;
+            uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_3;
             break;
 
         case 5:
-            uConfig0 |= M2351_FLASH_CONFIG_CBOV_2;
+            uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_2;
             break;
 
         case 6:
-            uConfig0 |= M2351_FLASH_CONFIG_CBOV_1;
+            uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_1;
             break;
 
         case 7:
         default:
-            uConfig0 |= M2351_FLASH_CONFIG_CBOV_0;
+            uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_0;
             break;
     }
 
     switch (m_nRadioWDT) {
         case 0:
-            uConfig0 &= ~M2351_FLASH_CONFIG_CWDTEN;
-            uConfig0 |=  M2351_FLASH_CONFIG_CWDTEN_INACTIVE;
+            uConfig0 &= ~NUMICRO_FLASH_CONFIG_CWDTEN;
+            uConfig0 |=  NUMICRO_FLASH_CONFIG_CWDTEN_INACTIVE;
             break;
 
         case 2:
-            uConfig0 &= ~(M2351_FLASH_CONFIG_CWDTEN | M2351_FLASH_CONFIG_CWDTPDEN);
-            uConfig0 |= (M2351_FLASH_CONFIG_CWDTEN_BY_LIRCEN | M2351_FLASH_CONFIG_CWDTPDEN);
+            uConfig0 &= ~(NUMICRO_FLASH_CONFIG_CWDTEN | NUMICRO_FLASH_CONFIG_CWDTPDEN);
+            uConfig0 |= (NUMICRO_FLASH_CONFIG_CWDTEN_BY_LIRCEN | NUMICRO_FLASH_CONFIG_CWDTPDEN);
             break;
 
         default:
-            if (((uConfig0 & M2351_FLASH_CONFIG_CWDTEN) == M2351_FLASH_CONFIG_CWDTEN_INACTIVE) ||
-                    (((uConfig0 & M2351_FLASH_CONFIG_CWDTEN) == M2351_FLASH_CONFIG_CWDTEN_BY_LIRCEN) && (uConfig0 & M2351_FLASH_CONFIG_CWDTPDEN))) {
-                uConfig0 &= ~(M2351_FLASH_CONFIG_CWDTEN | M2351_FLASH_CONFIG_CWDTPDEN);
-                uConfig0 |= (M2351_FLASH_CONFIG_CWDTEN_ACTIVE | M2351_FLASH_CONFIG_CWDTPDEN);
+            if (((uConfig0 & NUMICRO_FLASH_CONFIG_CWDTEN) == NUMICRO_FLASH_CONFIG_CWDTEN_INACTIVE) ||
+                    (((uConfig0 & NUMICRO_FLASH_CONFIG_CWDTEN) == NUMICRO_FLASH_CONFIG_CWDTEN_BY_LIRCEN) && (uConfig0 & NUMICRO_FLASH_CONFIG_CWDTPDEN))) {
+                uConfig0 &= ~(NUMICRO_FLASH_CONFIG_CWDTEN | NUMICRO_FLASH_CONFIG_CWDTPDEN);
+                uConfig0 |= (NUMICRO_FLASH_CONFIG_CWDTEN_ACTIVE | NUMICRO_FLASH_CONFIG_CWDTPDEN);
             }
     }
 
@@ -286,9 +286,9 @@ void CDialogConfiguration_M2351::GUIToConfig()
     }
 
     if (m_nRadioIO == 0) {
-        uConfig0 |=  M2351_FLASH_CONFIG_CIOINI;
+        uConfig0 |=  NUMICRO_FLASH_CONFIG_CIOINI;
     } else {
-        uConfig0 &= ~M2351_FLASH_CONFIG_CIOINI;
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_CIOINI;
     }
 
     if (m_bCheckMBS) {
@@ -298,15 +298,15 @@ void CDialogConfiguration_M2351::GUIToConfig()
     }
 
     if (m_bCheckBrownOutDetect) {
-        uConfig0 &= ~M2351_FLASH_CONFIG_CBODEN;
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_CBODEN;
     } else {
-        uConfig0 |=  M2351_FLASH_CONFIG_CBODEN;
+        uConfig0 |=  NUMICRO_FLASH_CONFIG_CBODEN;
     }
 
     if (m_bCheckBrownOutReset) {
-        uConfig0 &= ~M2351_FLASH_CONFIG_CBORST;
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_CBORST;
     } else {
-        uConfig0 |=  M2351_FLASH_CONFIG_CBORST;
+        uConfig0 |=  NUMICRO_FLASH_CONFIG_CBORST;
     }
 
     if (m_bDisableICE) {
