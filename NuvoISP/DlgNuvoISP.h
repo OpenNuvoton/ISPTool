@@ -26,6 +26,9 @@ public:
     enum { IDD = IDD_DIALOG_NUVOISP};
 #endif
 
+    BOOL m_bShowSPI;
+    void ShowSPIOptions(BOOL bShow);
+
     CNuvoISPDlg(UINT Template = CNuvoISPDlg::IDD, CWnd *pParent = NULL);	// standard constructor
     virtual ~CNuvoISPDlg();
     CString	m_sConnect;

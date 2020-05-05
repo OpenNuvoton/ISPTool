@@ -73,6 +73,7 @@ CNuvoISPDlg::CNuvoISPDlg(UINT Template,
 #endif
     };
     memcpy(&m_CtrlID, buddy, sizeof(m_CtrlID));
+    m_bShowSPI = FALSE;
 }
 
 CNuvoISPDlg::~CNuvoISPDlg()
@@ -198,6 +199,7 @@ BOOL CNuvoISPDlg::OnInitDialog()
     SetDlgItemText(IDC_EDIT_FLASH_BASE_ADDRESS, _T("100000"));
     Set_ThreadAction(&CISPProc::Thread_Idle);
     RegisterNotification();
+    ShowSPIOptions(FALSE);
     return TRUE;	// return TRUE  unless you set the focus to a control
 }
 
@@ -969,4 +971,56 @@ void CNuvoISPDlg::OnKillfocusEditAPRomOffset()
     strAddr.Format(_T("%06X"), m_uAPROM_Offset);
     SetDlgItemText(IDC_EDIT_APROM_BASE_ADDRESS, strAddr);
     TRACE(_T("OnKillfocusEditAPRomOffset\n"));
+}
+
+
+void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
+{
+    // Group - Load File
+    ShowDlgItem(IDC_BUTTON_SPI, bShow);
+    ShowDlgItem(IDC_STATIC_FILENAME_SPI, bShow);
+    ShowDlgItem(IDC_EDIT_FILEPATH_SPI, bShow);
+    ShowDlgItem(IDC_STATIC_FILEINFO_SPI, bShow);
+    CWnd *pWnd = NULL;
+    CRect rect1, rect2;
+    pWnd = GetDlgItem(IDC_GROUP_FLASH_FILE);
+    pWnd->GetWindowRect(&rect1);
+    ScreenToClient(&rect1);
+    GetDlgItem(IDC_BUTTON_SPI)->GetWindowRect(&rect2);
+    ScreenToClient(&rect2);
+    pWnd->MoveWindow(rect1.left,
+                     rect1.top,
+                     rect1.Width(),
+                     rect2.top - rect1.top);
+    // Group - Config Bits
+    UINT32 nIds_CB[] = {
+        IDC_GROUP_CONFIG,
+        IDC_BUTTON_CONFIG,
+        IDC_STATIC_CONFIG0,
+        // IDC_STATIC_CONFIG_0,
+        IDC_STATIC_CONFIG_VALUE_0,
+        IDC_STATIC_CONFIG_VALUE_1,
+        IDC_STATIC_CONFIG_VALUE_2,
+        IDC_STATIC_CONFIG_VALUE_3,
+    };
+    GetDlgItem(IDC_GROUP_FLASH_FILE)->GetWindowRect(&rect1);
+    ScreenToClient(&rect1);
+    GetDlgItem(IDC_GROUP_CONFIG)->GetWindowRect(&rect2);
+    ScreenToClient(&rect2);
+    int offset = rect2.top - rect1.top - rect1.top - 5;
+
+    for (size_t i = 0; i < 2; i++) {
+        CRect rect;
+        pWnd = GetDlgItem(nIds_CB[i]);
+        pWnd->GetWindowRect(&rect);
+        ScreenToClient(&rect);
+        pWnd->MoveWindow(rect.left,
+                         rect.top - offset,
+                         rect.Width(),
+                         rect.Height());
+    }
+
+    pViewer[2]->ShowWindow(bShow);
+    ShowDlgItem(IDC_CHECK_SPI, bShow);
+    ShowDlgItem(IDC_CHECK_ERASE_SPI, bShow);
 }
