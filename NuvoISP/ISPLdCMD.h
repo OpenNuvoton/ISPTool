@@ -2,6 +2,8 @@
 #define INC__ISP_LD_H__
 #pragma once
 
+#define SUPPORT_SPIFLASH (1)
+
 #include "CScopedMutex.hpp"
 #include "Interface\CHidIO2.h"
 #include "Interface\CUartIO.h"
@@ -67,6 +69,10 @@ public:
         CMD_CONNECT			= 0x000000AE,
         CMD_UPDATE_DATAFLASH = 0x000000C3,
         CMD_RESEND_PACKET   = 0x000000FF,
+#if (SUPPORT_SPIFLASH)
+        CMD_ERASE_SPIFLASH = 0x000000D0,
+        CMD_UPDATE_SPIFLASH = 0x000000D1,
+#endif
     };
 
     BOOL CMD_Connect(DWORD dwMilliseconds = 30);
@@ -106,6 +112,10 @@ public:
 
     unsigned int m_ConnectInfo[4];
 
+#if (SUPPORT_SPIFLASH)
+    BOOL Cmd_ERASE_SPIFLASH(unsigned long offset, unsigned long total_len);
+    BOOL Cmd_UPDATE_SPIFLASH(unsigned long offset, unsigned long total_len, const char *buffer);
+#endif
 };
 
 class ISPLdCMD2 : public ISPLdCMD

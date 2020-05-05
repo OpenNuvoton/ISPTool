@@ -13,7 +13,6 @@
 #include "DialogMain.h"
 #include "ISPProc.h"
 
-#define NUM_VIEW 2
 /////////////////////////////////////////////////////////////////////////////
 // CNuvoISPDlg dialog
 
@@ -21,7 +20,11 @@ class CNuvoISPDlg: public CDialogMain, public CISPProc
 {
 // Construction
 public:
+#if (SUPPORT_SPIFLASH)
+    enum { IDD = IDD_DIALOG_NUVOISP_WITH_SPI};
+#else
     enum { IDD = IDD_DIALOG_NUVOISP};
+#endif
 
     CNuvoISPDlg(UINT Template = CNuvoISPDlg::IDD, CWnd *pParent = NULL);	// standard constructor
     virtual ~CNuvoISPDlg();

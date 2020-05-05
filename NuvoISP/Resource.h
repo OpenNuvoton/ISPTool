@@ -23,6 +23,7 @@
 #define IDC_LINK_GITHUB                 126
 #define IDC_LINK_GITEE                  127
 #define IDC_LINK_GITLAB                 128
+#define IDD_DIALOG_NUVOISP_WITH_SPI     129
 #define IDD_DIALOG_CONFIGURATION_NANO100 130
 #define IDD_DIALOG_CONFIGURATION_MINI51 132
 #define IDI_ICON_NULINK                 134
@@ -88,6 +89,7 @@
 #define IDC_CHECK_ERASE                 1067
 #define IDC_EDIT_FLASH_INFO2            1068
 #define IDC_CHECK_LDROM_WR_PROTECT      1068
+#define IDC_CHECK_ERASE_SPI             1068
 #define IDC_CHECK_BLANKCHECK            1069
 #define IDC_EDIT_FLASH_INFO3            1070
 #define IDC_CHECK_PROGRAM               1071

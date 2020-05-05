@@ -470,3 +470,63 @@ BOOL ISPLdCMD::RunLDROM()
 {
     return WriteFile(CMD_RUN_LDROM, NULL, 0, USBCMD_TIMEOUT_LONG);
 }
+
+
+#if (SUPPORT_SPIFLASH)
+BOOL ISPLdCMD::Cmd_ERASE_SPIFLASH(unsigned long offset, unsigned long total_len)
+{
+    unsigned long os = offset;
+
+    while (os < total_len) {
+        WriteFile(
+            CMD_ERASE_SPIFLASH,
+            (const char *)&os,
+            4,
+            USBCMD_TIMEOUT_LONG);
+
+        if (ReadFile(NULL, 0, USBCMD_TIMEOUT_LONG, TRUE)) {
+            os += 64 * 1024;
+        } else {
+            return FALSE;
+        }
+    }
+
+    return TRUE;
+}
+
+BOOL ISPLdCMD::Cmd_UPDATE_SPIFLASH(unsigned long start_addr,
+                                   unsigned long total_len,
+                                   const char *buffer)
+{
+    unsigned long write_len = 0;
+    char acBuffer[
+     HID_MAX_PACKET_SIZE_EP
+     - 8 /* cmd, index */ ];
+
+    while (write_len < total_len) {
+        unsigned long addr = start_addr + write_len;
+        unsigned long len = (total_len - write_len);
+
+        if (len > (sizeof(acBuffer) - 8)) {
+            len = (sizeof(acBuffer) - 8);
+        }
+
+        memcpy(&acBuffer[0], &addr, 4);
+        memcpy(&acBuffer[4], &len, 4);
+        memcpy(&acBuffer[8], buffer + write_len, len);
+        WriteFile(
+            CMD_UPDATE_SPIFLASH,
+            acBuffer,
+            len + 8/*start_addr, total_len*/,
+            USBCMD_TIMEOUT_LONG);
+
+        if (ReadFile(NULL, 0, USBCMD_TIMEOUT_LONG, TRUE)) {
+            write_len += len;
+        } else {
+            return FALSE;
+        }
+    }
+
+    return TRUE;
+}
+#endif

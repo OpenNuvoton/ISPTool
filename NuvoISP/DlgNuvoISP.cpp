@@ -67,7 +67,10 @@ CNuvoISPDlg::CNuvoISPDlg(UINT Template,
 
     WINCTRLID buddy[] = {
         {IDC_BUTTON_APROM, IDC_EDIT_FILEPATH_APROM, IDC_STATIC_FILEINFO_APROM},
-        {IDC_BUTTON_NVM, IDC_EDIT_FILEPATH_NVM, IDC_STATIC_FILEINFO_NVM}
+        {IDC_BUTTON_NVM, IDC_EDIT_FILEPATH_NVM, IDC_STATIC_FILEINFO_NVM},
+#if (SUPPORT_SPIFLASH)
+        {IDC_BUTTON_SPI, IDC_EDIT_FILEPATH_SPI, IDC_STATIC_FILEINFO_SPI},
+#endif
     };
     memcpy(&m_CtrlID, buddy, sizeof(m_CtrlID));
 }
@@ -95,6 +98,10 @@ void CNuvoISPDlg::DoDataExchange(CDataExchange *pDX)
     DDX_Text(pDX, IDC_STATIC_CONNECT, m_sConnect);
     DDX_Check(pDX, IDC_CHECK_APROM, m_bProgram_APROM);
     DDX_Check(pDX, IDC_CHECK_NVM, m_bProgram_NVM);
+#if (SUPPORT_SPIFLASH)
+    DDX_Check(pDX, IDC_CHECK_SPI, m_bProgram_SPI);
+    DDX_Check(pDX, IDC_CHECK_ERASE_SPI, m_bErase_SPI);
+#endif
     DDX_Check(pDX, IDC_CHECK_CONFIG, m_bProgram_Config);
     DDX_Check(pDX, IDC_CHECK_ERASE, m_bErase);
     DDX_Check(pDX, IDC_CHECK_RUN_APROM, m_bRunAPROM);
@@ -113,6 +120,9 @@ BEGIN_MESSAGE_MAP(CNuvoISPDlg, CDialog)
     ON_BN_CLICKED(IDC_BUTTON_CONNECT, OnButtonConnect)
     ON_BN_CLICKED(IDC_BUTTON_APROM, OnButtonLoadFile)
     ON_BN_CLICKED(IDC_BUTTON_NVM, OnButtonLoadFile)
+#if (SUPPORT_SPIFLASH)
+    ON_BN_CLICKED(IDC_BUTTON_SPI, OnButtonLoadFile)
+#endif
     ON_BN_CLICKED(IDC_BUTTON_START, OnButtonStart)
     ON_NOTIFY(TCN_SELCHANGE, IDC_TAB_DATA, OnSelchangeTabData)
     ON_BN_CLICKED(IDC_BUTTON_CONFIG, OnButtonConfig)
@@ -421,6 +431,10 @@ LRESULT CNuvoISPDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
                             AfxMessageBox(_T("Update Dataflash failed"));
                             break;
 
+                        case EPS_ERR_SPI:
+                            AfxMessageBox(_T("Update SPI Flash failed"));
+                            break;
+
                         case EPS_ERR_SIZE:
                             AfxMessageBox(_T("File Size > Flash Size"));
                             break;
@@ -467,8 +481,15 @@ void CNuvoISPDlg::OnButtonStart()
 {
     // TODO: Add your control notification handler code here
     UpdateData(TRUE);
-
     /* Try to reload file if necessary */
+#if (SUPPORT_SPIFLASH)
+
+    if (!(m_bProgram_APROM || m_bProgram_NVM || m_bProgram_Config || m_bErase || m_bRunAPROM || m_bProgram_SPI || m_bErase_SPI)) {
+        MessageBox(_T("You did not select any operation."), NULL, MB_ICONSTOP);
+        return;
+    }
+
+#else
 
     /* Check program operation */
     if (!(m_bProgram_APROM || m_bProgram_NVM || m_bProgram_Config || m_bErase || m_bRunAPROM)) {
@@ -476,6 +497,7 @@ void CNuvoISPDlg::OnButtonStart()
         return;
     }
 
+#endif
     /* WYLIWYP : What You Lock Is What You Program*/
     /* Lock ALL */
     EnableProgramOption(FALSE);
@@ -499,6 +521,15 @@ void CNuvoISPDlg::OnButtonStart()
             }
         }
 
+#if (SUPPORT_SPIFLASH)
+
+        if (strErr.IsEmpty() && m_bProgram_SPI) {
+            if (m_sFileInfo[2].st_size == 0) {
+                strErr = _T("Can not load SPI flash file for programming!");
+            }
+        }
+
+#endif
         // In case user press "Enter" after typing offset, need to call OnKillfocusEditAPRomOffset manually
         OnKillfocusEditAPRomOffset();
         UpdateAddrOffset();
@@ -610,6 +641,11 @@ void CNuvoISPDlg::EnableProgramOption(BOOL bEnable)
     EnableDlgItem(IDC_CHECK_ERASE, bEnable);
     EnableDlgItem(IDC_CHECK_RUN_APROM, bEnable);
     EnableDlgItem(IDC_BUTTON_START, bEnable);
+#if (SUPPORT_SPIFLASH)
+    EnableDlgItem(IDC_BUTTON_SPI, bEnable);
+    EnableDlgItem(IDC_CHECK_SPI, bEnable);
+    EnableDlgItem(IDC_CHECK_ERASE_SPI, bEnable);
+#endif
 }
 
 void CNuvoISPDlg::OnPaint()

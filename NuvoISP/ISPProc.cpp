@@ -363,6 +363,60 @@ void CISPProc::Thread_ProgramFlash()
             }
         }
 
+#if (SUPPORT_SPIFLASH)
+
+        if (m_bProgram_SPI || m_bErase_SPI) {
+            uAddr = 0;
+            uSize = 0;
+
+            if (m_bProgram_SPI) {
+                uSize = m_sFileInfo[2].st_size;
+                pBuffer = vector_ptr(m_sFileInfo[2].vbuf);
+            }
+
+            if (m_bErase_SPI) {
+                if (uSize < 128 * 1024) {
+                    uSize = 128 * 1024;
+                }
+            }
+
+            if (!m_ISPLdDev.Cmd_ERASE_SPIFLASH(uAddr, uSize)) {
+                m_eProcSts = EPS_ERR_SPI;
+                Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
+                return;
+            }
+
+            PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_WRITE_STATUS, 0);
+            m_ISPLdDev.SyncPackno();
+
+            for (unsigned long i = 0; i < uSize;) {
+                if (!m_bProgram_SPI) {
+                    break; // Erase Only
+                }
+
+                if (m_fnThreadProcStatus != &CISPProc::Thread_ProgramFlash) {
+                    break;
+                }
+
+                unsigned long uLen = (uSize - i);
+
+                if (uLen > 48) {
+                    uLen = 48;
+                }
+
+                if (!m_ISPLdDev.Cmd_UPDATE_SPIFLASH(uAddr + i, uLen, (const char *)(pBuffer + i))) {
+                    m_eProcSts = EPS_ERR_SPI;
+                    Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
+                    return;
+                } else {
+                    i += uLen;
+                    PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_WRITE_STATUS, (i * 100) / uSize);
+                }
+            }
+        }
+
+#endif
+
         if (m_bRunAPROM) {
             m_ISPLdDev.RunAPROM();
             m_eProcSts = EPS_OK;
