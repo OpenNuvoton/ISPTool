@@ -976,13 +976,14 @@ void CNuvoISPDlg::OnKillfocusEditAPRomOffset()
 
 void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
 {
+    CWnd *pWnd = NULL;
+    CRect rect1, rect2;
+    int offset;
     // Group - Load File
     ShowDlgItem(IDC_BUTTON_SPI, bShow);
     ShowDlgItem(IDC_STATIC_FILENAME_SPI, bShow);
     ShowDlgItem(IDC_EDIT_FILEPATH_SPI, bShow);
     ShowDlgItem(IDC_STATIC_FILEINFO_SPI, bShow);
-    CWnd *pWnd = NULL;
-    CRect rect1, rect2;
     pWnd = GetDlgItem(IDC_GROUP_FLASH_FILE);
     pWnd->GetWindowRect(&rect1);
     ScreenToClient(&rect1);
@@ -996,8 +997,7 @@ void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
     UINT32 nIds_CB[] = {
         IDC_GROUP_CONFIG,
         IDC_BUTTON_CONFIG,
-        IDC_STATIC_CONFIG0,
-        // IDC_STATIC_CONFIG_0,
+        IDC_STATIC_CONFIG_0,
         IDC_STATIC_CONFIG_VALUE_0,
         IDC_STATIC_CONFIG_VALUE_1,
         IDC_STATIC_CONFIG_VALUE_2,
@@ -1007,11 +1007,33 @@ void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
     ScreenToClient(&rect1);
     GetDlgItem(IDC_GROUP_CONFIG)->GetWindowRect(&rect2);
     ScreenToClient(&rect2);
-    int offset = rect2.top - rect1.top - rect1.top - 5;
+    offset = rect2.top - rect1.top - rect1.Height() - 5;
 
-    for (size_t i = 0; i < 2; i++) {
+    for (int i = 0; i < 7; i++) {
         CRect rect;
-        pWnd = GetDlgItem(nIds_CB[i]);
+        CWnd *pWnd = GetDlgItem(nIds_CB[i]);
+        pWnd->GetWindowRect(&rect);
+        ScreenToClient(&rect);
+        pWnd->MoveWindow(rect.left,
+                         rect.top - offset,
+                         rect.Width(),
+                         rect.Height());
+    }
+
+    // Group - File Data
+    UINT32 nIds_FD[] = {
+        IDC_GROUP_FILE_DATA,
+        IDC_TAB_DATA,
+    };
+    GetDlgItem(IDC_GROUP_CONFIG)->GetWindowRect(&rect1);
+    ScreenToClient(&rect1);
+    GetDlgItem(IDC_GROUP_FILE_DATA)->GetWindowRect(&rect2);
+    ScreenToClient(&rect2);
+    offset = rect2.top - rect1.top - rect1.Height() - 5;
+
+    for (int i = 0; i < 2; i++) {
+        CRect rect;
+        CWnd *pWnd = GetDlgItem(nIds_FD[i]);
         pWnd->GetWindowRect(&rect);
         ScreenToClient(&rect);
         pWnd->MoveWindow(rect.left,
@@ -1021,6 +1043,37 @@ void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
     }
 
     pViewer[2]->ShowWindow(bShow);
-    ShowDlgItem(IDC_CHECK_SPI, bShow);
-    ShowDlgItem(IDC_CHECK_ERASE_SPI, bShow);
+    // Group - Programming Options
+    UINT32 nIds_PO[] = {
+        IDC_GROUP_PROGRAM,
+        IDC_CHECK_APROM,
+        IDC_CHECK_NVM,
+        IDC_CHECK_SPI,
+        IDC_CHECK_CONFIG,
+        IDC_CHECK_RUN_APROM,
+        IDC_CHECK_ERASE,
+        IDC_CHECK_ERASE_SPI,
+        IDC_BUTTON_START,
+        // Progress Bar and Status
+        IDC_PROGRESS,
+        IDC_STATIC_STATUS,
+    };
+    GetDlgItem(IDC_GROUP_FILE_DATA)->GetWindowRect(&rect1);
+    ScreenToClient(&rect1);
+    GetDlgItem(IDC_GROUP_PROGRAM)->GetWindowRect(&rect2);
+    ScreenToClient(&rect2);
+    offset = rect2.top - rect1.top - rect1.Height() - 5;
+
+    for (int i = 0; i < 11; i++) {
+        CRect rect;
+        CWnd *pWnd = GetDlgItem(nIds_PO[i]);
+        pWnd->GetWindowRect(&rect);
+        ScreenToClient(&rect);
+        pWnd->MoveWindow(rect.left,
+                         rect.top - offset,
+                         rect.Width(),
+                         rect.Height());
+    }
+
+    // To Do : Main Window
 }

@@ -138,7 +138,6 @@
 #define IDC_EDIT_PRIVATE_KEY            1124
 #define IDC_BUTTON_OPEN                 1126
 #define IDC_EDIT_FILEPATH_FRM_FILE      1127
-#define IDC_STATIC_CONFIG0              1128
 #define IDC_STATIC_CHECKSUM             1129
 #define IDC_STATIC_MAP0                 1130
 #define IDC_STATIC_MAP2                 1131
