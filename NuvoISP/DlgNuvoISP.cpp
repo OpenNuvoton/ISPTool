@@ -73,7 +73,7 @@ CNuvoISPDlg::CNuvoISPDlg(UINT Template,
 #endif
     };
     memcpy(&m_CtrlID, buddy, sizeof(m_CtrlID));
-    m_bShowSPI = FALSE;
+    m_bShowSPI = -1; // not initialized
 }
 
 CNuvoISPDlg::~CNuvoISPDlg()
@@ -200,6 +200,7 @@ BOOL CNuvoISPDlg::OnInitDialog()
     Set_ThreadAction(&CISPProc::Thread_Idle);
     RegisterNotification();
     ShowSPIOptions(FALSE);
+    // ShowSPIOptions(TRUE);
     return TRUE;	// return TRUE  unless you set the focus to a control
 }
 
@@ -276,6 +277,14 @@ void CNuvoISPDlg::OnButtonLoadFile()
 
 void CNuvoISPDlg::OnButtonConnect()
 {
+    if (m_bShowSPI) {
+        ShowSPIOptions(FALSE);
+    } else {
+        ShowSPIOptions(TRUE);
+    }
+
+    return;
+
     // TODO: Add your control notification handler code here
     if (m_fnThreadProcStatus == &CISPProc::Thread_Idle
             || m_fnThreadProcStatus == &CISPProc::Thread_Pause) {
@@ -976,6 +985,12 @@ void CNuvoISPDlg::OnKillfocusEditAPRomOffset()
 
 void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
 {
+    if (m_bShowSPI == bShow) {
+        return;
+    } else {
+        m_bShowSPI = bShow;
+    }
+
     CWnd *pWnd = NULL;
     CRect rect1, rect2;
     int offset;
@@ -987,12 +1002,19 @@ void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
     pWnd = GetDlgItem(IDC_GROUP_FLASH_FILE);
     pWnd->GetWindowRect(&rect1);
     ScreenToClient(&rect1);
-    GetDlgItem(IDC_BUTTON_SPI)->GetWindowRect(&rect2);
+
+    if (bShow) {
+        GetDlgItem(IDC_STATIC_FILEINFO_SPI)->GetWindowRect(&rect2);
+    } else {
+        GetDlgItem(IDC_STATIC_FILEINFO_NVM)->GetWindowRect(&rect2);
+    }
+
     ScreenToClient(&rect2);
+    rect1.bottom = rect2.bottom + 10;
     pWnd->MoveWindow(rect1.left,
                      rect1.top,
                      rect1.Width(),
-                     rect2.top - rect1.top);
+                     rect1.Height());
     // Group - Config Bits
     UINT32 nIds_CB[] = {
         IDC_GROUP_CONFIG,
@@ -1021,6 +1043,20 @@ void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
     }
 
     // Group - File Data
+    if (bShow) {
+        if (m_TabData.GetItemCount() != NUM_VIEW) {
+            CString strTab;
+            GetDlgItemText(m_CtrlID[2].btn, strTab);
+            m_TabData.InsertItem(2, strTab);
+        }
+    } else {
+        if (m_TabData.GetItemCount() == NUM_VIEW) {
+            m_TabData.DeleteItem(2);
+        }
+
+        pViewer[2]->ShowWindow(SW_HIDE);
+    }
+
     UINT32 nIds_FD[] = {
         IDC_GROUP_FILE_DATA,
         IDC_TAB_DATA,
@@ -1044,6 +1080,8 @@ void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
 
     pViewer[2]->ShowWindow(bShow);
     // Group - Programming Options
+    ShowDlgItem(IDC_CHECK_SPI, bShow);
+    ShowDlgItem(IDC_CHECK_ERASE_SPI, bShow);
     UINT32 nIds_PO[] = {
         IDC_GROUP_PROGRAM,
         IDC_CHECK_APROM,
@@ -1054,9 +1092,6 @@ void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
         IDC_CHECK_ERASE,
         IDC_CHECK_ERASE_SPI,
         IDC_BUTTON_START,
-        // Progress Bar and Status
-        IDC_PROGRESS,
-        IDC_STATIC_STATUS,
     };
     GetDlgItem(IDC_GROUP_FILE_DATA)->GetWindowRect(&rect1);
     ScreenToClient(&rect1);
@@ -1064,7 +1099,7 @@ void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
     ScreenToClient(&rect2);
     offset = rect2.top - rect1.top - rect1.Height() - 5;
 
-    for (int i = 0; i < 11; i++) {
+    for (int i = 0; i < 9; i++) {
         CRect rect;
         CWnd *pWnd = GetDlgItem(nIds_PO[i]);
         pWnd->GetWindowRect(&rect);
@@ -1075,5 +1110,46 @@ void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
                          rect.Height());
     }
 
-    // To Do : Main Window
+    if (bShow) {
+        SetDlgItemText(IDC_CHECK_ERASE, _T("Erase All (Exclude SPI)"));
+        GetDlgItem(IDC_CHECK_SPI)->GetWindowRect(&rect2);
+    } else {
+        SetDlgItemText(IDC_CHECK_ERASE, _T("Erase All"));
+        GetDlgItem(IDC_CHECK_APROM)->GetWindowRect(&rect2);
+    }
+
+    ScreenToClient(&rect2);
+    pWnd = GetDlgItem(IDC_GROUP_PROGRAM);
+    pWnd->GetWindowRect(&rect1);
+    ScreenToClient(&rect1);
+    rect1.bottom = rect2.bottom + 10;
+    pWnd->MoveWindow(rect1.left,
+                     rect1.top,
+                     rect1.Width(),
+                     rect1.Height());
+    // Progress Bar and Status
+    UINT32 nIds_PB[] = {
+        IDC_PROGRESS,
+        IDC_STATIC_STATUS,
+    };
+
+    for (int i = 0; i < 2; i++) {
+        CRect rect;
+        CWnd *pWnd = GetDlgItem(nIds_PB[i]);
+        pWnd->GetWindowRect(&rect);
+        ScreenToClient(&rect);
+        pWnd->MoveWindow(rect.left,
+                         rect1.bottom + 5,
+                         rect.Width(),
+                         rect.Height());
+    }
+
+    // Main Window
+    GetWindowRect(&m_rect);
+    GetDlgItem(IDC_PROGRESS)->GetWindowRect(&rect2);
+    m_rect.bottom = rect2.bottom + 10;
+    MoveWindow(m_rect.left,
+               m_rect.top,
+               m_rect.Width(),
+               m_rect.Height());
 }
