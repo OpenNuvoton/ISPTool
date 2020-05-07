@@ -200,8 +200,8 @@ void CDialogConfiguration_N570::ConfigToGUI()
     m_nRadioBS = ((uConfig0 & N570_FLASH_CONFIG_CBS) == 0 ? 0 : 1);
     m_bCheckLowVolResetEnable = ((uConfig0 & N570_FLASH_CONFIG_CLVR) == 0 ? TRUE : FALSE);
     m_bCheckBrownOutHysteresis = ((uConfig0 & N570_FLASH_CONFIG_CBHYS) == 0 ? FALSE : TRUE);
-    m_bDataFlashEnable = ((uConfig0 & N570_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
-    m_bSecurityLock = ((uConfig0 & N570_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    m_bDataFlashEnable = ((uConfig0 & NUMICRO_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
+    m_bSecurityLock = ((uConfig0 & NUMICRO_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
     unsigned int uFlashBaseAddress = uConfig1 & 0xFFFFF;
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
     unsigned int uPageNum = uFlashBaseAddress / NUMICRO_FLASH_PAGE_SIZE_512;
@@ -309,16 +309,16 @@ void CDialogConfiguration_N570::GUIToConfig()
     }
 
     if (m_bDataFlashEnable) {
-        uConfig0 &= ~N570_FLASH_CONFIG_DFEN;
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_DFEN;
     } else {
-        uConfig0 |= N570_FLASH_CONFIG_DFEN;
+        uConfig0 |= NUMICRO_FLASH_CONFIG_DFEN;
         m_sFlashBaseAddress = "FFFFF";
     }
 
     if (m_bSecurityLock) {
-        uConfig0 &= ~N570_FLASH_CONFIG_LOCK;
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
     } else {
-        uConfig0 |= N570_FLASH_CONFIG_LOCK;
+        uConfig0 |= NUMICRO_FLASH_CONFIG_LOCK;
     }
 
     if (m_bCheckLowVolResetEnable) {

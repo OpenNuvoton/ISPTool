@@ -229,8 +229,8 @@ void CDialogConfiguration_M480::ConfigToGUI(int nEventID)
     m_bCheckBrownOutDetect = ((uConfig0 & M480_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
     m_bCheckBrownOutReset = ((uConfig0 & M480_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
     m_bCheckBootLoader = ((uConfig0 & M480_FLASH_CONFIG_BOOTLOADER) == 0 ? TRUE : FALSE);
-    m_bDataFlashEnable = ((uConfig0 & M480_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
-    m_bSecurityLock = ((uConfig0 & M480_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    m_bDataFlashEnable = ((uConfig0 & NUMICRO_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
+    m_bSecurityLock = ((uConfig0 & NUMICRO_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
     m_bICELock = ((uConfig0 & M480_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
     m_bSpromLockCacheable = ((uConfig0 & M480_FLASH_CONFIG_SPLCAEN) == 0 ? FALSE : TRUE);
 
@@ -445,17 +445,17 @@ void CDialogConfiguration_M480::GUIToConfig(int nEventID)
     }
 
     if (m_bDataFlashEnable) {
-        uConfig0 &= ~M480_FLASH_CONFIG_DFEN;
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_DFEN;
     } else {
-        uConfig0 |= M480_FLASH_CONFIG_DFEN;
+        uConfig0 |= NUMICRO_FLASH_CONFIG_DFEN;
         m_sFlashBaseAddress = "FFFFF";
     }
 
     if (m_bSecurityLock) {
-        uConfig0 &= ~M480_FLASH_CONFIG_LOCK;
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
         uConfig2 &= ~M480_FLASH_CONFIG_ALOCK;
     } else {
-        uConfig0 |= M480_FLASH_CONFIG_LOCK;
+        uConfig0 |= NUMICRO_FLASH_CONFIG_LOCK;
         uConfig2 &= ~M480_FLASH_CONFIG_ALOCK;
         uConfig2 |= 0x0000005A;
     }
@@ -697,8 +697,8 @@ void CDialogChipSetting_CFG_M480LD::ConfigToGUI(int nEventID)
     m_bCheckBrownOutDetect = ((uConfig0 & M480_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
     m_bCheckBrownOutReset = ((uConfig0 & M480_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
     m_bCheckBootLoader = ((uConfig0 & M480_FLASH_CONFIG_BOOTLOADER) == 0 ? TRUE : FALSE);
-    m_bDataFlashEnable = ((uConfig0 & M480_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
-    m_bSecurityLock = ((uConfig0 & M480_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    m_bDataFlashEnable = ((uConfig0 & NUMICRO_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
+    m_bSecurityLock = ((uConfig0 & NUMICRO_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
     m_bSecurityBootLock = ((uConfig2 & M480_FLASH_CONFIG_SBLOCK) == 0x5A00 ? FALSE : TRUE);
     m_bICELock = ((uConfig0 & M480_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
 
@@ -851,17 +851,17 @@ void CDialogChipSetting_CFG_M480LD::GUIToConfig(int nEventID)
     }
 
     if (m_bDataFlashEnable) {
-        uConfig0 &= ~M480_FLASH_CONFIG_DFEN;
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_DFEN;
     } else {
-        uConfig0 |= M480_FLASH_CONFIG_DFEN;
+        uConfig0 |= NUMICRO_FLASH_CONFIG_DFEN;
         m_sFlashBaseAddress = "FFFFF";
     }
 
     if (m_bSecurityLock) {
-        uConfig0 &= ~M480_FLASH_CONFIG_LOCK;
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
         uConfig2 &= ~M480_FLASH_CONFIG_ALOCK;
     } else {
-        uConfig0 |= M480_FLASH_CONFIG_LOCK;
+        uConfig0 |= NUMICRO_FLASH_CONFIG_LOCK;
         uConfig2 &= ~M480_FLASH_CONFIG_ALOCK;
         uConfig2 |= 0x0000005A;
     }

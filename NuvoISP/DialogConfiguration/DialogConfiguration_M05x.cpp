@@ -111,7 +111,7 @@ void CDialogConfiguration_M05x::ConfigToGUI(int nEventID)
     m_bCheckBrownOutDetect = ((uConfig0 & M05X_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
     m_bCheckBrownOutReset = ((uConfig0 & M05X_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
     m_bClockFilterEnable = ((uConfig0 & M05X_FLASH_CONFIG_CKF) == M05X_FLASH_CONFIG_CKF ? TRUE : FALSE);
-    m_bSecurityLock = ((uConfig0 & M05X_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    m_bSecurityLock = ((uConfig0 & NUMICRO_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
     m_sConfigValue0.Format(_T("0x%08X"), m_ConfigValue.m_value[0]);
 }
 
@@ -167,9 +167,9 @@ void CDialogConfiguration_M05x::GUIToConfig(int nEventID)
     }
 
     if (m_bSecurityLock) {
-        uConfig0 &= ~M05X_FLASH_CONFIG_LOCK;
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
     } else {
-        uConfig0 |= M05X_FLASH_CONFIG_LOCK;
+        uConfig0 |= NUMICRO_FLASH_CONFIG_LOCK;
     }
 
     uConfig0 |= M05X_FLASH_CONFIG_CWDTEN;
@@ -389,9 +389,9 @@ void CDialogConfiguration_M05XDN::GUIToConfig(int nEventID)
     }
 
     if (m_bSecurityLock) {
-        uConfig0 &= ~M05X_FLASH_CONFIG_LOCK;
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
     } else {
-        uConfig0 |= M05X_FLASH_CONFIG_LOCK;
+        uConfig0 |= NUMICRO_FLASH_CONFIG_LOCK;
     }
 
     m_ConfigValue.m_value[0] = uConfig0;

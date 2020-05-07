@@ -186,8 +186,8 @@ void CDialogConfiguration_MT500::ConfigToGUI(int nEventID)
     m_bCheckBrownOutDetect = ((uConfig0 & NUC1XX_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
     m_bCheckBrownOutReset = ((uConfig0 & NUC1XX_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
     m_bClockFilterEnable = ((uConfig0 & NUC1XX_FLASH_CONFIG_CKF) == NUC1XX_FLASH_CONFIG_CKF ? TRUE : FALSE);
-    m_bDataFlashEnable = ((uConfig0 & NUC1XX_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
-    m_bSecurityLock = ((uConfig0 & NUC1XX_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    m_bDataFlashEnable = ((uConfig0 & NUMICRO_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
+    m_bSecurityLock = ((uConfig0 & NUMICRO_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
     m_BCHZ_BPWM = ((uConfig0 & MT5XX_FLASH_CONFIG_CHZ_BPWM) == MT5XX_FLASH_CONFIG_CHZ_BPWM ? TRUE : FALSE);
     m_BCHZ_Odd1 = ((uConfig0 & MT5XX_FLASH_CONFIG_CHZ_Odd1) == MT5XX_FLASH_CONFIG_CHZ_Odd1 ? TRUE : FALSE);
     m_bCHZ_Even1 = ((uConfig0 & MT5XX_FLASH_CONFIG_CHZ_Event1) == MT5XX_FLASH_CONFIG_CHZ_Event1 ? TRUE : FALSE);
@@ -305,16 +305,16 @@ void CDialogConfiguration_MT500::GUIToConfig(int nEventID)
     }
 
     if (m_bDataFlashEnable) {
-        uConfig0 &= ~NUC1XX_FLASH_CONFIG_DFEN;
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_DFEN;
     } else {
-        uConfig0 |= NUC1XX_FLASH_CONFIG_DFEN;
+        uConfig0 |= NUMICRO_FLASH_CONFIG_DFEN;
         m_sFlashBaseAddress = "FFFFF";
     }
 
     if (m_bSecurityLock) {
-        uConfig0 &= ~NUC1XX_FLASH_CONFIG_LOCK;
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
     } else {
-        uConfig0 |= NUC1XX_FLASH_CONFIG_LOCK;
+        uConfig0 |= NUMICRO_FLASH_CONFIG_LOCK;
     }
 
     if (m_BCHZ_BPWM) {

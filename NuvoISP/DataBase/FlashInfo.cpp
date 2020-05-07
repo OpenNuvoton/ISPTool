@@ -807,7 +807,7 @@ bool GetInfo_NuMicro(//unsigned int uDID,
     }
 
     if (bShare) {
-        if ((uConfig0 & NUC1XX_FLASH_CONFIG_DFEN) == 0) {
+        if ((uConfig0 & NUMICRO_FLASH_CONFIG_DFEN) == 0) {
             unsigned int uNVM_Addr, uPage_Size;
             uPage_Size = ((uFlashType & 0x0000FF00) >>  8) + 9;
             uNVM_Addr = uConfig1 & 0x00FFFFFF;	// Needed?
