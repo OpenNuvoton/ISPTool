@@ -277,15 +277,6 @@ void CNuvoISPDlg::OnButtonLoadFile()
 
 void CNuvoISPDlg::OnButtonConnect()
 {
-    if (m_bShowSPI) {
-        ShowSPIOptions(FALSE);
-    } else {
-        ShowSPIOptions(TRUE);
-    }
-
-    return;
-
-    // TODO: Add your control notification handler code here
     if (m_fnThreadProcStatus == &CISPProc::Thread_Idle
             || m_fnThreadProcStatus == &CISPProc::Thread_Pause) {
         /* Connect */
@@ -495,7 +486,11 @@ void CNuvoISPDlg::OnButtonStart()
     /* Try to reload file if necessary */
 #if (SUPPORT_SPIFLASH)
 
-    if (!(m_bProgram_APROM || m_bProgram_NVM || m_bProgram_Config || m_bErase || m_bRunAPROM || m_bProgram_SPI || m_bErase_SPI)) {
+    if (m_bProgram_APROM || m_bProgram_NVM || m_bProgram_Config || m_bErase || m_bRunAPROM) {
+        // Check Standart ISP Options
+    } else if (m_bSupport_SPI && (m_bProgram_SPI || m_bErase_SPI)) {
+        // Check Extend ISP Options for SPI Flash
+    } else {
         MessageBox(_T("You did not select any operation."), NULL, MB_ICONSTOP);
         return;
     }
@@ -534,7 +529,7 @@ void CNuvoISPDlg::OnButtonStart()
 
 #if (SUPPORT_SPIFLASH)
 
-        if (strErr.IsEmpty() && m_bProgram_SPI) {
+        if (strErr.IsEmpty() && m_bProgram_SPI && m_bSupport_SPI) {
             if (m_sFileInfo[2].st_size == 0) {
                 strErr = _T("Can not load SPI flash file for programming!");
             }
@@ -753,7 +748,7 @@ void CNuvoISPDlg::ShowChipInfo_M2351(void)
     ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 1);
     ShowDlgItem(IDC_STATIC_CONFIG_VALUE_3, 1);
     // ChangeBtnText(1, _T("APROM_NS"));
-    m_uAPROM_Size = gsChipCfgInfo.uProgramMemorySize; // m_ISPLdDev.m_ConnectInfo[0];
+    m_uAPROM_Size = gsChipCfgInfo.uProgramMemorySize;
     ShowDlgItem(IDC_STATIC_APOFFSET, 1);
     ShowDlgItem(IDC_EDIT_APROM_BASE_ADDRESS, 1);
     EnableDlgItem(IDC_EDIT_APROM_BASE_ADDRESS, 1);
@@ -776,6 +771,7 @@ void CNuvoISPDlg::ShowChipInfo_M2351(void)
 
 void CNuvoISPDlg::ShowChipInfo_OnLine()
 {
+    ShowSPIOptions(m_bSupport_SPI);
     bool bSizeValid = UpdateSizeInfo(m_ulDeviceID, m_CONFIG[0], m_CONFIG[1]);
 
     // There is no specific part number for NUC505

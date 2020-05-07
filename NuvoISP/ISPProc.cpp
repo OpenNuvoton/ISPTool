@@ -185,6 +185,7 @@ void CISPProc::Thread_CheckDeviceConnect()
                 m_ISPLdDev.ReadConfig(m_CONFIG);
                 //printf("ReadConfig: %X, %X\n", m_CONFIG[0], m_CONFIG[1]);
                 memcpy(m_CONFIG_User, m_CONFIG, sizeof(m_CONFIG));
+                m_bSupport_SPI = m_ISPLdDev.bSupport_SPI;
                 m_eProcSts = EPS_OK;
 
                 if (MainHWND != NULL) { // UI Mode
@@ -365,7 +366,7 @@ void CISPProc::Thread_ProgramFlash()
 
 #if (SUPPORT_SPIFLASH)
 
-        if (m_bProgram_SPI || m_bErase_SPI) {
+        if (m_bSupport_SPI && (m_bProgram_SPI || m_bErase_SPI)) {
             uAddr = 0;
             uSize = 0;
 
@@ -386,7 +387,10 @@ void CISPProc::Thread_ProgramFlash()
                 return;
             }
 
-            PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_WRITE_STATUS, 0);
+            if (MainHWND != NULL) {
+                PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_WRITE_STATUS, 0);
+            }
+
             m_ISPLdDev.SyncPackno();
 
             for (unsigned long i = 0; i < uSize;) {
@@ -410,7 +414,10 @@ void CISPProc::Thread_ProgramFlash()
                     return;
                 } else {
                     i += uLen;
-                    PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_WRITE_STATUS, (i * 100) / uSize);
+
+                    if (MainHWND != NULL) {
+                        PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_WRITE_STATUS, (i * 100) / uSize);
+                    }
                 }
             }
         }

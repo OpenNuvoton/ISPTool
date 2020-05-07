@@ -33,6 +33,8 @@ protected:
 
 
 public:
+    BOOL bSupport_SPI;;
+
 
     BOOL bResendFlag;	// This flag is set by ReadFile
     ISPLdCMD();
@@ -109,8 +111,6 @@ public:
         m_strComNum = str;
     };
     CString m_strDevPathName;
-
-    unsigned int m_ConnectInfo[4];
 
 #if (SUPPORT_SPIFLASH)
     BOOL Cmd_ERASE_SPIFLASH(unsigned long offset, unsigned long total_len);

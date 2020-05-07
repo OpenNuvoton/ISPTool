@@ -430,13 +430,15 @@ BOOL ISPLdCMD::CMD_Connect(DWORD dwMilliseconds)
 
     BOOL ret = FALSE;
     DWORD dwStart = GetTickCount();
+    unsigned long uID;
 
     if (WriteFile(CMD_CONNECT, NULL, 0)) {
-        ret = ReadFile((char *)m_ConnectInfo, 16, dwMilliseconds, FALSE);
+        ret = ReadFile((char *)&uID, 4, dwMilliseconds, FALSE);
     }
 
     if (ret) {
         m_uCmdIndex = 3;
+        bSupport_SPI = (uID == 0x001540EF);
     } else if (m_uInterface == 3) {
         // For SPI interface, Nu-Link2 can get respones even if Target Device is not connected to Nu-Link2.
         // Without this delay, hidapi will crash due to heap corruption.

@@ -63,6 +63,8 @@ BOOL ISPLdCMD2::ReadFile(DWORD dwMilliseconds)
 
 BOOL ISPLdCMD2::CMD_Connect(DWORD dwMilliseconds)
 {
+    bSupport_SPI = FALSE;
+
     if (m_uInterface != 6) {
         return ISPLdCMD::CMD_Connect(dwMilliseconds);
     } else {
