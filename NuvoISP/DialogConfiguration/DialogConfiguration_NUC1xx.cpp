@@ -136,8 +136,8 @@ void CDialogConfiguration_NUC1xx::ConfigToGUI()
     m_bCheckBrownOutDetect = ((uConfig0 & NUC1XX_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
     m_bCheckBrownOutReset = ((uConfig0 & NUC1XX_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
     m_bClockFilterEnable = ((uConfig0 & NUC1XX_FLASH_CONFIG_CKF) == NUC1XX_FLASH_CONFIG_CKF ? TRUE : FALSE);
-    m_bDataFlashEnable = ((uConfig0 & NUC1XX_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
-    m_bSecurityLock = ((uConfig0 & NUC1XX_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    m_bDataFlashEnable = ((uConfig0 & NUMICRO_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
+    m_bSecurityLock = ((uConfig0 & NUMICRO_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
     unsigned int uFlashBaseAddress = uConfig1 & 0xFFFFF;
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
 
@@ -210,16 +210,16 @@ void CDialogConfiguration_NUC1xx::GUIToConfig()
     }
 
     if (m_bDataFlashEnable) {
-        uConfig0 &= ~NUC1XX_FLASH_CONFIG_DFEN;
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_DFEN;
     } else {
-        uConfig0 |= NUC1XX_FLASH_CONFIG_DFEN;
+        uConfig0 |= NUMICRO_FLASH_CONFIG_DFEN;
         m_sFlashBaseAddress = "FFFFF";
     }
 
     if (m_bSecurityLock) {
-        uConfig0 &= ~NUC1XX_FLASH_CONFIG_LOCK;
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
     } else {
-        uConfig0 |= NUC1XX_FLASH_CONFIG_LOCK;
+        uConfig0 |= NUMICRO_FLASH_CONFIG_LOCK;
     }
 
     //Removed if(m_bWatchDogEnable)

@@ -13,7 +13,6 @@ static char THIS_FILE[] = __FILE__;
 #define page_size NUMICRO_FLASH_PAGE_SIZE_512
 #define M251_FLASH_CONFIG_ICELOCK		0x00001000UL
 
-
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_M251 dialog
 
@@ -171,7 +170,7 @@ void CDialogConfiguration_M251::ConfigToGUI(int nEventID)
 
     m_bCheckBrownOutDetect = ((uConfig0 & M480_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
     m_bCheckBrownOutReset = ((uConfig0 & M480_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
-    m_bSecurityLock = ((uConfig0 & M480_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    m_bSecurityLock = ((uConfig0 & NUMICRO_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
     m_bICELock = ((uConfig0 & M251_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
     m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
 }
@@ -299,9 +298,9 @@ void CDialogConfiguration_M251::GUIToConfig(int nEventID)
     }
 
     if (m_bSecurityLock) {
-        uConfig0 &= ~M480_FLASH_CONFIG_LOCK;
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
     } else {
-        uConfig0 |= M480_FLASH_CONFIG_LOCK;
+        uConfig0 |= NUMICRO_FLASH_CONFIG_LOCK;
     }
 
     if (m_bICELock) {

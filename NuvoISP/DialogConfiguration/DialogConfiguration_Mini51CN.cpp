@@ -198,8 +198,8 @@ void CDialogConfiguration_Mini51CN::ConfigToGUI()
     m_nRadioIO = ((uConfig0 & MINI51_FLASH_CONFIG_CIOINI) == 0 ? 1 : 0);
     m_bClockFilterEnable = ((uConfig0 & MINI51_FLASH_CONFIG_CKF) == MINI51_FLASH_CONFIG_CKF ? TRUE : FALSE);
     m_bCheckBrownOutReset = ((uConfig0 & MINI51_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
-    m_bDataFlashEnable = ((uConfig0 & MINI51_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
-    m_bSecurityLock = ((uConfig0 & MINI51_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    m_bDataFlashEnable = ((uConfig0 & NUMICRO_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
+    m_bSecurityLock = ((uConfig0 & NUMICRO_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
 
     if (m_bDataFlashEnable) {
         uFlashBaseAddress = ((uFlashBaseAddress >= NUMICRO_FLASH_PAGE_SIZE_512) && (uFlashBaseAddress < m_uProgramMemorySize)) ? uFlashBaseAddress : (m_uProgramMemorySize - NUMICRO_FLASH_PAGE_SIZE_512);
@@ -297,16 +297,16 @@ void CDialogConfiguration_Mini51CN::GUIToConfig()
     }
 
     if (m_bDataFlashEnable) {
-        uConfig0 &= ~MINI51_FLASH_CONFIG_DFEN;
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_DFEN;
     } else {
-        uConfig0 |= MINI51_FLASH_CONFIG_DFEN;
+        uConfig0 |= NUMICRO_FLASH_CONFIG_DFEN;
         m_sFlashBaseAddress = "FFFFF";
     }
 
     if (m_bSecurityLock) {
-        uConfig0 &= ~MINI51_FLASH_CONFIG_LOCK;
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
     } else {
-        uConfig0 |= MINI51_FLASH_CONFIG_LOCK;
+        uConfig0 |= NUMICRO_FLASH_CONFIG_LOCK;
     }
 
     m_ConfigValue.m_value[0] = uConfig0;

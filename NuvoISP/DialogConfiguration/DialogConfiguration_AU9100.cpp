@@ -106,8 +106,8 @@ void CDialogConfiguration_AU9100::ConfigToGUI()
     unsigned int uConfig1 = m_ConfigValue.m_value[1];
     m_nRadioBS = ((uConfig0 & AU91XX_FLASH_CONFIG_CBS) == 0 ? 0 : 1);
     m_bCheckBrownOutDetect = ((uConfig0 & AU91XX_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
-    m_bDataFlashEnable = ((uConfig0 & AU91XX_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
-    m_bSecurityLock = ((uConfig0 & AU91XX_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    m_bDataFlashEnable = ((uConfig0 & NUMICRO_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
+    m_bSecurityLock = ((uConfig0 & NUMICRO_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
     m_bLDROM_EN = ((uConfig0 & AU91XX_FLASH_CONFIG_LDROM_EN) == 0 ? FALSE : TRUE);
     unsigned int uFlashBaseAddress = uConfig1 & 0xFFFFF;
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
@@ -139,16 +139,16 @@ void CDialogConfiguration_AU9100::GUIToConfig()
     }
 
     if (m_bDataFlashEnable) {
-        uConfig0 &= ~AU91XX_FLASH_CONFIG_DFEN;
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_DFEN;
     } else {
-        uConfig0 |= AU91XX_FLASH_CONFIG_DFEN;
+        uConfig0 |= NUMICRO_FLASH_CONFIG_DFEN;
         m_sFlashBaseAddress = "FFFFF";
     }
 
     if (m_bSecurityLock) {
-        uConfig0 &= ~AU91XX_FLASH_CONFIG_LOCK;
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
     } else {
-        uConfig0 |= AU91XX_FLASH_CONFIG_LOCK;
+        uConfig0 |= NUMICRO_FLASH_CONFIG_LOCK;
     }
 
     if (m_bLDROM_EN) {

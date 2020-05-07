@@ -150,9 +150,9 @@ void CDialogConfiguration_Nano112::ConfigToGUI()
     }
 
     m_bClockFilterEnable = ((uConfig0 & NANO100_FLASH_CONFIG_CKF) == NANO100_FLASH_CONFIG_CKF ? TRUE : FALSE);
-    m_bDataFlashEnable = ((uConfig0 & NANO100_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
+    m_bDataFlashEnable = ((uConfig0 & NUMICRO_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
     m_bWDTEnable = ((uConfig0 & NANO100_FLASH_CONFIG_CWDTEN) == 0 ? TRUE : FALSE);;
-    m_bSecurityLock = ((uConfig0 & NANO100_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    m_bSecurityLock = ((uConfig0 & NUMICRO_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
     unsigned int uFlashBaseAddress = uConfig1 & 0xFFFFF;
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
     unsigned int uPageNum = uFlashBaseAddress / NUMICRO_FLASH_PAGE_SIZE_512;
@@ -230,16 +230,16 @@ void CDialogConfiguration_Nano112::GUIToConfig()
 
     //if((m_bDataFlashEnable)&&(m_nRadioBS==1))		//2013 0521
     if (m_bDataFlashEnable) {
-        uConfig0 &= ~NANO100_FLASH_CONFIG_DFEN;
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_DFEN;
     } else {
-        uConfig0 |= NANO100_FLASH_CONFIG_DFEN;
+        uConfig0 |= NUMICRO_FLASH_CONFIG_DFEN;
         m_sFlashBaseAddress = "FFFFF";
     }
 
     if (m_bSecurityLock) {
-        uConfig0 &= ~NANO100_FLASH_CONFIG_LOCK;
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
     } else {
-        uConfig0 |= NANO100_FLASH_CONFIG_LOCK;
+        uConfig0 |= NUMICRO_FLASH_CONFIG_LOCK;
     }
 
     m_ConfigValue.m_value[0] = uConfig0;
