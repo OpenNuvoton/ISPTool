@@ -376,9 +376,13 @@ void CISPProc::Thread_ProgramFlash()
             }
 
             if (m_bErase_SPI) {
-                if (uSize < 128 * 1024) {
-                    uSize = 128 * 1024;
-                }
+                uSize = 2048 * 1024;
+            }
+
+            if (2048 * 1024 < uSize) {
+                m_eProcSts = EPS_ERR_SIZE;
+                Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
+                return;
             }
 
             if (!m_ISPLdDev.Cmd_ERASE_SPIFLASH(uAddr, uSize)) {

@@ -185,15 +185,15 @@ FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
     LTEXT           "Text is changed in run-time",IDC_STATIC_MESSAGE,74,10,186,26,SS_NOPREFIX
-    LTEXT           "Copyright(C) 2019",IDC_STATIC,74,46,119,8
+    LTEXT           "Copyright(C) 2020~2021",IDC_STATIC,74,46,119,8
     DEFPUSHBUTTON   "OK",IDOK,265,23,50,14,WS_GROUP
     LTEXT           "http://www.nuvoton.com/NuMicro/",IDC_LINK_NUVOTON,74,56,143,8
     LTEXT           "GitHub Repository",IDC_STATIC,74,72,65,8
     LTEXT           "https://github.com/OpenNuvoton/ISPTool/",IDC_LINK_GITHUB,74,82,138,8
     LTEXT           "GITEE Repository",IDC_STATIC,74,97,65,8
-    LTEXT           "https://gitee.com/OpenNuvoton/ISPTool/",IDC_LINK_GITEE,74,106,124,8
+    LTEXT           "https://gitee.com/OpenNuvoton/ISPTool/",IDC_LINK_GITEE,74,106,179,8
     LTEXT           "GitLab Repository",IDC_STATIC,74,120,65,8
-    LTEXT           "https://gitlab.com/OpenNuvoton/nuvoton-tools/ISPTool/",IDC_LINK_GITLAB,74,129,187,8
+    LTEXT           "https://gitlab.com/OpenNuvoton/nuvoton-tools/ISPTool/",IDC_LINK_GITLAB,74,129,197,8
 END
 
 IDD_DIALOG_HEX DIALOGEX 0, 0, 308, 162
@@ -1433,8 +1433,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 3,0,5,1014
- PRODUCTVERSION 3,0,5,1014
+ FILEVERSION 4,0,1,507
+ PRODUCTVERSION 4,0,1,507
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1450,12 +1450,12 @@ BEGIN
         BLOCK "040004b0"
         BEGIN
             VALUE "FileDescription", "ISP Programming Tool"
-            VALUE "FileVersion", "4.00"
+            VALUE "FileVersion", "4.01"
             VALUE "InternalName", "ISPTool"
             VALUE "LegalCopyright", "Copyright (C) 2020"
             VALUE "OriginalFilename", "NuvoISP.EXE"
             VALUE "ProductName", "ISP Programming Tool"
-            VALUE "ProductVersion", "4.00"
+            VALUE "ProductVersion", "4.01"
         END
     END
     BLOCK "VarFileInfo"
