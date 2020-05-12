@@ -20,6 +20,7 @@ class CDialogConfiguration_M251 : public CDialogResize
 // Construction
 public:
     CDialogConfiguration_M251(unsigned int uProgramMemorySize = 192 * 1024,
+                              UINT nIDTemplate = CDialogConfiguration_M251::IDD,
                               CWnd *pParent = NULL);   // standard constructor
 
     CAppConfig::M251_configs_t m_ConfigValue;
@@ -35,13 +36,12 @@ public:
     BOOL	m_bICELock;
     BOOL	m_bWDTEnable;
     BOOL	m_bWDTPowerDown;
-    int		m_nRadioGPG;
     int		m_nRadioIO;
     CSpinButtonCtrl	m_SpinDataFlashSize;
 
     unsigned int	m_uProgramMemorySize;
-    afx_msg void ConfigToGUI(int nEventID);
-    afx_msg void GUIToConfig(int nEventID);
+    virtual void ConfigToGUI(int nEventID = 0);
+    virtual void GUIToConfig(int nEventID = 0);
 
 protected:
     virtual void DoDataExchange(CDataExchange *pDX);

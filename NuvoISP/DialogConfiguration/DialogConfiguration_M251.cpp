@@ -17,8 +17,9 @@ static char THIS_FILE[] = __FILE__;
 // CDialogConfiguration_M251 dialog
 
 CDialogConfiguration_M251::CDialogConfiguration_M251(unsigned int uProgramMemorySize,
+        UINT nIDTemplate,
         CWnd *pParent /*=NULL*/)
-    : CDialogResize(CDialogConfiguration_M251::IDD, pParent)
+    : CDialogResize(nIDTemplate, pParent)
     , m_uProgramMemorySize(uProgramMemorySize)
 {
     m_nRadioBov = -1;
@@ -45,7 +46,6 @@ void CDialogConfiguration_M251::DoDataExchange(CDataExchange *pDX)
     DDX_Check(pDX, IDC_CHECK_ICE_LOCK, m_bICELock);
     DDX_Check(pDX, IDC_CHECK_WDT_ENABLE, m_bWDTEnable);
     DDX_Check(pDX, IDC_CHECK_WDT_POWER_DOWN, m_bWDTPowerDown);
-    DDX_Radio(pDX, IDC_RADIO_GPF_GPIO, m_nRadioGPG);
     DDX_Radio(pDX, IDC_RADIO_IO_TRI, m_nRadioIO);
 }
 
@@ -68,8 +68,6 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_M251, CDialog)
     ON_BN_CLICKED(IDC_CHECK_ICE_LOCK, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_WDT_ENABLE, OnButtonClick)
     ON_BN_CLICKED(IDC_CHECK_WDT_POWER_DOWN, OnCheckClickWDTPD)
-    ON_BN_CLICKED(IDC_RADIO_GPF_GPIO, OnButtonClick)
-    ON_BN_CLICKED(IDC_RADIO_GPF_CRYSTAL, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_IO_TRI, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_IO_BI, OnButtonClick)
     ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnButtonClick)
@@ -159,7 +157,6 @@ void CDialogConfiguration_M251::ConfigToGUI(int nEventID)
             break;
     }
 
-    m_nRadioGPG = ((uConfig0 & M480_FLASH_CONFIG_CGPFMFP) == 0 ? 0 : 1);
     m_nRadioIO = ((uConfig0 & M480_FLASH_CONFIG_CIOINI) == 0 ? 1 : 0);
     m_bWDTPowerDown = ((uConfig0 & M480_FLASH_CONFIG_CWDTPDEN) == 0 ? TRUE : FALSE);
     m_bWDTEnable = ((uConfig0 & M480_FLASH_CONFIG_CWDTEN) == 0 ? TRUE : FALSE);;
@@ -240,12 +237,6 @@ void CDialogConfiguration_M251::GUIToConfig(int nEventID)
         default:
             /* Keep old value */
             uConfig0 |= (m_ConfigValue.m_value[0] & M480_FLASH_CONFIG_CBS2);
-    }
-
-    if (m_nRadioGPG == 0) {
-        uConfig0 &= ~M480_FLASH_CONFIG_CGPFMFP;
-    } else {
-        uConfig0 |= M480_FLASH_CONFIG_CGPFMFP;
     }
 
     if (m_nRadioIO == 0) {
