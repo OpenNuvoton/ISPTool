@@ -659,6 +659,16 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 Config = (((CDialogConfiguration_M251 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
+            case IDD_DIALOG_CONFIGURATION_M258:
+                if (uProgramMemorySize) {
+                    pConfigDlg = new CDialogConfiguration_M258(uProgramMemorySize);
+                } else {
+                    pConfigDlg = new CDialogConfiguration_M258();
+                }
+
+                Config = (((CDialogConfiguration_M251 *)pConfigDlg)->m_ConfigValue.m_value);
+                break;
+
             default:
                 printf("or Unknow Configuration Dialog %X\n", uSeriesCode);
                 return false;

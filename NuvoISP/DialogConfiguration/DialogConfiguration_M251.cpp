@@ -340,3 +340,48 @@ void CDialogConfiguration_M251::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *p
 
     CDialogResize::OnVScroll(nSBCode, nPos, pScrollBar);
 }
+
+/////////////////////////////////////////////////////////////////////////////
+// CDialogConfiguration_M258
+/////////////////////////////////////////////////////////////////////////////
+CDialogConfiguration_M258::CDialogConfiguration_M258(unsigned int uProgramMemorySize, UINT nIDTemplate, CWnd *pParent /*=NULL*/)
+    : CDialogConfiguration_M251(uProgramMemorySize, nIDTemplate, pParent)
+{
+    m_nRadioBootClkSel = -1;
+}
+
+void CDialogConfiguration_M258::DoDataExchange(CDataExchange *pDX)
+{
+    CDialogConfiguration_M251::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(CDialogConfiguration_M258)
+    DDX_Radio(pDX, IDC_RADIO_BOOT_CLOCK_SELECT_0, m_nRadioBootClkSel);
+    //}}AFX_DATA_MAP
+}
+
+BEGIN_MESSAGE_MAP(CDialogConfiguration_M258, CDialogConfiguration_M251)
+    //{{AFX_MSG_MAP(CDialogConfiguration_M258)
+    ON_BN_CLICKED(IDC_RADIO_BOOT_CLOCK_SELECT_0, OnButtonClick)
+    ON_BN_CLICKED(IDC_RADIO_BOOT_CLOCK_SELECT_1, OnButtonClick)
+    //}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+void CDialogConfiguration_M258::ConfigToGUI(int nEventID)
+{
+    unsigned int uConfig0 = m_ConfigValue.m_value[0];
+    m_nRadioBootClkSel = ((uConfig0 & M258_FLASH_CONFIG_BOOTCLOCKSEL) == 0 ? 0 : 1);
+    CDialogConfiguration_M251::ConfigToGUI(nEventID);
+}
+
+void CDialogConfiguration_M258::GUIToConfig(int nEventID)
+{
+    unsigned int uConfig0 = m_ConfigValue.m_value[0];
+
+    if (m_nRadioBootClkSel == 0) {
+        uConfig0 &= ~M258_FLASH_CONFIG_BOOTCLOCKSEL;
+    } else {
+        uConfig0 |= M258_FLASH_CONFIG_BOOTCLOCKSEL;
+    }
+
+    m_ConfigValue.m_value[0] = uConfig0;
+    CDialogConfiguration_M251::GUIToConfig(nEventID);
+}

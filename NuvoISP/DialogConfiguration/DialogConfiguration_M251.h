@@ -55,6 +55,23 @@ protected:
     DECLARE_MESSAGE_MAP()
 };
 
+class CDialogConfiguration_M258 : public CDialogConfiguration_M251
+{
+public:
+    CDialogConfiguration_M258(unsigned int uProgramMemorySize = 128 * 1024,
+                              UINT nIDTemplate = CDialogConfiguration_M258::IDD,
+                              CWnd *pParent = NULL);
+
+    enum { IDD = IDD_DIALOG_CONFIGURATION_M258 };
+    int		m_nRadioBootClkSel;
+    virtual void ConfigToGUI(int nEventID = 0);
+    virtual void GUIToConfig(int nEventID = 0);
+
+protected:
+    virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
+    DECLARE_MESSAGE_MAP()
+};
+
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 

@@ -54,15 +54,23 @@ Reasons for these range limits:
 #define IDC_GROUP_HXT_MODE                  3015
 #define IDC_GROUP_CHIPRESET_TIMEEXT         3016
 #define IDC_GROUP_RST_PIN_WIDTH             3017
+#define IDC_GROUP_NSCBA                     3018
+#define IDC_GROUP_TWO_LEVEL_LOCK            3019
+#define IDC_GROUP_DPMS                      3020
+#define IDC_GROUP_DPMNS                     3021
+#define IDC_GROUP_DPMS_PASSWORD             3022
+#define IDC_GROUP_DPMNS_PASSWORD            3023
+#define IDC_GROUP_PLM_STAGE                 3024
+#define IDC_GROUP_ADVANCE_LOCK              3025
 
 // Clock Options
-#define IDC_RADIO_CLK_HXT                   3025
+#define IDC_RADIO_CLK_HXT                   3026
 #define IDC_RADIO_CLK_E12M                  IDC_RADIO_CLK_HXT
 #define IDC_RADIO_CLK_E12M6M                IDC_RADIO_CLK_HXT
-#define IDC_RADIO_CLK_HIRC                  3026
+#define IDC_RADIO_CLK_HIRC                  3027
 #define IDC_RADIO_CLK_I22M                  IDC_RADIO_CLK_HIRC
 #define IDC_RADIO_CLK_I24M                  IDC_RADIO_CLK_HIRC
-#define IDC_CHECK_CLOCK_FILTER_ENABLE       3027
+#define IDC_CHECK_CLOCK_FILTER_ENABLE       3028
 
 // Boot Options
 #define IDC_CHECK_BS_MKROM                  3030
@@ -130,6 +138,9 @@ Reasons for these range limits:
 #define IDC_SPIN_DATA_FLASH_SIZE            3084
 #define IDC_STATIC_DATA_FLASH_SIZE          3085
 #define IDC_CHECK_DATA_FLASH_VAR_SIZE_ENABLE    3086
+
+#define IDC_STATIC_FLASH_ADVANCE_LOCK       3088
+#define IDC_EDIT_FLASH_ADVANCE_LOCK         3089
 
 // others
 #define IDC_CHECK_SECURITY_LOCK             3090
@@ -224,3 +235,31 @@ Reasons for these range limits:
 #define IDC_RADIO_CHIPRESET_TIMEEXT_1       3175
 #define IDC_RADIO_RST_PIN_WIDTH_0           3176
 #define IDC_RADIO_RST_PIN_WIDTH_1           3177
+
+// M2354
+#define IDC_CHECK_TAMPER_POWER_DOWN         3180
+
+//M258
+#define IDC_RADIO_BOOT_CLOCK_SELECT_0       3190
+#define IDC_RADIO_BOOT_CLOCK_SELECT_1       3191
+#define IDC_GROUP_BOOT_CLOCK_SELECT         3192
+
+// I96000
+#define IDC_GROUP_LOAD_FAIL_OPTION          4000
+#define IDC_GROUP_STRAP_SELECT              4001
+#define IDC_RADIO_LOAD_FAIL_DISABLE         4002
+#define IDC_RADIO_LOAD_FAIL_ENABLE          4003
+#define IDC_RADIO_STRAP_PIN                 4004
+#define IDC_RADIO_STRAP_FUSE                4005
+#define IDC_CHECK_JTAG_BOOTFAIL             4006
+#define IDC_CHECK_CLEAR_RSTSTS              4007
+#define IDC_CHECK_JTAG_BOOTSUCCESS          4008
+#define IDC_CHECK_PIN_WAKEUP_0              4009
+#define IDC_CHECK_PIN_WAKEUP_1              4010
+#define IDC_CHECK_PIN_WAKEUP_2              4011
+#define IDC_CHECK_PIN_WAKEUP_3              4012
+#define IDC_COMBO_PIN_WAKEUP_0              4013
+#define IDC_COMBO_PIN_WAKEUP_1              4014
+#define IDC_COMBO_PIN_WAKEUP_2              4015
+#define IDC_COMBO_PIN_WAKEUP_3              4016
+#define IDC_COMBO_FUSE_RETRY                4017
