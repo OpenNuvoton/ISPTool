@@ -800,7 +800,17 @@ void CDialogMain::EnableInterface(bool bEnable)
     }
 }
 
-#define SERIES_NUM 9
+#define SERIES_N1XX  	0
+#define SERIES_MINI  	1
+#define SERIES_NANO  	2
+#define SERIES_M05X  	3
+#define SERIES_N029  	4
+#define SERIES_M4XX  	5
+#define SERIES_NONE  	6
+#define SERIES_8051  	7
+#define SERIES_AUDIO  	8
+#define SERIES_NUM  	9
+
 bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
 {
     unsigned int CFG[4] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
@@ -821,42 +831,42 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
 
             // NuDataBase.cpp: int LoadChipSeries(void)
             if (g_NuMicroChipSeries[i].uID == NUC_CHIP_TYPE_GENERAL_1T) {
-                subMenu[7]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
+                subMenu[SERIES_8051]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
                 continue;
             }
 
             if (str.find("NUC1") != std::string::npos) {
-                subMenu[0]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
+                subMenu[SERIES_N1XX]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
             } else if (str.find("MINI") != std::string::npos) {
-                subMenu[1]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
+                subMenu[SERIES_MINI]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
             } else if (str.find("Nano") != std::string::npos) {
-                subMenu[2]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
+                subMenu[SERIES_NANO]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
             } else if (str.find("M05") != std::string::npos) {
-                subMenu[3]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
+                subMenu[SERIES_M05X]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
             } else if (str.find("NUC029") != std::string::npos) {
-                subMenu[4]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
+                subMenu[SERIES_N029]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
             } else if (str.find("M4") != std::string::npos) {
-                subMenu[5]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
+                subMenu[SERIES_M4XX]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
             } else {
-                subMenu[6]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
+                subMenu[SERIES_NONE]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
             }
         }
 
         for (i = 0; i < g_AudioChipSeries.size(); i++) {
             std::string str(g_AudioChipSeries[i].szPartNumber);
-            subMenu[SERIES_NUM - 1]->AppendMenu(MF_STRING, g_AudioChipSeries[i].uProjectCode, CString(g_AudioChipSeries[i].szPartNumber));
+            subMenu[SERIES_AUDIO]->AppendMenu(MF_STRING, g_AudioChipSeries[i].uProjectCode, CString(g_AudioChipSeries[i].szPartNumber));
         }
 
         i = 0;
-        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[i++]->m_hMenu, _T("NUC1xx Series"));
-        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[i++]->m_hMenu, _T("MINI Series"));
-        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[i++]->m_hMenu, _T("NANO Series"));
-        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[i++]->m_hMenu, _T("M05x Series"));
-        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[i++]->m_hMenu, _T("NUC029 Series"));
-        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[i++]->m_hMenu, _T("M4 Series"));
-        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[i++]->m_hMenu, _T("Others"));
-        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[i++]->m_hMenu, _T("8051 1T Series"));
-        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[i++]->m_hMenu, _T("Audio Series"));
+        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[SERIES_N1XX]->m_hMenu, _T("NUC1xx Series"));
+        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[SERIES_MINI]->m_hMenu, _T("MINI Series"));
+        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[SERIES_NANO]->m_hMenu, _T("NANO Series"));
+        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[SERIES_M05X]->m_hMenu, _T("M05x Series"));
+        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[SERIES_N029]->m_hMenu, _T("NUC029 Series"));
+        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[SERIES_M4XX]->m_hMenu, _T("M4 Series"));
+        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[SERIES_NONE]->m_hMenu, _T("Others"));
+        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[SERIES_8051]->m_hMenu, _T("8051 1T Series"));
+        menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[SERIES_AUDIO]->m_hMenu, _T("Audio Series"));
 
         for (i = 0; i < SERIES_NUM; i++) {
             delete subMenu[i];
