@@ -17,12 +17,12 @@ public:
     CHidIO2();
     virtual ~CHidIO2();
     BOOL OpenDevice(unsigned short vendor_id, unsigned short product_id, int interface_number);
-    std::basic_string<TCHAR> GetDevicePath();
+    CString GetDevicePath();
     void CloseDevice();
     BOOL ReadFile(char *pcBuffer, size_t szMaxLen, DWORD *pdwLength, DWORD dwMilliseconds);
     BOOL WriteFile(const char *pcBuffer, size_t szLen, DWORD *pdwLength, DWORD dwMilliseconds);
     hid_device *hid_open(unsigned short vendor_id, unsigned short product_id, int interface_number);
-    std::basic_string<TCHAR> sDevPath;
+    CString sDevPath;
 };
 
 #endif

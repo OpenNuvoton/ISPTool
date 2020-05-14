@@ -38,7 +38,7 @@ bool ISPLdCMD::Open_Port(BOOL bErrorMsg)
                 return false;
             }
 
-            m_strDevPathName = m_hidIO.GetDevicePath().c_str();
+            m_strDevPathName = m_hidIO.GetDevicePath();
             break;
 
         case 2:
@@ -62,7 +62,7 @@ bool ISPLdCMD::Open_Port(BOOL bErrorMsg)
                 return false;
             }
 
-            m_strDevPathName = m_hidIO2.GetDevicePath().c_str();
+            m_strDevPathName = m_hidIO2.GetDevicePath();
             break;
 
         default:

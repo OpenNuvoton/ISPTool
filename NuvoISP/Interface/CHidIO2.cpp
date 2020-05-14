@@ -106,7 +106,7 @@ BOOL CHidIO2::WriteFile(const char *pcBuffer, size_t szLen, DWORD *pdwLength, DW
     return ret;
 }
 
-std::basic_string<TCHAR> CHidIO2::GetDevicePath()
+CString CHidIO2::GetDevicePath()
 {
     return sDevPath;
 }
