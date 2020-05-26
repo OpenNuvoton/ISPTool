@@ -24,20 +24,20 @@ public:
 // Dialog Data
     enum { IDD = IDD_DIALOG_CONFIGURATION_M2351 };
 
-    int		m_nRadioBov;
-    int		m_nRadioBS;
-    int		m_nRadioGPG;
-    int		m_nRadioIO;
+    int		m_nRadioCWDTEN;
+    int		m_nRadioCFGXT1;
+    int		m_nRadioCBOV;
+    int		m_nRadioCIOINI;
+    int		m_nRadioCBS;
     int		m_nRadioUART;
-    int		m_nRadioWDT;
 
     CString	m_sConfigValue0;
     CString	m_sConfigValue3;
 
-    BOOL	m_bCheckMBS;
-    BOOL	m_bCheckBrownOutDetect;
-    BOOL	m_bCheckBrownOutReset;
+    BOOL	m_bCheckCBORST;
+    BOOL	m_bCheckCBODEN;
     BOOL	m_bDisableICE;
+    BOOL	m_bCheckMBS;
 
     unsigned int m_uConfigValue[4];
 
