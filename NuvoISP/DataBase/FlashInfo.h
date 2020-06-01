@@ -48,26 +48,24 @@ typedef struct {
     };
 } FLASH_INFO_BY_DID_T;
 
-bool GetInfo_NuMicro(//unsigned int uDID,
-    unsigned int uConfig0,
-    unsigned int uConfig1,
-    unsigned int uProgramMemorySize,
-    unsigned int uFlashType,
-    unsigned int *puNVM_Addr,
-    unsigned int *puAPROM_Size,
-    unsigned int *puNVM_Size);
+void GetFlashSize_NuMicro(unsigned int uConfig0,
+                          unsigned int uConfig1,
+                          unsigned int uProgramMemorySize,
+                          unsigned int uFlashType,
+                          unsigned int *puNVM_Addr,
+                          unsigned int *puAPROM_Size,
+                          unsigned int *puNVM_Size);
 
 /* 8051 1T Series */
 void *GetInfo_8051_1T(unsigned int uDID, FLASH_INFO_BY_DID_T *pInfo);
 
-bool GetInfo_8051_1T(//unsigned int uDID,
-    unsigned int uConfig0,
-    unsigned int uProgramMemorySize,
-    unsigned int uFlashType,
-    unsigned int *puLDROM_Addr,
-    unsigned int *puLDROM_Size,
-    unsigned int *puAPROM_Size,
-    unsigned int *puNVM_Size);
+void GetFlashSize_OT8051(unsigned int uConfig0,
+                         unsigned int uProgramMemorySize,
+                         unsigned int uFlashType,
+                         unsigned int *puLDROM_Addr,
+                         unsigned int *puLDROM_Size,
+                         unsigned int *puAPROM_Size,
+                         unsigned int *puNVM_Size);
 
 #endif
 

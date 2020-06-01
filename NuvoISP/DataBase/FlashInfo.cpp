@@ -800,14 +800,13 @@ void *GetInfo(unsigned int uPID,
 #endif
 
 /* Calculate APROM and NVM size of NuMicro */
-bool GetInfo_NuMicro(//unsigned int uDID,
-    unsigned int uConfig0,
-    unsigned int uConfig1,
-    unsigned int uProgramMemorySize,
-    unsigned int uFlashType,
-    unsigned int *puNVM_Addr,
-    unsigned int *puAPROM_Size,
-    unsigned int *puNVM_Size)
+void GetFlashSize_NuMicro(unsigned int uConfig0,
+                          unsigned int uConfig1,
+                          unsigned int uProgramMemorySize,
+                          unsigned int uFlashType,
+                          unsigned int *puNVM_Addr,
+                          unsigned int *puAPROM_Size,
+                          unsigned int *puNVM_Size)
 {
     bool bShare;
     unsigned int uType = uFlashType & 0xFF;
@@ -841,7 +840,6 @@ bool GetInfo_NuMicro(//unsigned int uDID,
 
     *puAPROM_Size = uAPROM_Size;
     *puNVM_Size = uNVM_Size;
-    return true;
 }
 
 /* 8051 1T Series */
@@ -927,14 +925,13 @@ void *GetInfo_8051_1T(unsigned int uDID,
 #endif
 }
 
-bool GetInfo_8051_1T(//unsigned int uDID,
-    unsigned int uConfig0,
-    unsigned int uProgramMemorySize,
-    unsigned int uFlashType,
-    unsigned int *puLDROM_Addr,
-    unsigned int *puLDROM_Size,
-    unsigned int *puAPROM_Size,
-    unsigned int *puNVM_Size)
+void GetFlashSize_OT8051(unsigned int uConfig0,
+                         unsigned int uProgramMemorySize,
+                         unsigned int uFlashType,
+                         unsigned int *puLDROM_Addr,
+                         unsigned int *puLDROM_Size,
+                         unsigned int *puAPROM_Size,
+                         unsigned int *puNVM_Size)
 {
     unsigned int uLDROM_Size, uNVM_Size;
     unsigned int uLDSEL = (uConfig0 >> 8) & 0x07;
@@ -954,28 +951,6 @@ bool GetInfo_8051_1T(//unsigned int uDID,
     *puLDROM_Size = uLDROM_Size;
     *puAPROM_Size = uProgramMemorySize - uLDROM_Size - uNVM_Size;
     *puNVM_Size   = uNVM_Size;
-    return true;
 }
 #endif
 
-bool GetInfo(unsigned int uPID,
-             unsigned int uConfig0,
-             unsigned int uConfig1,
-             unsigned int *puNVM_Addr,
-             unsigned int *puAPROM_Size,
-             unsigned int *puNVM_Size)
-{
-    FLASH_PID_INFO_BASE_T flashInfo;
-    unsigned int uProgramMemorySize = 0;
-    unsigned int uFlashType = 0;
-
-    if (GetInfo(uPID, &flashInfo) != NULL) {
-        uProgramMemorySize = flashInfo.uProgramMemorySize;
-        uFlashType = flashInfo.uFlashType;
-        return GetInfo_NuMicro(uConfig0, uConfig1,
-                               uProgramMemorySize, uFlashType,
-                               puNVM_Addr, puAPROM_Size, puNVM_Size);
-    } else {
-        return false;
-    }
-}

@@ -149,7 +149,7 @@ bool GetChipDynamicInfo(unsigned int uID, unsigned int uConfig0, unsigned int uC
     unsigned int uLDROM_Addr, uLDROM_Size;
 
     if (uProductLine == 1) {
-        GetInfo_8051_1T(//uDID,
+        GetFlashSize_OT8051(
             uConfig0,
             uProgramMemorySize,
             uFlashType,
@@ -166,9 +166,9 @@ bool GetChipDynamicInfo(unsigned int uID, unsigned int uConfig0, unsigned int uC
         gsChipCfgInfo.uNVM_Size = uNVM_Size;
         return true;
     } else if (uProductLine == 2) {
-        GetInfo_NuMicro(uConfig0, uConfig1,
-                        uProgramMemorySize, uFlashType,
-                        &uNVM_Addr, &uAPROM_Size, &uNVM_Size);
+        GetFlashSize_NuMicro(uConfig0, uConfig1,
+                             uProgramMemorySize, uFlashType,
+                             &uNVM_Addr, &uAPROM_Size, &uNVM_Size);
         gsChipCfgInfo.uConfig0 = uConfig0;
         gsChipCfgInfo.uConfig1 = uConfig1;
         gsChipCfgInfo.uAPROM_Size = uAPROM_Size;
