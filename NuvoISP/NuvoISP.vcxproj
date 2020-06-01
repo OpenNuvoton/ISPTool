@@ -160,7 +160,6 @@
     <ClCompile Include="DialogMain.cpp" />
     <ClCompile Include="DlgNuvoISP.cpp" />
     <ClCompile Include="fileinfo.cpp" />
-    <ClCompile Include="HyperLink.cpp" />
     <ClCompile Include="Interface\CUartIO.cpp" />
     <ClCompile Include="ISPLdCMD.cpp" />
     <ClCompile Include="NumEdit.cpp" />

@@ -1,7 +1,7 @@
 #ifndef INC__ABOUT_H__
 #define INC__ABOUT_H__
 #include "Resource.h"
-#include "HyperLink.h"
+#include "afxlinkctrl.h" // CMFCLinkCtrl
 
 /////////////////////////////////////////////////////////////////////////////
 // CAboutDlg dialog used for App About
@@ -14,10 +14,10 @@ public:
 // Dialog Data
     //{{AFX_DATA(CAboutDlg)
     enum { IDD = IDD_ABOUTBOX };
-    CHyperLink	m_LinkNuvoton;
-    CHyperLink	m_LinkGitHub;
-    CHyperLink	m_LinkGITEE;
-    CHyperLink	m_LinkGitLab;
+    CMFCLinkCtrl m_LinkNuvoton;
+    CMFCLinkCtrl m_LinkGitHub;
+    CMFCLinkCtrl m_LinkGITEE;
+    CMFCLinkCtrl m_LinkGitLab;
     //}}AFX_DATA
 
     // ClassWizard generated virtual function overrides
@@ -33,15 +33,9 @@ protected:
     CString	m_sDate;
     //{{AFX_MSG(CAboutDlg)
     virtual BOOL OnInitDialog();
-    afx_msg void OnLinkNuvoton();
-    afx_msg void OnLinkGitHub();
-    afx_msg void OnLinkGITEE();
-    afx_msg void OnLinkGitLab();
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 };
-
-
 
 void OpenConsole();
 

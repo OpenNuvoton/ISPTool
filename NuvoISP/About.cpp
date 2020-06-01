@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "HyperLink.h"
 #include <sstream>	// for std::ostringstream
 
 #ifdef _DEBUG
@@ -36,17 +35,8 @@ void CAboutDlg::DoDataExchange(CDataExchange *pDX)
 
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
     //{{AFX_MSG_MAP(CAboutDlg)
-    ON_BN_CLICKED(IDC_LINK_NUVOTON, OnLinkNuvoton)
-    ON_BN_CLICKED(IDC_LINK_GITHUB, OnLinkGitHub)
-    ON_BN_CLICKED(IDC_LINK_GITEE, OnLinkGITEE)
-    ON_BN_CLICKED(IDC_LINK_GITLAB, OnLinkGitLab)
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
-
-void CAboutDlg::OnLinkNuvoton()
-{
-    m_LinkNuvoton.VisitURL();
-}
 
 BOOL CAboutDlg::OnInitDialog()
 {
@@ -56,24 +46,14 @@ BOOL CAboutDlg::OnInitDialog()
     sText.Format(_T("%s\n\n%s"), m_sTitle, m_sDate);
     SetWindowText(sTitle);
     SetDlgItemText(IDC_STATIC_MESSAGE, sText);
-    m_LinkNuvoton.SetWindowText(m_sUpdateURL);
-    m_LinkNuvoton.SetAutoSize(TRUE);
-    m_LinkNuvoton.SetURL(m_sUpdateURL);
+    m_LinkNuvoton.SetURL(_T("https://www.nuvoton.com/"));
+    m_LinkGitHub.SetURL(_T("https://github.com/OpenNuvoton/ISPTool/"));
+    m_LinkGITEE.SetURL(_T("https://gitee.com/OpenNuvoton/ISPTool/"));
+    m_LinkGitLab.SetURL(_T("https://gitlab.com/OpenNuvoton/nuvoton-tools/ISPTool/"));
+    m_LinkNuvoton.SizeToContent();
+    m_LinkGitHub.SizeToContent();
+    m_LinkGITEE.SizeToContent();
+    m_LinkGitLab.SizeToContent();
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
-}
-
-void CAboutDlg::OnLinkGitHub()
-{
-    m_LinkGitHub.VisitURL();
-}
-
-void CAboutDlg::OnLinkGITEE()
-{
-    m_LinkGITEE.VisitURL();
-}
-
-void CAboutDlg::OnLinkGitLab()
-{
-    m_LinkGitLab.VisitURL();
 }
