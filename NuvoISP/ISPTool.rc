@@ -1548,12 +1548,12 @@ BEGIN
         BLOCK "040004b0"
         BEGIN
             VALUE "FileDescription", "ISP Programming Tool"
-            VALUE "FileVersion", "4.01"
+            VALUE "FileVersion", "4.02"
             VALUE "InternalName", "ISPTool"
             VALUE "LegalCopyright", "Copyright (C) 2020"
             VALUE "OriginalFilename", "NuvoISP.EXE"
             VALUE "ProductName", "ISP Programming Tool"
-            VALUE "ProductVersion", "4.01"
+            VALUE "ProductVersion", "4.02"
         END
     END
     BLOCK "VarFileInfo"

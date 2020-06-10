@@ -661,6 +661,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
 
             case NUC_CHIP_TYPE_M031:  // Page Size: 512
             case NUC_CHIP_TYPE_M031G: // Page Size: 2048
+                size = 12;
                 if (uProgramMemorySize) {
                     pConfigDlg = new CDialogConfiguration_M031(uProgramMemorySize, uPage_Size);
                 } else {
@@ -679,6 +680,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 break;
 
             case NUC_CHIP_TYPE_M0A21:
+                size = 12;
                 if (uProgramMemorySize) {
                     pConfigDlg = new CDialogConfiguration_M0A21(uProgramMemorySize, uPage_Size);
                 } else {
@@ -689,6 +691,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 break;
 
             case NUC_CHIP_TYPE_M030G:
+                size = 12;
                 if (uProgramMemorySize) {
                     pConfigDlg = new CDialogConfiguration_M030G(uProgramMemorySize, uPage_Size);
                 } else {
