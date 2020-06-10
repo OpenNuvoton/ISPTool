@@ -130,9 +130,9 @@
     <ClCompile Include="DialogConfiguration\AppConfig.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_AU9100.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_I94000.cpp" />
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_M031.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M0564.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M05x.cpp" />
+    <ClCompile Include="DialogConfiguration\DialogConfiguration_M0A21.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M2351.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M251.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M451.cpp" />

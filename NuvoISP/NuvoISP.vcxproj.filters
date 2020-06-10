@@ -173,9 +173,6 @@
     <ClCompile Include="DialogConfiguration\DialogConfiguration_N570.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_M031.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M251.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
@@ -193,6 +190,9 @@
     </ClCompile>
     <ClCompile Include="ISPLdCMD2.cpp">
       <Filter>ISPTool\NuvoISP</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogConfiguration\DialogConfiguration_M0A21.cpp">
+      <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

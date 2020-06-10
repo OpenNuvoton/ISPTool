@@ -316,8 +316,8 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 #include "DialogConfiguration_I94000.h"
 #include "DialogConfiguration_AU9100.h"
 #include "DialogConfiguration_N570.h"
-#include "DialogConfiguration_M031.h"
 #include "DialogConfiguration_M251.h"
+#include "DialogConfiguration_M0A21.h"
 
 bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigned int uSeriesCode /* = 0*/)
 {
@@ -639,16 +639,6 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 Config = (((CDialogConfiguration_N570 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_M031:
-                if (uProgramMemorySize) {
-                    pConfigDlg = new CDialogConfiguration_M031(uProgramMemorySize, uPage_Size);
-                } else {
-                    pConfigDlg = new CDialogConfiguration_M031();
-                }
-
-                Config = (((CDialogConfiguration_M031 *)pConfigDlg)->m_ConfigValue.m_value);
-                break;
-
             case IDD_DIALOG_CONFIGURATION_M251:
                 if (uProgramMemorySize) {
                     pConfigDlg = new CDialogConfiguration_M251(uProgramMemorySize);
@@ -667,6 +657,45 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 }
 
                 Config = (((CDialogConfiguration_M251 *)pConfigDlg)->m_ConfigValue.m_value);
+                break;
+
+            case NUC_CHIP_TYPE_M031:  // Page Size: 512
+            case NUC_CHIP_TYPE_M031G: // Page Size: 2048
+                if (uProgramMemorySize) {
+                    pConfigDlg = new CDialogConfiguration_M031(uProgramMemorySize, uPage_Size);
+                } else {
+                    if (uSeriesCode == NUC_CHIP_TYPE_M031) {
+                        uProgramMemorySize = 128 * 1024;
+                        uPage_Size = 512;
+                    } else {
+                        uProgramMemorySize = 512 * 1024;
+                        uPage_Size = 2048;
+                    }
+
+                    pConfigDlg = new CDialogConfiguration_M031(uProgramMemorySize, uPage_Size);
+                }
+
+                Config = (((CDialogConfiguration_M031 *)pConfigDlg)->m_uConfigValue);
+                break;
+
+            case NUC_CHIP_TYPE_M0A21:
+                if (uProgramMemorySize) {
+                    pConfigDlg = new CDialogConfiguration_M0A21(uProgramMemorySize, uPage_Size);
+                } else {
+                    pConfigDlg = new CDialogConfiguration_M0A21(16 * 1024, 512);
+                }
+
+                Config = (((CDialogConfiguration_M0A21 *)pConfigDlg)->m_uConfigValue);
+                break;
+
+            case NUC_CHIP_TYPE_M030G:
+                if (uProgramMemorySize) {
+                    pConfigDlg = new CDialogConfiguration_M030G(uProgramMemorySize, uPage_Size);
+                } else {
+                    pConfigDlg = new CDialogConfiguration_M030G(64 * 1024, 512);
+                }
+
+                Config = (((CDialogConfiguration_M030G *)pConfigDlg)->m_uConfigValue);
                 break;
 
             default:

@@ -11,6 +11,14 @@ struct sChipInfo gNuVoiceChip;
 std::vector<CPartNumID> g_NuMicroChipSeries;
 std::vector<CPartNumID> g_AudioChipSeries;
 
+/**
+  * @brief Check if any given dwChipID is available in GetChipInformation.dll. (for Audio Series only)
+  * @param[in] dwChipID The PDID read from the target device.
+  * @param[in] pConfig The pointer to CONFIG read from the target device.
+  * @retval false The is an unknown chip to Audio Series.
+  * @retval true  The chip is found in the Audio Chip database.
+  * @details Search the PDID through the part number list of NuVoice family (Audio Series).
+  */
 bool GetInfo_NuVoice(DWORD dwChipID, DWORD *pConfig)
 {
     bool ret = false;
@@ -40,6 +48,13 @@ bool GetInfo_NuVoice(DWORD dwChipID, DWORD *pConfig)
     return ret;
 }
 
+/**
+  * @brief Check if any given uID is available in g_PartNumIDs (ref: PartNumID.cpp).
+  * @param[in] uID The PDID read from the target device.
+  * @retval false The given uID can not be found in the database, it may belong to Audio series or not suport yet.
+  * @retval true  The given uID is found.
+  * @details Search the PDID through the part number list of NuMicro family (M0, M23, M4, 80511T and Motor series).
+  */
 bool GetChipStaticInfo(unsigned int uID)
 {
     if (gsChipCfgInfo.uID == uID) {
@@ -63,6 +78,7 @@ bool GetChipStaticInfo(unsigned int uID)
 
     int i = 0;
 
+    // Step1: get part no. from PartNumID
     while (g_PartNumIDs[i].uID != 0xFFFFFFFF) {
         if (g_PartNumIDs[i].uID == uID) {
             gsChipCfgInfo.uID = uID;
@@ -74,6 +90,7 @@ bool GetChipStaticInfo(unsigned int uID)
         i++;
     }
 
+    // Step2: get flash info. from FlashInfo
     if (gsChipCfgInfo.uID == uID) {
         if ((gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_GENERAL_1T)) {
             // internal ref. to Flash_N76E1T.h
@@ -97,8 +114,36 @@ bool GetChipStaticInfo(unsigned int uID)
             gsChipCfgInfo.uProductLine = 2; // NuMicro
             gsChipCfgInfo.uProgramMemorySize = flashInfo.uProgramMemorySize;
             gsChipCfgInfo.uDataFlashSize = flashInfo.uDataFlashSize;
-            gsChipCfgInfo.uFlashType = flashInfo.uFlashType;
+            // !!! Do NOT use uFlashType in flashInfo. !!!
+            // gsChipCfgInfo.uFlashType = flashInfo.uFlashType;
             gsChipCfgInfo.uLDROM_Size = flashInfo.uISPFlashSize;
+            // Step3.1: flash type
+            unsigned int uSeriesCode = gsChipCfgInfo.uSeriesCode;
+            unsigned int uFlashType = 0;
+
+            // DataFlash Type 2
+            if ((uSeriesCode == IDD_DIALOG_CONFIGURATION_NUC103) // NUC123
+                    || (uSeriesCode == IDD_DIALOG_CONFIGURATION_NUC103BN) // NUC123 again
+                    // NUC131, M0518, NM1320 , NM1340 and NUC029DE
+                    || (uSeriesCode == IDD_DIALOG_CONFIGURATION_NUC131)) {
+                uFlashType = 2;
+            } else { // DataFlash Type 0 & 1
+                uFlashType = (flashInfo.uDataFlashSize != 0) ? 1 : 0;
+            }
+
+            // Step3.2: Page Size Type: 0x000 (512 Bytes, default), 0x200 (2K), 0x300 (4K)
+            if ((uSeriesCode == IDD_DIALOG_CONFIGURATION_NUC400)
+                    || (uSeriesCode == IDD_DIALOG_CONFIGURATION_M451)
+                    || (uSeriesCode == 0x00E45200) // M4521
+                    || (uSeriesCode == IDD_DIALOG_CONFIGURATION_M0564) //M0564/NUC126/M05641/NUC1261/NUC029GE
+                    || (uSeriesCode == NUC_CHIP_TYPE_M031G)) { //M031I/M031G
+                uFlashType |= 0x200;
+            } else if ((uSeriesCode == IDD_DIALOG_CONFIGURATION_M480) //M480
+                       || (uSeriesCode == IDD_DIALOG_CONFIGURATION_M480LD)) {
+                uFlashType |= 0x300;
+            }
+
+            gsChipCfgInfo.uFlashType = uFlashType;
             return true;
         }
     } else {
