@@ -398,6 +398,8 @@ void *GetInfo(unsigned int uPID,
         {  64 * 1024,   0 * 1024,  16 * 1024,    0x00010000,   15 * 512,    0x0C051090}, //TF5103Y
         {  48 * 1024,   0 * 1024,   8 * 1024,    0x0000C000,   15 * 512,    0x0C051091}, //TF5102Y
         {  64 * 1024,   0 * 1024,   8 * 1024,    0x00010000,   15 * 512,    0x0C112400}, //NM1244D48
+        {  64 * 1024,   0 * 1024,   8 * 1024,    0x00010000,   15 * 512,    0x0C112490}, //NM1244Y48
+        {  64 * 1024,   0 * 1024,   8 * 1024,    0x00010000,   15 * 512,    0x0C1124E0}, //NM1244Y
         {  64 * 1024,   0 * 1024,  16 * 1024,    0x00010000,   15 * 512,    0x0C012300}, //NM1234D
         {  32 * 1024,   0 * 1024,   8 * 1024,    0x00008000,   15 * 512,    0x0C012302}, //NM1232D
         {  48 * 1024,   0 * 1024,   8 * 1024,    0x0000C000,   15 * 512,    0x0C01230A}, //NM1220EBK0
@@ -535,6 +537,7 @@ void *GetInfo(unsigned int uPID,
         { 256 * 1024,   0 * 1024,  64 * 1024,    0x00040000,   4 * 1024,    0x01347911}, //M479SG8AEE
         { 256 * 1024,   0 * 1024,  64 * 1024,    0x00040000,   4 * 1024,    0x01347901}, //M479LG8AEE
         { 256 * 1024,   0 * 1024,  64 * 1024,    0x00040000,   4 * 1024,    0x01347991}, //M479NG8AEE
+        {  64 * 1024,   0 * 1024,  12 * 1024,    0x00010000,   4 * 1024,    0x00F25112}, //NDA102SD2
         {  32 * 1024,   0 * 1024,   8 * 1024,    0x00008000,   4 * 1024,    0x00F252B0}, //M252FC2AE
         {  32 * 1024,   0 * 1024,   8 * 1024,    0x00008000,   4 * 1024,    0x00F252A1}, //M252EC2AE
         {  32 * 1024,   0 * 1024,   8 * 1024,    0x00008000,   4 * 1024,    0x00F252E2}, //M252ZC2AE
@@ -608,42 +611,6 @@ void *GetInfo(unsigned int uPID,
         return NULL;
     }
 
-    unsigned int uFlashType = 0;
-
-    // DataFlash Type 2
-    if ((uPID & 0xFFFFFF00) == 0x10012300
-            || (uPID & 0xFFFFFF00) == 0x00012300
-            || (uPID & 0x000FFF00) == 0x00013100
-            || (uPID & 0xFFFFFF00) == 0x10051800
-            || (uPID & 0xFFFFFF00) == 0x00032000
-            || (uPID & 0xFFFFFF00) == 0x00034000
-            || (uPID & 0xFFFFFF00) == 0x00295A00) { //NUC123/NUC131/M0518/NM1320/NM1340/NUC029DE
-        uFlashType = 2;
-    } else {
-        uFlashType = (pInfo->uDataFlashSize != 0) ? 1 : 0;
-    }
-
-    // Page Size Type: 0x000 (512 Bytes, default), 0x200 (2K), 0x300 (4K)
-    if ((uPID & 0xFFFFFF00) == 0x00044200
-            || (uPID & 0xFFFFFF00) == 0x00047200
-            || (uPID & 0xFFFFF000) == 0x00845000
-            || (uPID & 0xFFFFF000) == 0x00945000  //NUC400/M451
-            || (uPID & 0xFFFFF000) == 0x00E45000  //M4521
-            || (uPID & 0xFFFFFF00) == 0x00C56400
-            || (uPID & 0xFFFFFF00) == 0x00C05200  //M0564/NUC126
-            || (uPID & 0xFFFFFF00) == 0x01205200
-            || (uPID & 0xFFFFFF00) == 0x01256400  //M05641/NUC1261
-            || (uPID & 0xFFFF0F00) == 0x01130100  //M031I
-            || (uPID & 0xFFFF0F00) == 0x01130600  //M031G
-            || (uPID & 0xFFFFFF00) == 0x00295C00) {//NUC029GE
-        uFlashType |= 0x200 ;
-    } else if ((uPID & 0xFFFFF000) == 0x00D48000	//M480
-               || (uPID & 0xFFFFFF00) == 0x01347900	//M479
-               || (uPID & 0xFFFFF000) == 0x01348000) {	//M480LD
-        uFlashType |= 0x300 ;
-    }
-
-    pInfo->uFlashType = uFlashType;
     return pInfo;
 #else
     return NULL;
