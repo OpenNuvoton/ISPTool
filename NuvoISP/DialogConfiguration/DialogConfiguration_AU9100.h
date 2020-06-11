@@ -18,13 +18,13 @@ class CDialogConfiguration_AU9100 : public CDialogResize
 public:
     CDialogConfiguration_AU9100(unsigned int uProgramMemorySize = 141 * 1024,
                                 unsigned int uLDROM_Size = 4 * 1024,
+                                UINT nIDTemplate = IDD_DIALOG_CONFIGURATION_AU9100,
                                 CWnd *pParent = NULL);   // standard constructor
 
     CAppConfig::AU91xx_configs_t m_ConfigValue;
 
 // Dialog Data
     //{{AFX_DATA(CDialogConfiguration_AU9100)
-    enum { IDD = IDD_DIALOG_CONFIGURATION_AU9100 };
     CNumEdit	m_FlashBaseAddress;
     CEdit	m_DataFlashSize;
     int		m_nRadioBS;
@@ -53,8 +53,8 @@ protected:
 
 // Implementation
 protected:
-    void ConfigToGUI();
-    void GUIToConfig();
+    virtual void ConfigToGUI();
+    virtual void GUIToConfig();
 
     // Generated message map functions
     //{{AFX_MSG(CDialogConfiguration_NUC1xx)
@@ -71,9 +71,16 @@ protected:
 class CDialogConfiguration_I9200 : public CDialogConfiguration_AU9100
 {
 public:
-    CDialogConfiguration_I9200(unsigned int uProgramMemorySize = 128 * 1024, unsigned int uLDROM_Size = 4 * 1024, CWnd *pParent = NULL);   // standard constructor
+    CDialogConfiguration_I9200(unsigned int uProgramMemorySize = 128 * 1024, unsigned int uLDROM_Size = 4 * 1024, UINT nIDTemplate = IDD_DIALOG_CONFIGURATION_I91200, CWnd *pParent = NULL);   // standard constructor
+
+    BOOL	m_bCheckLowVolResetEnable;
+
 protected:
     virtual BOOL OnInitDialog();
+    virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
+    virtual void ConfigToGUI();
+    virtual void GUIToConfig();
+    DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

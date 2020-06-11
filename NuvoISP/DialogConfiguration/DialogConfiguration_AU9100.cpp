@@ -22,8 +22,9 @@ static char THIS_FILE[] = __FILE__;
 
 CDialogConfiguration_AU9100::CDialogConfiguration_AU9100(unsigned int uProgramMemorySize,
         unsigned int uLDROM_Size,
+        UINT nIDTemplate,
         CWnd *pParent /*=NULL*/)
-    : CDialogResize(CDialogConfiguration_AU9100::IDD, pParent)
+    : CDialogResize(nIDTemplate, pParent)
     , m_uProgramMemorySize(uProgramMemorySize)
     , m_uLDROM_Size(uLDROM_Size)
 {
@@ -113,10 +114,17 @@ void CDialogConfiguration_AU9100::ConfigToGUI()
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
     unsigned int uPageNum = uFlashBaseAddress / m_uPageSize;
     unsigned int uLimitNum = (m_bLDROM_EN ? m_uProgramMemorySize : (m_uProgramMemorySize + m_uLDROM_Size)) / m_uPageSize;
-    unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * m_uPageSize) : 0;
+    unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * m_uPageSize) : m_uPageSize;
     m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uDataFlashSize : 0) / 1024.);
     m_SpinDataFlashSize.EnableWindow(m_bDataFlashEnable ? TRUE : FALSE);
     GetDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS)->EnableWindow(m_bDataFlashEnable);
+
+    if (m_bDataFlashEnable) {
+        uFlashBaseAddress = uLimitNum * m_uPageSize - uDataFlashSize;
+        m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
+        uConfig1 = uFlashBaseAddress;
+    }
+
     m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
     m_sConfigValue1.Format(_T("0x%08X"), uConfig1);
 }
@@ -205,15 +213,69 @@ void CDialogConfiguration_AU9100::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_I9200
 /////////////////////////////////////////////////////////////////////////////
-CDialogConfiguration_I9200::CDialogConfiguration_I9200(unsigned int uProgramMemorySize, unsigned int uLDROM_Size, CWnd *pParent /*=NULL*/)
-    : CDialogConfiguration_AU9100(uProgramMemorySize, uLDROM_Size, pParent)
+CDialogConfiguration_I9200::CDialogConfiguration_I9200(unsigned int uProgramMemorySize, unsigned int uLDROM_Size, UINT nIDTemplate, CWnd *pParent /*=NULL*/)
+    : CDialogConfiguration_AU9100(uProgramMemorySize, uLDROM_Size, nIDTemplate, pParent)
 {
 }
+
+void CDialogConfiguration_I9200::DoDataExchange(CDataExchange *pDX)
+{
+    CDialogResize::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(CDialogConfiguration_I9200)
+    DDX_Control(pDX, IDC_EDIT_FLASH_BASE_ADDRESS, m_FlashBaseAddress);
+    DDX_Control(pDX, IDC_EDIT_DATA_FLASH_SIZE, m_DataFlashSize);
+    DDX_Control(pDX, IDC_SPIN_DATA_FLASH_SIZE, m_SpinDataFlashSize);
+    DDX_Radio(pDX, IDC_RADIO_BS_LDROM, m_nRadioBS);
+    DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_0, m_sConfigValue0);
+    DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_1, m_sConfigValue1);
+    DDX_Check(pDX, IDC_CHECK_DATA_FLASH_ENABLE, m_bDataFlashEnable);
+    DDX_Check(pDX, IDC_CHECK_SECURITY_LOCK, m_bSecurityLock);
+    DDX_Check(pDX, IDC_CHECK_LVOL_RSTEN, m_bCheckLowVolResetEnable);
+    DDX_Text(pDX, IDC_EDIT_FLASH_BASE_ADDRESS, m_sFlashBaseAddress);
+    DDX_Text(pDX, IDC_EDIT_DATA_FLASH_SIZE, m_sDataFlashSize);
+    //}}AFX_DATA_MAP
+}
+
+BEGIN_MESSAGE_MAP(CDialogConfiguration_I9200, CDialog)
+    //{{AFX_MSG_MAP(CDialogConfiguration_AU9100)
+    ON_BN_CLICKED(IDC_RADIO_BS_LDROM, OnButtonClick)
+    ON_EN_KILLFOCUS(IDC_EDIT_FLASH_BASE_ADDRESS, OnKillfocusEditFlashBaseAddress)
+    ON_BN_CLICKED(IDC_RADIO_BS_APROM, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK, OnButtonClick)
+    ON_BN_CLICKED(IDC_CHECK_LVOL_RSTEN, OnButtonClick)
+    ON_WM_SIZE()
+    ON_WM_VSCROLL()
+    ON_WM_HSCROLL()
+    ON_WM_GETMINMAXINFO()
+    ON_WM_MOUSEWHEEL()
+    ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_DATA_FLASH_SIZE, OnDeltaposSpinDataFlashSize)
+    //}}AFX_MSG_MAP
+END_MESSAGE_MAP()
 
 BOOL CDialogConfiguration_I9200::OnInitDialog()
 {
     m_uPageSize = NUMICRO_FLASH_PAGE_SIZE_512;
-    m_bLDROM_EN = 1;
-    GetDlgItem(IDC_CHECK_LDROM_EN)->ShowWindow(SW_HIDE);
     return CDialogConfiguration_AU9100::OnInitDialog();
+}
+
+void CDialogConfiguration_I9200::ConfigToGUI()
+{
+    unsigned int uConfig0 = m_ConfigValue.m_value[0];
+    m_bCheckLowVolResetEnable = ((uConfig0 & N570_FLASH_CONFIG_CLVR) == 0 ? TRUE : FALSE);
+    CDialogConfiguration_AU9100::ConfigToGUI();
+}
+
+void CDialogConfiguration_I9200::GUIToConfig()
+{
+    unsigned int uConfig0 = m_ConfigValue.m_value[0];
+
+    if (m_bCheckLowVolResetEnable) {
+        uConfig0 &= ~N570_FLASH_CONFIG_CLVR;
+    } else {
+        uConfig0 |= N570_FLASH_CONFIG_CLVR;
+    }
+
+    m_ConfigValue.m_value[0] = uConfig0;
+    CDialogConfiguration_AU9100::GUIToConfig();
 }
