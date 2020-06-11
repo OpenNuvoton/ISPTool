@@ -133,8 +133,7 @@ bool GetChipStaticInfo(unsigned int uID)
 
             // Step3.2: Page Size Type: 0x000 (512 Bytes, default), 0x200 (2K), 0x300 (4K)
             if ((uSeriesCode == IDD_DIALOG_CONFIGURATION_NUC400)
-                    || (uSeriesCode == IDD_DIALOG_CONFIGURATION_M451)
-                    || (uSeriesCode == 0x00E45200) // M4521
+                    || (uSeriesCode == NUC_CHIP_TYPE_M451) // M451, M4521
                     || (uSeriesCode == IDD_DIALOG_CONFIGURATION_M0564) //M0564/NUC126/M05641/NUC1261/NUC029GE
                     || (uSeriesCode == NUC_CHIP_TYPE_M031G)) { //M031I/M031G
                 uFlashType |= 0x200;

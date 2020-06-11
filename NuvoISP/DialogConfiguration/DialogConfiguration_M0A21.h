@@ -121,6 +121,28 @@ protected:
     virtual void GUIToConfig();
 };
 
+/////////////////////////////////////////////////////////////////////////////
+// CDialogConfiguration_M451 dialog
+
+class CDialogConfiguration_M451 : public CDialogConfiguration_M0A21
+{
+// Construction
+public:
+    CDialogConfiguration_M451(unsigned int uProgramMemorySize,
+                              unsigned int uPageSize,
+                              CWnd *pParent = NULL);    // standard constructor
+
+// Dialog Data
+    //{{AFX_DATA(CDialogConfiguration_M031)
+    enum { IDD = IDD_DIALOG_CONFIGURATION_M0A21 };
+    //}}AFX_DATA
+
+protected:
+    virtual void UpdateUI();
+    virtual void ConfigToGUI();
+    virtual void GUIToConfig();
+};
+
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
