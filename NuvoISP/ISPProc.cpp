@@ -437,7 +437,7 @@ void CISPProc::Thread_ProgramFlash()
             str.Format(_T("Programming flash, OK! Run to APROM (%d secs)"), m_uProgTime);
 
             if (MainHWND != NULL) {
-                MessageBox(*MainHWND, str, NULL, MB_ICONINFORMATION);
+                MessageBox(*MainHWND, str, _T(""), MB_ICONINFORMATION);
             }
 
             // For Virtual Com Port device, it takes more than 5ms to convert USB signals to UART signals. (64 * 10 * 1000 / 115200 )
