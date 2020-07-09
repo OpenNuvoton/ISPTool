@@ -231,10 +231,17 @@ void CDialogConfiguration_I94000::ConfigToGUI(int nEventID)
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
     unsigned int uPageNum = uFlashBaseAddress / page_size;
     unsigned int uLimitNum = m_uProgramMemorySize / page_size;
-    unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * page_size) : 0;
+    unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * page_size) : page_size;
     m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uDataFlashSize : 0) / 1024.);
     m_SpinDataFlashSize.EnableWindow(m_bDataFlashEnable ? TRUE : FALSE);
     GetDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS)->EnableWindow(m_bDataFlashEnable);
+
+    if (m_bDataFlashEnable) {
+        uFlashBaseAddress = m_uProgramMemorySize - uDataFlashSize;
+        m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
+        uConfig1 = uFlashBaseAddress;
+    }
+
     m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
     m_sConfigValue1.Format(_T("0x%08X"), uConfig1);
 }

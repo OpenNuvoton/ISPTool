@@ -37,6 +37,7 @@ CDialogConfiguration_N570::CDialogConfiguration_N570(unsigned int uProgramMemory
     m_bDataFlashEnable = FALSE;
     m_bSecurityLock = FALSE;
     m_sFlashBaseAddress = _T("");
+    m_uPageSize = NUMICRO_FLASH_PAGE_SIZE_512;
     //}}AFX_DATA_INIT
 }
 
@@ -204,12 +205,19 @@ void CDialogConfiguration_N570::ConfigToGUI()
     m_bSecurityLock = ((uConfig0 & NUMICRO_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
     unsigned int uFlashBaseAddress = uConfig1 & 0xFFFFF;
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
-    unsigned int uPageNum = uFlashBaseAddress / NUMICRO_FLASH_PAGE_SIZE_512;
-    unsigned int uLimitNum = m_uProgramMemorySize / NUMICRO_FLASH_PAGE_SIZE_512;
-    unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * NUMICRO_FLASH_PAGE_SIZE_512) : 0;
+    unsigned int uPageNum = uFlashBaseAddress / m_uPageSize;
+    unsigned int uLimitNum = m_uProgramMemorySize / m_uPageSize;
+    unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * m_uPageSize) : m_uPageSize;
     m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uDataFlashSize : 0) / 1024.);
     m_SpinDataFlashSize.EnableWindow(m_bDataFlashEnable ? TRUE : FALSE);
     GetDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS)->EnableWindow(m_bDataFlashEnable);
+
+    if (m_bDataFlashEnable) {
+        uFlashBaseAddress = m_uProgramMemorySize - uDataFlashSize;
+        m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
+        uConfig1 = uFlashBaseAddress;
+    }
+
     m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
     m_sConfigValue1.Format(_T("0x%08X"), uConfig1);
 }
@@ -351,7 +359,7 @@ void CDialogConfiguration_N570::OnButtonClick()
 void CDialogConfiguration_N570::OnKillfocusEditFlashBaseAddress()
 {
     UpdateData(TRUE);
-    CDialogResize::OnKillfocusEditFlashBaseAddress(m_bDataFlashEnable, m_uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_512);
+    CDialogResize::OnKillfocusEditFlashBaseAddress(m_bDataFlashEnable, m_uProgramMemorySize, m_uPageSize);
 }
 
 void CDialogConfiguration_N570::OnOK()
@@ -366,7 +374,7 @@ void CDialogConfiguration_N570::OnOK()
 void CDialogConfiguration_N570::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)
 {
     UpdateData(TRUE);
-    CDialogResize::OnDeltaposSpinDataFlashSize(pNMHDR, pResult, m_bDataFlashEnable, m_uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_512);
+    CDialogResize::OnDeltaposSpinDataFlashSize(pNMHDR, pResult, m_bDataFlashEnable, m_uProgramMemorySize, m_uPageSize);
 }
 
 void CDialogConfiguration_N570::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)

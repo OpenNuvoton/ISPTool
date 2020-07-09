@@ -41,6 +41,7 @@ public:
     CSpinButtonCtrl	m_SpinDataFlashSize;
 
     unsigned int	m_uProgramMemorySize;
+    unsigned int	m_uPageSize;
     //}}AFX_DATA
 
 // Overrides
