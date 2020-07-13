@@ -377,6 +377,13 @@ typedef enum {
 /* Chip definition for M451 */
 #define M451_FLASH_CONFIG_XT1TYP		0x00010000UL //not release in TRM
 
+/* Chip definition for M471 */
+#define M471_MAX_APROM_SIZE				0x80000
+
+/* CONFIG 0 */
+#define M471_FLASH_CONFIG_ICELOCK		0x00000800UL
+#define M471_FLASH_CONFIG_CFGXT1		0x08000000UL
+
 /* Chip definition for M480 */
 
 #define M480_FLASH_CONFIG_CWDTEN		0x80000000UL
@@ -463,8 +470,6 @@ typedef enum {
 #define M258_FLASH_CONFIG_BOOTCLOCKSEL	0x02000000UL
 
 /* Chip definition for M0A21 */
-#define M0A21_MAX_APROM_SIZE			0x8000
-
 /* CONFIG 0 */
 #define M0A21_FLASH_CONFIG_RSTWSEL		0x00000100UL
 #define M0A21_FLASH_CONFIG_RSTEXT		0x00000200UL

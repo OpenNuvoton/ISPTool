@@ -1,27 +1,22 @@
-// DialogConfiguration_M0A21.cpp : implementation file
+// DialogChipSetting_CFG_M0A21.cpp : implementation file
 //
 
 #include "stdafx.h"
-#include <cassert>
-#include <deque>
-#include <string>
-#include <utility>
 #include "ChipDefs.h"
-#include "NumEdit.h"
-#include "DialogConfiguration_M0A21.h"
+#include "DialogChipSetting_CFG_M0A21.h"
+
 
 /////////////////////////////////////////////////////////////////////////////
-// CDialogConfiguration_M0A21 dialog
+// CDialogChipSetting_CFG_M0A21 dialog
 
-CDialogConfiguration_M0A21::CDialogConfiguration_M0A21(unsigned int uProgramMemorySize,
-        unsigned int uFlashPageSize,
-        CWnd *pParent /*=NULL*/)
+IMPLEMENT_DYNAMIC(CDialogChipSetting_CFG_M0A21, CDialog)
+
+CDialogChipSetting_CFG_M0A21::CDialogChipSetting_CFG_M0A21(CWnd *pParent /*=NULL*/)
     : CDialogResize(IDD, pParent)
-    , m_uProgramMemorySize(uProgramMemorySize)
-    , m_uFlashPageSize(uFlashPageSize)
+    , m_DataFlashBase(16, 8)
     , m_ALOCK(16, 2)
 {
-    //{{AFX_DATA_INIT(CDialogConfiguration_M0A21)
+    //{{AFX_DATA_INIT(CDialogChipSetting_CFG_M0A21)
     m_nRadioCWDTEN	= -1;
     m_nRadioCFGXT1	= -1;
     m_nRadioCFGRPS	= -1;
@@ -40,13 +35,15 @@ CDialogConfiguration_M0A21::CDialogConfiguration_M0A21(unsigned int uProgramMemo
     m_sConfigValue0	= _T("");
     m_sConfigValue1	= _T("");
     m_sConfigValue2	= _T("");
+    m_sConfigValue3	= _T("");
     //}}AFX_DATA_INIT
 }
 
-void CDialogConfiguration_M0A21::DoDataExchange(CDataExchange *pDX)
+
+void CDialogChipSetting_CFG_M0A21::DoDataExchange(CDataExchange *pDX)
 {
     CDialogResize::DoDataExchange(pDX);
-    //{{AFX_DATA_MAP(CDialogConfiguration_M0A21)
+    //{{AFX_DATA_MAP(CDialogChipSetting_CFG_M0A21)
     DDX_Radio(pDX, IDC_RADIO_WDT_DISABLE,			m_nRadioCWDTEN);
     DDX_Radio(pDX, IDC_RADIO_GPF_CRYSTAL,			m_nRadioCFGXT1);
     DDX_Radio(pDX, IDC_RADIO_RPD_RESET,				m_nRadioCFGRPS);
@@ -73,8 +70,9 @@ void CDialogConfiguration_M0A21::DoDataExchange(CDataExchange *pDX)
     //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(CDialogConfiguration_M0A21, CDialog)
-    //{{AFX_MSG_MAP(CDialogConfiguration_M0A21)
+
+BEGIN_MESSAGE_MAP(CDialogChipSetting_CFG_M0A21, CDialog)
+    //{{AFX_MSG_MAP(CDialogChipSetting_CFG_M0A21)
     ON_BN_CLICKED(IDC_RADIO_WDT_DISABLE,				OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_WDT_ENABLE_KEEP,			OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_WDT_ENABLE_STOP,			OnRadioClick)
@@ -106,18 +104,19 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_M0A21, CDialog)
     ON_EN_KILLFOCUS(IDC_EDIT_FLASH_ADVANCE_LOCK,		OnKillfocusEditAdvanceLock)
     ON_EN_KILLFOCUS(IDC_EDIT_FLASH_BASE_ADDRESS,		OnKillfocusEditDataFlashBase)
     ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_DATA_FLASH_SIZE,	OnDeltaposSpinDataFlashSize)
-    ON_WM_SIZE()
-    ON_WM_VSCROLL()
-    ON_WM_HSCROLL()
-    ON_WM_GETMINMAXINFO()
-    ON_WM_MOUSEWHEEL()
+    //ON_WM_SIZE()
+    //ON_WM_VSCROLL()
+    //ON_WM_HSCROLL()
+    //ON_WM_GETMINMAXINFO()
+    //ON_WM_MOUSEWHEEL()
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-/////////////////////////////////////////////////////////////////////////////
-// CDialogConfiguration_M0A21 message handlers
 
-BOOL CDialogConfiguration_M0A21::OnInitDialog()
+/////////////////////////////////////////////////////////////////////////////
+// CDialogChipSetting_CFG_M0A21 message handlers
+
+BOOL CDialogChipSetting_CFG_M0A21::OnInitDialog()
 {
     CDialog::OnInitDialog();
     // TODO: Add extra initialization here
@@ -130,30 +129,30 @@ BOOL CDialogConfiguration_M0A21::OnInitDialog()
     m_bIsInitialized = true;
     GetWindowRect(m_rect);
     AdjustDPI();
-    return TRUE;  // return TRUE unless you set the focus to a control
+    return TRUE;	// return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CDialogConfiguration_M0A21::OnRadioClick()
+void CDialogChipSetting_CFG_M0A21::OnRadioClick()
 {
     // TODO: Add your control notification handler code here
     GUIToConfig();
     ConfigToGUI();
 }
 
-void CDialogConfiguration_M0A21::OnCheckClick()
+void CDialogChipSetting_CFG_M0A21::OnCheckClick()
 {
     // TODO: Add your control notification handler code here
     GUIToConfig();
     ConfigToGUI();
 }
 
-void CDialogConfiguration_M0A21::UpdateUI()
+void CDialogChipSetting_CFG_M0A21::UpdateUI()
 {
     // TODO: Add your control notification handler code here
 }
 
-void CDialogConfiguration_M0A21::ConfigToGUI()
+void CDialogChipSetting_CFG_M0A21::ConfigToGUI()
 {
     unsigned int uConfig0 = m_uConfigValue[0];
     unsigned int uConfig1 = m_uConfigValue[1];
@@ -252,7 +251,7 @@ void CDialogConfiguration_M0A21::ConfigToGUI()
     UpdateData(FALSE);
 }
 
-void CDialogConfiguration_M0A21::GUIToConfig()
+void CDialogChipSetting_CFG_M0A21::GUIToConfig()
 {
     UpdateData(TRUE);
     unsigned int uConfig0 = 0xFFFFFFFF;
@@ -392,21 +391,21 @@ void CDialogConfiguration_M0A21::GUIToConfig()
     if (m_bCheckLOCK) {
         uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
 
-        if ((uConfig2 & 0xFF) == 0x5A) {
+        if ((uConfig2 & 0x5A) == 0x5A) {
             uConfig2 = 0xFFFFFF00;
             bEdit = true;
         }
     } else {
         uConfig0 |=  NUMICRO_FLASH_CONFIG_LOCK;
 
-        if ((uConfig2 & 0xFF) != 0x5A) {
+        if ((uConfig2 & 0x5A) != 0x5A) {
             uConfig2 = 0xFFFFFF5A;
             bEdit = true;
         }
     }
 
     if (!bEdit) {
-        unsigned int uALOCK = ::_tcstoul(m_sALOCK, NULL, 16);
+        unsigned int uALOCK = ::_tcstoul(m_sALOCK, NULL, 16) & 0x5A;
         uConfig2 = 0xFFFFFF00 | uALOCK;
 
         if (uALOCK == 0x5A) {
@@ -421,14 +420,14 @@ void CDialogConfiguration_M0A21::GUIToConfig()
     m_uConfigValue[2] = uConfig2;
 }
 
-void CDialogConfiguration_M0A21::OnKillfocusEditAdvanceLock()
+void CDialogChipSetting_CFG_M0A21::OnKillfocusEditAdvanceLock()
 {
     // TODO: Add your control notification handler code here
     GUIToConfig();
     ConfigToGUI();
 }
 
-void CDialogConfiguration_M0A21::OnKillfocusEditDataFlashBase()
+void CDialogChipSetting_CFG_M0A21::OnKillfocusEditDataFlashBase()
 {
     UpdateData(TRUE);
     unsigned int uDataFlashBase = ::_tcstoul(m_sDataFlashBase, NULL, 16);
@@ -446,7 +445,7 @@ void CDialogConfiguration_M0A21::OnKillfocusEditDataFlashBase()
     ConfigToGUI();
 }
 
-void CDialogConfiguration_M0A21::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)
+void CDialogChipSetting_CFG_M0A21::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)
 {
     UpdateData(TRUE);
     LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
@@ -472,36 +471,32 @@ void CDialogConfiguration_M0A21::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRES
     *pResult = 0;
 }
 
-void CDialogConfiguration_M0A21::OnOK()
+void CDialogChipSetting_CFG_M0A21::OnOK()
 {
-    // TODO: Add extra validation here
-    UpdateData(TRUE);
-    GUIToConfig();
-    CDialog::OnOK();
+    GetParent()->GetParent()->PostMessage(WM_COMMAND, IDOK);
+    //CDialog::OnOK ();
 }
 
-void CDialogConfiguration_M0A21::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
+void CDialogChipSetting_CFG_M0A21::OnCancel()
 {
-    if (pScrollBar != NULL && pScrollBar->GetDlgCtrlID() == m_SpinDataFlashSize.GetDlgCtrlID()) {
-        return;
-    }
-
-    CDialogResize::OnVScroll(nSBCode, nPos, pScrollBar);
+    GetParent()->GetParent()->PostMessage(WM_COMMAND, IDCANCEL);
+    //CDialog::OnCancel ();
 }
+
 
 /////////////////////////////////////////////////////////////////////////////
-// CDialogConfiguration_M030G dialog
+// CDialogChipSetting_CFG_M030G dialog
 
-CDialogConfiguration_M030G::CDialogConfiguration_M030G(unsigned int uProgramMemorySize,
-        unsigned int uFlashPageSize,
-        CWnd *pParent /*=NULL*/)
-    : CDialogConfiguration_M0A21(uProgramMemorySize, uFlashPageSize, pParent)
+IMPLEMENT_DYNAMIC(CDialogChipSetting_CFG_M030G, CDialog)
+
+CDialogChipSetting_CFG_M030G::CDialogChipSetting_CFG_M030G(CWnd *pParent /*=NULL*/)
+    : CDialogChipSetting_CFG_M0A21(pParent)
 {
-    //{{AFX_DATA_INIT(CDialogConfiguration_M030G)
+    //{{AFX_DATA_INIT(CDialogChipSetting_CFG_M030G)
     //}}AFX_DATA_INIT
 }
 
-void CDialogConfiguration_M030G::UpdateUI()
+void CDialogChipSetting_CFG_M030G::UpdateUI()
 {
     // TODO: Add your control notification handler code here
     GetDlgItem(IDC_GROUP_RPD)->ShowWindow(SW_HIDE);
@@ -534,7 +529,7 @@ void CDialogConfiguration_M030G::UpdateUI()
     }
 
     lDiff = rcGroupCBOD.bottom - rcGroupCFGXT1.bottom;
-    int nID1s[] = { IDOK, IDCANCEL, IDC_GROUP_WDT, IDC_RADIO_WDT_DISABLE, IDC_RADIO_WDT_ENABLE_KEEP, IDC_RADIO_WDT_ENABLE_STOP,
+    int nID1s[] = { IDC_GROUP_WDT, IDC_RADIO_WDT_DISABLE, IDC_RADIO_WDT_ENABLE_KEEP, IDC_RADIO_WDT_ENABLE_STOP,
                     IDC_GROUP_DATA_FLASH, IDC_CHECK_DATA_FLASH_ENABLE, IDC_STATIC_FLASH_BASE_ADDRESS, IDC_EDIT_FLASH_BASE_ADDRESS, IDC_STATIC_DATA_FLASH_SIZE, IDC_EDIT_DATA_FLASH_SIZE, IDC_SPIN_DATA_FLASH_SIZE,
                     IDC_GROUP_ADVANCE_LOCK, IDC_CHECK_SECURITY_LOCK, IDC_STATIC_FLASH_ADVANCE_LOCK, IDC_EDIT_FLASH_ADVANCE_LOCK,
                     IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2
@@ -550,7 +545,7 @@ void CDialogConfiguration_M030G::UpdateUI()
     SetWindowPos(this, 0, 0, rcTmp.right - rcTmp.left, rcTmp.bottom - rcTmp.top - lDiff, SWP_NOZORDER | SWP_NOMOVE);
 }
 
-void CDialogConfiguration_M030G::ConfigToGUI()
+void CDialogChipSetting_CFG_M030G::ConfigToGUI()
 {
     unsigned int uConfig0 = m_uConfigValue[0];
     unsigned int uConfig1 = m_uConfigValue[1];
@@ -616,7 +611,7 @@ void CDialogConfiguration_M030G::ConfigToGUI()
     UpdateData(FALSE);
 }
 
-void CDialogConfiguration_M030G::GUIToConfig()
+void CDialogChipSetting_CFG_M030G::GUIToConfig()
 {
     UpdateData(TRUE);
     unsigned int uConfig0 = 0xFFFFFFFF;
@@ -705,21 +700,21 @@ void CDialogConfiguration_M030G::GUIToConfig()
     if (m_bCheckLOCK) {
         uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
 
-        if ((uConfig2 & 0xFF) == 0x5A) {
+        if ((uConfig2 & 0x5A) == 0x5A) {
             uConfig2 = 0xFFFFFF00;
             bEdit = true;
         }
     } else {
         uConfig0 |=  NUMICRO_FLASH_CONFIG_LOCK;
 
-        if ((uConfig2 & 0xFF) != 0x5A) {
+        if ((uConfig2 & 0x5A) != 0x5A) {
             uConfig2 = 0xFFFFFF5A;
             bEdit = true;
         }
     }
 
     if (!bEdit) {
-        unsigned int uALOCK = ::_tcstoul(m_sALOCK, NULL, 16);
+        unsigned int uALOCK = ::_tcstoul(m_sALOCK, NULL, 16) & 0x5A;
         uConfig2 = 0xFFFFFF00 | uALOCK;
 
         if (uALOCK == 0x5A) {
@@ -734,19 +729,20 @@ void CDialogConfiguration_M030G::GUIToConfig()
     m_uConfigValue[2] = uConfig2;
 }
 
-/////////////////////////////////////////////////////////////////////////////
-// CDialogConfiguration_M031 dialog
 
-CDialogConfiguration_M031::CDialogConfiguration_M031(unsigned int uProgramMemorySize,
-        unsigned int uFlashPageSize,
-        CWnd *pParent /*=NULL*/)
-    : CDialogConfiguration_M0A21(uProgramMemorySize, uFlashPageSize, pParent)
+/////////////////////////////////////////////////////////////////////////////
+// CDialogChipSetting_CFG_M031 dialog
+
+IMPLEMENT_DYNAMIC(CDialogChipSetting_CFG_M031, CDialog)
+
+CDialogChipSetting_CFG_M031::CDialogChipSetting_CFG_M031(CWnd *pParent /*=NULL*/)
+    : CDialogChipSetting_CFG_M0A21(pParent)
 {
-    //{{AFX_DATA_INIT(CDialogConfiguration_M031)
+    //{{AFX_DATA_INIT(CDialogChipSetting_CFG_M031)
     //}}AFX_DATA_INIT
 }
 
-void CDialogConfiguration_M031::UpdateUI()
+void CDialogChipSetting_CFG_M031::UpdateUI()
 {
     // TODO: Add your control notification handler code here
     GetDlgItem(IDC_GROUP_RPD)->ShowWindow(SW_HIDE);
@@ -758,7 +754,7 @@ void CDialogConfiguration_M031::UpdateUI()
     GetDlgItem(IDC_RADIO_BOV_0)->ShowWindow(SW_HIDE);
 }
 
-void CDialogConfiguration_M031::ConfigToGUI()
+void CDialogChipSetting_CFG_M031::ConfigToGUI()
 {
     unsigned int uConfig0 = m_uConfigValue[0];
     unsigned int uConfig1 = m_uConfigValue[1];
@@ -848,7 +844,7 @@ void CDialogConfiguration_M031::ConfigToGUI()
     UpdateData(FALSE);
 }
 
-void CDialogConfiguration_M031::GUIToConfig()
+void CDialogChipSetting_CFG_M031::GUIToConfig()
 {
     UpdateData(TRUE);
     unsigned int uConfig0 = 0xFFFFFFFF;
@@ -974,21 +970,21 @@ void CDialogConfiguration_M031::GUIToConfig()
     if (m_bCheckLOCK) {
         uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
 
-        if ((uConfig2 & 0xFF) == 0x5A) {
+        if ((uConfig2 & 0x5A) == 0x5A) {
             uConfig2 = 0xFFFFFF00;
             bEdit = true;
         }
     } else {
         uConfig0 |=  NUMICRO_FLASH_CONFIG_LOCK;
 
-        if ((uConfig2 & 0xFF) != 0x5A) {
+        if ((uConfig2 & 0x5A) != 0x5A) {
             uConfig2 = 0xFFFFFF5A;
             bEdit = true;
         }
     }
 
     if (!bEdit) {
-        unsigned int uALOCK = ::_tcstoul(m_sALOCK, NULL, 16);
+        unsigned int uALOCK = ::_tcstoul(m_sALOCK, NULL, 16) & 0x5A;
         uConfig2 = 0xFFFFFF00 | uALOCK;
 
         if (uALOCK == 0x5A) {
@@ -1003,19 +999,20 @@ void CDialogConfiguration_M031::GUIToConfig()
     m_uConfigValue[2] = uConfig2;
 }
 
-/////////////////////////////////////////////////////////////////////////////
-// CDialogConfiguration_M451 dialog
 
-CDialogConfiguration_M451::CDialogConfiguration_M451(unsigned int uProgramMemorySize,
-        unsigned int uFlashPageSize,
-        CWnd *pParent /*=NULL*/)
-    : CDialogConfiguration_M0A21(uProgramMemorySize, uFlashPageSize, pParent)
+/////////////////////////////////////////////////////////////////////////////
+// CDialogChipSetting_CFG_M451 dialog
+
+IMPLEMENT_DYNAMIC(CDialogChipSetting_CFG_M451, CDialog)
+
+CDialogChipSetting_CFG_M451::CDialogChipSetting_CFG_M451(CWnd *pParent /*=NULL*/)
+    : CDialogChipSetting_CFG_M0A21(pParent)
 {
-    //{{AFX_DATA_INIT(CDialogConfiguration_M031)
+    //{{AFX_DATA_INIT(CDialogChipSetting_CFG_M451)
     //}}AFX_DATA_INIT
 }
 
-void CDialogConfiguration_M451::UpdateUI()
+void CDialogChipSetting_CFG_M451::UpdateUI()
 {
     // TODO: Add your control notification handler code here
     GetDlgItem(IDC_GROUP_RST_PIN_WIDTH)->ShowWindow(SW_HIDE);
@@ -1035,8 +1032,8 @@ void CDialogConfiguration_M451::UpdateUI()
     GetDlgItem(IDC_GROUP_ADVANCE_LOCK)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATIC_FLASH_ADVANCE_LOCK)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_EDIT_FLASH_ADVANCE_LOCK)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_STATIC_CONFIG_2)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_STATIC_CONFIG_VALUE_2)->ShowWindow(SW_HIDE);
+    //GetDlgItem(IDC_STATIC_CONFIG_2)->ShowWindow(SW_HIDE);
+    //GetDlgItem(IDC_STATIC_CONFIG_VALUE_2)->ShowWindow(SW_HIDE);
     RECT rcTmp, rcICELOCK, rcCFGXT1;
     GetDlgItem(IDC_CHECK_ICE_LOCK)->GetWindowRect(&rcICELOCK);
     GetDlgItem(IDC_RADIO_GPF_CRYSTAL)->GetWindowRect(&rcCFGXT1);
@@ -1061,8 +1058,7 @@ void CDialogConfiguration_M451::UpdateUI()
                      IDC_GROUP_WDT, IDC_RADIO_WDT_DISABLE, IDC_RADIO_WDT_ENABLE_KEEP, IDC_RADIO_WDT_ENABLE_STOP,
                      IDC_GROUP_DATA_FLASH, IDC_CHECK_DATA_FLASH_ENABLE, IDC_STATIC_FLASH_BASE_ADDRESS, IDC_EDIT_FLASH_BASE_ADDRESS, IDC_STATIC_DATA_FLASH_SIZE, IDC_EDIT_DATA_FLASH_SIZE, IDC_SPIN_DATA_FLASH_SIZE,
                      IDC_GROUP_ADVANCE_LOCK, IDC_CHECK_SECURITY_LOCK, IDC_STATIC_FLASH_ADVANCE_LOCK, IDC_EDIT_FLASH_ADVANCE_LOCK,
-                     IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2,
-                     IDOK, IDCANCEL
+                     IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2
                     };
 
     for (i = 0; i < _countof(nIDs); i++) {
@@ -1075,10 +1071,11 @@ void CDialogConfiguration_M451::UpdateUI()
     SetWindowPos(this, 0, 0, rcTmp.right - rcTmp.left, rcTmp.bottom - rcTmp.top - lDiff, SWP_NOZORDER | SWP_NOMOVE);
 }
 
-void CDialogConfiguration_M451::ConfigToGUI()
+void CDialogChipSetting_CFG_M451::ConfigToGUI()
 {
     unsigned int uConfig0 = m_uConfigValue[0];
     unsigned int uConfig1 = m_uConfigValue[1];
+    unsigned int uConfig2 = m_uConfigValue[2];
 
     switch (uConfig0 & NUMICRO_FLASH_CONFIG_CWDTEN) {
         case NUMICRO_FLASH_CONFIG_CWDTEN_INACTIVE:
@@ -1164,15 +1161,16 @@ void CDialogConfiguration_M451::ConfigToGUI()
     m_sDataFlashSize.Format(_T("%.2fK"), uDataFlashSize / 1024.);
     m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
     m_sConfigValue1.Format(_T("0x%08X"), uConfig1);
+    m_sConfigValue2.Format(_T("0x%08X"), uConfig2);
     UpdateData(FALSE);
 }
 
-void CDialogConfiguration_M451::GUIToConfig()
+void CDialogChipSetting_CFG_M451::GUIToConfig()
 {
     UpdateData(TRUE);
-    //unsigned int uConfig0 = 0xFFFFFFFF;
     unsigned int uConfig0 = ~M451_FLASH_CONFIG_XT1TYP;
     unsigned int uConfig1 = m_uConfigValue[1];
+    unsigned int uConfig2 = 0xFFFFFFFF;
 
     switch (m_nRadioCWDTEN) {
         case 0:
@@ -1288,4 +1286,292 @@ void CDialogConfiguration_M451::GUIToConfig()
 
     m_uConfigValue[0] = uConfig0;
     m_uConfigValue[1] = uConfig1;
+    m_uConfigValue[2] = uConfig2;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+// CDialogChipSetting_CFG_M471 dialog
+
+IMPLEMENT_DYNAMIC(CDialogChipSetting_CFG_M471, CDialog)
+
+CDialogChipSetting_CFG_M471::CDialogChipSetting_CFG_M471(CWnd *pParent /*=NULL*/)
+    : CDialogChipSetting_CFG_M0A21(pParent)
+{
+    //{{AFX_DATA_INIT(CDialogChipSetting_CFG_M471)
+    //}}AFX_DATA_INIT
+}
+
+void CDialogChipSetting_CFG_M471::UpdateUI()
+{
+    // TODO: Add your control notification handler code here
+    GetDlgItem(IDC_GROUP_RST_PIN_WIDTH)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_RADIO_RST_PIN_WIDTH_1)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_RADIO_RST_PIN_WIDTH_0)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_GROUP_CHIPRESET_TIMEEXT)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_RADIO_CHIPRESET_TIMEEXT_1)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_RADIO_CHIPRESET_TIMEEXT_0)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_GROUP_RPD)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_RADIO_RPD_RESET)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_RADIO_RPD_INPUT)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_RADIO_BOV_3)->SetWindowText(_T("4.4V"));
+    GetDlgItem(IDC_RADIO_BOV_2)->SetWindowText(_T("3.7V"));
+    GetDlgItem(IDC_RADIO_BOV_1)->SetWindowText(_T("3.3V"));
+    GetDlgItem(IDC_RADIO_BOV_0)->SetWindowText(_T("2.3V"));
+    GetDlgItem(IDC_GROUP_DATA_FLASH)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_CHECK_DATA_FLASH_ENABLE)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATIC_FLASH_BASE_ADDRESS)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATIC_DATA_FLASH_SIZE)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_EDIT_DATA_FLASH_SIZE)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_SPIN_DATA_FLASH_SIZE)->ShowWindow(SW_HIDE);
+    RECT rcTmp, rcGroupRSTW, rcGroupCFGXT1, rcGroupDFEN, rcGroupLOCK;
+    LONG lDiff;
+    GetDlgItem(IDC_GROUP_RST_PIN_WIDTH)->GetWindowRect(&rcGroupRSTW);
+    GetDlgItem(IDC_GROUP_GPF)->GetWindowRect(&rcGroupCFGXT1);
+    lDiff = rcGroupCFGXT1.top - rcGroupRSTW.top;
+    int i;
+    int nIDs[] = {IDC_GROUP_GPF, IDC_RADIO_GPF_CRYSTAL, IDC_RADIO_GPF_GPIO,
+                  IDC_GROUP_BOOT_SELECT, IDC_RADIO_BS_APROM, IDC_RADIO_BS_LDROM, IDC_RADIO_BS_APROM_LDROM, IDC_RADIO_BS_LDROM_APROM,
+                  IDC_GROUP_BROWN_OUT_VOLTAGE, IDC_RADIO_BOV_3, IDC_RADIO_BOV_2, IDC_RADIO_BOV_1, IDC_RADIO_BOV_0, IDC_CHECK_BROWN_OUT_DETECT, IDC_CHECK_BROWN_OUT_RESET,
+                  IDC_GROUP_WDT, IDC_RADIO_WDT_DISABLE, IDC_RADIO_WDT_ENABLE_KEEP, IDC_RADIO_WDT_ENABLE_STOP,
+                  IDC_GROUP_DATA_FLASH, IDC_CHECK_DATA_FLASH_ENABLE, IDC_STATIC_FLASH_BASE_ADDRESS, IDC_EDIT_FLASH_BASE_ADDRESS, IDC_STATIC_DATA_FLASH_SIZE, IDC_EDIT_DATA_FLASH_SIZE, IDC_SPIN_DATA_FLASH_SIZE
+                 };
+
+    for (i = 0; i < _countof(nIDs); i++) {
+        GetDlgItem(nIDs[i])->GetWindowRect(&rcTmp);
+        this->ScreenToClient(&rcTmp);
+        GetDlgItem(nIDs[i])->SetWindowPos(NULL, rcTmp.left, rcTmp.top - lDiff, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+    }
+
+    GetDlgItem(IDC_GROUP_DATA_FLASH)->GetWindowRect(&rcGroupDFEN);
+    GetDlgItem(IDC_GROUP_ADVANCE_LOCK)->GetWindowRect(&rcGroupLOCK);
+    lDiff = rcGroupLOCK.top - rcGroupDFEN.top;
+    int nID1s[] = { IDC_GROUP_ADVANCE_LOCK, IDC_CHECK_SECURITY_LOCK, IDC_STATIC_FLASH_ADVANCE_LOCK, IDC_EDIT_FLASH_ADVANCE_LOCK,
+                    IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2
+                  };
+
+    for (i = 0; i < _countof(nID1s); i++) {
+        GetDlgItem(nID1s[i])->GetWindowRect(&rcTmp);
+        this->ScreenToClient(&rcTmp);
+        GetDlgItem(nID1s[i])->SetWindowPos(NULL, rcTmp.left, rcTmp.top - lDiff, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+    }
+
+    this->GetWindowRect(&rcTmp);
+    SetWindowPos(this, 0, 0, rcTmp.right - rcTmp.left, rcTmp.bottom - rcTmp.top - lDiff, SWP_NOZORDER | SWP_NOMOVE);
+}
+
+void CDialogChipSetting_CFG_M471::ConfigToGUI()
+{
+    unsigned int uConfig0 = m_uConfigValue[0];
+    unsigned int uConfig1 = m_uConfigValue[1];
+    unsigned int uConfig2 = m_uConfigValue[2];
+
+    switch (uConfig0 & NUMICRO_FLASH_CONFIG_CWDTEN) {
+        case NUMICRO_FLASH_CONFIG_CWDTEN_INACTIVE:
+            m_nRadioCWDTEN = 0;
+            break;
+
+        case NUMICRO_FLASH_CONFIG_CWDTEN_BY_LIRCEN:
+            if (uConfig0 & NUMICRO_FLASH_CONFIG_CWDTPDEN) {
+                m_nRadioCWDTEN = 2;
+            } else {
+                m_nRadioCWDTEN = 1;
+            }
+
+            break;
+
+        default:
+            m_nRadioCWDTEN = 1;
+    }
+
+    switch (uConfig0 & NUMICRO_FLASH_CONFIG_CBOV_4_LEVEL) {
+        //case NUMICRO_FLASH_CONFIG_CBOV_7:
+        //	m_nRadioCBOV = 0; break;
+        //case NUMICRO_FLASH_CONFIG_CBOV_6:
+        //	m_nRadioCBOV = 1; break;
+        //case NUMICRO_FLASH_CONFIG_CBOV_5:
+        //	m_nRadioCBOV = 2; break;
+        //case NUMICRO_FLASH_CONFIG_CBOV_4:
+        //	m_nRadioCBOV = 3; break;
+        case NUMICRO_FLASH_CONFIG_CBOV_3:
+            m_nRadioCBOV = 0;
+            break;
+
+        case NUMICRO_FLASH_CONFIG_CBOV_2:
+            m_nRadioCBOV = 1;
+            break;
+
+        case NUMICRO_FLASH_CONFIG_CBOV_1:
+            m_nRadioCBOV = 2;
+            break;
+
+        case NUMICRO_FLASH_CONFIG_CBOV_0:
+        default:
+            m_nRadioCBOV = 3;
+            break;
+    }
+
+    switch (uConfig0 & NUMICRO_FLASH_CONFIG_CBS_4_MODE) {
+        case NUMICRO_FLASH_CONFIG_CBS_AP:
+            m_nRadioCBS = 0;
+            break;
+
+        case NUMICRO_FLASH_CONFIG_CBS_LD:
+            m_nRadioCBS = 1;
+            break;
+
+        case NUMICRO_FLASH_CONFIG_CBS_AP_IAP:
+            m_nRadioCBS = 2;
+            break;
+
+        case NUMICRO_FLASH_CONFIG_CBS_LD_IAP:
+        default:
+            m_nRadioCBS = 3;
+            break;
+    }
+
+    m_nRadioCFGXT1	= ((uConfig0 & M471_FLASH_CONFIG_CFGXT1) ? 0 : 1);
+    m_nRadioCIOINI	= ((uConfig0 & NUMICRO_FLASH_CONFIG_CIOINI) ? 0 : 1);
+    m_bCheckCBORST	= ((uConfig0 & NUMICRO_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
+    m_bCheckCBODEN	= ((uConfig0 & NUMICRO_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
+    m_bCheckICELOCK	= ((uConfig0 & M471_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
+    m_bCheckLOCK	= ((uConfig0 & NUMICRO_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    m_sALOCK.Format(_T("%02X"), uConfig2 & 0xFF);
+    m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
+    m_sConfigValue1.Format(_T("0x%08X"), uConfig1);
+    m_sConfigValue2.Format(_T("0x%08X"), uConfig2);
+    UpdateData(FALSE);
+}
+
+void CDialogChipSetting_CFG_M471::GUIToConfig()
+{
+    UpdateData(TRUE);
+    unsigned int uConfig0 = 0xFFFFFFFF;
+    unsigned int uConfig1 = 0xFFFFFFFF;
+    unsigned int uConfig2 = m_uConfigValue[2];
+
+    switch (m_nRadioCWDTEN) {
+        case 0:
+            uConfig0 &= ~NUMICRO_FLASH_CONFIG_CWDTEN;
+            uConfig0 |=  NUMICRO_FLASH_CONFIG_CWDTEN_INACTIVE;
+            break;
+
+        case 2:
+            uConfig0 &= ~(NUMICRO_FLASH_CONFIG_CWDTEN | NUMICRO_FLASH_CONFIG_CWDTPDEN);
+            uConfig0 |= (NUMICRO_FLASH_CONFIG_CWDTEN_BY_LIRCEN | NUMICRO_FLASH_CONFIG_CWDTPDEN);
+            break;
+
+        default:
+            if (((uConfig0 & NUMICRO_FLASH_CONFIG_CWDTEN) == NUMICRO_FLASH_CONFIG_CWDTEN_INACTIVE) ||
+                    (((uConfig0 & NUMICRO_FLASH_CONFIG_CWDTEN) == NUMICRO_FLASH_CONFIG_CWDTEN_BY_LIRCEN) && (uConfig0 & NUMICRO_FLASH_CONFIG_CWDTPDEN))) {
+                uConfig0 &= ~(NUMICRO_FLASH_CONFIG_CWDTEN | NUMICRO_FLASH_CONFIG_CWDTPDEN);
+                uConfig0 |= (NUMICRO_FLASH_CONFIG_CWDTEN_ACTIVE | NUMICRO_FLASH_CONFIG_CWDTPDEN);
+            }
+    }
+
+    uConfig0 &= ~NUMICRO_FLASH_CONFIG_CBOV_4_LEVEL;
+
+    switch (m_nRadioCBOV) {
+        case 0:
+            uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_3;
+            break;
+
+        case 1:
+            uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_2;
+            break;
+
+        case 2:
+            uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_1;
+            break;
+
+        case 3:
+        default:
+            uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_0;
+            break;
+    }
+
+    uConfig0 &= ~NUMICRO_FLASH_CONFIG_CBS_4_MODE;
+
+    switch (m_nRadioCBS) {
+        case 0:
+            uConfig0 |= NUMICRO_FLASH_CONFIG_CBS_AP;
+            break;
+
+        case 1:
+            uConfig0 |= NUMICRO_FLASH_CONFIG_CBS_LD;
+            break;
+
+        case 2:
+            uConfig0 |= NUMICRO_FLASH_CONFIG_CBS_AP_IAP;
+            break;
+
+        case 3:
+        default:
+            uConfig0 |= NUMICRO_FLASH_CONFIG_CBS_LD_IAP;
+            break;
+    }
+
+    if (m_nRadioCFGXT1 == 0) {
+        uConfig0 |=  M471_FLASH_CONFIG_CFGXT1;
+    } else {
+        uConfig0 &= ~M471_FLASH_CONFIG_CFGXT1;
+    }
+
+    if (m_nRadioCIOINI == 0) {
+        uConfig0 |=  NUMICRO_FLASH_CONFIG_CIOINI;
+    } else {
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_CIOINI;
+    }
+
+    if (m_bCheckCBORST) {
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_CBORST;
+    } else {
+        uConfig0 |=  NUMICRO_FLASH_CONFIG_CBORST;
+    }
+
+    if (m_bCheckCBODEN) {
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_CBODEN;
+    } else {
+        uConfig0 |=  NUMICRO_FLASH_CONFIG_CBODEN;
+    }
+
+    if (m_bCheckICELOCK) {
+        uConfig0 &= ~M471_FLASH_CONFIG_ICELOCK;
+    } else {
+        uConfig0 |=  M471_FLASH_CONFIG_ICELOCK;
+    }
+
+    bool bEdit = false;
+
+    if (m_bCheckLOCK) {
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
+
+        if ((uConfig2 & 0x5A) == 0x5A) {
+            uConfig2 = 0xFFFFFF00;
+            bEdit = true;
+        }
+    } else {
+        uConfig0 |=  NUMICRO_FLASH_CONFIG_LOCK;
+
+        if ((uConfig2 & 0x5A) != 0x5A) {
+            uConfig2 = 0xFFFFFF5A;
+            bEdit = true;
+        }
+    }
+
+    if (!bEdit) {
+        unsigned int uALOCK = ::_tcstoul(m_sALOCK, NULL, 16) & 0x5A;
+        uConfig2 = 0xFFFFFF00 | uALOCK;
+
+        if (uALOCK == 0x5A) {
+            uConfig0 |=  NUMICRO_FLASH_CONFIG_LOCK;
+        } else {
+            uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
+        }
+    }
+
+    m_uConfigValue[0] = uConfig0;
+    m_uConfigValue[1] = uConfig1;
+    m_uConfigValue[2] = uConfig2;
 }

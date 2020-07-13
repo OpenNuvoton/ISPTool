@@ -37,6 +37,9 @@
     <Filter Include="ThirdParty\hidapi">
       <UniqueIdentifier>{35677c9e-82b3-4c4d-84ce-6bc6d4c369ee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="External\DialogChipSetting">
+      <UniqueIdentifier>{eecb7a24-4138-4713-8ce0-85cae38a0080}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -62,6 +65,12 @@
     </ClInclude>
     <ClInclude Include="DataBase\NuDataBase.h">
       <Filter>External\DataBase</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogChipSetting\DialogChipSetting_CFG_M0A21.h">
+      <Filter>External\DialogChipSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogChipSetting\DialogChipSetting_NuMicro.h">
+      <Filter>External\DialogChipSetting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -188,8 +197,11 @@
     <ClCompile Include="ISPLdCMD2.cpp">
       <Filter>ISPTool\NuvoISP</Filter>
     </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_M0A21.cpp">
-      <Filter>External\DialogConfiguration</Filter>
+    <ClCompile Include="DialogChipSetting\DialogChipSetting_CFG_M0A21.cpp">
+      <Filter>External\DialogChipSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogChipSetting\DialogChipSetting_NuMicro.cpp">
+      <Filter>External\DialogChipSetting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
