@@ -318,6 +318,7 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 #include "DialogConfiguration_M251.h"
 //
 #include "DialogChipSetting_NuMicro.h"
+#include "DialogChipSetting_M480LD.h"
 
 bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigned int uSeriesCode /* = 0*/)
 {
@@ -562,12 +563,12 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
 
             case IDD_DIALOG_CONFIGURATION_M480LD:
                 if (uProgramMemorySize) {
-                    pConfigDlg = new CDialogChipSetting_CFG_M480LD(uProgramMemorySize);
+                    pConfigDlg = new CDialogChipSetting_M480LD(uProgramMemorySize);
                 } else {
-                    pConfigDlg = new CDialogChipSetting_CFG_M480LD();
+                    pConfigDlg = new CDialogChipSetting_M480LD();
                 }
 
-                Config = (((CDialogChipSetting_CFG_M480LD *)pConfigDlg)->m_uConfigValue);
+                Config = (((CDialogChipSetting_M480LD *)pConfigDlg)->m_uConfigValue);
                 break;
 
             case IDD_DIALOG_CONFIGURATION_M2351:
@@ -646,7 +647,6 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
 
             case NUC_CHIP_TYPE_M031:  // Page Size: 512
             case NUC_CHIP_TYPE_M031G: // Page Size: 2048
-
                 if (uProgramMemorySize) {
                     pConfigDlg = new CDialogChipSetting_NuMicro(uProgramMemorySize, uPage_Size, NUC_CHIP_TYPE_M031);
                 } else {
@@ -661,40 +661,37 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                     pConfigDlg = new CDialogChipSetting_NuMicro(uProgramMemorySize, uPage_Size, NUC_CHIP_TYPE_M031);
                 }
 
-                Config = (((CDialogChipSetting_NuMicro*)pConfigDlg)->m_uConfigValue);
+                Config = (((CDialogChipSetting_NuMicro *)pConfigDlg)->m_uConfigValue);
                 break;
 
             case NUC_CHIP_TYPE_M0A21:
-
                 if (uProgramMemorySize) {
                     pConfigDlg = new CDialogChipSetting_NuMicro(uProgramMemorySize, uPage_Size, uSeriesCode);
                 } else {
                     pConfigDlg = new CDialogChipSetting_NuMicro(16 * 1024, 512, uSeriesCode);
                 }
 
-                Config = (((CDialogChipSetting_NuMicro*)pConfigDlg)->m_uConfigValue);
+                Config = (((CDialogChipSetting_NuMicro *)pConfigDlg)->m_uConfigValue);
                 break;
 
             case NUC_CHIP_TYPE_M030G:
-
                 if (uProgramMemorySize) {
                     pConfigDlg = new CDialogChipSetting_NuMicro(uProgramMemorySize, uPage_Size, uSeriesCode);
                 } else {
                     pConfigDlg = new CDialogChipSetting_NuMicro(64 * 1024, 512, uSeriesCode);
                 }
 
-                Config = (((CDialogChipSetting_NuMicro*)pConfigDlg)->m_uConfigValue);
+                Config = (((CDialogChipSetting_NuMicro *)pConfigDlg)->m_uConfigValue);
                 break;
 
             case NUC_CHIP_TYPE_M451: // M451, M4521
-
                 if (uProgramMemorySize) {
                     pConfigDlg = new CDialogChipSetting_NuMicro(uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_2K, uSeriesCode);
                 } else {
                     pConfigDlg = new CDialogChipSetting_NuMicro(256 * 1024, NUMICRO_FLASH_PAGE_SIZE_2K, uSeriesCode);
                 }
 
-                Config = (((CDialogChipSetting_NuMicro*)pConfigDlg)->m_uConfigValue);
+                Config = (((CDialogChipSetting_NuMicro *)pConfigDlg)->m_uConfigValue);
                 break;
 
             default:

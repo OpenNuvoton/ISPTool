@@ -118,6 +118,7 @@
     <ClInclude Include="DataBase\NuDataBase.h" />
     <ClInclude Include="DataBase\PartNumID.h" />
     <ClInclude Include="DialogChipSetting\DialogChipSetting_CFG_M0A21.h" />
+    <ClInclude Include="DialogChipSetting\DialogChipSetting_M480LD.h" />
     <ClInclude Include="DialogChipSetting\DialogChipSetting_NuMicro.h" />
     <ClInclude Include="DialogConfiguration\DialogConfiguration_M2351.h" />
     <ClInclude Include="resource.h" />
@@ -130,6 +131,7 @@
     <ClCompile Include="DataBase\NuDataBase.cpp" />
     <ClCompile Include="DataBase\PartNumID.cpp" />
     <ClCompile Include="DialogChipSetting\DialogChipSetting_CFG_M0A21.cpp" />
+    <ClCompile Include="DialogChipSetting\DialogChipSetting_M480LD.cpp" />
     <ClCompile Include="DialogChipSetting\DialogChipSetting_NuMicro.cpp" />
     <ClCompile Include="DialogConfiguration\AppConfig.cpp" />
     <ClCompile Include="DialogConfiguration\DialogConfiguration_AU9100.cpp" />

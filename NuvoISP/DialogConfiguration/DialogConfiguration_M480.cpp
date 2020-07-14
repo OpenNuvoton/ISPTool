@@ -904,3 +904,8 @@ void CDialogChipSetting_CFG_M480LD::OnKillfocusEditFlashBaseAddress()
     m_uConfigValue[1] = uConfig1;// | 0xFFF00000;
 }
 
+void CDialogChipSetting_CFG_M480LD::OnOK()
+{
+    GetParent()->GetParent()->PostMessage(WM_COMMAND, IDOK);
+    //CDialog::OnOK ();
+}
