@@ -126,7 +126,7 @@ BOOL CDialogConfiguration_OT8051::OnInitDialog()
 
     switch (uSID) {
         case OT8051_SID_N76E885: {
-            m_uLevel = OT8051_CONFIG_CBOV_8_LEVEL;
+            m_uLevel = 8;
             GetDlgItem(IDC_GROUP_FSYS)->ShowWindow(SW_HIDE);
             GetDlgItem(IDC_RADIO_FSYS_HIRC)->ShowWindow(SW_HIDE);
             GetDlgItem(IDC_RADIO_FSYS_LIRC)->ShowWindow(SW_HIDE);
@@ -145,7 +145,7 @@ BOOL CDialogConfiguration_OT8051::OnInitDialog()
         }
 
         case OT8051_SID_N76E616: {
-            m_uLevel = OT8051_CONFIG_CBOV_4_LEVEL;
+            m_uLevel = 4;
             GetDlgItem(IDC_GROUP_FSYS)->ShowWindow(SW_HIDE);
             GetDlgItem(IDC_RADIO_FSYS_HIRC)->ShowWindow(SW_HIDE);
             GetDlgItem(IDC_RADIO_FSYS_LIRC)->ShowWindow(SW_HIDE);
@@ -170,7 +170,7 @@ BOOL CDialogConfiguration_OT8051::OnInitDialog()
         case OT8051_SID_MS51_16K:
         case OT8051_SID_MS51_8K:
         case OT8051_SID_MS51_32K: {
-            m_uLevel = OT8051_CONFIG_CBOV_4_LEVEL;
+            m_uLevel = 4;
             GetDlgItem(IDC_GROUP_FSYS)->ShowWindow(SW_HIDE);
             GetDlgItem(IDC_RADIO_FSYS_HIRC)->ShowWindow(SW_HIDE);
             GetDlgItem(IDC_RADIO_FSYS_LIRC)->ShowWindow(SW_HIDE);
@@ -189,7 +189,7 @@ BOOL CDialogConfiguration_OT8051::OnInitDialog()
         }
 
         case OT8051_SID_N76L151: {
-            m_uLevel = OT8051_CONFIG_CBOV_8_LEVEL;
+            m_uLevel = 8;
             GetDlgItem(IDC_GROUP_FSYS)->ShowWindow(SW_HIDE);
             GetDlgItem(IDC_RADIO_FSYS_HIRC)->ShowWindow(SW_HIDE);
             GetDlgItem(IDC_RADIO_FSYS_LIRC)->ShowWindow(SW_HIDE);
@@ -210,7 +210,7 @@ BOOL CDialogConfiguration_OT8051::OnInitDialog()
         case OT8051_SID_ML51_16K:
         case OT8051_SID_ML51_32K:
         case OT8051_SID_ML51_64K: {
-            m_uLevel = OT8051_CONFIG_CBOV_8_LEVEL;
+            m_uLevel = 8;
             GetDlgItem(IDC_GROUP_FSYS)->ShowWindow(SW_HIDE);
             GetDlgItem(IDC_RADIO_FSYS_HIRC)->ShowWindow(SW_HIDE);
             GetDlgItem(IDC_RADIO_FSYS_LIRC)->ShowWindow(SW_HIDE);
@@ -229,7 +229,7 @@ BOOL CDialogConfiguration_OT8051::OnInitDialog()
         }
 
         case OT8051_SID_ML56_64K: {
-            m_uLevel = OT8051_CONFIG_CBOV_8_LEVEL;
+            m_uLevel = 6;
             GetDlgItem(IDC_GROUP_RPD)->ShowWindow(SW_HIDE);
             GetDlgItem(IDC_RADIO_RPD_RESET)->ShowWindow(SW_HIDE);
             GetDlgItem(IDC_RADIO_RPD_INPUT)->ShowWindow(SW_HIDE);
@@ -239,8 +239,10 @@ BOOL CDialogConfiguration_OT8051::OnInitDialog()
             GetDlgItem(IDC_RADIO_BOV_4)->SetWindowText(_T("2.4V"));
             GetDlgItem(IDC_RADIO_BOV_3)->SetWindowText(_T("2.7V"));
             GetDlgItem(IDC_RADIO_BOV_2)->SetWindowText(_T("3.0V"));
-            GetDlgItem(IDC_RADIO_BOV_1)->SetWindowText(_T("3.7V"));
-            GetDlgItem(IDC_RADIO_BOV_0)->SetWindowText(_T("4.4V"));
+            //GetDlgItem(IDC_RADIO_BOV_1)->SetWindowText(_T("3.7V"));
+            //GetDlgItem(IDC_RADIO_BOV_0)->SetWindowText(_T("4.4V"));
+            GetDlgItem(IDC_RADIO_BOV_1)->ShowWindow(SW_HIDE);
+            GetDlgItem(IDC_RADIO_BOV_0)->ShowWindow(SW_HIDE);
             break;
         }
     }
@@ -293,7 +295,7 @@ void CDialogConfiguration_OT8051::ConfigToGUI()
     m_bCheckBrownOutReset = ((ucConfig2 & OT8051_CONFIG_CBORST) != 0 ? TRUE : FALSE);
     m_bCheckBrownOutIAP = ((ucConfig2 & OT8051_CONFIG_BOIAP) != 0 ? TRUE : FALSE);
 
-    if (m_uLevel == OT8051_CONFIG_CBOV_8_LEVEL) {
+    if (m_uLevel == 8) {
         switch (ucConfig2 & OT8051_CONFIG_CBOV_8_LEVEL) {
             case OT8051_CONFIG_CBOV_7:
                 m_nRadio_CBOV = 0;
@@ -326,6 +328,35 @@ void CDialogConfiguration_OT8051::ConfigToGUI()
             default:
                 m_nRadio_CBOV = 7;
                 break;
+        }
+    } else if (m_uLevel == 6) {
+        switch (ucConfig2 & OT8051_CONFIG_CBOV_8_LEVEL) {
+            case OT8051_CONFIG_CBOV_7:
+                m_nRadio_CBOV = 0;
+                break;
+
+            case OT8051_CONFIG_CBOV_6:
+                m_nRadio_CBOV = 1;
+                break;
+
+            case OT8051_CONFIG_CBOV_5:
+                m_nRadio_CBOV = 2;
+                break;
+
+            case OT8051_CONFIG_CBOV_4:
+                m_nRadio_CBOV = 3;
+                break;
+
+            case OT8051_CONFIG_CBOV_3:
+                m_nRadio_CBOV = 4;
+                break;
+
+            case OT8051_CONFIG_CBOV_2:
+                m_nRadio_CBOV = 5;
+                break;
+
+            default:
+                m_nRadio_CBOV = 0;
         }
     } else {
         switch (ucConfig2 & OT8051_CONFIG_CBOV_4_LEVEL) {
@@ -433,7 +464,7 @@ void CDialogConfiguration_OT8051::GUIToConfig()
     ucConfig1 |= 0xF8;
 
     /* CONFIG 2 */
-    if (m_uLevel == OT8051_CONFIG_CBOV_8_LEVEL) {
+    if (m_uLevel == 8) {
         switch (m_nRadio_CBOV) {
             case 0:
                 ucConfig2 = OT8051_CONFIG_CBOV_7;
@@ -466,6 +497,37 @@ void CDialogConfiguration_OT8051::GUIToConfig()
             default:
                 ucConfig2 = OT8051_CONFIG_CBOV_0;
                 break;
+        }
+
+        ucConfig2 |= 0x8F;
+    } else if (m_uLevel == 6) {
+        switch (m_nRadio_CBOV) {
+            case 0:
+                ucConfig2 = OT8051_CONFIG_CBOV_7;
+                break;
+
+            case 1:
+                ucConfig2 = OT8051_CONFIG_CBOV_6;
+                break;
+
+            case 2:
+                ucConfig2 = OT8051_CONFIG_CBOV_5;
+                break;
+
+            case 3:
+                ucConfig2 = OT8051_CONFIG_CBOV_4;
+                break;
+
+            case 4:
+                ucConfig2 = OT8051_CONFIG_CBOV_3;
+                break;
+
+            case 5:
+                ucConfig2 = OT8051_CONFIG_CBOV_2;
+                break;
+
+            default:
+                ucConfig2 = OT8051_CONFIG_CBOV_7;
         }
 
         ucConfig2 |= 0x8F;

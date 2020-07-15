@@ -20,7 +20,7 @@ CDialogMain::CDialogMain(UINT nIDTemplate, CWnd *pParent /*=NULL*/)
     // offline test mode
     // get chip series from database
     int ret = LoadChipSeries();
-#endif
+#endif // #ifdef _DEBUG
 }
 
 CDialogMain::~CDialogMain()
@@ -517,14 +517,18 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 pConfigDlg = new CDialogConfiguration_NM1120;
                 Config = (((CDialogConfiguration_NM1120 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
+#ifdef _DEBUG
 
             // case for NUC_CHIP_TYPE_GENERAL_1T offline test mode
+            // test cases from g_80511TPartNumIDs in NuDataBase.cpp
             case 0x00002150: // N76E885
             case 0x00002F50: // N76E616
             case 0x00003650: // N76E003
             case 0x00104832: // ML51LC0XX
             case 0x0B004B21: // MS51FB9AE
+            case 0x08125744: // ML56SD1AE
                 uID = uSeriesCode;
+#endif // #ifdef _DEBUG
 
             case NUC_CHIP_TYPE_GENERAL_1T:
                 pConfigDlg = new CDialogConfiguration_OT8051(uID);
@@ -825,6 +829,8 @@ void CDialogMain::EnableInterface(bool bEnable)
     }
 }
 
+#ifdef _DEBUG
+
 #define SERIES_N1XX  	0
 #define SERIES_MINI  	1
 #define SERIES_NANO  	2
@@ -836,6 +842,7 @@ void CDialogMain::EnableInterface(bool bEnable)
 #define SERIES_AUDIO  	8
 #define SERIES_NUM  	9
 
+// call by OnButtonConfig
 bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
 {
     unsigned int CFG[4] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
@@ -907,8 +914,12 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
     return true;
 }
 
+#endif // #ifdef _DEBUG
+
 LRESULT CDialogMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
+#ifdef _DEBUG
+
     if (message == WM_COMMAND) {
         unsigned int i;
 
@@ -929,5 +940,6 @@ LRESULT CDialogMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
         }
     }
 
+#endif // #ifdef _DEBUG
     return CDialog::WindowProc(message, wParam, lParam);
 }

@@ -8,9 +8,6 @@ extern struct CPartNumID g_PartNumIDs[];
 CChipConfigInfo gsChipCfgInfo;
 struct sChipInfo gNuVoiceChip;
 
-std::vector<CPartNumID> g_NuMicroChipSeries;
-std::vector<CPartNumID> g_AudioChipSeries;
-
 /**
   * @brief Check if any given dwChipID is available in GetChipInformation.dll. (for Audio Series only)
   * @param[in] dwChipID The PDID read from the target device.
@@ -250,6 +247,14 @@ bool GetChipDynamicInfo(unsigned int uID, unsigned int uConfig0, unsigned int uC
     }
 }
 
+#ifdef _DEBUG
+
+// auto selection from g_PartNumIDs + manual selection from g_80511TPartNumIDs
+std::vector<CPartNumID> g_NuMicroChipSeries;
+// manual selection from g_AudioChipSeries since all part no. are stored in .dll
+std::vector<CPartNumID> g_AudioChipSeries;
+
+// This is a subset of "GetChipInformation.dll". (Audio Chip DataBase)
 struct CPartNumID g_AudioPartNumIDs[] = {
     /* Audio Part Number */
     {"I94133A", 0x1D010588, ISD_94000_SERIES},
@@ -271,6 +276,9 @@ struct CPartNumID g_AudioPartNumIDs[] = {
     {"---------", 0xFFFFFFFF, 0},
 };
 
+// This is a subset of "g_PartNumIDs" for NUC_CHIP_TYPE_GENERAL_1T. (NuMicro Chip DataBase)
+// All NUC_CHIP_TYPE_GENERAL_1T used CDialogConfiguration_OT8051.
+// Need to specify part no. for difference cases in CDialogConfiguration_OT8051.
 struct CPartNumID g_80511TPartNumIDs[] = {
     /* 8051 1T N76 & ML51 & MS51 series */
     {"N76E885", 0x00002150, NUC_CHIP_TYPE_GENERAL_1T},
@@ -280,9 +288,12 @@ struct CPartNumID g_80511TPartNumIDs[] = {
     // For ML51, Version A (PID0 = 0x00), Version B (PID0 = 0x10)
     {"ML51LC0XX", 0x00104832, NUC_CHIP_TYPE_GENERAL_1T},
     {"MS51FB9AE", 0x0B004B21, NUC_CHIP_TYPE_GENERAL_1T},
+    {"ML56SD1AE", 0x08125744, NUC_CHIP_TYPE_GENERAL_1T},
     {"---------", 0xFFFFFFFF, 0},
 };
 
+// call by CDialogMain::CDialogMain(...) in Debug Mode only (for test purpose)
+// Used to generate a dynamic Menu to test Configuration Dialog
 int LoadChipSeries(void)
 {
     unsigned int i = 0, uProjectCode = 0;
@@ -323,3 +334,5 @@ int LoadChipSeries(void)
 
     return (g_NuMicroChipSeries.size() + g_AudioChipSeries.size());
 }
+
+#endif // #ifdef _DEBUG

@@ -39,9 +39,9 @@ typedef struct {
             unsigned int bSupportPID : 1;
             unsigned int bSupportUID : 1;
             unsigned int bSupportUCID : 1;
-            unsigned int bLowPower : 1;
             unsigned int bSupportHIRCOff : 1;
-            unsigned int uReserved0 : 15;
+            unsigned int uIOVoltage : 4;
+            unsigned int uReserved0 : 12;
             unsigned int bSupportSCode : 1;
             unsigned int uReserved1 : 7;
         } feature;

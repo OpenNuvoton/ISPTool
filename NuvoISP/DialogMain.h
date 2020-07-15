@@ -42,7 +42,9 @@ public:
     void InitComboBox();
     void EnableInterface(bool bEnable);
     UINT ScanPCCom();
+#ifdef _DEBUG
     bool DemoConfigDlg(UINT Template = 0);
+#endif // #ifdef _DEBUG
 
 protected:
     virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
