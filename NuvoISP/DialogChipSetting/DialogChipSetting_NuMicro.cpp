@@ -17,6 +17,7 @@ CDialogChipSetting_NuMicro::CDialogChipSetting_NuMicro(unsigned int uProgramMemo
     , m_uProgramMemorySize(uProgramMemorySize)
     , m_uFlashPageSize(uFlashPageSize)
     , m_uChipSeries(uChipSeries)
+    , m_uShowFlag(0x01)
 {
     //{{AFX_DATA_INIT(CDialogChipSetting_NuMicro)
     // NOTE: the ClassWizard will add member initialization here
@@ -29,7 +30,9 @@ CDialogChipSetting_NuMicro::CDialogChipSetting_NuMicro(unsigned int uProgramMemo
 
 CDialogChipSetting_NuMicro::~CDialogChipSetting_NuMicro()
 {
-    delete m_pChipSetting_CFG;
+    if (m_uShowFlag & 0x01) {
+        delete m_pChipSetting_CFG;
+    }
 }
 
 void CDialogChipSetting_NuMicro::DoDataExchange(CDataExchange *pDX)
