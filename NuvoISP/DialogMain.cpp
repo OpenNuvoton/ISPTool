@@ -698,6 +698,16 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 Config = (((CDialogChipSetting_NuMicro *)pConfigDlg)->m_uConfigValue);
                 break;
 
+            case NUC_CHIP_TYPE_M471:
+                if (uProgramMemorySize) {
+                    pConfigDlg = new CDialogChipSetting_NuMicro(uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_2K, uSeriesCode);
+                } else {
+                    pConfigDlg = new CDialogChipSetting_NuMicro(512 * 1024, NUMICRO_FLASH_PAGE_SIZE_2K, uSeriesCode);
+                }
+
+                Config = (((CDialogChipSetting_NuMicro *)pConfigDlg)->m_uConfigValue);
+                break;
+
             default:
                 printf("or Unknow Configuration Dialog %X\n", uSeriesCode);
                 return false;

@@ -1032,8 +1032,8 @@ void CDialogChipSetting_CFG_M451::UpdateUI()
     GetDlgItem(IDC_GROUP_ADVANCE_LOCK)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATIC_FLASH_ADVANCE_LOCK)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_EDIT_FLASH_ADVANCE_LOCK)->ShowWindow(SW_HIDE);
-    //GetDlgItem(IDC_STATIC_CONFIG_2)->ShowWindow(SW_HIDE);
-    //GetDlgItem(IDC_STATIC_CONFIG_VALUE_2)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATIC_CONFIG_2)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_STATIC_CONFIG_VALUE_2)->ShowWindow(SW_HIDE);
     RECT rcTmp, rcICELOCK, rcCFGXT1;
     GetDlgItem(IDC_CHECK_ICE_LOCK)->GetWindowRect(&rcICELOCK);
     GetDlgItem(IDC_RADIO_GPF_CRYSTAL)->GetWindowRect(&rcCFGXT1);
@@ -1170,7 +1170,7 @@ void CDialogChipSetting_CFG_M451::GUIToConfig()
     UpdateData(TRUE);
     unsigned int uConfig0 = ~M451_FLASH_CONFIG_XT1TYP;
     unsigned int uConfig1 = m_uConfigValue[1];
-    unsigned int uConfig2 = 0xFFFFFFFF;
+    unsigned int uConfig2 = m_uConfigValue[2];
 
     switch (m_nRadioCWDTEN) {
         case 0:
