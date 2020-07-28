@@ -10,7 +10,6 @@
 #include "DialogResize.h"
 #include "NumEdit.h"
 
-
 /////////////////////////////////////////////////////////////////////////////
 // CDialogChipSetting_CFG_M0A21 dialog
 
@@ -59,6 +58,7 @@ public:
     unsigned int	m_uProgramMemorySize;
     unsigned int	m_uFlashPageSize;
     unsigned int	m_uConfigValue[4];
+    unsigned int	m_uConfigValue_t[4];
     //}}AFX_DATA
 
 protected:
@@ -71,6 +71,24 @@ protected:
     virtual void ConfigToGUI();
     virtual void GUIToConfig();
 
+    void CFG2GUI_CWDT();
+    void CFG2GUI_CBOD_4();
+    void CFG2GUI_CBOD_2();
+    void CFG2GUI_CIOINI();
+    void CFG2GUI_CBS_4();
+    void CFG2GUI_DFEN();
+    void CFG2GUI_LOCK();
+    void CFG2GUI_ALOCK();
+
+    void GUI2CFG_CWDT();
+    void GUI2CFG_CBOD_4();
+    void GUI2CFG_CBOD_2();
+    void GUI2CFG_CIOINI();
+    void GUI2CFG_CBS_4();
+    void GUI2CFG_DFEN();
+    void GUI2CFG_LOCK();
+    void GUI2CFG_ALOCK();
+
     afx_msg void OnRadioClick();
     afx_msg void OnCheckClick();
     afx_msg void OnKillfocusEditAdvanceLock();
@@ -81,7 +99,6 @@ protected:
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 };
-
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogChipSetting_CFG_M030G dialog
@@ -102,8 +119,10 @@ protected:
     virtual void UpdateUI();
     virtual void ConfigToGUI();
     virtual void GUIToConfig();
-};
 
+    void CFG2GUI_CWDT();
+    void GUI2CFG_CWDT();
+};
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogChipSetting_CFG_M031 dialog
@@ -126,7 +145,6 @@ protected:
     virtual void GUIToConfig();
 };
 
-
 /////////////////////////////////////////////////////////////////////////////
 // CDialogChipSetting_CFG_M451 dialog
 
@@ -146,8 +164,10 @@ protected:
     virtual void UpdateUI();
     virtual void ConfigToGUI();
     virtual void GUIToConfig();
-};
 
+    void CFG2GUI_CBOD_4();
+    void GUI2CFG_CBOD_4();
+};
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogChipSetting_CFG_M471 dialog
@@ -169,7 +189,6 @@ protected:
     virtual void ConfigToGUI();
     virtual void GUIToConfig();
 };
-
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
