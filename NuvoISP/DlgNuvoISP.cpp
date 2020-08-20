@@ -799,7 +799,8 @@ void CNuvoISPDlg::ShowChipInfo_OnLine()
         EnableDlgItem(IDC_CHECK_ERASE, 0);
     }
 
-    if (gsChipCfgInfo.uSeriesCode == IDD_DIALOG_CONFIGURATION_M2351) {
+    if ((gsChipCfgInfo.uSeriesCode == IDD_DIALOG_CONFIGURATION_M2351)
+            || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2354)) {
         ShowChipInfo_M2351();
         return;
     }
@@ -960,7 +961,8 @@ void CNuvoISPDlg::ChangeBtnText(int nBtn, LPTSTR pszText)
 
 void CNuvoISPDlg::OnKillfocusEditAPRomOffset()
 {
-    if (gsChipCfgInfo.uSeriesCode != IDD_DIALOG_CONFIGURATION_M2351) {
+    if ((gsChipCfgInfo.uSeriesCode != IDD_DIALOG_CONFIGURATION_M2351)
+            && (gsChipCfgInfo.uSeriesCode != NUC_CHIP_TYPE_M2354)) {
         return;
     }
 

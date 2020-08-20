@@ -581,7 +581,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 Config = (((CDialogConfiguration_M2351 *)pConfigDlg)->m_uConfigValue);
 
                 if (uSeriesCode == NUC_CHIP_TYPE_M2354) {
-                    ((CDialogConfiguration_M2351*)pConfigDlg)->m_uChipType = NUC_CHIP_TYPE_M2354;
+                    ((CDialogConfiguration_M2351 *)pConfigDlg)->m_uChipType = NUC_CHIP_TYPE_M2354;
                 }
 
                 break;
