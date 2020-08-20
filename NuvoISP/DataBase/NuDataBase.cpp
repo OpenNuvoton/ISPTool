@@ -154,7 +154,8 @@ static bool SkipDynamicInfo()
         return true;
     }
 
-    if (gsChipCfgInfo.uSeriesCode == IDD_DIALOG_CONFIGURATION_M2351) {
+    if ((gsChipCfgInfo.uSeriesCode == IDD_DIALOG_CONFIGURATION_M2351)
+        || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2354)) {
         return true;
     }
 

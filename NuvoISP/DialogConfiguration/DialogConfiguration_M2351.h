@@ -38,8 +38,10 @@ public:
     BOOL	m_bCheckCBODEN;
     BOOL	m_bDisableICE;
     BOOL	m_bCheckMBS;
+    BOOL	m_bTamperPowerDown;
 
     unsigned int m_uConfigValue[4];
+    unsigned int m_uChipType;
 
 // Implementation
 protected:

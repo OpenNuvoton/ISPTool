@@ -576,8 +576,14 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 break;
 
             case IDD_DIALOG_CONFIGURATION_M2351:
+            case NUC_CHIP_TYPE_M2354:
                 pConfigDlg = new CDialogConfiguration_M2351;
                 Config = (((CDialogConfiguration_M2351 *)pConfigDlg)->m_uConfigValue);
+
+                if (uSeriesCode == NUC_CHIP_TYPE_M2354) {
+                    ((CDialogConfiguration_M2351*)pConfigDlg)->m_uChipType = NUC_CHIP_TYPE_M2354;
+                }
+
                 break;
 
             case ISD_94000_SERIES:

@@ -1224,6 +1224,7 @@ BEGIN
     CONTROL         "Input Tri-state Mode",IDC_RADIO_IO_TRI,"Button",BS_AUTORADIOBUTTON | WS_GROUP,15,58,110,10
     CONTROL         "Quasi Bi-directional Mode",IDC_RADIO_IO_BI,"Button",BS_AUTORADIOBUTTON,135,58,110,10
     CONTROL         "Disable ICE Function",IDC_CHECK_ICE_LOCK,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,79,110,10
+    CONTROL         "Tamper Domain Power Down",IDC_CHECK_TAMPER_POWER_DOWN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,135,79,110,10
     GROUPBOX        "Brown Out Voltage",IDC_GROUP_BROWN_OUT_VOLTAGE,5,92,250,58
     CONTROL         "3.0V",IDC_RADIO_BOV_7,"Button",BS_AUTORADIOBUTTON | WS_GROUP,15,105,30,10
     CONTROL         "2.8V",IDC_RADIO_BOV_6,"Button",BS_AUTORADIOBUTTON,75,105,30,10
@@ -1490,12 +1491,12 @@ BEGIN
         BLOCK "040004b0"
         BEGIN
             VALUE "FileDescription", "ISP Programming Tool"
-            VALUE "FileVersion", "4.02"
+            VALUE "FileVersion", "4.03"
             VALUE "InternalName", "ISPTool"
             VALUE "LegalCopyright", "Copyright (C) 2020"
             VALUE "OriginalFilename", "NuvoISP.EXE"
             VALUE "ProductName", "ISP Programming Tool"
-            VALUE "ProductVersion", "4.02"
+            VALUE "ProductVersion", "4.03"
         END
     END
     BLOCK "VarFileInfo"

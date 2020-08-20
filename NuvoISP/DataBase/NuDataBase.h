@@ -21,7 +21,7 @@ struct CChipConfigInfo {
     unsigned int uProgramMemorySize;
     unsigned int uDataFlashSize;
     char szPartNumber[100];
-    unsigned int uFlashType;
+    unsigned int uFlashType; // used by GetFlashSize_NuMicro(...)
     unsigned int uProductLine; // 0: Unknown, 1: 8051-1T, 2: NuMicro, 3: Audio
     // Dynamic info. according to user configuration (CONFIG0, CONFIG1)
     unsigned int uConfig0;
