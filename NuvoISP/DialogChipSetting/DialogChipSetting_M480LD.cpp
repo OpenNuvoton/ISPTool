@@ -9,7 +9,6 @@
 #include "AppConfig.h"
 #include "DialogChipSetting_M480LD.h"
 
-
 // CDialogChipSetting_M480LD dialog
 
 IMPLEMENT_DYNAMIC(CDialogChipSetting_M480LD, CDialog)
@@ -35,7 +34,6 @@ void CDialogChipSetting_M480LD::DoDataExchange(CDataExchange *pDX)
     DDX_Control(pDX, IDC_TAB_CHIP_SETTING, m_TabChipSetting);
 }
 
-
 BEGIN_MESSAGE_MAP(CDialogChipSetting_M480LD, CDialog)
     ON_NOTIFY(TCN_SELCHANGE, IDC_TAB_CHIP_SETTING, &CDialogChipSetting_M480LD::OnTcnSelchangeTabChipsetting)
     ON_BN_CLICKED(IDOK, &CDialogChipSetting_M480LD::OnOk)
@@ -45,7 +43,6 @@ BEGIN_MESSAGE_MAP(CDialogChipSetting_M480LD, CDialog)
     ON_WM_GETMINMAXINFO()
     ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
-
 
 BOOL CDialogChipSetting_M480LD::OnInitDialog()
 {

@@ -9,7 +9,6 @@
 #include "ChipDefs.h"
 #include "DialogChipSetting_CFG_M0A21.h"
 
-
 // DialogChipSetting_NuMicro dialog
 
 class CDialogChipSetting_NuMicro : public CDialogResize

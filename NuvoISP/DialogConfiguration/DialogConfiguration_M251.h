@@ -39,7 +39,7 @@ public:
     int		m_nRadioIO;
     CSpinButtonCtrl	m_SpinDataFlashSize;
 
-    unsigned int	m_uProgramMemorySize;
+    unsigned int m_uProgramMemorySize;
     virtual void ConfigToGUI(int nEventID = 0);
     virtual void GUIToConfig(int nEventID = 0);
 

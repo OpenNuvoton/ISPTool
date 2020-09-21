@@ -11,7 +11,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #define page_size NUMICRO_FLASH_PAGE_SIZE_512
-#define M251_FLASH_CONFIG_ICELOCK		0x00001000UL
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_M251 dialog

@@ -14,9 +14,14 @@
 				8: 8051
 				9: ARM9
 				Other: Reserved
-	Second number - Page Size
+	Second number - Bit[6:4] Page Size
 				M0/M23(0: 512B, 1: 1KB, 2: 2KB)
 				M4(0: 2KB, 1:4KB)
+
+				 - Bit[7] for Flash Address definition
+				0: Old, e.g. LDROM 0x0010_0000
+				1: New, e.g. LDROM 0x0F10_0000
+
 	Third number - Bit[2:0]
 				0-3: NuMicro Series
 				6: Special Case (M0A21)
@@ -470,7 +475,10 @@ typedef enum {
 #	define M2351_FLASH_CONFIG_UART1PSL_SEL4	0x00000007UL
 
 #define M2354_FLASH_CONFIG_TMPPD		0xFFFF0000UL
-#	define M2354_FLASH_CONFIG_TMPPD_CODE	0x5A5A0000UL
+#	define M2354_FLASH_CONFIG_TMPPD_CODE	0x5AA50000UL
+
+/* Chip definition for M251 */
+#define M251_FLASH_CONFIG_ICELOCK		0x00001000UL
 
 #define M258_FLASH_CONFIG_BOOTCLOCKSEL	0x02000000UL
 
