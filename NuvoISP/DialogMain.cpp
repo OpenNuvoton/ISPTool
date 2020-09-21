@@ -315,7 +315,7 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 #include "DialogConfiguration_I94000.h"
 #include "DialogConfiguration_AU9100.h"
 #include "DialogConfiguration_N570.h"
-#include "DialogConfiguration_M251.h"
+#include "DialogChipSetting_M251.h"
 //
 #include "DialogChipSetting_NuMicro.h"
 #include "DialogChipSetting_M480LD.h"
@@ -635,24 +635,24 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 Config = (((CDialogConfiguration_N570 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_M251:
+            case IDD_DIALOG_CHIP_SETTING_CFG_M251:
                 if (uProgramMemorySize) {
-                    pConfigDlg = new CDialogConfiguration_M251(uProgramMemorySize);
+                    pConfigDlg = new CDialogChipSetting_M251(0, uProgramMemorySize);
                 } else {
-                    pConfigDlg = new CDialogConfiguration_M251();
+                    pConfigDlg = new CDialogChipSetting_M251();
                 }
 
-                Config = (((CDialogConfiguration_M251 *)pConfigDlg)->m_ConfigValue.m_value);
+                Config = (((CDialogChipSetting_M251 *)pConfigDlg)->m_uConfigOption_ConfigValue);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_M258:
+            case IDD_DIALOG_CHIP_SETTING_CFG_M258:
                 if (uProgramMemorySize) {
-                    pConfigDlg = new CDialogConfiguration_M258(uProgramMemorySize);
+                    pConfigDlg = new CDialogChipSetting_M251(1, uProgramMemorySize);
                 } else {
-                    pConfigDlg = new CDialogConfiguration_M258();
+                    pConfigDlg = new CDialogChipSetting_M251(1);
                 }
 
-                Config = (((CDialogConfiguration_M251 *)pConfigDlg)->m_ConfigValue.m_value);
+                Config = (((CDialogChipSetting_M251 *)pConfigDlg)->m_uConfigOption_ConfigValue);
                 break;
 
             case NUC_CHIP_TYPE_M031:  // Page Size: 512

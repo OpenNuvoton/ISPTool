@@ -26,7 +26,7 @@ public:
     CAppConfig::M251_configs_t m_ConfigValue;
 
     //{{AFX_DATA(CDialogConfiguration_M251)
-    enum { IDD = IDD_DIALOG_CONFIGURATION_M251 };
+    enum { IDD = IDD_DIALOG_CHIP_SETTING_CFG_M251 };
     int		m_nRadioBov;
     int		m_nRadioBS;
     CString	m_sConfigValue0;
@@ -62,7 +62,7 @@ public:
                               UINT nIDTemplate = CDialogConfiguration_M258::IDD,
                               CWnd *pParent = NULL);
 
-    enum { IDD = IDD_DIALOG_CONFIGURATION_M258 };
+    enum { IDD = IDD_DIALOG_CHIP_SETTING_CFG_M258 };
     int		m_nRadioBootClkSel;
     virtual void ConfigToGUI(int nEventID = 0);
     virtual void GUIToConfig(int nEventID = 0);

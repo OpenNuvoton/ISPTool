@@ -816,12 +816,6 @@ void CNuvoISPDlg::ShowChipInfo_OnLine()
         m_bProgram_NVM = 0;
         EnableDlgItem(IDC_CHECK_NVM, 0);
         EnableDlgItem(IDC_BUTTON_NVM, 0);
-    } else if (gsChipCfgInfo.uSeriesCode == IDD_DIALOG_CONFIGURATION_M251) {
-        SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0:"));
-        m_bProgram_NVM = 0;
-        EnableDlgItem(IDC_CHECK_NVM, 0);
-        EnableDlgItem(IDC_BUTTON_NVM, 0);
-        ShowDlgItem(IDC_STATIC_CONFIG_VALUE_1, 0);
     }
 
     if (bSizeValid) {

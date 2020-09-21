@@ -75,6 +75,9 @@
     <ClInclude Include="DialogChipSetting\DialogChipSetting_M480LD.h">
       <Filter>External\DialogChipSetting</Filter>
     </ClInclude>
+    <ClInclude Include="DialogChipSetting\DialogChipSetting_M251.h">
+      <Filter>External\DialogChipSetting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -207,6 +210,9 @@
       <Filter>External\DialogChipSetting</Filter>
     </ClCompile>
     <ClCompile Include="DialogChipSetting\DialogChipSetting_M480LD.cpp">
+      <Filter>External\DialogChipSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogChipSetting\DialogChipSetting_M251.cpp">
       <Filter>External\DialogChipSetting</Filter>
     </ClCompile>
   </ItemGroup>

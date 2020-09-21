@@ -326,9 +326,9 @@ void CDialogConfiguration_M251::OnCheckClickWDTPD()
 void CDialogConfiguration_M251::OnOK()
 {
     // TODO: Add extra validation here
-    UpdateData(TRUE);
-    GUIToConfig(0);
-    CDialog::OnOK();
+    //UpdateData(TRUE);
+    //GUIToConfig(0);
+    //CDialog::OnOK();
 }
 
 void CDialogConfiguration_M251::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
