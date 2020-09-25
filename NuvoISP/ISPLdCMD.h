@@ -157,4 +157,117 @@ public:
 
 
 };
+
+#ifdef _DEBUG
+// Offline Test
+class ISPLdCMDTest : public ISPLdCMD
+{
+
+public:
+    std::vector<unsigned int> m_test_chips;
+
+    BOOL bResendFlag;	// This flag is set by ReadFile
+
+    ISPLdCMDTest()
+    {
+        bResendFlag = 0; // to make programming pass.
+        m_test_chips.push_back(0x00235100); // M2351KIAAE
+        m_test_chips.push_back(0x00261000); // M261ZIAAE
+        m_test_chips.push_back(0x00235500); // M2354ES
+    };
+
+    virtual ~ISPLdCMDTest() {};
+
+    bool Check_USB_Link()
+    {
+        return true;
+    }
+
+    bool Open_Port(BOOL bErrorMsg = FALSE)
+    {
+        return true;
+    }
+
+    void Close_Port() {};
+
+    BOOL CMD_Connect(DWORD dwMilliseconds = 30)
+    {
+        bSupport_SPI = FALSE;
+        return TRUE;
+    }
+
+    BOOL CMD_Resend()
+    {
+        return TRUE;
+    }
+
+    void SyncPackno() {};
+
+    unsigned char GetVersion()
+    {
+        return 0x60;
+    }
+
+    unsigned long GetDeviceID()
+    {
+        static int i = 0;
+        unsigned int id = m_test_chips[i];
+        i++;
+
+        if (i == m_test_chips.size()) {
+            i = 0;
+        }
+
+        return id;
+    }
+
+    void ReadConfig(unsigned int config[])
+    {
+        config[0] = 0x11111111;
+        config[1] = 0x22222222;
+        config[2] = 0x33333333;
+        config[3] = 0x44444444;
+    }
+
+    void UpdateConfig(unsigned int config[], unsigned int response[])
+    {
+        response[0] = config[0];
+        response[1] = config[1];
+        response[2] = config[2];
+        response[3] = config[3];
+    }
+
+    void UpdateAPROM(unsigned long start_addr,
+                     unsigned long total_len,
+                     unsigned long cur_addr,
+                     const char *buffer,
+                     unsigned long *update_len) {};
+
+    void UpdateNVM(unsigned long start_addr,
+                   unsigned long total_len,
+                   unsigned long cur_addr,
+                   const char *buffer,
+                   unsigned long *update_len) {};
+
+    BOOL EraseAll()
+    {
+        return TRUE;
+    }
+
+    BOOL RunAPROM()
+    {
+        return TRUE;
+    }
+
+    BOOL RunLDROM()
+    {
+        return TRUE;
+    }
+
+    void SetInterface(unsigned int it, CString str) {};
+
+    CString m_strDevPathName;
+};
+#endif // #ifdef _DEBUG
+
 #endif
