@@ -51,6 +51,7 @@ protected:
     afx_msg void OnButtonClick();
     afx_msg void OnCheckClickWDTPD();
     virtual void OnOK();
+    virtual void OnCancel();
     afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
     DECLARE_MESSAGE_MAP()
 };

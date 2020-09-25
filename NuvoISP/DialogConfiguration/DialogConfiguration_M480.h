@@ -103,6 +103,7 @@ protected:
     afx_msg void OnKillfocusEditFlashBaseAddress();
     afx_msg void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnOK();
+    afx_msg void OnCancel();
 };
 
 //{{AFX_INSERT_LOCATION}}

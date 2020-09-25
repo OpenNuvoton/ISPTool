@@ -909,3 +909,9 @@ void CDialogChipSetting_CFG_M480LD::OnOK()
     GetParent()->GetParent()->PostMessage(WM_COMMAND, IDOK);
     //CDialog::OnOK ();
 }
+
+void CDialogChipSetting_CFG_M480LD::OnCancel()
+{
+    GetParent()->GetParent()->PostMessage(WM_COMMAND, IDCANCEL);
+    //CDialog::OnCancel ();
+}

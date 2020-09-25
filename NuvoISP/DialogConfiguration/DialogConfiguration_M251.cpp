@@ -326,9 +326,14 @@ void CDialogConfiguration_M251::OnCheckClickWDTPD()
 void CDialogConfiguration_M251::OnOK()
 {
     // TODO: Add extra validation here
-    //UpdateData(TRUE);
-    //GUIToConfig(0);
+    GetParent()->GetParent()->PostMessage(WM_COMMAND, IDOK);
     //CDialog::OnOK();
+}
+
+void CDialogConfiguration_M251::OnCancel()
+{
+    GetParent()->GetParent()->PostMessage(WM_COMMAND, IDCANCEL);
+    //CDialog::OnCancel ();
 }
 
 void CDialogConfiguration_M251::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
