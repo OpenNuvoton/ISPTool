@@ -7,7 +7,6 @@
 #include <utility>
 #include "ChipDefs.h"
 #include "NumEdit.h"
-#include "AppConfig.h"
 #include "DialogConfiguration_OT8051.h"
 #include <cassert>
 
@@ -230,6 +229,7 @@ BOOL CDialogConfiguration_OT8051::OnInitDialog()
 
         case OT8051_SID_ML56_64K: {
             m_uLevel = 6;
+            m_uPartNo |= 0x00100000;
             GetDlgItem(IDC_GROUP_RPD)->ShowWindow(SW_HIDE);
             GetDlgItem(IDC_RADIO_RPD_RESET)->ShowWindow(SW_HIDE);
             GetDlgItem(IDC_RADIO_RPD_INPUT)->ShowWindow(SW_HIDE);
@@ -258,11 +258,11 @@ BOOL CDialogConfiguration_OT8051::OnInitDialog()
 
 void CDialogConfiguration_OT8051::ConfigToGUI()
 {
-    unsigned char ucConfig0 = _GET_BYTE0(m_ConfigValue.m_value[0]);
-    unsigned char ucConfig1 = _GET_BYTE1(m_ConfigValue.m_value[0]);
-    unsigned char ucConfig2 = _GET_BYTE2(m_ConfigValue.m_value[0]);
-    unsigned char ucConfig3 = _GET_BYTE3(m_ConfigValue.m_value[0]);
-    unsigned char ucConfig4 = _GET_BYTE0(m_ConfigValue.m_value[1]);
+    unsigned char ucConfig0 = m_ucConfigValue[0];
+    unsigned char ucConfig1 = m_ucConfigValue[1];
+    unsigned char ucConfig2 = m_ucConfigValue[2];
+    unsigned char ucConfig3 = m_ucConfigValue[3];
+    unsigned char ucConfig4 = m_ucConfigValue[4];
     m_bSecurityLock = ((ucConfig0 & OT8051_CONFIG_LOCK) == 0 ? TRUE : FALSE);
     m_nRadio_RPD = ((ucConfig0 & OT8051_CONFIG_RPD) == 0 ? 1 : 0);
     m_bOCDEnable = ((ucConfig0 & OT8051_CONFIG_OCDEN) == 0 ? TRUE : FALSE);
@@ -581,8 +581,14 @@ void CDialogConfiguration_OT8051::GUIToConfig()
     }
 
     ucConfig4 |= 0x0F;
-    m_ConfigValue.m_value[0] = (ucConfig3 << 24) + (ucConfig2 << 16) + (ucConfig1 << 8) + ucConfig0;
-    m_ConfigValue.m_value[1] = 0xFFFFFF00 | ucConfig4;
+    m_ucConfigValue[0] = ucConfig0;
+    m_ucConfigValue[1] = ucConfig1;
+    m_ucConfigValue[2] = ucConfig2;
+    m_ucConfigValue[3] = ucConfig3;
+    m_ucConfigValue[4] = ucConfig4;
+    m_ucConfigValue[5] = 0xFF;
+    m_ucConfigValue[6] = 0xFF;
+    m_ucConfigValue[7] = 0xFF;
 }
 
 void CDialogConfiguration_OT8051::OnRadioClick()

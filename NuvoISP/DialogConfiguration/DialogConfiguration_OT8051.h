@@ -30,8 +30,6 @@ public:
     CDialogConfiguration_OT8051(unsigned int uPartNo = 0x3650,
                                 CWnd *pParent = NULL);
 
-    CAppConfig::N76E1T_configs_t m_ConfigValue;
-
 // Dialog Data
     //{{AFX_DATA(CDialogConfiguration_OT8051)
     enum { IDD = IDD_DIALOG_CONFIGURATION_OT8051 };
@@ -58,6 +56,8 @@ public:
 
     unsigned int	m_uPartNo;
     unsigned int	m_uLevel;
+
+    unsigned char	m_ucConfigValue[OT8051_FLASH_CONFIG_SIZE];
     //}}AFX_DATA
 
 // Overrides

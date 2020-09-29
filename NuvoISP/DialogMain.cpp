@@ -530,10 +530,31 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 uID = uSeriesCode;
 #endif // #ifdef _DEBUG
 
-            case NUC_CHIP_TYPE_GENERAL_1T:
+            case NUC_CHIP_TYPE_GENERAL_1T: {
                 pConfigDlg = new CDialogConfiguration_OT8051(uID);
-                Config = (((CDialogConfiguration_OT8051 *)pConfigDlg)->m_ConfigValue.m_value);
-                break;
+                unsigned char *pucConfigValue = (((CDialogConfiguration_OT8051 *)pConfigDlg)->m_ucConfigValue);
+                unsigned int Config0 = pConfig[0];
+                unsigned int Config1 = pConfig[1];
+                pucConfigValue[0] = (Config0 & 0x000000FF);
+                pucConfigValue[1] = (Config0 & 0x0000FF00) >> 8;
+                pucConfigValue[2] = (Config0 & 0x00FF0000) >> 16;
+                pucConfigValue[3] = (Config0 & 0xFF000000) >> 24;
+                pucConfigValue[4] = (Config1 & 0x000000FF);
+                pucConfigValue[5] = 0xFF;
+                pucConfigValue[6] = 0xFF;
+                pucConfigValue[7] = 0xFF;
+
+                if (pConfigDlg->DoModal() == IDOK) {
+                    pConfig[0] = (pucConfigValue[3] << 24) + (pucConfigValue[2] << 16) + (pucConfigValue[1] << 8) + pucConfigValue[0];
+                    pConfig[1] = 0xFFFFFF00 | pucConfigValue[4];
+                    ret = true;
+                }
+
+                delete pConfigDlg;
+            }
+
+            return ret;
+            break;
 
             case IDD_DIALOG_CONFIGURATION_M0564:	// M0564, NUC126
                 if (uProgramMemorySize) {
