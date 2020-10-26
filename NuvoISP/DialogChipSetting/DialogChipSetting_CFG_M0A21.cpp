@@ -1025,6 +1025,9 @@ void CDialogChipSetting_CFG_M471::UpdateUI()
     GetDlgItem(IDC_GROUP_CHIPRESET_TIMEEXT)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_RADIO_CHIPRESET_TIMEEXT_1)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_RADIO_CHIPRESET_TIMEEXT_0)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_GROUP_GPF)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_RADIO_GPF_CRYSTAL)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_RADIO_GPF_GPIO)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_GROUP_RPD)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_RADIO_RPD_RESET)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_RADIO_RPD_INPUT)->ShowWindow(SW_HIDE);
@@ -1039,14 +1042,13 @@ void CDialogChipSetting_CFG_M471::UpdateUI()
     GetDlgItem(IDC_STATIC_DATA_FLASH_SIZE)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_EDIT_DATA_FLASH_SIZE)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_SPIN_DATA_FLASH_SIZE)->ShowWindow(SW_HIDE);
-    RECT rcTmp, rcGroupRSTW, rcGroupCFGXT1, rcGroupDFEN, rcGroupLOCK;
+    RECT rcTmp, rcGroupRSTW, rcGroupCBS, rcGroupDFEN, rcGroupLOCK;
     LONG lDiff;
     GetDlgItem(IDC_GROUP_RST_PIN_WIDTH)->GetWindowRect(&rcGroupRSTW);
-    GetDlgItem(IDC_GROUP_GPF)->GetWindowRect(&rcGroupCFGXT1);
-    lDiff = rcGroupCFGXT1.top - rcGroupRSTW.top;
+    GetDlgItem(IDC_GROUP_BOOT_SELECT)->GetWindowRect(&rcGroupCBS);
+    lDiff = rcGroupCBS.top - rcGroupRSTW.top;
     int i;
-    int nIDs[] = {IDC_GROUP_GPF, IDC_RADIO_GPF_CRYSTAL, IDC_RADIO_GPF_GPIO,
-                  IDC_GROUP_BOOT_SELECT, IDC_RADIO_BS_APROM, IDC_RADIO_BS_LDROM, IDC_RADIO_BS_APROM_LDROM, IDC_RADIO_BS_LDROM_APROM,
+    int nIDs[] = {IDC_GROUP_BOOT_SELECT, IDC_RADIO_BS_APROM, IDC_RADIO_BS_LDROM, IDC_RADIO_BS_APROM_LDROM, IDC_RADIO_BS_LDROM_APROM,
                   IDC_GROUP_BROWN_OUT_VOLTAGE, IDC_RADIO_BOV_3, IDC_RADIO_BOV_2, IDC_RADIO_BOV_1, IDC_RADIO_BOV_0, IDC_CHECK_BROWN_OUT_DETECT, IDC_CHECK_BROWN_OUT_RESET,
                   IDC_GROUP_WDT, IDC_RADIO_WDT_DISABLE, IDC_RADIO_WDT_ENABLE_KEEP, IDC_RADIO_WDT_ENABLE_STOP,
                   IDC_GROUP_DATA_FLASH, IDC_CHECK_DATA_FLASH_ENABLE, IDC_STATIC_FLASH_BASE_ADDRESS, IDC_EDIT_FLASH_BASE_ADDRESS, IDC_STATIC_DATA_FLASH_SIZE, IDC_EDIT_DATA_FLASH_SIZE, IDC_SPIN_DATA_FLASH_SIZE
@@ -1080,7 +1082,6 @@ void CDialogChipSetting_CFG_M471::ConfigToGUI()
     m_uConfigValue_t[0] = m_uConfigValue[0];
     m_uConfigValue_t[1] = m_uConfigValue[1];
     m_uConfigValue_t[2] = m_uConfigValue[2];
-    m_nRadioCFGXT1	= ((m_uConfigValue_t[0] & M471_FLASH_CONFIG_CFGXT1) ? 0 : 1);
     m_bCheckICELOCK	= ((m_uConfigValue_t[0] & M471_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
     CFG2GUI_CWDT();
     CFG2GUI_CBOD_4();
@@ -1099,12 +1100,6 @@ void CDialogChipSetting_CFG_M471::GUIToConfig()
     m_uConfigValue_t[0] = 0xFFFFFFFF;
     m_uConfigValue_t[1] = 0xFFFFFFFF;
     m_uConfigValue_t[2] = m_uConfigValue[2];
-
-    if (m_nRadioCFGXT1 == 0) {
-        m_uConfigValue_t[0] |=  M471_FLASH_CONFIG_CFGXT1;
-    } else {
-        m_uConfigValue_t[0] &= ~M471_FLASH_CONFIG_CFGXT1;
-    }
 
     if (m_bCheckICELOCK) {
         m_uConfigValue_t[0] &= ~M471_FLASH_CONFIG_ICELOCK;
