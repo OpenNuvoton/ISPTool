@@ -308,7 +308,7 @@ void CDialogConfiguration_MT500::GUIToConfig(int nEventID)
         uConfig0 &= ~NUMICRO_FLASH_CONFIG_DFEN;
     } else {
         uConfig0 |= NUMICRO_FLASH_CONFIG_DFEN;
-        m_sFlashBaseAddress = "FFFFF";
+        m_sFlashBaseAddress = "FFFFFFFF";
     }
 
     if (m_bSecurityLock) {

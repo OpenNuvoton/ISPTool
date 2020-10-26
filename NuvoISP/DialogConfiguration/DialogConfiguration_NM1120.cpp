@@ -464,7 +464,7 @@ void CDialogConfiguration_NM1120::GUIToConfig()
         uConfig0 &= ~NUMICRO_FLASH_CONFIG_DFEN;
     } else {
         uConfig0 |= NUMICRO_FLASH_CONFIG_DFEN;
-        m_sFlashBaseAddress = "FFFFF";
+        m_sFlashBaseAddress = "FFFFFFFF";
     }
 
     if (m_bSecurityLock) {

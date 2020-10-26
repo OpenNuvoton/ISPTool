@@ -308,7 +308,7 @@ void CDialogConfiguration_NUC103::GUIToConfig(int nEventID)
     }
 
     if (!(m_bDataFlashEnable && m_bDataFlashVarSizeEnable)) {
-        m_sFlashBaseAddress = "FFFFF";
+        m_sFlashBaseAddress = "FFFFFFFF";
     }
 
     if (m_nRadioGPF == 0) {
