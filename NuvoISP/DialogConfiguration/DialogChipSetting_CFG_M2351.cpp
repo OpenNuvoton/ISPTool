@@ -1,17 +1,17 @@
-// DialogConfiguration_M2351.cpp : implementation file
+// DialogChipSetting_CFG_M2351.cpp : implementation file
 //
 #include "stdafx.h"
-#include "DialogConfiguration_M2351.h"
 #include "ChipDefs.h"
+#include "DialogChipSetting_CFG_M2351.h"
 
 /////////////////////////////////////////////////////////////////////////////
-// CDialogConfiguration_M2351 dialog
-IMPLEMENT_DYNAMIC(CDialogConfiguration_M2351, CDialog)
+// CDialogChipSetting_CFG_M2351 dialog
+IMPLEMENT_DYNAMIC(CDialogChipSetting_CFG_M2351, CDialog)
 
-CDialogConfiguration_M2351::CDialogConfiguration_M2351(CWnd *pParent /*=NULL*/)
-    : CDialogResize(CDialogConfiguration_M2351::IDD, pParent)
+CDialogChipSetting_CFG_M2351::CDialogChipSetting_CFG_M2351(CWnd *pParent /*=NULL*/)
+    : CDialogResize(CDialogChipSetting_CFG_M2351::IDD, pParent)
 {
-    //{{AFX_DATA_INIT(CDialogConfiguration_M2351)
+    //{{AFX_DATA_INIT(CDialogChipSetting_CFG_M2351)
     m_nRadioCBOV	= -1;
     m_nRadioCBS		= -1;
     m_nRadioCFGXT1	= -1;
@@ -32,14 +32,14 @@ CDialogConfiguration_M2351::CDialogConfiguration_M2351(CWnd *pParent /*=NULL*/)
     //}}AFX_DATA_INIT
 }
 
-CDialogConfiguration_M2351::~CDialogConfiguration_M2351()
+CDialogChipSetting_CFG_M2351::~CDialogChipSetting_CFG_M2351()
 {
 }
 
-void CDialogConfiguration_M2351::DoDataExchange(CDataExchange *pDX)
+void CDialogChipSetting_CFG_M2351::DoDataExchange(CDataExchange *pDX)
 {
     CDialogResize::DoDataExchange(pDX);
-    //{{AFX_DATA_MAP(CDialogConfiguration_M2351)
+    //{{AFX_DATA_MAP(CDialogChipSetting_CFG_M2351)
     DDX_Radio(pDX, IDC_RADIO_BOV_7, m_nRadioCBOV);
     DDX_Radio(pDX, IDC_RADIO_BS_APROM_LDROM, m_nRadioCBS);
     DDX_Radio(pDX, IDC_RADIO_GPF_CRYSTAL, m_nRadioCFGXT1);
@@ -56,8 +56,8 @@ void CDialogConfiguration_M2351::DoDataExchange(CDataExchange *pDX)
     //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(CDialogConfiguration_M2351, CDialog)
-    //{{AFX_MSG_MAP(CDialogConfiguration_M2351)
+BEGIN_MESSAGE_MAP(CDialogChipSetting_CFG_M2351, CDialog)
+    //{{AFX_MSG_MAP(CDialogChipSetting_CFG_M2351)
     ON_BN_CLICKED(IDC_RADIO_BOV_0, OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_BOV_1, OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_BOV_2, OnRadioClick)
@@ -95,9 +95,9 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_M2351, CDialog)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// CDialogConfiguration_M2351 message handlers
+// CDialogChipSetting_CFG_M2351 message handlers
 
-BOOL CDialogConfiguration_M2351::OnInitDialog()
+BOOL CDialogChipSetting_CFG_M2351::OnInitDialog()
 {
     CDialog::OnInitDialog();
 
@@ -117,21 +117,21 @@ BOOL CDialogConfiguration_M2351::OnInitDialog()
     // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CDialogConfiguration_M2351::OnRadioClick()
+void CDialogChipSetting_CFG_M2351::OnRadioClick()
 {
     // TODO: Add your control notification handler code here
     GUIToConfig();
     ConfigToGUI();
 }
 
-void CDialogConfiguration_M2351::OnCheckClick()
+void CDialogChipSetting_CFG_M2351::OnCheckClick()
 {
     // TODO: Add your control notification handler code here
     GUIToConfig();
     ConfigToGUI();
 }
 
-void CDialogConfiguration_M2351::ConfigToGUI()
+void CDialogChipSetting_CFG_M2351::ConfigToGUI()
 {
     unsigned int uConfig0 = m_uConfigValue[0];
     unsigned int uConfig3 = m_uConfigValue[3];
@@ -230,7 +230,7 @@ void CDialogConfiguration_M2351::ConfigToGUI()
     UpdateData(FALSE);
 }
 
-void CDialogConfiguration_M2351::GUIToConfig()
+void CDialogChipSetting_CFG_M2351::GUIToConfig()
 {
     UpdateData(TRUE);
     unsigned int uConfig0 = m_uConfigValue[0];
@@ -382,3 +382,14 @@ void CDialogConfiguration_M2351::GUIToConfig()
     m_uConfigValue[3] = uConfig3;
 }
 
+void CDialogChipSetting_CFG_M2351::OnOK()
+{
+    GetParent()->GetParent()->PostMessage(WM_COMMAND, IDOK);
+    //CDialog::OnOK ();
+}
+
+void CDialogChipSetting_CFG_M2351::OnCancel()
+{
+    GetParent()->GetParent()->PostMessage(WM_COMMAND, IDCANCEL);
+    //CDialog::OnCancel ();
+}

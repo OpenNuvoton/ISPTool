@@ -311,7 +311,6 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 #include "DialogConfiguration_M0564.h"
 #include "DialogConfiguration_OT8051.h"
 #include "DialogConfiguration_M480.h"
-#include "DialogConfiguration_M2351.h"
 #include "DialogConfiguration_I94000.h"
 #include "DialogConfiguration_AU9100.h"
 #include "DialogConfiguration_N570.h"
@@ -319,6 +318,7 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 //
 #include "DialogChipSetting_NuMicro.h"
 #include "DialogChipSetting_M480LD.h"
+#include "DialogChipSetting_M2351.h"
 
 bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigned int uSeriesCode /* = 0*/)
 {
@@ -596,15 +596,10 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 Config = (((CDialogChipSetting_M480LD *)pConfigDlg)->m_uConfigValue);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_M2351:
+            case NUC_CHIP_TYPE_M2351:
             case NUC_CHIP_TYPE_M2354:
-                pConfigDlg = new CDialogConfiguration_M2351;
-                Config = (((CDialogConfiguration_M2351 *)pConfigDlg)->m_uConfigValue);
-
-                if (uSeriesCode == NUC_CHIP_TYPE_M2354) {
-                    ((CDialogConfiguration_M2351 *)pConfigDlg)->m_uChipType = NUC_CHIP_TYPE_M2354;
-                }
-
+                pConfigDlg = new CDialogChipSetting_M2351(uSeriesCode);
+                Config = (((CDialogChipSetting_M2351 *)pConfigDlg)->m_uConfigValue);
                 break;
 
             case ISD_94000_SERIES:

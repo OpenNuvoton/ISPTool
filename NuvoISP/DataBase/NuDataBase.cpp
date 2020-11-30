@@ -148,13 +148,13 @@ bool GetChipStaticInfo(unsigned int uID)
     }
 }
 
-static bool SkipDynamicInfo()
+static bool HasNoDynamicInfo()
 {
     if (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_NUC505) {
         return true;
     }
 
-    if ((gsChipCfgInfo.uSeriesCode == IDD_DIALOG_CONFIGURATION_M2351)
+    if ((gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2351)
             || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2354)) {
         return true;
     }
@@ -169,7 +169,7 @@ bool GetChipDynamicInfo(unsigned int uID, unsigned int uConfig0, unsigned int uC
             return true;
         }
 
-        if (SkipDynamicInfo()) {
+        if (HasNoDynamicInfo()) {
             return false;
         }
     }
@@ -182,7 +182,7 @@ bool GetChipDynamicInfo(unsigned int uID, unsigned int uConfig0, unsigned int uC
         uProgramMemorySize = gsChipCfgInfo.uProgramMemorySize;
         uFlashType = gsChipCfgInfo.uFlashType;
 
-        if (SkipDynamicInfo()) {
+        if (HasNoDynamicInfo()) {
             return false;
         }
     }

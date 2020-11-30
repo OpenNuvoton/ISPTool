@@ -60,9 +60,6 @@
     <ClInclude Include="DataBase\PartNumID.h">
       <Filter>External\DataBase</Filter>
     </ClInclude>
-    <ClInclude Include="DialogConfiguration\DialogConfiguration_M2351.h">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClInclude>
     <ClInclude Include="DataBase\NuDataBase.h">
       <Filter>External\DataBase</Filter>
     </ClInclude>
@@ -77,6 +74,12 @@
     </ClInclude>
     <ClInclude Include="DialogChipSetting\DialogChipSetting_M251.h">
       <Filter>External\DialogChipSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogChipSetting\DialogChipSetting_M2351.h">
+      <Filter>External\DialogChipSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogConfiguration\DialogChipSetting_CFG_M2351.h">
+      <Filter>External\DialogConfiguration</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -173,9 +176,6 @@
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M480.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogConfiguration_M2351.cpp">
-      <Filter>External\DialogConfiguration</Filter>
-    </ClCompile>
     <ClCompile Include="DialogConfiguration\DialogConfiguration_I94000.cpp">
       <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
@@ -214,6 +214,12 @@
     </ClCompile>
     <ClCompile Include="DialogChipSetting\DialogChipSetting_M251.cpp">
       <Filter>External\DialogChipSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogChipSetting\DialogChipSetting_M2351.cpp">
+      <Filter>External\DialogChipSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogConfiguration\DialogChipSetting_CFG_M2351.cpp">
+      <Filter>External\DialogConfiguration</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
