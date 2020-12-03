@@ -28,9 +28,13 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\k-cm-memory.ico"
+
 IDI_ICON_KEY_INPUT      ICON                    "res\\1373459379_4852.ico"
+
 IDI_ICON_MEMORY         ICON                    "res\\k-cm-memory.ico"
+
 IDI_ICON_NULINK         ICON                    "res\\nulink.ico"
+
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -174,8 +178,8 @@ BEGIN
     LTEXT           "File Name:",IDC_STATIC_FILENAME_SPI,75,149,41,8
     EDITTEXT        IDC_EDIT_FILEPATH_SPI,121,147,258,14,ES_AUTOHSCROLL | ES_READONLY
     LTEXT           "File not load.",IDC_STATIC_FILEINFO_SPI,121,165,140,8
-    CONTROL         "Erase and Program SPI Flash",IDC_CHECK_SPI,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,359,108,10
-    CONTROL         "Erase Whole SPI Flash",IDC_CHECK_ERASE_SPI,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,128,359,86,10
+    CONTROL         "SPI Flash",IDC_CHECK_SPI,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,359,42,10
+    CONTROL         "Erase SPI Flash",IDC_CHECK_ERASE_SPI,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,57,359,66,10
 END
 
 IDD_ABOUTBOX DIALOGEX 0, 0, 336, 157
@@ -1012,7 +1016,7 @@ END
 
 IDD_DIALOG_CHIP_SETTING_M251 DIALOGEX 0, 0, 289, 295
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
-CAPTION "Chip Setting"
+CAPTION "Chip Settings"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,174,275,50,14
@@ -1475,8 +1479,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,0,2,611
- PRODUCTVERSION 4,0,2,611
+ FILEVERSION 4,0,3,1203
+ PRODUCTVERSION 4,0,3,1203
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -1713,8 +1717,11 @@ END
 //
 
 IDB_BITMAP_BANNER       BITMAP                  "res\\banner.bmp"
+
 IDB_BITMAP_NUVOTON      BITMAP                  "res\\nuvoton.bmp"
+
 IDB_BITMAP_CHIPS        BITMAP                  "res\\chips.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1722,6 +1729,7 @@ IDB_BITMAP_CHIPS        BITMAP                  "res\\chips.bmp"
 //
 
 1                       RT_MANIFEST             "res\\xp_style.xml"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1784,6 +1792,17 @@ BEGIN
     IDC_COMBO_GPA5_RINI, 0x403, 32, 0
 0x7550, 0x6c6c, 0x682d, 0x6769, 0x2f68, 0x6f6c, 0x2077, 0x6552, 0x6973, 
 0x7473, 0x726f, 0x6420, 0x7369, 0x6261, 0x656c, 0x0064, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_DIALOG_NUVOISP_WITH_SPI AFX_DIALOG_LAYOUT
+BEGIN
     0
 END
 
