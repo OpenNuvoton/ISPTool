@@ -169,7 +169,7 @@ BOOL CNuvoISPDlg::OnInitDialog()
     m_sConnect = _T("Disconnected");
     UpdateData(FALSE);
     // Title
-    SetWindowText(_T("Nuvoton NuMicro ISP Programming Tool 4.03"));
+    SetWindowText(_T("Nuvoton NuMicro ISP Programming Tool 4.04"));
 
     // Set data view area
     // Btn Text --> Tab Text

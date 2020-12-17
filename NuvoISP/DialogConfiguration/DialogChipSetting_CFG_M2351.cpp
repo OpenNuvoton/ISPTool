@@ -29,6 +29,8 @@ CDialogChipSetting_CFG_M2351::CDialogChipSetting_CFG_M2351(CWnd *pParent /*=NULL
     m_uConfigValue[3] = 0xFFFFFFFF;
     m_sConfigValue0 = _T("");
     m_sConfigValue3 = _T("");
+    m_bSecureBooting = true;
+    m_uCBOVLevel = 8;
     //}}AFX_DATA_INIT
 }
 
@@ -103,10 +105,30 @@ BOOL CDialogChipSetting_CFG_M2351::OnInitDialog()
 
     // TODO: Add extra initialization here
 
+    if (m_uChipType == NUC_CHIP_TYPE_M2351) {
+        GetDlgItem(IDC_CHECK_TAMPER_POWER_DOWN)->ShowWindow(SW_HIDE);
+        m_bSecureBooting = false;
+        m_uCBOVLevel = 8;
+    }
+
     if (m_uChipType == NUC_CHIP_TYPE_M2354) {
         GetDlgItem(IDC_CHECK_TAMPER_POWER_DOWN)->ShowWindow(SW_SHOW);
-    } else { //if (m_uChipType == NUC_CHIP_TYPE_M2351)
+        m_bSecureBooting = true;
+        m_uCBOVLevel = 8;
+    }
+
+    if (m_uChipType == NUC_CHIP_TYPE_M2379) {
         GetDlgItem(IDC_CHECK_TAMPER_POWER_DOWN)->ShowWindow(SW_HIDE);
+        GetDlgItem(IDC_RADIO_BOV_7)->SetWindowText(_T("4.4V"));
+        GetDlgItem(IDC_RADIO_BOV_6)->SetWindowText(_T("3.7V"));
+        GetDlgItem(IDC_RADIO_BOV_5)->SetWindowText(_T("2.7V"));
+        GetDlgItem(IDC_RADIO_BOV_4)->SetWindowText(_T("2.4V"));
+        GetDlgItem(IDC_RADIO_BOV_3)->ShowWindow(SW_HIDE);
+        GetDlgItem(IDC_RADIO_BOV_2)->ShowWindow(SW_HIDE);
+        GetDlgItem(IDC_RADIO_BOV_1)->ShowWindow(SW_HIDE);
+        GetDlgItem(IDC_RADIO_BOV_0)->ShowWindow(SW_HIDE);
+        m_bSecureBooting = true;
+        m_uCBOVLevel = 4;
     }
 
     ConfigToGUI();
@@ -136,39 +158,64 @@ void CDialogChipSetting_CFG_M2351::ConfigToGUI()
     unsigned int uConfig0 = m_uConfigValue[0];
     unsigned int uConfig3 = m_uConfigValue[3];
 
-    switch (uConfig0 & NUMICRO_FLASH_CONFIG_CBOV_8_LEVEL) {
-        case NUMICRO_FLASH_CONFIG_CBOV_7:
-            m_nRadioCBOV = 0;
-            break;
+    if (m_uCBOVLevel == 8) {
+        switch (uConfig0 & NUMICRO_FLASH_CONFIG_CBOV_8_LEVEL) {
+            case NUMICRO_FLASH_CONFIG_CBOV_7:
+                m_nRadioCBOV = 0;
+                break;
 
-        case NUMICRO_FLASH_CONFIG_CBOV_6:
-            m_nRadioCBOV = 1;
-            break;
+            case NUMICRO_FLASH_CONFIG_CBOV_6:
+                m_nRadioCBOV = 1;
+                break;
 
-        case NUMICRO_FLASH_CONFIG_CBOV_5:
-            m_nRadioCBOV = 2;
-            break;
+            case NUMICRO_FLASH_CONFIG_CBOV_5:
+                m_nRadioCBOV = 2;
+                break;
 
-        case NUMICRO_FLASH_CONFIG_CBOV_4:
-            m_nRadioCBOV = 3;
-            break;
+            case NUMICRO_FLASH_CONFIG_CBOV_4:
+                m_nRadioCBOV = 3;
+                break;
 
-        case NUMICRO_FLASH_CONFIG_CBOV_3:
-            m_nRadioCBOV = 4;
-            break;
+            case NUMICRO_FLASH_CONFIG_CBOV_3:
+                m_nRadioCBOV = 4;
+                break;
 
-        case NUMICRO_FLASH_CONFIG_CBOV_2:
-            m_nRadioCBOV = 5;
-            break;
+            case NUMICRO_FLASH_CONFIG_CBOV_2:
+                m_nRadioCBOV = 5;
+                break;
 
-        case NUMICRO_FLASH_CONFIG_CBOV_1:
-            m_nRadioCBOV = 6;
-            break;
+            case NUMICRO_FLASH_CONFIG_CBOV_1:
+                m_nRadioCBOV = 6;
+                break;
 
-        case NUMICRO_FLASH_CONFIG_CBOV_0:
-        default:
-            m_nRadioCBOV = 7;
-            break;
+            case NUMICRO_FLASH_CONFIG_CBOV_0:
+                m_nRadioCBOV = 7;
+                break;
+
+            default:
+                m_nRadioCBOV = 0;
+        }
+    } else { //if (m_uCBOVLevel == 4)
+        switch (uConfig0 & NUMICRO_FLASH_CONFIG_CBOV_8_LEVEL) {
+            case NUMICRO_FLASH_CONFIG_CBOV_3:
+                m_nRadioCBOV = 0;
+                break;
+
+            case NUMICRO_FLASH_CONFIG_CBOV_2:
+                m_nRadioCBOV = 1;
+                break;
+
+            case NUMICRO_FLASH_CONFIG_CBOV_1:
+                m_nRadioCBOV = 2;
+                break;
+
+            case NUMICRO_FLASH_CONFIG_CBOV_0:
+                m_nRadioCBOV = 3;
+                break;
+
+            default:
+                m_nRadioCBOV = 0;
+        }
     }
 
     switch (uConfig0 & NUMICRO_FLASH_CONFIG_CWDTEN) {
@@ -193,7 +240,7 @@ void CDialogChipSetting_CFG_M2351::ConfigToGUI()
     m_nRadioCFGXT1	= ((uConfig0 & M2351_FLASH_CONFIG_CFGXT1) ? 0 : 1);
     m_nRadioCIOINI	= ((uConfig0 & NUMICRO_FLASH_CONFIG_CIOINI) ? 0 : 1);
 
-    if (m_uChipType == NUC_CHIP_TYPE_M2354) {
+    if (m_bSecureBooting) {
         m_bCheckMBS = TRUE;
     } else {
         m_bCheckMBS = ((uConfig0 & M2351_FLASH_CONFIG_MBS) == 0 ? TRUE : FALSE);
@@ -235,41 +282,69 @@ void CDialogChipSetting_CFG_M2351::GUIToConfig()
     UpdateData(TRUE);
     unsigned int uConfig0 = m_uConfigValue[0];
     unsigned int uConfig3 = m_uConfigValue[3];
-    uConfig0 &= ~NUMICRO_FLASH_CONFIG_CBOV_8_LEVEL;
 
-    switch (m_nRadioCBOV) {
-        case 0:
-            uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_7;
-            break;
+    if (m_uCBOVLevel == 8) {
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_CBOV_8_LEVEL;
 
-        case 1:
-            uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_6;
-            break;
+        switch (m_nRadioCBOV) {
+            case 0:
+                uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_7;
+                break;
 
-        case 2:
-            uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_5;
-            break;
+            case 1:
+                uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_6;
+                break;
 
-        case 3:
-            uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_4;
-            break;
+            case 2:
+                uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_5;
+                break;
 
-        case 4:
-            uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_3;
-            break;
+            case 3:
+                uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_4;
+                break;
 
-        case 5:
-            uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_2;
-            break;
+            case 4:
+                uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_3;
+                break;
 
-        case 6:
-            uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_1;
-            break;
+            case 5:
+                uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_2;
+                break;
 
-        case 7:
-        default:
-            uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_0;
-            break;
+            case 6:
+                uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_1;
+                break;
+
+            case 7:
+                uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_0;
+                break;
+
+            default:
+                uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_7;
+        }
+    } else { //if (m_uCBOVLevel == 4)
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_CBOV_4_LEVEL;
+
+        switch (m_nRadioCBOV) {
+            case 0:
+                uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_3;
+                break;
+
+            case 1:
+                uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_2;
+                break;
+
+            case 2:
+                uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_1;
+                break;
+
+            case 3:
+                uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_0;
+                break;
+
+            default:
+                uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_3;
+        }
     }
 
     switch (m_nRadioCWDTEN) {
@@ -311,7 +386,7 @@ void CDialogChipSetting_CFG_M2351::GUIToConfig()
         uConfig0 &= ~NUMICRO_FLASH_CONFIG_CIOINI;
     }
 
-    if (m_uChipType == NUC_CHIP_TYPE_M2354) {
+    if (m_bSecureBooting) {
         uConfig0 |=  M2351_FLASH_CONFIG_MBS;
     } else {
         if (m_bCheckMBS) {

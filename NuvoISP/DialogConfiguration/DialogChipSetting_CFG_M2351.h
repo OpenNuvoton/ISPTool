@@ -44,6 +44,9 @@ public:
 
 // Implementation
 protected:
+    bool		 m_bSecureBooting;
+    unsigned int m_uCBOVLevel;
+
     // Generated message map functions
     //{{AFX_MSG(CDialogChipSetting_CFG_M2351)
     virtual BOOL OnInitDialog();
