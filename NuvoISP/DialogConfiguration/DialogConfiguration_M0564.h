@@ -80,6 +80,14 @@ protected:
     virtual BOOL OnInitDialog();
 };
 
+class CDialogConfiguration_NUC1262 : public CDialogConfiguration_M0564
+{
+public:
+    CDialogConfiguration_NUC1262(unsigned int uProgramMemorySize = 128 * 1024, CWnd *pParent = NULL);
+protected:
+    virtual BOOL OnInitDialog();
+};
+
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 

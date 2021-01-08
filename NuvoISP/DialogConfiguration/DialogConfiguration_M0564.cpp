@@ -390,3 +390,17 @@ BOOL CDialogConfiguration_NUC121::OnInitDialog()
     m_uPageSize = NUMICRO_FLASH_PAGE_SIZE_512;
     return CDialogConfiguration_M0564::OnInitDialog();
 }
+/////////////////////////////////////////////////////////////////////////////
+// CDialogConfiguration_NUC1262
+/////////////////////////////////////////////////////////////////////////////
+CDialogConfiguration_NUC1262::CDialogConfiguration_NUC1262(unsigned int uProgramMemorySize, CWnd *pParent /*=NULL*/)
+    : CDialogConfiguration_M0564(uProgramMemorySize, pParent)
+{
+}
+
+BOOL CDialogConfiguration_NUC1262::OnInitDialog()
+{
+    GetDlgItem(IDC_RADIO_GPF_GPIO)->EnableWindow(FALSE);
+    GetDlgItem(IDC_RADIO_GPF_CRYSTAL)->EnableWindow(FALSE);
+    return CDialogConfiguration_M0564::OnInitDialog();
+}
