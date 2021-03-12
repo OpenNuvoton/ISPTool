@@ -191,7 +191,7 @@ BEGIN
     LTEXT           "Text is changed in run-time",IDC_STATIC_MESSAGE,74,10,186,26,SS_NOPREFIX
     LTEXT           "Copyright(C) 2020~2021",IDC_STATIC,74,46,119,8
     DEFPUSHBUTTON   "OK",IDOK,265,23,50,14,WS_GROUP
-    DEFPUSHBUTTON   "http://www.nuvoton.com/NuMicro/",IDC_LINK_NUVOTON,74,56,143,8
+    DEFPUSHBUTTON   "https://www.nuvoton.com/",IDC_LINK_NUVOTON,74,56,143,8
     LTEXT           "GitHub Repository",IDC_STATIC,74,72,65,8
     DEFPUSHBUTTON   "https://github.com/OpenNuvoton/ISPTool/",IDC_LINK_GITHUB,74,82,138,8
     LTEXT           "GITEE Repository",IDC_STATIC,74,97,65,8
