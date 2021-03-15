@@ -14,10 +14,7 @@ public:
 // Dialog Data
     //{{AFX_DATA(CAboutDlg)
     enum { IDD = IDD_ABOUTBOX };
-    CMFCLinkCtrl m_LinkNuvoton;
-    CMFCLinkCtrl m_LinkGitHub;
-    CMFCLinkCtrl m_LinkGITEE;
-    CMFCLinkCtrl m_LinkGitLab;
+    CMFCLinkCtrl m_LinkUrl[4];
     //}}AFX_DATA
 
     // ClassWizard generated virtual function overrides
@@ -28,7 +25,6 @@ protected:
 
 // Implementation
 protected:
-    CString	m_sUpdateURL;
     CString	m_sTitle;
     CString	m_sDate;
     //{{AFX_MSG(CAboutDlg)

@@ -12,7 +12,6 @@ static char THIS_FILE[] = __FILE__;
 
 CAboutDlg::CAboutDlg(const CString &sTitle)
     :	CDialog(CAboutDlg::IDD)
-    ,	m_sUpdateURL(_T("http://www.nuvoton.com/NuMicro/"))
     ,	m_sTitle(sTitle)
 {
     std::ostringstream os;
@@ -26,10 +25,10 @@ void CAboutDlg::DoDataExchange(CDataExchange *pDX)
 {
     CDialog::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CAboutDlg)
-    DDX_Control(pDX, IDC_LINK_NUVOTON, m_LinkNuvoton);
-    DDX_Control(pDX, IDC_LINK_GITHUB, m_LinkGitHub);
-    DDX_Control(pDX, IDC_LINK_GITEE, m_LinkGITEE);
-    DDX_Control(pDX, IDC_LINK_GITLAB, m_LinkGitLab);
+    DDX_Control(pDX, IDC_LINK_NUVOTON, m_LinkUrl[0]);
+    DDX_Control(pDX, IDC_LINK_GITHUB, m_LinkUrl[1]);
+    DDX_Control(pDX, IDC_LINK_GITEE, m_LinkUrl[2]);
+    DDX_Control(pDX, IDC_LINK_GITLAB, m_LinkUrl[3]);
     //}}AFX_DATA_MAP
 }
 
@@ -46,14 +45,19 @@ BOOL CAboutDlg::OnInitDialog()
     sText.Format(_T("%s\n\n%s"), m_sTitle, m_sDate);
     SetWindowText(sTitle);
     SetDlgItemText(IDC_STATIC_MESSAGE, sText);
-    m_LinkNuvoton.SetURL(_T("https://www.nuvoton.com/"));
-    m_LinkGitHub.SetURL(_T("https://github.com/OpenNuvoton/ISPTool/"));
-    m_LinkGITEE.SetURL(_T("https://gitee.com/OpenNuvoton/ISPTool/"));
-    m_LinkGitLab.SetURL(_T("https://gitlab.com/OpenNuvoton/nuvoton-tools/ISPTool/"));
-    m_LinkNuvoton.SizeToContent();
-    m_LinkGitHub.SizeToContent();
-    m_LinkGITEE.SizeToContent();
-    m_LinkGitLab.SizeToContent();
+    const TCHAR *_sURL[4] = {
+        _T("https://www.nuvoton.com/"),
+        _T("https://github.com/OpenNuvoton/ISPTool/"),
+        _T("https://gitee.com/OpenNuvoton/ISPTool/"),
+        _T("https://gitlab.com/OpenNuvoton/nuvoton-tools/ISPTool/")
+    };
+
+    for (int i = 0; i < 4; i++) {
+        m_LinkUrl[i].SetWindowText(_sURL[i]);
+        m_LinkUrl[i].SetURL(_sURL[i]);
+        m_LinkUrl[i].SizeToContent();
+    }
+
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
 }
