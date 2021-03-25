@@ -476,7 +476,6 @@ BOOL ISPLdCMD::RunLDROM()
 }
 
 
-#if (SUPPORT_SPIFLASH)
 BOOL ISPLdCMD::Cmd_ERASE_SPIFLASH(unsigned long offset, unsigned long total_len)
 {
     unsigned long os = offset;
@@ -533,4 +532,3 @@ BOOL ISPLdCMD::Cmd_UPDATE_SPIFLASH(unsigned long start_addr,
 
     return TRUE;
 }
-#endif

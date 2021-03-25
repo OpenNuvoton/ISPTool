@@ -58,6 +58,7 @@ CNuvoISPDlg::CNuvoISPDlg(UINT Template,
     : CDialogMain(Template, pParent)
     , CISPProc(&m_hWnd)
 {
+    m_sCaption = _T("Nuvoton NuMicro ISP Programming Tool 4.XX");
     m_bConnect = false;
     int i = 0, j = 0;
 
@@ -68,9 +69,7 @@ CNuvoISPDlg::CNuvoISPDlg(UINT Template,
     WINCTRLID buddy[] = {
         {IDC_BUTTON_APROM, IDC_EDIT_FILEPATH_APROM, IDC_STATIC_FILEINFO_APROM},
         {IDC_BUTTON_NVM, IDC_EDIT_FILEPATH_NVM, IDC_STATIC_FILEINFO_NVM},
-#if (SUPPORT_SPIFLASH)
         {IDC_BUTTON_SPI, IDC_EDIT_FILEPATH_SPI, IDC_STATIC_FILEINFO_SPI},
-#endif
     };
     memcpy(&m_CtrlID, buddy, sizeof(m_CtrlID));
     m_bShowSPI = -1; // not initialized
@@ -99,10 +98,9 @@ void CNuvoISPDlg::DoDataExchange(CDataExchange *pDX)
     DDX_Text(pDX, IDC_STATIC_CONNECT, m_sConnect);
     DDX_Check(pDX, IDC_CHECK_APROM, m_bProgram_APROM);
     DDX_Check(pDX, IDC_CHECK_NVM, m_bProgram_NVM);
-#if (SUPPORT_SPIFLASH)
-    DDX_Check(pDX, IDC_CHECK_SPI, m_bProgram_SPI);
-    DDX_Check(pDX, IDC_CHECK_ERASE_SPI, m_bErase_SPI);
-#endif
+// Do NOT use DDX_Check for extend option
+//    DDX_Check(pDX, IDC_CHECK_SPI, m_bProgram_SPI);
+//    DDX_Check(pDX, IDC_CHECK_ERASE_SPI, m_bErase_SPI);
     DDX_Check(pDX, IDC_CHECK_CONFIG, m_bProgram_Config);
     DDX_Check(pDX, IDC_CHECK_ERASE, m_bErase);
     DDX_Check(pDX, IDC_CHECK_RUN_APROM, m_bRunAPROM);
@@ -121,9 +119,7 @@ BEGIN_MESSAGE_MAP(CNuvoISPDlg, CDialog)
     ON_BN_CLICKED(IDC_BUTTON_CONNECT, OnButtonConnect)
     ON_BN_CLICKED(IDC_BUTTON_APROM, OnButtonLoadFile)
     ON_BN_CLICKED(IDC_BUTTON_NVM, OnButtonLoadFile)
-#if (SUPPORT_SPIFLASH)
     ON_BN_CLICKED(IDC_BUTTON_SPI, OnButtonLoadFile)
-#endif
     ON_BN_CLICKED(IDC_BUTTON_START, OnButtonStart)
     ON_NOTIFY(TCN_SELCHANGE, IDC_TAB_DATA, OnSelchangeTabData)
     ON_BN_CLICKED(IDC_BUTTON_CONFIG, OnButtonConfig)
@@ -169,7 +165,7 @@ BOOL CNuvoISPDlg::OnInitDialog()
     m_sConnect = _T("Disconnected");
     UpdateData(FALSE);
     // Title
-    SetWindowText(_T("Nuvoton NuMicro ISP Programming Tool 4.04"));
+    SetWindowText(m_sCaption);
 
     // Set data view area
     // Btn Text --> Tab Text
@@ -483,8 +479,9 @@ void CNuvoISPDlg::OnButtonStart()
 {
     // TODO: Add your control notification handler code here
     UpdateData(TRUE);
-    /* Try to reload file if necessary */
-#if (SUPPORT_SPIFLASH)
+    // M487KMCAN
+    m_bProgram_SPI = IsDlgButtonChecked(IDC_CHECK_SPI);
+    m_bErase_SPI = IsDlgButtonChecked(IDC_CHECK_ERASE_SPI);
 
     if (m_bProgram_APROM || m_bProgram_NVM || m_bProgram_Config || m_bErase || m_bRunAPROM) {
         // Check Standart ISP Options
@@ -495,15 +492,6 @@ void CNuvoISPDlg::OnButtonStart()
         return;
     }
 
-#else
-
-    /* Check program operation */
-    if (!(m_bProgram_APROM || m_bProgram_NVM || m_bProgram_Config || m_bErase || m_bRunAPROM)) {
-        MessageBox(_T("You did not select any operation."), NULL, MB_ICONSTOP);
-        return;
-    }
-
-#endif
     /* WYLIWYP : What You Lock Is What You Program*/
     /* Lock ALL */
     EnableProgramOption(FALSE);
@@ -527,15 +515,12 @@ void CNuvoISPDlg::OnButtonStart()
             }
         }
 
-#if (SUPPORT_SPIFLASH)
-
         if (strErr.IsEmpty() && m_bProgram_SPI && m_bSupport_SPI) {
             if (m_sFileInfo[2].st_size == 0) {
                 strErr = _T("Can not load SPI flash file for programming!");
             }
         }
 
-#endif
         // In case user press "Enter" after typing offset, need to call OnKillfocusEditAPRomOffset manually
         OnKillfocusEditAPRomOffset();
         UpdateAddrOffset();
@@ -647,11 +632,10 @@ void CNuvoISPDlg::EnableProgramOption(BOOL bEnable)
     EnableDlgItem(IDC_CHECK_ERASE, bEnable);
     EnableDlgItem(IDC_CHECK_RUN_APROM, bEnable);
     EnableDlgItem(IDC_BUTTON_START, bEnable);
-#if (SUPPORT_SPIFLASH)
+    // SPI Option
     EnableDlgItem(IDC_BUTTON_SPI, bEnable);
     EnableDlgItem(IDC_CHECK_SPI, bEnable);
     EnableDlgItem(IDC_CHECK_ERASE_SPI, bEnable);
-#endif
 }
 
 void CNuvoISPDlg::OnPaint()

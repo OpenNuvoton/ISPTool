@@ -812,15 +812,20 @@ UINT CDialogMain::ScanPCCom()
     return nComNum;
 }
 
-void CDialogMain::InitComboBox()
+void CDialogMain::InitComboBox(int iSupportNL2)
 {
+    m_SelInterface.ResetContent();
     m_SelInterface.AddString(_T("USB"));
     m_SelInterface.AddString(_T("UART"));
     // Nu-Link2 ISP Bridge interfaces
-    m_SelInterface.AddString(_T("SPI"));
-    m_SelInterface.AddString(_T("I2C"));
-    m_SelInterface.AddString(_T("RS485"));
-    m_SelInterface.AddString(_T("CAN"));
+
+    if (iSupportNL2) {
+        m_SelInterface.AddString(_T("SPI"));
+        m_SelInterface.AddString(_T("I2C"));
+        m_SelInterface.AddString(_T("RS485"));
+        m_SelInterface.AddString(_T("CAN"));
+    }
+
     m_SelInterface.SetCurSel(0);
     OnSelchangeInterface();
 

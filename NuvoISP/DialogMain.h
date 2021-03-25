@@ -39,7 +39,7 @@ public:
     CString m_ComNum;
     afx_msg void OnSelchangeInterface();
     afx_msg void OnComboChange();
-    void InitComboBox();
+    void InitComboBox(int iSupportNL2 = 1);
     void EnableInterface(bool bEnable);
     UINT ScanPCCom();
 #ifdef _DEBUG

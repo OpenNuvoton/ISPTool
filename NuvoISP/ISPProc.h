@@ -12,11 +12,7 @@
 
 #include "fileinfo.h"
 
-#if (SUPPORT_SPIFLASH)
 #define NUM_VIEW 3
-#else
-#define NUM_VIEW 2
-#endif
 
 #define MSG_USER_EVENT				(WM_APP+1)
 #define MSG_UPDATE_ERASE_STATUS		3
@@ -102,11 +98,12 @@ public:
     BOOL	m_bProgram_Config;
     BOOL	m_bErase;
     BOOL	m_bRunAPROM;
-#if (SUPPORT_SPIFLASH)
-    BOOL	m_bSupport_SPI;
+
+    // For M487KMCAN only
+    BOOL	m_bSupport_SPI; // CMD_Connect
     BOOL	m_bProgram_SPI;
     BOOL	m_bErase_SPI;
-#endif
+
     // ISPLdCMD2 supports different protocol for CAN interface
     ISPLdCMD2	m_ISPLdDev;
     void SetInterface(unsigned int it, CString str)

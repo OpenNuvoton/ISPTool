@@ -35,6 +35,11 @@ CISPProc::CISPProc(HWND *pWnd)
     , m_bProgram_NVM(0)
     , m_bProgram_Config(0)
     , m_bErase(0)
+    , m_bRunAPROM(0)
+      // SPI option is for M487KMCAN only
+    , m_bSupport_SPI(0)
+    , m_bProgram_SPI(0)
+    , m_bErase_SPI(0)
 {
     MainHWND = pWnd;
     m_hThreadMutex = ::CreateMutex(NULL, FALSE, NULL);
@@ -364,8 +369,6 @@ void CISPProc::Thread_ProgramFlash()
             }
         }
 
-#if (SUPPORT_SPIFLASH)
-
         if (m_bSupport_SPI && (m_bProgram_SPI || m_bErase_SPI)) {
             uAddr = 0;
             uSize = 0;
@@ -425,8 +428,6 @@ void CISPProc::Thread_ProgramFlash()
                 }
             }
         }
-
-#endif
 
         if (m_bRunAPROM) {
             m_ISPLdDev.RunAPROM();
