@@ -576,6 +576,16 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 Config = (((CDialogConfiguration_NUC121 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
+            case IDD_DIALOG_CONFIGURATION_NUC1262:
+                if (uProgramMemorySize) {
+                    pConfigDlg = new CDialogConfiguration_NUC1262(uProgramMemorySize);
+                } else {
+                    pConfigDlg = new CDialogConfiguration_NUC1262();
+                }
+
+                Config = (((CDialogConfiguration_NUC1262 *)pConfigDlg)->m_ConfigValue.m_value);
+                break;
+
             case IDD_DIALOG_CONFIGURATION_M480:
                 if (uProgramMemorySize) {
                     pConfigDlg = new CDialogConfiguration_M480(uProgramMemorySize, uID);

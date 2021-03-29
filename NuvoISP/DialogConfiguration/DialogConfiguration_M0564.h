@@ -17,6 +17,7 @@ class CDialogConfiguration_M0564 : public CDialogResize
 // Construction
 public:
     CDialogConfiguration_M0564(unsigned int uProgramMemorySize = 256 * 1024,
+                               UINT nIDTemplate = IDD_DIALOG_CONFIGURATION_M0564,
                                CWnd *pParent = NULL);   // standard constructor
 
     CAppConfig::M0564_configs_t m_ConfigValue;
