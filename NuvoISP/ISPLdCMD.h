@@ -2,7 +2,15 @@
 #define INC__ISP_LD_H__
 #pragma once
 
-#define SUPPORT_SPIFLASH (1)
+// interface
+#define INTF_HID     (1)
+#define INTF_UART    (2)
+// OpenNuvoton/NuLink2_ISP_Bridge
+// https://github.com/OpenNuvoton/NuLink2_ISP_Bridge
+#define INTF_SPI     (3)
+#define INTF_I2C     (4)
+#define INTF_RS485   (5)
+#define INTF_CAN     (6)
 
 #include "CScopedMutex.hpp"
 #include "Interface\CHidIO2.h"
@@ -22,7 +30,6 @@ protected:
     ULONG			m_uUSB_PID;		// for compatibility
     CString			m_strComNum;
     CHidIO2			m_hidIO;
-    CHidIO2			m_hidIO2;
     CUartIO			m_comIO;
     BOOL			m_bOpenPort;
     CMutex2			m_Mutex;
@@ -31,6 +38,11 @@ protected:
     BOOL ReadFile(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, BOOL bCheckIndex = TRUE);
     BOOL WriteFile(unsigned long uCmd, const char *pcBuffer = NULL, DWORD dwLen = 0, DWORD dwMilliseconds = 20/*USBCMD_TIMEOUT*/);
 
+    // For CAN interface
+    BOOL ReadFileCAN(DWORD dwMilliseconds = 5000);
+    BOOL WriteFileCAN(ULONG uCMD, ULONG uDAT, DWORD dwMilliseconds = 20/*USBCMD_TIMEOUT*/);
+    ULONG m_uCmdCAN;
+    ULONG m_uDatCAN;
 
 public:
     BOOL bSupport_SPI;;
@@ -41,7 +53,7 @@ public:
     virtual ~ISPLdCMD();
 
     bool Check_USB_Link();
-    bool Open_Port(BOOL bErrorMsg = FALSE);
+    bool Open_Port();
     void Close_Port();
     void ReOpen_Port(BOOL bForce = FALSE);
 
@@ -75,6 +87,14 @@ public:
         CMD_UPDATE_SPIFLASH = 0x000000D1,
     };
 
+    // For Code size consideration, CAN only implements some basic isp commands.
+    // Need to return any constant in tool side to pass the flow.
+    enum {
+        CAN_CMD_READ_CONFIG = 0xA2000000,
+        CAN_CMD_RUN_APROM = 0xAB000000,
+        CAN_CMD_GET_DEVICEID = 0xB1000000,
+    };
+
     BOOL CMD_Connect(DWORD dwMilliseconds = 30);
     BOOL CMD_Resend();
 
@@ -100,7 +120,6 @@ public:
     BOOL RunAPROM();
     BOOL RunLDROM();
 
-    void Test();
     // it = 1 for HID, str is ignored.
     // it = 2 for UART, str as "COM5".
     void SetInterface(unsigned int it, CString str)
@@ -113,45 +132,6 @@ public:
 
     BOOL Cmd_ERASE_SPIFLASH(unsigned long offset, unsigned long total_len);
     BOOL Cmd_UPDATE_SPIFLASH(unsigned long offset, unsigned long total_len, const char *buffer);
-};
-
-class ISPLdCMD2 : public ISPLdCMD
-{
-protected:
-    ULONG			m_uCMD;
-    ULONG			m_uDAT;
-public:
-    BOOL ReadFile(DWORD dwMilliseconds = 5000);
-    BOOL WriteFile(ULONG uCMD, ULONG uDAT, DWORD dwMilliseconds = 20/*USBCMD_TIMEOUT*/);
-
-    ISPLdCMD2();
-    virtual ~ISPLdCMD2();
-
-    BOOL CMD_Connect(DWORD dwMilliseconds = 30);
-    BOOL CMD_Resend();
-
-
-    void SyncPackno();
-    unsigned char GetVersion();
-    unsigned long GetDeviceID();
-    void ReadConfig(unsigned int config[]);
-    void UpdateConfig(unsigned int config[], unsigned int response[]);
-    void UpdateAPROM(unsigned long start_addr,
-                     unsigned long total_len,
-                     unsigned long cur_addr,
-                     const char *buffer,
-                     unsigned long *update_len);
-    void UpdateNVM(unsigned long start_addr,
-                   unsigned long total_len,
-                   unsigned long cur_addr,
-                   const char *buffer,
-                   unsigned long *update_len);
-
-    BOOL EraseAll();
-
-    BOOL RunAPROM();
-    BOOL RunLDROM();
-
 
 };
 

@@ -200,9 +200,6 @@
     <ClCompile Include="Interface\CHidIO2.cpp">
       <Filter>ISPTool\Interface</Filter>
     </ClCompile>
-    <ClCompile Include="ISPLdCMD2.cpp">
-      <Filter>ISPTool\NuvoISP</Filter>
-    </ClCompile>
     <ClCompile Include="DialogChipSetting\DialogChipSetting_CFG_M0A21.cpp">
       <Filter>External\DialogChipSetting</Filter>
     </ClCompile>

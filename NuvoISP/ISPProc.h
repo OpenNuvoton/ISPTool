@@ -104,8 +104,8 @@ public:
     BOOL	m_bProgram_SPI;
     BOOL	m_bErase_SPI;
 
-    // ISPLdCMD2 supports different protocol for CAN interface
-    ISPLdCMD2	m_ISPLdDev;
+    // ISPLdCMD supports different protocol for CAN interface
+    ISPLdCMD	m_ISPLdDev;
     void SetInterface(unsigned int it, CString str)
     {
         m_ISPLdDev.SetInterface(it, str);

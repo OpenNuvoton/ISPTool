@@ -143,7 +143,7 @@ void CISPProc::Thread_CheckUSBConnect()
     DWORD dwStart = GetTickCount();
 
     while (m_fnThreadProcStatus == &CISPProc::Thread_CheckUSBConnect) {
-        if (m_ISPLdDev.Open_Port(false)) {
+        if (m_ISPLdDev.Open_Port()) {
             m_eProcSts = EPS_ERR_CONNECT;
             dwStart = GetTickCount();
 
@@ -184,11 +184,8 @@ void CISPProc::Thread_CheckDeviceConnect()
                 m_ISPLdDev.ReOpen_Port();
                 m_ISPLdDev.SyncPackno();
                 m_ucFW_VER = m_ISPLdDev.GetVersion();
-                //printf("GetVersion: %X\n", m_ucFW_VER);
                 m_ulDeviceID = m_ISPLdDev.GetDeviceID();
-                //printf("GetDeviceID: %X\n", m_ulDeviceID);
                 m_ISPLdDev.ReadConfig(m_CONFIG);
-                //printf("ReadConfig: %X, %X\n", m_CONFIG[0], m_CONFIG[1]);
                 memcpy(m_CONFIG_User, m_CONFIG, sizeof(m_CONFIG));
                 m_bSupport_SPI = m_ISPLdDev.bSupport_SPI;
                 m_eProcSts = EPS_OK;
