@@ -81,6 +81,9 @@
     <ClInclude Include="DialogConfiguration\DialogChipSetting_CFG_M2351.h">
       <Filter>External\DialogConfiguration</Filter>
     </ClInclude>
+    <ClInclude Include="ISPMkCMD.h">
+      <Filter>ISPTool\NuvoISP</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -217,6 +220,9 @@
     </ClCompile>
     <ClCompile Include="DialogConfiguration\DialogChipSetting_CFG_M2351.cpp">
       <Filter>External\DialogConfiguration</Filter>
+    </ClCompile>
+    <ClCompile Include="ISPMkCMD.cpp">
+      <Filter>ISPTool\NuvoISP</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
