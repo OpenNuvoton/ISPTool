@@ -2,6 +2,10 @@
 #define INC__ISP_LD_H__
 #pragma once
 
+// type
+#define TYPE_LDROM   (0)
+#define TYPE_MKROM   (1)
+
 // interface
 #define INTF_HID     (1)
 #define INTF_UART    (2)
@@ -37,6 +41,12 @@ protected:
 
     BOOL ReadFile(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, BOOL bCheckIndex = TRUE);
     BOOL WriteFile(unsigned long uCmd, const char *pcBuffer = NULL, DWORD dwLen = 0, DWORD dwMilliseconds = 20/*USBCMD_TIMEOUT*/);
+    // For LDROM ISP protocol
+    BOOL ReadFileLDROM(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, BOOL bCheckIndex = TRUE);
+    BOOL WriteFileLDROM(unsigned long uCmd, const char *pcBuffer = NULL, DWORD dwLen = 0, DWORD dwMilliseconds = 20/*USBCMD_TIMEOUT*/);
+    // For MKROM ISP protocol
+    BOOL ReadFileMKROM(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, BOOL bCheckIndex = TRUE);
+    BOOL WriteFileMKROM(unsigned long uCmd, const char *pcBuffer = NULL, DWORD dwLen = 0, DWORD dwMilliseconds = 20/*USBCMD_TIMEOUT*/);
 
     // For CAN interface
     BOOL ReadFileCAN(DWORD dwMilliseconds = 5000);
@@ -45,6 +55,7 @@ protected:
     ULONG m_uDatCAN;
 
 public:
+    int m_iIspType;
     BOOL bSupport_SPI;;
 
 
@@ -95,6 +106,7 @@ public:
         CAN_CMD_GET_DEVICEID = 0xB1000000,
     };
 
+    BOOL MKROM_Connect(DWORD dwMilliseconds = 10);
     BOOL CMD_Connect(DWORD dwMilliseconds = 30);
     BOOL CMD_Resend();
 

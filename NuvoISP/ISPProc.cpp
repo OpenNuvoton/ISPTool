@@ -148,6 +148,32 @@ void CISPProc::Thread_CheckUSBConnect()
             dwStart = GetTickCount();
 
             try {
+                if (m_ISPLdDev.MKROM_Connect(1)) {
+                    // Re-Open COM Port to clear previous status
+                    m_ISPLdDev.ReOpen_Port();
+                    break;
+                }
+            } catch (...) {
+                Set_ThreadAction(&CISPProc::Thread_Idle);
+            }
+        } else {
+            m_eProcSts = EPS_ERR_OPENPORT;
+            dwStart = GetTickCount();
+
+            while (m_fnThreadProcStatus == &CISPProc::Thread_CheckUSBConnect) {
+                if ((GetTickCount() - dwStart) > 1000) {
+                    break;
+                }
+            }
+        }
+    }
+
+    while (m_fnThreadProcStatus == &CISPProc::Thread_CheckUSBConnect) {
+        if (m_ISPLdDev.Open_Port()) {
+            m_eProcSts = EPS_ERR_CONNECT;
+            dwStart = GetTickCount();
+
+            try {
                 if (m_ISPLdDev.CMD_Connect(40)) {
                     Set_ThreadAction(&CISPProc::Thread_CheckDeviceConnect);
                 }
