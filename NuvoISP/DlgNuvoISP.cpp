@@ -1129,3 +1129,98 @@ void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
                m_rect.Width(),
                m_rect.Height());
 }
+
+CMKromISPDlg::CMKromISPDlg()
+    : CNuvoISPDlg()
+{
+}
+
+CMKromISPDlg::~CMKromISPDlg()
+{
+}
+
+void CMKromISPDlg::ShowChipInfo_OnLine()
+{
+    ShowSPIOptions(m_bSupport_SPI);
+    bool bSizeValid = UpdateSizeInfo(m_ulDeviceID, m_CONFIG[0], m_CONFIG[1]);
+    ShowDlgItem(IDC_STATIC_APOFFSET, 1);
+    ShowDlgItem(IDC_EDIT_APROM_BASE_ADDRESS, 1);
+    EnableDlgItem(IDC_EDIT_APROM_BASE_ADDRESS, 1);
+    // Update Part Number & CONFIG0 ~ CONFIG3 for all series
+    CString strTmp = _T("");
+    strTmp = gsChipCfgInfo.szPartNumber;
+    SetDlgItemText(IDC_EDIT_PARTNO, strTmp);
+    strTmp.Format(_T("0x%08X"), m_CONFIG_User[0]);
+    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, strTmp);
+    strTmp.Format(_T("0x%08X"), m_CONFIG_User[1]);
+    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, strTmp);
+    strTmp.Format(_T("0x%08X"), m_CONFIG_User[2]);
+    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_2, strTmp);
+    strTmp.Format(_T("0x%08X"), m_CONFIG_User[3]);
+    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_3, strTmp);
+
+    if (gsChipCfgInfo.uSeriesCode == IDD_DIALOG_CONFIGURATION_M480) {
+        SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0-3:"));
+        ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 1);
+        ShowDlgItem(IDC_STATIC_CONFIG_VALUE_3, 1);
+    } else if (gsChipCfgInfo.uSeriesCode == IDD_DIALOG_CONFIGURATION_M480LD) { // M480LD, M479
+        SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0-2:"));
+        ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 1);
+    }
+
+    if (bSizeValid) {
+        std::ostringstream os;
+        os << "APROM: " << size_str(m_uAPROM_Size) << ","
+           " Data: " << size_str(m_uNVM_Size);
+        std::string cstr = os.str();
+        std::wstring wcstr(cstr.begin(), cstr.end());
+        CString str = wcstr.c_str();
+        CString tips;
+        tips.Format(_T("Information of target chip,\n\n%s"), str);
+        CString info;
+        info.Format(_T("%s\nFW Ver: 0x%X"), wcstr.c_str(), int(m_ucFW_VER));
+        SetDlgItemText(IDC_STATIC_PARTNO, info);
+    } else {
+        CString tips;
+        tips.Format(_T("PDID: 0x%X, FW Ver: 0x%X"), m_ulDeviceID, int(m_ucFW_VER));
+        SetDlgItemText(IDC_STATIC_PARTNO, tips);
+    }
+
+    Invalidate();
+}
+
+void CMKromISPDlg::ShowChipInfo_OffLine(void)
+{
+    m_uAPROM_Offset = 0;
+    m_ButtonConnect.SetWindowText(_T("Connect"));
+    SetDlgItemText(IDC_EDIT_PARTNO, _T(""));
+    SetDlgItemText(IDC_STATIC_PARTNO, _T(""));
+    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, _T(""));
+    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, _T(""));
+    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_2, _T(""));
+    SetDlgItemText(IDC_STATIC_CONFIG_VALUE_3, _T(""));
+    ChangeBtnText(0, _T("APROM"));
+    ChangeBtnText(1, _T("Data Flash"));
+    ShowDlgItem(IDC_CHECK_CONFIG, 1);
+    ShowDlgItem(IDC_CHECK_ERASE, 1);
+    EnableDlgItem(IDC_BUTTON_CONFIG, 1);	// For Debug CONFIG dialog
+    ShowDlgItem(IDC_STATIC_APOFFSET, 1);
+    ShowDlgItem(IDC_EDIT_APROM_BASE_ADDRESS, 1);
+    ShowDlgItem(IDC_STATIC_FLASH_BASE_ADDRESS, 0);
+    ShowDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS, 0);
+    SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0,1:"));
+    ShowDlgItem(IDC_STATIC_CONFIG_VALUE_1, 1);
+    ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 0);
+    ShowDlgItem(IDC_STATIC_CONFIG_VALUE_3, 0);
+    EnableProgramOption(TRUE);
+    Invalidate(1);
+}
+
+void CMKromISPDlg::OnKillfocusEditAPRomOffset()
+{
+    CString strAddr;
+    GetDlgItemText(IDC_EDIT_APROM_BASE_ADDRESS, strAddr);
+    m_uAPROM_Offset = ::_tcstoul(strAddr, 0, 16);
+    strAddr.Format(_T("%08X"), m_uAPROM_Offset);
+    SetDlgItemText(IDC_EDIT_APROM_BASE_ADDRESS, strAddr);
+}

@@ -295,11 +295,11 @@ void CISPProc::Thread_ProgramFlash()
             uSize = m_sFileInfo[0].st_size;
             pBuffer = vector_ptr(m_sFileInfo[0].vbuf);
 
-            if (m_uAPROM_Size < m_uAPROM_Offset + uSize) {
-                m_eProcSts = EPS_ERR_SIZE;
-                Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
-                return;
-            }
+            //if (m_uAPROM_Size < m_uAPROM_Offset + uSize) {
+            //    m_eProcSts = EPS_ERR_SIZE;
+            //    Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
+            //    return;
+            //}
 
             if (MainHWND != NULL) {
                 PostMessage(*MainHWND, MSG_USER_EVENT, MSG_UPDATE_WRITE_STATUS, 0);

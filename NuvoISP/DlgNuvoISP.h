@@ -61,7 +61,7 @@ protected:
     afx_msg void OnDropFiles(HDROP hDropInfo);
     afx_msg void OnButtonConfig();
     afx_msg void OnPaint();
-    afx_msg void OnKillfocusEditAPRomOffset();
+    virtual afx_msg void OnKillfocusEditAPRomOffset();
     //}}AFX_MSG
     virtual void DoDataExchange(CDataExchange *pDX);	// DDX/DDV support
     virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
@@ -69,8 +69,8 @@ protected:
     afx_msg LRESULT  OnDeviceChange(WPARAM  nEventType, LPARAM  dwData);
     DECLARE_MESSAGE_MAP()
 
-    void ShowChipInfo_OffLine(void);
-    void ShowChipInfo_OnLine(void);
+    virtual void ShowChipInfo_OffLine(void);
+    virtual void ShowChipInfo_OnLine(void);
     void ShowChipInfo_NUC505(void);
     void ShowChipInfo_M2351(void);
     void ChangeBtnText(int nBtn, LPTSTR pszText);
@@ -84,6 +84,18 @@ private:
     void UnregisterNotification();
     HDEVNOTIFY m_hNotifyDevNode;
 };
+
+
+class CMKromISPDlg : public CNuvoISPDlg
+{
+public:
+    CMKromISPDlg();	// standard constructor
+    virtual ~CMKromISPDlg();
+    void ShowChipInfo_OnLine(void);
+    void ShowChipInfo_OffLine(void);
+    void OnKillfocusEditAPRomOffset();
+};
+
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
