@@ -770,8 +770,7 @@ BOOL ISPLdCMD::ReadFileMKROM(char *pcBuffer, size_t szMaxLen, DWORD dwMillisecon
         ULONG uCmdResult = *((ULONG *)&m_acBuffer[9]);
 
         if (dwLength >= 12
-                && (!bCheckIndex || uCmdIndex == m_uCmdIndex - 1)
-                && usCheckSum == m_usCheckSum) {
+                && (!bCheckIndex || uCmdIndex == m_uCmdIndex - 1)) {
             if (szMaxLen > dwLength - 12) {
                 szMaxLen = dwLength - 12;
             }
