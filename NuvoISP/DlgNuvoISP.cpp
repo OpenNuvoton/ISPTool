@@ -1330,3 +1330,30 @@ void CMKromISPDlg::DoDataExchange(CDataExchange *pDX)
     DDX_Control(pDX, IDC_COMBO_CLOCK2, m_SelClock2);
     //}}AFX_DATA_MAP
 }
+
+void CMKromISPDlg::OnButtonConnect()
+{
+    if (m_fnThreadProcStatus == &CISPProc::Thread_Idle
+            || m_fnThreadProcStatus == &CISPProc::Thread_Pause) {
+        /* Connect */
+        m_SelComPort.GetWindowText(m_ComNum);
+        //
+        DWORD Clock = 115200;
+        int CurSelIntf = m_SelInterface.GetCurSel();
+        int CurSelClock = m_SelClock.GetCurSel();
+
+        if (CurSelIntf == 1) {
+            DWORD arrClock[4] = { 115200, 230400, 460800, 921600, };
+            Clock = arrClock[CurSelClock];
+        } else if (CurSelIntf == 1) {
+            Clock = 250000 * (CurSelClock + 1); // 250K, 500K, 750K, 1000K
+        }
+
+        SetInterface(m_SelInterface.GetCurSel() + 1, m_ComNum, Clock);
+        EnableInterface(false);
+        Set_ThreadAction(&CISPProc::Thread_CheckUSBConnect);
+    } else if (m_fnThreadProcStatus != NULL) {
+        /* Disconnect */
+        Set_ThreadAction(&CISPProc::Thread_Idle);
+    }
+}

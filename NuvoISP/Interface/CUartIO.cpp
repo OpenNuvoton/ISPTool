@@ -23,7 +23,7 @@ void CUartIO::CloseDevice()
     }
 }
 
-BOOL CUartIO::OpenDevice(CString strComNum)
+BOOL CUartIO::OpenDevice(CString strComNum, DWORD BaudRate)
 {
     strComNum = _T("\\\\.\\") + strComNum;
 
@@ -55,7 +55,7 @@ BOOL CUartIO::OpenDevice(CString strComNum)
         dcb.DCBlength = sizeof(DCB);
         //printf("GetCommState - ");
         GetCommState(m_hCOMHandle, &dcb) ;        //讀串口原來的參數設置
-        dcb.BaudRate = 115200;                    //Baudrate;
+        dcb.BaudRate = BaudRate;                    //Baudrate;
         dcb.ByteSize = 8;
         dcb.Parity = NOPARITY;
         dcb.StopBits = ONESTOPBIT ;

@@ -54,7 +54,7 @@ protected:
     virtual BOOL OnInitDialog();
     afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
     //virtual void OnCancel();
-    afx_msg void OnButtonConnect();
+    virtual afx_msg void OnButtonConnect();
     afx_msg void OnButtonLoadFile();
     afx_msg void OnButtonStart();
     afx_msg void OnSelchangeTabData(NMHDR *pNMHDR, LRESULT *pResult);
@@ -100,6 +100,8 @@ public:
     // CDialogMain
     virtual void InitComboBox(int iDummy = 1);
     virtual void OnSelchangeInterface();
+    // CNuvoISPDlg
+    virtual afx_msg void OnButtonConnect();
 
 protected:
     virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support

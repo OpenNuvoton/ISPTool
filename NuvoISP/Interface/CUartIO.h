@@ -10,7 +10,7 @@ public:
     CUartIO();
     virtual ~CUartIO();
     void CloseDevice();
-    BOOL OpenDevice(CString strComNum);
+    BOOL OpenDevice(CString strComNum, DWORD BaudRate = 115200);
     BOOL ReadFile(char *pcBuffer, DWORD szMaxLen, DWORD *pdwLength, DWORD dwMilliseconds);
     BOOL WriteFile(const char *pcBuffer, DWORD szLen, DWORD *pdwLength, DWORD dwMilliseconds);
     //OVERLAPPED m_overlapped;

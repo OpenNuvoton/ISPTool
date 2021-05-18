@@ -37,6 +37,8 @@ protected:
     CUartIO			m_comIO;
     BOOL			m_bOpenPort;
     CMutex2			m_Mutex;
+    //
+    DWORD           m_dwClock;
 
 
     BOOL ReadFile(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, BOOL bCheckIndex = TRUE);
@@ -134,10 +136,11 @@ public:
 
     // it = 1 for HID, str is ignored.
     // it = 2 for UART, str as "COM5".
-    void SetInterface(unsigned int it, CString str)
+    void SetInterface(unsigned int it, CString str, DWORD dwClock = 115200)
     {
         m_uInterface = it;
         m_strComNum = str;
+        m_dwClock = dwClock;
     };
     CString m_strDevPathName;
 

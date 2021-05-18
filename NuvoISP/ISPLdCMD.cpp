@@ -53,7 +53,7 @@ bool ISPLdCMD::Open_Port()
             break;
 
         case INTF_UART:
-            if (!m_comIO.OpenDevice(m_strComNum)) {
+            if (!m_comIO.OpenDevice(m_strComNum, m_dwClock)) {
                 return false;
             }
 

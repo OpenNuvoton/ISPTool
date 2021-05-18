@@ -106,9 +106,9 @@ public:
 
     // ISPLdCMD supports different protocol for CAN interface
     ISPLdCMD	m_ISPLdDev;
-    void SetInterface(unsigned int it, CString str)
+    void SetInterface(unsigned int it, CString str, DWORD dwClock = 115200)
     {
-        m_ISPLdDev.SetInterface(it, str);
+        m_ISPLdDev.SetInterface(it, str, dwClock);
     };
 
     EProcSts m_eProcSts;
