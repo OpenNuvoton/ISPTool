@@ -21,7 +21,9 @@
 #define IDC_COMBO_COM_PORT              124
 #define IDC_CHECK_RUN_APROM             125
 #define IDC_LINK_GITHUB                 126
+#define IDC_COMBO_CLOCK                 126
 #define IDC_LINK_GITEE                  127
+#define IDC_COMBO_CLOCK2                127
 #define IDC_LINK_GITLAB                 128
 #define IDD_DIALOG_NUVOISP_WITH_SPI     129
 #define IDD_DIALOG_CONFIGURATION_NANO100 130
@@ -334,6 +336,7 @@
 #define IDD_DIALOG_CHIP_SETTING_NUMICRO 5150
 #define IDD_DIALOG_CHIP_SETTING_CFG_M0A21 5151
 #define IDD_DIALOG_CONFIGURATION_NUC1262 5154
+#define IDD_DIALOG_NUVOISP_MKROM        5155
 #define IDC_STATIC_MYMESSAGE            5535
 #define IDC_STATIC_TOGET                5536
 #define IDC_BUTTON_OK                   5537

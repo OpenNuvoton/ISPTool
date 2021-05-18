@@ -89,11 +89,25 @@ private:
 class CMKromISPDlg : public CNuvoISPDlg
 {
 public:
+    enum { IDD = IDD_DIALOG_NUVOISP_MKROM };
+
     CMKromISPDlg();	// standard constructor
     virtual ~CMKromISPDlg();
     void ShowChipInfo_OnLine(void);
     void ShowChipInfo_OffLine(void);
     void OnKillfocusEditAPRomOffset();
+    void ShowSPIOptions(BOOL bShow) {};
+    // CDialogMain
+    virtual void InitComboBox(int iDummy = 1);
+    virtual void OnSelchangeInterface();
+
+protected:
+    virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
+    virtual BOOL OnInitDialog();
+
+public:
+    CComboBox   m_SelClock;     // For Connect
+    CComboBox   m_SelClock2;    // For Program
 };
 
 

@@ -37,9 +37,9 @@ public:
     CComboBox   m_SelComPort;
     unsigned int m_Interface;
     CString m_ComNum;
-    afx_msg void OnSelchangeInterface();
+    virtual afx_msg void OnSelchangeInterface();
     afx_msg void OnComboChange();
-    void InitComboBox(int iSupportNL2 = 1);
+    virtual void InitComboBox(int iSupportNL2 = 1);
     void EnableInterface(bool bEnable);
     UINT ScanPCCom();
 #ifdef _DEBUG

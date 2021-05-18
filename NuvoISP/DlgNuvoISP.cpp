@@ -1131,7 +1131,7 @@ void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
 }
 
 CMKromISPDlg::CMKromISPDlg()
-    : CNuvoISPDlg()
+    : CNuvoISPDlg(CMKromISPDlg::IDD) // CMKromISPDlg::IDD, IDD_DIALOG_NUVOISP
 {
 }
 
@@ -1223,4 +1223,110 @@ void CMKromISPDlg::OnKillfocusEditAPRomOffset()
     m_uAPROM_Offset = ::_tcstoul(strAddr, 0, 16);
     strAddr.Format(_T("%08X"), m_uAPROM_Offset);
     SetDlgItemText(IDC_EDIT_APROM_BASE_ADDRESS, strAddr);
+}
+
+BOOL CMKromISPDlg::OnInitDialog()
+{
+    CNuvoISPDlg::OnInitDialog();
+    return TRUE;	// return TRUE  unless you set the focus to a control
+}
+//
+//void CMKromISPDlg::OnSelchangeInterface()
+//{
+//    m_SelComPort.EnableWindow(m_SelInterface.GetCurSel() == 1);
+//
+//    if (m_SelInterface.GetCurSel() != 1) {
+//        EnableDlgItem(IDC_BUTTON_CONNECT, true);
+//    } else {
+//        OnComboChange();
+//    }
+//}
+
+void CMKromISPDlg::InitComboBox(int iDummy)
+{
+    m_SelInterface.ResetContent();
+    m_SelInterface.AddString(_T("USB"));
+    m_SelInterface.AddString(_T("UART"));
+    m_SelInterface.AddString(_T("SPI"));
+    m_SelInterface.AddString(_T("I2C"));
+    m_SelInterface.AddString(_T("CAN"));
+    m_SelInterface.SetCurSel(0);
+    m_SelClock.ResetContent();
+    m_SelClock.AddString(_T("115200"));
+    m_SelClock.AddString(_T("230400"));
+    m_SelClock.AddString(_T("460800"));
+    m_SelClock.AddString(_T("921600"));
+    m_SelClock.SetCurSel(0);
+    m_SelClock2.ResetContent();
+    m_SelClock2.AddString(_T("115200"));
+    m_SelClock2.AddString(_T("230400"));
+    m_SelClock2.AddString(_T("460800"));
+    m_SelClock2.AddString(_T("921600"));
+    m_SelClock2.SetCurSel(0);
+    OnSelchangeInterface();
+
+    if (ScanPCCom()) {
+        m_SelComPort.SetCurSel(0);
+    }
+}
+
+
+void CMKromISPDlg::OnSelchangeInterface()
+{
+    static int _clock = 1;
+    int _interface = m_SelInterface.GetCurSel();
+    m_SelComPort.EnableWindow(_interface == 1);
+
+    if ((_interface == 1) || (_interface == 4)) {
+        EnableDlgItem(IDC_COMBO_CLOCK, true);
+        EnableDlgItem(IDC_COMBO_CLOCK2, true);
+
+        if (_clock != _interface) {
+            m_SelClock.ResetContent();
+            int _sel = m_SelClock2.GetCurSel();
+            m_SelClock2.ResetContent();
+            _clock = _interface;
+
+            if (_clock == 1) {
+                m_SelClock.AddString(_T("115200"));
+                m_SelClock.AddString(_T("230400"));
+                m_SelClock.AddString(_T("460800"));
+                m_SelClock.AddString(_T("921600"));
+                m_SelClock2.AddString(_T("115200"));
+                m_SelClock2.AddString(_T("230400"));
+                m_SelClock2.AddString(_T("460800"));
+                m_SelClock2.AddString(_T("921600"));
+            } else {
+                m_SelClock.AddString(_T("250K"));
+                m_SelClock.AddString(_T("500K"));
+                m_SelClock.AddString(_T("750K"));
+                m_SelClock.AddString(_T("1000K"));
+                m_SelClock2.AddString(_T("250K"));
+                m_SelClock2.AddString(_T("500K"));
+                m_SelClock2.AddString(_T("750K"));
+                m_SelClock2.AddString(_T("1000K"));
+            }
+
+            m_SelClock.SetCurSel(0);
+            m_SelClock2.SetCurSel(_sel);
+        }
+    } else {
+        EnableDlgItem(IDC_COMBO_CLOCK, false);
+        EnableDlgItem(IDC_COMBO_CLOCK2, false);
+    }
+
+    if (_interface == 1) {
+        OnComboChange();
+    } else {
+        EnableDlgItem(IDC_BUTTON_CONNECT, true);
+    }
+}
+
+void CMKromISPDlg::DoDataExchange(CDataExchange *pDX)
+{
+    CNuvoISPDlg::DoDataExchange(pDX);
+    //{{AFX_DATA_MAP(CNuvoISPDlg)
+    DDX_Control(pDX, IDC_COMBO_CLOCK, m_SelClock);
+    DDX_Control(pDX, IDC_COMBO_CLOCK2, m_SelClock2);
+    //}}AFX_DATA_MAP
 }
