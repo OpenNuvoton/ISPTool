@@ -868,3 +868,61 @@ BOOL ISPLdCMD::WriteFile(unsigned long uCmd, const char *pcBuffer, DWORD dwLen, 
         return WriteFileMKROM(uCmd, pcBuffer, dwLen, dwMilliseconds);
     }
 }
+
+/* short ack command - 32-bits x 3:
+    [ checksum + cmd_id ] + [ packet number ] + [ result ]
+      [31:16]    [15:0]          [31:0]           [31:0]
+*/
+
+BOOL ISPLdCMD::Cmd_SET_UART_SPEED(DWORD dwClock)
+{
+    if (WriteFileMKROM(CMD_SET_UART_SPEED, (const char *)(&dwClock), 4)) {
+        return ReadFileMKROM(NULL, 0, USBCMD_TIMEOUT_LONG, TRUE);
+    } else {
+        return FALSE;
+    }
+}
+
+BOOL ISPLdCMD::Cmd_SET_CAN_SPEED(DWORD dwClock)
+{
+    if (WriteFileMKROM(CMD_SET_CAN_SPEED, (const char *)(&dwClock), 4)) {
+        return ReadFileMKROM(NULL, 0, USBCMD_TIMEOUT_LONG, TRUE);
+    } else {
+        return FALSE;
+    }
+}
+
+BOOL ISPLdCMD::Cmd_REBOOT_SOURCE(DWORD rebootSrc, DWORD address)
+{
+    DWORD Input[] = { rebootSrc, address };
+    return WriteFileMKROM(CMD_SET_CAN_SPEED, (const char *)(Input), 8);
+}
+
+BOOL ISPLdCMD::Cmd_GOTO_USBDISP(void)
+{
+    if (WriteFileMKROM(CMD_GOTO_USBDISP)) {
+        return ReadFileMKROM(NULL, 0, USBCMD_TIMEOUT_LONG, TRUE);
+    } else {
+        return FALSE;
+    }
+}
+
+BOOL ISPLdCMD::Cmd_ERASE_ALL_FLASH(void)
+{
+    if (WriteFileMKROM(CMD_ERASE_ALL_FLASH)) {
+        return ReadFileMKROM(NULL, 0, USBCMD_TIMEOUT_LONG, TRUE);
+    } else {
+        return FALSE;
+    }
+}
+
+BOOL ISPLdCMD::Cmd_ERASE_PAGE(DWORD address, DWORD page_cnt)
+{
+    DWORD Input[] = { address, page_cnt };
+
+    if (WriteFileMKROM(CMD_ERASE_PAGE, (const char *)(Input), 8)) {
+        return ReadFileMKROM(NULL, 0, USBCMD_TIMEOUT_LONG, TRUE);
+    } else {
+        return FALSE;
+    }
+}

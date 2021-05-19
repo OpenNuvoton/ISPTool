@@ -148,7 +148,47 @@ public:
     BOOL Cmd_ERASE_SPIFLASH(unsigned long offset, unsigned long total_len);
     BOOL Cmd_UPDATE_SPIFLASH(unsigned long offset, unsigned long total_len, const char *buffer);
 
+
+    enum {
+        /* short ack command - 32-bits x 3:
+            [ checksum + cmd_id ] + [ packet number ] + [ result ]
+              [31:16]    [15:0]          [31:0]           [31:0]
+        */
+        CMD_SET_UART_SPEED = 0x00A1,
+        CMD_SET_CAN_SPEED = 0x00A2,
+        CMD_REBOOT_SOURCE = 0x00AB,
+        CMD_WRITE_DATA = 0x00A0,
+        CMD_WRITE_DATA_EXT = 0x00D4,
+        //CMD_SYNC_PACKNO = 0x00A4,
+        CMD_GOTO_USBDISP = 0x00E3,
+        CMD_ERASE_ALL_FLASH = 0x00A3,
+        CMD_ERASE_PAGE = 0x00D3,
+        //CMD_RESEND_PACKET = 0x00FF,
+
+        /* long ack command - 32-bits x 16:
+           [ checksum + cmd_id ] + [ packet number ] + [ result ] + [ word-0 ~ word-12 ]
+             [31:16]    [15:0]          [31:0]           [31:0]
+        */
+        CMD_GET_CHIP_INFO = 0x00AE,
+        CMD_READ_DATA = 0x00D1,
+    };
+
+    BOOL Cmd_SET_UART_SPEED(DWORD dwClock);
+    BOOL Cmd_SET_CAN_SPEED(DWORD dwClock);
+    BOOL Cmd_REBOOT_SOURCE(DWORD rebootSrc, DWORD address);
+    BOOL Cmd_GOTO_USBDISP(void);
+    BOOL Cmd_ERASE_ALL_FLASH(void);
+    BOOL Cmd_ERASE_PAGE(DWORD address, DWORD page_cnt);
+
+
 };
+
+
+#define CMD_RST_SRC_CHIP            (0x1ul)
+#define CMD_RST_SRC_CPU             (0x2ul) // + vecmap addr (512-bytes alignment)
+#define CMD_RST_SRC_SYS             (0x4ul) // + vecmap addr (512-bytes alignment)
+#define CMD_EXEC_ADDR               (0x8ul) // + vrot addr (1024-bytes alignment)
+
 
 #ifdef _DEBUG
 // Offline Test
