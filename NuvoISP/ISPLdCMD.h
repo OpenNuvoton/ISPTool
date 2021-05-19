@@ -154,23 +154,25 @@ public:
             [ checksum + cmd_id ] + [ packet number ] + [ result ]
               [31:16]    [15:0]          [31:0]           [31:0]
         */
-        CMD_SET_UART_SPEED = 0x00A1,
-        CMD_SET_CAN_SPEED = 0x00A2,
-        CMD_REBOOT_SOURCE = 0x00AB,
-        CMD_WRITE_DATA = 0x00A0,
-        CMD_WRITE_DATA_EXT = 0x00D4,
-        //CMD_SYNC_PACKNO = 0x00A4,
-        CMD_GOTO_USBDISP = 0x00E3,
-        CMD_ERASE_ALL_FLASH = 0x00A3,
-        CMD_ERASE_PAGE = 0x00D3,
+        CMD_REBOOT_SOURCE = 0x00B0,     // por, cpu, sys, specify base(vecmap+vtor)
+        CMD_WRITE_DATA = 0x00D0,        // write directly
+        CMD_WRITE_DATA_EXT = 0x00D1,    // erase then write
+
+        CMD_GOTO_USBDISP = 0x00C0,      // change to USB mode
+        CMD_SET_UART_SPEED = 0x00C1,    // 115200, 230400, 460800, 921600
+        CMD_SET_CAN_SPEED = 0x00C2,     // 250k, 500k, 750k, 1000k
+
+        CMD_ERASE_PAGE = 0x00E0,        // easre according address and page counts
+        CMD_ERASE_ALL_FLASH = 0x00E1,   // erase APROM, LDROM
+
         //CMD_RESEND_PACKET = 0x00FF,
 
         /* long ack command - 32-bits x 16:
            [ checksum + cmd_id ] + [ packet number ] + [ result ] + [ word-0 ~ word-12 ]
              [31:16]    [15:0]          [31:0]           [31:0]
         */
-        CMD_GET_CHIP_INFO = 0x00AE,
-        CMD_READ_DATA = 0x00D1,
+        CMD_GET_CHIP_INFO = 0x00A0,     // connect, the first command
+        CMD_READ_DATA = 0x00D2,
     };
 
     BOOL Cmd_SET_UART_SPEED(DWORD dwClock);
