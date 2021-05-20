@@ -311,6 +311,8 @@ void ISPLdCMD::SyncPackno()
 {
     if (m_uInterface == INTF_CAN) {
         return; // not support
+    } else if (m_iIspType == TYPE_MKROM) {
+        return; // not support
     }
 
     m_uCmdIndex = 1;
@@ -326,6 +328,8 @@ unsigned char ISPLdCMD::GetVersion()
 {
     if (m_uInterface == INTF_CAN) {
         return 0xCA; // not support
+    } else if (m_iIspType == TYPE_MKROM) {
+        return mkChipInfo[1];
     }
 
     WriteFile(
@@ -352,6 +356,8 @@ unsigned long ISPLdCMD::GetDeviceID()
         } else {
             return 0;
         }
+    } else if (m_iIspType == TYPE_MKROM) {
+        return mkChipInfo[0];
     }
 
     WriteFile(
@@ -375,6 +381,12 @@ void ISPLdCMD::ReadConfig(unsigned int config[])
                     config[i] = *((ULONG *)&m_acBuffer[5]);
                 }
             }
+        }
+
+        return;
+    } else if (m_iIspType == TYPE_MKROM) {
+        if (Cmd_GET_CHIP_INFO()) {
+            memcpy(config, &mkChipInfo[5], 16);
         }
 
         return;
@@ -590,6 +602,13 @@ BOOL ISPLdCMD::CMD_Connect(DWORD dwMilliseconds)
         }
 
         return ret;
+    } else if (m_iIspType == TYPE_MKROM) {
+        if (Cmd_GET_CHIP_INFO()) {
+            m_uCmdIndex = 3;
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
 
     if (m_uUSB_PID == 0xA316) {
@@ -817,6 +836,8 @@ BOOL ISPLdCMD::WriteFileMKROM(unsigned long uCmd, const char *pcBuffer, DWORD dw
     }
 
     m_usCheckSum = Checksum((unsigned char *)&m_acBuffer[5], sizeof(m_acBuffer) - 5);
+    // 2021.05.19 new check sum should include the command id.
+    m_usCheckSum += uCmd;
     *((unsigned short *)&m_acBuffer[3]) = m_usCheckSum;
     DWORD dwLength;
     BOOL bRet = FALSE;
@@ -926,3 +947,15 @@ BOOL ISPLdCMD::Cmd_ERASE_PAGE(DWORD address, DWORD page_cnt)
         return FALSE;
     }
 }
+
+BOOL ISPLdCMD::Cmd_GET_CHIP_INFO(void)
+{
+    bSupport_SPI = 0;
+
+    if (WriteFileMKROM(CMD_GET_CHIP_INFO)) {
+        return ReadFileMKROM((char *)(mkChipInfo), 36, USBCMD_TIMEOUT_LONG, FALSE); // don't check index
+    } else {
+        return FALSE;
+    }
+}
+

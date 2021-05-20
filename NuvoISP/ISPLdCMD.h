@@ -181,7 +181,9 @@ public:
     BOOL Cmd_GOTO_USBDISP(void);
     BOOL Cmd_ERASE_ALL_FLASH(void);
     BOOL Cmd_ERASE_PAGE(DWORD address, DWORD page_cnt);
+    BOOL Cmd_GET_CHIP_INFO(void);
 
+    DWORD mkChipInfo[9];
 
 };
 
