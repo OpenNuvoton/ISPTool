@@ -412,6 +412,12 @@ void ISPLdCMD::UpdateConfig(unsigned int config[], unsigned int response[])
         }
 
         return;
+    }  else if (m_iIspType == TYPE_MKROM) {
+        if (Cmd_WRITE_DATA_EXT(FMC_CONFIG_BASE, 16, (DWORD *)config)) {
+            memcpy(response, config, 16);
+        }
+
+        return;
     }
 
     WriteFile(
@@ -464,11 +470,12 @@ void ISPLdCMD::UpdateAPROM(unsigned long start_addr,
             write_len = sizeof(acBuffer) - 8/*start_addr, total_len*/;
         }
 
+        unsigned long uCmd = (m_iIspType == TYPE_LDROM) ? CMD_UPDATE_APROM : CMD_WRITE_DATA_EXT;
         memcpy(&acBuffer[0], &start_addr, 4);
         memcpy(&acBuffer[4], &total_len, 4);
         memcpy(&acBuffer[8], buffer, write_len);
         WriteFile(
-            CMD_UPDATE_APROM,
+            uCmd,
             acBuffer,
             write_len + 8/*start_addr, total_len*/,
             USBCMD_TIMEOUT_LONG);
@@ -513,11 +520,12 @@ void ISPLdCMD::UpdateNVM(unsigned long start_addr,
             write_len = sizeof(acBuffer) - 8/*start_addr, total_len*/;
         }
 
+        unsigned long uCmd = (m_iIspType == TYPE_LDROM) ? CMD_UPDATE_DATAFLASH : CMD_WRITE_DATA_EXT;
         memcpy(&acBuffer[0], &start_addr, 4);
         memcpy(&acBuffer[4], &total_len, 4);
         memcpy(&acBuffer[8], buffer, write_len);
         WriteFile(
-            CMD_UPDATE_DATAFLASH,
+            uCmd,
             acBuffer,
             write_len + 8/*start_addr, total_len*/,
             USBCMD_TIMEOUT_LONG);
@@ -945,6 +953,24 @@ BOOL ISPLdCMD::Cmd_ERASE_PAGE(DWORD address, DWORD page_cnt)
     }
 }
 
+BOOL ISPLdCMD::Cmd_WRITE_DATA_EXT(DWORD address, DWORD byte_length, DWORD *data)
+{
+    size_t len = (byte_length < 48) ? byte_length : 48;
+    DWORD Input[16] = { address, byte_length };
+    memcpy(&Input[2], data, len);
+
+    if (WriteFileMKROM(CMD_WRITE_DATA_EXT, (const char *)(Input), len + 16)) {
+        return ReadFileMKROM(NULL, 0, USBCMD_TIMEOUT_LONG, TRUE);
+    }
+
+    return FALSE;
+}
+
+/* long ack command - 32-bits x 16:
+   [ checksum + cmd_id ] + [ packet number ] + [ result ] + [ word-0 ~ word-12 ]
+     [31:16]    [15:0]          [31:0]           [31:0]
+*/
+
 BOOL ISPLdCMD::Cmd_GET_CHIP_INFO(void)
 {
     bSupport_SPI = 0;
@@ -959,4 +985,5 @@ BOOL ISPLdCMD::Cmd_GET_CHIP_INFO(void)
 
     return FALSE;
 }
+
 

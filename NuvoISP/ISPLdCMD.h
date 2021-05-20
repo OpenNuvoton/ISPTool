@@ -165,8 +165,6 @@ public:
         CMD_ERASE_PAGE = 0x00E0,        // easre according address and page counts
         CMD_ERASE_ALL_FLASH = 0x00E1,   // erase APROM, LDROM
 
-        //CMD_RESEND_PACKET = 0x00FF,
-
         /* long ack command - 32-bits x 16:
            [ checksum + cmd_id ] + [ packet number ] + [ result ] + [ word-0 ~ word-12 ]
              [31:16]    [15:0]          [31:0]           [31:0]
@@ -185,6 +183,7 @@ public:
 
     DWORD mkChipInfo[9];
 
+    BOOL Cmd_WRITE_DATA_EXT(DWORD address, DWORD length, DWORD *data);
 };
 
 
@@ -193,6 +192,7 @@ public:
 #define CMD_RST_SRC_SYS             (0x4ul) // + vecmap addr (512-bytes alignment)
 #define CMD_EXEC_ADDR               (0x8ul) // + vrot addr (1024-bytes alignment)
 
+#define FMC_CONFIG_BASE             0x00300000UL
 
 #ifdef _DEBUG
 // Offline Test
