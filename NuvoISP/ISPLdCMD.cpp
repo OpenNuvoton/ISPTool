@@ -545,6 +545,8 @@ BOOL ISPLdCMD::EraseAll()
 {
     if (m_uInterface == INTF_CAN) {
         return FALSE; // not support
+    }  else if (m_iIspType == TYPE_MKROM) {
+        return Cmd_ERASE_ALL_FLASH();
     }
 
     BOOL ret = FALSE;
@@ -603,12 +605,7 @@ BOOL ISPLdCMD::CMD_Connect(DWORD dwMilliseconds)
 
         return ret;
     } else if (m_iIspType == TYPE_MKROM) {
-        if (Cmd_GET_CHIP_INFO()) {
-            m_uCmdIndex = 3;
-            return TRUE;
-        } else {
-            return FALSE;
-        }
+        return Cmd_GET_CHIP_INFO();
     }
 
     if (m_uUSB_PID == 0xA316) {
@@ -953,9 +950,13 @@ BOOL ISPLdCMD::Cmd_GET_CHIP_INFO(void)
     bSupport_SPI = 0;
 
     if (WriteFileMKROM(CMD_GET_CHIP_INFO)) {
-        return ReadFileMKROM((char *)(mkChipInfo), 36, USBCMD_TIMEOUT_LONG, FALSE); // don't check index
-    } else {
-        return FALSE;
+        // don't check index
+        if (ReadFileMKROM((char *)(mkChipInfo), 36, USBCMD_TIMEOUT_LONG, FALSE)) {
+            m_uCmdIndex = 3;
+            return TRUE;
+        }
     }
+
+    return FALSE;
 }
 
