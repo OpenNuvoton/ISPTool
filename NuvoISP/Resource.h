@@ -25,8 +25,12 @@
 #define IDC_LINK_GITEE                  127
 #define IDC_COMBO_CLOCK2                127
 #define IDC_LINK_GITLAB                 128
+#define IDC_COMBO_REBOOT                128
 #define IDD_DIALOG_NUVOISP_WITH_SPI     129
+#define IDC_CHECK_CLOCK                 129
 #define IDD_DIALOG_CONFIGURATION_NANO100 130
+#define IDC_CHECK_CLOCK2                130
+#define IDC_CHECK_USBDISP               131
 #define IDD_DIALOG_CONFIGURATION_MINI51 132
 #define IDI_ICON_NULINK                 134
 #define IDD_DIALOG_CONFIGURATION_NUC200 136
@@ -232,6 +236,7 @@
 #define IDC_EDIT_APROM_BASE_ADDRESS     1212
 #define IDC_EDIT_SPIFLASH_INFORMATION   1212
 #define IDC_STATIC_SPI_DATA_RW_SIZE     1213
+#define IDC_EDIT_VECMAP                 1213
 #define IDC_EDIT_SPI_DATA_RW_SIZE       1214
 #define IDC_STATIC_SPI_DATA_RW_SIZE1    1215
 #define IDC_STATIC_SPI_CODE_RW_SIZE     1216

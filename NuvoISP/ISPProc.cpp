@@ -40,6 +40,12 @@ CISPProc::CISPProc(HWND *pWnd)
     , m_bSupport_SPI(0)
     , m_bProgram_SPI(0)
     , m_bErase_SPI(0)
+      // For MKROM ISP only
+    , m_bSet_CLOCK(0)
+    , m_uClock(0)
+    , m_uReBootSrc(CMD_RST_SRC_CHIP)
+    , m_uVecMap(0)
+    , m_bSet_USBDISP(0)
 {
     MainHWND = pWnd;
     m_hThreadMutex = ::CreateMutex(NULL, FALSE, NULL);
@@ -453,12 +459,57 @@ void CISPProc::Thread_ProgramFlash()
         }
 
         if (m_bRunAPROM) {
-            m_ISPLdDev.RunAPROM();
+            if (m_uReBootSrc) {
+                m_ISPLdDev.Cmd_REBOOT_SOURCE(m_uReBootSrc, m_uVecMap);
+            } else {
+                m_ISPLdDev.RunAPROM();
+            }
+
             m_eProcSts = EPS_OK;
             time_t end = time(NULL);
             m_uProgTime = unsigned int(end - start);
             CString str;
             str.Format(_T("Programming flash, OK! Run to APROM (%d secs)"), m_uProgTime);
+
+            if (MainHWND != NULL) {
+                MessageBox(*MainHWND, str, _T(""), MB_ICONINFORMATION);
+            }
+
+            // For Virtual Com Port device, it takes more than 5ms to convert USB signals to UART signals. (64 * 10 * 1000 / 115200 )
+            // After sending Reset Command by PC Tool, we must wait for a little time to make sure the target device will receive Reset Command.
+            // Without this latency, the Close Port operation will cancel the transmission immediately.
+            Sleep(20);
+            Set_ThreadAction(&CISPProc::Thread_Idle);
+            return;
+        }
+
+        if (m_bSet_USBDISP) {
+            m_ISPLdDev.Cmd_GOTO_USBDISP();
+            m_eProcSts = EPS_OK;
+            time_t end = time(NULL);
+            m_uProgTime = unsigned int(end - start);
+            CString str;
+            str.Format(_T("Set USBDISP OK! Reconnect using USBD (not supported yet). (%d secs)"), m_uProgTime);
+
+            if (MainHWND != NULL) {
+                MessageBox(*MainHWND, str, _T(""), MB_ICONINFORMATION);
+            }
+
+            // For Virtual Com Port device, it takes more than 5ms to convert USB signals to UART signals. (64 * 10 * 1000 / 115200 )
+            // After sending Reset Command by PC Tool, we must wait for a little time to make sure the target device will receive Reset Command.
+            // Without this latency, the Close Port operation will cancel the transmission immediately.
+            Sleep(20);
+            Set_ThreadAction(&CISPProc::Thread_Idle);
+            return;
+        }
+
+        if (m_bSet_CLOCK) {
+            m_ISPLdDev.Cmd_SET_UART_SPEED(m_uClock);
+            m_eProcSts = EPS_OK;
+            time_t end = time(NULL);
+            m_uProgTime = unsigned int(end - start);
+            CString str;
+            str.Format(_T("Set Clock (%d) OK! Reconnect using new clock setting. (%d secs)"), m_uClock, m_uProgTime);
 
             if (MainHWND != NULL) {
                 MessageBox(*MainHWND, str, _T(""), MB_ICONINFORMATION);

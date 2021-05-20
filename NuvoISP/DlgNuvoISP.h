@@ -56,7 +56,7 @@ protected:
     //virtual void OnCancel();
     virtual afx_msg void OnButtonConnect();
     afx_msg void OnButtonLoadFile();
-    afx_msg void OnButtonStart();
+    virtual afx_msg void OnButtonStart();
     afx_msg void OnSelchangeTabData(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnDropFiles(HDROP hDropInfo);
     afx_msg void OnButtonConfig();
@@ -102,6 +102,7 @@ public:
     virtual void OnSelchangeInterface();
     // CNuvoISPDlg
     virtual afx_msg void OnButtonConnect();
+    virtual afx_msg void OnButtonStart();
 
 protected:
     virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
@@ -110,6 +111,7 @@ protected:
 public:
     CComboBox   m_SelClock;     // For Connect
     CComboBox   m_SelClock2;    // For Program
+    CComboBox   m_SelReBoot;
 };
 
 

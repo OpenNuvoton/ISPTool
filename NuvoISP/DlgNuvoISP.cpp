@@ -1264,6 +1264,12 @@ void CMKromISPDlg::InitComboBox(int iDummy)
     m_SelClock2.AddString(_T("921600"));
     m_SelClock2.SetCurSel(0);
     OnSelchangeInterface();
+    m_SelReBoot.ResetContent();
+    m_SelReBoot.AddString(_T("CMD_RST_SRC_CHIP"));
+    m_SelReBoot.AddString(_T("CMD_RST_SRC_CPU"));
+    m_SelReBoot.AddString(_T("CMD_RST_SRC_SYS"));
+    m_SelReBoot.AddString(_T("CMD_EXEC_ADDR"));
+    m_SelReBoot.SetCurSel(0);
 
     if (ScanPCCom()) {
         m_SelComPort.SetCurSel(0);
@@ -1301,10 +1307,10 @@ void CMKromISPDlg::OnSelchangeInterface()
                 m_SelClock.AddString(_T("500K"));
                 m_SelClock.AddString(_T("750K"));
                 m_SelClock.AddString(_T("1000K"));
-                m_SelClock2.AddString(_T("250K"));
-                m_SelClock2.AddString(_T("500K"));
-                m_SelClock2.AddString(_T("750K"));
-                m_SelClock2.AddString(_T("1000K"));
+                m_SelClock2.AddString(_T("250000"));
+                m_SelClock2.AddString(_T("500000"));
+                m_SelClock2.AddString(_T("750000"));
+                m_SelClock2.AddString(_T("1000000"));
             }
 
             m_SelClock.SetCurSel(0);
@@ -1328,6 +1334,9 @@ void CMKromISPDlg::DoDataExchange(CDataExchange *pDX)
     //{{AFX_DATA_MAP(CNuvoISPDlg)
     DDX_Control(pDX, IDC_COMBO_CLOCK, m_SelClock);
     DDX_Control(pDX, IDC_COMBO_CLOCK2, m_SelClock2);
+    DDX_Control(pDX, IDC_COMBO_REBOOT, m_SelReBoot);
+    DDX_Check(pDX, IDC_CHECK_CLOCK, m_bSet_CLOCK);
+    DDX_Check(pDX, IDC_CHECK_USBDISP, m_bSet_USBDISP);
     //}}AFX_DATA_MAP
 }
 
@@ -1356,4 +1365,96 @@ void CMKromISPDlg::OnButtonConnect()
         /* Disconnect */
         Set_ThreadAction(&CISPProc::Thread_Idle);
     }
+}
+
+void CMKromISPDlg::OnButtonStart()
+{
+    UpdateData(TRUE);
+    // M487KMCAN
+    m_bProgram_SPI = 0;
+    m_bErase_SPI = 0;
+
+    if (m_bProgram_APROM || m_bProgram_NVM || m_bProgram_Config || m_bErase || m_bRunAPROM || m_bSet_CLOCK || m_bSet_USBDISP) {
+        // Check Standart ISP Options
+    } else if (m_bSupport_SPI && (m_bProgram_SPI || m_bErase_SPI)) {
+        // Check Extend ISP Options for SPI Flash
+    } else {
+        MessageBox(_T("You did not select any operation."), NULL, MB_ICONSTOP);
+        return;
+    }
+
+    /* WYLIWYP : What You Lock Is What You Program*/
+    /* Lock ALL */
+    EnableProgramOption(FALSE);
+    /* Check thread status */
+    CString strErr = _T("");
+    LockGUI();
+
+    if (m_fnThreadProcStatus == &CISPProc::Thread_CheckDisconnect)
+        // if(m_fnThreadProcStatus == &CNuvoISPDlg::Thread_Idle)
+    {
+        /* Check write size */
+        if (strErr.IsEmpty() && m_bProgram_APROM) {
+            if (m_sFileInfo[0].st_size == 0) {
+                strErr = _T("Can not load APROM file for programming!");
+            }
+        }
+
+        if (strErr.IsEmpty() && m_bProgram_NVM) {
+            if (m_sFileInfo[1].st_size == 0) {
+                strErr = _T("Can not load data flash file for programming!");
+            }
+        }
+
+        if (strErr.IsEmpty() && m_bProgram_SPI && m_bSupport_SPI) {
+            if (m_sFileInfo[2].st_size == 0) {
+                strErr = _T("Can not load SPI flash file for programming!");
+            }
+        }
+
+        // In case user press "Enter" after typing offset, need to call OnKillfocusEditAPRomOffset manually
+        OnKillfocusEditAPRomOffset();
+        UpdateAddrOffset();
+
+        if (m_bSet_CLOCK) {
+            m_uClock = GetDlgItemInt(IDC_COMBO_CLOCK2);
+        }
+
+        if (m_bRunAPROM) {
+            m_uReBootSrc = (1 << m_SelReBoot.GetCurSel());
+            //
+            CString strAddr;
+            GetDlgItemText(IDC_EDIT_VECMAP, strAddr);
+            m_uVecMap = ::_tcstoul(strAddr, 0, 16);
+
+            if (m_uReBootSrc == CMD_RST_SRC_CHIP) {
+            } else if (m_uReBootSrc == CMD_RST_SRC_CPU) {
+            } else if (m_uReBootSrc == CMD_RST_SRC_SYS) {
+            } else if (m_uReBootSrc == CMD_EXEC_ADDR) {
+            } else {
+            }
+
+            strAddr.Format(_T("%08X"), m_uVecMap);
+            SetDlgItemText(IDC_EDIT_VECMAP, strAddr);
+        }
+
+        if (strErr.IsEmpty() && m_bProgram_SPI && m_bSupport_SPI) {
+            if (m_sFileInfo[2].st_size == 0) {
+                strErr = _T("Can not load SPI flash file for programming!");
+            }
+        }
+
+        if (strErr.IsEmpty()) {
+            Set_ThreadAction(&CISPProc::Thread_ProgramFlash);
+        }
+    } else {
+        strErr = _T("Please wait for ISP operation.");
+    }
+
+    if (!strErr.IsEmpty()) {
+        MessageBox(strErr, NULL, MB_ICONSTOP);
+        EnableProgramOption(TRUE);
+    }
+
+    UnlockGUI();
 }

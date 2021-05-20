@@ -104,6 +104,13 @@ public:
     BOOL	m_bProgram_SPI;
     BOOL	m_bErase_SPI;
 
+    // For MKROM ISP only
+    BOOL	m_bSet_CLOCK;
+    BOOL	m_bSet_USBDISP;
+    unsigned int m_uClock;
+    unsigned int m_uReBootSrc;
+    unsigned int m_uVecMap;
+
     // ISPLdCMD supports different protocol for CAN interface
     ISPLdCMD	m_ISPLdDev;
     void SetInterface(unsigned int it, CString str, DWORD dwClock = 115200)
