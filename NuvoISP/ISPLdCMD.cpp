@@ -917,7 +917,7 @@ BOOL ISPLdCMD::Cmd_SET_CAN_SPEED(DWORD dwClock)
 BOOL ISPLdCMD::Cmd_REBOOT_SOURCE(DWORD rebootSrc, DWORD address)
 {
     DWORD Input[] = { rebootSrc, address };
-    return WriteFileMKROM(CMD_SET_CAN_SPEED, (const char *)(Input), 8);
+    return WriteFileMKROM(CMD_REBOOT_SOURCE, (const char *)(Input), 8);
 }
 
 BOOL ISPLdCMD::Cmd_GOTO_USBDISP(void)
