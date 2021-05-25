@@ -577,14 +577,14 @@ BOOL ISPLdCMD::MKROM_Connect(DWORD dwMilliseconds)
     }
 
     // BOOL ISPLdCMD::WriteFile
-    memset(m_acBuffer, 0, sizeof(m_acBuffer));
-    m_acBuffer[0] = 'a';
-    m_acBuffer[1] = 'a';
-    m_acBuffer[2] = 'a';
-    m_acBuffer[3] = 'a';
+    memset(m_acBuffer, 'a', sizeof(m_acBuffer));
+    //m_acBuffer[0] = 'a';
+    //m_acBuffer[1] = 'a';
+    //m_acBuffer[2] = 'a';
+    //m_acBuffer[3] = 'a';
     DWORD dwLength;
 
-    if (m_comIO.WriteFile(m_acBuffer, 4, &dwLength, dwMilliseconds)) {
+    if (m_comIO.WriteFile(m_acBuffer, 64, &dwLength, dwMilliseconds)) {
         if (!m_comIO.ReadFile(m_acBuffer, 1, &dwLength, dwMilliseconds)) {
             printf("NG in m_comIO.ReadFile\n");
             return FALSE;

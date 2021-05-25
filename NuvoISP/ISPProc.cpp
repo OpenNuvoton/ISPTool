@@ -146,12 +146,11 @@ void CISPProc::Thread_CheckUSBConnect()
 
     m_ISPLdDev.Close_Port();
     DWORD dwWait = 0;
-    DWORD dwStart = GetTickCount();
+    DWORD dwStart = 0;
 
     while (m_fnThreadProcStatus == &CISPProc::Thread_CheckUSBConnect) {
         if (m_ISPLdDev.Open_Port()) {
             m_eProcSts = EPS_ERR_CONNECT;
-            dwStart = GetTickCount();
 
             try {
                 if (m_ISPLdDev.MKROM_Connect(1)) {
