@@ -26,6 +26,7 @@ class ISPLdCMD
 {
 protected:
     CHAR	m_acBuffer[HID_MAX_PACKET_SIZE_EP + 1];
+    CHAR	m_acPattern[HID_MAX_PACKET_SIZE_EP + 1];
     unsigned long m_uCmdIndex;
     USHORT	m_usCheckSum;
 
