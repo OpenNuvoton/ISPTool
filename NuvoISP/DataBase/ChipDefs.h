@@ -567,6 +567,8 @@ typedef enum {
 #	define OT8051_CONFIG_LDSIZE_3K		0x04
 #	define OT8051_CONFIG_LDSIZE_4K		0x03
 
+#define OT8051_CONFIG_IODEFAULT			0x20
+
 /* CONFIG 2 */
 #define OT8051_CONFIG_CBORST			0x04
 #define OT8051_CONFIG_BOIAP				0x08
@@ -584,6 +586,11 @@ typedef enum {
 
 /* CONFIG 3 */
 //XTGS[1:0]
+#define OT8051_CONFIG_CLKDIV			0x03
+#	define OT8051_CONFIG_CLKDIV_3		0x03
+#	define OT8051_CONFIG_CLKDIV_2		0x02
+#	define OT8051_CONFIG_CLKDIV_1		0x01
+#	define OT8051_CONFIG_CLKDIV_0		0x00
 
 /* CONFIG 4 */
 #define OT8051_CONFIG_WDT				0xF0
@@ -606,5 +613,7 @@ typedef enum {
 #define OT8051_SID_MS51_32K				0x5300
 
 #define OT8051_SID_ML56_64K				0x5700
+
+#define OT8051_SID_MUG51_16K			0x6300
 
 #endif

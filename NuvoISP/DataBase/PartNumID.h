@@ -11,6 +11,7 @@
 
 #include <string>
 #include <sstream>
+#include "ChipDefs.h"
 
 struct CPartNumID {
     char szPartNumber[32];

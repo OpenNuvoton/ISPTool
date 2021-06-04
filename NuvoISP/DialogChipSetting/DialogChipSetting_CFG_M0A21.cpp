@@ -1033,8 +1033,8 @@ void CDialogChipSetting_CFG_M471::UpdateUI()
     GetDlgItem(IDC_RADIO_RPD_INPUT)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_RADIO_BOV_3)->SetWindowText(_T("4.4V"));
     GetDlgItem(IDC_RADIO_BOV_2)->SetWindowText(_T("3.7V"));
-    GetDlgItem(IDC_RADIO_BOV_1)->SetWindowText(_T("3.3V"));
-    GetDlgItem(IDC_RADIO_BOV_0)->SetWindowText(_T("2.3V"));
+    GetDlgItem(IDC_RADIO_BOV_1)->SetWindowText(_T("2.7V"));
+    GetDlgItem(IDC_RADIO_BOV_0)->SetWindowText(_T("2.4V"));
     GetDlgItem(IDC_GROUP_DATA_FLASH)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_CHECK_DATA_FLASH_ENABLE)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATIC_FLASH_BASE_ADDRESS)->ShowWindow(SW_HIDE);
