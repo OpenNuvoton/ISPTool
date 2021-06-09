@@ -52,6 +52,10 @@ public:
                 m_bProgram_APROM = TRUE;
                 szArgIndex = 0; // 0: APROM
                 fnParseArg = &CMyCommandLineInfo::ParseArg_2files;
+            } else if (_tcscmp(pszParam, _T("spi")) == 0) {
+                m_bProgram_SPI = TRUE;
+                szArgIndex = 2; // 2: SPI Flash
+                fnParseArg = &CMyCommandLineInfo::ParseArg_2files;
             } else if (_tcscmp(pszParam, _T("interface")) == 0) {
                 fnParseArg = &CMyCommandLineInfo::ParseArg_Interface;
             } else if (_tcscmp(pszParam, _T("run")) == 0) {
@@ -113,7 +117,12 @@ BOOL CISPToolApp::InitInstance()
             goto _UI_MODE;
         }
 
-        AttachConsole(ATTACH_PARENT_PROCESS);
+        if (!AttachConsole(ATTACH_PARENT_PROCESS)) {
+            if (!AllocConsole()) {
+                MessageBox(GetConsoleWindow(), _T("Failed to create debug console."), NULL, MB_OKCANCEL | MB_ICONEXCLAMATION);
+            }
+        }
+
         freopen("CONIN$", "r+t", stdin);
         freopen("CONOUT$", "w+t", stdout);
         setbuf(stdout, NULL);
@@ -147,9 +156,9 @@ BOOL CISPToolApp::InitInstance()
             }
 
             if (rCmdInfo.m_eProcSts == EPS_OK) {
-                printf("\nProgram OK.");
+                printf("\n Program OK.");
             } else {
-                printf("\nProgram NG.");
+                printf("\n Program NG.");
             }
 
             if (rCmdInfo.m_bBatch) {

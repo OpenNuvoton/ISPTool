@@ -450,7 +450,14 @@ void CISPProc::Thread_ProgramFlash()
             time_t end = time(NULL);
             m_uProgTime = unsigned int(end - start);
             m_eProcSts = EPS_PROG_DONE;
-            Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
+
+            if (MainHWND != NULL) {
+                Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
+            } else {
+                m_eProcSts = EPS_OK;
+                Set_ThreadAction(&CISPProc::Thread_Idle);
+                return;
+            }
         }
     } catch (...) {
         if (MainHWND != NULL) {
