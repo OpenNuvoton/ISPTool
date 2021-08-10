@@ -52,6 +52,10 @@ public:
                 m_bProgram_APROM = TRUE;
                 szArgIndex = 0; // 0: APROM
                 fnParseArg = &CMyCommandLineInfo::ParseArg_2files;
+            } else if (_tcscmp(pszParam, _T("nvm")) == 0) {
+                m_bProgram_NVM = TRUE;
+                szArgIndex = 1; // 1: Data Flash
+                fnParseArg = &CMyCommandLineInfo::ParseArg_2files;
             } else if (_tcscmp(pszParam, _T("spi")) == 0) {
                 m_bProgram_SPI = TRUE;
                 szArgIndex = 2; // 2: SPI Flash
@@ -63,6 +67,8 @@ public:
             } else if (_tcscmp(pszParam, _T("batch")) == 0) {
                 m_bRunAPROM = TRUE;
                 m_bBatch = true;
+            } else if (_tcscmp(pszParam, _T("erase")) == 0) {
+                m_bErase = TRUE;
             } else {
                 printf("Unknown Error @ ParseParam.\n");
 
@@ -151,6 +157,7 @@ BOOL CISPToolApp::InitInstance()
                         _tprintf(_T("\n ProgramFlash."));
                     } else {
                         _tprintf(_T("\n UnKnown Stage."));
+                        break;
                     }
                 }
             }
@@ -159,6 +166,7 @@ BOOL CISPToolApp::InitInstance()
                 printf("\n Program OK.");
             } else {
                 printf("\n Program NG.");
+                break;
             }
 
             if (rCmdInfo.m_bBatch) {
