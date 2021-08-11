@@ -316,6 +316,11 @@ void CISPProc::Thread_ProgramFlash()
         }
 
         if (m_bProgram_NVM) {
+            // CLI mode
+            if (MainHWND == NULL) {
+                UpdateSizeInfo(m_ulDeviceID, m_CONFIG[0], m_CONFIG[1]);
+            }
+
             uAddr = m_uNVM_Addr;
             uSize = m_sFileInfo[1].st_size;
             pBuffer = vector_ptr(m_sFileInfo[1].vbuf);

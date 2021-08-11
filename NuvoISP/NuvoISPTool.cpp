@@ -155,6 +155,9 @@ BOOL CISPToolApp::InitInstance()
                         _tprintf(_T("\n CheckDeviceConnect."));
                     } else if (fnThreadProcStatus == &CISPProc::Thread_ProgramFlash) {
                         _tprintf(_T("\n ProgramFlash."));
+                    } else if (fnThreadProcStatus == &CISPProc::Thread_CheckDisconnect) {
+                        // In some minor error case (file size check error), isptool did not go into disconnect status.
+                        break;
                     } else {
                         _tprintf(_T("\n UnKnown Stage."));
                         break;
@@ -162,12 +165,57 @@ BOOL CISPToolApp::InitInstance()
                 }
             }
 
-            if (rCmdInfo.m_eProcSts == EPS_OK) {
-                printf("\n Program OK.");
-            } else {
-                printf("\n Program NG.");
-                break;
+            printf("\n ");
+
+            switch (rCmdInfo.m_eProcSts) {
+                case EPS_ERR_OPENPORT:
+                    printf("Open Port Error");
+                    break;
+
+                case EPS_ERR_CONNECT:
+                    printf("CMD_CONNECT Error");
+                    break;
+
+                case EPS_ERR_ERASE:
+                    printf("Erase failed");
+                    break;
+
+                case EPS_ERR_CONFIG:
+                    printf("Update CONFIG failed");
+                    break;
+
+                case EPS_ERR_APROM:
+                    printf("Update APROM failed");
+                    break;
+
+                case EPS_ERR_NVM:
+                    printf("Update Dataflash failed");
+                    break;
+
+                case EPS_ERR_SPI:
+                    printf("Update SPI Flash failed");
+                    break;
+
+                case EPS_ERR_SIZE:
+                    printf("Error: File Size > Flash Size");
+                    break;
+
+                case EPS_PROG_DONE:
+                case EPS_OK:
+                    printf("Programming flash, OK!");
+                    break;
+
+                default:
+                    printf(("Unknown Status %d"), rCmdInfo.m_eProcSts);
+                    break;
             }
+
+            //if (rCmdInfo.m_eProcSts == EPS_OK) {
+            //    printf("\n Program OK.");
+            //} else {
+            //    printf("\n Program NG. %d", rCmdInfo.m_eProcSts);
+            //    break;
+            //}
 
             if (rCmdInfo.m_bBatch) {
                 continue;
