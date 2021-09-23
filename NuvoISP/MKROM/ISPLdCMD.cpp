@@ -40,9 +40,8 @@ bool ISPLdCMD::Open_Port()
                     return false;
                 }
             } else  if (m_iIspType == TYPE_MKROM) {
-                // Temp ID
-                if (m_hidIO.OpenDevice(0x0416, 0x3F00, -1)) {	// ISP FW >= 0x30
-                    m_uUSB_PID = 0x3F00;
+                if (m_hidIO.OpenDevice(0x0416, 0x2000, -1)) {
+                    m_uUSB_PID = 0x2000;
                 } else {
                     return false;
                 }
