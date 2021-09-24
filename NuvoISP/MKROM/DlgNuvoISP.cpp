@@ -1200,7 +1200,7 @@ void CMKromISPDlg::ShowChipInfo_OffLine(void)
     SetDlgItemText(IDC_STATIC_CONFIG_VALUE_2, _T(""));
     SetDlgItemText(IDC_STATIC_CONFIG_VALUE_3, _T(""));
     ChangeBtnText(0, _T("APROM"));
-    ChangeBtnText(1, _T("Data Flash"));
+    ChangeBtnText(1, _T("LDROM"));
     ShowDlgItem(IDC_CHECK_CONFIG, 1);
     ShowDlgItem(IDC_CHECK_ERASE, 1);
     EnableDlgItem(IDC_BUTTON_CONFIG, 1);	// For Debug CONFIG dialog

@@ -31,22 +31,10 @@ bool ISPLdCMD::Open_Port()
 
     switch (m_uInterface) {
         case INTF_HID:
-            if (m_iIspType == TYPE_LDROM) {
-                if (m_hidIO.OpenDevice(0x0416, 0x3F00, -1)) {	// ISP FW >= 0x30
-                    m_uUSB_PID = 0x3F00;
-                } else if (m_hidIO.OpenDevice(0x0416, 0xA316, -1)) {	// ISP FW < 0x30
-                    m_uUSB_PID = 0xA316;
-                } else {
-                    return false;
-                }
-            } else  if (m_iIspType == TYPE_MKROM) {
-                if (m_hidIO.OpenDevice(0x0416, 0x2000, -1)) {
-                    m_uUSB_PID = 0x2000;
-                } else {
-                    return false;
-                }
+            if (m_hidIO.OpenDevice(0x0416, 0x2000, -1)) {
+                m_uUSB_PID = 0x2000;
             } else {
-                throw _T("Invalid ISP Type.");
+                return false;
             }
 
             m_strDevPathName = m_hidIO.GetDevicePath();
@@ -370,8 +358,6 @@ unsigned long ISPLdCMD::GetDeviceID()
     return uID;
 }
 
-#define FMC_USER_CONFIG_0       0x00300000UL
-
 void ISPLdCMD::ReadConfig(unsigned int config[])
 {
     if (m_uInterface == INTF_CAN) {
@@ -505,48 +491,7 @@ void ISPLdCMD::UpdateNVM(unsigned long start_addr,
                          const char *buffer,
                          unsigned long *update_len)
 {
-    if (m_uInterface == INTF_CAN) {
-        UpdateAPROM(start_addr, total_len, cur_addr, buffer, update_len);
-        return;
-    }
-
-    unsigned long write_len = total_len - (cur_addr - start_addr);
-    char acBuffer[
-     HID_MAX_PACKET_SIZE_EP
-     - 8 /* cmd, index */ ];
-
-    if (start_addr == cur_addr) {
-        if (write_len > sizeof(acBuffer) - 8/*start_addr, total_len*/) {
-            write_len = sizeof(acBuffer) - 8/*start_addr, total_len*/;
-        }
-
-        unsigned long uCmd = (m_iIspType == TYPE_LDROM) ? CMD_UPDATE_DATAFLASH : CMD_WRITE_DATA_EXT;
-        memcpy(&acBuffer[0], &start_addr, 4);
-        memcpy(&acBuffer[4], &total_len, 4);
-        memcpy(&acBuffer[8], buffer, write_len);
-        WriteFile(
-            uCmd,
-            acBuffer,
-            write_len + 8/*start_addr, total_len*/,
-            USBCMD_TIMEOUT_LONG);
-        /* First block need erase the chip, need long timeout */
-        ReadFile(NULL, 0, USBCMD_TIMEOUT_LONG, TRUE);
-    } else {
-        if (write_len > sizeof(acBuffer)) {
-            write_len = sizeof(acBuffer);
-        }
-
-        WriteFile(
-            0,
-            buffer,
-            write_len,
-            USBCMD_TIMEOUT_LONG);
-        ReadFile(NULL, 0, USBCMD_TIMEOUT_LONG, TRUE);
-    }
-
-    if (update_len != NULL) {
-        *update_len = write_len;
-    }
+    throw _T("not implemented.");
 }
 
 BOOL ISPLdCMD::EraseAll()
@@ -674,67 +619,16 @@ BOOL ISPLdCMD::RunLDROM()
 
 BOOL ISPLdCMD::Cmd_ERASE_SPIFLASH(unsigned long offset, unsigned long total_len)
 {
-    if (m_uInterface == INTF_CAN) {
-        return FALSE; // not support
-    }
-
-    unsigned long os = offset;
-
-    while (os < total_len) {
-        WriteFile(
-            CMD_ERASE_SPIFLASH,
-            (const char *)&os,
-            4,
-            USBCMD_TIMEOUT_LONG);
-
-        if (ReadFile(NULL, 0, USBCMD_TIMEOUT_LONG, TRUE)) {
-            os += 64 * 1024;
-        } else {
-            return FALSE;
-        }
-    }
-
-    return TRUE;
+    throw _T("not implemented.");
+    return FALSE;
 }
 
 BOOL ISPLdCMD::Cmd_UPDATE_SPIFLASH(unsigned long start_addr,
                                    unsigned long total_len,
                                    const char *buffer)
 {
-    if (m_uInterface == INTF_CAN) {
-        return FALSE; // not support
-    }
-
-    unsigned long write_len = 0;
-    char acBuffer[
-     HID_MAX_PACKET_SIZE_EP
-     - 8 /* cmd, index */ ];
-
-    while (write_len < total_len) {
-        unsigned long addr = start_addr + write_len;
-        unsigned long len = (total_len - write_len);
-
-        if (len > (sizeof(acBuffer) - 8)) {
-            len = (sizeof(acBuffer) - 8);
-        }
-
-        memcpy(&acBuffer[0], &addr, 4);
-        memcpy(&acBuffer[4], &len, 4);
-        memcpy(&acBuffer[8], buffer + write_len, len);
-        WriteFile(
-            CMD_UPDATE_SPIFLASH,
-            acBuffer,
-            len + 8/*start_addr, total_len*/,
-            USBCMD_TIMEOUT_LONG);
-
-        if (ReadFile(NULL, 0, USBCMD_TIMEOUT_LONG, TRUE)) {
-            write_len += len;
-        } else {
-            return FALSE;
-        }
-    }
-
-    return TRUE;
+    throw _T("not implemented.");
+    return FALSE;
 }
 
 

@@ -2,6 +2,13 @@
 #define INC__ISP_LD_H__
 #pragma once
 
+// fmc.h
+#define FMC_LDROM_BASE          0x00100000UL    /*!< LDROM base address          \hideinitializer */
+#define FMC_CONFIG_BASE         0x00300000UL    /*!< User Configuration address  \hideinitializer */
+#define FMC_USER_CONFIG_0       0x00300000UL    /*!< User Config 0 address       \hideinitializer */
+#define FMC_USER_CONFIG_1       0x00300004UL    /*!< User Config 1 address       \hideinitializer */
+#define FMC_USER_CONFIG_2       0x00300008UL    /*!< User Config 2 address       \hideinitializer */
+
 // type
 #define TYPE_LDROM   (0)
 #define TYPE_MKROM   (1)
