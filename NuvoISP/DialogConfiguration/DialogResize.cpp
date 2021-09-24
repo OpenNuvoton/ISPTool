@@ -276,6 +276,10 @@ BOOL CDialogResize::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 }
 void CDialogResize::AdjustDPI()
 {
+    if (GetDlgItem(IDCANCEL) == NULL) {
+        return;
+    }
+
     int nScreenHeight;
     nScreenHeight = GetSystemMetrics(SM_CYSCREEN);
     //Get task bar height
