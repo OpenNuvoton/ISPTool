@@ -34,12 +34,14 @@ public:
     //{{AFX_DATA(CDialogConfiguration_OT8051)
     enum { IDD = IDD_DIALOG_CONFIGURATION_OT8051 };
 
-    int		m_nRadio_FSYS;
-    int		m_nRadio_RPD;
-    int		m_nRadio_OCDPWM;
     int		m_nRadio_CBS;
+    int		m_nRadio_FSYS;
+    int		m_nRadio_OCDPWM;
+    int		m_nRadio_RPD;
+    int		m_nRadio_IODEFAULT;
     int		m_nRadio_LDSIZE;
     int		m_nRadio_CBOV;
+    int		m_nRadio_SYSCLKDIV;
     int		m_nRadio_WDTEN;
 
     CString	m_sConfigValue0;
@@ -48,14 +50,20 @@ public:
     CString	m_sConfigValue3;
     CString	m_sConfigValue4;
 
-    BOOL	m_bSecurityLock;
     BOOL	m_bOCDEnable;
+    BOOL	m_bSecurityLock;
     BOOL	m_bCheckBrownOutEnable;
     BOOL	m_bCheckBrownOutIAP;
     BOOL	m_bCheckBrownOutReset;
 
     unsigned int	m_uPartNo;
     unsigned int	m_uLevel;
+
+    bool	m_bFSYS;
+    bool	m_bOCDPWM;
+    bool	m_bRPD;
+    bool	m_bIODEFAULT;
+    bool	m_bSYSCLKDIV;
 
     unsigned char	m_ucConfigValue[OT8051_FLASH_CONFIG_SIZE];
     //}}AFX_DATA

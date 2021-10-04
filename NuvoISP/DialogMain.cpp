@@ -527,6 +527,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
             case 0x00104832: // ML51LC0XX
             case 0x0B004B21: // MS51FB9AE
             case 0x08125744: // ML56SD1AE
+            case 0x0C106321: // MUG51TB9AE
                 uID = uSeriesCode;
 #endif // #ifdef _DEBUG
 

@@ -43,7 +43,8 @@ typedef struct {
             unsigned int uIOVoltage : 4;
             unsigned int uReserved0 : 12;
             unsigned int bSupportSCode : 1;
-            unsigned int uReserved1 : 7;
+            unsigned int bSupportCRC8 : 1;
+            unsigned int uReserved1 : 6;
         } feature;
     };
 } FLASH_INFO_BY_DID_T;
