@@ -165,16 +165,16 @@ void CDialogChipSetting_CFG_M460::UpdateUI()
         LONG lDiff;
         GetDlgItem(IDC_GROUP_SPIM_SELECT)->GetWindowRect(&rcGroupSPIMPSL);
         GetDlgItem(IDC_GROUP_UART1_SELECT)->GetWindowRect(&rcGroupUART1PSL);
-        lDiff = rcGroupUART1PSL.bottom - rcGroupSPIMPSL.bottom;
-        int i, nIDs[] = {IDC_GROUP_UART1_SELECT, IDC_RADIO_UART1_SEL3, IDC_RADIO_UART1_SEL2, IDC_RADIO_UART1_SEL1, IDC_RADIO_UART1_SEL0,
-                         IDC_GROUP_ISP_MODE, IDC_CHECK_ISP_MODE_UART, IDC_CHECK_ISP_MODE_USB, IDC_CHECK_ISP_MODE_CAN, IDC_CHECK_ISP_MODE_I2C, IDC_CHECK_ISP_MODE_SPI,
-                         IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2, IDC_STATIC_CONFIG_3, IDC_STATIC_CONFIG_VALUE_3
-                        };
+        lDiff = rcGroupSPIMPSL.bottom - rcGroupUART1PSL.bottom;
+        int i;
+        int nID0s[] = { IDC_GROUP_ISP_MODE, IDC_CHECK_ISP_MODE_UART, IDC_CHECK_ISP_MODE_USB, IDC_CHECK_ISP_MODE_CAN, IDC_CHECK_ISP_MODE_I2C, IDC_CHECK_ISP_MODE_SPI,
+                        IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2, IDC_STATIC_CONFIG_3, IDC_STATIC_CONFIG_VALUE_3
+                      };
 
-        for (i = 0; i < _countof(nIDs); i++) {
-            GetDlgItem(nIDs[i])->GetWindowRect(&rcTmp);
+        for (i = 0; i < _countof(nID0s); i++) {
+            GetDlgItem(nID0s[i])->GetWindowRect(&rcTmp);
             this->ScreenToClient(&rcTmp);
-            GetDlgItem(nIDs[i])->SetWindowPos(NULL, rcTmp.left, rcTmp.top - lDiff, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+            GetDlgItem(nID0s[i])->SetWindowPos(NULL, rcTmp.left, rcTmp.top - lDiff, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
         }
 
         this->GetWindowRect(&rcTmp);
@@ -424,7 +424,7 @@ void CDialogChipSetting_CFG_M460::CFG2GUI_CBS_2()
 
 void CDialogChipSetting_CFG_M460::CFG2GUI_ICELOCK()
 {
-    m_bCheckICELOCK	= ((m_uConfigValue_t[0] & M480_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
+    m_bCheckICELOCK = ((m_uConfigValue_t[0] & M480_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
 }
 
 void CDialogChipSetting_CFG_M460::CFG2GUI_DFEN()
