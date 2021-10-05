@@ -78,8 +78,14 @@
     <ClInclude Include="DialogChipSetting\DialogChipSetting_M2351.h">
       <Filter>External\DialogChipSetting</Filter>
     </ClInclude>
-    <ClInclude Include="DialogConfiguration\DialogChipSetting_CFG_M2351.h">
-      <Filter>External\DialogConfiguration</Filter>
+    <ClInclude Include="DialogChipSetting\DialogChipSetting_CFG_M2351.h">
+      <Filter>External\DialogChipSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogChipSetting\DialogChipSetting_CFG_M460.h">
+      <Filter>External\DialogChipSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogChipSetting\DialogChipSetting_M460.h">
+      <Filter>External\DialogChipSetting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -215,8 +221,14 @@
     <ClCompile Include="DialogChipSetting\DialogChipSetting_M2351.cpp">
       <Filter>External\DialogChipSetting</Filter>
     </ClCompile>
-    <ClCompile Include="DialogConfiguration\DialogChipSetting_CFG_M2351.cpp">
-      <Filter>External\DialogConfiguration</Filter>
+    <ClCompile Include="DialogChipSetting\DialogChipSetting_CFG_M2351.cpp">
+      <Filter>External\DialogChipSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogChipSetting\DialogChipSetting_CFG_M460.cpp">
+      <Filter>External\DialogChipSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogChipSetting\DialogChipSetting_M460.cpp">
+      <Filter>External\DialogChipSetting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

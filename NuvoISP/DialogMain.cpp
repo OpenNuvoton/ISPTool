@@ -319,6 +319,7 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 #include "DialogChipSetting_NuMicro.h"
 #include "DialogChipSetting_M480LD.h"
 #include "DialogChipSetting_M2351.h"
+#include "DialogChipSetting_M460.h"
 
 bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigned int uSeriesCode /* = 0*/)
 {
@@ -605,6 +606,18 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 }
 
                 Config = (((CDialogChipSetting_M480LD *)pConfigDlg)->m_uConfigValue);
+                break;
+
+            case NUC_CHIP_TYPE_M460:
+
+                //CDialogChipSetting_M460(unsigned int uProgramMemorySize, unsigned int uFlashPageSize, unsigned int uPID, unsigned int uDID, unsigned int uChipSeries, CWnd * pParent = NULL);	// standard constructor
+                if (uProgramMemorySize) {
+                    pConfigDlg = new CDialogChipSetting_M460(uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_4K, 0, 0, NUC_CHIP_TYPE_M460);
+                } else {
+                    pConfigDlg = new CDialogChipSetting_M460(256 * 1024, NUMICRO_FLASH_PAGE_SIZE_4K, 0, 0, NUC_CHIP_TYPE_M460);
+                }
+
+                Config = (((CDialogChipSetting_M2351 *)pConfigDlg)->m_uConfigValue);
                 break;
 
             case NUC_CHIP_TYPE_M2351:
