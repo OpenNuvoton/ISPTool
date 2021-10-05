@@ -625,32 +625,20 @@ void CDialogChipSetting_CFG_M030G::UpdateUI()
     GetDlgItem(IDC_CHECK_BROWN_OUT_DETECT)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_CHECK_BROWN_OUT_RESET)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_RADIO_WDT_ENABLE_STOP)->ShowWindow(SW_HIDE);
-    RECT rcTmp, rcGroupRSTW, rcGroupCFGXT1, rcGroupCBOD;
+    RECT rcTmp, rcGroupCFGXT1, rcGroupCIOINI;
     LONG lDiff;
-    GetDlgItem(IDC_GROUP_RST_PIN_WIDTH)->GetWindowRect(&rcGroupRSTW);
     GetDlgItem(IDC_GROUP_GPF)->GetWindowRect(&rcGroupCFGXT1);
-    GetDlgItem(IDC_GROUP_BROWN_OUT_VOLTAGE)->GetWindowRect(&rcGroupCBOD);
-    lDiff = rcGroupCFGXT1.bottom - rcGroupRSTW.bottom;
+    GetDlgItem(IDC_GROUP_IO_STATE)->GetWindowRect(&rcGroupCIOINI);
+    lDiff = rcGroupCFGXT1.bottom - rcGroupCIOINI.bottom;
     int i;
-    int nIDs[] = {IDC_GROUP_BOOT_SELECT, IDC_RADIO_BS_APROM, IDC_RADIO_BS_LDROM, IDC_RADIO_BS_APROM_LDROM, IDC_RADIO_BS_LDROM_APROM};
-
-    for (i = 0; i < _countof(nIDs); i++) {
-        GetDlgItem(nIDs[i])->GetWindowRect(&rcTmp);
-        this->ScreenToClient(&rcTmp);
-        GetDlgItem(nIDs[i])->SetWindowPos(NULL, rcTmp.left, rcTmp.top - lDiff, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
-    }
-
-    lDiff = rcGroupCBOD.bottom - rcGroupCFGXT1.bottom;
-    int nID1s[] = { IDC_GROUP_WDT, IDC_RADIO_WDT_DISABLE, IDC_RADIO_WDT_ENABLE_KEEP, IDC_RADIO_WDT_ENABLE_STOP,
-                    IDC_GROUP_DATA_FLASH, IDC_CHECK_DATA_FLASH_ENABLE, IDC_STATIC_FLASH_BASE_ADDRESS, IDC_EDIT_FLASH_BASE_ADDRESS, IDC_STATIC_DATA_FLASH_SIZE, IDC_EDIT_DATA_FLASH_SIZE, IDC_SPIN_DATA_FLASH_SIZE,
-                    IDC_GROUP_ADVANCE_LOCK, IDC_CHECK_SECURITY_LOCK, IDC_STATIC_FLASH_ADVANCE_LOCK, IDC_EDIT_FLASH_ADVANCE_LOCK,
+    int nID0s[] = { IDC_GROUP_WDT, IDC_RADIO_WDT_DISABLE, IDC_RADIO_WDT_ENABLE_KEEP, IDC_RADIO_WDT_ENABLE_STOP,
                     IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2
                   };
 
-    for (i = 0; i < _countof(nID1s); i++) {
-        GetDlgItem(nID1s[i])->GetWindowRect(&rcTmp);
+    for (i = 0; i < _countof(nID0s); i++) {
+        GetDlgItem(nID0s[i])->GetWindowRect(&rcTmp);
         this->ScreenToClient(&rcTmp);
-        GetDlgItem(nID1s[i])->SetWindowPos(NULL, rcTmp.left, rcTmp.top - lDiff, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+        GetDlgItem(nID0s[i])->SetWindowPos(NULL, rcTmp.left, rcTmp.top - lDiff, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
     }
 
     this->GetWindowRect(&rcTmp);
@@ -761,6 +749,24 @@ void CDialogChipSetting_CFG_M031::UpdateUI()
     GetDlgItem(IDC_RADIO_BOV_2)->SetWindowText(_T("2.0V"));
     GetDlgItem(IDC_RADIO_BOV_1)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_RADIO_BOV_0)->ShowWindow(SW_HIDE);
+    RECT rcTmp, rcGroupCFGRPS, rcGroupCBOD;
+    LONG lDiff;
+    GetDlgItem(IDC_GROUP_RPD)->GetWindowRect(&rcGroupCFGRPS);
+    GetDlgItem(IDC_GROUP_BROWN_OUT_VOLTAGE)->GetWindowRect(&rcGroupCBOD);
+    lDiff = rcGroupCFGRPS.bottom - rcGroupCBOD.bottom;
+    int i;
+    int nID0s[] = { IDC_GROUP_GPF, IDC_RADIO_GPF_CRYSTAL, IDC_RADIO_GPF_GPIO, IDC_GROUP_WDT, IDC_RADIO_WDT_DISABLE, IDC_RADIO_WDT_ENABLE_KEEP, IDC_RADIO_WDT_ENABLE_STOP,
+                    IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2
+                  };
+
+    for (i = 0; i < _countof(nID0s); i++) {
+        GetDlgItem(nID0s[i])->GetWindowRect(&rcTmp);
+        this->ScreenToClient(&rcTmp);
+        GetDlgItem(nID0s[i])->SetWindowPos(NULL, rcTmp.left, rcTmp.top - lDiff, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+    }
+
+    this->GetWindowRect(&rcTmp);
+    SetWindowPos(this, 0, 0, rcTmp.right - rcTmp.left, rcTmp.bottom - rcTmp.top - lDiff, SWP_NOZORDER | SWP_NOMOVE);
 }
 
 void CDialogChipSetting_CFG_M031::ConfigToGUI()
@@ -844,7 +850,6 @@ void CDialogChipSetting_CFG_M451::UpdateUI()
     GetDlgItem(IDC_GROUP_RST_PIN_WIDTH)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_RADIO_RST_PIN_WIDTH_1)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_RADIO_RST_PIN_WIDTH_0)->ShowWindow(SW_HIDE);
-    GetDlgItem(IDC_CHECK_ICE_LOCK)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_GROUP_CHIPRESET_TIMEEXT)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_RADIO_CHIPRESET_TIMEEXT_1)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_RADIO_CHIPRESET_TIMEEXT_0)->ShowWindow(SW_HIDE);
@@ -855,42 +860,38 @@ void CDialogChipSetting_CFG_M451::UpdateUI()
     GetDlgItem(IDC_RADIO_BOV_2)->SetWindowText(_T("3.7V"));
     GetDlgItem(IDC_RADIO_BOV_1)->SetWindowText(_T("2.7V"));
     GetDlgItem(IDC_RADIO_BOV_0)->SetWindowText(_T("2.2V"));
-    GetDlgItem(IDC_GROUP_ADVANCE_LOCK)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATIC_FLASH_ADVANCE_LOCK)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_EDIT_FLASH_ADVANCE_LOCK)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_CHECK_ICE_LOCK)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATIC_CONFIG_2)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_STATIC_CONFIG_VALUE_2)->ShowWindow(SW_HIDE);
-    RECT rcTmp, rcICELOCK, rcCFGXT1;
-    GetDlgItem(IDC_CHECK_ICE_LOCK)->GetWindowRect(&rcICELOCK);
-    GetDlgItem(IDC_RADIO_GPF_CRYSTAL)->GetWindowRect(&rcCFGXT1);
-    LONG lDiff0, lDiff1;
-    lDiff0 = rcICELOCK.left - rcCFGXT1.left;
-    lDiff1 = rcCFGXT1.bottom - rcICELOCK.bottom;
-    GetDlgItem(IDC_GROUP_GPF)->GetWindowRect(&rcTmp);
-    this->ScreenToClient(&rcTmp);
-    GetDlgItem(IDC_GROUP_GPF)->SetWindowPos(NULL, rcTmp.left + lDiff0, rcTmp.top - lDiff1, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
-    GetDlgItem(IDC_RADIO_GPF_CRYSTAL)->GetWindowRect(&rcTmp);
-    this->ScreenToClient(&rcTmp);
-    GetDlgItem(IDC_RADIO_GPF_CRYSTAL)->SetWindowPos(NULL, rcTmp.left + lDiff0, rcTmp.top - lDiff1, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
-    GetDlgItem(IDC_RADIO_GPF_GPIO)->GetWindowRect(&rcTmp);
-    this->ScreenToClient(&rcTmp);
-    GetDlgItem(IDC_RADIO_GPF_GPIO)->SetWindowPos(NULL, rcTmp.left + lDiff0, rcTmp.top - lDiff1, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
-    RECT rcGroupRSTWSEL, rcGroupCBS;
-    GetDlgItem(IDC_GROUP_RST_PIN_WIDTH)->GetWindowRect(&rcGroupRSTWSEL);
+    RECT rcTmp, rcGroupRSTEXT, rcGroupCBS, rcGroupCFGRPS, rcGroupCBOD;
+    LONG lDiff;
+    GetDlgItem(IDC_GROUP_CHIPRESET_TIMEEXT)->GetWindowRect(&rcGroupRSTEXT);
     GetDlgItem(IDC_GROUP_BOOT_SELECT)->GetWindowRect(&rcGroupCBS);
-    LONG lDiff = rcGroupCBS.bottom - rcGroupRSTWSEL.bottom;
-    int i, nIDs[] = {IDC_GROUP_BOOT_SELECT, IDC_RADIO_BS_APROM, IDC_RADIO_BS_LDROM, IDC_RADIO_BS_APROM_LDROM, IDC_RADIO_BS_LDROM_APROM,
-                     IDC_GROUP_BROWN_OUT_VOLTAGE, IDC_RADIO_BOV_3, IDC_RADIO_BOV_2, IDC_RADIO_BOV_1, IDC_RADIO_BOV_0, IDC_CHECK_BROWN_OUT_DETECT, IDC_CHECK_BROWN_OUT_RESET,
-                     IDC_GROUP_WDT, IDC_RADIO_WDT_DISABLE, IDC_RADIO_WDT_ENABLE_KEEP, IDC_RADIO_WDT_ENABLE_STOP,
-                     IDC_GROUP_DATA_FLASH, IDC_CHECK_DATA_FLASH_ENABLE, IDC_STATIC_FLASH_BASE_ADDRESS, IDC_EDIT_FLASH_BASE_ADDRESS, IDC_STATIC_DATA_FLASH_SIZE, IDC_EDIT_DATA_FLASH_SIZE, IDC_SPIN_DATA_FLASH_SIZE,
-                     IDC_GROUP_ADVANCE_LOCK, IDC_CHECK_SECURITY_LOCK, IDC_STATIC_FLASH_ADVANCE_LOCK, IDC_EDIT_FLASH_ADVANCE_LOCK,
-                     IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2
-                    };
+    lDiff = rcGroupRSTEXT.bottom - rcGroupCBS.bottom;
+    int i;
+    int nID0s[] = { IDC_GROUP_IO_STATE, IDC_RADIO_IO_TRI, IDC_RADIO_IO_BI,
+                    IDC_GROUP_BROWN_OUT_VOLTAGE, IDC_RADIO_BOV_3, IDC_RADIO_BOV_2, IDC_RADIO_BOV_1, IDC_RADIO_BOV_0, IDC_CHECK_BROWN_OUT_DETECT, IDC_CHECK_BROWN_OUT_RESET
+                  };
 
-    for (i = 0; i < _countof(nIDs); i++) {
-        GetDlgItem(nIDs[i])->GetWindowRect(&rcTmp);
+    for (i = 0; i < _countof(nID0s); i++) {
+        GetDlgItem(nID0s[i])->GetWindowRect(&rcTmp);
         this->ScreenToClient(&rcTmp);
-        GetDlgItem(nIDs[i])->SetWindowPos(NULL, rcTmp.left, rcTmp.top - lDiff, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+        GetDlgItem(nID0s[i])->SetWindowPos(NULL, rcTmp.left, rcTmp.top - lDiff, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+    }
+
+    GetDlgItem(IDC_GROUP_RPD)->GetWindowRect(&rcGroupCFGRPS);
+    GetDlgItem(IDC_GROUP_BROWN_OUT_VOLTAGE)->GetWindowRect(&rcGroupCBOD);
+    lDiff = rcGroupCFGRPS.bottom - rcGroupCBOD.bottom;
+    int nID1s[] = { IDC_GROUP_GPF, IDC_RADIO_GPF_CRYSTAL, IDC_RADIO_GPF_GPIO, IDC_GROUP_WDT, IDC_RADIO_WDT_DISABLE, IDC_RADIO_WDT_ENABLE_KEEP, IDC_RADIO_WDT_ENABLE_STOP,
+                    IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2
+                  };
+
+    for (i = 0; i < _countof(nID1s); i++) {
+        GetDlgItem(nID1s[i])->GetWindowRect(&rcTmp);
+        this->ScreenToClient(&rcTmp);
+        GetDlgItem(nID1s[i])->SetWindowPos(NULL, rcTmp.left, rcTmp.top - lDiff, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
     }
 
     this->GetWindowRect(&rcTmp);
@@ -1042,35 +1043,44 @@ void CDialogChipSetting_CFG_M471::UpdateUI()
     GetDlgItem(IDC_STATIC_DATA_FLASH_SIZE)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_EDIT_DATA_FLASH_SIZE)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_SPIN_DATA_FLASH_SIZE)->ShowWindow(SW_HIDE);
-    RECT rcTmp, rcGroupRSTW, rcGroupCBS, rcGroupDFEN, rcGroupLOCK;
+    RECT rcTmp, rcGroupRSTEXT, rcGroupCBS, rcGroupCFGXT1, rcGroupCBOD, rcGroupLOCK, rcGroupDFEN;
     LONG lDiff;
-    GetDlgItem(IDC_GROUP_RST_PIN_WIDTH)->GetWindowRect(&rcGroupRSTW);
+    GetDlgItem(IDC_GROUP_CHIPRESET_TIMEEXT)->GetWindowRect(&rcGroupRSTEXT);
     GetDlgItem(IDC_GROUP_BOOT_SELECT)->GetWindowRect(&rcGroupCBS);
-    lDiff = rcGroupCBS.top - rcGroupRSTW.top;
+    lDiff = rcGroupRSTEXT.bottom - rcGroupCBS.bottom;
     int i;
-    int nIDs[] = {IDC_GROUP_BOOT_SELECT, IDC_RADIO_BS_APROM, IDC_RADIO_BS_LDROM, IDC_RADIO_BS_APROM_LDROM, IDC_RADIO_BS_LDROM_APROM,
-                  IDC_GROUP_BROWN_OUT_VOLTAGE, IDC_RADIO_BOV_3, IDC_RADIO_BOV_2, IDC_RADIO_BOV_1, IDC_RADIO_BOV_0, IDC_CHECK_BROWN_OUT_DETECT, IDC_CHECK_BROWN_OUT_RESET,
-                  IDC_GROUP_WDT, IDC_RADIO_WDT_DISABLE, IDC_RADIO_WDT_ENABLE_KEEP, IDC_RADIO_WDT_ENABLE_STOP,
-                  IDC_GROUP_DATA_FLASH, IDC_CHECK_DATA_FLASH_ENABLE, IDC_STATIC_FLASH_BASE_ADDRESS, IDC_EDIT_FLASH_BASE_ADDRESS, IDC_STATIC_DATA_FLASH_SIZE, IDC_EDIT_DATA_FLASH_SIZE, IDC_SPIN_DATA_FLASH_SIZE
-                 };
+    int nID0s[] = { IDC_GROUP_IO_STATE, IDC_RADIO_IO_TRI, IDC_RADIO_IO_BI,
+                    IDC_GROUP_BROWN_OUT_VOLTAGE, IDC_RADIO_BOV_3, IDC_RADIO_BOV_2, IDC_RADIO_BOV_1, IDC_RADIO_BOV_0, IDC_CHECK_BROWN_OUT_DETECT, IDC_CHECK_BROWN_OUT_RESET
+                  };
 
-    for (i = 0; i < _countof(nIDs); i++) {
-        GetDlgItem(nIDs[i])->GetWindowRect(&rcTmp);
+    for (i = 0; i < _countof(nID0s); i++) {
+        GetDlgItem(nID0s[i])->GetWindowRect(&rcTmp);
         this->ScreenToClient(&rcTmp);
-        GetDlgItem(nIDs[i])->SetWindowPos(NULL, rcTmp.left, rcTmp.top - lDiff, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+        GetDlgItem(nID0s[i])->SetWindowPos(NULL, rcTmp.left, rcTmp.top - lDiff, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
     }
 
-    GetDlgItem(IDC_GROUP_DATA_FLASH)->GetWindowRect(&rcGroupDFEN);
     GetDlgItem(IDC_GROUP_ADVANCE_LOCK)->GetWindowRect(&rcGroupLOCK);
+    GetDlgItem(IDC_GROUP_DATA_FLASH)->GetWindowRect(&rcGroupDFEN);
     lDiff = rcGroupLOCK.top - rcGroupDFEN.top;
-    int nID1s[] = { IDC_GROUP_ADVANCE_LOCK, IDC_CHECK_SECURITY_LOCK, IDC_STATIC_FLASH_ADVANCE_LOCK, IDC_EDIT_FLASH_ADVANCE_LOCK,
-                    IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2
-                  };
+    int nID1s[] = { IDC_GROUP_ADVANCE_LOCK, IDC_CHECK_SECURITY_LOCK, IDC_STATIC_FLASH_ADVANCE_LOCK, IDC_EDIT_FLASH_ADVANCE_LOCK, IDC_CHECK_ICE_LOCK };
 
     for (i = 0; i < _countof(nID1s); i++) {
         GetDlgItem(nID1s[i])->GetWindowRect(&rcTmp);
         this->ScreenToClient(&rcTmp);
         GetDlgItem(nID1s[i])->SetWindowPos(NULL, rcTmp.left, rcTmp.top - lDiff, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+    }
+
+    GetDlgItem(IDC_GROUP_GPF)->GetWindowRect(&rcGroupCFGXT1);
+    GetDlgItem(IDC_GROUP_BROWN_OUT_VOLTAGE)->GetWindowRect(&rcGroupCBOD);
+    lDiff = rcGroupCFGXT1.bottom - rcGroupCBOD.bottom;
+    int nID2s[] = { IDC_GROUP_WDT, IDC_RADIO_WDT_DISABLE, IDC_RADIO_WDT_ENABLE_KEEP, IDC_RADIO_WDT_ENABLE_STOP,
+                    IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2
+                  };
+
+    for (i = 0; i < _countof(nID2s); i++) {
+        GetDlgItem(nID2s[i])->GetWindowRect(&rcTmp);
+        this->ScreenToClient(&rcTmp);
+        GetDlgItem(nID2s[i])->SetWindowPos(NULL, rcTmp.left, rcTmp.top - lDiff, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
     }
 
     this->GetWindowRect(&rcTmp);

@@ -21,7 +21,7 @@ public:
     virtual ~CDialogChipSetting_NuMicro();
 
 // Dialog Data
-    enum { IDD = IDD_DIALOG_CHIP_SETTING_NUMICRO };
+    enum { IDD = IDD_DIALOG_CHIP_SETTING_NUMICRO1 };
 
 protected:
     unsigned int m_uProgramMemorySize;

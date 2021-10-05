@@ -965,6 +965,7 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
             delete subMenu[i];
         }
 
+        menu.AppendMenu(MF_STRING | MF_POPUP, 0xFFFFFFFF, _T("Test ALL"));
         POINT point;
         GetCursorPos(&point);
         menu.TrackPopupMenu(TPM_LEFTALIGN, point.x, point.y, this);
@@ -983,6 +984,16 @@ LRESULT CDialogMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
     if (message == WM_COMMAND) {
         unsigned int i;
+
+        if (wParam == 0xFFFFFFFF) {
+            for (i = 0; i < g_NuMicroChipSeries.size(); ++i) {
+                unsigned int CFG[4] = { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
+                unsigned int uSeriesCode = g_NuMicroChipSeries[i].uProjectCode;
+                ConfigDlgSel(CFG, sizeof(CFG), uSeriesCode);
+            }
+
+            return 1;
+        }
 
         for (i = 0; i < g_NuMicroChipSeries.size(); ++i) {
             if (g_NuMicroChipSeries[i].uProjectCode == wParam) {
