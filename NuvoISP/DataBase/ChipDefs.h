@@ -649,6 +649,7 @@ typedef enum {
 #	define OT8051_CONFIG_CLKDIV_2		0x02
 #	define OT8051_CONFIG_CLKDIV_1		0x01
 #	define OT8051_CONFIG_CLKDIV_0		0x00
+#define OT8051_CONFIG_ADC_TRIGGER		0x08
 
 /* CONFIG 4 */
 #define OT8051_CONFIG_WDT				0xF0
@@ -673,5 +674,7 @@ typedef enum {
 #define OT8051_SID_ML56_64K				0x5700
 
 #define OT8051_SID_MUG51_16K			0x6300
+
+#define OT8051_SID_N76S003_MSS51		0x6700
 
 #endif

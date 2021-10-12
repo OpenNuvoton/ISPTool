@@ -35,7 +35,8 @@ typedef struct {
     union {
         unsigned int uFlashType;
         struct {
-            unsigned int uFlashMode : 4;
+            unsigned int uFlashMode : 2;
+            unsigned int uFlashPageSize : 2;
             unsigned int bSupportPID : 1;
             unsigned int bSupportUID : 1;
             unsigned int bSupportUCID : 1;

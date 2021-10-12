@@ -50,6 +50,7 @@ public:
     CString	m_sConfigValue3;
     CString	m_sConfigValue4;
 
+    BOOL	m_bADCTrigger;
     BOOL	m_bOCDEnable;
     BOOL	m_bSecurityLock;
     BOOL	m_bCheckBrownOutEnable;
@@ -64,6 +65,7 @@ public:
     bool	m_bRPD;
     bool	m_bIODEFAULT;
     bool	m_bSYSCLKDIV;
+    bool	m_bADCTrig;
 
     unsigned char	m_ucConfigValue[OT8051_FLASH_CONFIG_SIZE];
     //}}AFX_DATA

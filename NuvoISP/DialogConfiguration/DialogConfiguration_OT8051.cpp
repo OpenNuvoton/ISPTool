@@ -33,6 +33,7 @@ CDialogConfiguration_OT8051::CDialogConfiguration_OT8051(unsigned int uPartNo,
     m_sConfigValue2 = _T("");
     m_sConfigValue3 = _T("");
     m_sConfigValue4 = _T("");
+    m_bADCTrigger			= FALSE;
     m_bOCDEnable			= FALSE;
     m_bSecurityLock			= FALSE;
     m_bCheckBrownOutEnable	= TRUE;
@@ -43,6 +44,7 @@ CDialogConfiguration_OT8051::CDialogConfiguration_OT8051(unsigned int uPartNo,
     m_bRPD		= true;
     m_bIODEFAULT = true;
     m_bSYSCLKDIV = true;
+    m_bADCTrig	= true;
     //}}AFX_DATA_INIT
 }
 
@@ -64,6 +66,7 @@ void CDialogConfiguration_OT8051::DoDataExchange(CDataExchange *pDX)
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_2,	m_sConfigValue2);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_3,	m_sConfigValue3);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_4,	m_sConfigValue4);
+    DDX_Check(pDX, IDC_CHECK_ADC_TRIGGER,		m_bADCTrigger);
     DDX_Check(pDX, IDC_CHECK_OCD_ENABLE,		m_bOCDEnable);
     DDX_Check(pDX, IDC_CHECK_SECURITY_LOCK,		m_bSecurityLock);
     DDX_Check(pDX, IDC_CHECK_BROWN_OUT_ENABLE,	m_bCheckBrownOutEnable);
@@ -113,6 +116,7 @@ BEGIN_MESSAGE_MAP(CDialogConfiguration_OT8051, CDialog)
     ON_BN_CLICKED(IDC_RADIO_WDT_ENABLE_STOP,	OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_WDT_ENABLE_KEEP,	OnRadioClick)
 
+    ON_BN_CLICKED(IDC_CHECK_ADC_TRIGGER,		OnCheckClick)
     ON_BN_CLICKED(IDC_CHECK_OCD_ENABLE,			OnCheckClick)
     ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK,		OnCheckClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_ENABLE,	OnCheckClick)
@@ -146,6 +150,7 @@ BOOL CDialogConfiguration_OT8051::OnInitDialog()
             m_bFSYS = false;
             m_bIODEFAULT = false;
             m_bSYSCLKDIV = false;
+            m_bADCTrig   = false;
             GetDlgItem(IDC_GROUP_RPD)->SetWindowText(_T("P1.2/RST Pin Function"));
             GetDlgItem(IDC_RADIO_RPD_RESET)->SetWindowText(_T("P1.2 as the external reset pin"));
             GetDlgItem(IDC_RADIO_RPD_INPUT)->SetWindowText(_T("P1.2 as the input-only pin"));
@@ -166,6 +171,7 @@ BOOL CDialogConfiguration_OT8051::OnInitDialog()
             m_bOCDPWM = false;
             m_bIODEFAULT = false;
             m_bSYSCLKDIV = false;
+            m_bADCTrig   = false;
             GetDlgItem(IDC_GROUP_RPD)->SetWindowText(_T("P3.6/RST Pin Function"));
             GetDlgItem(IDC_RADIO_RPD_RESET)->SetWindowText(_T("P3.6 as the external reset pin"));
             GetDlgItem(IDC_RADIO_RPD_INPUT)->SetWindowText(_T("P3.6 as the input-only pin"));
@@ -188,6 +194,7 @@ BOOL CDialogConfiguration_OT8051::OnInitDialog()
             m_bFSYS = false;
             m_bIODEFAULT = false;
             m_bSYSCLKDIV = false;
+            m_bADCTrig   = false;
             GetDlgItem(IDC_GROUP_RPD)->SetWindowText(_T("P2.0/RST Pin Function"));
             GetDlgItem(IDC_RADIO_RPD_RESET)->SetWindowText(_T("P2.0 as the external reset pin"));
             GetDlgItem(IDC_RADIO_RPD_INPUT)->SetWindowText(_T("P2.0 as the input-only pin"));
@@ -207,9 +214,10 @@ BOOL CDialogConfiguration_OT8051::OnInitDialog()
         case OT8051_SID_ML51_64K: {
             m_uLevel = 8;
             m_bFSYS = false;
-            m_bRPD = false;
+            m_bRPD  = false;
             m_bIODEFAULT = false;
             m_bSYSCLKDIV = false;
+            m_bADCTrig   = false;
             GetDlgItem(IDC_RADIO_BOV_7)->SetWindowText(_T("Default 1.8V"));
             GetDlgItem(IDC_RADIO_BOV_6)->SetWindowText(_T("1.8V"));
             GetDlgItem(IDC_RADIO_BOV_5)->SetWindowText(_T("2.0V"));
@@ -227,6 +235,7 @@ BOOL CDialogConfiguration_OT8051::OnInitDialog()
             m_bRPD = false;
             m_bIODEFAULT = false;
             m_bSYSCLKDIV = false;
+            m_bADCTrig   = false;
             GetDlgItem(IDC_RADIO_BOV_7)->SetWindowText(_T("Default 1.8V"));
             GetDlgItem(IDC_RADIO_BOV_6)->SetWindowText(_T("1.8V"));
             GetDlgItem(IDC_RADIO_BOV_5)->SetWindowText(_T("2.0V"));
@@ -244,6 +253,7 @@ BOOL CDialogConfiguration_OT8051::OnInitDialog()
             m_uLevel = 8;
             m_bFSYS = false;
             m_bRPD = false;
+            m_bADCTrig = false;
             GetDlgItem(IDC_RADIO_BOV_7)->SetWindowText(_T("Default 1.8V"));
             GetDlgItem(IDC_RADIO_BOV_6)->SetWindowText(_T("1.8V"));
             GetDlgItem(IDC_RADIO_BOV_5)->SetWindowText(_T("2.0V"));
@@ -252,6 +262,25 @@ BOOL CDialogConfiguration_OT8051::OnInitDialog()
             GetDlgItem(IDC_RADIO_BOV_2)->SetWindowText(_T("3.0V"));
             GetDlgItem(IDC_RADIO_BOV_1)->SetWindowText(_T("3.7V"));
             GetDlgItem(IDC_RADIO_BOV_0)->SetWindowText(_T("4.4V"));
+            break;
+        }
+
+        case OT8051_SID_N76S003_MSS51: {
+            m_uLevel = 4;
+            m_bFSYS = false;
+            m_bIODEFAULT = false;
+            m_bSYSCLKDIV = false;
+            GetDlgItem(IDC_GROUP_RPD)->SetWindowText(_T("P2.0/RST Pin Function"));
+            GetDlgItem(IDC_RADIO_RPD_RESET)->SetWindowText(_T("P2.0 as the external reset pin"));
+            GetDlgItem(IDC_RADIO_RPD_INPUT)->SetWindowText(_T("P2.0 as the input-only pin"));
+            GetDlgItem(IDC_RADIO_BOV_7)->SetWindowText(_T("2.2V"));
+            GetDlgItem(IDC_RADIO_BOV_6)->SetWindowText(_T("2.7V"));
+            GetDlgItem(IDC_RADIO_BOV_5)->SetWindowText(_T("3.7V"));
+            GetDlgItem(IDC_RADIO_BOV_4)->SetWindowText(_T("4.4V"));
+            GetDlgItem(IDC_RADIO_BOV_3)->ShowWindow(SW_HIDE);
+            GetDlgItem(IDC_RADIO_BOV_2)->ShowWindow(SW_HIDE);
+            GetDlgItem(IDC_RADIO_BOV_1)->ShowWindow(SW_HIDE);
+            GetDlgItem(IDC_RADIO_BOV_0)->ShowWindow(SW_HIDE);
             break;
         }
     }
@@ -290,7 +319,7 @@ BOOL CDialogConfiguration_OT8051::OnInitDialog()
         GetDlgItem(IDC_GROUP_BROWN_OUT_VOLTAGE)->GetWindowRect(&rcGroupCBOV);
         GetDlgItem(IDC_GROUP_SYSCLKDIV)->GetWindowRect(&rcGroupCLKDIV);
         LONG lDiff = rcGroupCLKDIV.bottom - rcGroupCBOV.bottom;
-        int i, nIDs[] = { IDOK, IDCANCEL, IDC_GROUP_WDT, IDC_RADIO_WDT_DISABLE, IDC_RADIO_WDT_ENABLE_STOP, IDC_RADIO_WDT_ENABLE_KEEP, IDC_CHECK_SECURITY_LOCK, IDC_CHECK_OCD_ENABLE,
+        int i, nIDs[] = { IDOK, IDCANCEL, IDC_GROUP_WDT, IDC_RADIO_WDT_DISABLE, IDC_RADIO_WDT_ENABLE_STOP, IDC_RADIO_WDT_ENABLE_KEEP, IDC_CHECK_SECURITY_LOCK, IDC_CHECK_OCD_ENABLE, IDC_CHECK_ADC_TRIGGER,
                           IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2, IDC_STATIC_CONFIG_3, IDC_STATIC_CONFIG_VALUE_3, IDC_STATIC_CONFIG_4, IDC_STATIC_CONFIG_VALUE_4
                         };
 
@@ -302,6 +331,10 @@ BOOL CDialogConfiguration_OT8051::OnInitDialog()
 
         this->GetWindowRect(&rcTmp);
         SetWindowPos(this, 0, 0, rcTmp.right - rcTmp.left, rcTmp.bottom - rcTmp.top - lDiff, SWP_NOZORDER | SWP_NOMOVE);
+    }
+
+    if (!m_bADCTrig) {
+        GetDlgItem(IDC_CHECK_ADC_TRIGGER)->ShowWindow(SW_HIDE);
     }
 
     ConfigToGUI();
@@ -455,6 +488,8 @@ void CDialogConfiguration_OT8051::ConfigToGUI()
         default:
             m_nRadio_SYSCLKDIV = 3;
     }
+
+    m_bADCTrigger = ((ucConfig3 & OT8051_CONFIG_ADC_TRIGGER) == 0 ? TRUE : FALSE);
 
     switch (ucConfig4 & OT8051_CONFIG_WDT) {
         case OT8051_CONFIG_WDT_DIS:
@@ -657,6 +692,10 @@ void CDialogConfiguration_OT8051::GUIToConfig()
         }
 
         ucConfig3 |= 0xFC;
+    }
+
+    if (m_bADCTrig && m_bADCTrigger) {
+        ucConfig3 &= ~OT8051_CONFIG_ADC_TRIGGER;
     }
 
     /* CONFIG 4 */

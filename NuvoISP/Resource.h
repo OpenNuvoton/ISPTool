@@ -307,13 +307,8 @@
 #define IDC_EDIT_RESERVE4               1399
 #define IDC_EDIT_RESERVE5               1400
 #define IDC_TAB_CHIP_SETTING            1401
+#define IDC_CHECK_ADC_TRIGGER           1459
 #define IDC_STATIC_FILENAME_SPI         1478
-#define IDC_GROUP_ISP_MODE              1602
-#define IDC_CHECK_ISP_MODE_UART         1715
-#define IDC_CHECK_ISP_MODE_USB          1716
-#define IDC_CHECK_ISP_MODE_CAN          1717
-#define IDC_CHECK_ISP_MODE_I2C          1718
-#define IDC_CHECK_ISP_MODE_SPI          1719
 #define IDC_CHECK_SECURITY_BOOT_LOCK    1485
 #define IDC_GROUP_IODEFAULT             1600
 #define IDC_GROUP_SYSCLKDIV             1601
@@ -324,6 +319,11 @@
 #define IDC_RADIO_SYSCLKDIV_1           1631
 #define IDC_RADIO_SYSCLKDIV_2           1632
 #define IDC_RADIO_SYSCLKDIV_3           1633
+#define IDC_CHECK_ISP_MODE_UART         1715
+#define IDC_CHECK_ISP_MODE_USB          1716
+#define IDC_CHECK_ISP_MODE_CAN          1717
+#define IDC_CHECK_ISP_MODE_I2C          1718
+#define IDC_CHECK_ISP_MODE_SPI          1719
 #define IDC_STATIC_FLASH_KEYSTORE_LOCK  1787
 #define IDC_EDIT_FLASH_KEYSTORE_LOCK    1793
 #define IDD_DIALOG_CONFIGURATION_M058   5082
