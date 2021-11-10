@@ -609,15 +609,17 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 break;
 
             case NUC_CHIP_TYPE_M460:
+            case NUC_CHIP_TYPE_M460HD:
+            case NUC_CHIP_TYPE_M460LD:
 
                 //CDialogChipSetting_M460(unsigned int uProgramMemorySize, unsigned int uFlashPageSize, unsigned int uPID, unsigned int uDID, unsigned int uChipSeries, CWnd * pParent = NULL);	// standard constructor
                 if (uProgramMemorySize) {
-                    pConfigDlg = new CDialogChipSetting_M460(uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_4K, 0, 0, NUC_CHIP_TYPE_M460);
+                    pConfigDlg = new CDialogChipSetting_M460(uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_4K, 0, 0, uSeriesCode);
                 } else {
-                    pConfigDlg = new CDialogChipSetting_M460(256 * 1024, NUMICRO_FLASH_PAGE_SIZE_4K, 0, 0, NUC_CHIP_TYPE_M460);
+                    pConfigDlg = new CDialogChipSetting_M460(256 * 1024, NUMICRO_FLASH_PAGE_SIZE_4K, 0, 0, uSeriesCode);
                 }
 
-                Config = (((CDialogChipSetting_M2351 *)pConfigDlg)->m_uConfigValue);
+                Config = (((CDialogChipSetting_M460 *)pConfigDlg)->m_uConfigValue);
                 break;
 
             case NUC_CHIP_TYPE_M2351:
@@ -984,10 +986,10 @@ LRESULT CDialogMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
     if (message == WM_COMMAND) {
         unsigned int i;
+        unsigned int CFG[4] = { 0x11111111, 0x222222222, 0x33333333, 0x44444444 };
 
-        if (wParam == 0xFFFFFFFF) {
+        if (wParam == 0xFFFFFFFF) { // Test ALL
             for (i = 0; i < g_NuMicroChipSeries.size(); ++i) {
-                unsigned int CFG[4] = { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
                 unsigned int uSeriesCode = g_NuMicroChipSeries[i].uProjectCode;
                 ConfigDlgSel(CFG, sizeof(CFG), uSeriesCode);
             }
@@ -997,7 +999,6 @@ LRESULT CDialogMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
         for (i = 0; i < g_NuMicroChipSeries.size(); ++i) {
             if (g_NuMicroChipSeries[i].uProjectCode == wParam) {
-                unsigned int CFG[4] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
                 ConfigDlgSel(CFG, sizeof(CFG), wParam);
                 return 1;
             }
@@ -1005,7 +1006,6 @@ LRESULT CDialogMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
         for (i = 0; i < g_AudioChipSeries.size(); ++i) {
             if (g_AudioChipSeries[i].uProjectCode == wParam) {
-                unsigned int CFG[4] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
                 ConfigDlgSel(CFG, sizeof(CFG), wParam);
                 return 1;
             }

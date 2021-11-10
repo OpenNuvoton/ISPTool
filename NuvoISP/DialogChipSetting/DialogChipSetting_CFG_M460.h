@@ -68,10 +68,10 @@ public:
     unsigned int	m_uConfigValue_t[4];
     //}}AFX_DATA
 
-protected:
     unsigned int	m_uProgramMemorySize;
     unsigned int	m_uFlashPageSize;
     bool			m_bSupportSPIM;
+protected:
 
     // Generated message map functions
     //{{AFX_MSG(CDialogChipSetting_CFG_M0A21)

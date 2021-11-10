@@ -136,9 +136,6 @@ BOOL CDialogChipSetting_CFG_M460::OnInitDialog()
     //m_uProgramMemorySize = chipInfo.uProgramMemorySize;
     //m_uFlashPageSize	= (1 << chipInfo.uFlash_PageSize);
     //m_bSupportSPIM		= (chipInfo.uSPIM_Size > 0) ? true : false;
-    m_uProgramMemorySize = 256 * 1024;
-    m_uFlashPageSize	= NUMICRO_FLASH_PAGE_SIZE_4K;
-    m_bSupportSPIM		= true;
     UpdateUI();
     UDACCEL pAccel[1];
     pAccel[0].nInc = 1;
