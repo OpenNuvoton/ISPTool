@@ -21,8 +21,8 @@ static char THIS_FILE[] = __FILE__;
 // CDialogConfiguration_M0564 dialog
 
 CDialogConfiguration_M0564::CDialogConfiguration_M0564(unsigned int uProgramMemorySize,
-        UINT nIDTemplate, CWnd *pParent /*=NULL*/)
-    : CDialogResize(nIDTemplate, pParent)
+        CWnd *pParent /*=NULL*/)
+    : CDialogResize(CDialogConfiguration_M0564::IDD, pParent)
     , m_uProgramMemorySize(uProgramMemorySize)
 {
     //{{AFX_DATA_INIT(CDialogConfiguration_M0564)
@@ -381,7 +381,7 @@ void CDialogConfiguration_M0564::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *
 // CDialogConfiguration_NUC121
 /////////////////////////////////////////////////////////////////////////////
 CDialogConfiguration_NUC121::CDialogConfiguration_NUC121(unsigned int uProgramMemorySize, CWnd *pParent /*=NULL*/)
-    : CDialogConfiguration_M0564(uProgramMemorySize, IDD_DIALOG_CONFIGURATION_M0564, pParent)
+    : CDialogConfiguration_M0564(uProgramMemorySize, pParent)
 {
 }
 
@@ -394,7 +394,7 @@ BOOL CDialogConfiguration_NUC121::OnInitDialog()
 // CDialogConfiguration_NUC1262
 /////////////////////////////////////////////////////////////////////////////
 CDialogConfiguration_NUC1262::CDialogConfiguration_NUC1262(unsigned int uProgramMemorySize, CWnd *pParent /*=NULL*/)
-    : CDialogConfiguration_M0564(uProgramMemorySize, IDD_DIALOG_CONFIGURATION_NUC1262, pParent)
+    : CDialogConfiguration_M0564(uProgramMemorySize, pParent)
 {
 }
 
