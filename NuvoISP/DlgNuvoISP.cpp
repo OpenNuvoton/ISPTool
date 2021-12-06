@@ -58,7 +58,7 @@ CNuvoISPDlg::CNuvoISPDlg(UINT Template,
     : CDialogMain(Template, pParent)
     , CISPProc(&m_hWnd)
 {
-    m_sCaption = _T("Nuvoton NuMicro ISP Programming Tool 4.XX");
+    m_sCaption = _T("Nuvoton NuMicro ISP Programming Tool 4.07");
     m_bConnect = false;
     int i = 0, j = 0;
 
@@ -790,9 +790,7 @@ void CNuvoISPDlg::ShowChipInfo_OnLine()
     }
 
     if ((gsChipCfgInfo.uSeriesCode == IDD_DIALOG_CONFIGURATION_M480)
-            || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M460)
-            || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M460HD)
-            || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M460LD)) {
+            || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M460)) {
         SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0-3:"));
         ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 1);
         ShowDlgItem(IDC_STATIC_CONFIG_VALUE_3, 1);

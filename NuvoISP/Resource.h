@@ -307,7 +307,7 @@
 #define IDC_EDIT_RESERVE4               1399
 #define IDC_EDIT_RESERVE5               1400
 #define IDC_TAB_CHIP_SETTING            1401
-#define IDC_CHECK_ADC_TRIGGER           1459
+#define IDC_CHECK_ADCINTEN              1459
 #define IDC_STATIC_FILENAME_SPI         1478
 #define IDC_CHECK_SECURITY_BOOT_LOCK    1485
 #define IDC_GROUP_IODEFAULT             1600

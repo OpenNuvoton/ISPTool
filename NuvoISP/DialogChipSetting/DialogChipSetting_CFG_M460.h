@@ -29,8 +29,6 @@ public:
     int				m_nRadioCBOV;
     int				m_nRadioCIOINI;
     int				m_nRadioCBS;
-    int				m_nRadioSPIMPSL;
-    int				m_nRadioUART1PSL;
 
     BOOL			m_bCheckCBORST;
     BOOL			m_bCheckCBODEN;
@@ -70,7 +68,6 @@ public:
 
     unsigned int	m_uProgramMemorySize;
     unsigned int	m_uFlashPageSize;
-    bool			m_bSupportSPIM;
 protected:
 
     // Generated message map functions

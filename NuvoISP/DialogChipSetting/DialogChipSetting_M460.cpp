@@ -64,7 +64,6 @@ BOOL CDialogChipSetting_M460::OnInitDialog()
         m_pChipSetting_CFG = new CDialogChipSetting_CFG_M460();
         m_pChipSetting_CFG->m_uProgramMemorySize = m_uProgramMemorySize;
         m_pChipSetting_CFG->m_uFlashPageSize = m_uFlashPageSize;
-        m_pChipSetting_CFG->m_bSupportSPIM = (m_uChipSeries == NUC_CHIP_TYPE_M460HD) ? true : false;
         m_pChipSetting_CFG->m_uPID					= m_uPID;
         m_pChipSetting_CFG->m_uDID					= m_uDID;
         m_pChipSetting_CFG->m_uConfigValue[0]		= m_uConfigValue[0];

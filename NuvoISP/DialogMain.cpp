@@ -609,8 +609,6 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 break;
 
             case NUC_CHIP_TYPE_M460:
-            case NUC_CHIP_TYPE_M460HD:
-            case NUC_CHIP_TYPE_M460LD:
 
                 //CDialogChipSetting_M460(unsigned int uProgramMemorySize, unsigned int uFlashPageSize, unsigned int uPID, unsigned int uDID, unsigned int uChipSeries, CWnd * pParent = NULL);	// standard constructor
                 if (uProgramMemorySize) {

@@ -22,8 +22,6 @@ CDialogChipSetting_CFG_M460::CDialogChipSetting_CFG_M460(CWnd *pParent /*=NULL*/
     m_nRadioCBOV	= -1;
     m_nRadioCIOINI	= -1;
     m_nRadioCBS		= -1;
-    m_nRadioSPIMPSL	= -1;
-    m_nRadioUART1PSL = -1;
     m_bCheckCBORST	= FALSE;
     m_bCheckCBODEN	= FALSE;
     m_bCheckICELOCK	= FALSE;
@@ -51,8 +49,6 @@ void CDialogChipSetting_CFG_M460::DoDataExchange(CDataExchange *pDX)
     DDX_Radio(pDX, IDC_RADIO_BOV_7,					m_nRadioCBOV);
     DDX_Radio(pDX, IDC_RADIO_IO_TRI,				m_nRadioCIOINI);
     DDX_Radio(pDX, IDC_RADIO_BS_APROM_LDROM,		m_nRadioCBS);
-    DDX_Radio(pDX, IDC_RADIO_SPIM_SEL3,				m_nRadioSPIMPSL);
-    DDX_Radio(pDX, IDC_RADIO_UART1_SEL3,			m_nRadioUART1PSL);
     DDX_Check(pDX, IDC_CHECK_BROWN_OUT_RESET,		m_bCheckCBORST);
     DDX_Check(pDX, IDC_CHECK_BROWN_OUT_DETECT,		m_bCheckCBODEN);
     DDX_Check(pDX, IDC_CHECK_ICE_LOCK,				m_bCheckICELOCK);
@@ -96,14 +92,6 @@ BEGIN_MESSAGE_MAP(CDialogChipSetting_CFG_M460, CDialog)
     ON_BN_CLICKED(IDC_RADIO_IO_BI,						OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM,				OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM,				OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_SPIM_SEL3,					OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_SPIM_SEL2,					OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_SPIM_SEL1,					OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_SPIM_SEL0,					OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_UART1_SEL3,					OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_UART1_SEL2,					OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_UART1_SEL1,					OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_UART1_SEL0,					OnRadioClick)
 
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET,			OnCheckClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT,			OnCheckClick)
@@ -135,7 +123,6 @@ BOOL CDialogChipSetting_CFG_M460::OnInitDialog()
     //GetChipInfo_NuMicro(m_uPID, m_uDID, 0xFFFFFFFF, 0xFFFFFFFF, false, &chipInfo);
     //m_uProgramMemorySize = chipInfo.uProgramMemorySize;
     //m_uFlashPageSize	= (1 << chipInfo.uFlash_PageSize);
-    //m_bSupportSPIM		= (chipInfo.uSPIM_Size > 0) ? true : false;
     UpdateUI();
     UDACCEL pAccel[1];
     pAccel[0].nInc = 1;
@@ -152,31 +139,6 @@ BOOL CDialogChipSetting_CFG_M460::OnInitDialog()
 void CDialogChipSetting_CFG_M460::UpdateUI()
 {
     // TODO: Add your control notification handler code here
-    if (!m_bSupportSPIM) {
-        GetDlgItem(IDC_GROUP_SPIM_SELECT)->ShowWindow(SW_HIDE);
-        GetDlgItem(IDC_RADIO_SPIM_SEL3)->ShowWindow(SW_HIDE);
-        GetDlgItem(IDC_RADIO_SPIM_SEL2)->ShowWindow(SW_HIDE);
-        GetDlgItem(IDC_RADIO_SPIM_SEL1)->ShowWindow(SW_HIDE);
-        GetDlgItem(IDC_RADIO_SPIM_SEL0)->ShowWindow(SW_HIDE);
-        RECT rcTmp, rcGroupSPIMPSL, rcGroupUART1PSL;
-        LONG lDiff;
-        GetDlgItem(IDC_GROUP_SPIM_SELECT)->GetWindowRect(&rcGroupSPIMPSL);
-        GetDlgItem(IDC_GROUP_UART1_SELECT)->GetWindowRect(&rcGroupUART1PSL);
-        lDiff = rcGroupSPIMPSL.bottom - rcGroupUART1PSL.bottom;
-        int i;
-        int nID0s[] = { IDC_GROUP_ISP_MODE, IDC_CHECK_ISP_MODE_UART, IDC_CHECK_ISP_MODE_USB, IDC_CHECK_ISP_MODE_CAN, IDC_CHECK_ISP_MODE_I2C, IDC_CHECK_ISP_MODE_SPI,
-                        IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2, IDC_STATIC_CONFIG_3, IDC_STATIC_CONFIG_VALUE_3
-                      };
-
-        for (i = 0; i < _countof(nID0s); i++) {
-            GetDlgItem(nID0s[i])->GetWindowRect(&rcTmp);
-            this->ScreenToClient(&rcTmp);
-            GetDlgItem(nID0s[i])->SetWindowPos(NULL, rcTmp.left, rcTmp.top - lDiff, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
-        }
-
-        this->GetWindowRect(&rcTmp);
-        SetWindowPos(this, 0, 0, rcTmp.right - rcTmp.left, rcTmp.bottom - rcTmp.top - lDiff, SWP_NOZORDER | SWP_NOMOVE);
-    }
 }
 
 void CDialogChipSetting_CFG_M460::ConfigToGUI()
@@ -197,45 +159,6 @@ void CDialogChipSetting_CFG_M460::ConfigToGUI()
     m_bCheckISP_CAN	= ((m_uConfigValue_t[3] & M460_FLASH_CONFIG_CANISPEN) != 0 ? TRUE : FALSE);
     m_bCheckISP_I2C	= ((m_uConfigValue_t[3] & M460_FLASH_CONFIG_I2CISPEN) != 0 ? TRUE : FALSE);
     m_bCheckISP_SPI	= ((m_uConfigValue_t[3] & M460_FLASH_CONFIG_SPIISPEN) != 0 ? TRUE : FALSE);
-
-    /* SPIM multi-function pin selection */
-    switch (m_uConfigValue_t[3] & M460_FLASH_CONFIG_SPIMPSL) {
-        case M460_FLASH_CONFIG_SPIMPSL_SEL0:
-            m_nRadioSPIMPSL = 3;
-            break;
-
-        case M460_FLASH_CONFIG_SPIMPSL_SEL1:
-            m_nRadioSPIMPSL = 2;
-            break;
-
-        case M460_FLASH_CONFIG_SPIMPSL_SEL2:
-            m_nRadioSPIMPSL = 1;
-            break;
-
-        case M460_FLASH_CONFIG_SPIMPSL_SEL3:
-            m_nRadioSPIMPSL = 0;
-            break;
-    }
-
-    /* UART1 multi-function pin selection */
-    switch (m_uConfigValue_t[3] & M460_FLASH_CONFIG_UART1PSL) {
-        case M460_FLASH_CONFIG_UART1PSL_SEL0:
-            m_nRadioUART1PSL = 3;
-            break;
-
-        case M460_FLASH_CONFIG_UART1PSL_SEL1:
-            m_nRadioUART1PSL = 2;
-            break;
-
-        case M460_FLASH_CONFIG_UART1PSL_SEL2:
-            m_nRadioUART1PSL = 1;
-            break;
-
-        case M460_FLASH_CONFIG_UART1PSL_SEL3:
-            m_nRadioUART1PSL = 0;
-            break;
-    }
-
     m_sConfigValue0.Format(_T("0x%08X"), m_uConfigValue_t[0]);
     m_sConfigValue1.Format(_T("0x%08X"), m_uConfigValue_t[1]);
     m_sConfigValue2.Format(_T("0x%08X"), m_uConfigValue_t[2]);
@@ -286,57 +209,6 @@ void CDialogChipSetting_CFG_M460::GUIToConfig()
         m_uConfigValue_t[3] |=  M460_FLASH_CONFIG_SPIISPEN;
     } else {
         m_uConfigValue_t[3] &= ~M460_FLASH_CONFIG_SPIISPEN;
-    }
-
-    if (m_bSupportSPIM) {
-        m_uConfigValue_t[3] &= ~M460_FLASH_CONFIG_SPIMPSL;
-
-        switch (m_nRadioSPIMPSL) {
-            case 0:
-                m_uConfigValue_t[3] |= M460_FLASH_CONFIG_SPIMPSL_SEL3;
-                break;
-
-            case 1:
-                m_uConfigValue_t[3] |= M460_FLASH_CONFIG_SPIMPSL_SEL2;
-                break;
-
-            case 2:
-                m_uConfigValue_t[3] |= M460_FLASH_CONFIG_SPIMPSL_SEL1;
-                break;
-
-            case 3:
-            default:
-                if (m_nRadioUART1PSL != 1) {
-                    m_uConfigValue_t[3] |= M460_FLASH_CONFIG_SPIMPSL_SEL0;
-                } else {
-                    m_uConfigValue_t[3] |= (m_uConfigValue[3] & M460_FLASH_CONFIG_SPIMPSL);
-                }
-        }
-    }
-
-    m_uConfigValue_t[3] &= ~M460_FLASH_CONFIG_UART1PSL;
-
-    switch (m_nRadioUART1PSL) {
-        case 0:
-            m_uConfigValue_t[3] |= M460_FLASH_CONFIG_UART1PSL_SEL3;
-            break;
-
-        case 1:
-            if (m_nRadioSPIMPSL != 3) {
-                m_uConfigValue_t[3] |= M460_FLASH_CONFIG_UART1PSL_SEL2;
-            } else {
-                m_uConfigValue_t[3] |= (m_uConfigValue[3] & M460_FLASH_CONFIG_UART1PSL);
-            }
-
-            break;
-
-        case 2:
-            m_uConfigValue_t[3] |= M460_FLASH_CONFIG_UART1PSL_SEL1;
-            break;
-
-        case 3:
-        default:
-            m_uConfigValue_t[3] |= M460_FLASH_CONFIG_UART1PSL_SEL0;
     }
 
     m_uConfigValue[0] = m_uConfigValue_t[0];
