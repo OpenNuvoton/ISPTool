@@ -117,7 +117,7 @@ void CDialogHex::OnSize(UINT nType, int cx, int cy)
         /* Set edit area */
         CRect rcEdit;
         rcEdit.left = rcClient.left + 0;
-        rcEdit.right = rcButton.left - 12;
+        rcEdit.right = rcClient.right - (rcButton.right - rcButton.left) - 12 - 12;		
         rcEdit.top = rcClient.top + 1;
         rcEdit.bottom = rcClient.bottom - 0;
         ScreenToClient(rcEdit);
@@ -136,12 +136,12 @@ void CDialogHex::OnSize(UINT nType, int cx, int cy)
             if (pRadio != NULL && pRadio->GetSafeHwnd()) {
                 CRect rcRadio;
                 pRadio->GetWindowRect(rcRadio);
+                ScreenToClient(&rcRadio);
                 int nHeight = rcRadio.Height();
                 rcRadio.right += rcButton.left - 1 - rcRadio.left;
                 rcRadio.left = rcButton.left - 1;
-                rcRadio.bottom += (rcClient.top + 6 + i * (nHeight + 4) - rcRadio.top);
-                rcRadio.top = rcClient.top + 6 + i * (nHeight + 4);
-                ScreenToClient(&rcRadio);
+                rcRadio.top = 6 + i * (nHeight + 4);
+                rcRadio.bottom = rcRadio.top + nHeight;
                 pRadio->MoveWindow(rcRadio);
             }
         }
