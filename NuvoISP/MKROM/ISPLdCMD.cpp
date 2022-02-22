@@ -524,7 +524,7 @@ BOOL ISPLdCMD::MKROM_Connect(DWORD dwMilliseconds)
     // BOOL ISPLdCMD::WriteFile
     DWORD dwLength;
 
-    if (m_comIO.WriteFile(m_acPattern, 64, &dwLength, dwMilliseconds)) {
+    if (m_comIO.WriteFile(m_acPattern, 63, &dwLength, dwMilliseconds)) {
         if (!m_comIO.ReadFile(m_acBuffer, 1, &dwLength, dwMilliseconds)) {
             printf("NG in m_comIO.ReadFile\n");
             return FALSE;
