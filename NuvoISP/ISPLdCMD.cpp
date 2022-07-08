@@ -55,6 +55,8 @@ bool ISPLdCMD::Open_Port()
                 m_uUSB_PID = 0x5201;
             } else if (m_hidIO.OpenDevice(0x0416, 0x5203, 5)) {	// Nu-Link2 with ISP-Bridge
                 m_uUSB_PID = 0x5203;
+            } else if (m_hidIO.OpenDevice(0x0416, 0x2006, 4)) {	
+                m_uUSB_PID = 0x2006;
             } else if (m_hidIO.OpenDevice(0x0416, 0x3F10, -1)) {	// ISP-Bridge
                 m_uUSB_PID = 0x3F10;
             } else {
