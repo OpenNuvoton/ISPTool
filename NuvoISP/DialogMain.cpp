@@ -518,7 +518,6 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 pConfigDlg = new CDialogConfiguration_NM1120;
                 Config = (((CDialogConfiguration_NM1120 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
-#ifdef _DEBUG
 
             // case for NUC_CHIP_TYPE_GENERAL_1T offline test mode
             // test cases from g_80511TPartNumIDs in NuDataBase.cpp
@@ -530,7 +529,6 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
             case 0x08125744: // ML56SD1AE
             case 0x0C106321: // MUG51TB9AE
                 uID = uSeriesCode;
-#endif // #ifdef _DEBUG
 
             case NUC_CHIP_TYPE_GENERAL_1T: {
                 pConfigDlg = new CDialogConfiguration_OT8051(uID);

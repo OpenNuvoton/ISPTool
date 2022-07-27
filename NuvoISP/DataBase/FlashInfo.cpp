@@ -845,11 +845,11 @@ void GetFlashSize_OT8051(unsigned int uConfig0,
     }
 
     uNVM_Size = 0;
-
+    
     if (uFlashMode) {
         uNVM_Size = 0x2800 - uLDROM_Size;
     }
-
+    
     *puLDROM_Addr = uProgramMemorySize - uLDROM_Size;
     *puLDROM_Size = uLDROM_Size;
     *puAPROM_Size = uProgramMemorySize - uLDROM_Size - uNVM_Size;
