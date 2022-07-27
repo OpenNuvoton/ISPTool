@@ -199,7 +199,7 @@ bool GetChipDynamicInfo(unsigned int uID, unsigned int uConfig0, unsigned int uC
         GetFlashSize_OT8051(
             uConfig0,
             uProgramMemorySize,
-            uFlashType,
+            uFlashMode,
             &uLDROM_Addr,
             &uLDROM_Size,
             &uAPROM_Size,
