@@ -10,6 +10,7 @@
 #define CHIP_CFG_MAX_LEN			4
 
 enum eAllChipSeries : DWORD {
+//NuVoice Series Chip
     ISD_94000_SERIES			= 0x100001,
     ISD_91200_SERIES			= 0x100002,		//I91200/N573
     ISD_9160_SERIES				= 0x100003,		//I9160/N575
