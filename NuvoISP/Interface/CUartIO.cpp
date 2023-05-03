@@ -55,7 +55,7 @@ BOOL CUartIO::OpenDevice(CString strComNum)
         dcb.DCBlength = sizeof(DCB);
         //printf("GetCommState - ");
         GetCommState(m_hCOMHandle, &dcb) ;        //讀串口原來的參數設置
-        dcb.BaudRate = 115200;                    //Baudrate;
+        dcb.BaudRate = BAUD_RATE_115200;          //Baudrate;
         dcb.ByteSize = 8;
         dcb.Parity = NOPARITY;
         dcb.StopBits = ONESTOPBIT ;
