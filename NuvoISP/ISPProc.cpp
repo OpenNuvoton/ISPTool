@@ -148,7 +148,7 @@ void CISPProc::Thread_CheckUSBConnect()
             dwStart = GetTickCount();
 
             try {
-                if (m_ISPLdDev.CMD_Connect(40)) {
+                if (m_ISPLdDev.CMD_Connect(250)) {
                     Set_ThreadAction(&CISPProc::Thread_CheckDeviceConnect);
                 }
             } catch (...) {
