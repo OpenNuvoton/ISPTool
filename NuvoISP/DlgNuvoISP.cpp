@@ -213,7 +213,7 @@ void CNuvoISPDlg::OnButtonBinFile(int idx, TCHAR *szPath)
     // Open file dialog
     CFileDialog dialog(TRUE, NULL, NULL,
                        OFN_EXPLORER | OFN_ENABLESIZING | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY,
-                       _T("Binary Files (*.bin)|*.bin|All Files|*.*||"),
+                       _T("Binary Files (*.bin)|*.bin||"),
                        this);
 
     if (szPath != NULL) {
