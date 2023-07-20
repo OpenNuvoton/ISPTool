@@ -648,8 +648,10 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
             case ISD_9160_SERIES:
             case ISD_91300_SERIES:
             case NUVOICE_N575_SERIES:
-            case NUVOICE_N574_SERIES:
+            case NUVOICE_N574F128_SERIES:
             case NUVOICE_N574F1K5_SERIES:
+            case NUVOICE_NSC74128_SERIES:
+            case NUVOICE_NSC741K5_SERIES:
                 if (uProgramMemorySize) {
                     pConfigDlg = new CDialogConfiguration_AU9100(uProgramMemorySize);
                 } else {
