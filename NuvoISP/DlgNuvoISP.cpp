@@ -784,7 +784,8 @@ void CNuvoISPDlg::ShowChipInfo_OnLine()
     }
 
     if ((gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2351)
-            || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2354)) {
+            || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2354)
+            || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2L31)) {
         ShowChipInfo_M2351();
         return;
     }
@@ -941,14 +942,20 @@ void CNuvoISPDlg::ChangeBtnText(int nBtn, LPTSTR pszText)
 void CNuvoISPDlg::OnKillfocusEditAPRomOffset()
 {
     if ((gsChipCfgInfo.uSeriesCode != NUC_CHIP_TYPE_M2351)
-            && (gsChipCfgInfo.uSeriesCode != NUC_CHIP_TYPE_M2354)) {
+            && (gsChipCfgInfo.uSeriesCode != NUC_CHIP_TYPE_M2354)
+            && (gsChipCfgInfo.uSeriesCode != NUC_CHIP_TYPE_M2L31)) {
         return;
     }
 
     CString strAddr;
     GetDlgItemText(IDC_EDIT_APROM_BASE_ADDRESS, strAddr);
     m_uAPROM_Offset = ::_tcstoul(strAddr, 0, 16);
-    m_uAPROM_Offset &= 0xFF800; // 2K page alignment
+    if (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2L31) {
+        m_uAPROM_Offset &= 0xFF000; // 4K page alignment
+    }
+    else {
+        m_uAPROM_Offset &= 0xFF800; // 2K page alignment
+    }
 
     if (m_uAPROM_Offset >= m_uAPROM_Size) {
         m_uAPROM_Offset = 0;

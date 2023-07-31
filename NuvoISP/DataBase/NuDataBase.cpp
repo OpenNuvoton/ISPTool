@@ -157,7 +157,8 @@ static bool HasNoDynamicInfo()
     }
 
     if ((gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2351)
-            || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2354)) {
+            || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2354)
+            || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2L31)) {
         return true;
     }
 

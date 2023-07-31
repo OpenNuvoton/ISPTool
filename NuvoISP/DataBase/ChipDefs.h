@@ -15,7 +15,7 @@
 				9: ARM9
 				Other: Reserved
 	Second number - Bit[6:4] Page Size
-				M0/M23(0: 512B, 1: 1KB, 2: 2KB)
+				M0/M23(0: 512B, 1: 1KB, 2: 2KB, 3:4KB)
 				M4(0: 2KB, 1:4KB)
 
 				 - Bit[7] for Flash Address definition
@@ -55,6 +55,7 @@ typedef enum {
     NUC_CHIP_TYPE_M2351			= 0x321,
     NUC_CHIP_TYPE_M2354			= 0x322,
     NUC_CHIP_TYPE_M2379			= 0x323,
+    NUC_CHIP_TYPE_M2L31         = 0x330,
     NUC_CHIP_TYPE_GENERAL_V7M	= 0x400,
     NUC_CHIP_TYPE_NUC4XX		= 0x401,
     NUC_CHIP_TYPE_M451			= 0x402,

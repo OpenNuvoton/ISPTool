@@ -620,6 +620,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
 
             case NUC_CHIP_TYPE_M2351:
             case NUC_CHIP_TYPE_M2354:
+            case NUC_CHIP_TYPE_M2L31:
                 pConfigDlg = new CDialogChipSetting_M2351(uSeriesCode);
                 Config = (((CDialogChipSetting_M2351 *)pConfigDlg)->m_uConfigValue);
                 break;
