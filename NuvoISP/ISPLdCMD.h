@@ -128,7 +128,7 @@ public:
         m_strComNum = str;
     };
     CString m_strDevPathName;
-
+    ULONG get_m_uInterface();
 
     BOOL Cmd_ERASE_SPIFLASH(unsigned long offset, unsigned long total_len);
     BOOL Cmd_UPDATE_SPIFLASH(unsigned long offset, unsigned long total_len, const char *buffer);

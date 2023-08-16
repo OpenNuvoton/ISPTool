@@ -320,6 +320,7 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 #include "DialogChipSetting_M480LD.h"
 #include "DialogChipSetting_M2351.h"
 #include "DialogChipSetting_M460.h"
+#include "DialogChipSetting_M2L31.h"
 
 bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigned int uSeriesCode /* = 0*/)
 {
@@ -620,9 +621,12 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
 
             case NUC_CHIP_TYPE_M2351:
             case NUC_CHIP_TYPE_M2354:
-            case NUC_CHIP_TYPE_M2L31:
                 pConfigDlg = new CDialogChipSetting_M2351(uSeriesCode);
                 Config = (((CDialogChipSetting_M2351 *)pConfigDlg)->m_uConfigValue);
+                break;
+            case NUC_CHIP_TYPE_M2L31:
+                pConfigDlg = new CDialogChipSetting_M2L31(256 * 1024, NUMICRO_FLASH_PAGE_SIZE_4K, 0, 0, uSeriesCode);
+                Config = (((CDialogChipSetting_M2L31*)pConfigDlg)->m_uConfigValue);
                 break;
 
             case ISD_94000_SERIES:

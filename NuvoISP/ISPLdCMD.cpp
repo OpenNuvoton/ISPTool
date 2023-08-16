@@ -609,6 +609,11 @@ BOOL ISPLdCMD::RunLDROM()
     }
 }
 
+ULONG ISPLdCMD::get_m_uInterface()
+{
+    return m_uInterface;
+}
+
 BOOL ISPLdCMD::Cmd_ERASE_SPIFLASH(unsigned long offset, unsigned long total_len)
 {
     if (m_uInterface == INTF_CAN) {

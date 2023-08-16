@@ -147,8 +147,16 @@ void CISPProc::Thread_CheckUSBConnect()
             m_eProcSts = EPS_ERR_CONNECT;
             dwStart = GetTickCount();
 
+            DWORD connect_time = 40;
+            if (m_ISPLdDev.get_m_uInterface() == 2) {
+                DWORD default_baud_rate = BAUD_RATE_115200;
+                if (640000 / default_baud_rate > connect_time) {
+                    connect_time = DWORD( 2 * 640000 / default_baud_rate);
+                } 
+            }
+
             try {
-                if (m_ISPLdDev.CMD_Connect(250)) {
+                if (m_ISPLdDev.CMD_Connect(connect_time)) {
                     Set_ThreadAction(&CISPProc::Thread_CheckDeviceConnect);
                 }
             } catch (...) {
