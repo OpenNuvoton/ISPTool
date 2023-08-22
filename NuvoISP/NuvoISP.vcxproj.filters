@@ -87,6 +87,12 @@
     <ClInclude Include="DialogChipSetting\DialogChipSetting_M460.h">
       <Filter>External\DialogChipSetting</Filter>
     </ClInclude>
+    <ClInclude Include="DialogChipSetting\DialogChipSetting_M2L31.h">
+      <Filter>External\DialogChipSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogChipSetting\DialogChipSetting_CFG_M2L31.h">
+      <Filter>External\DialogChipSetting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -228,6 +234,12 @@
       <Filter>External\DialogChipSetting</Filter>
     </ClCompile>
     <ClCompile Include="DialogChipSetting\DialogChipSetting_M460.cpp">
+      <Filter>External\DialogChipSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogChipSetting\DialogChipSetting_M2L31.cpp">
+      <Filter>External\DialogChipSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogChipSetting\DialogChipSetting_CFG_M2L31.cpp">
       <Filter>External\DialogChipSetting</Filter>
     </ClCompile>
   </ItemGroup>

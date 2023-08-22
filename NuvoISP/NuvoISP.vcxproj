@@ -122,9 +122,11 @@
     <ClInclude Include="DataBase\PartNumID.h" />
     <ClInclude Include="DialogChipSetting\DialogChipSetting_CFG_M0A21.h" />
     <ClInclude Include="DialogChipSetting\DialogChipSetting_CFG_M2351.h" />
+    <ClInclude Include="DialogChipSetting\DialogChipSetting_CFG_M2L31.h" />
     <ClInclude Include="DialogChipSetting\DialogChipSetting_CFG_M460.h" />
     <ClInclude Include="DialogChipSetting\DialogChipSetting_M2351.h" />
     <ClInclude Include="DialogChipSetting\DialogChipSetting_M251.h" />
+    <ClInclude Include="DialogChipSetting\DialogChipSetting_M2L31.h" />
     <ClInclude Include="DialogChipSetting\DialogChipSetting_M460.h" />
     <ClInclude Include="DialogChipSetting\DialogChipSetting_M480LD.h" />
     <ClInclude Include="DialogChipSetting\DialogChipSetting_NuMicro.h" />
@@ -139,9 +141,11 @@
     <ClCompile Include="DataBase\PartNumID.cpp" />
     <ClCompile Include="DialogChipSetting\DialogChipSetting_CFG_M0A21.cpp" />
     <ClCompile Include="DialogChipSetting\DialogChipSetting_CFG_M2351.cpp" />
+    <ClCompile Include="DialogChipSetting\DialogChipSetting_CFG_M2L31.cpp" />
     <ClCompile Include="DialogChipSetting\DialogChipSetting_CFG_M460.cpp" />
     <ClCompile Include="DialogChipSetting\DialogChipSetting_M2351.cpp" />
     <ClCompile Include="DialogChipSetting\DialogChipSetting_M251.cpp" />
+    <ClCompile Include="DialogChipSetting\DialogChipSetting_M2L31.cpp" />
     <ClCompile Include="DialogChipSetting\DialogChipSetting_M460.cpp" />
     <ClCompile Include="DialogChipSetting\DialogChipSetting_M480LD.cpp" />
     <ClCompile Include="DialogChipSetting\DialogChipSetting_NuMicro.cpp" />
