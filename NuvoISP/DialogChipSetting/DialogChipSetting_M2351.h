@@ -36,7 +36,7 @@ protected:
 
     DECLARE_MESSAGE_MAP()
 public:
-    unsigned int m_uConfigValue[4];
+    unsigned int m_uConfigValue[12];
 
     unsigned int m_uNSecure_Addr;
 

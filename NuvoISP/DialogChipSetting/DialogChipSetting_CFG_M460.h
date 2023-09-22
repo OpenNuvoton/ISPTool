@@ -62,8 +62,8 @@ public:
 
     unsigned int	m_uPID;
     unsigned int	m_uDID;
-    unsigned int	m_uConfigValue[4];
-    unsigned int	m_uConfigValue_t[4];
+    unsigned int	m_uConfigValue[12];
+    unsigned int	m_uConfigValue_t[12];
     //}}AFX_DATA
 
     unsigned int	m_uProgramMemorySize;

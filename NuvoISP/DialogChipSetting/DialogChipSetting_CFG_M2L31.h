@@ -35,6 +35,7 @@ public:
     BOOL			m_bCheckICELOCK;
     BOOL			m_bCheckLOCK;
     BOOL			m_bCheckDFEN;
+    BOOL			m_bCheckSCEN;
 
     BOOL			m_bCheckISP_UART;
     BOOL			m_bCheckISP_USB;
@@ -55,15 +56,25 @@ public:
     CString			m_sDataFlashBase;
     CString			m_sDataFlashSize;
 
+    CString		    m_sSecureConcealBase;
+    CString		    m_sSecureConcealPageSize;
+
+    CNumEdit		m_SecureConcealBase;
+    CNumEdit		m_SecureConcealPageSize;
+
     CString			m_sConfigValue0;
     CString			m_sConfigValue1;
     CString			m_sConfigValue2;
     CString			m_sConfigValue3;
 
+    CString			m_sConfigValue4;
+    CString			m_sConfigValue5;
+    CString			m_sConfigValue6;
+
     unsigned int	m_uPID;
     unsigned int	m_uDID;
-    unsigned int	m_uConfigValue[4];
-    unsigned int	m_uConfigValue_t[4];
+    unsigned int	m_uConfigValue[11];
+    unsigned int	m_uConfigValue_t[11];
     //}}AFX_DATA
 
     unsigned int	m_uProgramMemorySize;
@@ -86,6 +97,7 @@ protected:
     void CFG2GUI_ICELOCK();
     void CFG2GUI_DFEN();
     void CFG2GUI_KSPLOCK();
+    void CFG2GUI_SCEN();
 
     void GUI2CFG_CWDT();
     void GUI2CFG_CBOD_8();
@@ -94,12 +106,15 @@ protected:
     void GUI2CFG_ICELOCK();
     void GUI2CFG_DFEN();
     void GUI2CFG_KSPLOCK();
+    void GUI2CFG_SCEN();
 
     afx_msg void OnRadioClick();
     afx_msg void OnCheckClick();
     afx_msg void OnKillfocusEditAdvanceLock();
     afx_msg void OnKillfocusEditKeyStoreLock();
     afx_msg void OnKillfocusEditDataFlashBase();
+    afx_msg void OnKillfocusEditSCBase();
+    afx_msg void OnKillfocusEditSCSize();
     afx_msg void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnOK();
     afx_msg void OnCancel();

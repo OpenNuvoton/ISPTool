@@ -94,7 +94,7 @@ public:
                                   CWnd *pParent = NULL);   // standard constructor
 
     enum { IDD = IDD_DIALOG_CONFIGURATION_M480LD };
-    unsigned int m_uConfigValue[4];
+    unsigned int m_uConfigValue[12];
 
 protected:
     virtual void DoDataExchange(CDataExchange *pDX);   // DDX/DDV support

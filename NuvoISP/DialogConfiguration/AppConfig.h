@@ -12,7 +12,7 @@ public:
 
     /* Global configurations */
     struct configs_t {
-        unsigned int m_value[4];
+        unsigned int m_value[12];
     };
 
 #define NUC1xx_configs_t configs_t

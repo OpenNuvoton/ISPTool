@@ -913,7 +913,9 @@ void CDialogMain::EnableInterface(bool bEnable)
 // call by OnButtonConfig
 bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
 {
-    unsigned int CFG[4] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
+    unsigned int CFG[11] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
+                            0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
+                            0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
 
     if (Template == 0) {
         CMenu menu;
@@ -991,7 +993,7 @@ LRESULT CDialogMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
     if (message == WM_COMMAND) {
         unsigned int i;
-        unsigned int CFG[4] = { 0x11111111, 0x222222222, 0x33333333, 0x44444444 };
+        unsigned int CFG[4] = { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
 
         if (wParam == 0xFFFFFFFF) { // Test ALL
             for (i = 0; i < g_NuMicroChipSeries.size(); ++i) {

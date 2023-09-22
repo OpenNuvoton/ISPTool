@@ -7,6 +7,7 @@
 //
 #include "ChipDefs.h"
 #include "DialogChipSetting_CFG_M2L31.h"
+#include "DialogChipSetting_CFG_M2L31_2.h"
 
 // DialogChipSetting_M460 dialog
 
@@ -34,13 +35,14 @@ protected:
 
     DECLARE_MESSAGE_MAP()
 public:
-    unsigned int	m_uConfigValue[4];
+    unsigned int	m_uConfigValue[12];
 
     unsigned int	m_nSel;
     unsigned int	m_uShowFlag;
 
     CTabCtrl m_TabChipSetting;
     CDialogChipSetting_CFG_M2L31    *m_pChipSetting_CFG;
+    CDialogChipSetting_CFG_M2L31_2  *m_pChipSetting_CFG_2;
 
     afx_msg void OnTcnSelchangeTabChipsetting(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnOk();

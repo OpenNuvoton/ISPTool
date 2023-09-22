@@ -93,6 +93,9 @@
     <ClInclude Include="DialogChipSetting\DialogChipSetting_CFG_M2L31.h">
       <Filter>External\DialogChipSetting</Filter>
     </ClInclude>
+    <ClInclude Include="DialogChipSetting\DialogChipSetting_CFG_M2L31_2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -241,6 +244,9 @@
     </ClCompile>
     <ClCompile Include="DialogChipSetting\DialogChipSetting_CFG_M2L31.cpp">
       <Filter>External\DialogChipSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogChipSetting\DialogChipSetting_CFG_M2L31_2.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

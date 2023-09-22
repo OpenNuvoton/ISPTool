@@ -57,8 +57,8 @@ public:
 
     unsigned int	m_uProgramMemorySize;
     unsigned int	m_uFlashPageSize;
-    unsigned int	m_uConfigValue[4];
-    unsigned int	m_uConfigValue_t[4];
+    unsigned int	m_uConfigValue[12];
+    unsigned int	m_uConfigValue_t[12];
     //}}AFX_DATA
 
 protected:

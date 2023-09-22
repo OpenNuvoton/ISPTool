@@ -375,7 +375,7 @@ void ISPLdCMD::ReadConfig(unsigned int config[])
         NULL,
         0,
         USBCMD_TIMEOUT);
-    ReadFile((char *)config, 16, USBCMD_TIMEOUT, TRUE);
+    ReadFile((char *)config, 16 * 3, USBCMD_TIMEOUT, TRUE);
 }
 
 void ISPLdCMD::UpdateConfig(unsigned int config[], unsigned int response[])
