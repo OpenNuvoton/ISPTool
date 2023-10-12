@@ -20,7 +20,7 @@ inline std::string size_str(unsigned int size)
     char buf[128];
 
     if (size == 0) {
-        _snprintf_s(buf, sizeof(buf), _TRUNCATE, "0K", size);
+        _snprintf_s(buf, sizeof(buf), _TRUNCATE, "0K");
     } else if (size <= 1) {
         _snprintf_s(buf, sizeof(buf), _TRUNCATE, "%d byte", size);
     } else if (size < 1024) {
@@ -109,6 +109,9 @@ void CNuvoISPDlg::DoDataExchange(CDataExchange *pDX)
     DDX_Text(pDX, IDC_STATIC_STATUS, m_sStatus);
     DDX_Control(pDX, IDC_COMBO_COM_PORT, m_SelComPort);
     DDX_Control(pDX, IDC_COMBO_INTERFACE, m_SelInterface);
+    DDX_Control(pDX, IDC_EDIT_IPADDRESS, m_IPAddress);
+    DDX_Control(pDX, IDC_EDIT_IPPORT, m_EditIPPort);
+    DDX_Text(pDX, IDC_EDIT_IPPORT, m_iIPPort);
     //}}AFX_DATA_MAP
 }
 
@@ -137,6 +140,8 @@ BEGIN_MESSAGE_MAP(CNuvoISPDlg, CDialog)
     //ON_WM_DEVICECHANGE()
     ON_MESSAGE(WM_DEVICECHANGE, OnDeviceChange)
     ON_EN_KILLFOCUS(IDC_EDIT_APROM_BASE_ADDRESS, OnKillfocusEditAPRomOffset)
+    ON_EN_CHANGE(IDC_EDIT_IPADDRESS, OnIPAddressChange)
+    ON_EN_CHANGE(IDC_EDIT_IPPORT, OnIPPortChange)
 END_MESSAGE_MAP()
 
 BOOL CNuvoISPDlg::OnInitDialog()
@@ -197,6 +202,11 @@ BOOL CNuvoISPDlg::OnInitDialog()
     RegisterNotification();
     ShowSPIOptions(FALSE);
     // ShowSPIOptions(TRUE);
+
+    m_IPAddress.SetAddress(192, 168, 4, 1);
+    m_iIPPort = 333;
+    UpdateData(FALSE);
+
     return TRUE;	// return TRUE  unless you set the focus to a control
 }
 
@@ -276,9 +286,15 @@ void CNuvoISPDlg::OnButtonConnect()
     if (m_fnThreadProcStatus == &CISPProc::Thread_Idle
             || m_fnThreadProcStatus == &CISPProc::Thread_Pause) {
         /* Connect */
-        m_SelComPort.GetWindowText(m_ComNum);
-        SetInterface(m_SelInterface.GetCurSel() + 1, m_ComNum);
+        CString sComNum, sIPAddress, sIPPort;
+
+        m_SelComPort.GetWindowText(sComNum);
+        m_IPAddress.GetWindowText(sIPAddress);
+        m_EditIPPort.GetWindowText(sIPPort);
+
+        SetInterface(m_Interfaces[m_SelInterface.GetCurSel()].second, sComNum, sIPAddress, sIPPort);
         EnableInterface(false);
+
         Set_ThreadAction(&CISPProc::Thread_CheckUSBConnect);
     } else if (m_fnThreadProcStatus != NULL) {
         /* Disconnect */

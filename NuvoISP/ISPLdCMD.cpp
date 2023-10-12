@@ -10,6 +10,7 @@
 ISPLdCMD::ISPLdCMD()
     : m_bOpenPort(FALSE)
     , m_uCmdIndex(18)	//Do not use 0 to avoid firmware already has index 0 occasionally.
+    , m_uInterface(0)
 {
 }
 
@@ -66,6 +67,13 @@ bool ISPLdCMD::Open_Port()
             m_strDevPathName = m_hidIO.GetDevicePath();
             break;
 
+        case INTF_WIFI:
+            if (!m_trsp.OpenDevice(CTRSP::INTF_E_WIFI, m_strIPAddress, m_strIPPort)) {
+                return false;
+            }
+
+            break;
+
         default:
             return false;
     }
@@ -92,6 +100,10 @@ void ISPLdCMD::Close_Port()
 
         case INTF_UART:
             m_comIO.CloseDevice();
+            break;
+
+        case INTF_WIFI:
+            m_trsp.CloseDevice();
             break;
 
         case INTF_SPI:
@@ -196,6 +208,13 @@ BOOL ISPLdCMD::ReadFile(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, B
 
                 break;
 
+            case INTF_WIFI:
+                if (!m_trsp.Read(m_acBuffer + 1, 64, &dwLength, dwMilliseconds)) {
+                    return FALSE;
+                }
+
+                break;
+
             case INTF_SPI:
             case INTF_I2C:
             case INTF_RS485:
@@ -274,6 +293,11 @@ BOOL ISPLdCMD::WriteFile(unsigned long uCmd, const char *pcBuffer, DWORD dwLen, 
 
         case INTF_UART:
             bRet = m_comIO.WriteFile(m_acBuffer + 1, 64, &dwLength, dwMilliseconds);
+            break;
+
+        case INTF_WIFI:
+            m_trsp.ClearReadBuf();
+            bRet = m_trsp.Write(m_acBuffer + 1, 64, &dwLength);
             break;
 
         case INTF_SPI:
@@ -607,11 +631,6 @@ BOOL ISPLdCMD::RunLDROM()
     } else {
         return WriteFile(CMD_RUN_LDROM, NULL, 0, USBCMD_TIMEOUT_LONG);
     }
-}
-
-ULONG ISPLdCMD::get_m_uInterface()
-{
-    return m_uInterface;
 }
 
 BOOL ISPLdCMD::Cmd_ERASE_SPIFLASH(unsigned long offset, unsigned long total_len)

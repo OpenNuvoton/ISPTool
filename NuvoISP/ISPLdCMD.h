@@ -11,10 +11,12 @@
 #define INTF_I2C     (4)
 #define INTF_RS485   (5)
 #define INTF_CAN     (6)
+#define INTF_WIFI    (7)
 
 #include "CScopedMutex.hpp"
 #include "Interface\CHidIO2.h"
 #include "Interface\CUartIO.h"
+#include "Interface\CTRSP.h"
 #define HID_MAX_PACKET_SIZE_EP 64
 class CUartIO;
 
@@ -29,8 +31,11 @@ protected:
     ULONG			m_uInterface;
     ULONG			m_uUSB_PID;		// for compatibility
     CString			m_strComNum;
+    CString			m_strIPAddress;
+    CString			m_strIPPort;
     CHidIO2			m_hidIO;
     CUartIO			m_comIO;
+    CTRSP			m_trsp;
     BOOL			m_bOpenPort;
     CMutex2			m_Mutex;
 
@@ -122,13 +127,20 @@ public:
 
     // it = 1 for HID, str is ignored.
     // it = 2 for UART, str as "COM5".
-    void SetInterface(unsigned int it, CString str)
+    void SetInterface(unsigned int it, CString sComNum, CString sIPAddress, CString sIPPort)
     {
         m_uInterface = it;
-        m_strComNum = str;
+        m_strComNum = sComNum;
+        m_strIPAddress = sIPAddress;
+        m_strIPPort = sIPPort;
     };
+
+    ULONG GetInterface()
+    {
+        return m_uInterface;
+    }
+
     CString m_strDevPathName;
-    ULONG get_m_uInterface();
 
     BOOL Cmd_ERASE_SPIFLASH(unsigned long offset, unsigned long total_len);
     BOOL Cmd_UPDATE_SPIFLASH(unsigned long offset, unsigned long total_len, const char *buffer);

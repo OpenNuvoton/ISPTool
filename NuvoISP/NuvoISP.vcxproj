@@ -175,6 +175,7 @@
     <ClCompile Include="DialogConfiguration\DialogConfiguration_OT8051.cpp" />
     <ClCompile Include="DialogConfiguration\DialogResize.cpp" />
     <ClCompile Include="Interface\CHidIO2.cpp" />
+    <ClCompile Include="Interface\CTRSP.cpp" />
     <ClCompile Include="ISPProc.cpp" />
     <ClCompile Include="DialogHex.cpp" />
     <ClCompile Include="DialogMain.cpp" />

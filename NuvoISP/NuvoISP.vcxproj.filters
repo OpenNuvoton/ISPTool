@@ -94,7 +94,7 @@
       <Filter>External\DialogChipSetting</Filter>
     </ClInclude>
     <ClInclude Include="DialogChipSetting\DialogChipSetting_CFG_M2L31_2.h">
-      <Filter>Header Files</Filter>
+      <Filter>External\DialogChipSetting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -246,7 +246,10 @@
       <Filter>External\DialogChipSetting</Filter>
     </ClCompile>
     <ClCompile Include="DialogChipSetting\DialogChipSetting_CFG_M2L31_2.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>External\DialogChipSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface\CTRSP.cpp">
+      <Filter>ISPTool\Interface</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
