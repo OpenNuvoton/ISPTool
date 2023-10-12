@@ -52,6 +52,7 @@ bool ISPLdCMD::Open_Port()
         case INTF_I2C:
         case INTF_RS485:
         case INTF_CAN:
+        case INTF_LIN:
             if (m_hidIO.OpenDevice(0x0416, 0x5201, 5)) {	// Nu-Link2 with ISP-Bridge
                 m_uUSB_PID = 0x5201;
             } else if (m_hidIO.OpenDevice(0x0416, 0x5203, 5)) {	// Nu-Link2 with ISP-Bridge
@@ -110,6 +111,7 @@ void ISPLdCMD::Close_Port()
         case INTF_I2C:
         case INTF_RS485:
         case INTF_CAN:
+        case INTF_LIN:
             m_hidIO.CloseDevice();
             break;
 
@@ -218,6 +220,7 @@ BOOL ISPLdCMD::ReadFile(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, B
             case INTF_SPI:
             case INTF_I2C:
             case INTF_RS485:
+            case INTF_LIN:
                 if (!m_hidIO.ReadFile(m_acBuffer, 65, &dwLength, dwMilliseconds)) {
                     return FALSE;
                 }
@@ -303,6 +306,7 @@ BOOL ISPLdCMD::WriteFile(unsigned long uCmd, const char *pcBuffer, DWORD dwLen, 
         case INTF_SPI:
         case INTF_I2C:
         case INTF_RS485:
+        case INTF_LIN:
             m_acBuffer[2] = static_cast<CHAR>(m_uInterface);
             bRet = m_hidIO.WriteFile(m_acBuffer, 65, &dwLength, dwMilliseconds);
             break;

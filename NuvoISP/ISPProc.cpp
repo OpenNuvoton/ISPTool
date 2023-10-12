@@ -139,20 +139,25 @@ void CISPProc::Thread_CheckUSBConnect()
     }
 
     m_ISPLdDev.Close_Port();
-    DWORD dwWait = 0;
     DWORD dwStart = GetTickCount();
+    DWORD dwConnectTime = 0;
+    DWORD dwDefaultBaudRate = BAUD_RATE_115200;
 
     while (m_fnThreadProcStatus == &CISPProc::Thread_CheckUSBConnect) {
         if (m_ISPLdDev.Open_Port()) {
             m_eProcSts = EPS_ERR_CONNECT;
             dwStart = GetTickCount();
+            dwConnectTime = 40;
 
-            DWORD dwConnectTime = 40;
-            if (m_ISPLdDev.GetInterface() == INTF_UART) {
-                DWORD dwDefaultBaudRate = BAUD_RATE_115200;
-                if (640000 / dwDefaultBaudRate > dwConnectTime) {
-                    dwConnectTime = DWORD(2 * 640000 / dwDefaultBaudRate);
-                } 
+            switch (m_ISPLdDev.GetInterface()) {
+                case INTF_UART:
+                    if ((640000 / dwDefaultBaudRate) > dwConnectTime) {
+                        dwConnectTime = (DWORD)(2 * 640000 / dwDefaultBaudRate);
+                    }
+                    break;
+                case INTF_LIN:
+                    dwConnectTime = 200;
+                    break;
             }
 
             try {

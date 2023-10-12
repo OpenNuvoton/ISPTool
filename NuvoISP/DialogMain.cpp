@@ -855,6 +855,7 @@ void CDialogMain::InitComboBox(int iSupportNL2)
         m_Interfaces.push_back(std::make_pair(_T("I2C"), INTF_I2C));
         m_Interfaces.push_back(std::make_pair(_T("RS485"), INTF_RS485));
         m_Interfaces.push_back(std::make_pair(_T("CAN"), INTF_CAN));
+        m_Interfaces.push_back(std::make_pair(_T("LIN"), INTF_LIN));
     }
     m_Interfaces.push_back(std::make_pair(_T("Wi-Fi"), INTF_WIFI));
 

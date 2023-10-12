@@ -794,7 +794,7 @@ void CNuvoISPDlg::ShowChipInfo_OnLine()
     SetDlgItemText(IDC_STATIC_CONFIG_VALUE_3, strTmp);
 
     // Erase All command is not suppoted for CAN interface
-    if (m_SelInterface.GetCurSel() == 5) { // CAN interface
+    if (m_Interfaces[m_SelInterface.GetCurSel()].second == INTF_CAN) { // CAN interface
         m_bErase = 0;
         EnableDlgItem(IDC_CHECK_ERASE, 0);
     }
