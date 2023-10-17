@@ -40,6 +40,7 @@ public:
     unsigned int m_Interface;
     CIPAddressCtrl m_IPAddress;
     CEdit m_EditIPPort;
+    CEdit m_EditBDName;
     int m_iIPPort;
     afx_msg void OnSelchangeInterface();
     afx_msg void OnComboChange();

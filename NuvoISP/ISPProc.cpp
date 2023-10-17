@@ -156,6 +156,8 @@ void CISPProc::Thread_CheckUSBConnect()
                     }
                     break;
                 case INTF_LIN:
+                case INTF_WIFI:
+                case INTF_BLE:
                     dwConnectTime = 200;
                     break;
             }

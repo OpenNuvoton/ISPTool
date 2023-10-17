@@ -13,6 +13,7 @@
 #define INTF_CAN     (6)
 #define INTF_LIN     (7)
 #define INTF_WIFI    (8)
+#define INTF_BLE     (9)
 
 #include "CScopedMutex.hpp"
 #include "Interface\CHidIO2.h"
@@ -34,6 +35,8 @@ protected:
     CString			m_strComNum;
     CString			m_strIPAddress;
     CString			m_strIPPort;
+    CString			m_strBDName;
+    CString			m_strDevPathName;
     CHidIO2			m_hidIO;
     CUartIO			m_comIO;
     CTRSP			m_trsp;
@@ -136,12 +139,20 @@ public:
         m_strIPPort = sIPPort;
     };
 
-    ULONG GetInterface()
+    ULONG GetInterface() const
     {
         return m_uInterface;
     }
 
-    CString m_strDevPathName;
+    CString GetBDName() const
+    {
+        return m_strBDName;
+    }
+
+    CString GetDevPathName() const
+    {
+        return m_strDevPathName;
+    }
 
     BOOL Cmd_ERASE_SPIFLASH(unsigned long offset, unsigned long total_len);
     BOOL Cmd_UPDATE_SPIFLASH(unsigned long offset, unsigned long total_len, const char *buffer);

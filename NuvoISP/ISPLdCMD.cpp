@@ -2,8 +2,12 @@
 #include "ISPLdCMD.h"
 #include <stdio.h>
 
-#define USBCMD_TIMEOUT		5000
-#define USBCMD_TIMEOUT_LONG	25000
+#define USBCMD_TIMEOUT       5000
+#define USBCMD_TIMEOUT_LONG  25000
+
+#define BLE_SERV_F01_UUID    0xABF0
+#define BLE_CHAR_W01_UUID    0xABF1
+#define BLE_CHAR_N01_UUID    0xABF2
 
 #define printf(...)
 
@@ -26,6 +30,7 @@ bool ISPLdCMD::Open_Port()
 
     m_uUSB_PID = 0;
     m_strDevPathName = _T("");
+    m_strBDName = _T("");
     ScopedMutex scopedLock(m_Mutex);
 
     switch (m_uInterface) {
@@ -75,6 +80,14 @@ bool ISPLdCMD::Open_Port()
 
             break;
 
+        case INTF_BLE:
+            if (!m_trsp.OpenDevice(CTRSP::INTF_E_BLE, BLE_SERV_F01_UUID, BLE_CHAR_W01_UUID, BLE_CHAR_N01_UUID)) {
+                return false;
+            }
+
+            m_strBDName = m_trsp.GetActiveDeviceName().c_str();
+            break;
+
         default:
             return false;
     }
@@ -86,6 +99,7 @@ bool ISPLdCMD::Open_Port()
 void ISPLdCMD::Close_Port()
 {
     m_strDevPathName = _T("");
+    m_strBDName = _T("");
     ScopedMutex scopedLock(m_Mutex);
 
     if (!m_bOpenPort) {
@@ -104,6 +118,7 @@ void ISPLdCMD::Close_Port()
             break;
 
         case INTF_WIFI:
+        case INTF_BLE:
             m_trsp.CloseDevice();
             break;
 
@@ -211,6 +226,7 @@ BOOL ISPLdCMD::ReadFile(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, B
                 break;
 
             case INTF_WIFI:
+            case INTF_BLE:
                 if (!m_trsp.Read(m_acBuffer + 1, 64, &dwLength, dwMilliseconds)) {
                     return FALSE;
                 }
@@ -299,6 +315,7 @@ BOOL ISPLdCMD::WriteFile(unsigned long uCmd, const char *pcBuffer, DWORD dwLen, 
             break;
 
         case INTF_WIFI:
+        case INTF_BLE:
             m_trsp.ClearReadBuf();
             bRet = m_trsp.Write(m_acBuffer + 1, 64, &dwLength);
             break;
@@ -555,7 +572,7 @@ BOOL ISPLdCMD::EraseAll()
 
     BOOL ret = FALSE;
 
-    if (WriteFile(CMD_ERASE_ALL, NULL,	0, USBCMD_TIMEOUT_LONG)) {
+    if (WriteFile(CMD_ERASE_ALL, NULL, 0, USBCMD_TIMEOUT_LONG)) {
         ret = ReadFile(NULL, 0, USBCMD_TIMEOUT_LONG, TRUE);
     }
 

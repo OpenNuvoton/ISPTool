@@ -111,6 +111,7 @@ void CNuvoISPDlg::DoDataExchange(CDataExchange *pDX)
     DDX_Control(pDX, IDC_COMBO_INTERFACE, m_SelInterface);
     DDX_Control(pDX, IDC_EDIT_IPADDRESS, m_IPAddress);
     DDX_Control(pDX, IDC_EDIT_IPPORT, m_EditIPPort);
+    DDX_Control(pDX, IDC_EDIT_BDNAME, m_EditBDName);
     DDX_Text(pDX, IDC_EDIT_IPPORT, m_iIPPort);
     //}}AFX_DATA_MAP
 }
@@ -384,6 +385,7 @@ LRESULT CNuvoISPDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
             CString sMessage;
             UpdateData(true);
             m_sStatus = _T("");
+            m_EditBDName.SetWindowText(m_ISPLdDev.GetBDName());
 
             switch (lParam) {
                 case CONNECT_STATUS_NONE:
@@ -923,7 +925,7 @@ LRESULT CNuvoISPDlg::OnDeviceChange(WPARAM  nEventType, LPARAM  dwData)
             // Device has been removed.
             //¡K
             if (pdbi->dbcc_devicetype == DBT_DEVTYP_DEVICEINTERFACE) {
-                if (DevPathName.CompareNoCase(m_ISPLdDev.m_strDevPathName) == 0) {
+                if (DevPathName.CompareNoCase(m_ISPLdDev.GetDevPathName()) == 0) {
                     Set_ThreadAction(&CISPProc::Thread_Idle);
                 }
             }

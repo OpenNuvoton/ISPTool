@@ -858,6 +858,7 @@ void CDialogMain::InitComboBox(int iSupportNL2)
         m_Interfaces.push_back(std::make_pair(_T("LIN"), INTF_LIN));
     }
     m_Interfaces.push_back(std::make_pair(_T("Wi-Fi"), INTF_WIFI));
+    m_Interfaces.push_back(std::make_pair(_T("BLE"), INTF_BLE));
 
     m_SelInterface.ResetContent();
     for (size_t i = 0; i < m_Interfaces.size(); i++) {
@@ -881,14 +882,19 @@ void CDialogMain::OnSelchangeInterface()
         OnComboChange();
     }
 
+    GetDlgItem(IDC_COMBO_COM_PORT)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_EDIT_IPADDRESS)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_EDIT_IPPORT)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_EDIT_BDNAME)->ShowWindow(SW_HIDE);
+
     if (m_Interfaces[m_SelInterface.GetCurSel()].second == INTF_WIFI) {
-       GetDlgItem(IDC_COMBO_COM_PORT)->ShowWindow(SW_HIDE);
        GetDlgItem(IDC_EDIT_IPADDRESS)->ShowWindow(SW_SHOW);
        GetDlgItem(IDC_EDIT_IPPORT)->ShowWindow(SW_SHOW);
     }
+    else if (m_Interfaces[m_SelInterface.GetCurSel()].second == INTF_BLE) {
+        GetDlgItem(IDC_EDIT_BDNAME)->ShowWindow(SW_SHOW);
+    }
     else {
-       GetDlgItem(IDC_EDIT_IPADDRESS)->ShowWindow(SW_HIDE);
-       GetDlgItem(IDC_EDIT_IPPORT)->ShowWindow(SW_HIDE);
        GetDlgItem(IDC_COMBO_COM_PORT)->ShowWindow(SW_SHOW);
     }
 }
@@ -924,15 +930,17 @@ void CDialogMain::OnIPPortChange()
 void CDialogMain::EnableInterface(bool bEnable)
 {
     if (bEnable) {
-        m_SelInterface.EnableWindow(1);
+        m_SelInterface.EnableWindow(TRUE);
         OnSelchangeInterface();
-        m_IPAddress.EnableWindow(1);
-        m_EditIPPort.EnableWindow(1);
+        m_IPAddress.EnableWindow(TRUE);
+        m_EditIPPort.EnableWindow(TRUE);
+        m_EditBDName.EnableWindow(FALSE);
     } else {
-        m_SelInterface.EnableWindow(0);
-        m_SelComPort.EnableWindow(0);
-        m_IPAddress.EnableWindow(0);
-        m_EditIPPort.EnableWindow(0);
+        m_SelInterface.EnableWindow(FALSE);
+        m_SelComPort.EnableWindow(FALSE);
+        m_IPAddress.EnableWindow(FALSE);
+        m_EditIPPort.EnableWindow(FALSE);
+        m_EditBDName.EnableWindow(FALSE);
     }
 }
 
