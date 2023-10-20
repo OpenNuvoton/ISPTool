@@ -62,7 +62,6 @@ Reasons for these range limits:
 #define IDC_GROUP_DPMNS_PASSWORD            3023
 #define IDC_GROUP_PLM_STAGE                 3024
 #define IDC_GROUP_ADVANCE_LOCK              3025
-#define IDC_GROUP_SECURE_CONCEAL            3026
 
 // Clock Options
 #define IDC_RADIO_CLK_HXT                   3027
@@ -250,22 +249,23 @@ Reasons for these range limits:
 #define IDC_GROUP_BOOT_CLOCK_SELECT         3192
 
 // Secure Conceal
-#define IDC_CHECK_SECURE_CONCEAL_ENABLE      3200
-#define IDC_SECURE_CONCEAL_BASE_ADDRESS      3201
-#define IDC_EDIT_SECURE_CONCEAL_BASE_ADDRESS        3202
-#define IDC_EDIT_SECURE_CONCEAL_SIZE         3203
-#define IDC_STATIC_SECURE_CONCEAL_SIZE       3204
+#define IDC_GROUP_SECURE_CONCEAL            3200
+#define IDC_SECURE_CONCEAL_BASE_ADDRESS     3201
+#define IDC_EDIT_SECURE_CONCEAL_SIZE        3202
+#define IDC_EDIT_SECURE_CONCEAL_BASE_ADDRESS        3203
+#define IDC_CHECK_SECURE_CONCEAL_ENABLE     3204
 #define IDC_CHECK_SECURE_CONCEAL_VAR_SIZE_ENABLE    3205
+#define IDC_STATIC_SECURE_CONCEAL_SIZE      3206
 
-#define IDC_RADIO_LEVEL_0                   3206
-#define IDC_RADIO_LEVEL_1                   3207
-#define IDC_RADIO_LEVEL_2                   3208
-#define IDC_RADIO_LEVEL_3                   3209
 
-#define IDC_RADIO_PIN_0                     3210
-#define IDC_RADIO_PIN_1                     3211
-#define IDC_RADIO_PIN_2                     3212
-#define IDC_RADIO_PIN_3                     3213
+#define IDC_RADIO_LEVEL_0                   3210
+#define IDC_RADIO_LEVEL_1                   3211
+#define IDC_RADIO_LEVEL_2                   3212
+#define IDC_RADIO_LEVEL_3                   3213
+#define IDC_RADIO_PIN_0                     3214
+#define IDC_RADIO_PIN_1                     3215
+#define IDC_RADIO_PIN_2                     3216
+#define IDC_RADIO_PIN_3                     3217
 
 #define IDC_CHECK_SAFETY_PROTECT_0          3300
 #define IDC_CHECK_SAFETY_PROTECT_1          3301

@@ -960,9 +960,9 @@ void CDialogMain::EnableInterface(bool bEnable)
 // call by OnButtonConfig
 bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
 {
-    unsigned int CFG[11] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
+    unsigned int CFG[12] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
                             0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
-                            0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
+                            0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF};
 
     if (Template == 0) {
         CMenu menu;

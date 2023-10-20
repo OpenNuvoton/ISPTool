@@ -62,7 +62,7 @@ bool ISPLdCMD::Open_Port()
                 m_uUSB_PID = 0x5201;
             } else if (m_hidIO.OpenDevice(0x0416, 0x5203, 5)) {	// Nu-Link2 with ISP-Bridge
                 m_uUSB_PID = 0x5203;
-            } else if (m_hidIO.OpenDevice(0x0416, 0x2006, 4)) {	
+            } else if (m_hidIO.OpenDevice(0x0416, 0x2006, 4)) { 
                 m_uUSB_PID = 0x2006;
             } else if (m_hidIO.OpenDevice(0x0416, 0x3F10, -1)) {	// ISP-Bridge
                 m_uUSB_PID = 0x3F10;
@@ -440,9 +440,9 @@ void ISPLdCMD::UpdateConfig(unsigned int config[], unsigned int response[])
     WriteFile(
         CMD_UPDATE_CONFIG,
         (const char *)config,
-        16,
+        16 * 3,
         USBCMD_TIMEOUT_LONG);
-    ReadFile((char *)response, 16, USBCMD_TIMEOUT_LONG, TRUE);
+    ReadFile((char *)response, 16 * 3, USBCMD_TIMEOUT_LONG, TRUE);
 }
 
 void ISPLdCMD::UpdateAPROM(unsigned long start_addr,
