@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 
 struct WINCTRLID {
     int         btn;
@@ -33,12 +34,18 @@ public:
     void EnableDlgItem(int nID, BOOL bEnable);
 
     // Interface Selection for USB or UART
+    std::vector<std::pair<CString, unsigned int>> m_Interfaces;
     CComboBox   m_SelInterface;
     CComboBox   m_SelComPort;
     unsigned int m_Interface;
-    CString m_ComNum;
+    CIPAddressCtrl m_IPAddress;
+    CEdit m_EditIPPort;
+    CEdit m_EditBDName;
+    int m_iIPPort;
     afx_msg void OnSelchangeInterface();
     afx_msg void OnComboChange();
+    afx_msg void OnIPAddressChange();
+    afx_msg void OnIPPortChange();
     void InitComboBox(int iSupportNL2 = 1);
     void EnableInterface(bool bEnable);
     UINT ScanPCCom();

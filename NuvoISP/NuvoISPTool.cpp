@@ -29,12 +29,14 @@ protected:
     size_t szArgIndex;
 public:
     bool m_bBatch;
+    unsigned int m_uInterface;
 
     CMyCommandLineInfo()
         : fnParseArg(NULL)
         , szArgIndex(0)
         , CISPProc(NULL)
         , m_bBatch(false)
+        , m_uInterface(0)
     {
         m_uAPROM_Addr   = 0;
         m_uAPROM_Size   = 0xFFFFFFFF;
@@ -61,6 +63,7 @@ public:
                 szArgIndex = 2; // 2: SPI Flash
                 fnParseArg = &CMyCommandLineInfo::ParseArg_2files;
             } else if (_tcscmp(pszParam, _T("interface")) == 0) {
+                szArgIndex = 0;
                 fnParseArg = &CMyCommandLineInfo::ParseArg_Interface;
             } else if (_tcscmp(pszParam, _T("run")) == 0) {
                 m_bRunAPROM = TRUE;
@@ -96,11 +99,20 @@ public:
 
     virtual void ParseArg_Interface(const TCHAR *pszParam, BOOL bLast)
     {
-        if (_tcscmp(pszParam, _T("HID")) == 0) {
-            SetInterface(1, _T("")); // 1: HID
-        } else {
-            SetInterface(2, pszParam); // 2: UART & specific COM port
+        if (szArgIndex == 0) {
+            if (_tcscmp(pszParam, _T("HID")) == 0) {
+                m_uInterface = INTF_HID;
+                SetInterface(m_uInterface, _T(""), _T(""), _T(""));
+            } else if (_tcscmp(pszParam, _T("UART")) == 0) {
+                m_uInterface = INTF_UART;
+            }
+        } else if (szArgIndex == 1) {
+            if (m_uInterface == INTF_UART) {
+                SetInterface(m_uInterface, pszParam, _T(""), _T(""));
+            }
         }
+
+        ++szArgIndex;
     }
 };
 

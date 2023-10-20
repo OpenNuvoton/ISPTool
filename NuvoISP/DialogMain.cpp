@@ -7,6 +7,7 @@
 #include <cstring>
 
 #include "NuDataBase.h"
+#include "ISPLdCmd.h"
 
 IMPLEMENT_DYNAMIC(CDialogMain, CDialog)
 
@@ -845,18 +846,24 @@ UINT CDialogMain::ScanPCCom()
 
 void CDialogMain::InitComboBox(int iSupportNL2)
 {
-    m_SelInterface.ResetContent();
-    m_SelInterface.AddString(_T("USB"));
-    m_SelInterface.AddString(_T("UART"));
+    m_Interfaces.clear();
+    m_Interfaces.push_back(std::make_pair(_T("USB"), INTF_HID));
+    m_Interfaces.push_back(std::make_pair(_T("UART"), INTF_UART));
     // Nu-Link2 ISP Bridge interfaces
-
     if (iSupportNL2) {
-        m_SelInterface.AddString(_T("SPI"));
-        m_SelInterface.AddString(_T("I2C"));
-        m_SelInterface.AddString(_T("RS485"));
-        m_SelInterface.AddString(_T("CAN"));
+        m_Interfaces.push_back(std::make_pair(_T("SPI"), INTF_SPI));
+        m_Interfaces.push_back(std::make_pair(_T("I2C"), INTF_I2C));
+        m_Interfaces.push_back(std::make_pair(_T("RS485"), INTF_RS485));
+        m_Interfaces.push_back(std::make_pair(_T("CAN"), INTF_CAN));
+        m_Interfaces.push_back(std::make_pair(_T("LIN"), INTF_LIN));
     }
+    m_Interfaces.push_back(std::make_pair(_T("Wi-Fi"), INTF_WIFI));
+    m_Interfaces.push_back(std::make_pair(_T("BLE"), INTF_BLE));
 
+    m_SelInterface.ResetContent();
+    for (size_t i = 0; i < m_Interfaces.size(); i++) {
+        m_SelInterface.AddString(m_Interfaces[i].first);
+    }
     m_SelInterface.SetCurSel(0);
     OnSelchangeInterface();
 
@@ -867,12 +874,28 @@ void CDialogMain::InitComboBox(int iSupportNL2)
 
 void CDialogMain::OnSelchangeInterface()
 {
-    m_SelComPort.EnableWindow(m_SelInterface.GetCurSel() == 1);
+    m_SelComPort.EnableWindow(m_Interfaces[m_SelInterface.GetCurSel()].second == INTF_UART);
 
-    if (m_SelInterface.GetCurSel() != 1) {
+    if (m_Interfaces[m_SelInterface.GetCurSel()].second != INTF_UART) {
         EnableDlgItem(IDC_BUTTON_CONNECT, true);
     } else {
         OnComboChange();
+    }
+
+    GetDlgItem(IDC_COMBO_COM_PORT)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_EDIT_IPADDRESS)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_EDIT_IPPORT)->ShowWindow(SW_HIDE);
+    GetDlgItem(IDC_EDIT_BDNAME)->ShowWindow(SW_HIDE);
+
+    if (m_Interfaces[m_SelInterface.GetCurSel()].second == INTF_WIFI) {
+       GetDlgItem(IDC_EDIT_IPADDRESS)->ShowWindow(SW_SHOW);
+       GetDlgItem(IDC_EDIT_IPPORT)->ShowWindow(SW_SHOW);
+    }
+    else if (m_Interfaces[m_SelInterface.GetCurSel()].second == INTF_BLE) {
+        GetDlgItem(IDC_EDIT_BDNAME)->ShowWindow(SW_SHOW);
+    }
+    else {
+       GetDlgItem(IDC_COMBO_COM_PORT)->ShowWindow(SW_SHOW);
     }
 }
 
@@ -886,14 +909,38 @@ void CDialogMain::OnComboChange()
     EnableDlgItem(IDC_BUTTON_CONNECT, m_SelComPort.GetCurSel());
 }
 
+void CDialogMain::OnIPAddressChange()
+{
+}
+
+void CDialogMain::OnIPPortChange()
+{
+    CString sIPPort;
+    m_EditIPPort.GetWindowText(sIPPort);
+    m_iIPPort = _tstoi(sIPPort);
+
+    if (m_iIPPort < 0)
+        m_iIPPort = 0;
+    else if (m_iIPPort > 65536)
+        m_iIPPort = 65536;
+
+    UpdateData(FALSE);
+}
+
 void CDialogMain::EnableInterface(bool bEnable)
 {
     if (bEnable) {
-        m_SelInterface.EnableWindow(1);
+        m_SelInterface.EnableWindow(TRUE);
         OnSelchangeInterface();
+        m_IPAddress.EnableWindow(TRUE);
+        m_EditIPPort.EnableWindow(TRUE);
+        m_EditBDName.EnableWindow(FALSE);
     } else {
-        m_SelInterface.EnableWindow(0);
-        m_SelComPort.EnableWindow(0);
+        m_SelInterface.EnableWindow(FALSE);
+        m_SelComPort.EnableWindow(FALSE);
+        m_IPAddress.EnableWindow(FALSE);
+        m_EditIPPort.EnableWindow(FALSE);
+        m_EditBDName.EnableWindow(FALSE);
     }
 }
 

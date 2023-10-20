@@ -56,15 +56,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\DialogConfiguration\;$(ProjectDir)\DataBase\;$(ProjectDir)\ThirdParty\hidapi\hidapi\;$(ProjectDir)\DialogChipSetting\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\DialogConfiguration\;$(ProjectDir)\DataBase\;$(ProjectDir)\ThirdParty\hidapi\hidapi\;$(ProjectDir)\DialogChipSetting\;$(ProjectDir)\Interface</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <DisableSpecificWarnings>4819</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>
-      </AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)\Interface</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateMapFile>true</GenerateMapFile>
     </Link>
@@ -87,7 +86,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\DialogConfiguration\;$(ProjectDir)\DataBase\;$(ProjectDir)\ThirdParty\hidapi\hidapi\;$(ProjectDir)\DialogChipSetting\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)\DialogConfiguration\;$(ProjectDir)\DataBase\;$(ProjectDir)\ThirdParty\hidapi\hidapi\;$(ProjectDir)\DialogChipSetting\;$(ProjectDir)\Interface</AdditionalIncludeDirectories>
       <DebugInformationFormat>OldStyle</DebugInformationFormat>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <DisableSpecificWarnings>4819</DisableSpecificWarnings>
@@ -97,12 +96,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>
-      </AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)\Interface</AdditionalLibraryDirectories>
       <AdditionalDependencies>
       </AdditionalDependencies>
-      <LinkTimeCodeGeneration>
-      </LinkTimeCodeGeneration>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
@@ -175,6 +172,7 @@
     <ClCompile Include="DialogConfiguration\DialogConfiguration_OT8051.cpp" />
     <ClCompile Include="DialogConfiguration\DialogResize.cpp" />
     <ClCompile Include="Interface\CHidIO2.cpp" />
+    <ClCompile Include="Interface\CTRSP.cpp" />
     <ClCompile Include="ISPProc.cpp" />
     <ClCompile Include="DialogHex.cpp" />
     <ClCompile Include="DialogMain.cpp" />

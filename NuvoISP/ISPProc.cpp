@@ -139,24 +139,31 @@ void CISPProc::Thread_CheckUSBConnect()
     }
 
     m_ISPLdDev.Close_Port();
-    DWORD dwWait = 0;
     DWORD dwStart = GetTickCount();
+    DWORD dwConnectTime = 0;
+    DWORD dwDefaultBaudRate = BAUD_RATE_115200;
 
     while (m_fnThreadProcStatus == &CISPProc::Thread_CheckUSBConnect) {
         if (m_ISPLdDev.Open_Port()) {
             m_eProcSts = EPS_ERR_CONNECT;
             dwStart = GetTickCount();
+            dwConnectTime = 40;
 
-            DWORD connect_time = 40;
-            if (m_ISPLdDev.get_m_uInterface() == 2) {
-                DWORD default_baud_rate = BAUD_RATE_115200;
-                if (640000 / default_baud_rate > connect_time) {
-                    connect_time = DWORD( 2 * 640000 / default_baud_rate);
-                } 
+            switch (m_ISPLdDev.GetInterface()) {
+                case INTF_UART:
+                    if ((640000 / dwDefaultBaudRate) > dwConnectTime) {
+                        dwConnectTime = (DWORD)(2 * 640000 / dwDefaultBaudRate);
+                    }
+                    break;
+                case INTF_LIN:
+                case INTF_WIFI:
+                case INTF_BLE:
+                    dwConnectTime = 200;
+                    break;
             }
 
             try {
-                if (m_ISPLdDev.CMD_Connect(connect_time)) {
+                if (m_ISPLdDev.CMD_Connect(dwConnectTime)) {
                     Set_ThreadAction(&CISPProc::Thread_CheckDeviceConnect);
                 }
             } catch (...) {
