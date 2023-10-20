@@ -626,7 +626,12 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 Config = (((CDialogChipSetting_M2351 *)pConfigDlg)->m_uConfigValue);
                 break;
             case NUC_CHIP_TYPE_M2L31:
-                pConfigDlg = new CDialogChipSetting_M2L31(256 * 1024, NUMICRO_FLASH_PAGE_SIZE_4K, 0, 0, uSeriesCode);
+                if (uProgramMemorySize){
+                    pConfigDlg = new CDialogChipSetting_M2L31(uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_4K, 0, 0, uSeriesCode);
+                } else {
+                    pConfigDlg = new CDialogChipSetting_M2L31(512 * 1024, NUMICRO_FLASH_PAGE_SIZE_4K, 0, 0, uSeriesCode);
+                }
+
                 Config = (((CDialogChipSetting_M2L31*)pConfigDlg)->m_uConfigValue);
                 break;
 

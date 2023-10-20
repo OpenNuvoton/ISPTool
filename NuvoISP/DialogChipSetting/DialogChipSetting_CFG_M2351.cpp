@@ -104,6 +104,8 @@ BOOL CDialogChipSetting_CFG_M2351::OnInitDialog()
     CDialog::OnInitDialog();
 
     // TODO: Add extra initialization here
+    GetDlgItem(IDC_CHECK_ICE_LOCK)->ShowWindow(SW_HIDE);
+    m_bDisableICE = false;
 
     if (m_uChipType == NUC_CHIP_TYPE_M2351) {
         GetDlgItem(IDC_CHECK_TAMPER_POWER_DOWN)->ShowWindow(SW_HIDE);
@@ -114,8 +116,6 @@ BOOL CDialogChipSetting_CFG_M2351::OnInitDialog()
     if (m_uChipType == NUC_CHIP_TYPE_M2354) {
         GetDlgItem(IDC_CHECK_TAMPER_POWER_DOWN)->ShowWindow(SW_SHOW);
         m_bSecureBooting = true;
-        GetDlgItem(IDC_CHECK_ICE_LOCK)->ShowWindow(SW_HIDE);
-        m_bDisableICE = false;
         m_uCBOVLevel = 8;
     }
 
