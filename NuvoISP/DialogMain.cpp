@@ -1045,7 +1045,9 @@ LRESULT CDialogMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
     if (message == WM_COMMAND) {
         unsigned int i;
-        unsigned int CFG[4] = { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
+        unsigned int CFG[12] = { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
+                                 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
+                                 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
 
         if (wParam == 0xFFFFFFFF) { // Test ALL
             for (i = 0; i < g_NuMicroChipSeries.size(); ++i) {

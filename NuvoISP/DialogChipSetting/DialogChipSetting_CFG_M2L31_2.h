@@ -19,7 +19,7 @@ class CDialogChipSetting_CFG_M2L31_2 : public CDialogResize
 
 // Construction
 public:
-    CDialogChipSetting_CFG_M2L31_2(CWnd *pParent = NULL);		// standard constructor
+    CDialogChipSetting_CFG_M2L31_2(int edit_8, CWnd *pParent = NULL);		// standard constructor
 
 // Dialog Data
     //{{AFX_DATA(CDialogChipSetting_CFG_M460)
@@ -27,6 +27,7 @@ public:
 
     int				m_nRadioLockLv;
     int				m_nRadioLockPin;
+    int				m_edit_8;
 
     BOOL			m_bCheckSP[64];
 
@@ -50,6 +51,7 @@ protected:
     void DoDataExchange(CDataExchange *pDX);	// DDX/DDV support
 
     virtual void UpdateUI();
+    virtual void LockUI();
     virtual void ConfigToGUI();
     virtual void GUIToConfig();
 

@@ -71,7 +71,7 @@ BOOL CDialogChipSetting_M2L31::OnInitDialog()
     int nItem = 0;
 
     if (m_uShowFlag & 0x01) {
-        m_TabChipSetting.InsertItem(nItem++, _T("Configuration"));
+        m_TabChipSetting.InsertItem(nItem++, _T("Configuration 0-6"));
         m_pChipSetting_CFG = new CDialogChipSetting_CFG_M2L31();
         m_pChipSetting_CFG->m_uProgramMemorySize = m_uProgramMemorySize;
         m_pChipSetting_CFG->m_uFlashPageSize = m_uFlashPageSize;
@@ -88,8 +88,13 @@ BOOL CDialogChipSetting_M2L31::OnInitDialog()
     }
 
     if (m_uShowFlag & 0x02) {
-        m_TabChipSetting.InsertItem(nItem++, _T("Configuration"));
-        m_pChipSetting_CFG_2 = new CDialogChipSetting_CFG_M2L31_2();
+        m_TabChipSetting.InsertItem(nItem++, _T("Configuration 8-10"));
+        if ((m_uConfigValue[10] & 0xFFFF) == 0xFFFF) {
+            m_pChipSetting_CFG_2 = new CDialogChipSetting_CFG_M2L31_2(TRUE);
+        }
+        else {
+            m_pChipSetting_CFG_2 = new CDialogChipSetting_CFG_M2L31_2(FALSE);
+        }
         m_pChipSetting_CFG_2->m_uProgramMemorySize = m_uProgramMemorySize;
         m_pChipSetting_CFG_2->m_uFlashPageSize = m_uFlashPageSize;
         m_pChipSetting_CFG_2->m_uPID = m_uPID;

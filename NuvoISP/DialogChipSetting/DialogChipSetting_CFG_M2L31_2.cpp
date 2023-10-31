@@ -11,8 +11,9 @@
 
 IMPLEMENT_DYNAMIC(CDialogChipSetting_CFG_M2L31_2, CDialog)
 
-CDialogChipSetting_CFG_M2L31_2::CDialogChipSetting_CFG_M2L31_2(CWnd *pParent /*=NULL*/)
+CDialogChipSetting_CFG_M2L31_2::CDialogChipSetting_CFG_M2L31_2(int edit_8, CWnd *pParent /*=NULL*/)
     : CDialogResize(IDD, pParent)
+    , m_edit_8(edit_8)
 {
     //{{AFX_DATA_INIT(CDialogChipSetting_CFG_M460)
 
@@ -203,6 +204,7 @@ BOOL CDialogChipSetting_CFG_M2L31_2::OnInitDialog()
     pAccel[0].nInc = 1;
     pAccel[0].nSec = 0;
     ConfigToGUI();
+    LockUI();
     m_bIsInitialized = true;
     GetWindowRect(m_rect);
     AdjustDPI();
@@ -213,6 +215,25 @@ BOOL CDialogChipSetting_CFG_M2L31_2::OnInitDialog()
 void CDialogChipSetting_CFG_M2L31_2::UpdateUI()
 {
     // TODO: Add your control notification handler code here
+}
+
+void CDialogChipSetting_CFG_M2L31_2::LockUI() 
+{
+    GetDlgItem(IDC_RADIO_LEVEL_0)->EnableWindow(m_edit_8);
+    GetDlgItem(IDC_RADIO_LEVEL_1)->EnableWindow(m_edit_8);
+    GetDlgItem(IDC_RADIO_LEVEL_2)->EnableWindow(m_edit_8);
+    GetDlgItem(IDC_RADIO_LEVEL_3)->EnableWindow(m_edit_8);
+    GetDlgItem(IDC_RADIO_PIN_0)->EnableWindow(m_edit_8);
+    GetDlgItem(IDC_RADIO_PIN_1)->EnableWindow(m_edit_8);
+    GetDlgItem(IDC_RADIO_PIN_2)->EnableWindow(m_edit_8);
+    GetDlgItem(IDC_RADIO_PIN_3)->EnableWindow(m_edit_8);
+    for (int i = 0; i < 64; i++) {
+        GetDlgItem(IDC_CHECK_SAFETY_PROTECT_0 + i)->EnableWindow(m_edit_8);
+    }
+    GetDlgItem(IDC_BUTTON_SELECT_ALL_0)->EnableWindow(m_edit_8);
+    GetDlgItem(IDC_BUTTON_CLEAR_ALL_0)->EnableWindow(m_edit_8);
+    GetDlgItem(IDC_BUTTON_SELECT_ALL_1)->EnableWindow(m_edit_8);
+    GetDlgItem(IDC_BUTTON_CLEAR_ALL_1)->EnableWindow(m_edit_8);
 }
 
 void CDialogChipSetting_CFG_M2L31_2::ConfigToGUI()
@@ -233,19 +254,20 @@ void CDialogChipSetting_CFG_M2L31_2::ConfigToGUI()
 
 void CDialogChipSetting_CFG_M2L31_2::GUIToConfig()
 {
-    UpdateData(TRUE);
-    m_uConfigValue_t[0] = m_uConfigValue[0];
-    m_uConfigValue_t[1] = m_uConfigValue[1];
-    m_uConfigValue_t[2] = m_uConfigValue[2];
+    if (m_edit_8) {
+        UpdateData(TRUE);
+        m_uConfigValue_t[0] = m_uConfigValue[0];
+        m_uConfigValue_t[1] = m_uConfigValue[1];
+        m_uConfigValue_t[2] = m_uConfigValue[2];
 
-    GUI2CFG_CheckSP();
-    GUI2CFG_LockLv();
-    GUI2CFG_LockPin();  
+        GUI2CFG_CheckSP();
+        GUI2CFG_LockLv();
+        GUI2CFG_LockPin();
 
-    m_uConfigValue[0] = m_uConfigValue_t[0];
-    m_uConfigValue[1] = m_uConfigValue_t[1];
-    m_uConfigValue[2] = m_uConfigValue_t[2];
-
+        m_uConfigValue[0] = m_uConfigValue_t[0];
+        m_uConfigValue[1] = m_uConfigValue_t[1];
+        m_uConfigValue[2] = m_uConfigValue_t[2];
+    }
 }
 
 void CDialogChipSetting_CFG_M2L31_2::CFG2GUI_CheckSP() 
@@ -282,7 +304,7 @@ void CDialogChipSetting_CFG_M2L31_2::CFG2GUI_LockLv()
             break;
 
         default:
-            m_nRadioLockLv = 0;
+            m_nRadioLockLv = 1;
     }
 }
 

@@ -802,14 +802,14 @@ void CNuvoISPDlg::ShowChipInfo_OnLine()
     }
 
     if ((gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2351)
-            || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2354)
-            || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2L31)) {
+            || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2354)) {
         ShowChipInfo_M2351();
         return;
     }
 
     if ((gsChipCfgInfo.uSeriesCode == IDD_DIALOG_CONFIGURATION_M480)
-            || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M460)) {
+            || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M460)
+            || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2L31)) {
         SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0-3:"));
         ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 1);
         ShowDlgItem(IDC_STATIC_CONFIG_VALUE_3, 1);
