@@ -312,6 +312,7 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 #include "DialogConfiguration_M0564.h"
 #include "DialogConfiguration_OT8051.h"
 #include "DialogConfiguration_M480.h"
+#include "DialogConfiguration_M2003.h"
 #include "DialogConfiguration_I94000.h"
 #include "DialogConfiguration_AU9100.h"
 #include "DialogConfiguration_N570.h"
@@ -633,6 +634,17 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 }
 
                 Config = (((CDialogChipSetting_M2L31*)pConfigDlg)->m_uConfigValue);
+                break;
+
+            case NUC_CHIP_TYPE_M2003:
+                if (uProgramMemorySize) {
+                    pConfigDlg = new CDialogConfiguration_M2003(uProgramMemorySize, uID);
+                }
+                else {
+                    pConfigDlg = new CDialogConfiguration_M2003();
+                }
+
+                Config = (((CDialogConfiguration_M2003*)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
             case ISD_94000_SERIES:

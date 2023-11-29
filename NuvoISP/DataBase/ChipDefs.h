@@ -52,6 +52,7 @@ typedef enum {
     NUC_CHIP_TYPE_M030G			= 0x10F,
     NUC_CHIP_TYPE_M031G			= 0x12A,
     NUC_CHIP_TYPE_M251			= 0x201,
+    NUC_CHIP_TYPE_M2003         = 0x20E,
     NUC_CHIP_TYPE_M2351			= 0x321,
     NUC_CHIP_TYPE_M2354			= 0x322,
     NUC_CHIP_TYPE_M2379			= 0x323,

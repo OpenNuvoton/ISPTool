@@ -87,8 +87,6 @@
     <ClInclude Include="DialogChipSetting\DialogChipSetting_M460.h">
       <Filter>External\DialogChipSetting</Filter>
     </ClInclude>
-    
-    
     <ClInclude Include="DialogChipSetting\DialogChipSetting_M2L31.h">
       <Filter>External\DialogChipSetting</Filter>
     </ClInclude>
@@ -97,6 +95,9 @@
     </ClInclude>
     <ClInclude Include="DialogChipSetting\DialogChipSetting_CFG_M2L31_2.h">
       <Filter>External\DialogChipSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogConfiguration\DialogConfiguration_M2003.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -241,8 +242,6 @@
     <ClCompile Include="DialogChipSetting\DialogChipSetting_M460.cpp">
       <Filter>External\DialogChipSetting</Filter>
     </ClCompile>
-    
-    
     <ClCompile Include="DialogChipSetting\DialogChipSetting_M2L31.cpp">
       <Filter>External\DialogChipSetting</Filter>
     </ClCompile>
@@ -254,6 +253,9 @@
     </ClCompile>
     <ClCompile Include="Interface\CTRSP.cpp">
       <Filter>ISPTool\Interface</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogConfiguration\DialogConfiguration_M2003.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
