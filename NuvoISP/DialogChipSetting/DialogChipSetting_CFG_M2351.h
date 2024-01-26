@@ -39,7 +39,7 @@ public:
     BOOL	m_bCheckMBS;
     BOOL	m_bTamperPowerDown;
 
-    unsigned int m_uConfigValue[12];
+    unsigned int m_uConfigValue[14];
     unsigned int m_uChipType;
 
 // Implementation

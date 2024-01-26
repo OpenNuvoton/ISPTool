@@ -73,8 +73,8 @@ public:
 
     unsigned int	m_uPID;
     unsigned int	m_uDID;
-    unsigned int	m_uConfigValue[11];
-    unsigned int	m_uConfigValue_t[11];
+    unsigned int	m_uConfigValue[14];
+    unsigned int	m_uConfigValue_t[14];
     //}}AFX_DATA
 
     unsigned int	m_uProgramMemorySize;
@@ -120,9 +120,6 @@ protected:
     afx_msg void OnCancel();
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
-public:
-    afx_msg void OnBnClickedGroupDataFlash();
-    afx_msg void OnEnChangeEditDataFlashSize();
 };
 
 //{{AFX_INSERT_LOCATION}}

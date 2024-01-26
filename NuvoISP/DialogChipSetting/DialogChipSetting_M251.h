@@ -30,7 +30,7 @@ protected:
 
     DECLARE_MESSAGE_MAP()
 public:
-    unsigned int m_uConfigOption_ConfigValue[12];
+    unsigned int m_uConfigOption_ConfigValue[14];
     unsigned int m_uProgramMemorySize;
     unsigned int m_uParam;
 

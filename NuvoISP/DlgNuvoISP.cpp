@@ -58,7 +58,7 @@ CNuvoISPDlg::CNuvoISPDlg(UINT Template,
     : CDialogMain(Template, pParent)
     , CISPProc(&m_hWnd)
 {
-    m_sCaption = _T("Nuvoton NuMicro ISP Programming Tool 4.12");
+    m_sCaption = _T("Nuvoton NuMicro ISP Programming Tool 4.13");
     m_bConnect = false;
     int i = 0, j = 0;
 
@@ -73,6 +73,7 @@ CNuvoISPDlg::CNuvoISPDlg(UINT Template,
     };
     memcpy(&m_CtrlID, buddy, sizeof(m_CtrlID));
     m_bShowSPI = -1; // not initialized
+    m_bShowNVM = -1;
 }
 
 CNuvoISPDlg::~CNuvoISPDlg()
@@ -202,6 +203,7 @@ BOOL CNuvoISPDlg::OnInitDialog()
     Set_ThreadAction(&CISPProc::Thread_Idle);
     RegisterNotification();
     ShowSPIOptions(FALSE);
+    ShowNVMOptions(TRUE);
     // ShowSPIOptions(TRUE);
 
     m_IPAddress.SetAddress(192, 168, 4, 1);
@@ -510,6 +512,9 @@ void CNuvoISPDlg::OnButtonStart()
         return;
     }
 
+    // Warning Function Add Here
+    ShowWarningMessage();
+
     /* WYLIWYP : What You Lock Is What You Program*/
     /* Lock ALL */
     EnableProgramOption(FALSE);
@@ -715,6 +720,7 @@ void CNuvoISPDlg::ShowChipInfo_OffLine(void)
     ShowDlgItem(IDC_STATIC_CONFIG_VALUE_1, 1);
     ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 0);
     ShowDlgItem(IDC_STATIC_CONFIG_VALUE_3, 0);
+    ShowNVMOptions(TRUE);
     EnableProgramOption(TRUE);
     Invalidate(1);
 }
@@ -816,10 +822,13 @@ void CNuvoISPDlg::ShowChipInfo_OnLine()
     } else if (gsChipCfgInfo.uSeriesCode == IDD_DIALOG_CONFIGURATION_M480LD) { // M480LD, M479
         SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0-2:"));
         ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 1);
-    } else if (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_GENERAL_1T) {
+    } else if ((gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_GENERAL_1T) 
+            || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M55M1)
+            || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2003)){
         m_bProgram_NVM = 0;
         EnableDlgItem(IDC_CHECK_NVM, 0);
         EnableDlgItem(IDC_BUTTON_NVM, 0);
+        ShowNVMOptions(FALSE);
     }
 
     if (bSizeValid) {
@@ -984,6 +993,172 @@ void CNuvoISPDlg::OnKillfocusEditAPRomOffset()
     TRACE(_T("OnKillfocusEditAPRomOffset\n"));
 }
 
+void CNuvoISPDlg::ShowNVMOptions(BOOL bShow) 
+{
+    if (m_bShowNVM == bShow) {
+        return;
+    }
+    else {
+        m_bShowNVM = bShow;
+    }
+
+    CWnd* pWnd = NULL;
+    CRect rect1, rect2;
+    int offset;
+    // Group - Load File
+    ShowDlgItem(IDC_BUTTON_NVM, bShow);
+    ShowDlgItem(IDC_STATIC_FILENAME_1, bShow);
+    ShowDlgItem(IDC_EDIT_FILEPATH_NVM, bShow);
+    ShowDlgItem(IDC_STATIC_FILEINFO_NVM, bShow);
+    pWnd = GetDlgItem(IDC_GROUP_FLASH_FILE);
+    pWnd->GetWindowRect(&rect1);
+    ScreenToClient(&rect1);
+
+    if (bShow) {
+        GetDlgItem(IDC_STATIC_FILEINFO_NVM)->GetWindowRect(&rect2);
+    }
+    else {
+        GetDlgItem(IDC_STATIC_FILEINFO_APROM)->GetWindowRect(&rect2);
+    }
+
+    ScreenToClient(&rect2);
+    rect1.bottom = rect2.bottom + 10;
+    pWnd->MoveWindow(rect1.left,
+        rect1.top,
+        rect1.Width(),
+        rect1.Height());
+    // Group - Config Bits
+    UINT32 nIds_CB[] = {
+        IDC_GROUP_CONFIG,
+        IDC_BUTTON_CONFIG,
+        IDC_STATIC_CONFIG_0,
+        IDC_STATIC_CONFIG_VALUE_0,
+        IDC_STATIC_CONFIG_VALUE_1,
+        IDC_STATIC_CONFIG_VALUE_2,
+        IDC_STATIC_CONFIG_VALUE_3,
+    };
+    GetDlgItem(IDC_GROUP_FLASH_FILE)->GetWindowRect(&rect1);
+    ScreenToClient(&rect1);
+    GetDlgItem(IDC_GROUP_CONFIG)->GetWindowRect(&rect2);
+    ScreenToClient(&rect2);
+    offset = rect2.top - rect1.top - rect1.Height() - 5;
+
+    for (int i = 0; i < 7; i++) {
+        CRect rect;
+        CWnd* pWnd = GetDlgItem(nIds_CB[i]);
+        pWnd->GetWindowRect(&rect);
+        ScreenToClient(&rect);
+        pWnd->MoveWindow(rect.left,
+            rect.top - offset,
+            rect.Width(),
+            rect.Height());
+    }
+
+    // Group - File Data
+    if (bShow) {
+        if (m_TabData.GetItemCount() <= 1) {
+            CString strTab;
+            GetDlgItemText(m_CtrlID[1].btn, strTab);
+            m_TabData.InsertItem(1, strTab);
+        }
+    }
+    else {
+        if (m_TabData.GetItemCount() > 1) {
+            m_TabData.DeleteItem(1);
+        }
+
+        pViewer[1]->ShowWindow(SW_HIDE);
+    }
+
+    UINT32 nIds_FD[] = {
+        IDC_GROUP_FILE_DATA,
+        IDC_TAB_DATA,
+    };
+    GetDlgItem(IDC_GROUP_CONFIG)->GetWindowRect(&rect1);
+    ScreenToClient(&rect1);
+    GetDlgItem(IDC_GROUP_FILE_DATA)->GetWindowRect(&rect2);
+    ScreenToClient(&rect2);
+    offset = rect2.top - rect1.top - rect1.Height() - 5;
+
+    for (int i = 0; i < 2; i++) {
+        CRect rect;
+        CWnd* pWnd = GetDlgItem(nIds_FD[i]);
+        pWnd->GetWindowRect(&rect);
+        ScreenToClient(&rect);
+        pWnd->MoveWindow(rect.left,
+            rect.top - offset,
+            rect.Width(),
+            rect.Height());
+    }
+
+    pViewer[2]->ShowWindow(bShow);
+    // Group - Programming Options
+    ShowDlgItem(IDC_CHECK_NVM, bShow);
+    UINT32 nIds_PO[] = {
+        IDC_GROUP_PROGRAM,
+        IDC_CHECK_APROM,
+        IDC_CHECK_NVM,
+        IDC_CHECK_SPI,
+        IDC_CHECK_CONFIG,
+        IDC_CHECK_RUN_APROM,
+        IDC_CHECK_ERASE,
+        IDC_CHECK_ERASE_SPI,
+        IDC_BUTTON_START,
+    };
+    GetDlgItem(IDC_GROUP_FILE_DATA)->GetWindowRect(&rect1);
+    ScreenToClient(&rect1);
+    GetDlgItem(IDC_GROUP_PROGRAM)->GetWindowRect(&rect2);
+    ScreenToClient(&rect2);
+    offset = rect2.top - rect1.top - rect1.Height() - 5;
+
+    for (int i = 0; i < 9; i++) {
+        CRect rect;
+        CWnd* pWnd = GetDlgItem(nIds_PO[i]);
+        pWnd->GetWindowRect(&rect);
+        ScreenToClient(&rect);
+        pWnd->MoveWindow(rect.left,
+            rect.top - offset,
+            rect.Width(),
+            rect.Height());
+    }
+    SetDlgItemText(IDC_CHECK_ERASE, _T("Erase All"));
+    GetDlgItem(IDC_CHECK_APROM)->GetWindowRect(&rect2);
+
+    ScreenToClient(&rect2);
+    pWnd = GetDlgItem(IDC_GROUP_PROGRAM);
+    pWnd->GetWindowRect(&rect1);
+    ScreenToClient(&rect1);
+    rect1.bottom = rect2.bottom + 10;
+    pWnd->MoveWindow(rect1.left,
+        rect1.top,
+        rect1.Width(),
+        rect1.Height());
+    // Progress Bar and Status
+    UINT32 nIds_PB[] = {
+        IDC_PROGRESS,
+        IDC_STATIC_STATUS,
+    };
+
+    for (int i = 0; i < 2; i++) {
+        CRect rect;
+        CWnd* pWnd = GetDlgItem(nIds_PB[i]);
+        pWnd->GetWindowRect(&rect);
+        ScreenToClient(&rect);
+        pWnd->MoveWindow(rect.left,
+            rect1.bottom + 5,
+            rect.Width(),
+            rect.Height());
+    }
+
+    // Main Window
+    GetWindowRect(&m_rect);
+    GetDlgItem(IDC_PROGRESS)->GetWindowRect(&rect2);
+    m_rect.bottom = rect2.bottom + 10;
+    MoveWindow(m_rect.left,
+        m_rect.top,
+        m_rect.Width(),
+        m_rect.Height());
+}
 
 void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
 {
@@ -1154,4 +1329,14 @@ void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
                m_rect.top,
                m_rect.Width(),
                m_rect.Height());
+}
+
+void CNuvoISPDlg::ShowWarningMessage(void) {
+    if ((gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M460)
+        || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2L31)) {
+        if ((m_CONFIG_User[2] & 0x5A5A) != 0x5A5A) {
+            MessageBox(_T("When Advance Security Lock or Key Store Protection Lock is enabled, the secure boot verification routine will be enforced. And MCU will enter the revoked state after whole chip erase."), NULL, MB_ICONWARNING);
+        }
+    } 
+    //MessageBox(_T("Debug Message."), NULL, MB_ICONWARNING);
 }

@@ -64,6 +64,8 @@ bool ISPLdCMD::Open_Port()
                 m_uUSB_PID = 0x5203;
             } else if (m_hidIO.OpenDevice(0x0416, 0x2006, 4)) { 
                 m_uUSB_PID = 0x2006;
+            } else if (m_hidIO.OpenDevice(0x0416, 0x2009, 4)) {
+                m_uUSB_PID = 0x2009;
             } else if (m_hidIO.OpenDevice(0x0416, 0x3F10, -1)) {	// ISP-Bridge
                 m_uUSB_PID = 0x3F10;
             } else {
@@ -400,12 +402,14 @@ unsigned long ISPLdCMD::GetDeviceID()
 }
 
 #define FMC_USER_CONFIG_0       0x00300000UL
+#define SPEC_FMC_USER_CONFIG_0  0x0F300000UL
 
 void ISPLdCMD::ReadConfig(unsigned int config[])
 {
     if (m_uInterface == INTF_CAN) {
-        for (int i = 0; i < 4; i++) {
-            if (WriteFileCAN(CAN_CMD_READ_CONFIG, FMC_USER_CONFIG_0 + 4 * i)) {
+        unsigned int addr = (!bSpec_addr) ? FMC_USER_CONFIG_0 : SPEC_FMC_USER_CONFIG_0;
+        for (int i = 0; i < 14; i++) {
+            if (WriteFileCAN(CAN_CMD_READ_CONFIG, addr + 4 * i)) {
                 if (ReadFileCAN()) {
                     config[i] = *((ULONG *)&m_acBuffer[5]);
                 }
@@ -420,14 +424,15 @@ void ISPLdCMD::ReadConfig(unsigned int config[])
         NULL,
         0,
         USBCMD_TIMEOUT);
-    ReadFile((char *)config, 16 * 3, USBCMD_TIMEOUT, TRUE);
+    ReadFile((char *)config, 56, USBCMD_TIMEOUT, TRUE);
 }
 
 void ISPLdCMD::UpdateConfig(unsigned int config[], unsigned int response[])
 {
     if (m_uInterface == INTF_CAN) {
-        for (int i = 0; i < 4; i++) {
-            if (WriteFileCAN(FMC_USER_CONFIG_0 + 4 * i, config[i])) {
+        unsigned int addr = (!bSpec_addr) ? FMC_USER_CONFIG_0 : SPEC_FMC_USER_CONFIG_0;
+        for (int i = 0; i < 14; i++) {
+            if (WriteFileCAN(addr + 4 * i, config[i])) {
                 if (ReadFileCAN()) {
                     response[i] = *((ULONG *)&m_acBuffer[5]);
                 }
@@ -442,7 +447,7 @@ void ISPLdCMD::UpdateConfig(unsigned int config[], unsigned int response[])
         (const char *)config,
         16 * 3,
         USBCMD_TIMEOUT_LONG);
-    ReadFile((char *)response, 16 * 3, USBCMD_TIMEOUT_LONG, TRUE);
+    ReadFile((char *)response, 56, USBCMD_TIMEOUT_LONG, TRUE);
 }
 
 void ISPLdCMD::UpdateAPROM(unsigned long start_addr,
@@ -582,12 +587,20 @@ BOOL ISPLdCMD::EraseAll()
 BOOL ISPLdCMD::CMD_Connect(DWORD dwMilliseconds)
 {
     bSupport_SPI = 0;
+    bSpec_addr = 0;
 
     if (m_uInterface == INTF_CAN) {
         BOOL ret = FALSE;
 
         if (WriteFileCAN(CAN_CMD_GET_DEVICEID, 0)) {
             ret = ReadFileCAN();
+        }
+        
+        if (ret) {
+            ULONG CAN_uID = *((ULONG*)&m_acBuffer[5]);
+            // M460, M2L31, M55M1
+            bSpec_addr = ((CAN_uID == 0x00551000) || ((CAN_uID & 0xFFFFFF00) == 0x01F31000) 
+                ||((CAN_uID & 0xFFFFF000) == 0x01B46000) || ((CAN_uID & 0xFFFFF000) == 0x01C46000));
         }
 
         return ret;
@@ -607,7 +620,7 @@ BOOL ISPLdCMD::CMD_Connect(DWORD dwMilliseconds)
 
     if (ret) {
         m_uCmdIndex = 3;
-        bSupport_SPI = (uID == 0x001540EF);
+        bSupport_SPI = (uID == 0x001540EF); 
     } else if (m_uInterface == 3) {
         // For SPI interface, Nu-Link2 can get respones even if Target Device is not connected to Nu-Link2.
         // Without this delay, hidapi will crash due to heap corruption.

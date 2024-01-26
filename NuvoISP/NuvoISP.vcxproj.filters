@@ -99,6 +99,15 @@
     <ClInclude Include="DialogConfiguration\DialogConfiguration_M2003.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DialogChipSetting\DialogChipSetting_CFG_M55M1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogChipSetting\DialogChipSetting_CFG_M55M1_2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogChipSetting\DialogChipSetting_M55M1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -255,6 +264,15 @@
       <Filter>ISPTool\Interface</Filter>
     </ClCompile>
     <ClCompile Include="DialogConfiguration\DialogConfiguration_M2003.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogChipSetting\DialogChipSetting_CFG_M55M1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogChipSetting\DialogChipSetting_CFG_M55M1_2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogChipSetting\DialogChipSetting_M55M1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

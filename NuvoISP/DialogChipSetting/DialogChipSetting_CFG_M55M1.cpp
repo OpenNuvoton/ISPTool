@@ -4,18 +4,15 @@
 #include "stdafx.h"
 #include "ChipDefs.h"
 #include "FlashInfo.h"
-#include "DialogChipSetting_CFG_M2L31.h"
+#include "DialogChipSetting_CFG_M55M1.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogChipSetting_CFG_M460 dialog
 
-IMPLEMENT_DYNAMIC(CDialogChipSetting_CFG_M2L31, CDialog)
+IMPLEMENT_DYNAMIC(CDialogChipSetting_CFG_M55M1, CDialog)
 
-CDialogChipSetting_CFG_M2L31::CDialogChipSetting_CFG_M2L31(CWnd *pParent /*=NULL*/)
+CDialogChipSetting_CFG_M55M1::CDialogChipSetting_CFG_M55M1(CWnd *pParent /*=NULL*/)
     : CDialogResize(IDD, pParent)
-    , m_DataFlashBase(16, 8)
-    , m_ALOCK(16, 2)
-    , m_KSPLOCK(16, 2)
 {
     //{{AFX_DATA_INIT(CDialogChipSetting_CFG_M460)
     m_nRadioCWDTEN	= -1;
@@ -25,74 +22,73 @@ CDialogChipSetting_CFG_M2L31::CDialogChipSetting_CFG_M2L31(CWnd *pParent /*=NULL
     m_bCheckCBORST	= FALSE;
     m_bCheckCBODEN	= FALSE;
     m_bCheckICELOCK	= FALSE;
-    m_bCheckLOCK	= FALSE;
-    m_bCheckDFEN	= FALSE;
     m_bCheckSCEN    = FALSE;
+    m_bTamperPowerDown = FALSE;
     m_bCheckISP_UART = TRUE;
     m_bCheckISP_USB	= FALSE;
     m_bCheckISP_CAN	= TRUE;
     m_bCheckISP_I2C	= TRUE;
     m_bCheckISP_SPI	= TRUE;
-    m_sDataFlashBase = _T("");
-    m_sDataFlashSize = _T("");
+    m_bCheckNSCRLOCK = FALSE;
+    m_bCheckSCRLOCK = FALSE;
+    m_bCheckARLOCK = FALSE;
+    m_bMirror = FALSE;
     m_sSecureConcealBase = _T("");
     m_sSecureConcealPageSize = _T("");
+    m_sNSCRBase = _T("");
     m_sConfigValue0	= _T("");
-    m_sConfigValue1	= _T("");
-    m_sConfigValue2	= _T("");
     m_sConfigValue3	= _T("");
     m_sConfigValue4 = _T("");
     m_sConfigValue5 = _T("");
     m_sConfigValue6 = _T("");
+    m_sConfigValue11 = _T("");
+    m_sConfigValue12 = _T("");
+    m_sConfigValue13 = _T("");
     //}}AFX_DATA_INIT
 }
 
-void CDialogChipSetting_CFG_M2L31::DoDataExchange(CDataExchange *pDX)
+void CDialogChipSetting_CFG_M55M1::DoDataExchange(CDataExchange *pDX)
 {
     CDialogResize::DoDataExchange(pDX);
-    //{{AFX_DATA_MAP(CDialogChipSetting_CFG_M2L31)
+    //{{AFX_DATA_MAP(CDialogChipSetting_CFG_M55M1)
     DDX_Radio(pDX, IDC_RADIO_WDT_DISABLE,			m_nRadioCWDTEN);
     DDX_Radio(pDX, IDC_RADIO_BOV_7,					m_nRadioCBOV);
     DDX_Radio(pDX, IDC_RADIO_BS_APROM_LDROM,		m_nRadioCBS);
-    DDX_Radio(pDX, IDC_RADIO_UART1_SEL3,            m_nRadioUART);
+    DDX_Radio(pDX, IDC_RADIO_UART1_SEL1,            m_nRadioUART);
     DDX_Check(pDX, IDC_CHECK_BROWN_OUT_RESET,		m_bCheckCBORST);
     DDX_Check(pDX, IDC_CHECK_BROWN_OUT_DETECT,		m_bCheckCBODEN);
     DDX_Check(pDX, IDC_CHECK_ICE_LOCK,				m_bCheckICELOCK);
-    DDX_Check(pDX, IDC_CHECK_SECURITY_LOCK,			m_bCheckLOCK);
-    DDX_Check(pDX, IDC_CHECK_DATA_FLASH_ENABLE,		m_bCheckDFEN);
     DDX_Check(pDX, IDC_CHECK_SECURE_CONCEAL_ENABLE, m_bCheckSCEN);
+    DDX_Check(pDX, IDC_CHECK_TAMPER_POWER_DOWN,     m_bTamperPowerDown);
     DDX_Check(pDX, IDC_CHECK_ISP_MODE_UART,			m_bCheckISP_UART);
-    DDX_Check(pDX, IDC_CHECK_ISP_MODE_USB,			m_bCheckISP_USB);
     DDX_Check(pDX, IDC_CHECK_ISP_MODE_CAN,			m_bCheckISP_CAN);
     DDX_Check(pDX, IDC_CHECK_ISP_MODE_I2C,			m_bCheckISP_I2C);
-    DDX_Check(pDX, IDC_CHECK_ISP_MODE_SPI,			m_bCheckISP_SPI);
-    DDX_Control(pDX, IDC_EDIT_FLASH_ADVANCE_LOCK,	m_ALOCK);
-    DDX_Control(pDX, IDC_EDIT_FLASH_KEYSTORE_LOCK,	m_KSPLOCK);
-    DDX_Control(pDX, IDC_EDIT_FLASH_BASE_ADDRESS,	m_DataFlashBase);
-    DDX_Control(pDX, IDC_EDIT_DATA_FLASH_SIZE,		m_DataFlashSize);
-    DDX_Control(pDX, IDC_SPIN_DATA_FLASH_SIZE,		m_SpinDataFlashSize);
-    DDX_Text(pDX, IDC_EDIT_FLASH_ADVANCE_LOCK,		m_sALOCK);
-    DDX_Text(pDX, IDC_EDIT_FLASH_KEYSTORE_LOCK,		m_sKSPLOCK);
-    DDX_Text(pDX, IDC_EDIT_FLASH_BASE_ADDRESS,		m_sDataFlashBase);
-    DDX_Text(pDX, IDC_EDIT_DATA_FLASH_SIZE,			m_sDataFlashSize);
+    DDX_Check(pDX, IDC_CHECK_NSCR_LOCK,             m_bCheckNSCRLOCK);
+    DDX_Check(pDX, IDC_CHECK_SCR_LOCK,              m_bCheckSCRLOCK);
+    DDX_Check(pDX, IDC_CHECK_AR_LOCK,               m_bCheckARLOCK);
+    DDX_Check(pDX, IDC_CHECK_MIRROR_BOUNDARY,       m_bMirror);
     DDX_Text(pDX, IDC_EDIT_SECURE_CONCEAL_BASE_ADDRESS, m_sSecureConcealBase);
     DDX_Text(pDX, IDC_EDIT_SECURE_CONCEAL_SIZE,     m_sSecureConcealPageSize);
+    DDX_Text(pDX, IDC_EDIT_NSCR_BASE_ADDRESS,       m_sNSCRBase);
     DDX_Control(pDX, IDC_EDIT_SECURE_CONCEAL_BASE_ADDRESS, m_SecureConcealBase);
     DDX_Control(pDX, IDC_EDIT_SECURE_CONCEAL_SIZE,  m_SecureConcealPageSize);
+    DDX_Control(pDX, IDC_EDIT_NSCR_BASE_ADDRESS,    m_NSCRBase);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_0,		m_sConfigValue0);
-    DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_1,		m_sConfigValue1);
-    DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_2,		m_sConfigValue2);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_3,		m_sConfigValue3);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_4,        m_sConfigValue4);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_5,        m_sConfigValue5);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_6,        m_sConfigValue6);
+    DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_11,       m_sConfigValue11);
+    DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_12,       m_sConfigValue12);
+    DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_13,       m_sConfigValue13);
     //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(CDialogChipSetting_CFG_M2L31, CDialog)
-    //{{AFX_MSG_MAP(CDialogChipSetting_CFG_M2L31)
+BEGIN_MESSAGE_MAP(CDialogChipSetting_CFG_M55M1, CDialog)
+    //{{AFX_MSG_MAP(CDialogChipSetting_CFG_M55M1)
     ON_BN_CLICKED(IDC_RADIO_WDT_DISABLE,				OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_WDT_ENABLE_KEEP,			OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_WDT_ENABLE_STOP,            OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_BOV_7,						OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_BOV_6,						OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_BOV_5,						OnRadioClick)
@@ -100,41 +96,33 @@ BEGIN_MESSAGE_MAP(CDialogChipSetting_CFG_M2L31, CDialog)
     ON_BN_CLICKED(IDC_RADIO_BOV_3,						OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_BOV_2,						OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_BOV_1,						OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_0,						OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM,				OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM,				OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_UART1_SEL0,                 OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_UART1_SEL1,                 OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_UART1_SEL2,                 OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_UART1_SEL3,                 OnRadioClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET,			OnCheckClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT,			OnCheckClick)
     ON_BN_CLICKED(IDC_CHECK_ICE_LOCK,					OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK,				OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_DATA_FLASH_ENABLE,			OnCheckClick)
+    ON_BN_CLICKED(IDC_CHECK_NSCR_LOCK,                  OnCheckClick)
+    ON_BN_CLICKED(IDC_CHECK_SCR_LOCK,				    OnCheckClick)
+    ON_BN_CLICKED(IDC_CHECK_AR_LOCK,                    OnCheckClick)
+    ON_BN_CLICKED(IDC_CHECK_MIRROR_BOUNDARY,            OnCheckClick)
     ON_BN_CLICKED(IDC_CHECK_SECURE_CONCEAL_ENABLE,      OnCheckClick)
+    ON_BN_CLICKED(IDC_CHECK_TAMPER_POWER_DOWN,          OnCheckClick)
 
     ON_BN_CLICKED(IDC_CHECK_ISP_MODE_UART,				OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_ISP_MODE_USB,				OnCheckClick)
     ON_BN_CLICKED(IDC_CHECK_ISP_MODE_CAN,				OnCheckClick)
     ON_BN_CLICKED(IDC_CHECK_ISP_MODE_I2C,				OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_ISP_MODE_SPI,				OnCheckClick)
-
-    ON_EN_KILLFOCUS(IDC_EDIT_FLASH_ADVANCE_LOCK,		OnKillfocusEditAdvanceLock)
-    ON_EN_KILLFOCUS(IDC_EDIT_FLASH_KEYSTORE_LOCK,		OnKillfocusEditKeyStoreLock)
-    ON_EN_KILLFOCUS(IDC_EDIT_FLASH_BASE_ADDRESS,		OnKillfocusEditDataFlashBase)
-    ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_DATA_FLASH_SIZE,	OnDeltaposSpinDataFlashSize)
 
     ON_EN_KILLFOCUS(IDC_EDIT_SECURE_CONCEAL_BASE_ADDRESS, OnKillfocusEditSCBase)
     ON_EN_KILLFOCUS(IDC_EDIT_SECURE_CONCEAL_SIZE,       OnKillfocusEditSCSize)
-
-    //}}AFX_MSG_MAP
+    ON_EN_KILLFOCUS(IDC_EDIT_NSCR_BASE_ADDRESS,         OnKillfocusEditNSCRBase)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogChipSetting_CFG_M460 message handlers
 
-BOOL CDialogChipSetting_CFG_M2L31::OnInitDialog()
+BOOL CDialogChipSetting_CFG_M55M1::OnInitDialog()
 {
     CDialog::OnInitDialog();
     // TODO: Add extra initialization here
@@ -146,7 +134,9 @@ BOOL CDialogChipSetting_CFG_M2L31::OnInitDialog()
     UDACCEL pAccel[1];
     pAccel[0].nInc = 1;
     pAccel[0].nSec = 0;
-    m_SpinDataFlashSize.SetAccel(1, pAccel);
+    m_bCheckNSCRLOCK = 0;
+    GetDlgItem(IDC_CHECK_MIRROR_BOUNDARY)->EnableWindow(m_bCheckNSCRLOCK);
+    GetDlgItem(IDC_EDIT_NSCR_BASE_ADDRESS)->EnableWindow(m_bCheckNSCRLOCK);
     ConfigToGUI();
     m_bIsInitialized = true;
     GetWindowRect(m_rect);
@@ -155,72 +145,87 @@ BOOL CDialogChipSetting_CFG_M2L31::OnInitDialog()
     // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CDialogChipSetting_CFG_M2L31::UpdateUI()
+void CDialogChipSetting_CFG_M55M1::UpdateUI()
 {
     // TODO: Add your control notification handler code here
 }
 
-void CDialogChipSetting_CFG_M2L31::ConfigToGUI()
+void CDialogChipSetting_CFG_M55M1::ConfigToGUI()
 {
     m_uConfigValue_t[0] = m_uConfigValue[0];
-    m_uConfigValue_t[1] = m_uConfigValue[1];
-    m_uConfigValue_t[2] = m_uConfigValue[2];
     m_uConfigValue_t[3] = m_uConfigValue[3];
     m_uConfigValue_t[4] = m_uConfigValue[4];
     m_uConfigValue_t[5] = m_uConfigValue[5];
     m_uConfigValue_t[6] = m_uConfigValue[6];
+    m_uConfigValue_t[11] = m_uConfigValue[11];
+    m_uConfigValue_t[12] = m_uConfigValue[12];
+    m_uConfigValue_t[13] = m_uConfigValue[13];
     CFG2GUI_CWDT();
     CFG2GUI_CBOD_8();
     CFG2GUI_ICELOCK();
     CFG2GUI_UART1();
     CFG2GUI_CBS_2();
     CFG2GUI_SCEN();
-    CFG2GUI_DFEN();
-    CFG2GUI_KSPLOCK();
+    CFG2GUI_NSCR();
+    m_bTamperPowerDown = ((m_uConfigValue_t[3] & M2354_FLASH_CONFIG_TMPPD) == M2354_FLASH_CONFIG_TMPPD_CODE ? TRUE : FALSE);
     m_bCheckISP_UART = ((m_uConfigValue_t[3] & M2L31_FLASH_CONFIG_UARTISPEN) != 0 ? TRUE : FALSE);
-    m_bCheckISP_USB	= ((m_uConfigValue_t[3] & M2L31_FLASH_CONFIG_USBISPDIS) == 0 ? TRUE : FALSE);
     m_bCheckISP_CAN	= ((m_uConfigValue_t[3] & M2L31_FLASH_CONFIG_CANISPEN) != 0 ? TRUE : FALSE);
     m_bCheckISP_I2C	= ((m_uConfigValue_t[3] & M2L31_FLASH_CONFIG_I2CISPEN) != 0 ? TRUE : FALSE);
-    m_bCheckISP_SPI	= ((m_uConfigValue_t[3] & M2L31_FLASH_CONFIG_SPIISPEN) != 0 ? TRUE : FALSE);
+    m_bCheckSCRLOCK = ((m_uConfigValue_t[11] & 0x000000FFUL) != 0x0000005AUL ? TRUE : FALSE);
+    m_bCheckARLOCK = ((m_uConfigValue_t[13] & 0x000000FFUL) != 0x0000005AUL ? TRUE : FALSE);
+    m_bMirror = ((m_uConfigValue_t[12] & 0x80000000UL) != 0 ? TRUE : FALSE);
     m_sConfigValue0.Format(_T("0x%08X"), m_uConfigValue_t[0]);
-    m_sConfigValue1.Format(_T("0x%08X"), m_uConfigValue_t[1]);
-    m_sConfigValue2.Format(_T("0x%08X"), m_uConfigValue_t[2]);
     m_sConfigValue3.Format(_T("0x%08X"), m_uConfigValue_t[3]);
     m_sConfigValue4.Format(_T("0x%08X"), m_uConfigValue_t[4]);
     m_sConfigValue5.Format(_T("0x%08X"), m_uConfigValue_t[5]);
     m_sConfigValue6.Format(_T("0x%08X"), m_uConfigValue_t[6]);
+    m_sConfigValue11.Format(_T("0x%08X"), m_uConfigValue_t[11]);
+    m_sConfigValue12.Format(_T("0x%08X"), m_uConfigValue_t[12]);
+    m_sConfigValue13.Format(_T("0x%08X"), m_uConfigValue_t[13]);
     UpdateData(FALSE);
 }
 
-void CDialogChipSetting_CFG_M2L31::GUIToConfig()
+void CDialogChipSetting_CFG_M55M1::GUIToConfig()
 {
     UpdateData(TRUE);
     m_uConfigValue_t[0] = 0xFFFFFFFF;
-    m_uConfigValue_t[1] = m_uConfigValue[1];
-    m_uConfigValue_t[2] = m_uConfigValue[2];
     m_uConfigValue_t[3] = 0xFFFFFFFF;
     m_uConfigValue_t[4] = m_uConfigValue[4];
     m_uConfigValue_t[5] = m_uConfigValue[5];
     m_uConfigValue_t[6] = m_uConfigValue[6];
+    m_uConfigValue_t[11] = m_uConfigValue[11];
+    m_uConfigValue_t[12] = m_uConfigValue[12];
+    m_uConfigValue_t[13] = m_uConfigValue[13];
+
+    GetDlgItem(IDC_CHECK_MIRROR_BOUNDARY)->EnableWindow(m_bCheckNSCRLOCK);
+    GetDlgItem(IDC_EDIT_NSCR_BASE_ADDRESS)->EnableWindow(m_bCheckNSCRLOCK);
+
     GUI2CFG_CWDT();
     GUI2CFG_CBOD_8();
     GUI2CFG_ICELOCK();
     GUI2CFG_UART1();
     GUI2CFG_CBS_2();
     GUI2CFG_SCEN();
-    GUI2CFG_DFEN();
-    GUI2CFG_KSPLOCK();   
+    GUI2CFG_NSCR();
+
+    m_uConfigValue_t[3] &= ~M2354_FLASH_CONFIG_TMPPD;
+
+    if (m_bTamperPowerDown) {
+        m_uConfigValue_t[3] |= M2354_FLASH_CONFIG_TMPPD_CODE;
+    }
+    else {
+        if ((m_uConfigValue[3] & M2354_FLASH_CONFIG_TMPPD) != M2354_FLASH_CONFIG_TMPPD_CODE) {
+            m_uConfigValue_t[3] |= (m_uConfigValue[3] & M2354_FLASH_CONFIG_TMPPD);
+        }
+        else {
+            m_uConfigValue_t[3] |= M2354_FLASH_CONFIG_TMPPD;
+        }
+    }
 
     if (m_bCheckISP_UART) {
         m_uConfigValue_t[3] |=  M2L31_FLASH_CONFIG_UARTISPEN;
     } else {
         m_uConfigValue_t[3] &= ~M2L31_FLASH_CONFIG_UARTISPEN;
-    }
-
-    if (!m_bCheckISP_USB) {
-        m_uConfigValue_t[3] |=  M2L31_FLASH_CONFIG_USBISPDIS;
-    } else {
-        m_uConfigValue_t[3] &= ~M2L31_FLASH_CONFIG_USBISPDIS;
     }
 
     if (m_bCheckISP_CAN) {
@@ -235,26 +240,66 @@ void CDialogChipSetting_CFG_M2L31::GUIToConfig()
         m_uConfigValue_t[3] &= ~M2L31_FLASH_CONFIG_I2CISPEN;
     }
 
-    if (m_bCheckISP_SPI) {
-        m_uConfigValue_t[3] |=  M2L31_FLASH_CONFIG_SPIISPEN;
-    } else {
-        m_uConfigValue_t[3] &= ~M2L31_FLASH_CONFIG_SPIISPEN;
+    m_uConfigValue_t[11] &= ~0x000000FFUL;
+
+    if (!m_bCheckSCRLOCK) {
+        m_uConfigValue_t[11] |= 0x0000005AUL;
+    }
+    else {
+        if ((m_uConfigValue[11] & 0x000000FFUL) != 0x0000005AUL) {
+            m_uConfigValue_t[11] |= (m_uConfigValue[11] & 0x000000FFUL);
+        }
+        else {
+            m_uConfigValue_t[11] |= 0x000000FFUL;
+        }
+    }
+
+    m_uConfigValue_t[13] &= ~0x000000FFUL;
+
+    if (!m_bCheckARLOCK) {
+        m_uConfigValue_t[13] |= 0x0000005AUL;
+    }
+    else {
+        if ((m_uConfigValue[13] & 0x000000FFUL) != 0x0000005AUL) {
+            m_uConfigValue_t[13] |= (m_uConfigValue[13] & 0x000000FFUL);
+        }
+        else {
+            m_uConfigValue_t[13] |= 0x000000FFUL;
+        }
+    }
+
+    if (m_bMirror) {
+        m_uConfigValue_t[12] |= 0x80000000UL;
+    }
+    else {
+        m_uConfigValue_t[12] &= ~0x80000000UL;
     }
 
     m_uConfigValue[0] = m_uConfigValue_t[0];
-    m_uConfigValue[1] = m_uConfigValue_t[1];
-    m_uConfigValue[2] = m_uConfigValue_t[2];
     m_uConfigValue[3] = m_uConfigValue_t[3];
     m_uConfigValue[4] = m_uConfigValue_t[4];
     m_uConfigValue[5] = m_uConfigValue_t[5];
     m_uConfigValue[6] = m_uConfigValue_t[6];
+    m_uConfigValue[11] = m_uConfigValue_t[11];
+    m_uConfigValue[12] = m_uConfigValue_t[12];
+    m_uConfigValue[13] = m_uConfigValue_t[13];
 }
 
-void CDialogChipSetting_CFG_M2L31::CFG2GUI_CWDT()
+void CDialogChipSetting_CFG_M55M1::CFG2GUI_CWDT()
 {
     switch (m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CWDTEN) {
         case NUMICRO_FLASH_CONFIG_CWDTEN_INACTIVE:
             m_nRadioCWDTEN = 0;
+            break;
+
+        case NUMICRO_FLASH_CONFIG_CWDTEN_BY_LIRCEN:
+            if (m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CWDTPDEN) {
+                m_nRadioCWDTEN = 2;
+            }
+            else {
+                m_nRadioCWDTEN = 1;
+            }
+
             break;
 
         default:
@@ -262,7 +307,7 @@ void CDialogChipSetting_CFG_M2L31::CFG2GUI_CWDT()
     }
 }
 
-void CDialogChipSetting_CFG_M2L31::CFG2GUI_CBOD_8()
+void CDialogChipSetting_CFG_M55M1::CFG2GUI_CBOD_8()
 {
     switch (m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBOV_8_LEVEL) {
         case NUMICRO_FLASH_CONFIG_CBOV_7:
@@ -293,10 +338,6 @@ void CDialogChipSetting_CFG_M2L31::CFG2GUI_CBOD_8()
             m_nRadioCBOV = 6;
             break;
 
-        case NUMICRO_FLASH_CONFIG_CBOV_0:
-            m_nRadioCBOV = 7;
-            break;
-
         default:
             m_nRadioCBOV = 0;
     }
@@ -305,17 +346,17 @@ void CDialogChipSetting_CFG_M2L31::CFG2GUI_CBOD_8()
     m_bCheckCBODEN = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
 }
 
-void CDialogChipSetting_CFG_M2L31::CFG2GUI_CBS_2()
+void CDialogChipSetting_CFG_M55M1::CFG2GUI_CBS_2()
 {
     m_nRadioCBS = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBS_2_MODE) ? 0 : 1);
 }
 
-void CDialogChipSetting_CFG_M2L31::CFG2GUI_ICELOCK()
+void CDialogChipSetting_CFG_M55M1::CFG2GUI_ICELOCK()
 {
     m_bCheckICELOCK = ((m_uConfigValue_t[0] & M480_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
 }
 
-void CDialogChipSetting_CFG_M2L31::CFG2GUI_UART1()
+void CDialogChipSetting_CFG_M55M1::CFG2GUI_UART1()
 {
     switch (m_uConfigValue_t[3] & M2351_FLASH_CONFIG_UART1PSL_SEL3) {
     case M2351_FLASH_CONFIG_UART1PSL_SEL0:
@@ -326,45 +367,12 @@ void CDialogChipSetting_CFG_M2L31::CFG2GUI_UART1()
         m_nRadioUART = 1;
         break;
 
-    case M2351_FLASH_CONFIG_UART1PSL_SEL2:
-        m_nRadioUART = 2;
-        break;
-
-    case M2351_FLASH_CONFIG_UART1PSL_SEL3:
-        m_nRadioUART = 3;
-        break;
-
     default:
         m_nRadioUART = 0;
     }
 }
 
-void CDialogChipSetting_CFG_M2L31::CFG2GUI_DFEN()
-{
-    unsigned int uDataFlashBase, uDataFlashSize;
-    m_bCheckDFEN = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
-
-    if (m_bCheckDFEN && !m_bCheckSCEN) {
-        m_SpinDataFlashSize.EnableWindow(TRUE);
-        m_DataFlashBase.EnableWindow(TRUE);
-        uDataFlashBase = m_uConfigValue_t[1] & ~(m_uFlashPageSize - 1);
-        uDataFlashSize = m_uProgramMemorySize - uDataFlashBase;
-
-        if (uDataFlashSize > m_uProgramMemorySize) {
-            uDataFlashSize = 0;
-        }
-    } else {
-        m_SpinDataFlashSize.EnableWindow(FALSE);
-        m_DataFlashBase.EnableWindow(FALSE);
-        uDataFlashBase = 0xFFFFFFFF;
-        uDataFlashSize = 0;
-    }
-
-    m_sDataFlashBase.Format(_T("%X"), m_uConfigValue_t[1]);
-    m_sDataFlashSize.Format(_T("%.2fK"), uDataFlashSize / 1024.);
-}
-
-void CDialogChipSetting_CFG_M2L31::CFG2GUI_SCEN()
+void CDialogChipSetting_CFG_M55M1::CFG2GUI_SCEN()
 {
     unsigned int uSCBase, uSCSize;
     m_bCheckSCEN = ((m_uConfigValue_t[6] == M2L31_SECURE_CONCEAL_ENABLE)? TRUE : FALSE);
@@ -376,8 +384,8 @@ void CDialogChipSetting_CFG_M2L31::CFG2GUI_SCEN()
         //uSCSize = m_uProgramMemorySize - uSCBase;
         uSCSize = m_uConfigValue_t[5];
 
-        if (uSCSize > (m_uProgramMemorySize - uSCBase) / 4096) {
-            uSCSize = (m_uProgramMemorySize - uSCBase) / 4096;
+        if (uSCSize > (m_uProgramMemorySize - uSCBase) / 8182) {
+            uSCSize = (m_uProgramMemorySize - uSCBase) / 8182;
         }
 
         if (uSCSize > m_uProgramMemorySize) {
@@ -395,31 +403,48 @@ void CDialogChipSetting_CFG_M2L31::CFG2GUI_SCEN()
     m_sSecureConcealPageSize.Format(_T("%d"), uSCSize);
 }
 
-void CDialogChipSetting_CFG_M2L31::CFG2GUI_KSPLOCK()
+void CDialogChipSetting_CFG_M55M1::CFG2GUI_NSCR()
 {
-    m_bCheckLOCK = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
-    m_sALOCK.Format(_T("%02X"), m_uConfigValue_t[2] & 0xFF);
-    m_sKSPLOCK.Format(_T("%02X"), (m_uConfigValue_t[2] >> 8) & 0xFF);
+    unsigned int uSCBase, uSCSize;
+
+    uSCBase = m_uConfigValue_t[12] & 0x7FFFFFFFUL;
+
+    uSCBase = (uSCBase/0x2000) * 0x2000;
+
+    if (uSCBase > 0x2FE000) {
+        uSCBase = 0x2FE000;
+    }
+
+    if (uSCBase < 0x102000) {
+        uSCBase = 0x102000;
+    }
+
+    m_sNSCRBase.Format(_T("%X"), uSCBase);
 }
 
-void CDialogChipSetting_CFG_M2L31::GUI2CFG_CWDT()
+void CDialogChipSetting_CFG_M55M1::GUI2CFG_CWDT()
 {
     switch (m_nRadioCWDTEN) {
         case 0:
             m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_CWDTEN;
-            m_uConfigValue_t[0] |=  NUMICRO_FLASH_CONFIG_CWDTEN_INACTIVE;
+            m_uConfigValue_t[0] |= NUMICRO_FLASH_CONFIG_CWDTEN_INACTIVE;
+            break;
+
+        case 2:
+            m_uConfigValue_t[0] &= ~(NUMICRO_FLASH_CONFIG_CWDTEN | NUMICRO_FLASH_CONFIG_CWDTPDEN);
+            m_uConfigValue_t[0] |= (NUMICRO_FLASH_CONFIG_CWDTEN_BY_LIRCEN | NUMICRO_FLASH_CONFIG_CWDTPDEN);
             break;
 
         default:
             if (((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CWDTEN) == NUMICRO_FLASH_CONFIG_CWDTEN_INACTIVE) ||
-                    (((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CWDTEN) == NUMICRO_FLASH_CONFIG_CWDTEN_BY_LIRCEN) && (m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CWDTPDEN))) {
+                (((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CWDTEN) == NUMICRO_FLASH_CONFIG_CWDTEN_BY_LIRCEN) && (m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CWDTPDEN))) {
                 m_uConfigValue_t[0] &= ~(NUMICRO_FLASH_CONFIG_CWDTEN | NUMICRO_FLASH_CONFIG_CWDTPDEN);
                 m_uConfigValue_t[0] |= (NUMICRO_FLASH_CONFIG_CWDTEN_ACTIVE | NUMICRO_FLASH_CONFIG_CWDTPDEN);
             }
     }
 }
 
-void CDialogChipSetting_CFG_M2L31::GUI2CFG_CBOD_8()
+void CDialogChipSetting_CFG_M55M1::GUI2CFG_CBOD_8()
 {
     m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_CBOV_8_LEVEL;
 
@@ -452,12 +477,8 @@ void CDialogChipSetting_CFG_M2L31::GUI2CFG_CBOD_8()
             m_uConfigValue_t[0] |= NUMICRO_FLASH_CONFIG_CBOV_1;
             break;
 
-        case 7:
-            m_uConfigValue_t[0] |= NUMICRO_FLASH_CONFIG_CBOV_0;
-            break;
-
         default:
-            m_uConfigValue_t[0] |= NUMICRO_FLASH_CONFIG_CBOV_3;
+            m_uConfigValue_t[0] |= NUMICRO_FLASH_CONFIG_CBOV_7;
     }
 
     if (m_bCheckCBORST) {
@@ -473,7 +494,7 @@ void CDialogChipSetting_CFG_M2L31::GUI2CFG_CBOD_8()
     }
 }
 
-void CDialogChipSetting_CFG_M2L31::GUI2CFG_CBS_2()
+void CDialogChipSetting_CFG_M55M1::GUI2CFG_CBS_2()
 {
     m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_CBS_2_MODE;
 
@@ -484,7 +505,7 @@ void CDialogChipSetting_CFG_M2L31::GUI2CFG_CBS_2()
     }
 }
 
-void CDialogChipSetting_CFG_M2L31::GUI2CFG_ICELOCK()
+void CDialogChipSetting_CFG_M55M1::GUI2CFG_ICELOCK()
 {
     if (m_bCheckICELOCK) {
         m_uConfigValue_t[0] &= ~M480_FLASH_CONFIG_ICELOCK;
@@ -493,7 +514,7 @@ void CDialogChipSetting_CFG_M2L31::GUI2CFG_ICELOCK()
     }
 }
 
-void CDialogChipSetting_CFG_M2L31::GUI2CFG_UART1()
+void CDialogChipSetting_CFG_M55M1::GUI2CFG_UART1()
 {
     m_uConfigValue_t[3] &= ~M2351_FLASH_CONFIG_UART1PSL_SEL3;
 
@@ -506,94 +527,12 @@ void CDialogChipSetting_CFG_M2L31::GUI2CFG_UART1()
         m_uConfigValue_t[3] |= M2351_FLASH_CONFIG_UART1PSL_SEL1;
         break;
 
-    case 2:
-        m_uConfigValue_t[3] |= M2351_FLASH_CONFIG_UART1PSL_SEL2;
-        break;
-
-    case 3:
-        m_uConfigValue_t[3] |= M2351_FLASH_CONFIG_UART1PSL_SEL3;
-        break;
-
     default:
-        m_uConfigValue_t[3] |= M2351_FLASH_CONFIG_UART1PSL_SEL3;
+        m_uConfigValue_t[3] |= M2351_FLASH_CONFIG_UART1PSL_SEL1;
     }
 }
 
-void CDialogChipSetting_CFG_M2L31::GUI2CFG_DFEN()
-{
-    if (m_bCheckDFEN && !m_bCheckSCEN) {
-        m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_DFEN;
-        m_uConfigValue_t[1] &= ~(m_uFlashPageSize - 1);
-
-        if (m_uConfigValue_t[1] < m_uFlashPageSize) {
-            m_uConfigValue_t[1] = m_uFlashPageSize;
-        }
-
-        if (m_uConfigValue_t[1] > (m_uProgramMemorySize - m_uFlashPageSize)) {
-            m_uConfigValue_t[1] = (m_uProgramMemorySize - m_uFlashPageSize);
-        }
-    } else {
-        m_uConfigValue_t[0] |=  NUMICRO_FLASH_CONFIG_DFEN;
-
-        if (m_uConfigValue_t[1] != 0xFFFFFFFF) {
-            m_uConfigValue_t[1]  = 0xFFFFFFFF;
-        }
-    }
-}
-
-void CDialogChipSetting_CFG_M2L31::GUI2CFG_KSPLOCK()
-{
-    bool bModify0 = false, bModify1 = false;
-
-    if (m_bCheckLOCK) {
-        m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_LOCK;
-
-        if ((m_uConfigValue_t[2] & 0x5A) == 0x5A) {
-            m_uConfigValue_t[2] &= ~0xFF;
-            bModify0 = true;
-        }
-    } else {
-        m_uConfigValue_t[0] |=  NUMICRO_FLASH_CONFIG_LOCK;
-
-        if ((m_uConfigValue_t[2] & 0x5A) != 0x5A) {
-            m_uConfigValue_t[2] = (m_uConfigValue_t[2] & ~0xFF) | 0x5A;
-            bModify0 = true;
-        }
-
-        if ((m_uConfigValue_t[2] & 0x5A00) != 0x5A00) {
-            m_uConfigValue_t[2] = (m_uConfigValue_t[2] & ~0xFF00) | 0x5A00;
-            bModify1 = true;
-        }
-    }
-
-    if (!bModify0) {
-        unsigned int uALOCK = ::_tcstoul(m_sALOCK, NULL, 16) & 0x5A;
-        m_uConfigValue_t[2] = (m_uConfigValue_t[2] & ~0xFF) | uALOCK;
-
-        if (uALOCK == 0x5A) {
-            m_uConfigValue_t[0] |=  NUMICRO_FLASH_CONFIG_LOCK;
-
-            if ((m_uConfigValue_t[2] & 0x5A00) != 0x5A00) {
-                m_uConfigValue_t[2] = (m_uConfigValue_t[2] & ~0xFF00) | 0x5A00;
-                bModify1 = true;
-            }
-        } else {
-            m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_LOCK;
-        }
-    }
-
-    if (!bModify1) {
-        unsigned int uKSPLOCK = ::_tcstoul(m_sKSPLOCK, NULL, 16) & 0x5A;
-        m_uConfigValue_t[2] = (m_uConfigValue_t[2] & ~0xFF00) | (uKSPLOCK << 8);
-
-        if ((m_uConfigValue_t[2] & 0x5A00) != 0x5A00) {
-            m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_LOCK;
-            m_uConfigValue_t[2] &= ~0xFF;
-        }
-    }
-}
-
-void CDialogChipSetting_CFG_M2L31::GUI2CFG_SCEN()
+void CDialogChipSetting_CFG_M55M1::GUI2CFG_SCEN()
 {
     if (m_bCheckSCEN) {
         m_uConfigValue_t[6] = M2L31_SECURE_CONCEAL_ENABLE;
@@ -607,8 +546,8 @@ void CDialogChipSetting_CFG_M2L31::GUI2CFG_SCEN()
             m_uConfigValue_t[4] = (m_uProgramMemorySize - m_uFlashPageSize);
         }
 
-        if (m_uConfigValue_t[5] > (m_uProgramMemorySize - m_uConfigValue_t[4]) / 4096) {
-            m_uConfigValue_t[5] = (m_uProgramMemorySize - m_uConfigValue_t[4]) / 4096;
+        if (m_uConfigValue_t[5] > (m_uProgramMemorySize - m_uConfigValue_t[4]) / 8182) {
+            m_uConfigValue_t[5] = (m_uProgramMemorySize - m_uConfigValue_t[4]) / 8182;
         }
 
     }
@@ -625,53 +564,38 @@ void CDialogChipSetting_CFG_M2L31::GUI2CFG_SCEN()
     }
 }
 
-void CDialogChipSetting_CFG_M2L31::OnRadioClick()
+void CDialogChipSetting_CFG_M55M1::GUI2CFG_NSCR()
 {
-    // TODO: Add your control notification handler code here
-    GUIToConfig();
-    ConfigToGUI();
-}
+    unsigned int uNSCR;
+    m_uConfigValue_t[12] &= ~(m_uFlashPageSize - 1);
+    uNSCR = m_uConfigValue_t[12] & ~(0x80000000UL);
 
-void CDialogChipSetting_CFG_M2L31::OnCheckClick()
-{
-    // TODO: Add your control notification handler code here
-    GUIToConfig();
-    ConfigToGUI();
-}
-
-void CDialogChipSetting_CFG_M2L31::OnKillfocusEditAdvanceLock()
-{
-    // TODO: Add your control notification handler code here
-    GUIToConfig();
-    ConfigToGUI();
-}
-
-void CDialogChipSetting_CFG_M2L31::OnKillfocusEditKeyStoreLock()
-{
-    // TODO: Add your control notification handler code here
-    GUIToConfig();
-    ConfigToGUI();
-}
-
-void CDialogChipSetting_CFG_M2L31::OnKillfocusEditDataFlashBase()
-{
-    UpdateData(TRUE);
-    unsigned int uDataFlashBase = ::_tcstoul(m_sDataFlashBase, NULL, 16);
-    uDataFlashBase &= ~(m_uFlashPageSize - 1);
-
-    if (uDataFlashBase < m_uFlashPageSize) {
-        uDataFlashBase = m_uFlashPageSize;
+    if (uNSCR < 0x102000) {
+        uNSCR = 0x102000;
     }
 
-    if (uDataFlashBase > (m_uProgramMemorySize - m_uFlashPageSize)) {
-        uDataFlashBase = (m_uProgramMemorySize - m_uFlashPageSize);
+    if (uNSCR > (0x2FE000)) {
+        uNSCR = (0x2FE000);
     }
 
-    m_uConfigValue[1] = uDataFlashBase;
+    m_uConfigValue_t[12] |= uNSCR;
+}
+
+void CDialogChipSetting_CFG_M55M1::OnRadioClick()
+{
+    // TODO: Add your control notification handler code here
+    GUIToConfig();
     ConfigToGUI();
 }
 
-void CDialogChipSetting_CFG_M2L31::OnKillfocusEditSCBase()
+void CDialogChipSetting_CFG_M55M1::OnCheckClick()
+{
+    // TODO: Add your control notification handler code here
+    GUIToConfig();
+    ConfigToGUI();
+}
+
+void CDialogChipSetting_CFG_M55M1::OnKillfocusEditSCBase()
 {
     UpdateData(TRUE);
     unsigned int uSCBase = ::_tcstoul(m_sSecureConcealBase, NULL, 16);
@@ -689,56 +613,49 @@ void CDialogChipSetting_CFG_M2L31::OnKillfocusEditSCBase()
     ConfigToGUI();
 }
 
-void CDialogChipSetting_CFG_M2L31::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)
-{
-    UpdateData(TRUE);
-    LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
-    unsigned int uDataFlashBase = ::_tcstoul(m_sDataFlashBase, NULL, 16);
-    uDataFlashBase &= ~(m_uFlashPageSize - 1);
-
-    if (pNMUpDown->iDelta == 1) {
-        uDataFlashBase += m_uFlashPageSize;
-    } else if (pNMUpDown->iDelta == -1) {
-        uDataFlashBase -= m_uFlashPageSize;
-    }
-
-    if (uDataFlashBase < m_uFlashPageSize) {
-        uDataFlashBase = m_uFlashPageSize;
-    }
-
-    if (uDataFlashBase > (m_uProgramMemorySize - m_uFlashPageSize)) {
-        uDataFlashBase = (m_uProgramMemorySize - m_uFlashPageSize);
-    }
-
-    m_uConfigValue[1] = uDataFlashBase;
-    ConfigToGUI();
-    *pResult = 0;
-}
-
-void CDialogChipSetting_CFG_M2L31::OnKillfocusEditSCSize()
+void CDialogChipSetting_CFG_M55M1::OnKillfocusEditSCSize()
 {
     UpdateData(TRUE);
     unsigned int uSCSize = ::_tcstoul(m_sSecureConcealPageSize, NULL, 10);
 
-    if (uSCSize > (m_uProgramMemorySize - m_uConfigValue[4]) / 4096) {
-        uSCSize = (m_uProgramMemorySize - m_uConfigValue[4]) / 4096;
+    if (uSCSize > (m_uProgramMemorySize - m_uConfigValue_t[4]) / 8182) {
+        uSCSize = (m_uProgramMemorySize - m_uConfigValue_t[4]) / 8182;
     }
 
     if (uSCSize < 1) {
         uSCSize = 1;
     }
 
-    m_uConfigValue[5] = uSCSize;
+    m_uConfigValue_t[5] = uSCSize;
     ConfigToGUI();
 }
 
-void CDialogChipSetting_CFG_M2L31::OnOK()
+void CDialogChipSetting_CFG_M55M1::OnKillfocusEditNSCRBase()
+{
+    UpdateData(TRUE);
+    unsigned int uSCBase = ::_tcstoul(m_sNSCRBase, NULL, 16);
+    uSCBase &= ~(m_uFlashPageSize - 1);
+    uSCBase &= ~(0x80000000UL);
+
+    if (uSCBase < 0x102000) {
+        uSCBase = 0x102000;
+    }
+
+    if (uSCBase > (0x2FE000)) {
+        uSCBase = (0x2FE000);
+    }
+
+    m_uConfigValue_t[12] |= uSCBase;
+    ConfigToGUI();
+}
+
+void CDialogChipSetting_CFG_M55M1::OnOK()
 {
     GetParent()->GetParent()->PostMessage(WM_COMMAND, IDOK);
     //CDialog::OnOK();
 }
 
-void CDialogChipSetting_CFG_M2L31::OnCancel()
+void CDialogChipSetting_CFG_M55M1::OnCancel()
 {
     GetParent()->GetParent()->PostMessage(WM_COMMAND, IDCANCEL);
     //CDialog::OnCancel();

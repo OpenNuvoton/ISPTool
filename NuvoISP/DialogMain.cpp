@@ -323,6 +323,7 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 #include "DialogChipSetting_M2351.h"
 #include "DialogChipSetting_M460.h"
 #include "DialogChipSetting_M2L31.h"
+#include "DialogChipSetting_M55M1.h"
 
 bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigned int uSeriesCode /* = 0*/)
 {
@@ -645,6 +646,17 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 }
 
                 Config = (((CDialogConfiguration_M2003*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
+
+            case NUC_CHIP_TYPE_M55M1:
+                if (uProgramMemorySize) {
+                    pConfigDlg = new CDialogChipSetting_M55M1(uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_8K, 0, 0, uSeriesCode);
+                }
+                else {
+                    pConfigDlg = new CDialogChipSetting_M55M1(2048 * 1024, NUMICRO_FLASH_PAGE_SIZE_8K, 0, 0, uSeriesCode);
+                }
+
+                Config = (((CDialogChipSetting_M55M1*)pConfigDlg)->m_uConfigValue);
                 break;
 
             case ISD_94000_SERIES:
@@ -977,9 +989,10 @@ void CDialogMain::EnableInterface(bool bEnable)
 // call by OnButtonConfig
 bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
 {
-    unsigned int CFG[12] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
+    unsigned int CFG[14] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
                             0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
-                            0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF};
+                            0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
+                            0xFFFFFFFF, 0xFFFFFFFF};
 
     if (Template == 0) {
         CMenu menu;
@@ -1057,9 +1070,10 @@ LRESULT CDialogMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
     if (message == WM_COMMAND) {
         unsigned int i;
-        unsigned int CFG[12] = { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
+        unsigned int CFG[14] = { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
                                  0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
-                                 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF };
+                                 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
+                                 0xFFFFFFFF, 0xFFFFFFFF };
 
         if (wParam == 0xFFFFFFFF) { // Test ALL
             for (i = 0; i < g_NuMicroChipSeries.size(); ++i) {

@@ -54,8 +54,9 @@ protected:
     ULONG m_uDatCAN;
 
 public:
-    BOOL bSupport_SPI;;
-
+    BOOL bSupport_SPI;
+    BOOL bSupport_NVM;
+    BOOL bSpec_addr;
 
     BOOL bResendFlag;	// This flag is set by ReadFile
     ISPLdCMD();

@@ -138,7 +138,8 @@ bool GetChipStaticInfo(unsigned int uID)
                 uFlashType |= 0x200;
             } else if ((uSeriesCode == IDD_DIALOG_CONFIGURATION_M480) //M480
                        || (uSeriesCode == IDD_DIALOG_CONFIGURATION_M480LD)
-                       || (uSeriesCode == NUC_CHIP_TYPE_M460)) {
+                       || (uSeriesCode == NUC_CHIP_TYPE_M460)
+                       || (uSeriesCode == NUC_CHIP_TYPE_M2L31)) {
                 uFlashType |= 0x300;
             }
 

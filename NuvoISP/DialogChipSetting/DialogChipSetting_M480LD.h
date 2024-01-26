@@ -20,7 +20,7 @@ public:
 
     virtual ~CDialogChipSetting_M480LD();
 
-    unsigned int m_uConfigValue[12];
+    unsigned int m_uConfigValue[14];
 
 // Dialog Data
     enum { IDD = IDD_DIALOG_CHIP_SETTING_M2351 };

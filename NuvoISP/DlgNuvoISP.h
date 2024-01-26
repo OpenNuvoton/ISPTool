@@ -25,7 +25,9 @@ public:
 
     CString m_sCaption;
     BOOL m_bShowSPI;
+    BOOL m_bShowNVM;
     virtual void ShowSPIOptions(BOOL bShow);
+    virtual void ShowNVMOptions(BOOL bShow);
 
     CNuvoISPDlg(UINT Template = CNuvoISPDlg::IDD, CWnd *pParent = NULL);	// standard constructor
     virtual ~CNuvoISPDlg();
@@ -74,6 +76,8 @@ protected:
     void ShowChipInfo_NUC505(void);
     void ShowChipInfo_M2351(void);
     void ChangeBtnText(int nBtn, LPTSTR pszText);
+
+    void ShowWarningMessage(void);
 
 public:
     afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);

@@ -1,5 +1,5 @@
-#if !defined(AFX_DIALOGCHIPSETTING_CFG_M2L31_2_H__INCLUDED_)
-#define AFX_DIALOGCHIPSETTING_CFG_M2L31_2_H__INCLUDED_
+#if !defined(AFX_DIALOGCHIPSETTING_CFG_M55M1_2_H__INCLUDED_)
+#define AFX_DIALOGCHIPSETTING_CFG_M55M1_2_H__INCLUDED_
 
 #if _MSC_VER > 1000
 #pragma once
@@ -13,17 +13,17 @@
 /////////////////////////////////////////////////////////////////////////////
 // CDialogChipSetting_CFG_M460 dialog
 
-class CDialogChipSetting_CFG_M2L31_2 : public CDialogResize
+class CDialogChipSetting_CFG_M55M1_2 : public CDialogResize
 {
-    DECLARE_DYNAMIC(CDialogChipSetting_CFG_M2L31_2)
+    DECLARE_DYNAMIC(CDialogChipSetting_CFG_M55M1_2)
 
 // Construction
 public:
-    CDialogChipSetting_CFG_M2L31_2(int edit_8, CWnd *pParent = NULL);		// standard constructor
+    CDialogChipSetting_CFG_M55M1_2(int edit_8, CWnd *pParent = NULL);		// standard constructor
 
 // Dialog Data
     //{{AFX_DATA(CDialogChipSetting_CFG_M460)
-    enum { IDD = IDD_DIALOG_CHIP_SETTING_CFG_M2L31_2 };
+    enum { IDD = IDD_DIALOG_CHIP_SETTING_CFG_M55M1_2 };
 
     int				m_nRadioLockLv;
     int				m_nRadioLockPin;

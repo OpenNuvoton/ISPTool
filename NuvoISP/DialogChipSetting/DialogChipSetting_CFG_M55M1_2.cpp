@@ -4,14 +4,14 @@
 #include "stdafx.h"
 #include "ChipDefs.h"
 #include "FlashInfo.h"
-#include "DialogChipSetting_CFG_M2L31_2.h"
+#include "DialogChipSetting_CFG_M55M1_2.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogChipSetting_CFG_M460 dialog
 
-IMPLEMENT_DYNAMIC(CDialogChipSetting_CFG_M2L31_2, CDialog)
+IMPLEMENT_DYNAMIC(CDialogChipSetting_CFG_M55M1_2, CDialog)
 
-CDialogChipSetting_CFG_M2L31_2::CDialogChipSetting_CFG_M2L31_2(int edit_8, CWnd *pParent /*=NULL*/)
+CDialogChipSetting_CFG_M55M1_2::CDialogChipSetting_CFG_M55M1_2(int edit_8, CWnd *pParent /*=NULL*/)
     : CDialogResize(IDD, pParent)
     , m_edit_8(edit_8)
 {
@@ -27,10 +27,9 @@ CDialogChipSetting_CFG_M2L31_2::CDialogChipSetting_CFG_M2L31_2(int edit_8, CWnd 
     //}}AFX_DATA_INIT
 }
 
-void CDialogChipSetting_CFG_M2L31_2::DoDataExchange(CDataExchange *pDX)
+void CDialogChipSetting_CFG_M55M1_2::DoDataExchange(CDataExchange *pDX)
 {
     CDialogResize::DoDataExchange(pDX);
-    //{{AFX_DATA_MAP(CDialogChipSetting_CFG_M2L31)
     DDX_Radio(pDX, IDC_RADIO_LEVEL_0,               m_nRadioLockLv);
     DDX_Radio(pDX, IDC_RADIO_PIN_0,                 m_nRadioLockPin);
     DDX_Check(pDX, IDC_CHECK_SAFETY_PROTECT_0,      m_bCheckSP[0]);
@@ -103,15 +102,14 @@ void CDialogChipSetting_CFG_M2L31_2::DoDataExchange(CDataExchange *pDX)
     //}}AFX_DATA_MAP
 }
 
-BEGIN_MESSAGE_MAP(CDialogChipSetting_CFG_M2L31_2, CDialog)
-    //{{AFX_MSG_MAP(CDialogChipSetting_CFG_M2L31)
+BEGIN_MESSAGE_MAP(CDialogChipSetting_CFG_M55M1_2, CDialog)
     ON_BN_CLICKED(IDC_RADIO_LEVEL_0,					OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_LEVEL_1,					OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_LEVEL_2,					OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_LEVEL_3,					OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_PIN_0,						OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_PIN_1,						OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_PIN_2,						OnRadioClick)
+    //ON_BN_CLICKED(IDC_RADIO_PIN_2,						OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_PIN_3,						OnRadioClick)
 
     ON_BN_CLICKED(IDC_CHECK_SAFETY_PROTECT_0,			OnCheckClick)
@@ -183,12 +181,13 @@ BEGIN_MESSAGE_MAP(CDialogChipSetting_CFG_M2L31_2, CDialog)
     ON_BN_CLICKED(IDC_BUTTON_CLEAR_ALL_0,               OnButtonClickClear0)
     ON_BN_CLICKED(IDC_BUTTON_SELECT_ALL_1,              OnButtonClickSelcet1)
     ON_BN_CLICKED(IDC_BUTTON_CLEAR_ALL_1,               OnButtonClickClear1)
+    //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogChipSetting_CFG_M460 message handlers
 
-BOOL CDialogChipSetting_CFG_M2L31_2::OnInitDialog()
+BOOL CDialogChipSetting_CFG_M55M1_2::OnInitDialog()
 {
     CDialog::OnInitDialog();
     // TODO: Add extra initialization here
@@ -209,12 +208,12 @@ BOOL CDialogChipSetting_CFG_M2L31_2::OnInitDialog()
     // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CDialogChipSetting_CFG_M2L31_2::UpdateUI()
+void CDialogChipSetting_CFG_M55M1_2::UpdateUI()
 {
     // TODO: Add your control notification handler code here
 }
 
-void CDialogChipSetting_CFG_M2L31_2::LockUI() 
+void CDialogChipSetting_CFG_M55M1_2::LockUI()
 {
     GetDlgItem(IDC_RADIO_LEVEL_0)->EnableWindow(m_edit_8);
     GetDlgItem(IDC_RADIO_LEVEL_1)->EnableWindow(m_edit_8);
@@ -222,7 +221,7 @@ void CDialogChipSetting_CFG_M2L31_2::LockUI()
     GetDlgItem(IDC_RADIO_LEVEL_3)->EnableWindow(m_edit_8);
     GetDlgItem(IDC_RADIO_PIN_0)->EnableWindow(m_edit_8);
     GetDlgItem(IDC_RADIO_PIN_1)->EnableWindow(m_edit_8);
-    GetDlgItem(IDC_RADIO_PIN_2)->EnableWindow(m_edit_8);
+    //GetDlgItem(IDC_RADIO_PIN_2)->EnableWindow(m_edit_8);
     GetDlgItem(IDC_RADIO_PIN_3)->EnableWindow(m_edit_8);
     for (int i = 0; i < 64; i++) {
         GetDlgItem(IDC_CHECK_SAFETY_PROTECT_0 + i)->EnableWindow(m_edit_8);
@@ -233,7 +232,7 @@ void CDialogChipSetting_CFG_M2L31_2::LockUI()
     GetDlgItem(IDC_BUTTON_CLEAR_ALL_1)->EnableWindow(m_edit_8);
 }
 
-void CDialogChipSetting_CFG_M2L31_2::ConfigToGUI()
+void CDialogChipSetting_CFG_M55M1_2::ConfigToGUI()
 {
     m_uConfigValue_t[0] = m_uConfigValue[0];
     m_uConfigValue_t[1] = m_uConfigValue[1];
@@ -249,7 +248,7 @@ void CDialogChipSetting_CFG_M2L31_2::ConfigToGUI()
     UpdateData(FALSE);
 }
 
-void CDialogChipSetting_CFG_M2L31_2::GUIToConfig()
+void CDialogChipSetting_CFG_M55M1_2::GUIToConfig()
 {
     if (m_edit_8) {
         UpdateData(TRUE);
@@ -267,7 +266,7 @@ void CDialogChipSetting_CFG_M2L31_2::GUIToConfig()
     }
 }
 
-void CDialogChipSetting_CFG_M2L31_2::CFG2GUI_CheckSP() 
+void CDialogChipSetting_CFG_M55M1_2::CFG2GUI_CheckSP()
 {
     for (int i = 0; i < 32; i++) {
         m_bCheckSP[i] = ((m_uConfigValue_t[0] & (1 << i)) == 0 ? TRUE : FALSE);
@@ -275,7 +274,7 @@ void CDialogChipSetting_CFG_M2L31_2::CFG2GUI_CheckSP()
     }
 }
 
-void CDialogChipSetting_CFG_M2L31_2::CFG2GUI_LockLv()
+void CDialogChipSetting_CFG_M55M1_2::CFG2GUI_LockLv()
 {
     switch (m_uConfigValue_t[2] & 0xFFFF) {
         case 0xFFFF:
@@ -305,7 +304,7 @@ void CDialogChipSetting_CFG_M2L31_2::CFG2GUI_LockLv()
     }
 }
 
-void CDialogChipSetting_CFG_M2L31_2::CFG2GUI_LockPin()
+void CDialogChipSetting_CFG_M55M1_2::CFG2GUI_LockPin()
 {
     switch (m_uConfigValue_t[2] & 0x000F) {
         case 0xF:
@@ -331,7 +330,7 @@ void CDialogChipSetting_CFG_M2L31_2::CFG2GUI_LockPin()
     }
 }
 
-void CDialogChipSetting_CFG_M2L31_2::GUI2CFG_CheckSP()
+void CDialogChipSetting_CFG_M55M1_2::GUI2CFG_CheckSP()
 {
     for (int i = 0; i < 32; i++) {
         if (m_bCheckSP[i]) {
@@ -349,7 +348,7 @@ void CDialogChipSetting_CFG_M2L31_2::GUI2CFG_CheckSP()
     }
 }
 
-void CDialogChipSetting_CFG_M2L31_2::GUI2CFG_LockLv()
+void CDialogChipSetting_CFG_M55M1_2::GUI2CFG_LockLv()
 {
     m_uConfigValue_t[2] &= ~0xFFFF;
     switch (m_nRadioLockLv) {  
@@ -374,7 +373,7 @@ void CDialogChipSetting_CFG_M2L31_2::GUI2CFG_LockLv()
     }
 }
 
-void CDialogChipSetting_CFG_M2L31_2::GUI2CFG_LockPin()
+void CDialogChipSetting_CFG_M55M1_2::GUI2CFG_LockPin()
 {
     m_uConfigValue_t[2] &= ~0xF;
     if (m_nRadioLockLv >= 2) {
@@ -407,55 +406,55 @@ void CDialogChipSetting_CFG_M2L31_2::GUI2CFG_LockPin()
     }
 }
 
-void CDialogChipSetting_CFG_M2L31_2::OnRadioClick()
+void CDialogChipSetting_CFG_M55M1_2::OnRadioClick()
 {
     // TODO: Add your control notification handler code here
     GUIToConfig();
     ConfigToGUI();
 }
 
-void CDialogChipSetting_CFG_M2L31_2::OnCheckClick()
+void CDialogChipSetting_CFG_M55M1_2::OnCheckClick()
 {
     // TODO: Add your control notification handler code here
     GUIToConfig();
     ConfigToGUI();
 }
 
-void CDialogChipSetting_CFG_M2L31_2::OnButtonClickSelcet0()
+void CDialogChipSetting_CFG_M55M1_2::OnButtonClickSelcet0()
 {
     // TODO: Add your control notification handler code here
     m_uConfigValue[0] = 0x00000000;
     ConfigToGUI();
 }
 
-void CDialogChipSetting_CFG_M2L31_2::OnButtonClickSelcet1()
+void CDialogChipSetting_CFG_M55M1_2::OnButtonClickSelcet1()
 {
     // TODO: Add your control notification handler code here
     m_uConfigValue[1] = 0x00000000;
     ConfigToGUI();
 }
 
-void CDialogChipSetting_CFG_M2L31_2::OnButtonClickClear0()
+void CDialogChipSetting_CFG_M55M1_2::OnButtonClickClear0()
 {
     // TODO: Add your control notification handler code here
     m_uConfigValue[0] = 0xFFFFFFFF;
     ConfigToGUI();
 }
 
-void CDialogChipSetting_CFG_M2L31_2::OnButtonClickClear1()
+void CDialogChipSetting_CFG_M55M1_2::OnButtonClickClear1()
 {
     // TODO: Add your control notification handler code here
     m_uConfigValue[1] = 0xFFFFFFFF;
     ConfigToGUI();
 }
 
-void CDialogChipSetting_CFG_M2L31_2::OnOK()
+void CDialogChipSetting_CFG_M55M1_2::OnOK()
 {
     GetParent()->GetParent()->PostMessage(WM_COMMAND, IDOK);
     //CDialog::OnOK();
 }
 
-void CDialogChipSetting_CFG_M2L31_2::OnCancel()
+void CDialogChipSetting_CFG_M55M1_2::OnCancel()
 {
     GetParent()->GetParent()->PostMessage(WM_COMMAND, IDCANCEL);
     //CDialog::OnCancel();
