@@ -419,6 +419,9 @@ void CDialogChipSetting_CFG_M55M1::CFG2GUI_NSCR()
         uSCBase = 0x102000;
     }
 
+    if (!m_bCheckNSCRLOCK) {
+        uSCBase = 0xFFFFFF;
+    }
     m_sNSCRBase.Format(_T("%X"), uSCBase);
 }
 
@@ -579,6 +582,9 @@ void CDialogChipSetting_CFG_M55M1::GUI2CFG_NSCR()
     }
 
     m_uConfigValue_t[12] |= uNSCR;
+    if (!m_bCheckNSCRLOCK) {
+        m_uConfigValue_t[12] = 0xFFFFFFFF;
+    }
 }
 
 void CDialogChipSetting_CFG_M55M1::OnRadioClick()
@@ -646,6 +652,9 @@ void CDialogChipSetting_CFG_M55M1::OnKillfocusEditNSCRBase()
     }
 
     m_uConfigValue_t[12] |= uSCBase;
+    if (!m_bCheckNSCRLOCK) {
+        m_uConfigValue_t[12] = 0xFFFFFFFF;
+    }
     ConfigToGUI();
 }
 
