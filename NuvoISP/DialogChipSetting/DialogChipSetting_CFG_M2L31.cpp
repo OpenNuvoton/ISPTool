@@ -376,8 +376,8 @@ void CDialogChipSetting_CFG_M2L31::CFG2GUI_SCEN()
         //uSCSize = m_uProgramMemorySize - uSCBase;
         uSCSize = m_uConfigValue_t[5];
 
-        if (uSCSize > (m_uProgramMemorySize - uSCBase) / 4096) {
-            uSCSize = (m_uProgramMemorySize - uSCBase) / 4096;
+        if (uSCSize > (m_uProgramMemorySize - uSCBase) / m_uFlashPageSize) {
+            uSCSize = (m_uProgramMemorySize - uSCBase) / m_uFlashPageSize;
         }
 
         if (uSCSize > m_uProgramMemorySize) {
@@ -607,8 +607,8 @@ void CDialogChipSetting_CFG_M2L31::GUI2CFG_SCEN()
             m_uConfigValue_t[4] = (m_uProgramMemorySize - m_uFlashPageSize);
         }
 
-        if (m_uConfigValue_t[5] > (m_uProgramMemorySize - m_uConfigValue_t[4]) / 4096) {
-            m_uConfigValue_t[5] = (m_uProgramMemorySize - m_uConfigValue_t[4]) / 4096;
+        if (m_uConfigValue_t[5] > (m_uProgramMemorySize - m_uConfigValue_t[4]) / m_uFlashPageSize) {
+            m_uConfigValue_t[5] = (m_uProgramMemorySize - m_uConfigValue_t[4]) / m_uFlashPageSize;
         }
 
     }

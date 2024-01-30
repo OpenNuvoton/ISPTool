@@ -142,6 +142,9 @@ bool GetChipStaticInfo(unsigned int uID)
                        || (uSeriesCode == NUC_CHIP_TYPE_M2L31)) {
                 uFlashType |= 0x300;
             }
+            else if (uSeriesCode == NUC_CHIP_TYPE_M55M1) {
+                uFlashType |= 0x400;
+            }
 
             gsChipCfgInfo.uFlashType = uFlashType;
             return true;
