@@ -108,6 +108,15 @@
     <ClInclude Include="DialogChipSetting\DialogChipSetting_M55M1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DialogChipSetting\DialogChipSetting_M2A23.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogChipSetting\DialogChipSetting_CFG_M2A23.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogChipSetting\DialogChipSetting_CFG_M2A23_2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -273,6 +282,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DialogChipSetting\DialogChipSetting_M55M1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogChipSetting\DialogChipSetting_CFG_M2A23.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogChipSetting\DialogChipSetting_CFG_M2A23_2.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogChipSetting\DialogChipSetting_M2A23.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

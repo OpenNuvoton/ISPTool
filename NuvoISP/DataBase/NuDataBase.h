@@ -32,10 +32,12 @@ struct CChipConfigInfo {
     unsigned int uNVM_Size;
     unsigned int uLDROM_Addr;
     unsigned int uLDROM_Size;
+    unsigned int uUCID[4];
 };
 
 extern CChipConfigInfo gsChipCfgInfo;
-bool GetChipDynamicInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfig1);
+bool GetChipDynamicInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfig1, unsigned int m_uUCID[]);
+bool GetInfo_NuVoice(DWORD dwChipID, DWORD* pConfig);
 
 extern std::vector<CPartNumID> g_NuMicroChipSeries;
 extern std::vector<CPartNumID> g_AudioChipSeries;

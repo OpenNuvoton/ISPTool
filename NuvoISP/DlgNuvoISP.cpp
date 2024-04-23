@@ -833,8 +833,13 @@ void CNuvoISPDlg::ShowChipInfo_OnLine()
 
     if (bSizeValid) {
         std::ostringstream os;
-        os << "APROM: " << size_str(m_uAPROM_Size) << ","
-           " Data: " << size_str(m_uNVM_Size);
+        if (m_uNVM_Size != 0) {
+            os << "APROM: " << size_str(m_uAPROM_Size) << ","
+                " Data: " << size_str(m_uNVM_Size);
+        }
+        else {
+            os << "APROM: " << size_str(m_uAPROM_Size);
+        }
         std::string cstr = os.str();
         std::wstring wcstr(cstr.begin(), cstr.end());
         CString str = wcstr.c_str();

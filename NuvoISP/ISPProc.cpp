@@ -202,6 +202,12 @@ void CISPProc::Thread_CheckDeviceConnect()
                 m_ulDeviceID = m_ISPLdDev.GetDeviceID();
                 m_ISPLdDev.ReadConfig(m_CONFIG);
                 memcpy(m_CONFIG_User, m_CONFIG, sizeof(m_CONFIG));
+                DWORD pConfig[4];
+                pConfig[0] = m_CONFIG_User[0];
+                pConfig[1] = m_CONFIG_User[1];
+                if (GetInfo_NuVoice(m_ulDeviceID, pConfig)) {
+                    m_ISPLdDev.GetUCID(m_uUCID);
+                }
                 m_bSupport_SPI = m_ISPLdDev.bSupport_SPI;
                 m_eProcSts = EPS_OK;
 
@@ -500,7 +506,7 @@ void CISPProc::UnlockGUI()
 
 bool CISPProc::UpdateSizeInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfig1)
 {
-    if (GetChipDynamicInfo(uID, uConfig0, uConfig1)) {
+    if (GetChipDynamicInfo(uID, uConfig0, uConfig1, m_uUCID)) {
         m_uNVM_Addr = gsChipCfgInfo.uNVM_Addr;
         m_uNVM_Size = gsChipCfgInfo.uNVM_Size;
         m_uAPROM_Size = gsChipCfgInfo.uAPROM_Size;

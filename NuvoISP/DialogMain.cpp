@@ -324,6 +324,7 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 #include "DialogChipSetting_M460.h"
 #include "DialogChipSetting_M2L31.h"
 #include "DialogChipSetting_M55M1.h"
+#include "DialogChipSetting_M2A23.h"
 
 bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigned int uSeriesCode /* = 0*/)
 {
@@ -635,6 +636,17 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 }
 
                 Config = (((CDialogChipSetting_M2L31*)pConfigDlg)->m_uConfigValue);
+                break;
+
+            case IDD_DIALOG_CONFIGURATION_M2A23:
+                if (uProgramMemorySize) {
+                    pConfigDlg = new CDialogChipSetting_M2A23(uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_4K, 0, 0, uSeriesCode);
+                }
+                else {
+                    pConfigDlg = new CDialogChipSetting_M2A23(512 * 1024, NUMICRO_FLASH_PAGE_SIZE_4K, 0, 0, uSeriesCode);
+                }
+
+                Config = (((CDialogChipSetting_M2A23*)pConfigDlg)->m_uConfigValue);
                 break;
 
             case NUC_CHIP_TYPE_M2003:
