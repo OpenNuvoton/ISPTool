@@ -265,7 +265,8 @@ BOOL CDialogConfiguration_OT8051::OnInitDialog()
             break;
         }
 
-        case OT8051_SID_N76S003_MG51: {
+        case OT8051_SID_N76S003_MG51:
+        case OT8051_SID_MG51_64K: {
             m_uLevel = 4;
             m_bFSYS = false;
             m_bIODEFAULT = false;

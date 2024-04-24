@@ -717,5 +717,6 @@ typedef enum {
 #define OT8051_SID_MUG51_16K			0x6300
 
 #define OT8051_SID_N76S003_MG51			0x6700
+#define OT8051_SID_MG51_64K			    0x7200
 
 #endif
