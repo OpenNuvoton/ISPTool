@@ -36,7 +36,7 @@ struct CChipConfigInfo {
 };
 
 extern CChipConfigInfo gsChipCfgInfo;
-bool GetChipDynamicInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfig1, unsigned int m_uUCID[]);
+bool GetChipDynamicInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfig1);
 bool GetInfo_NuVoice(DWORD dwChipID, DWORD* pConfig);
 
 extern std::vector<CPartNumID> g_NuMicroChipSeries;

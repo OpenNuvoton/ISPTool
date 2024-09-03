@@ -87,7 +87,6 @@ public:
         CMD_ERASE_ALL 	    = 0x000000A3,
         CMD_READ_CONFIG     = 0x000000A2,
         CMD_GET_DEVICEID    = 0x000000B1,
-        CMD_GET_UCID        = 0x000000B2,
         CMD_RUN_APROM		= 0x000000AB,
         CMD_RUN_LDROM		= 0x000000AC,
         CMD_RESET			= 0x000000AD,
@@ -113,7 +112,6 @@ public:
     void SyncPackno();
     unsigned char GetVersion();
     unsigned long GetDeviceID();
-    void GetUCID(unsigned int config[]);
     void ReadConfig(unsigned int config[]);
     void UpdateConfig(unsigned int config[], unsigned int response[]);
     void UpdateAPROM(unsigned long start_addr,

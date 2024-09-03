@@ -6,7 +6,6 @@
 extern struct CPartNumID g_PartNumIDs[];
 
 CChipConfigInfo gsChipCfgInfo;
-sFindChipInfo FindChipInfo;
 struct sChipInfo gNuVoiceChip;
 
 /**
@@ -45,46 +44,6 @@ bool GetInfo_NuVoice(DWORD dwChipID, DWORD *pConfig)
 
     return ret;
 }
-
-bool FindInfo_NuVoice(DWORD dwChipID, DWORD* pConfig, DWORD *m_uUCID)
-{
-    bool ret = false;
-    memset(&gNuVoiceChip, 0, sizeof(sChipInfo));
-    memset(&FindChipInfo, 0, sizeof(sFindChipInfo));
-    
-    FindChipInfo.dwChipID = dwChipID;
-    FindChipInfo.dwCfgNum = 2;
-    FindChipInfo.dwConfig[0] = pConfig[0];
-    FindChipInfo.dwConfig[1] = pConfig[1];
-    FindChipInfo.dwChipUCID[0] = m_uUCID[0];
-    FindChipInfo.dwChipUCID[1] = m_uUCID[1];
-    FindChipInfo.dwChipUCID[2] = m_uUCID[2];
-    FindChipInfo.dwChipUCID[3] = m_uUCID[3];
-    HMODULE hDll = ::LoadLibrary(_T("GetChipInformation.dll"));
-
-    if (hDll != NULL) {
-        CREATE_CHIPINFO_MANAGER pCreateChipInfoManager = (CREATE_CHIPINFO_MANAGER)::GetProcAddress(hDll, "CreateChipInfoManager");
-
-        if (pCreateChipInfoManager) {
-            I_ChipInfoManager* pChipInfoManager = NULL;
-
-            if (pCreateChipInfoManager(&pChipInfoManager) == TRUE) {
-                eChipInfoError err = pChipInfoManager->GetChipInfoByFindInfo(FindChipInfo, gNuVoiceChip, 0);
-
-                if (err == ECE_NO_ERROR) {
-                    ret = true;
-                }
-
-                pChipInfoManager->ReleaseDLL();
-            }
-        }
-
-        FreeLibrary(hDll);
-    }
-
-    return ret;
-}
-
 /**
   * @brief Check if any given uID is available in g_PartNumIDs (ref: PartNumID.cpp).
   * @param[in] uID The PDID read from the target device.
@@ -208,7 +167,7 @@ static bool HasNoDynamicInfo()
     return false;
 }
 
-bool GetChipDynamicInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfig1, unsigned int m_uUCID[])
+bool GetChipDynamicInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfig1)
 {
     if (gsChipCfgInfo.uID == uID) {
         if ((gsChipCfgInfo.uConfig0 == uConfig0) && (gsChipCfgInfo.uConfig1 == uConfig1)) {
@@ -270,15 +229,8 @@ bool GetChipDynamicInfo(unsigned int uID, unsigned int uConfig0, unsigned int uC
         DWORD pConfig[4];
         pConfig[0] = uConfig0;
         pConfig[1] = uConfig1;
-        DWORD UCID[4];
-        UCID[0] = m_uUCID[0];
-        UCID[1] = m_uUCID[1];
-        UCID[2] = m_uUCID[2];
-        UCID[3] = m_uUCID[3];
         if (GetInfo_NuVoice(uID, pConfig)) {
             uProductLine = 3; // Audio
-            memcpy(gsChipCfgInfo.uUCID, m_uUCID, 4);
-            FindInfo_NuVoice(uID, pConfig, UCID);
             gsChipCfgInfo.uID = uID;
             gsChipCfgInfo.uConfig0 = uConfig0;
             gsChipCfgInfo.uConfig1 = uConfig1;

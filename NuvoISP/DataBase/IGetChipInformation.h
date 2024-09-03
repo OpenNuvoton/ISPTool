@@ -52,6 +52,7 @@ enum eAllChipSeries : DWORD
 	N584_SERIES					= 0x90000C,
 	N589L_SERIES				= 0x90000D,
 	NSP2_SERIES					= 0x90000E,
+	SPEECH_NSR_SERIES			= 0x90000F,
 	UNKNOWN_SERIES				= 0xFFFFFF,
 };
 
@@ -104,6 +105,7 @@ const sSeriesName g_SeriesToName[] =
 	{N589E_SERIES,_T("N589E")},
 	{N584_SERIES,_T("N584")},
 	{N589L_SERIES,_T("N589L")},
+	{SPEECH_NSR_SERIES,_T("NSR")},
 };
 
 typedef struct sChipInfo

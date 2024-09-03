@@ -375,23 +375,6 @@ unsigned char ISPLdCMD::GetVersion()
     return ucVersion;
 }
 
-void ISPLdCMD::GetUCID(unsigned int config[])
-{
-    unsigned int UCID[4] = {0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF,0xFFFFFFFF};
-    if (m_uInterface == INTF_CAN) {
-        memcpy(config, UCID, 4);
-        return ; // not support
-    }
-
-    WriteFile(
-        CMD_GET_UCID,
-        NULL,
-        0,
-        USBCMD_TIMEOUT);
-    ReadFile((char*)config, 16, USBCMD_TIMEOUT, TRUE);
-    return ;
-}
-
 unsigned long ISPLdCMD::GetDeviceID()
 {
     if (m_uInterface == INTF_CAN) {
