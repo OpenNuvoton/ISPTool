@@ -968,7 +968,9 @@ void CNuvoISPDlg::ChangeBtnText(int nBtn, LPTSTR pszText)
     TC_ITEM ti;
     ti.mask = TCIF_TEXT;
     ti.pszText = pszText;
-    VERIFY(m_TabData.SetItem(nBtn, &ti));
+    if (nBtn < m_TabData.GetItemCount()) {
+        VERIFY(m_TabData.SetItem(nBtn, &ti));
+    }
 }
 
 void CNuvoISPDlg::OnKillfocusEditAPRomOffset()
