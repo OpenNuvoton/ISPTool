@@ -144,6 +144,7 @@
 #define IDC_STATIC_FLASH_KEYSTORE_LOCK  1088
 #define IDC_EDIT_FLASH_KEYSTORE_LOCK    1089
 #define IDC_EDIT_BDNAME                 1090
+#define IDC_RADIO_UART1_SEL02           1092
 #define IDC_STATIC_CONFIG_11            3084
 #define IDC_STATIC_CONFIG_VALUE_11      3085
 #define IDC_STATIC_CONFIG_12            3086
@@ -166,7 +167,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        147
 #define _APS_NEXT_COMMAND_VALUE         32843
-#define _APS_NEXT_CONTROL_VALUE         1091
+#define _APS_NEXT_CONTROL_VALUE         1093
 #define _APS_NEXT_SYMED_VALUE           299
 #endif
 #endif
