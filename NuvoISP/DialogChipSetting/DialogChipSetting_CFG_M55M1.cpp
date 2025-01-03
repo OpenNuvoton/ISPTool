@@ -77,7 +77,7 @@ void CDialogChipSetting_CFG_M55M1::DoDataExchange(CDataExchange *pDX)
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_5,		m_sConfigValue5);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_6,		m_sConfigValue6);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_11,		m_sConfigValue11);
-    DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_12		m_sConfigValue12);
+    DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_12,		m_sConfigValue12);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_13,		m_sConfigValue13);
     //}}AFX_DATA_MAP
 }
@@ -97,7 +97,7 @@ BEGIN_MESSAGE_MAP(CDialogChipSetting_CFG_M55M1, CDialog)
     ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM,				OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM,				OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_UART1_SEL3,					OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_UART1_SEL2,					nRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_UART1_SEL2,					OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_UART1_SEL1,					OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_UART1_SEL0,					OnRadioClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET,			OnCheckClick)
