@@ -4,9 +4,9 @@
 #include <string>
 
 #ifdef _DEBUG
-#pragma comment(lib, "BleIOd.lib")
+    #pragma comment(lib, "BleIOd.lib")
 #else
-#pragma comment(lib, "BleIO.lib")
+    #pragma comment(lib, "BleIO.lib")
 #endif
 
 class CBleIO
@@ -39,4 +39,5 @@ private:
     class CImpl;
     CImpl *m_Impl;
 };
+
 #endif

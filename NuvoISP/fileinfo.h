@@ -9,18 +9,19 @@
 namespace std
 {
 #ifdef _UNICODE
-typedef wstring tstring;
+    typedef wstring tstring;
 #else
-typedef string tstring;
+    typedef string tstring;
 #endif
 }
 
-struct fileinfo {
+struct fileinfo
+{
     //std::tstring& filename;
     CString filename;
     size_t st_size;
     unsigned short usCheckSum;
-    std::vector<unsigned char>	vbuf;
+    std::vector<unsigned char>  vbuf;
     fileinfo() : filename(_T("")), st_size(0), usCheckSum(0)
     {
     }

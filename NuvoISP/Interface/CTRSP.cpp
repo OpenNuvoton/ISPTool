@@ -31,7 +31,8 @@ BOOL CTRSP::OpenDevice(INTF_E eInterface, ...)
 {
     m_Intf = eInterface;
 
-    if (m_Intf == INTF_E_WIFI) {
+    if (m_Intf == INTF_E_WIFI)
+    {
         va_list valist;
         va_start(valist, eInterface);
 
@@ -57,7 +58,8 @@ BOOL CTRSP::OpenDevice(INTF_E eInterface, ...)
         int loopflag = 0;
         int maxloop = -1;
 
-        if ((retval = WSAStartup(MAKEWORD(2, 2), &wsaData)) != 0) {
+        if ((retval = WSAStartup(MAKEWORD(2, 2), &wsaData)) != 0)
+        {
             WSACleanup();
             return FALSE;
         }
@@ -72,22 +74,26 @@ BOOL CTRSP::OpenDevice(INTF_E eInterface, ...)
                              &hints,
                              &results);
 
-        if (retval != 0) {
+        if (retval != 0)
+        {
             return FALSE;
         }
 
-        if (results == NULL) {
+        if (results == NULL)
+        {
             return FALSE;
         }
 
         addrptr = results;
 
-        while (addrptr) {
+        while (addrptr)
+        {
             conn_socket = socket(addrptr->ai_family,
                                  addrptr->ai_socktype,
                                  addrptr->ai_protocol);
 
-            if (conn_socket == INVALID_SOCKET) {
+            if (conn_socket == INVALID_SOCKET)
+            {
                 return FALSE;
             }
 
@@ -99,7 +105,8 @@ BOOL CTRSP::OpenDevice(INTF_E eInterface, ...)
                                  NI_MAXSERV,
                                  NI_NUMERICHOST | NI_NUMERICSERV);
 
-            if (retval != 0) {
+            if (retval != 0)
+            {
                 return FALSE;
             }
 
@@ -107,12 +114,15 @@ BOOL CTRSP::OpenDevice(INTF_E eInterface, ...)
                              addrptr->ai_addr,
                              (int)addrptr->ai_addrlen);
 
-            if (retval == SOCKET_ERROR) {
+            if (retval == SOCKET_ERROR)
+            {
                 closesocket(conn_socket);
                 conn_socket = INVALID_SOCKET;
 
                 addrptr = addrptr->ai_next;
-            } else {
+            }
+            else
+            {
                 break;
             }
         }
@@ -120,14 +130,17 @@ BOOL CTRSP::OpenDevice(INTF_E eInterface, ...)
         freeaddrinfo(results);
         results = NULL;
 
-        if (conn_socket == INVALID_SOCKET) {
+        if (conn_socket == INVALID_SOCKET)
+        {
             return FALSE;
         }
 
         m_conn_socket = conn_socket;
 
         return TRUE;
-    } else if (m_Intf == INTF_E_BLE) {
+    }
+    else if (m_Intf == INTF_E_BLE)
+    {
         va_list valist;
         va_start(valist, eInterface);
 
@@ -137,7 +150,8 @@ BOOL CTRSP::OpenDevice(INTF_E eInterface, ...)
 
         va_end(valist);
 
-        if (m_BleIO.OpenDevice(m_ServF01)) {
+        if (m_BleIO.OpenDevice(m_ServF01))
+        {
             return SetActiveDevice(0);
         }
     }
@@ -147,8 +161,10 @@ BOOL CTRSP::OpenDevice(INTF_E eInterface, ...)
 
 void CTRSP::CloseDevice(void)
 {
-    if (m_Intf == INTF_E_WIFI) {
-        if (m_conn_socket != INVALID_SOCKET) {
+    if (m_Intf == INTF_E_WIFI)
+    {
+        if (m_conn_socket != INVALID_SOCKET)
+        {
             shutdown(m_conn_socket, SD_SEND);
 
             closesocket(m_conn_socket);
@@ -157,18 +173,24 @@ void CTRSP::CloseDevice(void)
         }
 
         WSACleanup();
-    } else if (m_Intf == INTF_E_BLE) {
+    }
+    else if (m_Intf == INTF_E_BLE)
+    {
         m_BleIO.CloseDevice();
     }
 }
 
 size_t CTRSP::GetDeviceLength(void) const
 {
-    if (m_Intf == INTF_E_WIFI) {
-        if (m_conn_socket != INVALID_SOCKET) {
+    if (m_Intf == INTF_E_WIFI)
+    {
+        if (m_conn_socket != INVALID_SOCKET)
+        {
             return 1;
         }
-    } else if (m_Intf == INTF_E_BLE) {
+    }
+    else if (m_Intf == INTF_E_BLE)
+    {
         return m_BleIO.GetDeviceLength();
     }
 
@@ -177,15 +199,20 @@ size_t CTRSP::GetDeviceLength(void) const
 
 BOOL CTRSP::SetActiveDevice(size_t szIndex)
 {
-    if (m_Intf == INTF_E_WIFI) {
-        if (m_conn_socket != INVALID_SOCKET && szIndex < 1) {
+    if (m_Intf == INTF_E_WIFI)
+    {
+        if (m_conn_socket != INVALID_SOCKET && szIndex < 1)
+        {
             return TRUE;
         }
-    } else if (m_Intf == INTF_E_BLE) {
+    }
+    else if (m_Intf == INTF_E_BLE)
+    {
         if (szIndex >= _countof(m_aucRxBuf))
             return FALSE;
 
-        if (m_BleIO.SetActiveDevice(szIndex)) {
+        if (m_BleIO.SetActiveDevice(szIndex))
+        {
             return (m_BleIO.SetCharacteristic(m_CharN01)
                     && m_BleIO.SubScribe(TRUE, FALSE)
                     && m_BleIO.RegisterNotify(BLE_NotifyCallback, this));
@@ -197,11 +224,15 @@ BOOL CTRSP::SetActiveDevice(size_t szIndex)
 
 size_t CTRSP::GetActiveDevice(void) const
 {
-    if (m_Intf == INTF_E_WIFI) {
-        if (m_conn_socket != INVALID_SOCKET) {
+    if (m_Intf == INTF_E_WIFI)
+    {
+        if (m_conn_socket != INVALID_SOCKET)
+        {
             return 0;
         }
-    } else if (m_Intf == INTF_E_BLE) {
+    }
+    else if (m_Intf == INTF_E_BLE)
+    {
         return m_BleIO.GetActiveDevice();
     }
 
@@ -210,7 +241,8 @@ size_t CTRSP::GetActiveDevice(void) const
 
 std::string CTRSP::GetActiveDeviceName(void) const
 {
-    if (m_Intf == INTF_E_BLE) {
+    if (m_Intf == INTF_E_BLE)
+    {
         return m_BleIO.GetActiveDeviceAddr();
     }
 
@@ -219,18 +251,24 @@ std::string CTRSP::GetActiveDeviceName(void) const
 
 BOOL CTRSP::Write(const CHAR *pcBuffer, size_t szLen, DWORD *pdwLength)
 {
-    if (m_Intf == INTF_E_WIFI) {
-        if (m_conn_socket != INVALID_SOCKET) {
+    if (m_Intf == INTF_E_WIFI)
+    {
+        if (m_conn_socket != INVALID_SOCKET)
+        {
             int retval = send(m_conn_socket, pcBuffer, szLen, 0);
 
-            if (retval == SOCKET_ERROR) {
+            if (retval == SOCKET_ERROR)
+            {
                 return FALSE;
             }
         }
 
         return TRUE;
-    } else if (m_Intf == INTF_E_BLE) {
-        if (m_BleIO.SetCharacteristic(m_CharW01)) {
+    }
+    else if (m_Intf == INTF_E_BLE)
+    {
+        if (m_BleIO.SetCharacteristic(m_CharW01))
+        {
             return m_BleIO.Write(pcBuffer, szLen, pdwLength);
         }
     }
@@ -240,8 +278,10 @@ BOOL CTRSP::Write(const CHAR *pcBuffer, size_t szLen, DWORD *pdwLength)
 
 BOOL CTRSP::Read(CHAR *pcBuffer, size_t szLen, DWORD *pdwLength, DWORD dwTime)
 {
-    if (m_Intf == INTF_E_WIFI) {
-        if (m_conn_socket != INVALID_SOCKET) {
+    if (m_Intf == INTF_E_WIFI)
+    {
+        if (m_conn_socket != INVALID_SOCKET)
+        {
             int selectReturn;
             fd_set rfd;
             timeval timeout = {0, 0};
@@ -253,23 +293,30 @@ BOOL CTRSP::Read(CHAR *pcBuffer, size_t szLen, DWORD *pdwLength, DWORD dwTime)
 
             selectReturn = select(m_conn_socket + 1, &rfd, NULL, NULL, &timeout);
 
-            if (selectReturn == -1) {
+            if (selectReturn == -1)
+            {
                 return FALSE;
             }
 
-            if (FD_ISSET(m_conn_socket, &rfd)) {
+            if (FD_ISSET(m_conn_socket, &rfd))
+            {
                 int retval = recv(m_conn_socket, pcBuffer, szLen, 0);
 
-                if (retval == SOCKET_ERROR) {
+                if (retval == SOCKET_ERROR)
+                {
                     return FALSE;
                 }
-            } else {
+            }
+            else
+            {
                 return FALSE;
             }
 
             return TRUE;
         }
-    } else if (m_Intf == INTF_E_BLE) {
+    }
+    else if (m_Intf == INTF_E_BLE)
+    {
         size_t szIndex = GetActiveDevice();
         DWORD dwLength = 0;
         DWORD dwStart = GetTickCount();
@@ -278,7 +325,8 @@ BOOL CTRSP::Read(CHAR *pcBuffer, size_t szLen, DWORD *pdwLength, DWORD dwTime)
 
         std::lock_guard<std::mutex> lock(m_RxMutex);
 
-        if (m_auRxCount[szIndex] > 0) {
+        if (m_auRxCount[szIndex] > 0)
+        {
             dwLength = m_auRxCount[szIndex];
 
             if (dwLength > szLen)
@@ -300,7 +348,8 @@ BOOL CTRSP::Read(CHAR *pcBuffer, size_t szLen, DWORD *pdwLength, DWORD dwTime)
 
 void CTRSP::ClearReadBuf(void)
 {
-    if (m_Intf == INTF_E_BLE) {
+    if (m_Intf == INTF_E_BLE)
+    {
         size_t szIndex = GetActiveDevice();
         std::lock_guard<std::mutex> lock(m_RxMutex);
 
@@ -313,7 +362,8 @@ void BLE_NotifyCallback(UCHAR *pData, ULONG uDataSize, void *pContext)
 {
     CTRSP *pTRSP = (CTRSP *)pContext;
 
-    if (pTRSP != NULL) {
+    if (pTRSP != NULL)
+    {
         size_t szIndex = pTRSP->GetActiveDevice();
         std::lock_guard<std::mutex> lock(pTRSP->m_RxMutex);
         ULONG uBufSize = sizeof(pTRSP->m_aucRxBuf[szIndex]) - pTRSP->m_auRxCount[szIndex];
@@ -321,7 +371,8 @@ void BLE_NotifyCallback(UCHAR *pData, ULONG uDataSize, void *pContext)
         if (uBufSize > uDataSize)
             uBufSize = uDataSize;
 
-        if (uBufSize > 0) {
+        if (uBufSize > 0)
+        {
             memcpy(pTRSP->m_aucRxBuf[szIndex] + pTRSP->m_auRxCount[szIndex], pData, uBufSize);
             pTRSP->m_auRxCount[szIndex] += uBufSize;
         }

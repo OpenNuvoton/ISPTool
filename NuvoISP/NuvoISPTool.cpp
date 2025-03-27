@@ -7,7 +7,7 @@
 #include "DlgNuvoISP.h"
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
+    #define new DEBUG_NEW
 #endif
 
 BEGIN_MESSAGE_MAP(CISPToolApp, CWinApp)
@@ -22,7 +22,7 @@ CISPToolApp theApp;
 
 
 class CMyCommandLineInfo
-    :	public CCommandLineInfo, public CISPProc
+    :   public CCommandLineInfo, public CISPProc
 {
 protected:
     void (CMyCommandLineInfo::*fnParseArg)(const TCHAR *pszParam, BOOL bLast);
@@ -46,40 +46,60 @@ public:
 
     virtual void ParseParam(const TCHAR *pszParam, BOOL bFlag, BOOL bLast)
     {
-        if (bFlag) {
+        if (bFlag)
+        {
             szArgIndex = 0;
             fnParseArg = NULL;
 
-            if (_tcscmp(pszParam, _T("aprom")) == 0) {
+            if (_tcscmp(pszParam, _T("aprom")) == 0)
+            {
                 m_bProgram_APROM = TRUE;
                 szArgIndex = 0; // 0: APROM
                 fnParseArg = &CMyCommandLineInfo::ParseArg_2files;
-            } else if (_tcscmp(pszParam, _T("nvm")) == 0) {
+            }
+            else if (_tcscmp(pszParam, _T("nvm")) == 0)
+            {
                 m_bProgram_NVM = TRUE;
                 szArgIndex = 1; // 1: Data Flash
                 fnParseArg = &CMyCommandLineInfo::ParseArg_2files;
-            } else if (_tcscmp(pszParam, _T("spi")) == 0) {
+            }
+            else if (_tcscmp(pszParam, _T("spi")) == 0)
+            {
                 m_bProgram_SPI = TRUE;
                 szArgIndex = 2; // 2: SPI Flash
                 fnParseArg = &CMyCommandLineInfo::ParseArg_2files;
-            } else if (_tcscmp(pszParam, _T("interface")) == 0) {
+            }
+            else if (_tcscmp(pszParam, _T("interface")) == 0)
+            {
                 szArgIndex = 0;
                 fnParseArg = &CMyCommandLineInfo::ParseArg_Interface;
-            } else if (_tcscmp(pszParam, _T("run")) == 0) {
+            }
+            else if (_tcscmp(pszParam, _T("run")) == 0)
+            {
                 m_bRunAPROM = TRUE;
-            } else if (_tcscmp(pszParam, _T("batch")) == 0) {
+            }
+            else if (_tcscmp(pszParam, _T("batch")) == 0)
+            {
                 m_bRunAPROM = TRUE;
                 m_bBatch = true;
-            } else if (_tcscmp(pszParam, _T("erase")) == 0) {
+            }
+            else if (_tcscmp(pszParam, _T("erase")) == 0)
+            {
                 m_bErase = TRUE;
-            } else {
+            }
+            else
+            {
                 printf("Unknown Error @ ParseParam.\n");
 
                 while (1);
             }
-        } else if (fnParseArg != NULL) {
+        }
+        else if (fnParseArg != NULL)
+        {
             (this->*fnParseArg)(pszParam, bLast);
-        } else {
+        }
+        else
+        {
             printf("Unknown Error @ ParseParam.\n");
 
             while (1);
@@ -88,9 +108,12 @@ public:
 
     virtual void ParseArg_2files(const TCHAR *pszParam, BOOL bLast)
     {
-        if (UpdateBinFile(szArgIndex, pszParam)) {
+        if (UpdateBinFile(szArgIndex, pszParam))
+        {
             printf("Load File OK.\n");
-        } else {
+        }
+        else
+        {
             printf("Load File NG.\n");
 
             while (1);
@@ -99,15 +122,22 @@ public:
 
     virtual void ParseArg_Interface(const TCHAR *pszParam, BOOL bLast)
     {
-        if (szArgIndex == 0) {
-            if (_tcscmp(pszParam, _T("HID")) == 0) {
+        if (szArgIndex == 0)
+        {
+            if (_tcscmp(pszParam, _T("HID")) == 0)
+            {
                 m_uInterface = INTF_HID;
                 SetInterface(m_uInterface, _T(""), _T(""), _T(""));
-            } else if (_tcscmp(pszParam, _T("UART")) == 0) {
+            }
+            else if (_tcscmp(pszParam, _T("UART")) == 0)
+            {
                 m_uInterface = INTF_UART;
             }
-        } else if (szArgIndex == 1) {
-            if (m_uInterface == INTF_UART) {
+        }
+        else if (szArgIndex == 1)
+        {
+            if (m_uInterface == INTF_UART)
+            {
                 SetInterface(m_uInterface, pszParam, _T(""), _T(""));
             }
         }
@@ -131,12 +161,15 @@ BOOL CISPToolApp::InitInstance()
             LocalFree(szArglist);
         }
 
-        if (nArgs == 1) {
+        if (nArgs == 1)
+        {
             goto _UI_MODE;
         }
 
-        if (!AttachConsole(ATTACH_PARENT_PROCESS)) {
-            if (!AllocConsole()) {
+        if (!AttachConsole(ATTACH_PARENT_PROCESS))
+        {
+            if (!AllocConsole())
+            {
                 MessageBox(GetConsoleWindow(), _T("Failed to create debug console."), NULL, MB_OKCANCEL | MB_ICONEXCLAMATION);
             }
         }
@@ -148,29 +181,43 @@ BOOL CISPToolApp::InitInstance()
         CMyCommandLineInfo rCmdInfo;
         ParseCommandLine(rCmdInfo);
 
-        do {
+        do
+        {
             void (CISPProc::*fnThreadProcStatus)() = &CISPProc::Thread_Pause;
             void (CISPProc::*fnThreadProcStatus_backup)() = &CISPProc::Thread_Pause;
             rCmdInfo.Set_ThreadAction(&CISPProc::Thread_CheckUSBConnect);
             _tprintf(_T("\n --------------------------------"));
 
-            while (fnThreadProcStatus != &CISPProc::Thread_Idle) {
-                if (fnThreadProcStatus == fnThreadProcStatus_backup) { // status not changed, check again
+            while (fnThreadProcStatus != &CISPProc::Thread_Idle)
+            {
+                if (fnThreadProcStatus == fnThreadProcStatus_backup)   // status not changed, check again
+                {
                     fnThreadProcStatus = rCmdInfo.m_fnThreadProcStatus;
                     continue;
-                } else { // status changed
+                }
+                else     // status changed
+                {
                     fnThreadProcStatus_backup = fnThreadProcStatus;
 
-                    if (fnThreadProcStatus == &CISPProc::Thread_CheckUSBConnect) {
+                    if (fnThreadProcStatus == &CISPProc::Thread_CheckUSBConnect)
+                    {
                         _tprintf(_T("\n CheckUSBConnect."));
-                    } else if (fnThreadProcStatus == &CISPProc::Thread_CheckDeviceConnect) {
+                    }
+                    else if (fnThreadProcStatus == &CISPProc::Thread_CheckDeviceConnect)
+                    {
                         _tprintf(_T("\n CheckDeviceConnect."));
-                    } else if (fnThreadProcStatus == &CISPProc::Thread_ProgramFlash) {
+                    }
+                    else if (fnThreadProcStatus == &CISPProc::Thread_ProgramFlash)
+                    {
                         _tprintf(_T("\n ProgramFlash."));
-                    } else if (fnThreadProcStatus == &CISPProc::Thread_CheckDisconnect) {
+                    }
+                    else if (fnThreadProcStatus == &CISPProc::Thread_CheckDisconnect)
+                    {
                         // In some minor error case (file size check error), isptool did not go into disconnect status.
                         break;
-                    } else {
+                    }
+                    else
+                    {
                         _tprintf(_T("\n UnKnown Stage."));
                         break;
                     }
@@ -179,7 +226,8 @@ BOOL CISPToolApp::InitInstance()
 
             printf("\n ");
 
-            switch (rCmdInfo.m_eProcSts) {
+            switch (rCmdInfo.m_eProcSts)
+            {
                 case EPS_ERR_OPENPORT:
                     printf("Open Port Error");
                     break;
@@ -229,9 +277,12 @@ BOOL CISPToolApp::InitInstance()
             //    break;
             //}
 
-            if (rCmdInfo.m_bBatch) {
+            if (rCmdInfo.m_bBatch)
+            {
                 continue;
-            } else {
+            }
+            else
+            {
                 break;
             }
         } while (rCmdInfo.m_bBatch);
@@ -240,6 +291,7 @@ BOOL CISPToolApp::InitInstance()
         fflush(stdout);
         return FALSE;
     }
+
 _UI_MODE:
     SetRegistryKey(_T("NuvotonISP"));
     CNuvoISPDlg MainDlg;

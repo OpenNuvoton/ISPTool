@@ -2,7 +2,7 @@
 #define AFX_DIALOGCONFIGURATION_NANO100_H__E0CD7A09_C5DC_481E_A871_03B422A615F8__INCLUDED_
 
 #if _MSC_VER > 1000
-#pragma once
+    #pragma once
 #endif // _MSC_VER > 1000
 // DialogConfiguration.h : header file
 //
@@ -14,41 +14,44 @@
 
 class CDialogConfiguration_Nano100 : public CDialogResize
 {
-// Construction
+    // Construction
 public:
     CDialogConfiguration_Nano100(unsigned int uProgramMemorySize = 123 * 1024,
-                                 CWnd *pParent = NULL);   // standard constructor
+                                 CWnd* pParent = NULL);   // standard constructor
+
+    static CString GetConfigWarning(const CAppConfig::Nano100_configs_t &config);
 
     CAppConfig::Nano100_configs_t m_ConfigValue;
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CDialogConfiguration_Nano100)
     enum { IDD = IDD_DIALOG_CONFIGURATION_NANO100 };
-    CNumEdit	m_FlashBaseAddress;
-    CEdit	m_DataFlashSize;
-    int		m_nRadioBor;
-    int		m_nRadioBS;
-    CString	m_sConfigValue0;
-    CString	m_sConfigValue1;
-    CString	m_sFlashBaseAddress;
-    CString	m_sDataFlashSize;
-    BOOL	m_bClockFilterEnable;
-    BOOL	m_bDataFlashEnable;
-    BOOL	m_bSecurityLock;
-    BOOL	m_bWDTEnable;
-    CSpinButtonCtrl	m_SpinDataFlashSize;
+    CNumEdit    m_FlashBaseAddress;
+    CEdit   m_DataFlashSize;
+    int     m_nRadioBor;
+    int     m_nRadioBS;
+    CString m_sConfigValue0;
+    CString m_sConfigValue1;
+    CString m_sFlashBaseAddress;
+    CString m_sDataFlashSize;
+    BOOL    m_bClockFilterEnable;
+    BOOL    m_bDataFlashEnable;
+    BOOL    m_bSecurityLock;
+    BOOL    m_bWDTEnable;
+    CSpinButtonCtrl m_SpinDataFlashSize;
 
-    unsigned int	m_uProgramMemorySize;
+    unsigned int    m_uProgramMemorySize;
     //}}AFX_DATA
 
-// Overrides
+
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CDialogConfiguration_Nano100)
 protected:
-    virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
     void ConfigToGUI();
     void GUIToConfig();
@@ -60,7 +63,7 @@ protected:
     afx_msg void OnKillfocusEditFlashBaseAddress();
     virtual void OnOK();
     afx_msg void OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult);
-    afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar);
+    afx_msg void OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
     //}}AFX_MSG
     DECLARE_MESSAGE_MAP()
 };
@@ -73,10 +76,10 @@ protected:
 
 class CDialogConfiguration_Nano100AN : public CDialogConfiguration_Nano100
 {
-// Construction
+    // Construction
 public:
     CDialogConfiguration_Nano100AN(unsigned int uProgramMemorySize = 64 * 1024,
-                                   CWnd *pParent = NULL);   // standard constructor
+                                   CWnd* pParent = NULL);   // standard constructor
 
 protected:
     virtual BOOL OnInitDialog();

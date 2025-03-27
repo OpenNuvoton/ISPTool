@@ -2,7 +2,7 @@
 #define AFX_DIALOGHEX_H__6734BB13_4E7E_4EEB_A921_0BE656E8E378__INCLUDED_
 
 #if _MSC_VER > 1000
-#pragma once
+    #pragma once
 #endif // _MSC_VER > 1000
 
 #include <vector>
@@ -15,7 +15,7 @@
 
 class CDialogHex : public CDialog
 {
-// Construction
+    // Construction
 public:
     CDialogHex(CWnd *pParent = NULL);   // standard constructor
 
@@ -24,24 +24,24 @@ public:
     void UpdateHexView(int nWidth);
     BOOL EnableWindow(BOOL bEnable);
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CDialogHex)
     enum { IDD = IDD_DIALOG_HEX };
-    CEdit	m_Edit_DataView;
-    CRichEditCtrl	m_REdit_DataView;
-    CButton	m_ButtonSaveAs;
-    int		m_nRadioUINT;
+    CEdit   m_Edit_DataView;
+    CRichEditCtrl   m_REdit_DataView;
+    CButton m_ButtonSaveAs;
+    int     m_nRadioUINT;
     //}}AFX_DATA
 
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CDialogHex)
 protected:
     virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
     CFont m_Font0;
     CFont m_Font1;

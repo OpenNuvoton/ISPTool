@@ -4,6 +4,7 @@
 #include <deque>
 #include <string>
 #include <utility>
+#include "Lang.h"
 #include "ChipDefs.h"
 #include "NumEdit.h"
 #include "AppConfig.h"
@@ -11,15 +12,15 @@
 #include <cassert>
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+    #define new DEBUG_NEW
+    #undef THIS_FILE
+    static char THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_NUC4xx dialog
 CDialogConfiguration_NUC4xx::CDialogConfiguration_NUC4xx(unsigned int uProgramMemorySize,
-        CWnd *pParent /*=NULL*/)
+                                                         CWnd* pParent /*=NULL*/)
     : CDialogResize(CDialogConfiguration_NUC4xx::IDD, pParent)
     , m_uProgramMemorySize(uProgramMemorySize)
 {
@@ -44,7 +45,7 @@ CDialogConfiguration_NUC4xx::CDialogConfiguration_NUC4xx(unsigned int uProgramMe
     //}}AFX_DATA_INIT
 }
 
-void CDialogConfiguration_NUC4xx::DoDataExchange(CDataExchange *pDX)
+void CDialogConfiguration_NUC4xx::DoDataExchange(CDataExchange* pDX)
 {
     CDialogResize::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CDialogConfiguration_NUC4xx)
@@ -111,19 +112,24 @@ END_MESSAGE_MAP()
 BOOL CDialogConfiguration_NUC4xx::OnInitDialog()
 {
     CDialog::OnInitDialog();
+
     UDACCEL pAccel[1];
     pAccel[0].nInc = 1;
     pAccel[0].nSec = 0;
     m_SpinDataFlashSize.SetAccel(1, pAccel);
+
     au32Config[0] = m_ConfigValue.m_value[0];
     au32Config[1] = m_ConfigValue.m_value[1];
     au32Config[2] = m_ConfigValue.m_value[2];
     au32Config[3] = m_ConfigValue.m_value[3];
     ConfigToGUI(0);
+
     UpdateData(FALSE);
+
     m_bIsInitialized = true;
     GetWindowRect(m_rect);
     AdjustDPI();
+
     return TRUE;
 }
 
@@ -132,7 +138,8 @@ void CDialogConfiguration_NUC4xx::ConfigToGUI(int nEventID)
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
     unsigned int uConfig1 = m_ConfigValue.m_value[1];
 
-    switch (uConfig0 & NUC4XX_FLASH_CONFIG_CBOV) {
+    switch (uConfig0 & NUC4XX_FLASH_CONFIG_CBOV)
+    {
         case NUC4XX_FLASH_CONFIG_CBOV_45:
             m_nRadioBov = 0;
             break;
@@ -151,7 +158,8 @@ void CDialogConfiguration_NUC4xx::ConfigToGUI(int nEventID)
             break;
     }
 
-    switch (uConfig0 & NUC4XX_FLASH_CONFIG_CBS2) {
+    switch (uConfig0 & NUC4XX_FLASH_CONFIG_CBS2)
+    {
         case NUC4XX_FLASH_CONFIG_CBS_LD:
             m_nRadioBS = 0;
             break;
@@ -177,22 +185,23 @@ void CDialogConfiguration_NUC4xx::ConfigToGUI(int nEventID)
     m_bWDTPowerDown = ((uConfig0 & NUC4XX_FLASH_CONFIG_CWDTPDEN) == 0 ? TRUE : FALSE);
     m_bWDTEnable = ((uConfig0 & NUC4XX_FLASH_CONFIG_CWDTEN) == 0 ? TRUE : FALSE);;
 
-    if (!m_bWDTEnable) {
-        m_bWDTPowerDown = FALSE;
-    }
+    if (!m_bWDTEnable) m_bWDTPowerDown = FALSE;
 
     m_bCheckBrownOutDetect = ((uConfig0 & NUC4XX_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
     m_bCheckBrownOutReset = ((uConfig0 & NUC4XX_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
-    m_bDataFlashEnable = ((uConfig0 & NUMICRO_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
-    m_bSecurityLock = ((uConfig0 & NUMICRO_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    m_bDataFlashEnable = ((uConfig0 & NUC4XX_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
+    m_bSecurityLock = ((uConfig0 & NUC4XX_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+
     unsigned int uFlashBaseAddress = uConfig1 & 0xFFFFF;
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
+
     unsigned int uPageNum = uFlashBaseAddress / NUMICRO_FLASH_PAGE_SIZE_2K;
     unsigned int uLimitNum = m_uProgramMemorySize / NUMICRO_FLASH_PAGE_SIZE_2K;
     unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * NUMICRO_FLASH_PAGE_SIZE_2K) : 0;
     m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uDataFlashSize : 0) / 1024.);
     m_SpinDataFlashSize.EnableWindow(m_bDataFlashEnable ? TRUE : FALSE);
     GetDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS)->EnableWindow(m_bDataFlashEnable);
+
     m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
     m_sConfigValue1.Format(_T("0x%08X"), uConfig1);
     m_sConfigValue2.Format(_T("0x%08X"), m_ConfigValue.m_value[2]);
@@ -203,9 +212,11 @@ void CDialogConfiguration_NUC4xx::GUIToConfig(int nEventID)
 {
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
     unsigned int uConfig1;
+
     uConfig0 &= ~NUC4XX_FLASH_CONFIG_CBOV;
 
-    switch (m_nRadioBov) {
+    switch (m_nRadioBov)
+    {
         case 0:
             uConfig0 |= NUC4XX_FLASH_CONFIG_CBOV_45;
             break;
@@ -229,7 +240,8 @@ void CDialogConfiguration_NUC4xx::GUIToConfig(int nEventID)
 
     uConfig0 &= ~NUC4XX_FLASH_CONFIG_CBS2;
 
-    switch (m_nRadioBS) {
+    switch (m_nRadioBS)
+    {
         case 0:
             uConfig0 |= NUC4XX_FLASH_CONFIG_CBS_LD;
             break;
@@ -251,81 +263,76 @@ void CDialogConfiguration_NUC4xx::GUIToConfig(int nEventID)
             uConfig0 |= (m_ConfigValue.m_value[0] & NUC4XX_FLASH_CONFIG_CBS2);
     }
 
-    if (m_nRadioGPG == 0) {
+    if (m_nRadioGPG == 0)
         uConfig0 &= ~NUC4XX_FLASH_CONFIG_CGPFMFP;
-    } else {
+    else
         uConfig0 |= NUC4XX_FLASH_CONFIG_CGPFMFP;
-    }
 
-    if (m_nRadioGPG32K == 0) {
+    if (m_nRadioGPG32K == 0)
         uConfig0 &= ~NUC4XX_FLASH_CONFIG_CFG32K;
-    } else {
+    else
         uConfig0 |= NUC4XX_FLASH_CONFIG_CFG32K;
-    }
 
-    if (m_nRadioRMIIEnable == 0) {
+    if (m_nRadioRMIIEnable == 0)
         uConfig0 &= ~NUC4XX_FLASH_CONFIG_RMII;
-    } else {
+    else
         uConfig0 |= NUC4XX_FLASH_CONFIG_RMII;
-    }
 
-    if (m_nRadioIO == 0) {
+    if (m_nRadioIO == 0)
         uConfig0 |= NUC4XX_FLASH_CONFIG_CIOINI;
-    } else {
+    else
         uConfig0 &= ~NUC4XX_FLASH_CONFIG_CIOINI;
-    }
 
-    if (m_bWDTPowerDown) {
+    if (m_bWDTPowerDown)
         uConfig0 &= ~NUC4XX_FLASH_CONFIG_CWDTPDEN;
-    } else {
+    else
         uConfig0 |= NUC4XX_FLASH_CONFIG_CWDTPDEN;
-    }
 
-    if (m_bWDTEnable) {
+    if (m_bWDTEnable)
         uConfig0 &= ~NUC4XX_FLASH_CONFIG_CWDTEN;
-    } else {
+    else
         uConfig0 |= NUC4XX_FLASH_CONFIG_CWDTEN;
-    }
 
-    if (nEventID == IDC_CHECK_WDT_POWER_DOWN) {
-        if (m_bWDTPowerDown) {
+    if (nEventID == IDC_CHECK_WDT_POWER_DOWN)
+    {
+        if (m_bWDTPowerDown)
             uConfig0 &= ~NUC4XX_FLASH_CONFIG_CWDTEN;
-        }
-    } else {
-        if (!m_bWDTEnable) {
+    }
+    else
+    {
+        if (!m_bWDTEnable)
             uConfig0 |= NUC4XX_FLASH_CONFIG_CWDTPDEN;
-        }
     }
 
-    if (m_bCheckBrownOutDetect) {
+    if (m_bCheckBrownOutDetect)
         uConfig0 &= ~NUC4XX_FLASH_CONFIG_CBODEN;
-    } else {
+    else
         uConfig0 |= NUC4XX_FLASH_CONFIG_CBODEN;
-    }
 
-    if (m_bCheckBrownOutReset) {
+    if (m_bCheckBrownOutReset)
         uConfig0 &= ~NUC4XX_FLASH_CONFIG_CBORST;
-    } else {
+    else
         uConfig0 |= NUC4XX_FLASH_CONFIG_CBORST;
-    }
 
-    if (m_bDataFlashEnable) {
-        uConfig0 &= ~NUMICRO_FLASH_CONFIG_DFEN;
-    } else {
-        uConfig0 |= NUMICRO_FLASH_CONFIG_DFEN;
+    if (m_bDataFlashEnable)
+        uConfig0 &= ~NUC4XX_FLASH_CONFIG_DFEN;
+    else
+    {
+        uConfig0 |= NUC4XX_FLASH_CONFIG_DFEN;
         m_sFlashBaseAddress = "FFFFFFFF";
     }
 
-    if (m_bSecurityLock) {
-        uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
-    } else {
-        uConfig0 |= NUMICRO_FLASH_CONFIG_LOCK;
-    }
+    if (m_bSecurityLock)
+        uConfig0 &= ~NUC4XX_FLASH_CONFIG_LOCK;
+    else
+        uConfig0 |= NUC4XX_FLASH_CONFIG_LOCK;
 
     m_ConfigValue.m_value[0] = uConfig0;
+
     TCHAR *pEnd;
     uConfig1 = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
     m_ConfigValue.m_value[1] = uConfig1;// | 0xFFF00000;
+
     au32Config[0] = m_ConfigValue.m_value[0];
     au32Config[1] = m_ConfigValue.m_value[1];
     au32Config[2] = m_ConfigValue.m_value[2];
@@ -334,10 +341,12 @@ void CDialogConfiguration_NUC4xx::GUIToConfig(int nEventID)
 void CDialogConfiguration_NUC4xx::OnGUIEvent(int nEventID)
 {
     UpdateData(TRUE);
+
     GUIToConfig(nEventID);
     au32Config[3] = FMC_CRC8(au32Config, 3);
     m_ConfigValue.m_value[3] = au32Config[3];
     ConfigToGUI(nEventID);
+
     UpdateData(FALSE);
 }
 
@@ -360,11 +369,26 @@ void CDialogConfiguration_NUC4xx::OnKillfocusEditFlashBaseAddress()
 void CDialogConfiguration_NUC4xx::OnOK()
 {
     UpdateData(TRUE);
+
     OnKillfocusEditFlashBaseAddress();
     GUIToConfig(0);
     au32Config[3] = FMC_CRC8(au32Config, 3);
     m_ConfigValue.m_value[3] = au32Config[3];
+
     CDialog::OnOK();
+}
+
+CString CDialogConfiguration_NUC4xx::GetConfigWarning(const CAppConfig::NUC4xx_configs_t &config)
+{
+    CString str;
+    unsigned int uConfig0 = config.m_value[0];
+
+    BOOL bSecurityLock = ((uConfig0 & NUC4XX_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+
+    if (!bSecurityLock)
+        str += _T("   ") + _I(IDS_DISABLE_SECURITY_LOCK);
+
+    return str;
 }
 
 unsigned int CDialogConfiguration_NUC4xx::FMC_CRC8(unsigned int au32Data[], unsigned int i32Count)
@@ -373,21 +397,24 @@ unsigned int CDialogConfiguration_NUC4xx::FMC_CRC8(unsigned int au32Data[], unsi
     unsigned char     i, u8Cnt, u8InData;
     unsigned char    au8CRC[4] = { 0xff, 0xff, 0xff, 0xff };
 
-    for (i32ByteIdx = 0; i32ByteIdx < 4; i32ByteIdx++) {
-        for (u8Cnt = 0; u8Cnt < i32Count; u8Cnt++) {
-            for (i = 0x80; i != 0; i /= 2) {
-                if ((au8CRC[i32ByteIdx] & 0x80) != 0) {
+    for (i32ByteIdx = 0; i32ByteIdx < 4; i32ByteIdx++)
+    {
+        for (u8Cnt = 0; u8Cnt < i32Count; u8Cnt++)
+        {
+            for (i = 0x80; i != 0; i /= 2)
+            {
+                if ((au8CRC[i32ByteIdx] & 0x80) != 0)
+                {
                     au8CRC[i32ByteIdx] *= 2;
                     au8CRC[i32ByteIdx] ^= 7;
-                } else {
-                    au8CRC[i32ByteIdx] *= 2;
                 }
+                else
+                    au8CRC[i32ByteIdx] *= 2;
 
                 u8InData = (au32Data[u8Cnt] >> (i32ByteIdx * 8)) & 0xff;
 
-                if ((u8InData & i) != 0) {
+                if ((u8InData & i) != 0)
                     au8CRC[i32ByteIdx] ^= 0x7;
-                }
             }
         }
     }
@@ -401,11 +428,10 @@ void CDialogConfiguration_NUC4xx::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRE
     CDialogResize::OnDeltaposSpinDataFlashSize(pNMHDR, pResult, m_bDataFlashEnable, m_uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_2K);
 }
 
-void CDialogConfiguration_NUC4xx::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
+void CDialogConfiguration_NUC4xx::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
-    if (pScrollBar != NULL && pScrollBar->GetDlgCtrlID() == m_SpinDataFlashSize.GetDlgCtrlID()) {
+    if (pScrollBar != NULL && pScrollBar->GetDlgCtrlID() == m_SpinDataFlashSize.GetDlgCtrlID())
         return;
-    }
 
     CDialogResize::OnVScroll(nSBCode, nPos, pScrollBar);
 }

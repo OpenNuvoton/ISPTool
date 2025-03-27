@@ -11,10 +11,13 @@ public:
     virtual ~CAppConfig();
 
     /* Global configurations */
-    struct configs_t {
+    struct configs_t
+    {
         unsigned int m_value[14];
     };
 
+#define I96000_configs_t configs_t
+#define N572_configs_t configs_t
 #define NUC1xx_configs_t configs_t
 #define M451_configs_t configs_t
 #define M05x_configs_t configs_t

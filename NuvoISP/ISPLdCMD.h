@@ -25,23 +25,23 @@ class CUartIO;
 class ISPLdCMD
 {
 protected:
-    CHAR	m_acBuffer[HID_MAX_PACKET_SIZE_EP + 1];
+    CHAR    m_acBuffer[HID_MAX_PACKET_SIZE_EP + 1];
     unsigned long m_uCmdIndex;
-    USHORT	m_usCheckSum;
+    USHORT  m_usCheckSum;
 
     // Interface
-    ULONG			m_uInterface;
-    ULONG			m_uUSB_PID;		// for compatibility
-    CString			m_strComNum;
-    CString			m_strIPAddress;
-    CString			m_strIPPort;
-    CString			m_strBDName;
-    CString			m_strDevPathName;
-    CHidIO2			m_hidIO;
-    CUartIO			m_comIO;
-    CTRSP			m_trsp;
-    BOOL			m_bOpenPort;
-    CMutex2			m_Mutex;
+    ULONG           m_uInterface;
+    ULONG           m_uUSB_PID;     // for compatibility
+    CString         m_strComNum;
+    CString         m_strIPAddress;
+    CString         m_strIPPort;
+    CString         m_strBDName;
+    CString         m_strDevPathName;
+    CHidIO2         m_hidIO;
+    CUartIO         m_comIO;
+    CTRSP           m_trsp;
+    BOOL            m_bOpenPort;
+    CMutex2         m_Mutex;
 
 
     BOOL ReadFile(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, BOOL bCheckIndex = TRUE);
@@ -58,7 +58,7 @@ public:
     BOOL bSupport_NVM;
     BOOL bSpec_addr;
 
-    BOOL bResendFlag;	// This flag is set by ReadFile
+    BOOL bResendFlag;   // This flag is set by ReadFile
     ISPLdCMD();
     virtual ~ISPLdCMD();
 
@@ -72,25 +72,27 @@ public:
         int i;
         unsigned short c;
 
-        for (c = 0, i = 0; i < len; i++) {
+        for (c = 0, i = 0; i < len; i++)
+        {
             c += buf[i];
         }
 
         return (c);
     }
 
-    enum {
+    enum
+    {
         CMD_GET_VERSION     = 0x000000A6,
-        CMD_UPDATE_APROM	= 0x000000A0,
-        CMD_SYNC_PACKNO		= 0x000000A4,
+        CMD_UPDATE_APROM    = 0x000000A0,
+        CMD_SYNC_PACKNO     = 0x000000A4,
         CMD_UPDATE_CONFIG   = 0x000000A1,
-        CMD_ERASE_ALL 	    = 0x000000A3,
+        CMD_ERASE_ALL       = 0x000000A3,
         CMD_READ_CONFIG     = 0x000000A2,
         CMD_GET_DEVICEID    = 0x000000B1,
-        CMD_RUN_APROM		= 0x000000AB,
-        CMD_RUN_LDROM		= 0x000000AC,
-        CMD_RESET			= 0x000000AD,
-        CMD_CONNECT			= 0x000000AE,
+        CMD_RUN_APROM       = 0x000000AB,
+        CMD_RUN_LDROM       = 0x000000AC,
+        CMD_RESET           = 0x000000AD,
+        CMD_CONNECT         = 0x000000AE,
         CMD_UPDATE_DATAFLASH = 0x000000C3,
         CMD_RESEND_PACKET   = 0x000000FF,
         CMD_ERASE_SPIFLASH  = 0x000000D0,
@@ -99,7 +101,8 @@ public:
 
     // For Code size consideration, CAN only implements some basic isp commands.
     // Need to return any constant in tool side to pass the flow.
-    enum {
+    enum
+    {
         CAN_CMD_READ_CONFIG = 0xA2000000,
         CAN_CMD_RUN_APROM = 0xAB000000,
         CAN_CMD_GET_DEVICEID = 0xB1000000,
@@ -168,7 +171,7 @@ class ISPLdCMDTest : public ISPLdCMD
 public:
     std::vector<unsigned int> m_test_chips;
 
-    BOOL bResendFlag;	// This flag is set by ReadFile
+    BOOL bResendFlag;   // This flag is set by ReadFile
 
     ISPLdCMDTest()
     {
@@ -216,7 +219,8 @@ public:
         unsigned int id = m_test_chips[i];
         i++;
 
-        if (i == m_test_chips.size()) {
+        if (i == m_test_chips.size())
+        {
             i = 0;
         }
 
@@ -270,6 +274,7 @@ public:
 
     CString m_strDevPathName;
 };
+
 #endif // #ifdef _DEBUG
 
 #endif

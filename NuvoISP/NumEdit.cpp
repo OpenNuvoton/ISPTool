@@ -5,9 +5,9 @@
 #include "NumEdit.h"
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+    #define new DEBUG_NEW
+    #undef THIS_FILE
+    static char THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
@@ -36,20 +36,27 @@ END_MESSAGE_MAP()
 
 static bool is_digit(int nChar, int nRadix)
 {
-    if (nRadix <= 10) {	/* 0 - 9 */
-        if (nChar >= '0' && nChar < '0' + nRadix) {
+    if (nRadix <= 10)   /* 0 - 9 */
+    {
+        if (nChar >= '0' && nChar < '0' + nRadix)
+        {
             return true;
         }
-    } else if (nRadix <= 36) {	/* 0 - 9,  A - Z */
-        if (nChar >= '0' && nChar <= '9') {
+    }
+    else if (nRadix <= 36)      /* 0 - 9,  A - Z */
+    {
+        if (nChar >= '0' && nChar <= '9')
+        {
             return true;
         }
 
-        if (nChar >= 'a' && nChar < 'a' + nRadix - 10) {
+        if (nChar >= 'a' && nChar < 'a' + nRadix - 10)
+        {
             return true;
         }
 
-        if (nChar >= 'A' && nChar < 'A' + nRadix - 10) {
+        if (nChar >= 'A' && nChar < 'A' + nRadix - 10)
+        {
             return true;
         }
     }
@@ -65,17 +72,21 @@ void UpdateCaret(CNumEdit *pEdit, BOOL bInsert)
     CFont *pOldFont = pDC->SelectObject(pFont);
     CSize sizeChar = pDC->GetTextExtent(_T("0"));
 
-    if (bInsert) {
+    if (bInsert)
+    {
         // Insert mode, vertical line caret
         sizeChar.cx = 0;
-    } else {
+    }
+    else
+    {
         // Checks whether caret is at the end of current line
         int nLineIndex = pEdit->LineIndex();
         int nLineLength = pEdit->LineLength();
         int nStart, nEnd;
         pEdit->GetSel(nStart, nEnd);
 
-        if (nStart == nEnd && nStart != nLineIndex + nLineLength) {
+        if (nStart == nEnd && nStart != nLineIndex + nLineLength)
+        {
             // No text selected & caret is not at end of line
             // So, gets next character
             TCHAR *strLine = new TCHAR[nLineLength + 1];
@@ -106,11 +117,13 @@ void CNumEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
     //printf("ON CHAR %d\n", nChar);
     // TODO: Add your message handler code here and/or call default
-    if (::isgraph(nChar) && !is_digit(nChar, m_nRadix)) {
+    if (::isgraph(nChar) && !is_digit(nChar, m_nRadix))
+    {
         return;
     }
 
-    if (this->GetStyle() & ES_READONLY) {
+    if (this->GetStyle() & ES_READONLY)
+    {
         return;
     }
 
@@ -121,7 +134,8 @@ void CNumEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
     this->SetRedraw(FALSE);
 
     /* Remove next char */
-    if (m_bInsertMode == false && nChar >= ' ' && nChar <= 0xFF) {
+    if (m_bInsertMode == false && nChar >= ' ' && nChar <= 0xFF)
+    {
         //GetSel(nStartChar, nEndChar);
         SetSel(nStartChar, nStartChar + 1);
         ReplaceSel(_T(""));
@@ -132,8 +146,10 @@ void CNumEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
     GetWindowText(str);
     int i;
 
-    for (i = 0; i < str.GetLength(); ++i) {
-        if (!is_digit(str.GetAt(i), m_nRadix)) {
+    for (i = 0; i < str.GetLength(); ++i)
+    {
+        if (!is_digit(str.GetAt(i), m_nRadix))
+        {
             break;
         }
     }
@@ -141,18 +157,24 @@ void CNumEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
     this->SetRedraw(TRUE);
 
     /* Change to lower case or upper case */
-    if (m_bUseLowerCase != false) {
+    if (m_bUseLowerCase != false)
+    {
         str.MakeLower();
-    } else {
+    }
+    else
+    {
         str.MakeUpper();
     }
 
     /* Check if it's valid */
-    if (str.GetLength() > m_nMaxLength || i < str.GetLength()) {
+    if (str.GetLength() > m_nMaxLength || i < str.GetLength())
+    {
         /* Restore backup str */
         SetWindowText(str_bak);
         SetSel(nStartChar, nEndChar);
-    } else {
+    }
+    else
+    {
         GetSel(nStartChar, nEndChar);
         SetWindowText(str);
         SetSel(nStartChar, nEndChar);
@@ -174,9 +196,11 @@ void CNumEdit::SetInsertMode(bool bInsertMode)
 LRESULT CNumEdit::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
     // TODO: Add your specialized code here and/or call the base class
-    switch (message) {
+    switch (message)
+    {
         case (WM_KEYUP):
-            if (wParam == VK_INSERT) {
+            if (wParam == VK_INSERT)
+            {
                 SetInsertMode(!m_bInsertMode);
             }
 
@@ -186,7 +210,8 @@ LRESULT CNumEdit::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
         case (WM_LBUTTONUP):
         case (WM_SETFOCUS):
         case (WM_CHAR):
-            if (m_bInsertMode == false) {
+            if (m_bInsertMode == false)
+            {
                 UpdateCaret(this, false);
                 break;
             }

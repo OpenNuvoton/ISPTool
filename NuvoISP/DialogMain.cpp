@@ -5,9 +5,8 @@
 #include "DialogMain.h"
 #include "resource.h"
 #include <cstring>
-
-#include "NuDataBase.h"
 #include "ISPLdCmd.h"
+#include "NuDataBase.h"
 
 IMPLEMENT_DYNAMIC(CDialogMain, CDialog)
 
@@ -54,32 +53,47 @@ void CDialogMain::OnSize(UINT nType, int cx, int cy)
     m_nScrollPosY = 0;
     GetWindowRect(rect);
 
-    if (!m_bIsInitialized) {
+    if (!m_bIsInitialized)
+    {
         nScrollMaxY = 0;
         nScrollMaxX = 0;
-    } else {
-        if (rect.Height() < m_rect.Height()) {
+    }
+    else
+    {
+        if (rect.Height() < m_rect.Height())
+        {
             nScrollMaxY = m_rect.Height() - rect.Height() + m_ScrollBarWidth;
-        } else {
+        }
+        else
+        {
             nScrollMaxY = 0;
         }
 
-        if (rect.Width() < m_rect.Width()) {
+        if (rect.Width() < m_rect.Width())
+        {
             nScrollMaxX = m_rect.Width() - rect.Width() + m_ScrollBarWidth;
-        } else {
+        }
+        else
+        {
             nScrollMaxX = 0;
         }
 
-        if (nScrollMaxY != 0 && nScrollMaxX == 0) {
+        if (nScrollMaxY != 0 && nScrollMaxX == 0)
+        {
             nScrollMaxX = 10;
-        } else if (nScrollMaxY == 0 && nScrollMaxX != 0) {
+        }
+        else if (nScrollMaxY == 0 && nScrollMaxX != 0)
+        {
             nScrollMaxY = 10;
         }
     }
 
-    if (nScrollMaxX == 0 || nScrollMaxY == 0) {
+    if (nScrollMaxX == 0 || nScrollMaxY == 0)
+    {
         m_bShowScrollBar = false;
-    } else {
+    }
+    else
+    {
         m_bShowScrollBar = true;
     }
 
@@ -110,35 +124,41 @@ void CDialogMain::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
     int nMaxPos = scrollinfo.nMax;
     int nDelta;
 
-    switch (nSBCode) {
+    switch (nSBCode)
+    {
         case SB_LINEDOWN:
-            if (m_nScrollPosY >= nMaxPos) {
+            if (m_nScrollPosY >= nMaxPos)
+            {
                 return;
             }
 
             nDelta = min(nMaxPos / 100, nMaxPos - m_nScrollPosY);
 
-            if (nMaxPos / 100 == 0) {
+            if (nMaxPos / 100 == 0)
+            {
                 nDelta = 1;
             }
 
             break;
 
         case SB_LINEUP:
-            if (m_nScrollPosY <= 0) {
+            if (m_nScrollPosY <= 0)
+            {
                 return;
             }
 
             nDelta = -min(nMaxPos / 100, m_nScrollPosY);
 
-            if (nMaxPos / 100 == 0) {
+            if (nMaxPos / 100 == 0)
+            {
                 nDelta = -1;
             }
 
             break;
 
         case SB_PAGEDOWN:
-            if (m_nScrollPosY >= nMaxPos) {
+            if (m_nScrollPosY >= nMaxPos)
+            {
                 return;
             }
 
@@ -150,7 +170,8 @@ void CDialogMain::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
             break;
 
         case SB_PAGEUP:
-            if (m_nScrollPosY <= 0) {
+            if (m_nScrollPosY <= 0)
+            {
                 return;
             }
 
@@ -175,35 +196,41 @@ void CDialogMain::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
     int nMaxPos = scrollinfo.nMax;
     int nDelta;
 
-    switch (nSBCode) {
+    switch (nSBCode)
+    {
         case SB_LINERIGHT:
-            if (m_nScrollPosX >= nMaxPos) {
+            if (m_nScrollPosX >= nMaxPos)
+            {
                 return;
             }
 
             nDelta = min(nMaxPos / 100, nMaxPos - m_nScrollPosX);
 
-            if (nMaxPos / 100 == 0) {
+            if (nMaxPos / 100 == 0)
+            {
                 nDelta = 1;
             }
 
             break;
 
         case SB_LINELEFT:
-            if (m_nScrollPosX <= 0) {
+            if (m_nScrollPosX <= 0)
+            {
                 return;
             }
 
             nDelta = -min(nMaxPos / 100, m_nScrollPosX);
 
-            if (nMaxPos / 100 == 0) {
+            if (nMaxPos / 100 == 0)
+            {
                 nDelta = -1;
             }
 
             break;
 
         case SB_PAGERIGHT:
-            if (m_nScrollPosX >= nMaxPos) {
+            if (m_nScrollPosX >= nMaxPos)
+            {
                 return;
             }
 
@@ -215,7 +242,8 @@ void CDialogMain::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
             break;
 
         case SB_PAGELEFT:
-            if (m_nScrollPosX <= 0) {
+            if (m_nScrollPosX <= 0)
+            {
                 return;
             }
 
@@ -236,32 +264,40 @@ void CDialogMain::OnGetMinMaxInfo(MINMAXINFO *lpMMI)
 {
     CDialog::OnGetMinMaxInfo(lpMMI);
 
-    if (m_bIsInitialized) {
+    if (m_bIsInitialized)
+    {
         lpMMI->ptMaxTrackSize.x = m_rect.Width();
         lpMMI->ptMaxTrackSize.y = m_rect.Height();
         lpMMI->ptMinTrackSize.x = 310;
         lpMMI->ptMinTrackSize.y = 310;
     }
 }
+
 BOOL CDialogMain::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
     CDialog::OnMouseWheel(nFlags, zDelta, pt);
 
-    if (m_bShowScrollBar) {
+    if (m_bShowScrollBar)
+    {
         SCROLLINFO scrollinfo;
         GetScrollInfo(SB_VERT, &scrollinfo);
         int nMaxPos = scrollinfo.nMax;
         int nScrollPos = scrollinfo.nPos;
         int nDelta;
 
-        if (zDelta < 0) {
-            if (m_nScrollPosY >= nMaxPos) {
+        if (zDelta < 0)
+        {
+            if (m_nScrollPosY >= nMaxPos)
+            {
                 return 0;
             }
 
             nDelta = min(nMaxPos / 10, nMaxPos - m_nScrollPosY);
-        } else {
-            if (m_nScrollPosY <= 0) {
+        }
+        else
+        {
+            if (m_nScrollPosY <= 0)
+            {
                 return 0;
             }
 
@@ -280,7 +316,8 @@ void CDialogMain::ShowDlgItem(int nID, int nCmdShow)
 {
     CWnd *pWnd = GetDlgItem(nID);
 
-    if (pWnd != NULL) {
+    if (pWnd != NULL)
+    {
         pWnd->ShowWindow(nCmdShow);
     }
 }
@@ -289,7 +326,8 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 {
     CWnd *pWnd = GetDlgItem(nID);
 
-    if (pWnd != NULL) {
+    if (pWnd != NULL)
+    {
         pWnd->EnableWindow(bEnable);
     }
 }
@@ -312,15 +350,20 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 #include "DialogConfiguration_M0564.h"
 #include "DialogConfiguration_OT8051.h"
 #include "DialogConfiguration_M480.h"
-#include "DialogConfiguration_M2003.h"
 #include "DialogConfiguration_I94000.h"
+#include "DialogConfiguration_I96000.h"
 #include "DialogConfiguration_AU9100.h"
 #include "DialogConfiguration_N570.h"
+#include "DialogConfiguration_N572.h"
+#include "DialogConfiguration_N572F064.h"
+#include "DialogConfiguration_N572F072.h"
+#include "DialogConfiguration_N574.h"
 #include "DialogChipSetting_M251.h"
 //
 #include "DialogChipSetting_NuMicro.h"
 #include "DialogChipSetting_M480LD.h"
 #include "DialogChipSetting_M2351.h"
+#include "DialogChipSetting_M2354.h"
 #include "DialogChipSetting_M460.h"
 #include "DialogChipSetting_M2L31.h"
 #include "DialogChipSetting_M55M1.h"
@@ -337,7 +380,8 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
     unsigned int uID = 0;
     unsigned int uPage_Size = NUMICRO_FLASH_PAGE_SIZE_512;
 
-    if (uSeriesCode == 0) {
+    if (uSeriesCode == 0)
+    {
         // uSeriesCode = 0; online mode (load chip info. from gsChipCfgInfo)
         uSeriesCode = gsChipCfgInfo.uSeriesCode;
         bIsDataFlashFixed = gsChipCfgInfo.uDataFlashSize;
@@ -348,97 +392,131 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
         uPage_Size = 1 << (((gsChipCfgInfo.uFlashType & 0x0000FF00) >>  8) + 9);
     }
 
-    if (1) {
-        switch (uSeriesCode) {
-            case IDD_DIALOG_CONFIGURATION_NUC100:
-                if (uProgramMemorySize) {
+    if (1)
+    {
+        switch (uSeriesCode)
+        {
+            case PROJ_NUC100AN:
+            case PROJ_NUC100CN:
+                if (uProgramMemorySize)
+                {
                     pConfigDlg = new CDialogConfiguration_NUC1xx(bIsDataFlashFixed, uProgramMemorySize, uDataFlashSize);    // "NUC100BN";
-                } else {
+                }
+                else
+                {
                     pConfigDlg = new CDialogConfiguration_NUC1xx;    // "NUC100BN";
                 }
 
                 Config = (((CDialogConfiguration_NUC1xx *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_NUC102:
+            case PROJ_NUC122AN:
+            case PROJ_NUC122DN:
                 pConfigDlg = new CDialogConfiguration_NUC102;
                 Config = (((CDialogConfiguration_NUC102 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_NUC103:
-                if (uProgramMemorySize) {
+            case PROJ_NUC123AN:
+                if (uProgramMemorySize)
+                {
                     pConfigDlg = new CDialogConfiguration_NUC123AN(uProgramMemorySize, uDataFlashSize);
-                } else {
+                }
+                else
+                {
                     pConfigDlg = new CDialogConfiguration_NUC123AN;
                 }
 
                 Config = (((CDialogConfiguration_NUC123AN *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_NUC103BN:
-                if (uProgramMemorySize) {
+            case PROJ_NUC123AE:
+                if (uProgramMemorySize)
+                {
                     pConfigDlg = new CDialogConfiguration_NUC123AE(uProgramMemorySize, uDataFlashSize);
-                } else {
+                }
+                else
+                {
                     pConfigDlg = new CDialogConfiguration_NUC123AE;
                 }
 
                 Config = (((CDialogConfiguration_NUC123AE *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_NUC200:
-                if (uProgramMemorySize) {
+            case PROJ_NUC100DN:
+            case PROJ_NUC200AE:
+            case PROJ_NUC2201:
+                if (uProgramMemorySize)
+                {
                     pConfigDlg = new CDialogConfiguration_NUC2xx(bIsDataFlashFixed, uProgramMemorySize, uDataFlashSize);
-                } else {
+                }
+                else
+                {
                     pConfigDlg = new CDialogConfiguration_NUC2xx;
                 }
 
                 Config = (((CDialogConfiguration_NUC2xx *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_NUC131:
-                if (uProgramMemorySize) {
+            case PROJ_NUC1311:
+            case PROJ_M0518:
+                if (uProgramMemorySize)
+                {
                     pConfigDlg = new CDialogConfiguration_NUC131(uProgramMemorySize, uDataFlashSize);
-                } else {
+                }
+                else
+                {
                     pConfigDlg = new CDialogConfiguration_NUC131;
                 }
 
                 Config = (((CDialogConfiguration_NUC131 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_NANO100:
-                if (uProgramMemorySize) {
+            case PROJ_NANO100AN:
+                if (uProgramMemorySize)
+                {
                     pConfigDlg = new CDialogConfiguration_Nano100AN(uProgramMemorySize);
-                } else {
+                }
+                else
+                {
                     pConfigDlg = new CDialogConfiguration_Nano100AN;
                 }
 
                 Config = (((CDialogConfiguration_Nano100AN *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_NANO100BN:
-                if (uProgramMemorySize) {
+            case PROJ_NANO100BN:
+                if (uProgramMemorySize)
+                {
                     pConfigDlg = new CDialogConfiguration_Nano100(uProgramMemorySize);
-                } else {
+                }
+                else
+                {
                     pConfigDlg = new CDialogConfiguration_Nano100;
                 }
 
                 Config = (((CDialogConfiguration_Nano100 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_NANO112:
-                if (uProgramMemorySize) {
+            case PROJ_NANO102AN:
+                if (uProgramMemorySize)
+                {
                     pConfigDlg = new CDialogConfiguration_Nano112(uProgramMemorySize);
-                } else {
+                }
+                else
+                {
                     pConfigDlg = new CDialogConfiguration_Nano112;
                 }
 
                 Config = (((CDialogConfiguration_Nano112 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_NANO103:
-                if (uProgramMemorySize) {
+            case PROJ_NANO103:
+                if (uProgramMemorySize)
+                {
                     pConfigDlg = new CDialogConfiguration_Nano103(uProgramMemorySize);
-                } else {
+                }
+                else
+                {
                     pConfigDlg = new CDialogConfiguration_Nano103;
                 }
 
@@ -446,98 +524,123 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 break;
 
             // M051AN, M051BN
-            case IDD_DIALOG_CONFIGURATION_M051:
+            case PROJ_M051AN:
                 pConfigDlg = new CDialogConfiguration_M05XAN();
                 Config = (((CDialogConfiguration_M05XAN *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_M051BN:
+            case PROJ_M051BN:
                 pConfigDlg = new CDialogConfiguration_M05XBN();
                 Config = (((CDialogConfiguration_M05XBN *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
             // M051DN, M051DE, M058SAN
-            case IDD_DIALOG_CONFIGURATION_M051CN:
+            case PROJ_M051DN:
+            case PROJ_M051DE:
                 pConfigDlg = new CDialogConfiguration_M05XDN;
                 Config = (((CDialogConfiguration_M05XDN *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_M058:
+            case PROJ_M058SAN:
                 pConfigDlg = new CDialogConfiguration_M058SAN;
                 Config = (((CDialogConfiguration_M058SAN *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_MINI51:
-                if (uProgramMemorySize) {
+            case PROJ_MINI51AN:
+                if (uProgramMemorySize)
+                {
                     pConfigDlg = new CDialogConfiguration_Mini51(uProgramMemorySize);
-                } else {
+                }
+                else
+                {
                     pConfigDlg = new CDialogConfiguration_Mini51;
                 }
 
                 Config = (((CDialogConfiguration_Mini51 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_MINI51CN:
-                if (uProgramMemorySize) {
+            case PROJ_MINI51DE:
+            case PROJ_MINI58:
+                if (uProgramMemorySize)
+                {
                     pConfigDlg = new CDialogConfiguration_Mini51CN(uProgramMemorySize, uID);
-                } else if ((uID & 0xFFFFFF00) == 0x00A05800) {
+                }
+                else if ((uID & 0xFFFFFF00) == 0x00A05800)
+                {
                     pConfigDlg = new CDialogConfiguration_Mini51CN(32 * 1024, uID);
-                } else {
+                }
+                else
+                {
                     pConfigDlg = new CDialogConfiguration_Mini51CN;
                 }
 
                 Config = (((CDialogConfiguration_Mini51CN *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_NM1200:
-                if (uProgramMemorySize) {
+            case PROJ_MINI55:
+                if (uProgramMemorySize)
+                {
                     pConfigDlg = new CDialogConfiguration_NM1200(uProgramMemorySize);
-                } else {
+                }
+                else
+                {
                     pConfigDlg = new CDialogConfiguration_NM1200;
                 }
 
                 Config = (((CDialogConfiguration_NM1200 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_MT500:
-                if (uProgramMemorySize) {
+            case PROJ_NM1500AE:
+                if (uProgramMemorySize)
+                {
                     pConfigDlg = new CDialogConfiguration_MT500(bIsDataFlashFixed, uProgramMemorySize, uDataFlashSize);
-                } else {
+                }
+                else
+                {
                     pConfigDlg = new CDialogConfiguration_MT500;
                 }
 
                 Config = (((CDialogConfiguration_MT500 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_NUC400:
-                if (uProgramMemorySize) {
+            case PROJ_NUC400AE:
+                if (uProgramMemorySize)
+                {
                     pConfigDlg = new CDialogConfiguration_NUC4xx(uProgramMemorySize);
-                } else {
+                }
+                else
+                {
                     pConfigDlg = new CDialogConfiguration_NUC4xx;
                 }
 
                 Config = (((CDialogConfiguration_NUC4xx *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_NM1120:
+            case PROJ_NM1120:
+            case PROJ_NM1230:
+            case PROJ_NM1240:
                 pConfigDlg = new CDialogConfiguration_NM1120;
                 Config = (((CDialogConfiguration_NM1120 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
             // case for NUC_CHIP_TYPE_GENERAL_1T offline test mode
             // test cases from g_80511TPartNumIDs in NuDataBase.cpp
-            case 0x00002150: // N76E885
-            case 0x00002F50: // N76E616
-            case 0x00003650: // N76E003
-            case 0x00104832: // ML51LC0XX
-            case 0x0B004B21: // MS51FB9AE
-            case 0x08125744: // ML56SD1AE
-            case 0x0C106321: // MUG51TB9AE
+            case PROJ_N76E885: // N76E885
+            case PROJ_N76E616: // N76E616
+            case PROJ_N76E003: // N76E003
+            case PROJ_ML51_32K:
+            case PROJ_ML51_16K:
+            case PROJ_MS51_32K:
+            case PROJ_MS51_16K:
+            case PROJ_MS51_8K:
+            case PROJ_ML56:
+            case PROJ_MUG51:
+            case PROJ_MG51:
+            case PROJ_MG51D:
+            {
                 uID = uSeriesCode;
-
-            case NUC_CHIP_TYPE_GENERAL_1T: {
                 pConfigDlg = new CDialogConfiguration_OT8051(uID);
-                unsigned char *pucConfigValue = (((CDialogConfiguration_OT8051 *)pConfigDlg)->m_ucConfigValue);
+                unsigned char *pucConfigValue = (((CDialogConfiguration_OT8051*)pConfigDlg)->m_ucConfigValue);
                 unsigned int Config0 = pConfig[0];
                 unsigned int Config1 = pConfig[1];
                 pucConfigValue[0] = (Config0 & 0x000000FF);
@@ -549,143 +652,162 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 pucConfigValue[6] = 0xFF;
                 pucConfigValue[7] = 0xFF;
 
-                if (pConfigDlg->DoModal() == IDOK) {
+                if (pConfigDlg->DoModal() == IDOK)
+                {
                     pConfig[0] = (pucConfigValue[3] << 24) + (pucConfigValue[2] << 16) + (pucConfigValue[1] << 8) + pucConfigValue[0];
                     pConfig[1] = 0xFFFFFF00 | pucConfigValue[4];
                     ret = true;
                 }
 
                 delete pConfigDlg;
-            }
 
-            return ret;
+                return ret;
+            }
             break;
 
-            case IDD_DIALOG_CONFIGURATION_M0564:	// M0564, NUC126
-                if (uProgramMemorySize) {
+            case PROJ_M0564:
+            case PROJ_NUC1261:
+                if (uProgramMemorySize)
+                {
                     pConfigDlg = new CDialogConfiguration_M0564(uProgramMemorySize);
-                } else {
+                }
+                else
+                {
                     pConfigDlg = new CDialogConfiguration_M0564();
                 }
 
                 Config = (((CDialogConfiguration_M0564 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case 0x00012100:	// NUC121, NUC125
-                if (uProgramMemorySize) {
+            case PROJ_NUC121:   // NUC121, NUC125
+                if (uProgramMemorySize)
+                {
                     pConfigDlg = new CDialogConfiguration_NUC121(uProgramMemorySize);
-                } else {
+                }
+                else
+                {
                     pConfigDlg = new CDialogConfiguration_NUC121();
                 }
 
                 Config = (((CDialogConfiguration_NUC121 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_NUC1262:
-                if (uProgramMemorySize) {
+            case PROJ_NUC1262:
+            case PROJ_NUC1263:
+                if (uProgramMemorySize)
+                {
                     pConfigDlg = new CDialogConfiguration_NUC1262(uProgramMemorySize);
-                } else {
+                }
+                else
+                {
                     pConfigDlg = new CDialogConfiguration_NUC1262();
                 }
 
                 Config = (((CDialogConfiguration_NUC1262 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_M480:
-                if (uProgramMemorySize) {
+            case PROJ_M480:
+                if (uProgramMemorySize)
+                {
                     pConfigDlg = new CDialogConfiguration_M480(uProgramMemorySize, uID);
-                } else {
+                }
+                else
+                {
                     pConfigDlg = new CDialogConfiguration_M480();
                 }
 
                 Config = (((CDialogConfiguration_M480 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_M480LD:
-                if (uProgramMemorySize) {
+            case PROJ_M480LD:
+                if (uProgramMemorySize)
+                {
                     pConfigDlg = new CDialogChipSetting_M480LD(uProgramMemorySize);
-                } else {
+                }
+                else
+                {
                     pConfigDlg = new CDialogChipSetting_M480LD();
                 }
 
                 Config = (((CDialogChipSetting_M480LD *)pConfigDlg)->m_uConfigValue);
                 break;
 
-            case NUC_CHIP_TYPE_M460:
-
-                //CDialogChipSetting_M460(unsigned int uProgramMemorySize, unsigned int uFlashPageSize, unsigned int uPID, unsigned int uDID, unsigned int uChipSeries, CWnd * pParent = NULL);	// standard constructor
-                if (uProgramMemorySize) {
-                    pConfigDlg = new CDialogChipSetting_M460(uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_4K, 0, 0, uSeriesCode);
-                } else {
-                    pConfigDlg = new CDialogChipSetting_M460(256 * 1024, NUMICRO_FLASH_PAGE_SIZE_4K, 0, 0, uSeriesCode);
-                }
+            case PROJ_M460HD:
+            case PROJ_M460LD:
+                pConfigDlg = new CDialogChipSetting_M460(uID, uID & 0xFFFF, uSeriesCode);
 
                 Config = (((CDialogChipSetting_M460 *)pConfigDlg)->m_uConfigValue);
                 break;
 
-            case NUC_CHIP_TYPE_M2351:
-            case NUC_CHIP_TYPE_M2354:
-                pConfigDlg = new CDialogChipSetting_M2351(uSeriesCode);
-                Config = (((CDialogChipSetting_M2351 *)pConfigDlg)->m_uConfigValue);
+            case PROJ_M2351:
+                pConfigDlg = new CDialogChipSetting_M2351(M2351_MAX_APROM_SIZE, NUMICRO_FLASH_PAGE_SIZE_2K, TRUE, TRUE, NUC_CHIP_TYPE_M2351);
+                Config = (((CDialogChipSetting_M2351*)pConfigDlg)->m_uConfigValue);
                 break;
-            case NUC_CHIP_TYPE_M2L31:
-                if (uProgramMemorySize){
-                    pConfigDlg = new CDialogChipSetting_M2L31(uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_4K, 0, 0, uSeriesCode);
-                } else {
-                    pConfigDlg = new CDialogChipSetting_M2L31(512 * 1024, NUMICRO_FLASH_PAGE_SIZE_4K, 0, 0, uSeriesCode);
-                }
+
+            case PROJ_M2354ES:
+            case PROJ_M2354:
+                pConfigDlg = new CDialogChipSetting_M2354(M2354_MAX_APROM_SIZE, NUMICRO_FLASH_PAGE_SIZE_2K, TRUE, NUC_CHIP_TYPE_M2354);
+                Config = (((CDialogChipSetting_M2354 *)pConfigDlg)->m_uConfigValue);
+                break;
+
+            case PROJ_M2L31_256K:
+            case PROJ_M2L31_512K:
+                pConfigDlg = new CDialogChipSetting_M2L31(uID, uID & 0xFFFF, uSeriesCode);
 
                 Config = (((CDialogChipSetting_M2L31*)pConfigDlg)->m_uConfigValue);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_M2A23:
-                if (uProgramMemorySize) {
-                    pConfigDlg = new CDialogChipSetting_M2A23(uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_4K, 0, 0, uSeriesCode);
+            case PROJ_M2A23:
+                if (uProgramMemorySize)
+                {
+                    pConfigDlg = new CDialogChipSetting_M2A23(uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_2K, uID, uID & 0xFFFF, uSeriesCode);
                 }
-                else {
-                    pConfigDlg = new CDialogChipSetting_M2A23(512 * 1024, NUMICRO_FLASH_PAGE_SIZE_4K, 0, 0, uSeriesCode);
+                else
+                {
+                    pConfigDlg = new CDialogChipSetting_M2A23(256 * 1024, NUMICRO_FLASH_PAGE_SIZE_2K, uID, uID & 0xFFFF, uSeriesCode);
                 }
 
                 Config = (((CDialogChipSetting_M2A23*)pConfigDlg)->m_uConfigValue);
                 break;
 
-            case NUC_CHIP_TYPE_M2003:
-                if (uProgramMemorySize) {
-                    pConfigDlg = new CDialogConfiguration_M2003(uProgramMemorySize, uID);
-                }
-                else {
-                    pConfigDlg = new CDialogConfiguration_M2003();
-                }
-
-                Config = (((CDialogConfiguration_M2003*)pConfigDlg)->m_ConfigValue.m_value);
+            case PROJ_M2003:
+                pConfigDlg = new CDialogChipSetting_NuMicro(uID, uID & 0xFFFF, IDS_M2003_SERIES);
+                Config = (((CDialogChipSetting_NuMicro*)pConfigDlg)->m_uConfigValue);
                 break;
 
-            case NUC_CHIP_TYPE_M55M1:
-                if (uProgramMemorySize) {
-                    pConfigDlg = new CDialogChipSetting_M55M1(uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_8K, 0, 0, uSeriesCode);
-                }
-                else {
-                    pConfigDlg = new CDialogChipSetting_M55M1(2048 * 1024, NUMICRO_FLASH_PAGE_SIZE_8K, 0, 0, uSeriesCode);
-                }
+            case PROJ_M55M1:
+                pConfigDlg = new CDialogChipSetting_M55M1(TRUE, uID, uID & 0xFFFF, uSeriesCode);
 
                 Config = (((CDialogChipSetting_M55M1*)pConfigDlg)->m_uConfigValue);
                 break;
 
             case ISD_94000_SERIES:
-            case IDD_DIALOG_CONFIGURATION_I94000:
-                if (uProgramMemorySize) {
+            case NPCx_SERIES:
+                if (uProgramMemorySize)
+                {
                     pConfigDlg = new CDialogConfiguration_I94000(uProgramMemorySize);
-                } else {
+                }
+                else
+                {
                     pConfigDlg = new CDialogConfiguration_I94000();
                 }
 
                 Config = (((CDialogConfiguration_I94000 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
+            case ISD_96000_SERIES:
+
+                pConfigDlg = new CDialogConfiguration_I96000();
+
+                Config = (((CDialogConfiguration_I96000*)pConfigDlg)->m_ConfigValue.m_value);
+
             case ISD_91200_SERIES:
-                if (uProgramMemorySize) {
+                if (uProgramMemorySize)
+                {
                     pConfigDlg = new CDialogConfiguration_I9200(uProgramMemorySize);
-                } else {
+                }
+                else
+                {
                     pConfigDlg = new CDialogConfiguration_I9200();
                 }
 
@@ -700,107 +822,119 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
             case NUVOICE_NSC74128_SERIES:
             case NUVOICE_NSC741K5_SERIES:
             case NUVOICE_NSC128L42_SERIES:
-                if (uProgramMemorySize) {
-                    pConfigDlg = new CDialogConfiguration_AU9100(uProgramMemorySize);
-                } else {
-                    pConfigDlg = new CDialogConfiguration_AU9100();
+            case NUVOICE_N576_SERIES:
+                if (uProgramMemorySize)
+                {
+                    pConfigDlg = new CDialogConfiguration_N574(uProgramMemorySize);
+                }
+                else
+                {
+                    pConfigDlg = new CDialogConfiguration_N574();
                 }
 
-                Config = (((CDialogConfiguration_AU9100 *)pConfigDlg)->m_ConfigValue.m_value);
+                Config = (((CDialogConfiguration_N574*)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CONFIGURATION_AU9100:
+            case NUVOICE_N569_SERIES:
+            case NUVOICE_N569J_SERIES:
                 pConfigDlg = new CDialogConfiguration_AU9100();
                 Config = (((CDialogConfiguration_AU9100 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
             case ISD_91000_SERIES:
-            case IDD_DIALOG_CONFIGURATION_N570:
-                if (uProgramMemorySize) {
+            case NUVOICE_N570_SERIES:
+            case NUVOICE_N570H_SERIES:
+            case NUVOICE_N570J_SERIES:
+                if (uProgramMemorySize)
+                {
                     pConfigDlg = new CDialogConfiguration_N570(uProgramMemorySize);
-                } else {
+                }
+                else
+                {
                     pConfigDlg = new CDialogConfiguration_N570();
                 }
 
                 Config = (((CDialogConfiguration_N570 *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
-            case IDD_DIALOG_CHIP_SETTING_CFG_M251:
-                if (uProgramMemorySize) {
+            case NUVOICE_N571_SERIES:
+                pConfigDlg = new CDialogConfiguration_N572();
+                Config = (((CDialogConfiguration_N572*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
+
+            case NUVOICE_N572F064_SERIES:
+                pConfigDlg = new CDialogConfiguration_N572F064();
+                Config = (((CDialogConfiguration_N572F064*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
+
+            case NUVOICE_N572F072_SERIES:
+                pConfigDlg = new CDialogConfiguration_N572F072();
+                Config = (((CDialogConfiguration_N572F072*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
+
+            case PROJ_M252_C:
+            case PROJ_M252_D:
+            case PROJ_M252_E:
+            case PROJ_M252_G:
+                if (uProgramMemorySize)
+                {
                     pConfigDlg = new CDialogChipSetting_M251(0, uProgramMemorySize);
-                } else {
+                }
+                else
+                {
                     pConfigDlg = new CDialogChipSetting_M251();
                 }
 
                 Config = (((CDialogChipSetting_M251 *)pConfigDlg)->m_uConfigOption_ConfigValue);
                 break;
 
-            case IDD_DIALOG_CHIP_SETTING_CFG_M258:
-                if (uProgramMemorySize) {
+            case PROJ_M258:
+            case PROJ_M253:
+            case PROJ_M256D:
+            case PROJ_M258G:
+                if (uProgramMemorySize)
+                {
                     pConfigDlg = new CDialogChipSetting_M251(1, uProgramMemorySize);
-                } else {
+                }
+                else
+                {
                     pConfigDlg = new CDialogChipSetting_M251(1);
                 }
 
                 Config = (((CDialogChipSetting_M251 *)pConfigDlg)->m_uConfigOption_ConfigValue);
                 break;
 
-            case NUC_CHIP_TYPE_M031:  // Page Size: 512
-            case NUC_CHIP_TYPE_M031G: // Page Size: 2048
-                if (uProgramMemorySize) {
-                    pConfigDlg = new CDialogChipSetting_NuMicro(uProgramMemorySize, uPage_Size, NUC_CHIP_TYPE_M031);
-                } else {
-                    if (uSeriesCode == NUC_CHIP_TYPE_M031) {
-                        uProgramMemorySize = 128 * 1024;
-                        uPage_Size = 512;
-                    } else {
-                        uProgramMemorySize = 512 * 1024;
-                        uPage_Size = 2048;
-                    }
-
-                    pConfigDlg = new CDialogChipSetting_NuMicro(uProgramMemorySize, uPage_Size, NUC_CHIP_TYPE_M031);
-                }
-
+            case PROJ_M031_128K:
+            case PROJ_M031_64K:
+            case PROJ_M031_32K:
+            case PROJ_M031_16K:
+            case PROJ_M032D:           // Page Size: 512
+            case PROJ_M031_512K:
+            case PROJ_M031_256K:       // Page Size: 2048
+                pConfigDlg = new CDialogChipSetting_NuMicro(uID, uID & 0xFFFF, IDS_M031_SERIES);
                 Config = (((CDialogChipSetting_NuMicro *)pConfigDlg)->m_uConfigValue);
                 break;
 
-            case NUC_CHIP_TYPE_M0A21:
-                if (uProgramMemorySize) {
-                    pConfigDlg = new CDialogChipSetting_NuMicro(uProgramMemorySize, uPage_Size, uSeriesCode);
-                } else {
-                    pConfigDlg = new CDialogChipSetting_NuMicro(16 * 1024, 512, uSeriesCode);
-                }
-
+            case PROJ_M0A21:
+                pConfigDlg = new CDialogChipSetting_NuMicro(uID, uID & 0xFFFF, IDS_M0A21_SERIES);
                 Config = (((CDialogChipSetting_NuMicro *)pConfigDlg)->m_uConfigValue);
                 break;
 
-            case NUC_CHIP_TYPE_M030G:
-                if (uProgramMemorySize) {
-                    pConfigDlg = new CDialogChipSetting_NuMicro(uProgramMemorySize, uPage_Size, uSeriesCode);
-                } else {
-                    pConfigDlg = new CDialogChipSetting_NuMicro(64 * 1024, 512, uSeriesCode);
-                }
-
+            case PROJ_M030G:
+            case PROJ_M031GPON:
+                pConfigDlg = new CDialogChipSetting_NuMicro(uID, uID & 0xFFFF, IDS_M030G_SERIES);
                 Config = (((CDialogChipSetting_NuMicro *)pConfigDlg)->m_uConfigValue);
                 break;
 
-            case NUC_CHIP_TYPE_M451: // M451, M4521
-                if (uProgramMemorySize) {
-                    pConfigDlg = new CDialogChipSetting_NuMicro(uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_2K, uSeriesCode);
-                } else {
-                    pConfigDlg = new CDialogChipSetting_NuMicro(256 * 1024, NUMICRO_FLASH_PAGE_SIZE_2K, uSeriesCode);
-                }
-
+            case PROJ_M451HD: // M451, M4521
+            case PROJ_M451LD:
+            case PROJ_M4521:
+                pConfigDlg = new CDialogChipSetting_NuMicro(uID, uID & 0xFFFF, IDS_M451_SERIES);
                 Config = (((CDialogChipSetting_NuMicro *)pConfigDlg)->m_uConfigValue);
                 break;
 
-            case NUC_CHIP_TYPE_M471:
-                if (uProgramMemorySize) {
-                    pConfigDlg = new CDialogChipSetting_NuMicro(uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_2K, uSeriesCode);
-                } else {
-                    pConfigDlg = new CDialogChipSetting_NuMicro(512 * 1024, NUMICRO_FLASH_PAGE_SIZE_2K, uSeriesCode);
-                }
-
+            case PROJ_M471:
+                pConfigDlg = new CDialogChipSetting_NuMicro(uID, uID & 0xFFFF, IDS_M471_SERIES);
                 Config = (((CDialogChipSetting_NuMicro *)pConfigDlg)->m_uConfigValue);
                 break;
 
@@ -810,11 +944,13 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
         }
     }
 
-    if (pConfigDlg != NULL) {
+    if (pConfigDlg != NULL)
+    {
         // Pass User Config to Configuration Dialog
         memcpy(Config, pConfig, size);
 
-        if (pConfigDlg->DoModal() == IDOK) {
+        if (pConfigDlg->DoModal() == IDOK)
+        {
             // Update User Config from Configuration Dialog
             memcpy(pConfig, Config, size);
             ret = true;
@@ -846,7 +982,8 @@ UINT CDialogMain::ScanPCCom()
     HKEY hKEY;
     LONG hResult = ::RegOpenKeyEx(HKEY_LOCAL_MACHINE, _T("HARDWARE\\DEVICEMAP\\SERIALCOMM"), 0, KEY_READ, &hKEY);
 
-    if (hResult != ERROR_SUCCESS) { //如果無法打開hKEY,則中止程式的執行
+    if (hResult != ERROR_SUCCESS)   //如果無法打開hKEY,則中止程式的執行
+    {
         //AfxMessageBox("錯誤：無法打開有關註冊表項");
         return  0 ;
     }
@@ -857,7 +994,8 @@ UINT CDialogMain::ScanPCCom()
     DWORD aa = 30, num = 0, a1, a2, a3, a4, a5, a6, a7;
     hResult = ::RegQueryInfoKey(hKEY, strInf, &a7, NULL, &a3, &a1, &a2, &num, &a4, &a5, &a6, NULL);
 
-    if (hResult != ERROR_SUCCESS) { //如果無法打開hKEY,則中止程式的執行
+    if (hResult != ERROR_SUCCESS)   //如果無法打開hKEY,則中止程式的執行
+    {
         //AfxMessageBox("錯誤：無法打開有關註冊表項");
         RegCloseKey(hKEY);
         return   0;
@@ -866,12 +1004,14 @@ UINT CDialogMain::ScanPCCom()
     BYTE portName[30];
     CString csr;
 
-    for (DWORD i = 0 ; i < num ; i++) {
+    for (DWORD i = 0 ; i < num ; i++)
+    {
         aa = 30 ;
         cbData_1 = 30;
         hResult = ::RegEnumValue(hKEY, i, strInf, &aa, NULL, &type_1, portName, &cbData_1);
 
-        if ((hResult != ERROR_SUCCESS) && (hResult != ERROR_MORE_DATA)) { //如果無法打開hKEY,則中止程式的執行
+        if ((hResult != ERROR_SUCCESS) && (hResult != ERROR_MORE_DATA))   //如果無法打開hKEY,則中止程式的執行
+        {
             //AfxMessageBox("錯誤：無法獲取有關註冊表項");
             continue;
         }
@@ -891,25 +1031,32 @@ void CDialogMain::InitComboBox(int iSupportNL2)
     m_Interfaces.clear();
     m_Interfaces.push_back(std::make_pair(_T("USB"), INTF_HID));
     m_Interfaces.push_back(std::make_pair(_T("UART"), INTF_UART));
+
     // Nu-Link2 ISP Bridge interfaces
-    if (iSupportNL2) {
+    if (iSupportNL2)
+    {
         m_Interfaces.push_back(std::make_pair(_T("SPI"), INTF_SPI));
         m_Interfaces.push_back(std::make_pair(_T("I2C"), INTF_I2C));
         m_Interfaces.push_back(std::make_pair(_T("RS485"), INTF_RS485));
         m_Interfaces.push_back(std::make_pair(_T("CAN"), INTF_CAN));
         m_Interfaces.push_back(std::make_pair(_T("LIN"), INTF_LIN));
     }
+
     m_Interfaces.push_back(std::make_pair(_T("Wi-Fi"), INTF_WIFI));
     m_Interfaces.push_back(std::make_pair(_T("BLE"), INTF_BLE));
 
     m_SelInterface.ResetContent();
-    for (size_t i = 0; i < m_Interfaces.size(); i++) {
+
+    for (size_t i = 0; i < m_Interfaces.size(); i++)
+    {
         m_SelInterface.AddString(m_Interfaces[i].first);
     }
+
     m_SelInterface.SetCurSel(0);
     OnSelchangeInterface();
 
-    if (ScanPCCom()) {
+    if (ScanPCCom())
+    {
         m_SelComPort.SetCurSel(0);
     }
 }
@@ -918,9 +1065,12 @@ void CDialogMain::OnSelchangeInterface()
 {
     m_SelComPort.EnableWindow(m_Interfaces[m_SelInterface.GetCurSel()].second == INTF_UART);
 
-    if (m_Interfaces[m_SelInterface.GetCurSel()].second != INTF_UART) {
+    if (m_Interfaces[m_SelInterface.GetCurSel()].second != INTF_UART)
+    {
         EnableDlgItem(IDC_BUTTON_CONNECT, true);
-    } else {
+    }
+    else
+    {
         OnComboChange();
     }
 
@@ -929,21 +1079,25 @@ void CDialogMain::OnSelchangeInterface()
     GetDlgItem(IDC_EDIT_IPPORT)->ShowWindow(SW_HIDE);
     GetDlgItem(IDC_EDIT_BDNAME)->ShowWindow(SW_HIDE);
 
-    if (m_Interfaces[m_SelInterface.GetCurSel()].second == INTF_WIFI) {
-       GetDlgItem(IDC_EDIT_IPADDRESS)->ShowWindow(SW_SHOW);
-       GetDlgItem(IDC_EDIT_IPPORT)->ShowWindow(SW_SHOW);
+    if (m_Interfaces[m_SelInterface.GetCurSel()].second == INTF_WIFI)
+    {
+        GetDlgItem(IDC_EDIT_IPADDRESS)->ShowWindow(SW_SHOW);
+        GetDlgItem(IDC_EDIT_IPPORT)->ShowWindow(SW_SHOW);
     }
-    else if (m_Interfaces[m_SelInterface.GetCurSel()].second == INTF_BLE) {
+    else if (m_Interfaces[m_SelInterface.GetCurSel()].second == INTF_BLE)
+    {
         GetDlgItem(IDC_EDIT_BDNAME)->ShowWindow(SW_SHOW);
     }
-    else {
-       GetDlgItem(IDC_COMBO_COM_PORT)->ShowWindow(SW_SHOW);
+    else
+    {
+        GetDlgItem(IDC_COMBO_COM_PORT)->ShowWindow(SW_SHOW);
     }
 }
 
 void CDialogMain::OnComboChange()
 {
-    if (m_SelComPort.GetCurSel() == 0) {
+    if (m_SelComPort.GetCurSel() == 0)
+    {
         int portcnt = ScanPCCom();
         printf("Num Port = %d\n", portcnt);
     }
@@ -971,13 +1125,16 @@ void CDialogMain::OnIPPortChange()
 
 void CDialogMain::EnableInterface(bool bEnable)
 {
-    if (bEnable) {
+    if (bEnable)
+    {
         m_SelInterface.EnableWindow(TRUE);
         OnSelchangeInterface();
         m_IPAddress.EnableWindow(TRUE);
         m_EditIPPort.EnableWindow(TRUE);
         m_EditBDName.EnableWindow(FALSE);
-    } else {
+    }
+    else
+    {
         m_SelInterface.EnableWindow(FALSE);
         m_SelComPort.EnableWindow(FALSE);
         m_IPAddress.EnableWindow(FALSE);
@@ -988,16 +1145,27 @@ void CDialogMain::EnableInterface(bool bEnable)
 
 #ifdef _DEBUG
 
-#define SERIES_N1XX  	0
-#define SERIES_MINI  	1
-#define SERIES_NANO  	2
-#define SERIES_M05X  	3
-#define SERIES_N029  	4
-#define SERIES_M4XX  	5
-#define SERIES_NONE  	6
-#define SERIES_8051  	7
-#define SERIES_AUDIO  	8
-#define SERIES_NUM  	9
+#define SERIES_N1XX     0
+#define SERIES_MINI     1
+#define SERIES_NANO     2
+#define SERIES_M05X     3
+#define SERIES_N029     4
+#define SERIES_M4XX     5
+#define SERIES_NONE     6
+#define SERIES_8051     7
+#define SERIES_AUDIO    8
+#define SERIES_NUM      9
+
+#include <string>
+#include <sstream>
+#include <iomanip>
+template <typename T>
+std::string int_to_hex(T val, size_t width = sizeof(T) * 2)
+{
+    std::stringstream ss;
+    ss << std::setfill('0') << std::setw(width) << std::hex << (val | 0);
+    return ss.str();
+}
 
 // call by OnButtonConfig
 bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
@@ -1005,48 +1173,68 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
     unsigned int CFG[14] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
                             0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
                             0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
-                            0xFFFFFFFF, 0xFFFFFFFF};
+                            0xFFFFFFFF, 0xFFFFFFFF
+                           };
 
-    if (Template == 0) {
+    if (Template == 0)
+    {
         CMenu menu;
         menu.CreatePopupMenu();
         CMenu *subMenu[SERIES_NUM];
         unsigned int i;
 
-        for (i = 0; i < SERIES_NUM; i++) {
+        for (i = 0; i < SERIES_NUM; i++)
+        {
             subMenu[i] = new CMenu;
             subMenu[i]->CreatePopupMenu();
         }
 
-        for (i = 0; i < g_NuMicroChipSeries.size(); i++) {
+        for (i = 0; i < g_NuMicroChipSeries.size(); i++)
+        {
             std::string str(g_NuMicroChipSeries[i].szPartNumber);
 
             // NuDataBase.cpp: int LoadChipSeries(void)
-            if (g_NuMicroChipSeries[i].uID == NUC_CHIP_TYPE_GENERAL_1T) {
+            if ((g_NuMicroChipSeries[i].uProjectCode >= PROJ_N76E885) && (g_NuMicroChipSeries[i].uProjectCode <= PROJ_MG51D))
+            {
                 subMenu[SERIES_8051]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
                 continue;
             }
 
-            if (str.find("NUC1") != std::string::npos) {
+            if (str.find("NUC1") != std::string::npos)
+            {
                 subMenu[SERIES_N1XX]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
-            } else if (str.find("MINI") != std::string::npos) {
+            }
+            else if (str.find("MINI") != std::string::npos)
+            {
                 subMenu[SERIES_MINI]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
-            } else if (str.find("Nano") != std::string::npos) {
+            }
+            else if (str.find("Nano") != std::string::npos)
+            {
                 subMenu[SERIES_NANO]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
-            } else if (str.find("M05") != std::string::npos) {
+            }
+            else if (str.find("M05") != std::string::npos)
+            {
                 subMenu[SERIES_M05X]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
-            } else if (str.find("NUC029") != std::string::npos) {
+            }
+            else if (str.find("NUC029") != std::string::npos)
+            {
                 subMenu[SERIES_N029]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
-            } else if (str.find("M4") != std::string::npos) {
+            }
+            else if (str.find("M4") != std::string::npos)
+            {
                 subMenu[SERIES_M4XX]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
-            } else {
+            }
+            else
+            {
                 subMenu[SERIES_NONE]->AppendMenu(MF_STRING, g_NuMicroChipSeries[i].uProjectCode, CString(g_NuMicroChipSeries[i].szPartNumber));
             }
         }
 
-        for (i = 0; i < g_AudioChipSeries.size(); i++) {
+        for (i = 0; i < g_AudioChipSeries.size(); i++)
+        {
             std::string str(g_AudioChipSeries[i].szPartNumber);
-            subMenu[SERIES_AUDIO]->AppendMenu(MF_STRING, g_AudioChipSeries[i].uProjectCode, CString(g_AudioChipSeries[i].szPartNumber));
+            //subMenu[SERIES_AUDIO]->AppendMenu(MF_STRING, g_AudioChipSeries[i].uProjectCode, CString(g_AudioChipSeries[i].szPartNumber));
+            subMenu[SERIES_AUDIO]->AppendMenu(MF_STRING, g_AudioChipSeries[i].uProjectCode, CString(int_to_hex(g_AudioChipSeries[i].uProjectCode).c_str()));
         }
 
         i = 0;
@@ -1060,7 +1248,8 @@ bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
         menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[SERIES_8051]->m_hMenu, _T("8051 1T Series"));
         menu.AppendMenu(MF_STRING | MF_POPUP, (UINT)subMenu[SERIES_AUDIO]->m_hMenu, _T("Audio Series"));
 
-        for (i = 0; i < SERIES_NUM; i++) {
+        for (i = 0; i < SERIES_NUM; i++)
+        {
             delete subMenu[i];
         }
 
@@ -1081,15 +1270,19 @@ LRESULT CDialogMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
 #ifdef _DEBUG
 
-    if (message == WM_COMMAND) {
+    if (message == WM_COMMAND)
+    {
         unsigned int i;
         unsigned int CFG[14] = { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
                                  0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
                                  0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
-                                 0xFFFFFFFF, 0xFFFFFFFF };
+                                 0xFFFFFFFF, 0xFFFFFFFF
+                               };
 
-        if (wParam == 0xFFFFFFFF) { // Test ALL
-            for (i = 0; i < g_NuMicroChipSeries.size(); ++i) {
+        if (wParam == 0xFFFFFFFF)   // Test ALL
+        {
+            for (i = 0; i < g_NuMicroChipSeries.size(); ++i)
+            {
                 unsigned int uSeriesCode = g_NuMicroChipSeries[i].uProjectCode;
                 ConfigDlgSel(CFG, sizeof(CFG), uSeriesCode);
             }
@@ -1097,15 +1290,19 @@ LRESULT CDialogMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
             return 1;
         }
 
-        for (i = 0; i < g_NuMicroChipSeries.size(); ++i) {
-            if (g_NuMicroChipSeries[i].uProjectCode == wParam) {
+        for (i = 0; i < g_NuMicroChipSeries.size(); ++i)
+        {
+            if (g_NuMicroChipSeries[i].uProjectCode == wParam)
+            {
                 ConfigDlgSel(CFG, sizeof(CFG), wParam);
                 return 1;
             }
         }
 
-        for (i = 0; i < g_AudioChipSeries.size(); ++i) {
-            if (g_AudioChipSeries[i].uProjectCode == wParam) {
+        for (i = 0; i < g_AudioChipSeries.size(); ++i)
+        {
+            if (g_AudioChipSeries[i].uProjectCode == wParam)
+            {
                 ConfigDlgSel(CFG, sizeof(CFG), wParam);
                 return 1;
             }

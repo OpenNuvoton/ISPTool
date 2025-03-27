@@ -1,7 +1,8 @@
 #pragma once
 #include <vector>
 
-struct WINCTRLID {
+struct WINCTRLID
+{
     int         btn;
     int         path;
     int         sizecksum;
@@ -15,13 +16,13 @@ public:
     CDialogMain(UINT nIDTemplate, CWnd *pParent = NULL);  // standard constructor
     virtual ~CDialogMain();
 
-// Dialog Data
+    // Dialog Data
     int m_nScrollPosY; // to store the current vertical scroll position
     int m_nScrollPosX; // to store the current horizontal scroll position
     int m_ScrollBarWidth;
     BOOL m_bIsInitialized;
     BOOL m_bShowScrollBar;
-    CRect m_rect;		//original dialog rect info
+    CRect m_rect;       //original dialog rect info
 
 
 #ifndef _NO_CONFIGURATION_DLG
@@ -34,7 +35,7 @@ public:
     void EnableDlgItem(int nID, BOOL bEnable);
 
     // Interface Selection for USB or UART
-    std::vector<std::pair<CString, unsigned int>> m_Interfaces;
+    std::vector<std::pair<CString, unsigned int >> m_Interfaces;
     CComboBox   m_SelInterface;
     CComboBox   m_SelComPort;
     unsigned int m_Interface;

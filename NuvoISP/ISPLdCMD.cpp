@@ -13,7 +13,7 @@
 
 ISPLdCMD::ISPLdCMD()
     : m_bOpenPort(FALSE)
-    , m_uCmdIndex(18)	//Do not use 0 to avoid firmware already has index 0 occasionally.
+    , m_uCmdIndex(18)   //Do not use 0 to avoid firmware already has index 0 occasionally.
     , m_uInterface(0)
 {
 }
@@ -24,7 +24,8 @@ ISPLdCMD::~ISPLdCMD()
 
 bool ISPLdCMD::Open_Port()
 {
-    if (m_bOpenPort) {
+    if (m_bOpenPort)
+    {
         return true;
     }
 
@@ -33,13 +34,19 @@ bool ISPLdCMD::Open_Port()
     m_strBDName = _T("");
     ScopedMutex scopedLock(m_Mutex);
 
-    switch (m_uInterface) {
+    switch (m_uInterface)
+    {
         case INTF_HID:
-            if (m_hidIO.OpenDevice(0x0416, 0x3F00, -1)) {	// ISP FW >= 0x30
+            if (m_hidIO.OpenDevice(0x0416, 0x3F00, -1))     // ISP FW >= 0x30
+            {
                 m_uUSB_PID = 0x3F00;
-            } else if (m_hidIO.OpenDevice(0x0416, 0xA316, -1)) {	// ISP FW < 0x30
+            }
+            else if (m_hidIO.OpenDevice(0x0416, 0xA316, -1))        // ISP FW < 0x30
+            {
                 m_uUSB_PID = 0xA316;
-            } else {
+            }
+            else
+            {
                 return false;
             }
 
@@ -47,7 +54,8 @@ bool ISPLdCMD::Open_Port()
             break;
 
         case INTF_UART:
-            if (!m_comIO.OpenDevice(m_strComNum)) {
+            if (!m_comIO.OpenDevice(m_strComNum))
+            {
                 return false;
             }
 
@@ -58,17 +66,28 @@ bool ISPLdCMD::Open_Port()
         case INTF_RS485:
         case INTF_CAN:
         case INTF_LIN:
-            if (m_hidIO.OpenDevice(0x0416, 0x5201, 5)) {	// Nu-Link2 with ISP-Bridge
+            if (m_hidIO.OpenDevice(0x0416, 0x5201, 5))      // Nu-Link2 with ISP-Bridge
+            {
                 m_uUSB_PID = 0x5201;
-            } else if (m_hidIO.OpenDevice(0x0416, 0x5203, 5)) {	// Nu-Link2 with ISP-Bridge
+            }
+            else if (m_hidIO.OpenDevice(0x0416, 0x5203, 5))     // Nu-Link2 with ISP-Bridge
+            {
                 m_uUSB_PID = 0x5203;
-            } else if (m_hidIO.OpenDevice(0x0416, 0x2006, 4)) { 
+            }
+            else if (m_hidIO.OpenDevice(0x0416, 0x2006, 4))
+            {
                 m_uUSB_PID = 0x2006;
-            } else if (m_hidIO.OpenDevice(0x0416, 0x2009, 4)) {
+            }
+            else if (m_hidIO.OpenDevice(0x0416, 0x2009, 4))
+            {
                 m_uUSB_PID = 0x2009;
-            } else if (m_hidIO.OpenDevice(0x0416, 0x3F10, -1)) {	// ISP-Bridge
+            }
+            else if (m_hidIO.OpenDevice(0x0416, 0x3F10, -1))        // ISP-Bridge
+            {
                 m_uUSB_PID = 0x3F10;
-            } else {
+            }
+            else
+            {
                 return false;
             }
 
@@ -76,14 +95,16 @@ bool ISPLdCMD::Open_Port()
             break;
 
         case INTF_WIFI:
-            if (!m_trsp.OpenDevice(CTRSP::INTF_E_WIFI, m_strIPAddress, m_strIPPort)) {
+            if (!m_trsp.OpenDevice(CTRSP::INTF_E_WIFI, m_strIPAddress, m_strIPPort))
+            {
                 return false;
             }
 
             break;
 
         case INTF_BLE:
-            if (!m_trsp.OpenDevice(CTRSP::INTF_E_BLE, BLE_SERV_F01_UUID, BLE_CHAR_W01_UUID, BLE_CHAR_N01_UUID)) {
+            if (!m_trsp.OpenDevice(CTRSP::INTF_E_BLE, BLE_SERV_F01_UUID, BLE_CHAR_W01_UUID, BLE_CHAR_N01_UUID))
+            {
                 return false;
             }
 
@@ -104,13 +125,15 @@ void ISPLdCMD::Close_Port()
     m_strBDName = _T("");
     ScopedMutex scopedLock(m_Mutex);
 
-    if (!m_bOpenPort) {
+    if (!m_bOpenPort)
+    {
         return;
     }
 
     m_bOpenPort = FALSE;
 
-    switch (m_uInterface) {
+    switch (m_uInterface)
+    {
         case INTF_HID:
             m_hidIO.CloseDevice();
             break;
@@ -139,9 +162,12 @@ void ISPLdCMD::Close_Port()
 
 BOOL ISPLdCMD::WriteFileCAN(ULONG uCMD, ULONG uDAT, DWORD dwMilliseconds)
 {
-    if (!m_bOpenPort) {
+    if (!m_bOpenPort)
+    {
         throw _T("There is no Nu-Link connected to a USB port.");
-    } else if (m_uInterface != INTF_CAN) {
+    }
+    else if (m_uInterface != INTF_CAN)
+    {
         throw _T("This API is used by CAN only.");
     }
 
@@ -159,26 +185,33 @@ BOOL ISPLdCMD::ReadFileCAN(DWORD dwMilliseconds)
 {
     bResendFlag = FALSE;
 
-    if (!m_bOpenPort) {
+    if (!m_bOpenPort)
+    {
         throw _T("There is no Nu-Link connected to a USB port.");
-    } else if (m_uInterface != INTF_CAN) {
+    }
+    else if (m_uInterface != INTF_CAN)
+    {
         throw _T("This API is used by CAN only.");
     }
 
     DWORD dwLength;
 
-    if (!m_hidIO.ReadFile(m_acBuffer, 65, &dwLength, dwMilliseconds)) {
+    if (!m_hidIO.ReadFile(m_acBuffer, 65, &dwLength, dwMilliseconds))
+    {
         return FALSE;
     }
 
     /* Check if correct package index was read */
-    //m_acBuffer[0];	//For HID internal usage, ignored.
+    //m_acBuffer[0];    //For HID internal usage, ignored.
     ULONG uCMD = *((ULONG *)&m_acBuffer[1]);
     ULONG uDAT = *((ULONG *)&m_acBuffer[5]);
 
-    if (uCMD != m_uCmdCAN) {
+    if (uCMD != m_uCmdCAN)
+    {
         return FALSE;
-    } else {
+    }
+    else
+    {
         return TRUE;
     }
 }
@@ -186,7 +219,8 @@ BOOL ISPLdCMD::ReadFileCAN(DWORD dwMilliseconds)
 void ISPLdCMD::ReOpen_Port(BOOL bForce)
 {
     // Re-Open COM Port to clear previous status
-    if (bForce || (m_uInterface == INTF_UART)) {
+    if (bForce || (m_uInterface == INTF_UART))
+    {
         Close_Port();
         Open_Port();
     }
@@ -202,25 +236,32 @@ BOOL ISPLdCMD::ReadFile(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, B
 {
     bResendFlag = FALSE;
 
-    while (1) {
-        if (!m_bOpenPort) {
+    while (1)
+    {
+        if (!m_bOpenPort)
+        {
             throw _T("There is no Nu-Link connected to a USB port.");
-        } else if (m_uInterface == INTF_CAN) {
+        }
+        else if (m_uInterface == INTF_CAN)
+        {
             throw _T("This API can not be used by CAN.");
         }
 
         DWORD dwLength;
 
-        switch (m_uInterface) {
+        switch (m_uInterface)
+        {
             case INTF_HID:
-                if (!m_hidIO.ReadFile(m_acBuffer, 65, &dwLength, dwMilliseconds)) {
+                if (!m_hidIO.ReadFile(m_acBuffer, 65, &dwLength, dwMilliseconds))
+                {
                     return FALSE;
                 }
 
                 break;
 
             case INTF_UART:
-                if (!m_comIO.ReadFile(m_acBuffer + 1, 64, &dwLength, dwMilliseconds)) {
+                if (!m_comIO.ReadFile(m_acBuffer + 1, 64, &dwLength, dwMilliseconds))
+                {
                     printf("NG in m_comIO.ReadFile\n");
                     return FALSE;
                 }
@@ -229,7 +270,8 @@ BOOL ISPLdCMD::ReadFile(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, B
 
             case INTF_WIFI:
             case INTF_BLE:
-                if (!m_trsp.Read(m_acBuffer + 1, 64, &dwLength, dwMilliseconds)) {
+                if (!m_trsp.Read(m_acBuffer + 1, 64, &dwLength, dwMilliseconds))
+                {
                     return FALSE;
                 }
 
@@ -239,7 +281,8 @@ BOOL ISPLdCMD::ReadFile(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, B
             case INTF_I2C:
             case INTF_RS485:
             case INTF_LIN:
-                if (!m_hidIO.ReadFile(m_acBuffer, 65, &dwLength, dwMilliseconds)) {
+                if (!m_hidIO.ReadFile(m_acBuffer, 65, &dwLength, dwMilliseconds))
+                {
                     return FALSE;
                 }
 
@@ -251,25 +294,32 @@ BOOL ISPLdCMD::ReadFile(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, B
         }
 
         /* Check if correct package index was read */
-        //m_acBuffer[0];	//For HID internal usage, ignored.
+        //m_acBuffer[0];    //For HID internal usage, ignored.
         USHORT usCheckSum = *((USHORT *)&m_acBuffer[1]);
         ULONG uCmdIndex = *((ULONG *)&m_acBuffer[5]);
 
         if (dwLength >= 8
-                && (!bCheckIndex || uCmdIndex == m_uCmdIndex - 1)
-                && usCheckSum == m_usCheckSum) {
-            if (szMaxLen > dwLength - 8) {
+        && (!bCheckIndex || uCmdIndex == m_uCmdIndex - 1)
+        && usCheckSum == m_usCheckSum)
+        {
+            if (szMaxLen > dwLength - 8)
+            {
                 szMaxLen = dwLength - 8;
             }
 
-            if (pcBuffer != NULL && szMaxLen > 0) {
+            if (pcBuffer != NULL && szMaxLen > 0)
+            {
                 memcpy(pcBuffer, m_acBuffer + 9, szMaxLen);
             }
 
             return TRUE;
-        } else if (m_uUSB_PID == 0xA316) {
+        }
+        else if (m_uUSB_PID == 0xA316)
+        {
             SleepEx(10, TRUE);
-        } else {
+        }
+        else
+        {
             printf("dwLength = %d, uCmdIndex = %d, %d, usCheckSum = %d, %d\n", dwLength, uCmdIndex, m_uCmdIndex, usCheckSum, m_usCheckSum);
             bResendFlag = TRUE;
             break;
@@ -281,25 +331,30 @@ BOOL ISPLdCMD::ReadFile(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, B
 
 BOOL ISPLdCMD::WriteFile(unsigned long uCmd, const char *pcBuffer, DWORD dwLen, DWORD dwMilliseconds)
 {
-    if (!m_bOpenPort) {
+    if (!m_bOpenPort)
+    {
         throw _T("There is no Nu-Link connected to a USB port.");
-    } else if (m_uInterface == INTF_CAN) {
+    }
+    else if (m_uInterface == INTF_CAN)
+    {
         throw _T("This API can not be used by CAN.");
     }
 
     /* Set new package index value */
     DWORD dwCmdLength = dwLen;
 
-    if (dwCmdLength > sizeof(m_acBuffer) - 9) {
+    if (dwCmdLength > sizeof(m_acBuffer) - 9)
+    {
         dwCmdLength = sizeof(m_acBuffer) - 9;
     }
 
     memset(m_acBuffer, 0, sizeof(m_acBuffer));
-    //m_acBuffer[0] = 0x00;	//Always 0x00
+    //m_acBuffer[0] = 0x00; //Always 0x00
     *((ULONG *)&m_acBuffer[1]) = uCmd;
     *((ULONG *)&m_acBuffer[5]) = m_uCmdIndex;
 
-    if (pcBuffer != NULL && dwCmdLength > 0) {
+    if (pcBuffer != NULL && dwCmdLength > 0)
+    {
         memcpy(m_acBuffer + 9, pcBuffer, dwCmdLength);
     }
 
@@ -307,7 +362,8 @@ BOOL ISPLdCMD::WriteFile(unsigned long uCmd, const char *pcBuffer, DWORD dwLen, 
     DWORD dwLength;
     BOOL bRet = FALSE;
 
-    switch (m_uInterface) {
+    switch (m_uInterface)
+    {
         case INTF_HID:
             bRet = m_hidIO.WriteFile(m_acBuffer, 65, &dwLength, dwMilliseconds);
             break;
@@ -334,9 +390,12 @@ BOOL ISPLdCMD::WriteFile(unsigned long uCmd, const char *pcBuffer, DWORD dwLen, 
             break;
     }
 
-    if (bRet != FALSE) {
+    if (bRet != FALSE)
+    {
         m_uCmdIndex += 2;
-    } else {
+    }
+    else
+    {
         Close_Port();
     }
 
@@ -346,7 +405,8 @@ BOOL ISPLdCMD::WriteFile(unsigned long uCmd, const char *pcBuffer, DWORD dwLen, 
 
 void ISPLdCMD::SyncPackno()
 {
-    if (m_uInterface == INTF_CAN) {
+    if (m_uInterface == INTF_CAN)
+    {
         return; // not support
     }
 
@@ -361,7 +421,8 @@ void ISPLdCMD::SyncPackno()
 
 unsigned char ISPLdCMD::GetVersion()
 {
-    if (m_uInterface == INTF_CAN) {
+    if (m_uInterface == INTF_CAN)
+    {
         return 0xCA; // not support
     }
 
@@ -377,16 +438,21 @@ unsigned char ISPLdCMD::GetVersion()
 
 unsigned long ISPLdCMD::GetDeviceID()
 {
-    if (m_uInterface == INTF_CAN) {
+    if (m_uInterface == INTF_CAN)
+    {
         BOOL ret = FALSE;
 
-        if (WriteFileCAN(CAN_CMD_GET_DEVICEID, 0)) {
+        if (WriteFileCAN(CAN_CMD_GET_DEVICEID, 0))
+        {
             ret = ReadFileCAN();
         }
 
-        if (ret) {
+        if (ret)
+        {
             return *((ULONG *)&m_acBuffer[5]);
-        } else {
+        }
+        else
+        {
             return 0;
         }
     }
@@ -406,11 +472,16 @@ unsigned long ISPLdCMD::GetDeviceID()
 
 void ISPLdCMD::ReadConfig(unsigned int config[])
 {
-    if (m_uInterface == INTF_CAN) {
+    if (m_uInterface == INTF_CAN)
+    {
         unsigned int addr = (!bSpec_addr) ? FMC_USER_CONFIG_0 : SPEC_FMC_USER_CONFIG_0;
-        for (int i = 0; i < 14; i++) {
-            if (WriteFileCAN(CAN_CMD_READ_CONFIG, addr + 4 * i)) {
-                if (ReadFileCAN()) {
+
+        for (int i = 0; i < 14; i++)
+        {
+            if (WriteFileCAN(CAN_CMD_READ_CONFIG, addr + 4 * i))
+            {
+                if (ReadFileCAN())
+                {
                     config[i] = *((ULONG *)&m_acBuffer[5]);
                 }
             }
@@ -429,11 +500,16 @@ void ISPLdCMD::ReadConfig(unsigned int config[])
 
 void ISPLdCMD::UpdateConfig(unsigned int config[], unsigned int response[])
 {
-    if (m_uInterface == INTF_CAN) {
+    if (m_uInterface == INTF_CAN)
+    {
         unsigned int addr = (!bSpec_addr) ? FMC_USER_CONFIG_0 : SPEC_FMC_USER_CONFIG_0;
-        for (int i = 0; i < 14; i++) {
-            if (WriteFileCAN(addr + 4 * i, config[i])) {
-                if (ReadFileCAN()) {
+
+        for (int i = 0; i < 14; i++)
+        {
+            if (WriteFileCAN(addr + 4 * i, config[i]))
+            {
+                if (ReadFileCAN())
+                {
                     response[i] = *((ULONG *)&m_acBuffer[5]);
                 }
             }
@@ -456,26 +532,32 @@ void ISPLdCMD::UpdateAPROM(unsigned long start_addr,
                            const char *buffer,
                            unsigned long *update_len)
 {
-    if (m_uInterface == INTF_CAN) {
+    if (m_uInterface == INTF_CAN)
+    {
         bResendFlag = 1;
         unsigned long write_len = total_len - (cur_addr - start_addr);
 
-        if (write_len > 4) {
+        if (write_len > 4)
+        {
             write_len = 4;
         }
 
-        if (write_len) {
+        if (write_len)
+        {
             unsigned long data = 0;
             memcpy(&data, buffer, write_len);
 
-            if (WriteFileCAN(cur_addr, data)) {
-                if (ReadFileCAN()) {
+            if (WriteFileCAN(cur_addr, data))
+            {
+                if (ReadFileCAN())
+                {
                     bResendFlag = 0;
                 }
             }
         }
 
-        if (update_len != NULL) {
+        if (update_len != NULL)
+        {
             *update_len = write_len;
         }
 
@@ -484,11 +566,13 @@ void ISPLdCMD::UpdateAPROM(unsigned long start_addr,
 
     unsigned long write_len = total_len - (cur_addr - start_addr);
     char acBuffer[
-     HID_MAX_PACKET_SIZE_EP
-     - 8 /* cmd, index */ ];
+        HID_MAX_PACKET_SIZE_EP
+        - 8 /* cmd, index */ ];
 
-    if (start_addr == cur_addr) {
-        if (write_len > sizeof(acBuffer) - 8/*start_addr, total_len*/) {
+    if (start_addr == cur_addr)
+    {
+        if (write_len > sizeof(acBuffer) - 8/*start_addr, total_len*/)
+        {
             write_len = sizeof(acBuffer) - 8/*start_addr, total_len*/;
         }
 
@@ -502,8 +586,11 @@ void ISPLdCMD::UpdateAPROM(unsigned long start_addr,
             USBCMD_TIMEOUT_LONG);
         /* First block need erase the chip, need long timeout */
         ReadFile(NULL, 0, USBCMD_TIMEOUT_LONG, TRUE);
-    } else {
-        if (write_len > sizeof(acBuffer)) {
+    }
+    else
+    {
+        if (write_len > sizeof(acBuffer))
+        {
             write_len = sizeof(acBuffer);
         }
 
@@ -515,7 +602,8 @@ void ISPLdCMD::UpdateAPROM(unsigned long start_addr,
         ReadFile(NULL, 0, USBCMD_TIMEOUT_LONG, TRUE);
     }
 
-    if (update_len != NULL) {
+    if (update_len != NULL)
+    {
         *update_len = write_len;
     }
 }
@@ -526,18 +614,21 @@ void ISPLdCMD::UpdateNVM(unsigned long start_addr,
                          const char *buffer,
                          unsigned long *update_len)
 {
-    if (m_uInterface == INTF_CAN) {
+    if (m_uInterface == INTF_CAN)
+    {
         UpdateAPROM(start_addr, total_len, cur_addr, buffer, update_len);
         return;
     }
 
     unsigned long write_len = total_len - (cur_addr - start_addr);
     char acBuffer[
-     HID_MAX_PACKET_SIZE_EP
-     - 8 /* cmd, index */ ];
+        HID_MAX_PACKET_SIZE_EP
+        - 8 /* cmd, index */ ];
 
-    if (start_addr == cur_addr) {
-        if (write_len > sizeof(acBuffer) - 8/*start_addr, total_len*/) {
+    if (start_addr == cur_addr)
+    {
+        if (write_len > sizeof(acBuffer) - 8/*start_addr, total_len*/)
+        {
             write_len = sizeof(acBuffer) - 8/*start_addr, total_len*/;
         }
 
@@ -551,8 +642,11 @@ void ISPLdCMD::UpdateNVM(unsigned long start_addr,
             USBCMD_TIMEOUT_LONG);
         /* First block need erase the chip, need long timeout */
         ReadFile(NULL, 0, USBCMD_TIMEOUT_LONG, TRUE);
-    } else {
-        if (write_len > sizeof(acBuffer)) {
+    }
+    else
+    {
+        if (write_len > sizeof(acBuffer))
+        {
             write_len = sizeof(acBuffer);
         }
 
@@ -564,20 +658,23 @@ void ISPLdCMD::UpdateNVM(unsigned long start_addr,
         ReadFile(NULL, 0, USBCMD_TIMEOUT_LONG, TRUE);
     }
 
-    if (update_len != NULL) {
+    if (update_len != NULL)
+    {
         *update_len = write_len;
     }
 }
 
 BOOL ISPLdCMD::EraseAll()
 {
-    if (m_uInterface == INTF_CAN) {
+    if (m_uInterface == INTF_CAN)
+    {
         return FALSE; // not support
     }
 
     BOOL ret = FALSE;
 
-    if (WriteFile(CMD_ERASE_ALL, NULL, 0, USBCMD_TIMEOUT_LONG)) {
+    if (WriteFile(CMD_ERASE_ALL, NULL, 0, USBCMD_TIMEOUT_LONG))
+    {
         ret = ReadFile(NULL, 0, USBCMD_TIMEOUT_LONG, TRUE);
     }
 
@@ -589,24 +686,28 @@ BOOL ISPLdCMD::CMD_Connect(DWORD dwMilliseconds)
     bSupport_SPI = 0;
     bSpec_addr = 0;
 
-    if (m_uInterface == INTF_CAN) {
+    if (m_uInterface == INTF_CAN)
+    {
         BOOL ret = FALSE;
 
-        if (WriteFileCAN(CAN_CMD_GET_DEVICEID, 0)) {
+        if (WriteFileCAN(CAN_CMD_GET_DEVICEID, 0))
+        {
             ret = ReadFileCAN();
         }
-        
-        if (ret) {
+
+        if (ret)
+        {
             ULONG CAN_uID = *((ULONG*)&m_acBuffer[5]);
             // M460, M2L31, M55M1
-            bSpec_addr = ((CAN_uID == 0x00551000) || ((CAN_uID & 0xFFFFFF00) == 0x01F31000) 
-                ||((CAN_uID & 0xFFFFF000) == 0x01B46000) || ((CAN_uID & 0xFFFFF000) == 0x01C46000));
+            bSpec_addr = ((CAN_uID == 0x00551000) || ((CAN_uID & 0xFFFFFF00) == 0x01F31000)
+            || ((CAN_uID & 0xFFFFF000) == 0x01B46000) || ((CAN_uID & 0xFFFFF000) == 0x01C46000));
         }
 
         return ret;
     }
 
-    if (m_uUSB_PID == 0xA316) {
+    if (m_uUSB_PID == 0xA316)
+    {
         m_uCmdIndex = 1;
     }
 
@@ -614,19 +715,24 @@ BOOL ISPLdCMD::CMD_Connect(DWORD dwMilliseconds)
     DWORD dwStart = GetTickCount();
     unsigned long uID;
 
-    if (WriteFile(CMD_CONNECT, NULL, 0)) {
+    if (WriteFile(CMD_CONNECT, NULL, 0))
+    {
         ret = ReadFile((char *)&uID, 4, dwMilliseconds, FALSE);
     }
 
-    if (ret) {
+    if (ret)
+    {
         m_uCmdIndex = 3;
-        bSupport_SPI = (uID == 0x001540EF); 
-    } else if (m_uInterface == 3) {
+        bSupport_SPI = (uID == 0x001540EF);
+    }
+    else if (m_uInterface == 3)
+    {
         // For SPI interface, Nu-Link2 can get respones even if Target Device is not connected to Nu-Link2.
         // Without this delay, hidapi will crash due to heap corruption.
         DWORD dwDelay = (GetTickCount() - dwStart);
 
-        if (dwDelay < dwMilliseconds) {
+        if (dwDelay < dwMilliseconds)
+        {
             Sleep(dwMilliseconds - dwDelay);
         }
     }
@@ -636,13 +742,15 @@ BOOL ISPLdCMD::CMD_Connect(DWORD dwMilliseconds)
 
 BOOL ISPLdCMD::CMD_Resend()
 {
-    if (m_uInterface == INTF_CAN) {
+    if (m_uInterface == INTF_CAN)
+    {
         return FALSE; // not support
     }
 
     BOOL ret = FALSE;
 
-    if (WriteFile(CMD_RESEND_PACKET, NULL, 0, USBCMD_TIMEOUT_LONG)) {
+    if (WriteFile(CMD_RESEND_PACKET, NULL, 0, USBCMD_TIMEOUT_LONG))
+    {
         ret = ReadFile(NULL, 0, USBCMD_TIMEOUT_LONG, FALSE);
     }
 
@@ -651,40 +759,51 @@ BOOL ISPLdCMD::CMD_Resend()
 
 BOOL ISPLdCMD::RunAPROM()
 {
-    if (m_uInterface == INTF_CAN) {
+    if (m_uInterface == INTF_CAN)
+    {
         return (WriteFileCAN(CAN_CMD_RUN_APROM, 0));
-    } else {
+    }
+    else
+    {
         return WriteFile(CMD_RUN_APROM, NULL, 0, USBCMD_TIMEOUT_LONG);
     }
 }
 
 BOOL ISPLdCMD::RunLDROM()
 {
-    if (m_uInterface == INTF_CAN) {
+    if (m_uInterface == INTF_CAN)
+    {
         return FALSE; // not support
-    } else {
+    }
+    else
+    {
         return WriteFile(CMD_RUN_LDROM, NULL, 0, USBCMD_TIMEOUT_LONG);
     }
 }
 
 BOOL ISPLdCMD::Cmd_ERASE_SPIFLASH(unsigned long offset, unsigned long total_len)
 {
-    if (m_uInterface == INTF_CAN) {
+    if (m_uInterface == INTF_CAN)
+    {
         return FALSE; // not support
     }
 
     unsigned long os = offset;
 
-    while (os < total_len) {
+    while (os < total_len)
+    {
         WriteFile(
             CMD_ERASE_SPIFLASH,
             (const char *)&os,
             4,
             USBCMD_TIMEOUT_LONG);
 
-        if (ReadFile(NULL, 0, USBCMD_TIMEOUT_LONG, TRUE)) {
+        if (ReadFile(NULL, 0, USBCMD_TIMEOUT_LONG, TRUE))
+        {
             os += 64 * 1024;
-        } else {
+        }
+        else
+        {
             return FALSE;
         }
     }
@@ -696,20 +815,23 @@ BOOL ISPLdCMD::Cmd_UPDATE_SPIFLASH(unsigned long start_addr,
                                    unsigned long total_len,
                                    const char *buffer)
 {
-    if (m_uInterface == INTF_CAN) {
+    if (m_uInterface == INTF_CAN)
+    {
         return FALSE; // not support
     }
 
     unsigned long write_len = 0;
     char acBuffer[
-     HID_MAX_PACKET_SIZE_EP
-     - 8 /* cmd, index */ ];
+        HID_MAX_PACKET_SIZE_EP
+        - 8 /* cmd, index */ ];
 
-    while (write_len < total_len) {
+    while (write_len < total_len)
+    {
         unsigned long addr = start_addr + write_len;
         unsigned long len = (total_len - write_len);
 
-        if (len > (sizeof(acBuffer) - 8)) {
+        if (len > (sizeof(acBuffer) - 8))
+        {
             len = (sizeof(acBuffer) - 8);
         }
 
@@ -722,9 +844,12 @@ BOOL ISPLdCMD::Cmd_UPDATE_SPIFLASH(unsigned long start_addr,
             len + 8/*start_addr, total_len*/,
             USBCMD_TIMEOUT_LONG);
 
-        if (ReadFile(NULL, 0, USBCMD_TIMEOUT_LONG, TRUE)) {
+        if (ReadFile(NULL, 0, USBCMD_TIMEOUT_LONG, TRUE))
+        {
             write_len += len;
-        } else {
+        }
+        else
+        {
             return FALSE;
         }
     }

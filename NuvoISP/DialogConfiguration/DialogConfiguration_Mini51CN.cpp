@@ -5,6 +5,7 @@
 #include <deque>
 #include <string>
 #include <utility>
+#include "Lang.h"
 #include "ChipDefs.h"
 #include "NumEdit.h"
 #include "AppConfig.h"
@@ -12,17 +13,18 @@
 #include <cassert>
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+    #define new DEBUG_NEW
+    #undef THIS_FILE
+    static char THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_Mini51CN dialog
 
+
 CDialogConfiguration_Mini51CN::CDialogConfiguration_Mini51CN(unsigned int uProgramMemorySize,
-        unsigned int uPID,
-        CWnd *pParent /*=NULL*/)
+                                                             unsigned int uPID,
+                                                             CWnd* pParent /*=NULL*/)
     : CDialogResize(CDialogConfiguration_Mini51CN::IDD, pParent)
     , m_uProgramMemorySize(uProgramMemorySize)
     , m_uPID(uPID)
@@ -40,7 +42,8 @@ CDialogConfiguration_Mini51CN::CDialogConfiguration_Mini51CN(unsigned int uProgr
     //}}AFX_DATA_INIT
 }
 
-void CDialogConfiguration_Mini51CN::DoDataExchange(CDataExchange *pDX)
+
+void CDialogConfiguration_Mini51CN::DoDataExchange(CDataExchange* pDX)
 {
     CDialogResize::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CDialogConfiguration_Mini51CN)
@@ -95,19 +98,27 @@ END_MESSAGE_MAP()
 BOOL CDialogConfiguration_Mini51CN::OnInitDialog()
 {
     CDialog::OnInitDialog();
+
     // TODO: Add extra initialization here
     UDACCEL pAccel[1];
     pAccel[0].nInc = 1;
     pAccel[0].nSec = 0;
     m_SpinDataFlashSize.SetAccel(1, pAccel);
+
     ConfigToGUI();
+
     UpdateData(FALSE);
+
     m_bIsInitialized = true;
     GetWindowRect(m_rect);
     AdjustDPI();
+
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
 }
+
+
+
 
 void CDialogConfiguration_Mini51CN::ConfigToGUI()
 {
@@ -115,8 +126,10 @@ void CDialogConfiguration_Mini51CN::ConfigToGUI()
     unsigned int uConfig1 = m_ConfigValue.m_value[1];
     unsigned int uFlashBaseAddress = uConfig1 & 0xFFFFF;
 
-    if ((m_uPID & 0xFFFFFF00) == 0x00A05800) {
-        switch (uConfig0 & (MINI51_FLASH_CONFIG_CBOD2VEN | MINI51_FLASH_CONFIG_CBOV)) {
+    if ((m_uPID & 0xFFFFFF00) == 0x00A05800)
+    {
+        switch (uConfig0 & (MINI51_FLASH_CONFIG_CBOD2VEN | MINI51_FLASH_CONFIG_CBOV))
+        {
             case (MINI51_FLASH_CONFIG_CBOD2VEN | MINI51_FLASH_CONFIG_CBOV):
                 m_nRadioBov = 0;
                 break;
@@ -144,13 +157,19 @@ void CDialogConfiguration_Mini51CN::ConfigToGUI()
                 m_nRadioBov = 0;
                 break;
         }
-    } else {
-        if (uConfig0 & MINI51_FLASH_CONFIG_CBOD2VEN) {
+    }
+    else
+    {
+        if (uConfig0 & MINI51_FLASH_CONFIG_CBOD2VEN)
+        {
             m_nRadioBov = 0;
-        } else {
-            switch (uConfig0 & MINI51_FLASH_CONFIG_CBOV) {
+        }
+        else
+        {
+            switch (uConfig0 & MINI51_FLASH_CONFIG_CBOV)
+            {
                 //case MINI51_FLASH_CONFIG_CBOV_DISABLE:
-                //	m_nRadioBov = 0; break;
+                //  m_nRadioBov = 0; break;
                 case MINI51_FLASH_CONFIG_CBOV_44:
                     m_nRadioBov = 1;
                     break;
@@ -176,7 +195,8 @@ void CDialogConfiguration_Mini51CN::ConfigToGUI()
 
     //m_nRadioBS = ((uConfig0 & MINI51_FLASH_CONFIG_CBS) == 0 ? 0 : 1);
 
-    switch (uConfig0 & MINI51_FLASH_CONFIG_CBS2) {
+    switch (uConfig0 & MINI51_FLASH_CONFIG_CBS2)
+    {
         case MINI51_FLASH_CONFIG_CBS_LD:
             m_nRadioBS = 0;
             break;
@@ -196,12 +216,14 @@ void CDialogConfiguration_Mini51CN::ConfigToGUI()
     }
 
     m_nRadioIO = ((uConfig0 & MINI51_FLASH_CONFIG_CIOINI) == 0 ? 1 : 0);
+
     m_bClockFilterEnable = ((uConfig0 & MINI51_FLASH_CONFIG_CKF) == MINI51_FLASH_CONFIG_CKF ? TRUE : FALSE);
     m_bCheckBrownOutReset = ((uConfig0 & MINI51_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
-    m_bDataFlashEnable = ((uConfig0 & NUMICRO_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
-    m_bSecurityLock = ((uConfig0 & NUMICRO_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    m_bDataFlashEnable = ((uConfig0 & MINI51_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
+    m_bSecurityLock = ((uConfig0 & MINI51_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
 
-    if (m_bDataFlashEnable) {
+    if (m_bDataFlashEnable)
+    {
         uFlashBaseAddress = ((uFlashBaseAddress >= NUMICRO_FLASH_PAGE_SIZE_512) && (uFlashBaseAddress < m_uProgramMemorySize)) ? uFlashBaseAddress : (m_uProgramMemorySize - NUMICRO_FLASH_PAGE_SIZE_512);
         uFlashBaseAddress = (uFlashBaseAddress & MINI51_FLASH_CONFIG_DFBA) / NUMICRO_FLASH_PAGE_SIZE_512 * NUMICRO_FLASH_PAGE_SIZE_512;
         uConfig1 = uFlashBaseAddress;// | 0xFFF00000;
@@ -209,8 +231,10 @@ void CDialogConfiguration_Mini51CN::ConfigToGUI()
 
     m_SpinDataFlashSize.EnableWindow(m_bDataFlashEnable);
     GetDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS)->EnableWindow(m_bDataFlashEnable);
+
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
     m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable && (uFlashBaseAddress < m_uProgramMemorySize)) ? ((m_uProgramMemorySize - uFlashBaseAddress) / 1024.) : 0.);
+
     m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
     m_sConfigValue1.Format(_T("0x%08X"), uConfig1);
 }
@@ -220,10 +244,12 @@ void CDialogConfiguration_Mini51CN::GUIToConfig()
     //unsigned int uConfig0 = m_ConfigValue.m_value[0];
     unsigned int uConfig0 = 0xFFFFFFFF;
     unsigned int uConfig1;
+
     uConfig0 &= ~MINI51_FLASH_CONFIG_CBOV;
     uConfig0 &= ~MINI51_FLASH_CONFIG_CBOD2VEN;
 
-    switch (m_nRadioBov) {
+    switch (m_nRadioBov)
+    {
         case 0:
             uConfig0 |= MINI51_FLASH_CONFIG_CBOV_DISABLE;
             uConfig0 |= MINI51_FLASH_CONFIG_CBOD2VEN;
@@ -250,19 +276,20 @@ void CDialogConfiguration_Mini51CN::GUIToConfig()
             uConfig0 |= (m_ConfigValue.m_value[0] & MINI51_FLASH_CONFIG_CBOV);
     }
 
-    if (m_nRadioIO) {
+    if (m_nRadioIO)
         uConfig0 &= ~MINI51_FLASH_CONFIG_CIOINI;
-    } else {
+    else
         uConfig0 |= MINI51_FLASH_CONFIG_CIOINI;
-    }
 
     //if(m_nRadioBS == 0)
-    //	uConfig0 &= ~MINI51_FLASH_CONFIG_CBS;
+    //  uConfig0 &= ~MINI51_FLASH_CONFIG_CBS;
     //else
-    //	uConfig0 |= MINI51_FLASH_CONFIG_CBS;
+    //  uConfig0 |= MINI51_FLASH_CONFIG_CBS;
+
     uConfig0 &= ~MINI51_FLASH_CONFIG_CBS2;
 
-    switch (m_nRadioBS) {
+    switch (m_nRadioBS)
+    {
         case 0:
             uConfig0 |= MINI51_FLASH_CONFIG_CBS_LD;
             break;
@@ -284,32 +311,32 @@ void CDialogConfiguration_Mini51CN::GUIToConfig()
             uConfig0 |= (m_ConfigValue.m_value[0] & MINI51_FLASH_CONFIG_CBS2);
     }
 
-    if (m_bClockFilterEnable) {
+    if (m_bClockFilterEnable)
         uConfig0 |= MINI51_FLASH_CONFIG_CKF;
-    } else {
+    else
         uConfig0 &= ~MINI51_FLASH_CONFIG_CKF;
-    }
 
-    if (m_bCheckBrownOutReset) {
+    if (m_bCheckBrownOutReset)
         uConfig0 &= ~MINI51_FLASH_CONFIG_CBORST;
-    } else {
+    else
         uConfig0 |= MINI51_FLASH_CONFIG_CBORST;
-    }
 
-    if (m_bDataFlashEnable) {
-        uConfig0 &= ~NUMICRO_FLASH_CONFIG_DFEN;
-    } else {
-        uConfig0 |= NUMICRO_FLASH_CONFIG_DFEN;
+    if (m_bDataFlashEnable)
+        uConfig0 &= ~MINI51_FLASH_CONFIG_DFEN;
+    else
+    {
+        uConfig0 |= MINI51_FLASH_CONFIG_DFEN;
         m_sFlashBaseAddress = "FFFFFFFF";
     }
 
-    if (m_bSecurityLock) {
-        uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
-    } else {
-        uConfig0 |= NUMICRO_FLASH_CONFIG_LOCK;
-    }
+    if (m_bSecurityLock)
+        uConfig0 &= ~MINI51_FLASH_CONFIG_LOCK;
+    else
+        uConfig0 |= MINI51_FLASH_CONFIG_LOCK;
+
 
     m_ConfigValue.m_value[0] = uConfig0;
+
     TCHAR *pEnd;
     uConfig1 = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
     m_ConfigValue.m_value[1] = uConfig1;// | 0xFFF00000;
@@ -319,8 +346,10 @@ void CDialogConfiguration_Mini51CN::OnButtonClick()
 {
     // TODO: Add your control notification handler code here
     UpdateData(TRUE);
+
     GUIToConfig();
     ConfigToGUI();
+
     UpdateData(FALSE);
 }
 
@@ -334,9 +363,25 @@ void CDialogConfiguration_Mini51CN::OnOK()
 {
     // TODO: Add extra validation here
     UpdateData(TRUE);
+
     OnKillfocusEditFlashBaseAddress();
     GUIToConfig();
+
     CDialog::OnOK();
+}
+
+
+CString CDialogConfiguration_Mini51CN::GetConfigWarning(const CAppConfig::Mini51_configs_t &config)
+{
+    CString str;
+    unsigned int uConfig0 = config.m_value[0];
+
+    BOOL bSecurityLock = ((uConfig0 & MINI51_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+
+    if (!bSecurityLock)
+        str += _T("   ") + _I(IDS_DISABLE_SECURITY_LOCK);
+
+    return str;
 }
 
 void CDialogConfiguration_Mini51CN::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)
@@ -345,19 +390,19 @@ void CDialogConfiguration_Mini51CN::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, L
     CDialogResize::OnDeltaposSpinDataFlashSize(pNMHDR, pResult, m_bDataFlashEnable, m_uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_512);
 }
 
-void CDialogConfiguration_Mini51CN::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
+void CDialogConfiguration_Mini51CN::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
-    if (pScrollBar != NULL && pScrollBar->GetDlgCtrlID() == m_SpinDataFlashSize.GetDlgCtrlID()) {
+    if (pScrollBar != NULL && pScrollBar->GetDlgCtrlID() == m_SpinDataFlashSize.GetDlgCtrlID())
         return;
-    }
 
     CDialogResize::OnVScroll(nSBCode, nPos, pScrollBar);
 }
+
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_Mini58
 /////////////////////////////////////////////////////////////////////////////
 
-CDialogConfiguration_Mini58::CDialogConfiguration_Mini58(unsigned int uProgramMemorySize, unsigned int uPID, CWnd *pParent /*=NULL*/)
+CDialogConfiguration_Mini58::CDialogConfiguration_Mini58(unsigned int uProgramMemorySize, unsigned int uPID, CWnd* pParent /*=NULL*/)
     : CDialogConfiguration_Mini51CN(uProgramMemorySize, uPID, pParent)
 {
 }

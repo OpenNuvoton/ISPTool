@@ -5,10 +5,10 @@
 #pragma once
 
 #ifndef __AFXWIN_H__
-#error "對 PCH 包含此檔案前先包含 'stdafx.h'"
+    #error "對 PCH 包含此檔案前先包含 'stdafx.h'"
 #endif
 
-#include "resource.h"		// 主要符號
+#include "resource.h"       // 主要符號
 
 
 // CISPToolApp:
@@ -23,11 +23,11 @@ protected:
 public:
     CISPToolApp();
 
-// 覆寫
+    // 覆寫
 public:
     virtual BOOL InitInstance();
 
-// 程式碼實作
+    // 程式碼實作
 
     DECLARE_MESSAGE_MAP()
 };

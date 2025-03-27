@@ -1,9 +1,10 @@
 #include "stdafx.h"
 #include "FlashInfo.h"
+#include "Nu_Link.h"
 
 #ifndef __NUVOTON__
-#define USE_FLASH_PID_INFO_TABLE
-#define USE_FLASH_DID_INFO_TABLE
+    #define USE_FLASH_PID_INFO_TABLE
+    #define USE_FLASH_DID_INFO_TABLE
 #endif
 
 #ifndef __NUVOTON__
@@ -11,8 +12,9 @@ void *GetInfo(unsigned int uPID,
               FLASH_PID_INFO_BASE_T *pInfo)
 {
 #ifdef USE_FLASH_PID_INFO_TABLE
-    static FLASH_PID_INFO_BASE_T g_FlashPIDs[] = {
-        // AP size,     DF size,    RAM size,    DF address,   LD size,     PDID         Part no.
+    static FLASH_PID_INFO_BASE_T g_FlashPIDs[] =
+    {
+        //AP size,    DF size,  RAM size,  DF address,   LD size,   PDID         Part no.
         {  32 * 1024,   0 * 1024,   2 * 1024,    0x00008000,   2 * 1024,    0x011296F1}, //M029GGC0AE
         {  64 * 1024,   0 * 1024,   4 * 1024,    0x00010000,   2 * 1024,    0x011306F0}, //M030GGD1AE
         {  64 * 1024,   0 * 1024,   4 * 1024,    0x00010000,   2 * 1024,    0x011306E0}, //M030GTD1AE
@@ -313,6 +315,7 @@ void *GetInfo(unsigned int uPID,
         {  64 * 1024,   0 * 1024,  20 * 1024,    0x00010000,   4 * 1024,    0x21D12600}, //NUC1263LD4CE
         {  64 * 1024,   0 * 1024,  20 * 1024,    0x00010000,   4 * 1024,    0x21D12690}, //NUC1263ND4CE
         {  64 * 1024,   0 * 1024,  20 * 1024,    0x00010000,   4 * 1024,    0x21D126E0}, //NUC1263ZD4CE
+        {  64 * 1024,   0 * 1024,  20 * 1024,    0x00010000,   4 * 1024,    0x21D126E1}, //NSPD5ZD4AE
         {  32 * 1024,   4 * 1024,   8 * 1024,    0x0001F000,   4 * 1024,    0x00020007}, //NUC200LC2AN
         {  64 * 1024,   4 * 1024,   8 * 1024,    0x0001F000,   4 * 1024,    0x00020004}, //NUC200LD2AN
         { 128 * 1024,   0 * 1024,  16 * 1024,    0x00020000,   4 * 1024,    0x00020000}, //NUC200LE3AN
@@ -498,13 +501,6 @@ void *GetInfo(unsigned int uPID,
         { 512 * 1024,   0 * 1024,  64 * 1024,    0x00080000,  16 * 1024,    0x00047204}, //NUC472JI8AE
         { 256 * 1024,   0 * 1024,  64 * 1024,    0x00040000,  16 * 1024,    0x00047203}, //NUC472HG8AE
         { 512 * 1024,   0 * 1024,  64 * 1024,    0x00080000,  16 * 1024,    0x00047201}, //NUC472HI8AE
-        { 2048 * 1024,  8 * 1024, 128 * 1024,    0x00200000,   8 * 1024,    0x00551000}, //M55M1
-        { 2048 * 1024,  8 * 1024, 1552 * 1024,   0x00200000,   8 * 1024,    0x00551060}, //M55M1H2LJAE
-        { 2048 * 1024,  8 * 1024, 1552 * 1024,   0x00200000,   8 * 1024,    0x00551040}, //M55M1K2LJAE
-        { 2048 * 1024,  8 * 1024, 1552 * 1024,   0x00200000,   8 * 1024,    0x00551010}, //M55M1R2LJAE
-        { 2048 * 1024,  8 * 1024, 1552 * 1024,   0x00200000,   8 * 1024,    0x00551040}, //M5531K2LJAE
-        { 2048 * 1024,  8 * 1024, 1552 * 1024,   0x00200000,   8 * 1024,    0x00551010}, //M5531R2JIAE
-        { 2048 * 1024,  8 * 1024, 1552 * 1024,   0x00200000,   8 * 1024,    0x00551010}, //M5531R2LJAE
         { 256 * 1024,   0 * 1024,  32 * 1024,    0x00040000,   4 * 1024,    0x00845130}, //M451VG6AE
         { 128 * 1024,   0 * 1024,  32 * 1024,    0x00020000,   4 * 1024,    0x00845131}, //M451VE6AE
         { 256 * 1024,   0 * 1024,  32 * 1024,    0x00040000,   4 * 1024,    0x00845120}, //M451RG6AE
@@ -552,7 +548,6 @@ void *GetInfo(unsigned int uPID,
         { 256 * 1024,   0 * 1024,  32 * 1024,    0x00040000,   4 * 1024,    0x00845430}, //M4TKVG6AE
         { 128 * 1024,   0 * 1024,  32 * 1024,    0x00020000,   4 * 1024,    0x00E45210}, //M4521SE6AE
         { 128 * 1024,   0 * 1024,  32 * 1024,    0x00020000,   4 * 1024,    0x00E45200}, //M4521LE6AE
-
         { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48110}, //M481SIDAE
         { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D48100}, //M481LIDAE
         { 512 * 1024,   0 * 1024, 160 * 1024,    0x00080000,   4 * 1024,    0x00D481E0}, //M481ZIDAE
@@ -694,9 +689,14 @@ void *GetInfo(unsigned int uPID,
         { 512 * 1024,   0 * 1024,  96 * 1024,    0x00080000,   4 * 1024,    0x00235102}, //M2351CIAAE
         { 512 * 1024,   0 * 1024,  96 * 1024,    0x00080000,   4 * 1024,    0x00235103}, //M2351ZIAAE
         { 512 * 1024,   0 * 1024,  96 * 1024,    0x00080000,   4 * 1024,    0x00235300}, //M2351SFSIAAP
-        {1024 * 1024,   0 * 1024, 320 * 1024,    0x00100000,  16 * 1024,    0x00235500}, //M2354ES
+        {1024 * 1024,   0 * 1024, 320 * 1024,    0x00100000,  16 * 1024,    0x00235500}, //M2354ES //TC8250
+        {1024 * 1024,   0 * 1024, 256 * 1024,    0x00100000,  16 * 1024,    0xB17354E0}, //M2354CJFBE
+        {1024 * 1024,   0 * 1024, 256 * 1024,    0x00100000,  16 * 1024,    0xA17354E0}, //M2354CJFAE
+        {1024 * 1024,   0 * 1024, 256 * 1024,    0x00100000,  16 * 1024,    0xB1735440}, //M2354KJFBE
         {1024 * 1024,   0 * 1024, 256 * 1024,    0x00100000,  16 * 1024,    0xA1735440}, //M2354KJFAE
+        {1024 * 1024,   0 * 1024, 256 * 1024,    0x00100000,  16 * 1024,    0xB1735410}, //M2354SJFBE
         {1024 * 1024,   0 * 1024, 256 * 1024,    0x00100000,  16 * 1024,    0xA1735410}, //M2354SJFAE
+        {1024 * 1024,   0 * 1024, 256 * 1024,    0x00100000,  16 * 1024,    0xB1735400}, //M2354LJFBE
         {1024 * 1024,   0 * 1024, 256 * 1024,    0x00100000,  16 * 1024,    0xA1735400}, //M2354LJFAE
         {1024 * 1024,   0 * 1024, 256 * 1024,    0x00100000,  16 * 1024,    0xA173540C}, //M2354LJFCE
         { 512 * 1024,   0 * 1024,  96 * 1024,    0x00080000,   4 * 1024,    0x00261000}, //M261ZIAAE
@@ -718,23 +718,31 @@ void *GetInfo(unsigned int uPID,
         { 256 * 1024,   0 * 1024, 168 * 1024,    0x00040000,   8 * 1024,    0x01F31001}, //M2L31LGDAE
         { 256 * 1024,   0 * 1024,  40 * 1024,    0x00040000,   8 * 1024,    0x01F31002}, //M2L31LG4AE
         { 128 * 1024,   0 * 1024,  40 * 1024,    0x00020000,   8 * 1024,    0x01F31003}, //M2L31LE4AE
-        { 64  * 1024,   0 * 1024,  40 * 1024,    0x00010000,   8 * 1024,    0x01F31004}, //M2L31LD4AE
+        {  64 * 1024,   0 * 1024,  40 * 1024,    0x00010000,   8 * 1024,    0x01F31004}, //M2L31LD4AE
         { 512 * 1024,   0 * 1024, 168 * 1024,    0x00080000,   8 * 1024,    0x01F31090}, //M2L31YIDAE
         { 256 * 1024,   0 * 1024, 168 * 1024,    0x00040000,   8 * 1024,    0x01F31091}, //M2L31YGDAE
         { 256 * 1024,   0 * 1024,  40 * 1024,    0x00040000,   8 * 1024,    0x01F31092}, //M2L31YG4AE
         { 128 * 1024,   0 * 1024,  40 * 1024,    0x00020000,   8 * 1024,    0x01F31093}, //M2L31YE4AE
-        { 64  * 1024,   0 * 1024,  40 * 1024,    0x00010000,   8 * 1024,    0x01F31094}, //M2L31YD4AE
+        {  64 * 1024,   0 * 1024,  40 * 1024,    0x00010000,   8 * 1024,    0x01F31094}, //M2L31YD4AE
         { 128 * 1024,   0 * 1024,  40 * 1024,    0x00020000,   8 * 1024,    0x01F310C3}, //M2L31ZE4AE
-        { 64  * 1024,   0 * 1024,  40 * 1024,    0x00010000,   8 * 1024,    0x01F310C4}, //M2L31ZD4AE
+        {  64 * 1024,   0 * 1024,  40 * 1024,    0x00010000,   8 * 1024,    0x01F310C4}, //M2L31ZD4AE
         { 512 * 1024,   0 * 1024, 168 * 1024,    0x00080000,   8 * 1024,    0x01F310A0}, //M2L31CIDAE
         { 256 * 1024,   0 * 1024, 168 * 1024,    0x00040000,   8 * 1024,    0x01F310A1}, //M2L31CGDAE
         {  64 * 1024,   0 * 1024,  40 * 1024,    0x00010000,   8 * 1024,    0x01F310B4}, //M2L31XD4AE
+        {2048 * 1024,   0 * 1024, 1552 * 1024,    0x00000000,   8 * 1024,    0xA2000260}, //M55M1H3H2LJAE
+        {2048 * 1024,   0 * 1024, 1552 * 1024,    0x00000000,   8 * 1024,    0xA2000240}, //M55M1H3K2LJAE
+        {2048 * 1024,   0 * 1024, 1552 * 1024,    0x00000000,   8 * 1024,    0xA2000220}, //M55M1H3R2LJAE
+        {2048 * 1024,   0 * 1024, 1552 * 1024,    0x00000000,   8 * 1024,    0xA2000160}, //M55M1H2LJAE
+        {2048 * 1024,   0 * 1024, 1552 * 1024,    0x00000000,   8 * 1024,    0xA2000140}, //M55M1K2LJAE
+        {2048 * 1024,   0 * 1024, 1552 * 1024,    0x00000000,   8 * 1024,    0xA2000120}, //M55M1R2LJAE
+        {2048 * 1024,   0 * 1024, 1552 * 1024,    0x00000000,   8 * 1024,    0xA2000060}, //M5531H2LJAE
+        {2048 * 1024,   0 * 1024, 1552 * 1024,    0x00000000,   8 * 1024,    0xA2000040}, //M5531K2LJAE
+        {2048 * 1024,   0 * 1024, 1552 * 1024,    0x00000000,   8 * 1024,    0xA2000020}, //M5531R2LJAE
+        {1024 * 1024,   0 * 1024, 1232 * 1024,    0x00000000,   8 * 1024,    0xA2000021}, //M5531R2JIAE
         {  32 * 1024,   0 * 1024,   4 * 1024,    0x00008000,   4 * 1024,    0x01F03CB0}, //M2003FC1AE
         {  32 * 1024,   0 * 1024,   4 * 1024,    0x00008000,   4 * 1024,    0x01F03C80}, //M2003XC1AE
         {  32 * 1024,   0 * 1024,   4 * 1024,    0x00008000,   4 * 1024,    0x01F03C9F}, //M2P481QC1AE
         {  32 * 1024,   0 * 1024,   4 * 1024,    0x00008000,   4 * 1024,    0x01F03CFF}, //KN44490A
-        {  32 * 1024,   0 * 1024,   4 * 1024,    0x00008000,   4 * 1024,    0x01F03CB1}, //CM2003CF2AE
-        {  32 * 1024,   0 * 1024,   4 * 1024,    0x00008000,   4 * 1024,    0x01F03C81}, //CM2003CF3AE
         { 256 * 1024,   0 * 1024,  24 * 1024,    0x00040000,   4 * 1024,    0x02100010}, //M2A23SG5ACU
         { 256 * 1024,   0 * 1024,  24 * 1024,    0x00040000,   4 * 1024,    0x02100011}, //M2A23SG5AC
         { 256 * 1024,   0 * 1024,  24 * 1024,    0x00040000,   4 * 1024,    0x02100000}, //M2A23LG5ACU
@@ -747,25 +755,44 @@ void *GetInfo(unsigned int uPID,
         { 128 * 1024,   0 * 1024,  24 * 1024,    0x00020000,   4 * 1024,    0x02100101}, //M2A23LE5AC
         { 128 * 1024,   0 * 1024,  24 * 1024,    0x00020000,   4 * 1024,    0x02100190}, //M2A23NE5ACU
         { 128 * 1024,   0 * 1024,  24 * 1024,    0x00020000,   4 * 1024,    0x02100191}, //M2A23YE5AC
+        {  64 * 1024,   0 * 1024,  24 * 1024,    0x00010000,   4 * 1024,    0x02100211}, //M2A23SD5AC
+        {  64 * 1024,   0 * 1024,  24 * 1024,    0x00010000,   4 * 1024,    0x02100201}, //M2A23LD5AC
+        {  64 * 1024,   0 * 1024,  24 * 1024,    0x00010000,   4 * 1024,    0x02100291}, //M2A23YD5AC
+        //{ 256*1024,   0*1024,  32*1024,    0x00040000,   4*1024,    0x03200140}, //M2U54KG6AE
+        //{ 128*1024,   0*1024,  24*1024,    0x00020000,   4*1024,    0x03200141}, //M2U54KE4AE
+        //{ 256*1024,   0*1024,  32*1024,    0x00040000,   4*1024,    0x03200150}, //M2U54AG6AE
+        //{ 128*1024,   0*1024,  24*1024,    0x00020000,   4*1024,    0x03200151}, //M2U54AE4AE
+        //{ 256*1024,   0*1024,  32*1024,    0x00040000,   4*1024,    0x03200110}, //M2U54SG6AE
+        //{ 128*1024,   0*1024,  24*1024,    0x00020000,   4*1024,    0x03200111}, //M2U54SE4AE
+        //{ 256*1024,   0*1024,  32*1024,    0x00040000,   4*1024,    0x03200190}, //M2U54YG6AE
+        //{ 128*1024,   0*1024,  24*1024,    0x00020000,   4*1024,    0x03200191}, //M2U54YE4AE
+        //{  64*1024,   0*1024,  16*1024,    0x00010000,   4*1024,    0x03200092}, //M2U51YD3AE
+        //{  32*1024,   0*1024,   6*1024,    0x00008000,   4*1024,    0x03201093}, //M2U51YC2AE
+        //{  32*1024,   0*1024,   6*1024,    0x00008000,   4*1024,    0x032010C3}, //M2U51TC2AE
+        //{  32*1024,   0*1024,   6*1024,    0x00008000,   4*1024,    0x032010A3}, //M2U51EC2AE
+        //{  32*1024,   0*1024,   6*1024,    0x00008000,   4*1024,    0x032010B3}, //M2U51FC2AE
     };
+
     unsigned int i;
 
-    for (i = 0; i < sizeof(g_FlashPIDs) / sizeof(g_FlashPIDs[0]); ++i) {
-        if (g_FlashPIDs[i].uPID == uPID) {
+    for (i = 0; i < sizeof(g_FlashPIDs) / sizeof(g_FlashPIDs[0]); ++i)
+    {
+        if (g_FlashPIDs[i].uPID == uPID)
+        {
             *pInfo = g_FlashPIDs[i];
             break;
         }
     }
 
-    if (!(i < sizeof(g_FlashPIDs) / sizeof(g_FlashPIDs[0]))) {
+    if (!(i < sizeof(g_FlashPIDs) / sizeof(g_FlashPIDs[0])))
         return NULL;
-    }
 
     return pInfo;
 #else
     return NULL;
 #endif
 }
+
 #endif
 
 /* Calculate APROM and NVM size of NuMicro */
@@ -773,6 +800,7 @@ void GetFlashSize_NuMicro(unsigned int uConfig0,
                           unsigned int uConfig1,
                           unsigned int uProgramMemorySize,
                           unsigned int uFlashType,
+                          unsigned int uAPROM_Addr,
                           unsigned int *puNVM_Addr,
                           unsigned int *puAPROM_Size,
                           unsigned int *puNVM_Size)
@@ -780,28 +808,38 @@ void GetFlashSize_NuMicro(unsigned int uConfig0,
     bool bShare;
     unsigned int uType = uFlashType & 0xFF;
     unsigned int uAPROM_Size, uNVM_Size;
+
     bShare = (uType == 0) ? true : false;
 
-    if ((uType == 2) && ((uConfig0 & NUC1XX_FLASH_CONFIG_DFVSEN) == 0)) {
+    if ((uType == 2) && ((uConfig0 & NUC1XX_FLASH_CONFIG_DFVSEN) == 0))
+    {
         uProgramMemorySize += 0x1000;
         bShare = true;
     }
 
-    if (bShare) {
-        if ((uConfig0 & NUMICRO_FLASH_CONFIG_DFEN) == 0) {
+    if (bShare)
+    {
+        if ((uConfig0 & NUMICRO_FLASH_CONFIG_DFEN) == 0)
+        {
             unsigned int uNVM_Addr, uPage_Size;
-            uPage_Size = ((uFlashType & 0x0000FF00) >>  8) + 9;
-            uNVM_Addr = uConfig1 & 0x00FFFFFF;	// Needed?
+
+            uPage_Size = ((uFlashType & 0x0000FF00) >> 8) + 9;
+
+            uNVM_Addr = uConfig1 & 0x00FFFFFF;  // Needed?
             uNVM_Addr &= ~((1 << uPage_Size) - 1);
-            uAPROM_Size = (uProgramMemorySize > uNVM_Addr) ? uNVM_Addr : uProgramMemorySize;
+            uAPROM_Size = ((uNVM_Addr > uAPROM_Addr) && (uNVM_Addr <= (uAPROM_Addr + uProgramMemorySize))) ? (uNVM_Addr - uAPROM_Addr) : uProgramMemorySize;
             uNVM_Size = uProgramMemorySize - uAPROM_Size;
-        } else {
+        }
+        else
+        {
             uAPROM_Size = uProgramMemorySize;
             uNVM_Size = 0;
         }
 
-        *puNVM_Addr = uAPROM_Size;
-    } else {
+        *puNVM_Addr = uAPROM_Addr + uAPROM_Size;
+    }
+    else
+    {
         uAPROM_Size = uProgramMemorySize;
         uNVM_Size = 0x1000;
         *puNVM_Addr = 0x1F000;
@@ -811,6 +849,153 @@ void GetFlashSize_NuMicro(unsigned int uConfig0,
     *puNVM_Size = uNVM_Size;
 }
 
+void GetChipInfo(unsigned int uPID, sChipInfo *ChipInfo, unsigned int *uConfig, unsigned int uConfigNum, unsigned int *uUCID, unsigned int uDID)
+{
+    sChipInfo info;
+    CString csInfo;
+    CString csDllFileName;
+    TCHAR szFolder[_MAX_PATH];
+    GetDllInstallFolder(szFolder);
+    CString csStr(szFolder);
+    csStr += _T("\\");
+
+    csDllFileName = csStr + GETCHIPINFO_LIBRARY_NAME;
+    HMODULE hGetChipInfoTool = ::LoadLibrary(csDllFileName);
+
+    if (hGetChipInfoTool != NULL)
+    {
+        CREATE_CHIPINFO_MANAGER pCreateChipInfoManager = (CREATE_CHIPINFO_MANAGER)::GetProcAddress(hGetChipInfoTool, "CreateChipInfoManager");
+
+        if (pCreateChipInfoManager)
+        {
+            I_ChipInfoManager *pChipInfoManager = NULL;
+
+            if (pCreateChipInfoManager(&pChipInfoManager) == TRUE)
+            {
+                sFindChipInfo FindChipInfo;
+
+                FindChipInfo.dwChipID = uPID;
+
+                if (uUCID == NULL)
+                {
+                    FindChipInfo.bSkipUCID = true;
+                }
+                else if ((uUCID[0] != 0xffffffff) || (uUCID[1] != 0xffffffff) || (uUCID[2] != 0xffffffff) || (uUCID[3] != 0xffffffff))
+                {
+                    FindChipInfo.bSkipUCID = false;
+                    FindChipInfo.dwChipUCID[0] = uUCID[0];
+                    FindChipInfo.dwChipUCID[1] = uUCID[1];
+                    FindChipInfo.dwChipUCID[2] = uUCID[2];
+                    FindChipInfo.dwChipUCID[3] = uUCID[3];
+                }
+                else
+                {
+                    FindChipInfo.bSkipUCID = true;
+                }
+
+                FindChipInfo.dwCfgNum = uConfigNum;
+
+                if (uConfigNum == 1)
+                {
+                    FindChipInfo.dwConfig[0] = uConfig[0];
+                }
+                else if (uConfigNum == 2)
+                {
+                    FindChipInfo.dwConfig[0] = uConfig[0];
+                    FindChipInfo.dwConfig[1] = uConfig[1];
+                }
+
+                eChipInfoError nRet;
+                nRet = pChipInfoManager->GetChipInfoByFindInfo(FindChipInfo, info, uDID);
+
+                if ((nRet == ECE_NO_ERROR) || (nRet == ECE_USE_DEFAULT_CHIP))
+                {
+                    ChipInfo->dwChipID = info.dwChipID;
+                    memcpy(ChipInfo->sChipName, info.sChipName, sizeof(info.sChipName));
+                    ChipInfo->dwAPROMSize = info.dwAPROMSize;
+                    ChipInfo->dwLDROMSize = info.dwLDROMSize;
+                    ChipInfo->dwDataFlashSize = info.dwDataFlashSize;
+                    ChipInfo->dwDataFlashAddress = info.dwDataFlashAddress;
+                    ChipInfo->dwEmbeedSPIFlashSize = info.dwEmbeedSPIFlashSize;
+                    ChipInfo->dwSRAMSize = info.dwSRAMSize;
+                    ChipInfo->dwErasePageSize = info.dwErasePageSize;
+                    ChipInfo->dwSeriesEnum = info.dwSeriesEnum;
+                }
+                else
+                {
+                    ChipInfo->dwSeriesEnum = 0;
+                }
+
+                pChipInfoManager->ReleaseDLL();
+            }
+            else
+            {
+                ChipInfo->dwSeriesEnum = 0;
+            }
+        }
+        else
+        {
+            ChipInfo->dwSeriesEnum = 0;
+        }
+
+        FreeLibrary(hGetChipInfoTool);
+    }
+    else
+    {
+        ChipInfo->dwSeriesEnum = 0;
+    }
+}
+
+bool GetInfo_AU9100(//unsigned int uDID,
+    unsigned int uConfig0,
+    unsigned int uConfig1,
+    unsigned int uProgramMemorySize,
+    unsigned int uFlashType,
+    unsigned int *puNVM_Addr,
+    unsigned int *puLDROM_Size,
+    unsigned int *puAPROM_Size,
+    unsigned int *puNVM_Size)
+{
+    unsigned int uType = uFlashType & 0xFF;
+    unsigned int uAPROM_Size, uNVM_Size, uLDROM_Size;
+
+    uLDROM_Size = NUMICRO_FLASH_LDROM_SIZE_4K;
+
+    if ((uType == 1) || (uType == 2))       //1: ISD9100, N575  2: ISD9300, N576
+    {
+        if ((uConfig0 & AU91XX_FLASH_CONFIG_LDROM_EN) == 0)
+        {
+            uProgramMemorySize += uLDROM_Size;
+            uLDROM_Size = 0;
+        }
+    }
+
+    if ((uConfig0 & AU91XX_FLASH_CONFIG_DFEN) == 0)
+    {
+        unsigned int uNVM_Addr, uPage_Size;
+
+        uPage_Size = ((uFlashType & 0x0000FF00) >>  8) + 9;
+
+        uNVM_Addr = uConfig1 & 0x000FFFFF;  // Needed?
+        uNVM_Addr &= ~((1 << uPage_Size) - 1);
+
+        uAPROM_Size = (uProgramMemorySize > uNVM_Addr) ? uNVM_Addr : uProgramMemorySize;
+        uNVM_Size = uProgramMemorySize - uAPROM_Size;
+    }
+    else
+    {
+        uAPROM_Size = uProgramMemorySize;
+        uNVM_Size = 0;
+    }
+
+    *puNVM_Addr = uAPROM_Size;
+    *puAPROM_Size = uAPROM_Size;
+    *puNVM_Size = uNVM_Size;
+    *puLDROM_Size = uLDROM_Size;
+
+    return true;
+}
+
 /* 8051 1T Series */
 
 #ifndef __NUVOTON__
@@ -818,72 +1003,71 @@ void *GetInfo_8051_1T(unsigned int uDID,
                       FLASH_INFO_BY_DID_T *pInfo)
 {
 #ifdef USE_FLASH_DID_INFO_TABLE
-    static FLASH_INFO_BY_DID_T g_FlashDIDs[] = {
+    static FLASH_INFO_BY_DID_T g_FlashDIDs[] =
+    {
         // N76E885 (FA8251)
-        { 18 * 1024, 0, 0x0100, 0x00002150, ((0 << 25) | (0 << 24) | (0x0E << 8) | (0 << 7) | (0 << 6) | (0 << 5) | (0 << 4) | (0 << 2) | (0 << 0))},
-        { 18 * 1024, 0, 0x0100, 0x00002140, ((0 << 25) | (0 << 24) | (0x0E << 8) | (0 << 7) | (0 << 6) | (0 << 5) | (0 << 4) | (0 << 2) | (1 << 0))},
+        { 18 * 1024,    0, 0x0100, 0x00002150, ((1UL << 31) | (0UL << 25) | (0UL << 24) | (0x0EUL << 8) | (0UL << 7) | (0UL << 6) | (0UL << 5) | (0UL << 4) | (0UL << 2) | (0UL << 0))},
+        { 18 * 1024,    0, 0x0100, 0x00002140, ((1UL << 31) | (0UL << 25) | (0UL << 24) | (0x0EUL << 8) | (0UL << 7) | (0UL << 6) | (0UL << 5) | (0UL << 4) | (0UL << 2) | (1UL << 0))},
 
         // N76E616 (FA8261)
-        { 18 * 1024, 0, 0x0100, 0x00002F50, ((0 << 25) | (0 << 24) | (0x0E << 8) | (0 << 7) | (0 << 6) | (0 << 5) | (0 << 4) | (1 << 2) | (0 << 0))},
+        { 18 * 1024,    0, 0x0100, 0x00002F50, ((1UL << 31) | (0UL << 25) | (0UL << 24) | (0x0EUL << 8) | (0UL << 7) | (0UL << 6) | (0UL << 5) | (0UL << 4) | (1UL << 2) | (0UL << 0))},
 
         // N76E003 (FA8265)
-        { 18 * 1024, 0, 0x0300, 0x00003650, ((0 << 25) | (0 << 24) | (0x0E << 8) | (0 << 7) | (0 << 6) | (0 << 5) | (0 << 4) | (0 << 2) | (0 << 0))},
-        { 18 * 1024, 0, 0x0300, 0x00003640, ((0 << 25) | (0 << 24) | (0x0E << 8) | (0 << 7) | (0 << 6) | (0 << 5) | (0 << 4) | (0 << 2) | (1 << 0))},
-
-        // N76L151 (Closed)
-        //{ 32*1024, 0, 0x1000, 0x00003E60, 0},
-        //{ 32*1024, 0, 0x0800, 0x00003E61, 0},
+        { 18 * 1024,    0, 0x0300, 0x00003650, ((1UL << 31) | (0UL << 25) | (0UL << 24) | (0x0EUL << 8) | (0UL << 7) | (0UL << 6) | (0UL << 5) | (0UL << 4) | (0UL << 2) | (0UL << 0))},
+        { 18 * 1024,    0, 0x0300, 0x00003640, ((1UL << 31) | (0UL << 25) | (0UL << 24) | (0x0EUL << 8) | (0UL << 7) | (0UL << 6) | (0UL << 5) | (0UL << 4) | (0UL << 2) | (1UL << 0))},
 
         // ML51 (HAG023, HAG024)
-        {  8 * 1024, 0, 0x0400, 0x00004711, ((0 << 25) | (1 << 24) | (0x0F << 8) | (0 << 7) | (1 << 6) | (1 << 5) | (1 << 4) | (0 << 2) | (0 << 0))},
-        { 16 * 1024, 0, 0x0400, 0x00004721, ((0 << 25) | (1 << 24) | (0x0F << 8) | (0 << 7) | (1 << 6) | (1 << 5) | (1 << 4) | (0 << 2) | (0 << 0))},
+        {  8 * 1024,    0, 0x0400, 0x00004711, ((1UL << 31) | (0UL << 25) | (1UL << 24) | (0x0FUL << 8) | (0UL << 7) | (1UL << 6) | (1UL << 5) | (1UL << 4) | (0UL << 2) | (0UL << 0))},
+        { 16 * 1024,    0, 0x0400, 0x00004721, ((1UL << 31) | (0UL << 25) | (1UL << 24) | (0x0FUL << 8) | (0UL << 7) | (1UL << 6) | (1UL << 5) | (1UL << 4) | (0UL << 2) | (0UL << 0))},
 
-        { 16 * 1024, 0, 0x0400, 0x00004821, ((0 << 25) | (1 << 24) | (0x0F << 8) | (0 << 7) | (1 << 6) | (1 << 5) | (1 << 4) | (0 << 2) | (0 << 0))},
-        { 32 * 1024, 0, 0x0800, 0x00004832, ((0 << 25) | (1 << 24) | (0x0F << 8) | (0 << 7) | (1 << 6) | (1 << 5) | (1 << 4) | (0 << 2) | (0 << 0))},
+        { 16 * 1024,    0, 0x0400, 0x00004821, ((1UL << 31) | (0UL << 25) | (1UL << 24) | (0x0FUL << 8) | (0UL << 7) | (1UL << 6) | (1UL << 5) | (1UL << 4) | (0UL << 2) | (0UL << 0))},
+        { 32 * 1024,    0, 0x0800, 0x00004832, ((1UL << 31) | (0UL << 25) | (1UL << 24) | (0x0FUL << 8) | (0UL << 7) | (1UL << 6) | (1UL << 5) | (1UL << 4) | (0UL << 2) | (0UL << 0))},
 
-        { 32 * 1024, 0, 0x0800, 0x00004932, ((0 << 25) | (1 << 24) | (0x0F << 8) | (0 << 7) | (1 << 6) | (1 << 5) | (1 << 4) | (0 << 2) | (0 << 0))},
-        { 64 * 1024, 0, 0x1000, 0x00004944, ((0 << 25) | (1 << 24) | (0x0F << 8) | (0 << 7) | (1 << 6) | (1 << 5) | (1 << 4) | (0 << 2) | (0 << 0))},
+        { 32 * 1024,    0, 0x0800, 0x00004932, ((1UL << 31) | (0UL << 25) | (1UL << 24) | (0x0FUL << 8) | (0UL << 7) | (1UL << 6) | (1UL << 5) | (1UL << 4) | (0UL << 2) | (0UL << 0))},
+        { 64 * 1024,    0, 0x1000, 0x00004944, ((1UL << 31) | (0UL << 25) | (1UL << 24) | (0x0FUL << 8) | (0UL << 7) | (1UL << 6) | (1UL << 5) | (1UL << 4) | (0UL << 2) | (0UL << 0))},
 
         // MS51 (HAG030, HAG034, HAG035)
-        {  8 * 1024, 0, 0x0200, 0x00004B10, ((0 << 25) | (1 << 24) | (0x0E << 8) | (0 << 7) | (1 << 6) | (1 << 5) | (1 << 4) | (0 << 2) | (0 << 0))},
-        {  8 * 1024, 0, 0x0400, 0x00004B11, ((0 << 25) | (1 << 24) | (0x0E << 8) | (0 << 7) | (1 << 6) | (1 << 5) | (1 << 4) | (0 << 2) | (0 << 0))},
-        { 16 * 1024, 0, 0x0200, 0x00004B20, ((0 << 25) | (1 << 24) | (0x0E << 8) | (0 << 7) | (1 << 6) | (1 << 5) | (1 << 4) | (0 << 2) | (0 << 0))},
-        { 16 * 1024, 0, 0x0400, 0x00004B21, ((0 << 25) | (1 << 24) | (0x0E << 8) | (0 << 7) | (1 << 6) | (1 << 5) | (1 << 4) | (0 << 2) | (0 << 0))},
+        {  8 * 1024,    0, 0x0200, 0x00004B10, ((1UL << 31) | (0UL << 25) | (1UL << 24) | (0x0EUL << 8) | (0UL << 7) | (1UL << 6) | (1UL << 5) | (1UL << 4) | (0UL << 2) | (0UL << 0))},
+        {  8 * 1024,    0, 0x0400, 0x00004B11, ((1UL << 31) | (0UL << 25) | (1UL << 24) | (0x0EUL << 8) | (0UL << 7) | (1UL << 6) | (1UL << 5) | (1UL << 4) | (0UL << 2) | (0UL << 0))},
+        { 16 * 1024,    0, 0x0200, 0x00004B20, ((1UL << 31) | (0UL << 25) | (1UL << 24) | (0x0EUL << 8) | (0UL << 7) | (1UL << 6) | (1UL << 5) | (1UL << 4) | (0UL << 2) | (0UL << 0))},
+        { 16 * 1024,    0, 0x0400, 0x00004B21, ((1UL << 31) | (0UL << 25) | (1UL << 24) | (0x0EUL << 8) | (0UL << 7) | (1UL << 6) | (1UL << 5) | (1UL << 4) | (0UL << 2) | (0UL << 0))},
 
-        {  8 * 1024, 0, 0x0400, 0x00005211, ((0 << 25) | (1 << 24) | (0x0E << 8) | (0 << 7) | (1 << 6) | (1 << 5) | (1 << 4) | (0 << 2) | (0 << 0))},
+        {  8 * 1024,    0, 0x0400, 0x00005211, ((1UL << 31) | (0UL << 25) | (1UL << 24) | (0x0EUL << 8) | (0UL << 7) | (1UL << 6) | (1UL << 5) | (1UL << 4) | (0UL << 2) | (0UL << 0))},
 
-        { 16 * 1024, 0, 0x0800, 0x00005322, ((0 << 25) | (1 << 24) | (0x0E << 8) | (0 << 7) | (1 << 6) | (1 << 5) | (1 << 4) | (0 << 2) | (0 << 0))},
-        { 32 * 1024, 0, 0x0800, 0x00005332, ((0 << 25) | (1 << 24) | (0x0E << 8) | (0 << 7) | (1 << 6) | (1 << 5) | (1 << 4) | (0 << 2) | (0 << 0))},
+        { 16 * 1024,    0, 0x0800, 0x00005322, ((1UL << 31) | (0UL << 25) | (1UL << 24) | (0x0EUL << 8) | (0UL << 7) | (1UL << 6) | (1UL << 5) | (1UL << 4) | (0UL << 2) | (0UL << 0))},
+        { 32 * 1024,    0, 0x0800, 0x00005332, ((1UL << 31) | (0UL << 25) | (1UL << 24) | (0x0EUL << 8) | (0UL << 7) | (1UL << 6) | (1UL << 5) | (1UL << 4) | (0UL << 2) | (0UL << 0))},
 
         // ML56 (HAG037)
-        { 32 * 1024, 0, 0x1000, 0x00005734, ((1 << 25) | (1 << 24) | (0x07 << 8) | (1 << 7) | (1 << 6) | (1 << 5) | (1 << 4) | (0 << 2) | (0 << 0))},
-        { 64 * 1024, 0, 0x1000, 0x00005744, ((1 << 25) | (1 << 24) | (0x07 << 8) | (1 << 7) | (1 << 6) | (1 << 5) | (1 << 4) | (0 << 2) | (0 << 0))},
+        { 32 * 1024,    0, 0x1000, 0x00005734, ((1UL << 31) | (1UL << 25) | (1UL << 24) | (0x07UL << 8) | (1UL << 7) | (1UL << 6) | (1UL << 5) | (1UL << 4) | (0UL << 2) | (0UL << 0))},
+        { 64 * 1024,    0, 0x1000, 0x00005744, ((1UL << 31) | (1UL << 25) | (1UL << 24) | (0x07UL << 8) | (1UL << 7) | (1UL << 6) | (1UL << 5) | (1UL << 4) | (0UL << 2) | (0UL << 0))},
 
         // MUG51 (HAG049)
-        { 16 * 1024, 0, 0x0400, 0x00006321, ((1 << 25) | (1 << 24) | (0x0F << 8) | (0 << 7) | (1 << 6) | (1 << 5) | (1 << 4) | (0 << 2) | (0 << 0))},
+        { 16 * 1024,    0, 0x0400, 0x00006321, ((1UL << 31) | (1UL << 25) | (1UL << 24) | (0x0FUL << 8) | (0UL << 7) | (1UL << 6) | (1UL << 5) | (1UL << 4) | (0UL << 2) | (0UL << 0))},
 
         // MG51, N76S003 (KAG056)
-        //{ 18*1024, 0, 0x0300, 0x00006750, ((0 << 25) | (0 << 24) | (0x0E << 8) | (0 << 7) | (0 << 6) | (0 << 5) | (0 << 4) | (0 << 2) | (0 << 0))},
-        { 18 * 1024, 0, 0x0400, 0x00006750, ((0 << 25) | (0 << 24) | (0x0E << 8) | (0 << 7) | (1 << 6) | (1 << 5) | (1 << 4) | (0 << 2) | (0 << 0))},
-        { 16 * 1024, 0, 0x0400, 0x00006721, ((0 << 25) | (1 << 24) | (0x0E << 8) | (0 << 7) | (1 << 6) | (1 << 5) | (1 << 4) | (0 << 2) | (0 << 0))},
-        { 32 * 1024, 0, 0x0400, 0x00006731, ((0 << 25) | (1 << 24) | (0x0E << 8) | (0 << 7) | (1 << 6) | (1 << 5) | (1 << 4) | (0 << 2) | (0 << 0))},
-        
+        //{ 18 * 1024,    0, 0x0300, 0x00006750, ((1UL << 31) | (0UL << 25) | (0UL << 24) | (0x0EUL << 8) | (0UL << 7) | (0UL << 6) | (0UL << 5) | (0UL << 4) | (0UL << 2) | (0UL << 0))},
+        { 18 * 1024,    0, 0x0400, 0x00006750, ((1UL << 31) | (0UL << 25) | (0UL << 24) | (0x0EUL << 8) | (0UL << 7) | (1UL << 6) | (1UL << 5) | (1UL << 4) | (0UL << 2) | (0UL << 0))},
+        { 16 * 1024,    0, 0x0400, 0x00006721, ((1UL << 31) | (0UL << 25) | (1UL << 24) | (0x0EUL << 8) | (0UL << 7) | (1UL << 6) | (1UL << 5) | (1UL << 4) | (0UL << 2) | (0UL << 0))},
+        { 32 * 1024,    0, 0x0400, 0x00006731, ((1UL << 31) | (0UL << 25) | (1UL << 24) | (0x0EUL << 8) | (0UL << 7) | (1UL << 6) | (1UL << 5) | (1UL << 4) | (0UL << 2) | (0UL << 0))},
+
         // MG51 64K
-        { 64 * 1024, 0, 0x1000, 0x00007244, ((0 << 25) | (1 << 24) | (0x0E << 8) | (0 << 7) | (1 << 6) | (1 << 5) | (1 << 4) | (0 << 2) | (0 << 0))},
-        { 32 * 1024, 0, 0x1000, 0x00007234, ((0 << 25) | (1 << 24) | (0x0E << 8) | (0 << 7) | (1 << 6) | (1 << 5) | (1 << 4) | (0 << 2) | (0 << 0))},
+        { 64 * 1024,    0, 0x1000, 0x00007244, ((1UL << 31) | (0UL << 25) | (1UL << 24) | (0x0EUL << 8) | (0UL << 7) | (1UL << 6) | (1UL << 5) | (1UL << 4) | (0UL << 2) | (0UL << 0))},
+        { 32 * 1024,    0, 0x1000, 0x00007234, ((1UL << 31) | (0UL << 25) | (1UL << 24) | (0x0EUL << 8) | (0UL << 7) | (1UL << 6) | (1UL << 5) | (1UL << 4) | (0UL << 2) | (0UL << 0))},
     };
+
     size_t i;
 
-    for (i = 0; i < sizeof(g_FlashDIDs) / sizeof(g_FlashDIDs[0]); ++i) {
-        if (g_FlashDIDs[i].uDID == uDID) {
+    for (i = 0; i < sizeof(g_FlashDIDs) / sizeof(g_FlashDIDs[0]); ++i)
+    {
+        if (g_FlashDIDs[i].uDID == uDID)
+        {
             *pInfo = g_FlashDIDs[i];
             break;
         }
     }
 
-    if (!(i < sizeof(g_FlashDIDs) / sizeof(g_FlashDIDs[0]))) {
+    if (!(i < sizeof(g_FlashDIDs) / sizeof(g_FlashDIDs[0])))
         return NULL;
-    }
 
     return pInfo;
 #else
@@ -892,19 +1076,25 @@ void *GetInfo_8051_1T(unsigned int uDID,
 
     //pInfo->uProgramMemorySize = (uROMSEL == 0x06)? 0x8000 : 0x4800;
 
-    if (uSID == 0x3E00) {
+    if (uSID == 0x3E00)
+    {
         pInfo->uProgramMemorySize = 0x8000;
         pInfo->uRAMSize = (uDID & 0x01) ? 0x0800 : 0x1000;
-    } else if (uSID == 0x3600) {
+    }
+    else if (uSID == 0x3600)
+    {
         pInfo->uProgramMemorySize = 0x4800;
         pInfo->uRAMSize = 0x300;
-    } else {
+    }
+    else
+    {
         pInfo->uProgramMemorySize = 0x4800;
         pInfo->uRAMSize = 0x100;
     }
 
     pInfo->uFlashType = (uROMSEL == 0x04) ? 1 : 0;
     pInfo->uLDSize = 0;
+
     return pInfo;
 #endif
 }
@@ -919,21 +1109,54 @@ void GetFlashSize_OT8051(unsigned int uConfig0,
 {
     unsigned int uLDROM_Size, uNVM_Size;
     unsigned int uLDSEL = (uConfig0 >> 8) & 0x07;
+
     uLDROM_Size = (0x07 - uLDSEL) * 1024;
 
-    if (uLDROM_Size > 4096) {
+    if (uLDROM_Size > 4096)
         uLDROM_Size = 4096;
-    }
 
     uNVM_Size = 0;
-    
-    if (uFlashMode) {
+
+    if (uFlashMode)
         uNVM_Size = 0x2800 - uLDROM_Size;
-    }
-    
+
     *puLDROM_Addr = uProgramMemorySize - uLDROM_Size;
     *puLDROM_Size = uLDROM_Size;
     *puAPROM_Size = uProgramMemorySize - uLDROM_Size - uNVM_Size;
     *puNVM_Size   = uNVM_Size;
 }
+
+void GetFlashSize_4T(unsigned int uConfig0,
+                     unsigned int uProgramMemorySize,
+                     unsigned int *puAPROM_Size,
+                     unsigned int *puNVM_Size)
+{
+    unsigned char ucCONFIG0, ucCONFIG1;
+    unsigned int uAPROM_Size, uNVM_Size;
+
+    ucCONFIG0 = (uConfig0 >> 0) & 0xFF;
+    ucCONFIG1 = (uConfig0 >> 8) & 0xFF;
+
+    if ((ucCONFIG0 & N79E855_CONFIG_DFEN) == 0)
+    {
+        unsigned int uNVM_Addr;
+
+        if (ucCONFIG1 == 0)
+            ucCONFIG1 = 1;
+
+        uNVM_Addr = ucCONFIG1 << 8;
+
+        uAPROM_Size = (uNVM_Addr <= uProgramMemorySize) ? uNVM_Addr : uProgramMemorySize;
+        uNVM_Size = uProgramMemorySize - uAPROM_Size;
+    }
+    else
+    {
+        uAPROM_Size = uProgramMemorySize;
+        uNVM_Size = 0;
+    }
+
+    *puAPROM_Size = uAPROM_Size;
+    *puNVM_Size = uNVM_Size;
+}
+
 #endif

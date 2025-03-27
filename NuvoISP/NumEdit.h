@@ -2,7 +2,7 @@
 #define AFX_NUMEDIT_H__F1B78C9F_DFF8_48C3_8BF4_7A2C19722E25__INCLUDED_
 
 #if _MSC_VER > 1000
-#pragma once
+    #pragma once
 #endif // _MSC_VER > 1000
 // NumEdit.h : header file
 //
@@ -12,24 +12,24 @@
 
 class CNumEdit : public CEdit
 {
-// Construction
+    // Construction
 public:
     CNumEdit(int nRadix = 16, int nMaxLength = 8, bool bInsertMode = false, bool bUseLowerCase = false);
 
-// Attributes
+    // Attributes
 public:
 
-// Operations
+    // Operations
 public:
 
-// Overrides
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CNumEdit)
 protected:
     virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 public:
     virtual ~CNumEdit();
 

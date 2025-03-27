@@ -1,18 +1,18 @@
 #include "stdafx.h"
-#include <sstream>	// for std::ostringstream
+#include <sstream>  // for std::ostringstream
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+    #define new DEBUG_NEW
+    #undef THIS_FILE
+    static char THIS_FILE[] = __FILE__;
 #endif
 #include "About.h"
 /////////////////////////////////////////////////////////////////////////////
 // CAboutDlg dialog used for App About
 
 CAboutDlg::CAboutDlg(const CString &sTitle)
-    :	CDialog(CAboutDlg::IDD)
-    ,	m_sTitle(sTitle)
+    :   CDialog(CAboutDlg::IDD)
+    ,   m_sTitle(sTitle)
 {
     std::ostringstream os;
     os << "Build: " << __DATE__ << " @ " << __TIME__;
@@ -45,14 +45,16 @@ BOOL CAboutDlg::OnInitDialog()
     sText.Format(_T("%s\n\n%s"), m_sTitle, m_sDate);
     SetWindowText(sTitle);
     SetDlgItemText(IDC_STATIC_MESSAGE, sText);
-    const TCHAR *_sURL[4] = {
+    const TCHAR *_sURL[4] =
+    {
         _T("https://www.nuvoton.com/"),
         _T("https://github.com/OpenNuvoton/ISPTool/"),
         _T("https://gitee.com/OpenNuvoton/ISPTool/"),
         _T("https://gitlab.com/OpenNuvoton/nuvoton-tools/ISPTool/")
     };
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; i++)
+    {
         m_LinkUrl[i].SetWindowText(_sURL[i]);
         m_LinkUrl[i].SetURL(_sURL[i]);
         m_LinkUrl[i].SizeToContent();

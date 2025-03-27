@@ -5,6 +5,7 @@
 #include <deque>
 #include <string>
 #include <utility>
+#include "Lang.h"
 #include "ChipDefs.h"
 #include "NumEdit.h"
 #include "AppConfig.h"
@@ -12,16 +13,17 @@
 #include <cassert>
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+    #define new DEBUG_NEW
+    #undef THIS_FILE
+    static char THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_Nano103 dialog
 
+
 CDialogConfiguration_Nano103::CDialogConfiguration_Nano103(unsigned int uProgramMemorySize,
-        CWnd *pParent /*=NULL*/)
+                                                           CWnd* pParent /*=NULL*/)
     : CDialogResize(CDialogConfiguration_Nano103::IDD, pParent)
     , m_uProgramMemorySize(uProgramMemorySize)
 {
@@ -36,7 +38,8 @@ CDialogConfiguration_Nano103::CDialogConfiguration_Nano103(unsigned int uProgram
     //}}AFX_DATA_INIT
 }
 
-void CDialogConfiguration_Nano103::DoDataExchange(CDataExchange *pDX)
+
+void CDialogConfiguration_Nano103::DoDataExchange(CDataExchange* pDX)
 {
     CDialogResize::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CDialogConfiguration_Nano103)
@@ -56,6 +59,7 @@ void CDialogConfiguration_Nano103::DoDataExchange(CDataExchange *pDX)
     DDX_Text(pDX, IDC_EDIT_DATA_FLASH_SIZE, m_sDataFlashSize);
     //}}AFX_DATA_MAP
 }
+
 
 BEGIN_MESSAGE_MAP(CDialogConfiguration_Nano103, CDialog)
     //{{AFX_MSG_MAP(CDialogConfiguration_Nano103)
@@ -100,27 +104,33 @@ END_MESSAGE_MAP()
 BOOL CDialogConfiguration_Nano103::OnInitDialog()
 {
     CDialog::OnInitDialog();
+
     // TODO: Add extra initialization here
     UDACCEL pAccel[1];
     pAccel[0].nInc = 1;
     pAccel[0].nSec = 0;
     m_SpinDataFlashSize.SetAccel(1, pAccel);
+
     ConfigToGUI();
     //GUIToConfig();
     UpdateData(FALSE);
+
     m_bIsInitialized = true;
     GetWindowRect(m_rect);
     AdjustDPI();
+
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
 }
+
 
 void CDialogConfiguration_Nano103::ConfigToGUI()
 {
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
     unsigned int uConfig1 = m_ConfigValue.m_value[1];
 
-    switch (uConfig0 & NANO103_FLASH_CONFIG_CBORST) {
+    switch (uConfig0 & NANO103_FLASH_CONFIG_CBORST)
+    {
         case NANO103_FLASH_CONFIG_CBORST_31:
             m_nRadioBor = 0;
             break;
@@ -182,7 +192,8 @@ void CDialogConfiguration_Nano103::ConfigToGUI()
             uConfig0 |= (m_ConfigValue.m_value[0] & NANO103_FLASH_CONFIG_CBORST);
     }
 
-    switch (uConfig0 & NANO100_FLASH_CONFIG_CBS) {
+    switch (uConfig0 & NANO100_FLASH_CONFIG_CBS)
+    {
         case NANO100_FLASH_CONFIG_CBS_LD:
             m_nRadioBS = 0;
             break;
@@ -201,19 +212,22 @@ void CDialogConfiguration_Nano103::ConfigToGUI()
             break;
     }
 
-    m_bDataFlashEnable = ((uConfig0 & NUMICRO_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
+    m_bDataFlashEnable = ((uConfig0 & NANO100_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
     m_bCheckBrownOutDetect = ((uConfig0 & NANO103_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
     m_bClkStopDetect = ((uConfig0 & NANO100_FLASH_CONFIG_CCKSTOP) == 0 ? TRUE : FALSE);
     m_bMassErase = ((uConfig0 & NANO100_FLASH_CONFIG_MERASE) == 0 ? TRUE : FALSE);
-    m_bSecurityLock = ((uConfig0 & NUMICRO_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    m_bSecurityLock = ((uConfig0 & NANO100_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+
     unsigned int uFlashBaseAddress = uConfig1 & 0xFFFFF;
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
+
     unsigned int uPageNum = uFlashBaseAddress / NUMICRO_FLASH_PAGE_SIZE_512;
     unsigned int uLimitNum = m_uProgramMemorySize / NUMICRO_FLASH_PAGE_SIZE_512;
     unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * NUMICRO_FLASH_PAGE_SIZE_512) : 0;
     m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uDataFlashSize : 0) / 1024.);
     m_SpinDataFlashSize.EnableWindow(m_bDataFlashEnable ? TRUE : FALSE);
     GetDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS)->EnableWindow(m_bDataFlashEnable);
+
     m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
     m_sConfigValue1.Format(_T("0x%08X"), uConfig1);
 }
@@ -223,9 +237,11 @@ void CDialogConfiguration_Nano103::GUIToConfig()
     //unsigned int uConfig0 = m_ConfigValue.m_value[0];
     unsigned int uConfig0 = 0xFFFFFFFF;
     unsigned int uConfig1;
+
     uConfig0 &= ~NANO100_FLASH_CONFIG_CBS;
 
-    switch (m_nRadioBS) {
+    switch (m_nRadioBS)
+    {
         case 0:
             uConfig0 |= NANO100_FLASH_CONFIG_CBS_LD;
             break;
@@ -249,7 +265,8 @@ void CDialogConfiguration_Nano103::GUIToConfig()
 
     uConfig0 &= ~NANO103_FLASH_CONFIG_CBORST;
 
-    switch (m_nRadioBor) {
+    switch (m_nRadioBor)
+    {
         case 0:
             uConfig0 |= NANO103_FLASH_CONFIG_CBORST_31;
             break;
@@ -311,38 +328,36 @@ void CDialogConfiguration_Nano103::GUIToConfig()
             uConfig0 |= (m_ConfigValue.m_value[0] & NANO103_FLASH_CONFIG_CBORST);
     }
 
-    if (m_bCheckBrownOutDetect) {
+    if (m_bCheckBrownOutDetect)
         uConfig0 &= ~NANO103_FLASH_CONFIG_CBODEN;
-    } else {
+    else
         uConfig0 |= NANO103_FLASH_CONFIG_CBODEN;
-    }
 
-    if (m_bDataFlashEnable) {
-        uConfig0 &= ~NUMICRO_FLASH_CONFIG_DFEN;
-    } else {
-        uConfig0 |= NUMICRO_FLASH_CONFIG_DFEN;
+    if (m_bDataFlashEnable)
+        uConfig0 &= ~NANO100_FLASH_CONFIG_DFEN;
+    else
+    {
+        uConfig0 |= NANO100_FLASH_CONFIG_DFEN;
         m_sFlashBaseAddress = "FFFFFFFF";
     }
 
-    if (m_bClkStopDetect) {
+    if (m_bClkStopDetect)
         uConfig0 &= ~NANO100_FLASH_CONFIG_CCKSTOP;
-    } else {
+    else
         uConfig0 |= NANO100_FLASH_CONFIG_CCKSTOP;
-    }
 
-    if (m_bMassErase) {
+    if (m_bMassErase)
         uConfig0 &= ~NANO100_FLASH_CONFIG_MERASE;
-    } else {
+    else
         uConfig0 |= NANO100_FLASH_CONFIG_MERASE;
-    }
 
-    if (m_bSecurityLock) {
-        uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
-    } else {
-        uConfig0 |= NUMICRO_FLASH_CONFIG_LOCK;
-    }
+    if (m_bSecurityLock)
+        uConfig0 &= ~NANO100_FLASH_CONFIG_LOCK;
+    else
+        uConfig0 |= NANO100_FLASH_CONFIG_LOCK;
 
     m_ConfigValue.m_value[0] = uConfig0;
+
     TCHAR *pEnd;
     uConfig1 = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
     m_ConfigValue.m_value[1] = uConfig1;// | 0xFFF00000;
@@ -352,8 +367,10 @@ void CDialogConfiguration_Nano103::OnButtonClick()
 {
     // TODO: Add your control notification handler code here
     UpdateData(TRUE);
+
     GUIToConfig();
     ConfigToGUI();
+
     UpdateData(FALSE);
 }
 
@@ -367,9 +384,35 @@ void CDialogConfiguration_Nano103::OnOK()
 {
     // TODO: Add extra validation here
     UpdateData(TRUE);
+
     OnKillfocusEditFlashBaseAddress();
     GUIToConfig();
+
     CDialog::OnOK();
+}
+
+
+CString CDialogConfiguration_Nano103::GetConfigWarning(const CAppConfig::Nano100_configs_t &config)
+{
+    CString str;
+    unsigned int uConfig0 = config.m_value[0];
+
+    switch (uConfig0 & NANO100_FLASH_CONFIG_CFOSC)
+    {
+        case NANO100_FLASH_CONFIG_E12M:
+            str += _T("   ") + _I(IDS_SELECT_EXTERNAL_12M_CLOCK);
+            break;
+
+        default:
+            ;
+    }
+
+    BOOL bSecurityLock = ((uConfig0 & NANO100_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+
+    if (!bSecurityLock)
+        str += _T("   ") + _I(IDS_DISABLE_SECURITY_LOCK);
+
+    return str;
 }
 
 void CDialogConfiguration_Nano103::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)
@@ -378,11 +421,10 @@ void CDialogConfiguration_Nano103::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LR
     CDialogResize::OnDeltaposSpinDataFlashSize(pNMHDR, pResult, m_bDataFlashEnable, m_uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_512);
 }
 
-void CDialogConfiguration_Nano103::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
+void CDialogConfiguration_Nano103::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
-    if (pScrollBar != NULL && pScrollBar->GetDlgCtrlID() == m_SpinDataFlashSize.GetDlgCtrlID()) {
+    if (pScrollBar != NULL && pScrollBar->GetDlgCtrlID() == m_SpinDataFlashSize.GetDlgCtrlID())
         return;
-    }
 
     CDialogResize::OnVScroll(nSBCode, nPos, pScrollBar);
 }

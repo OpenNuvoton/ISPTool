@@ -2,13 +2,14 @@
 #define AFX_DIALOGCHIPSETTING_CFG_M460_H__E0CD7A09_C5DC_481E_A871_03B423E615F8__INCLUDED_
 
 #if _MSC_VER > 1000
-#pragma once
+    #pragma once
 #endif // _MSC_VER > 1000
 // DialogChipSetting_CFG_M460.h : header file
 //
 
 #include "DialogResize.h"
 #include "NumEdit.h"
+
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogChipSetting_CFG_M460 dialog
@@ -17,63 +18,61 @@ class CDialogChipSetting_CFG_M460 : public CDialogResize
 {
     DECLARE_DYNAMIC(CDialogChipSetting_CFG_M460)
 
-// Construction
+    // Construction
 public:
-    CDialogChipSetting_CFG_M460(CWnd *pParent = NULL);		// standard constructor
+    CDialogChipSetting_CFG_M460(CWnd* pParent = NULL);      // standard constructor
+    virtual ~CDialogChipSetting_CFG_M460();
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CDialogChipSetting_CFG_M460)
     enum { IDD = IDD_DIALOG_CHIP_SETTING_CFG_M460 };
 
-    int				m_nRadioCWDTEN;
-    int				m_nRadioCBOV;
-    int				m_nRadioCIOINI;
-    int				m_nRadioCBS;
+    int             m_nRadioCWDTEN;
+    int             m_nRadioCBOV;
+    int             m_nRadioCIOINI;
+    int             m_nRadioCBS;
 
-    BOOL			m_bCheckCBORST;
-    BOOL			m_bCheckCBODEN;
-    BOOL			m_bCheckICELOCK;
-    BOOL			m_bCheckLOCK;
-    BOOL			m_bCheckDFEN;
+    BOOL            m_bCheckCBORST;
+    BOOL            m_bCheckCBODEN;
+    BOOL            m_bCheckICELOCK;
+    BOOL            m_bCheckLOCK;
+    BOOL            m_bCheckDFEN;
 
-    BOOL			m_bCheckISP_UART;
-    BOOL			m_bCheckISP_USB;
-    BOOL			m_bCheckISP_CAN;
-    BOOL			m_bCheckISP_I2C;
-    BOOL			m_bCheckISP_SPI;
+    BOOL            m_bCheckISP_UART;
+    BOOL            m_bCheckISP_USB;
+    BOOL            m_bCheckISP_CAN;
+    BOOL            m_bCheckISP_I2C;
+    BOOL            m_bCheckISP_SPI;
 
-    CNumEdit		m_DataFlashBase;
-    CEdit			m_DataFlashSize;
-    CSpinButtonCtrl	m_SpinDataFlashSize;
+    CNumEdit        m_DataFlashBase;
+    CEdit           m_DataFlashSize;
+    CSpinButtonCtrl m_SpinDataFlashSize;
 
-    CNumEdit		m_ALOCK;
-    CString			m_sALOCK;
+    CNumEdit        m_ALOCK;
+    CString         m_sALOCK;
 
-    CNumEdit		m_KSPLOCK;
-    CString			m_sKSPLOCK;
+    CNumEdit        m_KSPLOCK;
+    CString         m_sKSPLOCK;
 
-    CString			m_sDataFlashBase;
-    CString			m_sDataFlashSize;
+    CString         m_sDataFlashBase;
+    CString         m_sDataFlashSize;
 
-    CString			m_sConfigValue0;
-    CString			m_sConfigValue1;
-    CString			m_sConfigValue2;
-    CString			m_sConfigValue3;
+    CString         m_sConfigValue0;
+    CString         m_sConfigValue1;
+    CString         m_sConfigValue2;
+    CString         m_sConfigValue3;
 
-    unsigned int	m_uPID;
-    unsigned int	m_uDID;
-    unsigned int	m_uConfigValue[14];
-    unsigned int	m_uConfigValue_t[14];
+    unsigned int    m_uProgramMemorySize;
+    unsigned int    m_uFlashPageSize;
+    unsigned int    m_uConfigValue[14];
+    unsigned int    m_uConfigValue_t[14];
     //}}AFX_DATA
 
-    unsigned int	m_uProgramMemorySize;
-    unsigned int	m_uFlashPageSize;
 protected:
-
     // Generated message map functions
-    //{{AFX_MSG(CDialogChipSetting_CFG_M0A21)
+    //{{AFX_MSG(CDialogChipSetting_CFG_M460)
     BOOL OnInitDialog();
-    void DoDataExchange(CDataExchange *pDX);	// DDX/DDV support
+    void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
     virtual void UpdateUI();
     virtual void ConfigToGUI();

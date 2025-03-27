@@ -14,7 +14,8 @@
 #include "IGetChipInformation.h" // for enum eAllChipSeries
 
 // Note: There is no dynamic info. for NUC505 & M2351.
-struct CChipConfigInfo {
+struct CChipConfigInfo
+{
     // Static Info.
     unsigned int uID;
     unsigned int uSeriesCode;
@@ -38,6 +39,8 @@ struct CChipConfigInfo {
 extern CChipConfigInfo gsChipCfgInfo;
 bool GetChipDynamicInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfig1);
 bool GetInfo_NuVoice(DWORD dwChipID, DWORD* pConfig);
+
+unsigned int GetFlashType(unsigned int uID, unsigned int uConfig0, unsigned int uConfig1);
 
 extern std::vector<CPartNumID> g_NuMicroChipSeries;
 extern std::vector<CPartNumID> g_AudioChipSeries;

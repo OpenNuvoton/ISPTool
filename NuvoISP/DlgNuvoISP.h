@@ -5,7 +5,7 @@
 #define _DLG_NUVOISP_H_
 
 #if _MSC_VER > 1000
-#pragma once
+    #pragma once
 #endif // _MSC_VER > 1000
 
 #include "Resource.h"
@@ -18,7 +18,7 @@
 
 class CNuvoISPDlg: public CDialogMain, public CISPProc
 {
-// Construction
+    // Construction
 public:
     enum { IDD = IDD_DIALOG_NUVOISP_WITH_SPI};
 
@@ -29,21 +29,21 @@ public:
     virtual void ShowSPIOptions(BOOL bShow);
     virtual void ShowNVMOptions(BOOL bShow);
 
-    CNuvoISPDlg(UINT Template = CNuvoISPDlg::IDD, CWnd *pParent = NULL);	// standard constructor
+    CNuvoISPDlg(UINT Template = CNuvoISPDlg::IDD, CWnd *pParent = NULL);    // standard constructor
     virtual ~CNuvoISPDlg();
-    CString	m_sConnect;
-    CTabCtrl	m_TabData;
+    CString m_sConnect;
+    CTabCtrl    m_TabData;
     CDialogHex *pViewer[NUM_VIEW];
-    CProgressCtrl	m_Progress;
+    CProgressCtrl   m_Progress;
 
     WINCTRLID m_CtrlID[NUM_VIEW];
     // virtual BOOL PreCreateWindow(CREATESTRUCT& cs)
 
     // Temp
     BOOL m_bConnect;
-    CButton	m_ButtonConnect;
+    CButton m_ButtonConnect;
     void OnButtonBinFile(int idx, TCHAR *szPath = NULL);
-    CString	m_sStatus;
+    CString m_sStatus;
 
     void EnableProgramOption(BOOL bEnable);
 
@@ -52,6 +52,7 @@ protected:
     // Generated message map functions
     //{{AFX_MSG(CNuvoISPDlg)
     void OnOK() {};
+
     //afx_msg void OnClose();
     virtual BOOL OnInitDialog();
     afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
@@ -65,7 +66,7 @@ protected:
     afx_msg void OnPaint();
     afx_msg void OnKillfocusEditAPRomOffset();
     //}}AFX_MSG
-    virtual void DoDataExchange(CDataExchange *pDX);	// DDX/DDV support
+    virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
     virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
     //afx_msg BOOL OnDeviceChange(UINT nEventType, DWORD dwData);
     afx_msg LRESULT  OnDeviceChange(WPARAM  nEventType, LPARAM  dwData);

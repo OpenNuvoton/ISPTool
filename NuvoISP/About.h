@@ -11,7 +11,7 @@ class CAboutDlg : public CDialog
 public:
     CAboutDlg(const CString &sTitle);
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CAboutDlg)
     enum { IDD = IDD_ABOUTBOX };
     CMFCLinkCtrl m_LinkUrl[4];
@@ -23,10 +23,10 @@ protected:
     virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
-    CString	m_sTitle;
-    CString	m_sDate;
+    CString m_sTitle;
+    CString m_sDate;
     //{{AFX_MSG(CAboutDlg)
     virtual BOOL OnInitDialog();
     //}}AFX_MSG

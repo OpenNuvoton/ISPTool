@@ -15,10 +15,12 @@ hid_device *CHidIO2::hid_open(unsigned short vendor_id, unsigned short product_i
     devs = hid_enumerate(vendor_id, product_id);
     cur_dev = devs;
 
-    while (cur_dev) {
+    while (cur_dev)
+    {
         if (cur_dev->vendor_id == vendor_id &&
-                cur_dev->product_id == product_id &&
-                ((-1 == interface_number) || (cur_dev->interface_number == interface_number))) {
+        cur_dev->product_id == product_id &&
+        ((-1 == interface_number) || (cur_dev->interface_number == interface_number)))
+        {
             path_to_open = cur_dev->path;
             break;
         }
@@ -26,11 +28,14 @@ hid_device *CHidIO2::hid_open(unsigned short vendor_id, unsigned short product_i
         cur_dev = cur_dev->next;
     }
 
-    if (path_to_open) {
+    if (path_to_open)
+    {
         /* Open the device */
         handle = hid_open_path(path_to_open);
         sDevPath = CString(path_to_open);
-    } else {
+    }
+    else
+    {
         sDevPath = _T("");
     }
 
@@ -42,7 +47,8 @@ hid_device *CHidIO2::hid_open(unsigned short vendor_id, unsigned short product_i
 CHidIO2::CHidIO2()
     : handle(0)
 {
-    if (hid_init()) {
+    if (hid_init())
+    {
         throw (_T("hid_init failed"));
     }
 }
@@ -56,7 +62,8 @@ CHidIO2::~CHidIO2()
 
 void CHidIO2::CloseDevice()
 {
-    if (handle) {
+    if (handle)
+    {
         hid_close(handle);
         handle = 0;
     }
@@ -64,14 +71,16 @@ void CHidIO2::CloseDevice()
 
 BOOL CHidIO2::OpenDevice(unsigned short vendor_id, unsigned short product_id, int interface_number)
 {
-    if (!handle) {
+    if (!handle)
+    {
         handle = CHidIO2::hid_open(vendor_id, product_id, interface_number);
     }
 
     BOOL ret = (handle != 0);
 
     // Set the hid_read() function to be blocking.
-    if (ret) {
+    if (ret)
+    {
         hid_set_nonblocking(handle, 0);
     }
 
@@ -85,11 +94,13 @@ BOOL CHidIO2::ReadFile(char *pcBuffer, size_t szMaxLen, DWORD *pdwLength, DWORD 
     res = hid_read_timeout(handle, buf, szMaxLen, dwMilliseconds);
     BOOL ret = (res == (szMaxLen - 1));
 
-    if (ret) {
+    if (ret)
+    {
         memcpy(pcBuffer + 1, buf, res);
     }
 
-    if (pdwLength != NULL) {
+    if (pdwLength != NULL)
+    {
         *pdwLength = res;
     }
 

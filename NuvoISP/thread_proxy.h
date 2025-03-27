@@ -9,7 +9,8 @@ template <class T>
 class thread_proxy_imp
 {
 protected:
-    typedef struct {
+    typedef struct
+    {
         DWORD (T::*lpStartAddress)(LPVOID);
         T *obj;
         LPVOID lpParameter;
@@ -49,19 +50,19 @@ public:
                  CREATE_SUSPENDED);
         rt->m_bAutoDelete = FALSE;
         rt->ResumeThread();
-        //	lpThreadAttributes,
-        //	dwStackSize,
-        //	&thread_proxy_imp::thread_proxy_entry,
-        //	static_cast<LPVOID> (&param),
-        //	dwCreationFlags,
-        //	&uThreadID );
-        //	if( lpThreadId )
-        //		*lpThreadId=uThreadID;
+        //  lpThreadAttributes,
+        //  dwStackSize,
+        //  &thread_proxy_imp::thread_proxy_entry,
+        //  static_cast<LPVOID> (&param),
+        //  dwCreationFlags,
+        //  &uThreadID );
+        //  if( lpThreadId )
+        //      *lpThreadId=uThreadID;
         /*
         {
-        	char szTmp[128];
-        	wsprintf( szTmp, ">>>>>>>>>>4<< Thread ID= %X\n", dwThreadID );
-        	OutputDebugString( szTmp );
+            char szTmp[128];
+            wsprintf( szTmp, ">>>>>>>>>>4<< Thread ID= %X\n", dwThreadID );
+            OutputDebugString( szTmp );
         }
         */
         ::WaitForSingleObject(param.sem, INFINITE);
@@ -84,12 +85,12 @@ CWinThread *thread_proxy(
 )
 {
     return thread_proxy_imp<T> ().create_thread(obj,
-            lpThreadAttributes,
-            dwStackSize,
-            lpStartAddress,
-            lpParameter,
-            dwCreationFlags,
-            lpThreadId);
+                                                lpThreadAttributes,
+                                                dwStackSize,
+                                                lpStartAddress,
+                                                lpParameter,
+                                                dwCreationFlags,
+                                                lpThreadId);
 }
 
 

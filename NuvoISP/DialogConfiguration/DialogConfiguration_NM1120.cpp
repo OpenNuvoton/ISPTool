@@ -5,6 +5,7 @@
 #include <deque>
 #include <string>
 #include <utility>
+#include "Lang.h"
 #include "ChipDefs.h"
 #include "NumEdit.h"
 #include "AppConfig.h"
@@ -12,16 +13,17 @@
 #include <cassert>
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+    #define new DEBUG_NEW
+    #undef THIS_FILE
+    static char THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_NM1120 dialog
 
+
 CDialogConfiguration_NM1120::CDialogConfiguration_NM1120(unsigned int uProgramMemorySize,
-        CWnd *pParent /*=NULL*/)
+                                                         CWnd* pParent /*=NULL*/)
     : CDialogResize(CDialogConfiguration_NM1120::IDD, pParent)
     , m_uProgramMemorySize(uProgramMemorySize)
 {
@@ -40,7 +42,8 @@ CDialogConfiguration_NM1120::CDialogConfiguration_NM1120(unsigned int uProgramMe
     //}}AFX_DATA_INIT
 }
 
-void CDialogConfiguration_NM1120::DoDataExchange(CDataExchange *pDX)
+
+void CDialogConfiguration_NM1120::DoDataExchange(CDataExchange* pDX)
 {
     CDialogResize::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CDialogConfiguration_NM1120)
@@ -113,24 +116,33 @@ END_MESSAGE_MAP()
 BOOL CDialogConfiguration_NM1120::OnInitDialog()
 {
     CDialog::OnInitDialog();
+
     // TODO: Add extra initialization here
     UDACCEL pAccel[1];
     pAccel[0].nInc = 1;
     pAccel[0].nSec = 0;
     m_SpinDataFlashSize.SetAccel(1, pAccel);
+
     ConfigToGUI();
+
     UpdateData(FALSE);
+
     m_bIsInitialized = true;
     GetWindowRect(m_rect);
     AdjustDPI();
+
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
 }
+
+
+
 
 void CDialogConfiguration_NM1120::ConfigToGUI()
 {
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
     unsigned int uConfig1 = m_ConfigValue.m_value[1];
+
     m_nGPA0rini = (uConfig0 & NM1120_FLASH_CONFIG_GPA0NIRI) >> 16;
     m_nGPA1rini = (uConfig0 & NM1120_FLASH_CONFIG_GPA1NIRI) >> 18;
     m_nGPA2rini = (uConfig0 & NM1120_FLASH_CONFIG_GPA2NIRI) >> 20;
@@ -138,31 +150,26 @@ void CDialogConfiguration_NM1120::ConfigToGUI()
     m_nGPA4rini = (uConfig0 & NM1120_FLASH_CONFIG_GPA4NIRI) >> 24;
     m_nGPA5rini = (uConfig0 & NM1120_FLASH_CONFIG_GPA5NIRI) >> 26;
 
-    if (m_nGPA0rini == 3) {
+    if (m_nGPA0rini == 3)
         m_nGPA0rini = 2;
-    }
 
-    if (m_nGPA1rini == 3) {
+    if (m_nGPA1rini == 3)
         m_nGPA1rini = 2;
-    }
 
-    if (m_nGPA2rini == 3) {
+    if (m_nGPA2rini == 3)
         m_nGPA2rini = 2;
-    }
 
-    if (m_nGPA3rini == 3) {
+    if (m_nGPA3rini == 3)
         m_nGPA3rini = 2;
-    }
 
-    if (m_nGPA4rini == 3) {
+    if (m_nGPA4rini == 3)
         m_nGPA4rini = 2;
-    }
 
-    if (m_nGPA5rini == 3) {
+    if (m_nGPA5rini == 3)
         m_nGPA5rini = 2;
-    }
 
-    switch (uConfig0 & NM1120_FLASH_CONFIG_CBOV) {
+    switch (uConfig0 & NM1120_FLASH_CONFIG_CBOV)
+    {
         case NM1120_FLASH_CONFIG_CBOV_20:
             m_nRadioBov = 0;
             break;
@@ -200,7 +207,8 @@ void CDialogConfiguration_NM1120::ConfigToGUI()
             break;
     }
 
-    switch (uConfig0 & NM1120_FLASH_CONFIG_CBS) {
+    switch (uConfig0 & NM1120_FLASH_CONFIG_CBS)
+    {
         case NM1120_FLASH_CONFIG_CBS_LD:
             m_nRadioBS = 0;
             break;
@@ -225,16 +233,19 @@ void CDialogConfiguration_NM1120::ConfigToGUI()
     m_nRadioIO = ((uConfig0 & NM1120_FLASH_CONFIG_CIOINI) == 0 ? 1 : 0);
     m_bCheckBrownOutEnable = ((uConfig0 & NM1120_FLASH_CONFIG_CBOVEN) == 0 ? TRUE : FALSE);
     m_bCheckBrownOutReset = ((uConfig0 & NM1120_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
-    m_bDataFlashEnable = ((uConfig0 & NUMICRO_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
-    m_bSecurityLock = ((uConfig0 & NUMICRO_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    m_bDataFlashEnable = ((uConfig0 & NM1120_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
+    m_bSecurityLock = ((uConfig0 & NM1120_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+
     unsigned int uFlashBaseAddress = uConfig1 & 0xFFFFF;
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
+
     unsigned int uPageNum = uFlashBaseAddress / NUMICRO_FLASH_PAGE_SIZE_512;
     unsigned int uLimitNum = m_uProgramMemorySize / NUMICRO_FLASH_PAGE_SIZE_512;
     unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * NUMICRO_FLASH_PAGE_SIZE_512) : 0;
     m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uDataFlashSize : 0) / 1024.);
     m_SpinDataFlashSize.EnableWindow(m_bDataFlashEnable ? TRUE : FALSE);
     GetDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS)->EnableWindow(m_bDataFlashEnable);
+
     m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
     m_sConfigValue1.Format(_T("0x%08X"), uConfig1);
 }
@@ -244,9 +255,11 @@ void CDialogConfiguration_NM1120::GUIToConfig()
     //unsigned int uConfig0 = m_ConfigValue.m_value[0];
     unsigned int uConfig0 = 0xFFFFFFFF;
     unsigned int uConfig1;
+
     uConfig0 &= ~NM1120_FLASH_CONFIG_GPA0NIRI;
 
-    switch (m_nGPA0rini) {
+    switch (m_nGPA0rini)
+    {
         case 0:
             uConfig0 |= (0x0 << 16);
             break;
@@ -268,7 +281,8 @@ void CDialogConfiguration_NM1120::GUIToConfig()
 
     uConfig0 &= ~NM1120_FLASH_CONFIG_GPA1NIRI;
 
-    switch (m_nGPA1rini) {
+    switch (m_nGPA1rini)
+    {
         case 0:
             uConfig0 |= (0x0 << 18);
             break;
@@ -290,7 +304,8 @@ void CDialogConfiguration_NM1120::GUIToConfig()
 
     uConfig0 &= ~NM1120_FLASH_CONFIG_GPA2NIRI;
 
-    switch (m_nGPA2rini) {
+    switch (m_nGPA2rini)
+    {
         case 0:
             uConfig0 |= (0x0 << 20);
             break;
@@ -312,7 +327,8 @@ void CDialogConfiguration_NM1120::GUIToConfig()
 
     uConfig0 &= ~NM1120_FLASH_CONFIG_GPA3NIRI;
 
-    switch (m_nGPA3rini) {
+    switch (m_nGPA3rini)
+    {
         case 0:
             uConfig0 |= (0x0 << 22);
             break;
@@ -334,7 +350,8 @@ void CDialogConfiguration_NM1120::GUIToConfig()
 
     uConfig0 &= ~NM1120_FLASH_CONFIG_GPA4NIRI;
 
-    switch (m_nGPA4rini) {
+    switch (m_nGPA4rini)
+    {
         case 0:
             uConfig0 |= (0x0 << 24);
             break;
@@ -356,7 +373,8 @@ void CDialogConfiguration_NM1120::GUIToConfig()
 
     uConfig0 &= ~NM1120_FLASH_CONFIG_GPA5NIRI;
 
-    switch (m_nGPA5rini) {
+    switch (m_nGPA5rini)
+    {
         case 0:
             uConfig0 |= (0x0 << 26);
             break;
@@ -378,36 +396,37 @@ void CDialogConfiguration_NM1120::GUIToConfig()
 
     uConfig0 &= ~NM1120_FLASH_CONFIG_CBOV;
 
-    switch (m_nRadioBov) {
-        case 0:	//2.0V
+    switch (m_nRadioBov)
+    {
+        case 0: //2.0V
             uConfig0 |= NM1120_FLASH_CONFIG_CBOV_20;
             break;
 
-        case 1:	//2.2V
+        case 1: //2.2V
             uConfig0 |= NM1120_FLASH_CONFIG_CBOV_22;
             break;
 
-        case 2:	//2.4V
+        case 2: //2.4V
             uConfig0 |= NM1120_FLASH_CONFIG_CBOV_24;
             break;
 
-        case 3:	//2.7V
+        case 3: //2.7V
             uConfig0 |= NM1120_FLASH_CONFIG_CBOV_27;
             break;
 
-        case 4:	//3.0V
+        case 4: //3.0V
             uConfig0 |= NM1120_FLASH_CONFIG_CBOV_30;
             break;
 
-        case 5:	//3.7V
+        case 5: //3.7V
             uConfig0 |= NM1120_FLASH_CONFIG_CBOV_37;
             break;
 
-        case 6:	//4.0V
+        case 6: //4.0V
             uConfig0 |= NM1120_FLASH_CONFIG_CBOV_40;
             break;
 
-        case 7:	//4.3V
+        case 7: //4.3V
             uConfig0 |= NM1120_FLASH_CONFIG_CBOV_43;
             break;
 
@@ -417,15 +436,15 @@ void CDialogConfiguration_NM1120::GUIToConfig()
             break;
     }
 
-    if (m_nRadioIO) {
+    if (m_nRadioIO)
         uConfig0 &= ~NM1120_FLASH_CONFIG_CIOINI;
-    } else {
+    else
         uConfig0 |= NM1120_FLASH_CONFIG_CIOINI;
-    }
 
     uConfig0 &= ~NM1120_FLASH_CONFIG_CBS;
 
-    switch (m_nRadioBS) {
+    switch (m_nRadioBS)
+    {
         case 0:
             uConfig0 |= NM1120_FLASH_CONFIG_CBS_LD;
             break;
@@ -448,32 +467,32 @@ void CDialogConfiguration_NM1120::GUIToConfig()
             break;
     }
 
-    if (m_bCheckBrownOutReset) {
+    if (m_bCheckBrownOutReset)
         uConfig0 &= ~NM1120_FLASH_CONFIG_CBORST;
-    } else {
+    else
         uConfig0 |= NM1120_FLASH_CONFIG_CBORST;
-    }
 
-    if (m_bCheckBrownOutEnable) {
+    if (m_bCheckBrownOutEnable)
         uConfig0 &= ~NM1120_FLASH_CONFIG_CBOVEN;
-    } else {
+    else
         uConfig0 |= NM1120_FLASH_CONFIG_CBOVEN;
-    }
 
-    if (m_bDataFlashEnable) {
-        uConfig0 &= ~NUMICRO_FLASH_CONFIG_DFEN;
-    } else {
-        uConfig0 |= NUMICRO_FLASH_CONFIG_DFEN;
+    if (m_bDataFlashEnable)
+        uConfig0 &= ~NM1120_FLASH_CONFIG_DFEN;
+    else
+    {
+        uConfig0 |= NM1120_FLASH_CONFIG_DFEN;
         m_sFlashBaseAddress = "FFFFFFFF";
     }
 
-    if (m_bSecurityLock) {
-        uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
-    } else {
-        uConfig0 |= NUMICRO_FLASH_CONFIG_LOCK;
-    }
+    if (m_bSecurityLock)
+        uConfig0 &= ~NM1120_FLASH_CONFIG_LOCK;
+    else
+        uConfig0 |= NM1120_FLASH_CONFIG_LOCK;
+
 
     m_ConfigValue.m_value[0] = uConfig0;
+
     TCHAR *pEnd;
     uConfig1 = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
     m_ConfigValue.m_value[1] = uConfig1;// | 0xFFF00000;
@@ -483,8 +502,10 @@ void CDialogConfiguration_NM1120::OnButtonClick()
 {
     // TODO: Add your control notification handler code here
     UpdateData(TRUE);
+
     GUIToConfig();
     ConfigToGUI();
+
     UpdateData(FALSE);
 }
 
@@ -498,9 +519,25 @@ void CDialogConfiguration_NM1120::OnOK()
 {
     // TODO: Add extra validation here
     UpdateData(TRUE);
+
     OnKillfocusEditFlashBaseAddress();
     GUIToConfig();
+
     CDialog::OnOK();
+}
+
+
+CString CDialogConfiguration_NM1120::GetConfigWarning(const CAppConfig::NM1120_configs_t &config)
+{
+    CString str;
+    unsigned int uConfig0 = config.m_value[0];
+
+    BOOL bSecurityLock = ((uConfig0 & NM1120_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+
+    if (!bSecurityLock)
+        str += _T("   ") + _I(IDS_DISABLE_SECURITY_LOCK);
+
+    return str;
 }
 
 void CDialogConfiguration_NM1120::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)
@@ -509,11 +546,10 @@ void CDialogConfiguration_NM1120::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRE
     CDialogResize::OnDeltaposSpinDataFlashSize(pNMHDR, pResult, m_bDataFlashEnable, m_uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_512);
 }
 
-void CDialogConfiguration_NM1120::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
+void CDialogConfiguration_NM1120::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
-    if (pScrollBar != NULL && pScrollBar->GetDlgCtrlID() == m_SpinDataFlashSize.GetDlgCtrlID()) {
+    if (pScrollBar != NULL && pScrollBar->GetDlgCtrlID() == m_SpinDataFlashSize.GetDlgCtrlID())
         return;
-    }
 
     CDialogResize::OnVScroll(nSBCode, nPos, pScrollBar);
 }

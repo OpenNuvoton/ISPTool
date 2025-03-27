@@ -1,35 +1,41 @@
 // DialogChipSetting_CFG_M2351.cpp : implementation file
 //
 #include "stdafx.h"
+#include "Lang.h"
 #include "ChipDefs.h"
 #include "DialogChipSetting_CFG_M2351.h"
+
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogChipSetting_CFG_M2351 dialog
 IMPLEMENT_DYNAMIC(CDialogChipSetting_CFG_M2351, CDialog)
 
-CDialogChipSetting_CFG_M2351::CDialogChipSetting_CFG_M2351(CWnd *pParent /*=NULL*/)
+CDialogChipSetting_CFG_M2351::CDialogChipSetting_CFG_M2351(CWnd* pParent /*=NULL*/)
     : CDialogResize(CDialogChipSetting_CFG_M2351::IDD, pParent)
 {
     //{{AFX_DATA_INIT(CDialogChipSetting_CFG_M2351)
-    m_nRadioCBOV	= -1;
-    m_nRadioCBS		= -1;
-    m_nRadioCFGXT1	= -1;
-    m_nRadioCIOINI	= -1;
-    m_nRadioUART	= -1;
-    m_nRadioCWDTEN	= -1;
-    m_bDisableICE	= FALSE;
-    m_bCheckMBS		= FALSE;
-    m_bCheckCBODEN	= FALSE;
-    m_bCheckCBORST	= FALSE;
-    m_bTamperPowerDown	= FALSE;
+    m_nRadioCBOV    = -1;
+    m_nRadioCBS     = -1;
+    m_nRadioCFGXT1  = -1;
+    m_nRadioCIOINI  = -1;
+    m_nRadioUART    = -1;
+    m_nRadioCWDTEN  = -1;
+    //m_bDisableICE = FALSE;
+    m_bCheckMBS     = FALSE;
+    m_bCheckCBODEN  = FALSE;
+    m_bCheckCBORST  = FALSE;
+    m_bTamperPowerDown  = FALSE;
+
     m_uConfigValue[0] = 0xFFFFFFFF;
     m_uConfigValue[1] = 0xFFFFFFFF;
     m_uConfigValue[2] = 0xFFFFFFFF;
     m_uConfigValue[3] = 0xFFFFFFFF;
+
     m_sConfigValue0 = _T("");
     m_sConfigValue3 = _T("");
+
     m_bSecureBooting = true;
+    m_bBootloaderISP = true;
     m_uCBOVLevel = 8;
     //}}AFX_DATA_INIT
 }
@@ -38,56 +44,55 @@ CDialogChipSetting_CFG_M2351::~CDialogChipSetting_CFG_M2351()
 {
 }
 
-void CDialogChipSetting_CFG_M2351::DoDataExchange(CDataExchange *pDX)
+void CDialogChipSetting_CFG_M2351::DoDataExchange(CDataExchange* pDX)
 {
     CDialogResize::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CDialogChipSetting_CFG_M2351)
-    DDX_Radio(pDX, IDC_RADIO_BOV_7, m_nRadioCBOV);
-    DDX_Radio(pDX, IDC_RADIO_BS_APROM_LDROM, m_nRadioCBS);
-    DDX_Radio(pDX, IDC_RADIO_GPF_CRYSTAL, m_nRadioCFGXT1);
-    DDX_Radio(pDX, IDC_RADIO_IO_TRI, m_nRadioCIOINI);
-    DDX_Radio(pDX, IDC_RADIO_WDT_DISABLE, m_nRadioCWDTEN);
-    DDX_Radio(pDX, IDC_RADIO_UART1_SEL4, m_nRadioUART);
-    DDX_Check(pDX, IDC_CHECK_BROWN_OUT_DETECT, m_bCheckCBODEN);
-    DDX_Check(pDX, IDC_CHECK_BROWN_OUT_RESET, m_bCheckCBORST);
-    DDX_Check(pDX, IDC_CHECK_BS_MKROM, m_bCheckMBS);
-    DDX_Check(pDX, IDC_CHECK_ICE_LOCK, m_bDisableICE);
+    DDX_Radio(pDX, IDC_RADIO_BOV_7,             m_nRadioCBOV);
+    DDX_Radio(pDX, IDC_RADIO_BS_APROM_LDROM,    m_nRadioCBS);
+    DDX_Radio(pDX, IDC_RADIO_GPF_CRYSTAL,       m_nRadioCFGXT1);
+    DDX_Radio(pDX, IDC_RADIO_IO_TRI,            m_nRadioCIOINI);
+    DDX_Radio(pDX, IDC_RADIO_WDT_DISABLE,       m_nRadioCWDTEN);
+    DDX_Radio(pDX, IDC_RADIO_UART1_SEL4,        m_nRadioUART);
+    DDX_Check(pDX, IDC_CHECK_BROWN_OUT_DETECT,  m_bCheckCBODEN);
+    DDX_Check(pDX, IDC_CHECK_BROWN_OUT_RESET,   m_bCheckCBORST);
+    DDX_Check(pDX, IDC_CHECK_BS_MKROM,          m_bCheckMBS);
+    //DDX_Check(pDX, IDC_CHECK_ICE_LOCK,            m_bDisableICE);
     DDX_Check(pDX, IDC_CHECK_TAMPER_POWER_DOWN, m_bTamperPowerDown);
-    DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_0, m_sConfigValue0);
-    DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_3, m_sConfigValue3);
+    DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_0,    m_sConfigValue0);
+    DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_3,    m_sConfigValue3);
     //}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(CDialogChipSetting_CFG_M2351, CDialog)
     //{{AFX_MSG_MAP(CDialogChipSetting_CFG_M2351)
-    ON_BN_CLICKED(IDC_RADIO_BOV_0, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_1, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_2, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_3, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_4, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_5, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_6, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_7, OnRadioClick)
-
-    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET, OnCheckClick)
-    ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM, OnRadioClick)
-    ON_BN_CLICKED(IDC_CHECK_BS_MKROM, OnCheckClick)
-    ON_BN_CLICKED(IDC_RADIO_GPF_CRYSTAL, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_GPF_GPIO, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_IO_TRI, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_IO_BI, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_UART1_SEL0, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_UART1_SEL1, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_UART1_SEL2, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_UART1_SEL3, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_UART1_SEL4, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_WDT_DISABLE, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_WDT_ENABLE_KEEP, OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_WDT_ENABLE_STOP, OnRadioClick)
-    ON_BN_CLICKED(IDC_CHECK_ICE_LOCK, OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_TAMPER_POWER_DOWN, OnCheckClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_0,              OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_1,              OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_2,              OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_3,              OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_4,              OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_5,              OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_6,              OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_7,              OnRadioClick)
+    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT,   OnCheckClick)
+    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET,    OnCheckClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM,     OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM,     OnRadioClick)
+    ON_BN_CLICKED(IDC_CHECK_BS_MKROM,           OnCheckClick)
+    ON_BN_CLICKED(IDC_RADIO_GPF_CRYSTAL,        OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_GPF_GPIO,           OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_IO_TRI,             OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_IO_BI,              OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_UART1_SEL0,         OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_UART1_SEL1,         OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_UART1_SEL2,         OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_UART1_SEL3,         OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_UART1_SEL4,         OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_WDT_DISABLE,        OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_WDT_ENABLE_KEEP,    OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_WDT_ENABLE_STOP,    OnRadioClick)
+    //ON_BN_CLICKED(IDC_CHECK_ICE_LOCK,         OnCheckClick)
+    ON_BN_CLICKED(IDC_CHECK_TAMPER_POWER_DOWN,  OnCheckClick)
     //ON_WM_SIZE()
     ON_WM_VSCROLL()
     ON_WM_HSCROLL()
@@ -104,55 +109,81 @@ BOOL CDialogChipSetting_CFG_M2351::OnInitDialog()
     CDialog::OnInitDialog();
 
     // TODO: Add extra initialization here
-    GetDlgItem(IDC_CHECK_ICE_LOCK)->ShowWindow(SW_HIDE);
-    m_bDisableICE = false;
 
-    if (m_uChipType == NUC_CHIP_TYPE_M2351) {
+    if (m_uChipType == NUC_CHIP_TYPE_M2351)
+    {
         GetDlgItem(IDC_CHECK_TAMPER_POWER_DOWN)->ShowWindow(SW_HIDE);
+
         m_bSecureBooting = false;
+        m_bBootloaderISP = true;
         m_uCBOVLevel = 8;
     }
 
-    if (m_uChipType == NUC_CHIP_TYPE_M2354) {
+    if (m_uChipType == NUC_CHIP_TYPE_M2354)
+    {
+        GetDlgItem(IDC_GROUP_UART1_SELECT)->ShowWindow(SW_HIDE);
+        GetDlgItem(IDC_RADIO_UART1_SEL4)->ShowWindow(SW_HIDE);
+        GetDlgItem(IDC_RADIO_UART1_SEL3)->ShowWindow(SW_HIDE);
+        GetDlgItem(IDC_RADIO_UART1_SEL2)->ShowWindow(SW_HIDE);
+        GetDlgItem(IDC_RADIO_UART1_SEL1)->ShowWindow(SW_HIDE);
+        GetDlgItem(IDC_RADIO_UART1_SEL0)->ShowWindow(SW_HIDE);
+
         GetDlgItem(IDC_CHECK_TAMPER_POWER_DOWN)->ShowWindow(SW_SHOW);
-        m_bSecureBooting = true;
-        m_uCBOVLevel = 8;
-    }
 
-    if (m_uChipType == NUC_CHIP_TYPE_M2379) {
-        GetDlgItem(IDC_CHECK_TAMPER_POWER_DOWN)->ShowWindow(SW_HIDE);
-        GetDlgItem(IDC_RADIO_BOV_7)->SetWindowText(_T("4.4V"));
-        GetDlgItem(IDC_RADIO_BOV_6)->SetWindowText(_T("3.7V"));
-        GetDlgItem(IDC_RADIO_BOV_5)->SetWindowText(_T("2.7V"));
-        GetDlgItem(IDC_RADIO_BOV_4)->SetWindowText(_T("2.4V"));
-        GetDlgItem(IDC_RADIO_BOV_3)->ShowWindow(SW_HIDE);
-        GetDlgItem(IDC_RADIO_BOV_2)->ShowWindow(SW_HIDE);
-        GetDlgItem(IDC_RADIO_BOV_1)->ShowWindow(SW_HIDE);
-        GetDlgItem(IDC_RADIO_BOV_0)->ShowWindow(SW_HIDE);
+        RECT rcTmp, rcGroupWDT, rcGroupUART1PSL;
+
+        GetDlgItem(IDC_GROUP_WDT)->GetWindowRect(&rcGroupWDT);
+        GetDlgItem(IDC_GROUP_UART1_SELECT)->GetWindowRect(&rcGroupUART1PSL);
+
+        LONG lDiff = rcGroupUART1PSL.bottom - rcGroupWDT.bottom;
+
+        int i, nIDs[] = { IDC_CHECK_TAMPER_POWER_DOWN };
+
+        for (i = 0; i < _countof(nIDs); i++)
+        {
+            GetDlgItem(nIDs[i])->GetWindowRect(&rcTmp);
+            this->ScreenToClient(&rcTmp);
+            GetDlgItem(nIDs[i])->SetWindowPos(NULL, rcTmp.left, rcTmp.top - lDiff, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+        }
+
+        this->GetWindowRect(&rcTmp);
+        SetWindowPos(this, 0, 0, rcTmp.right - rcTmp.left, rcTmp.bottom - rcTmp.top - lDiff, SWP_NOZORDER | SWP_NOMOVE);
+
         m_bSecureBooting = true;
-        m_uCBOVLevel = 4;
+        m_bBootloaderISP = false;
+        m_uCBOVLevel = 8;
     }
 
     ConfigToGUI();
+
     m_bIsInitialized = true;
     GetWindowRect(m_rect);
     AdjustDPI();
-    return TRUE;	// return TRUE unless you set the focus to a control
+
+    //EnableToolTips(TRUE);
+    //m_tooltip.Create(this);
+    //m_tooltip.Activate(TRUE);
+    //m_tooltip.SetTipTextColor(RGB(0, 0, 0));  //font color
+    //m_tooltip.SetDelayTime(TTDT_INITIAL, 200);    //delay time
+    //m_tooltip.SetDelayTime(TTDT_AUTOPOP, 5000);
+    //m_tooltip.AddTool(GetDlgItem(IDC_CHECK_ICE_LOCK), (m_bDisableICE) ? _I(IDS_WARNING_ICELOCK) : _T(""));
+
+    return TRUE;    // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 void CDialogChipSetting_CFG_M2351::OnRadioClick()
 {
-    // TODO: Add your control notification handler code here
     GUIToConfig();
     ConfigToGUI();
 }
 
 void CDialogChipSetting_CFG_M2351::OnCheckClick()
 {
-    // TODO: Add your control notification handler code here
     GUIToConfig();
     ConfigToGUI();
+
+    //m_tooltip.AddTool(GetDlgItem(IDC_CHECK_ICE_LOCK), (m_bDisableICE) ? _I(IDS_WARNING_ICELOCK) : _T(""));
 }
 
 void CDialogChipSetting_CFG_M2351::ConfigToGUI()
@@ -160,8 +191,10 @@ void CDialogChipSetting_CFG_M2351::ConfigToGUI()
     unsigned int uConfig0 = m_uConfigValue[0];
     unsigned int uConfig3 = m_uConfigValue[3];
 
-    if (m_uCBOVLevel == 8) {
-        switch (uConfig0 & NUMICRO_FLASH_CONFIG_CBOV_8_LEVEL) {
+    if (m_uCBOVLevel == 8)
+    {
+        switch (uConfig0 & NUMICRO_FLASH_CONFIG_CBOV_8_LEVEL)
+        {
             case NUMICRO_FLASH_CONFIG_CBOV_7:
                 m_nRadioCBOV = 0;
                 break;
@@ -197,8 +230,11 @@ void CDialogChipSetting_CFG_M2351::ConfigToGUI()
             default:
                 m_nRadioCBOV = 0;
         }
-    } else { //if (m_uCBOVLevel == 4)
-        switch (uConfig0 & NUMICRO_FLASH_CONFIG_CBOV_8_LEVEL) {
+    }
+    else //if (m_uCBOVLevel == 4)
+    {
+        switch (uConfig0 & NUMICRO_FLASH_CONFIG_CBOV_8_LEVEL)
+        {
             case NUMICRO_FLASH_CONFIG_CBOV_3:
                 m_nRadioCBOV = 0;
                 break;
@@ -220,17 +256,17 @@ void CDialogChipSetting_CFG_M2351::ConfigToGUI()
         }
     }
 
-    switch (uConfig0 & NUMICRO_FLASH_CONFIG_CWDTEN) {
+    switch (uConfig0 & NUMICRO_FLASH_CONFIG_CWDTEN)
+    {
         case NUMICRO_FLASH_CONFIG_CWDTEN_INACTIVE:
             m_nRadioCWDTEN = 0;
             break;
 
         case NUMICRO_FLASH_CONFIG_CWDTEN_BY_LIRCEN:
-            if (uConfig0 & NUMICRO_FLASH_CONFIG_CWDTPDEN) {
+            if (uConfig0 & NUMICRO_FLASH_CONFIG_CWDTPDEN)
                 m_nRadioCWDTEN = 2;
-            } else {
+            else
                 m_nRadioCWDTEN = 1;
-            }
 
             break;
 
@@ -238,57 +274,66 @@ void CDialogChipSetting_CFG_M2351::ConfigToGUI()
             m_nRadioCWDTEN = 1;
     }
 
-    m_nRadioCBS		= ((uConfig0 & NUMICRO_FLASH_CONFIG_CBS_2_MODE) ? 0 : 1);
-    m_nRadioCFGXT1	= ((uConfig0 & M2351_FLASH_CONFIG_CFGXT1) ? 0 : 1);
-    m_nRadioCIOINI	= ((uConfig0 & NUMICRO_FLASH_CONFIG_CIOINI) ? 0 : 1);
+    m_nRadioCBS     = ((uConfig0 & NUMICRO_FLASH_CONFIG_CBS_2_MODE) ? 0 : 1);
+    m_nRadioCFGXT1  = ((uConfig0 & NUMICRO_FLASH_CONFIG_CFGXT1) ? 0 : 1);
+    m_nRadioCIOINI  = ((uConfig0 & NUMICRO_FLASH_CONFIG_CIOINI) ? 0 : 1);
 
-    if (m_bSecureBooting) {
+    if (m_bSecureBooting)
         m_bCheckMBS = TRUE;
-    } else {
+    else
         m_bCheckMBS = ((uConfig0 & M2351_FLASH_CONFIG_MBS) == 0 ? TRUE : FALSE);
-    }
 
-    m_bCheckCBODEN	= ((uConfig0 & NUMICRO_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
-    m_bCheckCBORST	= ((uConfig0 & NUMICRO_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
-    m_bDisableICE = ((uConfig0 & M2351_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
+    m_bCheckCBODEN  = ((uConfig0 & NUMICRO_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
+    m_bCheckCBORST  = ((uConfig0 & NUMICRO_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
 
-    switch (uConfig3 & M2351_FLASH_CONFIG_UART1PSL) {
-        case M2351_FLASH_CONFIG_UART1PSL_SEL0:
-            m_nRadioUART = 4;
-            break;
+    //m_bDisableICE = ((uConfig0 & NUMICRO_M23_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
 
-        case M2351_FLASH_CONFIG_UART1PSL_SEL1:
-            m_nRadioUART = 3;
-            break;
+    if (m_bBootloaderISP)
+    {
+        switch (uConfig3 & M2351_FLASH_CONFIG_UART1PSL)
+        {
+            case M2351_FLASH_CONFIG_UART1PSL_SEL0:
+                m_nRadioUART = 4;
+                break;
 
-        case M2351_FLASH_CONFIG_UART1PSL_SEL2:
-            m_nRadioUART = 2;
-            break;
+            case M2351_FLASH_CONFIG_UART1PSL_SEL1:
+                m_nRadioUART = 3;
+                break;
 
-        case M2351_FLASH_CONFIG_UART1PSL_SEL3:
-            m_nRadioUART = 1;
-            break;
+            case M2351_FLASH_CONFIG_UART1PSL_SEL2:
+                m_nRadioUART = 2;
+                break;
 
-        default:
-            m_nRadioUART = 0;
+            case M2351_FLASH_CONFIG_UART1PSL_SEL3:
+                m_nRadioUART = 1;
+                break;
+
+            default:
+                m_nRadioUART = 0;
+        }
     }
 
     m_bTamperPowerDown = ((uConfig3 & M2354_FLASH_CONFIG_TMPPD) == M2354_FLASH_CONFIG_TMPPD_CODE ? TRUE : FALSE);
+
     m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
     m_sConfigValue3.Format(_T("0x%08X"), uConfig3);
+
     UpdateData(FALSE);
 }
 
 void CDialogChipSetting_CFG_M2351::GUIToConfig()
 {
     UpdateData(TRUE);
+
     unsigned int uConfig0 = m_uConfigValue[0];
     unsigned int uConfig3 = m_uConfigValue[3];
 
-    if (m_uCBOVLevel == 8) {
+    if (m_uCBOVLevel == 8)
+    {
         uConfig0 &= ~NUMICRO_FLASH_CONFIG_CBOV_8_LEVEL;
 
-        switch (m_nRadioCBOV) {
+        switch (m_nRadioCBOV)
+        {
             case 0:
                 uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_7;
                 break;
@@ -324,10 +369,13 @@ void CDialogChipSetting_CFG_M2351::GUIToConfig()
             default:
                 uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_7;
         }
-    } else { //if (m_uCBOVLevel == 4)
+    }
+    else //if (m_uCBOVLevel == 4)
+    {
         uConfig0 &= ~NUMICRO_FLASH_CONFIG_CBOV_4_LEVEL;
 
-        switch (m_nRadioCBOV) {
+        switch (m_nRadioCBOV)
+        {
             case 0:
                 uConfig0 |= NUMICRO_FLASH_CONFIG_CBOV_3;
                 break;
@@ -349,7 +397,8 @@ void CDialogChipSetting_CFG_M2351::GUIToConfig()
         }
     }
 
-    switch (m_nRadioCWDTEN) {
+    switch (m_nRadioCWDTEN)
+    {
         case 0:
             uConfig0 &= ~NUMICRO_FLASH_CONFIG_CWDTEN;
             uConfig0 |=  NUMICRO_FLASH_CONFIG_CWDTEN_INACTIVE;
@@ -362,7 +411,8 @@ void CDialogChipSetting_CFG_M2351::GUIToConfig()
 
         default:
             if (((uConfig0 & NUMICRO_FLASH_CONFIG_CWDTEN) == NUMICRO_FLASH_CONFIG_CWDTEN_INACTIVE) ||
-                    (((uConfig0 & NUMICRO_FLASH_CONFIG_CWDTEN) == NUMICRO_FLASH_CONFIG_CWDTEN_BY_LIRCEN) && (uConfig0 & NUMICRO_FLASH_CONFIG_CWDTPDEN))) {
+            (((uConfig0 & NUMICRO_FLASH_CONFIG_CWDTEN) == NUMICRO_FLASH_CONFIG_CWDTEN_BY_LIRCEN) && (uConfig0 & NUMICRO_FLASH_CONFIG_CWDTPDEN)))
+            {
                 uConfig0 &= ~(NUMICRO_FLASH_CONFIG_CWDTEN | NUMICRO_FLASH_CONFIG_CWDTPDEN);
                 uConfig0 |= (NUMICRO_FLASH_CONFIG_CWDTEN_ACTIVE | NUMICRO_FLASH_CONFIG_CWDTPDEN);
             }
@@ -370,89 +420,92 @@ void CDialogChipSetting_CFG_M2351::GUIToConfig()
 
     uConfig0 &= ~NUMICRO_FLASH_CONFIG_CBS_2_MODE;
 
-    if (m_nRadioCBS == 0) {
+    if (m_nRadioCBS == 0)
         uConfig0 |=  NUMICRO_FLASH_CONFIG_CBS_AP_IAP;
-    } else {
+    else
         uConfig0 |=  NUMICRO_FLASH_CONFIG_CBS_LD_IAP;
-    }
 
-    if (m_nRadioCFGXT1 == 0) {
-        uConfig0 |=  M2351_FLASH_CONFIG_CFGXT1;
-    } else {
-        uConfig0 &= ~M2351_FLASH_CONFIG_CFGXT1;
-    }
+    if (m_nRadioCFGXT1 == 0)
+        uConfig0 |=  NUMICRO_FLASH_CONFIG_CFGXT1;
+    else
+        uConfig0 &= ~NUMICRO_FLASH_CONFIG_CFGXT1;
 
-    if (m_nRadioCIOINI == 0) {
+    if (m_nRadioCIOINI == 0)
         uConfig0 |=  NUMICRO_FLASH_CONFIG_CIOINI;
-    } else {
+    else
         uConfig0 &= ~NUMICRO_FLASH_CONFIG_CIOINI;
-    }
 
-    if (m_bSecureBooting) {
+    if (m_bSecureBooting)
+    {
         uConfig0 |=  M2351_FLASH_CONFIG_MBS;
-    } else {
-        if (m_bCheckMBS) {
+    }
+    else
+    {
+        if (m_bCheckMBS)
             uConfig0 &= ~M2351_FLASH_CONFIG_MBS;
-        } else {
+        else
             uConfig0 |=  M2351_FLASH_CONFIG_MBS;
-        }
     }
 
-    if (m_bCheckCBODEN) {
+    if (m_bCheckCBODEN)
         uConfig0 &= ~NUMICRO_FLASH_CONFIG_CBODEN;
-    } else {
+    else
         uConfig0 |=  NUMICRO_FLASH_CONFIG_CBODEN;
-    }
 
-    if (m_bCheckCBORST) {
+    if (m_bCheckCBORST)
         uConfig0 &= ~NUMICRO_FLASH_CONFIG_CBORST;
-    } else {
+    else
         uConfig0 |=  NUMICRO_FLASH_CONFIG_CBORST;
-    }
 
-    if (m_bDisableICE) {
-        uConfig0 &= ~M2351_FLASH_CONFIG_ICELOCK;
-    } else {
-        uConfig0 |=  M2351_FLASH_CONFIG_ICELOCK;
-    }
+    //if(m_bDisableICE)
+    //  uConfig0 &= ~NUMICRO_M23_FLASH_CONFIG_ICELOCK;
+    //else
+    //  uConfig0 |=  NUMICRO_M23_FLASH_CONFIG_ICELOCK;
 
     uConfig3 &= ~M2351_FLASH_CONFIG_UART1PSL;
 
-    switch (m_nRadioUART) {
-        case 4:
-            uConfig3 |= M2351_FLASH_CONFIG_UART1PSL_SEL0;
-            break;
+    if (m_bBootloaderISP)
+    {
+        switch (m_nRadioUART)
+        {
+            case 4:
+                uConfig3 |= M2351_FLASH_CONFIG_UART1PSL_SEL0;
+                break;
 
-        case 3:
-            uConfig3 |= M2351_FLASH_CONFIG_UART1PSL_SEL1;
-            break;
+            case 3:
+                uConfig3 |= M2351_FLASH_CONFIG_UART1PSL_SEL1;
+                break;
 
-        case 2:
-            uConfig3 |= M2351_FLASH_CONFIG_UART1PSL_SEL2;
-            break;
+            case 2:
+                uConfig3 |= M2351_FLASH_CONFIG_UART1PSL_SEL2;
+                break;
 
-        case 1:
-            uConfig3 |= M2351_FLASH_CONFIG_UART1PSL_SEL3;
-            break;
+            case 1:
+                uConfig3 |= M2351_FLASH_CONFIG_UART1PSL_SEL3;
+                break;
 
-        default:
-            if ((m_uConfigValue[3] & M2351_FLASH_CONFIG_UART1PSL) > M2351_FLASH_CONFIG_UART1PSL_SEL3) {
-                uConfig3 |= (m_uConfigValue[3] & M2351_FLASH_CONFIG_UART1PSL);    /* Keep old value */
-            } else {
-                uConfig3 |= M2351_FLASH_CONFIG_UART1PSL_SEL4;
-            }
+            default:
+                if ((m_uConfigValue[3] & M2351_FLASH_CONFIG_UART1PSL) > M2351_FLASH_CONFIG_UART1PSL_SEL3)
+                    uConfig3 |= (m_uConfigValue[3] & M2351_FLASH_CONFIG_UART1PSL);  /* Keep old value */
+                else
+                    uConfig3 |= M2351_FLASH_CONFIG_UART1PSL_SEL4;
+        }
+    }
+    else
+    {
+        uConfig3 |= M2351_FLASH_CONFIG_UART1PSL;
     }
 
     uConfig3 &= ~M2354_FLASH_CONFIG_TMPPD;
 
-    if (m_bTamperPowerDown) {
+    if (m_bTamperPowerDown)
         uConfig3 |= M2354_FLASH_CONFIG_TMPPD_CODE;
-    } else {
-        if ((m_uConfigValue[3] & M2354_FLASH_CONFIG_TMPPD) != M2354_FLASH_CONFIG_TMPPD_CODE) {
+    else
+    {
+        if ((m_uConfigValue[3] & M2354_FLASH_CONFIG_TMPPD) != M2354_FLASH_CONFIG_TMPPD_CODE)
             uConfig3 |= (m_uConfigValue[3] & M2354_FLASH_CONFIG_TMPPD);
-        } else {
+        else
             uConfig3 |= M2354_FLASH_CONFIG_TMPPD;
-        }
     }
 
     m_uConfigValue[0] = uConfig0;

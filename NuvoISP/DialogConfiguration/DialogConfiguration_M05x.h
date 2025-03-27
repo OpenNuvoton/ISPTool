@@ -2,7 +2,7 @@
 #define AFX_DIALOGCONFIGURATION_M05X_H__E0CD7A09_C5DC_481E_A871_03B422E615F8__INCLUDED_
 
 #if _MSC_VER > 1000
-#pragma once
+    #pragma once
 #endif // _MSC_VER > 1000
 // DialogConfiguration.h : header file
 //
@@ -14,32 +14,35 @@
 
 class CDialogConfiguration_M05x : public CDialogResize
 {
-// Construction
+    // Construction
 public:
-    CDialogConfiguration_M05x(UINT nIDTemplate = IDD_DIALOG_CONFIGURATION_M051, CWnd *pParent = NULL);   // standard constructor
+    CDialogConfiguration_M05x(UINT nIDTemplate = IDD_DIALOG_CONFIGURATION_M051, CWnd* pParent = NULL);   // standard constructor
+
+    static CString GetConfigWarning(const unsigned int config[2]);
 
     CAppConfig::M05x_configs_t m_ConfigValue;
 
-// Dialog Data
+    // Dialog Data
     //{{AFX_DATA(CDialogConfiguration_M05x)
     enum { IDD = IDD_DIALOG_CONFIGURATION_M051 };
-    int		m_nRadioBov;
-    int		m_nRadioBS;
-    CString	m_sConfigValue0;
-    BOOL	m_bCheckBrownOutDetect;
-    BOOL	m_bCheckBrownOutReset;
-    BOOL	m_bClockFilterEnable;
-    BOOL	m_bSecurityLock;
+    int     m_nRadioBov;
+    int     m_nRadioBS;
+    CString m_sConfigValue0;
+    BOOL    m_bCheckBrownOutDetect;
+    BOOL    m_bCheckBrownOutReset;
+    BOOL    m_bClockFilterEnable;
+    BOOL    m_bSecurityLock;
     //}}AFX_DATA
 
-// Overrides
+
+    // Overrides
     // ClassWizard generated virtual function overrides
     //{{AFX_VIRTUAL(CDialogConfiguration_M05x)
 protected:
-    virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     //}}AFX_VIRTUAL
 
-// Implementation
+    // Implementation
 protected:
     virtual void ConfigToGUI(int nEventID = 0);
     virtual void GUIToConfig(int nEventID = 0);
@@ -56,13 +59,13 @@ protected:
 class CDialogConfiguration_M05XAN : public CDialogConfiguration_M05x
 {
 public:
-    CDialogConfiguration_M05XAN(CWnd *pParent = NULL);
+    CDialogConfiguration_M05XAN(CWnd* pParent = NULL);
 };
 
 class CDialogConfiguration_M05XBN : public CDialogConfiguration_M05x
 {
 public:
-    CDialogConfiguration_M05XBN(CWnd *pParent = NULL);
+    CDialogConfiguration_M05XBN(CWnd* pParent = NULL);
 protected:
     virtual BOOL OnInitDialog();
 };
@@ -70,12 +73,12 @@ protected:
 class CDialogConfiguration_M05XDN : public CDialogConfiguration_M05x
 {
 public:
-    CDialogConfiguration_M05XDN(UINT nIDTemplate = IDD_DIALOG_CONFIGURATION_M051CN, CWnd *pParent = NULL);
-    int		m_nRadioIO;
-    BOOL	m_bWDTEnable;
-    BOOL	m_bWDTPowerDown;
+    CDialogConfiguration_M05XDN(UINT nIDTemplate = IDD_DIALOG_CONFIGURATION_M051CN, CWnd* pParent = NULL);
+    int     m_nRadioIO;
+    BOOL    m_bWDTEnable;
+    BOOL    m_bWDTPowerDown;
 protected:
-    virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     virtual void ConfigToGUI(int nEventID = 0);
     virtual void GUIToConfig(int nEventID = 0);
     afx_msg void OnCheckClickWDTPD();
@@ -85,10 +88,10 @@ protected:
 class CDialogConfiguration_M058SAN : public CDialogConfiguration_M05XDN
 {
 public:
-    CDialogConfiguration_M058SAN(CWnd *pParent = NULL);
-    int		m_nRadioGP7;
+    CDialogConfiguration_M058SAN(CWnd* pParent = NULL);
+    int     m_nRadioGP7;
 protected:
-    virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
     virtual void ConfigToGUI(int nEventID = 0);
     virtual void GUIToConfig(int nEventID = 0);
     DECLARE_MESSAGE_MAP()

@@ -1,48 +1,63 @@
 #include "stdafx.h"
 #include "Resource.h"
-#include "DialogConfiguration.h" // Resource ID
 #include "DlgNuvoISP.h"
 #include "About.h"
-
+#include "ChipDefs.h"
+#include "NuDataBase.h"
 #include <dbt.h>
 
-#include "NuDataBase.h"
+//#include "NuDataBase.h"
 #include <sstream>
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+    #define new DEBUG_NEW
+    #undef THIS_FILE
+    static char THIS_FILE[] = __FILE__;
 #endif
 
 inline std::string size_str(unsigned int size)
 {
     char buf[128];
 
-    if (size == 0) {
+    if (size == 0)
+    {
         _snprintf_s(buf, sizeof(buf), _TRUNCATE, "0K");
-    } else if (size <= 1) {
+    }
+    else if (size <= 1)
+    {
         _snprintf_s(buf, sizeof(buf), _TRUNCATE, "%d byte", size);
-    } else if (size < 1024) {
+    }
+    else if (size < 1024)
+    {
         _snprintf_s(buf, sizeof(buf), _TRUNCATE, "%d bytes", size);
-    } else if (((size / 1024.) + 0.005) < 1024) {
+    }
+    else if (((size / 1024.) + 0.005) < 1024)
+    {
         double f = (size / 1024.) + 0.005;
         unsigned int i = (unsigned int)f;
         unsigned int j = (unsigned int)((f - i) * 100.);
 
-        if (j == 0) {
+        if (j == 0)
+        {
             _snprintf_s(buf, sizeof(buf), _TRUNCATE, "%dK", i);
-        } else {
+        }
+        else
+        {
             _snprintf_s(buf, sizeof(buf), _TRUNCATE, "%d.%02dK", i, j);
         }
-    } else {
+    }
+    else
+    {
         double f = (size / 1024. / 1024.) + 0.005;
         unsigned int i = (unsigned int)f;
         unsigned int j = (unsigned int)((f - i) * 100.);
 
-        if (j == 0) {
+        if (j == 0)
+        {
             _snprintf_s(buf, sizeof(buf), _TRUNCATE, "%dM", i);
-        } else {
+        }
+        else
+        {
             _snprintf_s(buf, sizeof(buf), _TRUNCATE, "%d.%02dM", i, j);
         }
     }
@@ -58,15 +73,17 @@ CNuvoISPDlg::CNuvoISPDlg(UINT Template,
     : CDialogMain(Template, pParent)
     , CISPProc(&m_hWnd)
 {
-    m_sCaption = _T("Nuvoton NuMicro ISP Programming Tool 4.14");
+    m_sCaption = _T("Nuvoton NuMicro ISP Programming Tool 4.15");
     m_bConnect = false;
     int i = 0, j = 0;
 
-    for (i = 0; i < NUM_VIEW; i++) {
+    for (i = 0; i < NUM_VIEW; i++)
+    {
         pViewer[i] = NULL;
     }
 
-    WINCTRLID buddy[] = {
+    WINCTRLID buddy[] =
+    {
         {IDC_BUTTON_APROM, IDC_EDIT_FILEPATH_APROM, IDC_STATIC_FILEINFO_APROM},
         {IDC_BUTTON_NVM, IDC_EDIT_FILEPATH_NVM, IDC_STATIC_FILEINFO_NVM},
         {IDC_BUTTON_SPI, IDC_EDIT_FILEPATH_SPI, IDC_STATIC_FILEINFO_SPI},
@@ -78,8 +95,10 @@ CNuvoISPDlg::CNuvoISPDlg(UINT Template,
 
 CNuvoISPDlg::~CNuvoISPDlg()
 {
-    for (int i = 0; i < NUM_VIEW; i++) {
-        if (pViewer[i] != NULL) {
+    for (int i = 0; i < NUM_VIEW; i++)
+    {
+        if (pViewer[i] != NULL)
+        {
             pViewer[i]->DestroyWindow();
         }
 
@@ -99,9 +118,9 @@ void CNuvoISPDlg::DoDataExchange(CDataExchange *pDX)
     DDX_Text(pDX, IDC_STATIC_CONNECT, m_sConnect);
     DDX_Check(pDX, IDC_CHECK_APROM, m_bProgram_APROM);
     DDX_Check(pDX, IDC_CHECK_NVM, m_bProgram_NVM);
-// Do NOT use DDX_Check for extend option
-//    DDX_Check(pDX, IDC_CHECK_SPI, m_bProgram_SPI);
-//    DDX_Check(pDX, IDC_CHECK_ERASE_SPI, m_bErase_SPI);
+    // Do NOT use DDX_Check for extend option
+    //    DDX_Check(pDX, IDC_CHECK_SPI, m_bProgram_SPI);
+    //    DDX_Check(pDX, IDC_CHECK_ERASE_SPI, m_bErase_SPI);
     DDX_Check(pDX, IDC_CHECK_CONFIG, m_bProgram_Config);
     DDX_Check(pDX, IDC_CHECK_ERASE, m_bErase);
     DDX_Check(pDX, IDC_CHECK_RUN_APROM, m_bRunAPROM);
@@ -154,11 +173,13 @@ BOOL CNuvoISPDlg::OnInitDialog()
     ASSERT(IDM_ABOUTBOX < 0xF000);
     CMenu *pSysMenu = GetSystemMenu(FALSE);
 
-    if (pSysMenu != NULL) {
+    if (pSysMenu != NULL)
+    {
         CString strAboutMenu;
         strAboutMenu = _T("About Nuvoton NuMicro ISP Programming Tool(&A)");
 
-        if (!strAboutMenu.IsEmpty()) {
+        if (!strAboutMenu.IsEmpty())
+        {
             pSysMenu->AppendMenu(MF_SEPARATOR);
             pSysMenu->AppendMenu(MF_STRING, IDM_ABOUTBOX, strAboutMenu);
         }
@@ -167,8 +188,8 @@ BOOL CNuvoISPDlg::OnInitDialog()
     m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
     // Set the icon for this dialog.  The framework does this automatically
     //  when the application's main window is not a dialog
-    SetIcon(m_hIcon, TRUE);			// Set big icon
-    SetIcon(m_hIcon, FALSE);		// Set small icon
+    SetIcon(m_hIcon, TRUE);         // Set big icon
+    SetIcon(m_hIcon, FALSE);        // Set small icon
     m_sConnect = _T("Disconnected");
     UpdateData(FALSE);
     // Title
@@ -176,7 +197,8 @@ BOOL CNuvoISPDlg::OnInitDialog()
 
     // Set data view area
     // Btn Text --> Tab Text
-    for (int i = 0; i < NUM_VIEW; i++) {
+    for (int i = 0; i < NUM_VIEW; i++)
+    {
         CString strTab;
         GetDlgItemText(m_CtrlID[i].btn, strTab);
         m_TabData.InsertItem(i, strTab);
@@ -186,7 +208,8 @@ BOOL CNuvoISPDlg::OnInitDialog()
     m_TabData.GetClientRect(rcClient);
     m_TabData.AdjustRect(FALSE, rcClient);
 
-    for (int i = 0; i < NUM_VIEW; i++) {
+    for (int i = 0; i < NUM_VIEW; i++)
+    {
         CDialogHex *pDlg = new CDialogHex;
         BOOL result = pDlg->Create(CDialogHex::IDD, &m_TabData);
         int error = ::GetLastError();
@@ -210,7 +233,7 @@ BOOL CNuvoISPDlg::OnInitDialog()
     m_iIPPort = 333;
     UpdateData(FALSE);
 
-    return TRUE;	// return TRUE  unless you set the focus to a control
+    return TRUE;    // return TRUE  unless you set the focus to a control
 }
 
 void CNuvoISPDlg::OnButtonBinFile(int idx, TCHAR *szPath)
@@ -219,7 +242,8 @@ void CNuvoISPDlg::OnButtonBinFile(int idx, TCHAR *szPath)
     // Backup current directory
     TCHAR szCurDir[MAX_PATH];
 
-    if (GetCurrentDirectory(sizeof(szCurDir) / sizeof(szCurDir[0]), szCurDir) == 0) {
+    if (GetCurrentDirectory(sizeof(szCurDir) / sizeof(szCurDir[0]), szCurDir) == 0)
+    {
         szCurDir[0] = (TCHAR)'\0';
     }
 
@@ -229,26 +253,33 @@ void CNuvoISPDlg::OnButtonBinFile(int idx, TCHAR *szPath)
                        _T("Binary Files (*.bin)|*.bin||"),
                        this);
 
-    if (szPath != NULL) {
+    if (szPath != NULL)
+    {
         FileName = szPath;
-    } else if (dialog.DoModal() == IDOK) {
+    }
+    else if (dialog.DoModal() == IDOK)
+    {
         FileName = dialog.GetPathName();
     }
 
     // Restore current directory
-    if (szCurDir[0] != (TCHAR)'\0') {
+    if (szCurDir[0] != (TCHAR)'\0')
+    {
         SetCurrentDirectory(szCurDir);
     }
 
-    if (FileName != _T("")) {
+    if (FileName != _T(""))
+    {
         int sz = getFilesize(FileName.GetBuffer(0));
 
-        if (UpdateFileInfo(FileName, &(m_sFileInfo[idx]))) {
+        if (UpdateFileInfo(FileName, &(m_sFileInfo[idx])))
+        {
             // File Path
             SetDlgItemText(m_CtrlID[idx].path, FileName);
 
             // Size & Check Sum Info
-            if (m_CtrlID[idx].sizecksum) {
+            if (m_CtrlID[idx].sizecksum)
+            {
                 CString str, strInfo;
 
                 if (sz >= 1024 * 1024 * 10)
@@ -276,8 +307,10 @@ void CNuvoISPDlg::OnButtonLoadFile()
     const MSG *msg = GetCurrentMessage();
     int BtnID = LOWORD(msg->wParam);
 
-    for (int idx = 0; idx < NUM_VIEW; idx++) {
-        if (BtnID == m_CtrlID[idx].btn) {
+    for (int idx = 0; idx < NUM_VIEW; idx++)
+    {
+        if (BtnID == m_CtrlID[idx].btn)
+        {
             OnButtonBinFile(idx);
             return;
         }
@@ -287,7 +320,8 @@ void CNuvoISPDlg::OnButtonLoadFile()
 void CNuvoISPDlg::OnButtonConnect()
 {
     if (m_fnThreadProcStatus == &CISPProc::Thread_Idle
-            || m_fnThreadProcStatus == &CISPProc::Thread_Pause) {
+    || m_fnThreadProcStatus == &CISPProc::Thread_Pause)
+    {
         /* Connect */
         CString sComNum, sIPAddress, sIPPort;
 
@@ -299,7 +333,9 @@ void CNuvoISPDlg::OnButtonConnect()
         EnableInterface(false);
 
         Set_ThreadAction(&CISPProc::Thread_CheckUSBConnect);
-    } else if (m_fnThreadProcStatus != NULL) {
+    }
+    else if (m_fnThreadProcStatus != NULL)
+    {
         /* Disconnect */
         Set_ThreadAction(&CISPProc::Thread_Idle);
     }
@@ -310,64 +346,84 @@ HBRUSH CNuvoISPDlg::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
     HBRUSH hbr = CDialog::OnCtlColor(pDC, pWnd, nCtlColor);
 
     // TODO:  在此變更 DC 的任何屬性
-    switch (pWnd->GetDlgCtrlID()) {
+    switch (pWnd->GetDlgCtrlID())
+    {
         case IDC_STATIC_CONNECT:
-            if (m_bConnect) {
-                pDC->SetTextColor(RGB(0, 128, 0));	//DarkGreen
-            } else {
-                pDC->SetTextColor(RGB(255, 0, 0));	//Red
+            if (m_bConnect)
+            {
+                pDC->SetTextColor(RGB(0, 128, 0));  //DarkGreen
+            }
+            else
+            {
+                pDC->SetTextColor(RGB(255, 0, 0));  //Red
             }
 
             break;
 
         case IDC_STATIC_CONFIG_VALUE_0:
-            if (!m_bConnect) {
+            if (!m_bConnect)
+            {
                 break;
             }
 
-            if (m_CONFIG_User[0] == m_CONFIG[0]) {
-                pDC->SetTextColor(RGB(0, 128, 0));	//DarkGreen
-            } else {
-                pDC->SetTextColor(RGB(255, 0, 0));	//Red
+            if (m_CONFIG_User[0] == m_CONFIG[0])
+            {
+                pDC->SetTextColor(RGB(0, 128, 0));  //DarkGreen
+            }
+            else
+            {
+                pDC->SetTextColor(RGB(255, 0, 0));  //Red
             }
 
             break;
 
         case IDC_STATIC_CONFIG_VALUE_1:
-            if (!m_bConnect) {
+            if (!m_bConnect)
+            {
                 break;
             }
 
-            if (m_CONFIG_User[1] == m_CONFIG[1]) {
-                pDC->SetTextColor(RGB(0, 128, 0));	//DarkGreen
-            } else {
-                pDC->SetTextColor(RGB(255, 0, 0));	//Red
+            if (m_CONFIG_User[1] == m_CONFIG[1])
+            {
+                pDC->SetTextColor(RGB(0, 128, 0));  //DarkGreen
+            }
+            else
+            {
+                pDC->SetTextColor(RGB(255, 0, 0));  //Red
             }
 
             break;
 
         case IDC_STATIC_CONFIG_VALUE_2:
-            if (!m_bConnect) {
+            if (!m_bConnect)
+            {
                 break;
             }
 
-            if (m_CONFIG_User[2] == m_CONFIG[2]) {
-                pDC->SetTextColor(RGB(0, 128, 0));	//DarkGreen
-            } else {
-                pDC->SetTextColor(RGB(255, 0, 0));	//Red
+            if (m_CONFIG_User[2] == m_CONFIG[2])
+            {
+                pDC->SetTextColor(RGB(0, 128, 0));  //DarkGreen
+            }
+            else
+            {
+                pDC->SetTextColor(RGB(255, 0, 0));  //Red
             }
 
             break;
 
         case IDC_STATIC_CONFIG_VALUE_3:
-            if (!m_bConnect) {
+            if (!m_bConnect)
+            {
                 break;
             }
 
-            if (m_CONFIG_User[3] == m_CONFIG[3]) {
-                pDC->SetTextColor(RGB(0, 128, 0));	//DarkGreen
-            } else {
-                pDC->SetTextColor(RGB(255, 0, 0));	//Red
+            if (m_CONFIG_User[3] == m_CONFIG[3])
+            {
+                pDC->SetTextColor(RGB(0, 128, 0));  //DarkGreen
+            }
+            else
+            {
+                pDC->SetTextColor(RGB(255, 0, 0));  //Red
             }
 
             break;
@@ -382,19 +438,23 @@ HBRUSH CNuvoISPDlg::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 
 LRESULT CNuvoISPDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
-    if (message == MSG_USER_EVENT) {
-        if (wParam == MSG_UPDATE_CONNECT_STATUS) {
+    if (message == MSG_USER_EVENT)
+    {
+        if (wParam == MSG_UPDATE_CONNECT_STATUS)
+        {
             CString sMessage;
             UpdateData(true);
             m_sStatus = _T("");
             m_EditBDName.SetWindowText(m_ISPLdDev.GetBDName());
 
-            switch (lParam) {
+            switch (lParam)
+            {
                 case CONNECT_STATUS_NONE:
                     EnableInterface(true);
-                    m_sConnect		= _T("Disconnected");
+                    m_sConnect      = _T("Disconnected");
 
-                    switch (m_eProcSts) {
+                    switch (m_eProcSts)
+                    {
                         case EPS_OK:
                             m_sConnect = _T("Disconnected");
                             break;
@@ -415,21 +475,22 @@ LRESULT CNuvoISPDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
                     break;
 
                 case CONNECT_STATUS_USB:
-                    m_sConnect		= _T("Waiting for device connection");
+                    m_sConnect      = _T("Waiting for device connection");
                     m_ButtonConnect.SetWindowText(_T("Stop check"));
                     break;
 
                 case CONNECT_STATUS_CONNECTING:
-                    m_sConnect		= _T("Getting Chip Information ...");
+                    m_sConnect      = _T("Getting Chip Information ...");
                     m_ButtonConnect.SetWindowText(_T("Stop check"));
                     break;
 
                 case CONNECT_STATUS_OK:
-                    m_sConnect		= _T("Connected");
+                    m_sConnect      = _T("Connected");
                     EnableProgramOption(TRUE);
                     ShowChipInfo_OnLine();
 
-                    switch (m_eProcSts) {
+                    switch (m_eProcSts)
+                    {
                         case EPS_ERR_ERASE:
                             AfxMessageBox(_T("Erase failed"));
                             break;
@@ -477,13 +538,17 @@ LRESULT CNuvoISPDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
             m_bConnect = (lParam == CONNECT_STATUS_OK);
             EnableDlgItem(IDC_BUTTON_START, m_bConnect);
             UpdateData(false);
-        } else if (wParam == MSG_UPDATE_ERASE_STATUS) {
+        }
+        else if (wParam == MSG_UPDATE_ERASE_STATUS)
+        {
             CString sText;
             sText.Format(_T("Erase %d%%"), (int)lParam);
             m_sStatus = sText;
             m_Progress.SetPos((int)lParam);
             UpdateData(FALSE);
-        } else if (wParam == MSG_UPDATE_WRITE_STATUS) {
+        }
+        else if (wParam == MSG_UPDATE_WRITE_STATUS)
+        {
             CString sText;
             sText.Format(_T("Program %d%%"), (int)lParam);
             m_sStatus = sText;
@@ -503,11 +568,16 @@ void CNuvoISPDlg::OnButtonStart()
     m_bProgram_SPI = IsDlgButtonChecked(IDC_CHECK_SPI);
     m_bErase_SPI = IsDlgButtonChecked(IDC_CHECK_ERASE_SPI);
 
-    if (m_bProgram_APROM || m_bProgram_NVM || m_bProgram_Config || m_bErase || m_bRunAPROM) {
+    if (m_bProgram_APROM || m_bProgram_NVM || m_bProgram_Config || m_bErase || m_bRunAPROM)
+    {
         // Check Standart ISP Options
-    } else if (m_bSupport_SPI && (m_bProgram_SPI || m_bErase_SPI)) {
+    }
+    else if (m_bSupport_SPI && (m_bProgram_SPI || m_bErase_SPI))
+    {
         // Check Extend ISP Options for SPI Flash
-    } else {
+    }
+    else
+    {
         MessageBox(_T("You did not select any operation."), NULL, MB_ICONSTOP);
         return;
     }
@@ -526,20 +596,26 @@ void CNuvoISPDlg::OnButtonStart()
         // if(m_fnThreadProcStatus == &CNuvoISPDlg::Thread_Idle)
     {
         /* Check write size */
-        if (strErr.IsEmpty() && m_bProgram_APROM) {
-            if (m_sFileInfo[0].st_size == 0) {
+        if (strErr.IsEmpty() && m_bProgram_APROM)
+        {
+            if (m_sFileInfo[0].st_size == 0)
+            {
                 strErr = _T("Can not load APROM file for programming!");
             }
         }
 
-        if (strErr.IsEmpty() && m_bProgram_NVM) {
-            if (m_sFileInfo[1].st_size == 0) {
+        if (strErr.IsEmpty() && m_bProgram_NVM)
+        {
+            if (m_sFileInfo[1].st_size == 0)
+            {
                 strErr = _T("Can not load data flash file for programming!");
             }
         }
 
-        if (strErr.IsEmpty() && m_bProgram_SPI && m_bSupport_SPI) {
-            if (m_sFileInfo[2].st_size == 0) {
+        if (strErr.IsEmpty() && m_bProgram_SPI && m_bSupport_SPI)
+        {
+            if (m_sFileInfo[2].st_size == 0)
+            {
                 strErr = _T("Can not load SPI flash file for programming!");
             }
         }
@@ -548,14 +624,18 @@ void CNuvoISPDlg::OnButtonStart()
         OnKillfocusEditAPRomOffset();
         UpdateAddrOffset();
 
-        if (strErr.IsEmpty()) {
+        if (strErr.IsEmpty())
+        {
             Set_ThreadAction(&CISPProc::Thread_ProgramFlash);
         }
-    } else {
+    }
+    else
+    {
         strErr = _T("Please wait for ISP operation.");
     }
 
-    if (!strErr.IsEmpty()) {
+    if (!strErr.IsEmpty())
+    {
         MessageBox(strErr, NULL, MB_ICONSTOP);
         EnableProgramOption(TRUE);
     }
@@ -568,15 +648,18 @@ void CNuvoISPDlg::OnSelchangeTabData(NMHDR *pNMHDR, LRESULT *pResult)
     // TODO: Add your control notification handler code here
     int nSelect = m_TabData.GetCurSel();
 
-    for (int i = 0; i < sizeof(pViewer) / sizeof(pViewer[0]); ++i) {
-        if (i != nSelect) {
+    for (int i = 0; i < sizeof(pViewer) / sizeof(pViewer[0]); ++i)
+    {
+        if (i != nSelect)
+        {
             pViewer[i]->ShowWindow(SW_HIDE);
         }
     }
 
     pViewer[nSelect]->ShowWindow(SW_SHOW);
 
-    if (pResult != NULL) {
+    if (pResult != NULL)
+    {
         *pResult = 0;
     }
 }
@@ -590,18 +673,22 @@ void CNuvoISPDlg::OnDropFiles(HDROP hDropInfo)
 
     //Returns a count of the files dropped
     while ((DragQueryFile(hDropInfo, 0xFFFFFFFF, NULL, 0) > 0)
-            && (m_fnThreadProcStatus != &CISPProc::Thread_ProgramFlash)) {
+            && (m_fnThreadProcStatus != &CISPProc::Thread_ProgramFlash))
+    {
         //Retrieves the position of the mouse pointer
         DragQueryPoint(hDropInfo, &point);
         //Retrieves the name of dropped file
         DragQueryFile(hDropInfo, 0, szPath, _countof(szPath));
 
-        if (1) {
-            for (int idx = 0; idx < NUM_VIEW; idx++) {
+        if (1)
+        {
+            for (int idx = 0; idx < NUM_VIEW; idx++)
+            {
                 GetDlgItem(m_CtrlID[idx].path)->GetWindowRect(&rect);
                 ScreenToClient(&rect);
 
-                if (PtInRect(&rect, point)) {
+                if (PtInRect(&rect, point))
+                {
                     OnButtonBinFile(idx, szPath);
                     break;
                 }
@@ -622,7 +709,8 @@ void CNuvoISPDlg::OnButtonConfig()
     // offline test mode
     // user can select test chip from popup menu
     if (m_fnThreadProcStatus == &CISPProc::Thread_Idle
-            || m_fnThreadProcStatus == &CISPProc::Thread_Pause) {
+    || m_fnThreadProcStatus == &CISPProc::Thread_Pause)
+    {
         DemoConfigDlg();
         return;
     }
@@ -630,7 +718,8 @@ void CNuvoISPDlg::OnButtonConfig()
 #endif
 
     // online mode - must connect to real chip. gsChipCfgInfo must be valid
-    if (ConfigDlgSel(m_CONFIG_User, sizeof(m_CONFIG_User))) {
+    if (ConfigDlgSel(m_CONFIG_User, sizeof(m_CONFIG_User)))
+    {
         CString strTmp = _T("");
         strTmp.Format(_T("0x%08X"), m_CONFIG_User[0]);
         SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, strTmp);
@@ -663,7 +752,8 @@ void CNuvoISPDlg::EnableProgramOption(BOOL bEnable)
 
 void CNuvoISPDlg::OnPaint()
 {
-    if (IsIconic()) {
+    if (IsIconic())
+    {
         CPaintDC dc(this); // device context for painting
         SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
         // Center icon in client rectangle
@@ -675,7 +765,9 @@ void CNuvoISPDlg::OnPaint()
         int y = (rect.Height() - cyIcon + 1) / 2;
         // Draw the icon
         dc.DrawIcon(x, y, m_hIcon);
-    } else {
+    }
+    else
+    {
         //顯示Logo
         //CDialog::OnPaint();
         CPaintDC   dc(this);   //Device context
@@ -711,7 +803,7 @@ void CNuvoISPDlg::ShowChipInfo_OffLine(void)
     ChangeBtnText(1, _T("Data Flash"));
     ShowDlgItem(IDC_CHECK_CONFIG, 1);
     ShowDlgItem(IDC_CHECK_ERASE, 1);
-    EnableDlgItem(IDC_BUTTON_CONFIG, 1);	// For Debug CONFIG dialog
+    EnableDlgItem(IDC_BUTTON_CONFIG, 1);    // For Debug CONFIG dialog
     ShowDlgItem(IDC_STATIC_APOFFSET, 0);
     ShowDlgItem(IDC_EDIT_APROM_BASE_ADDRESS, 0);
     ShowDlgItem(IDC_STATIC_FLASH_BASE_ADDRESS, 0);
@@ -783,7 +875,8 @@ void CNuvoISPDlg::ShowChipInfo_OnLine()
     bool bSizeValid = UpdateSizeInfo(m_ulDeviceID, m_CONFIG[0], m_CONFIG[1]);
 
     // There is no specific part number for NUC505
-    if (0x00550505 == m_ulDeviceID) {
+    if (0x00550505 == m_ulDeviceID)
+    {
         ShowChipInfo_NUC505();
         return;
     }
@@ -802,44 +895,59 @@ void CNuvoISPDlg::ShowChipInfo_OnLine()
     SetDlgItemText(IDC_STATIC_CONFIG_VALUE_3, strTmp);
 
     // Erase All command is not suppoted for CAN interface
-    if (m_Interfaces[m_SelInterface.GetCurSel()].second == INTF_CAN) { // CAN interface
+    if (m_Interfaces[m_SelInterface.GetCurSel()].second == INTF_CAN)   // CAN interface
+    {
         m_bErase = 0;
         EnableDlgItem(IDC_CHECK_ERASE, 0);
     }
 
-    if ((gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2351)
-            || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2354)) {
+    if ((gsChipCfgInfo.uSeriesCode == PROJ_M2351)
+    || (gsChipCfgInfo.uSeriesCode == PROJ_M2354)
+    || (gsChipCfgInfo.uSeriesCode == PROJ_M2354ES))
+    {
         ShowChipInfo_M2351();
         return;
     }
 
-    if ((gsChipCfgInfo.uSeriesCode == IDD_DIALOG_CONFIGURATION_M480)
-            || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M460)
-            || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2L31)) {
+    if ((gsChipCfgInfo.uSeriesCode == PROJ_M480)
+    || (gsChipCfgInfo.uSeriesCode == PROJ_M460HD)
+    || (gsChipCfgInfo.uSeriesCode == PROJ_M460LD)
+    || (gsChipCfgInfo.uSeriesCode == PROJ_M2L31_256K)
+    || (gsChipCfgInfo.uSeriesCode == PROJ_M2L31_512K))
+    {
         SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0-3:"));
         ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 1);
         ShowDlgItem(IDC_STATIC_CONFIG_VALUE_3, 1);
-    } else if (gsChipCfgInfo.uSeriesCode == IDD_DIALOG_CONFIGURATION_M480LD) { // M480LD, M479
+    }
+    else if (gsChipCfgInfo.uSeriesCode == PROJ_M480LD)     // M480LD, M479
+    {
         SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0-2:"));
         ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 1);
-    } else if ((gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_GENERAL_1T) 
-            || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M55M1)
-            || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2003)){
+    }
+    else if (((gsChipCfgInfo.uSeriesCode >= PROJ_N76E885) && (gsChipCfgInfo.uSeriesCode <= PROJ_MG51D))   // 8051
+    || (gsChipCfgInfo.uSeriesCode == PROJ_M55M1)
+    || (gsChipCfgInfo.uSeriesCode == PROJ_M2003))
+    {
         m_bProgram_NVM = 0;
         EnableDlgItem(IDC_CHECK_NVM, 0);
         EnableDlgItem(IDC_BUTTON_NVM, 0);
         ShowNVMOptions(FALSE);
     }
 
-    if (bSizeValid) {
+    if (bSizeValid)
+    {
         std::ostringstream os;
-        if (m_uNVM_Size != 0) {
+
+        if (m_uNVM_Size != 0)
+        {
             os << "APROM: " << size_str(m_uAPROM_Size) << ","
-                " Data: " << size_str(m_uNVM_Size);
+               " Data: " << size_str(m_uNVM_Size);
         }
-        else {
+        else
+        {
             os << "APROM: " << size_str(m_uAPROM_Size);
         }
+
         std::string cstr = os.str();
         std::wstring wcstr(cstr.begin(), cstr.end());
         CString str = wcstr.c_str();
@@ -848,7 +956,9 @@ void CNuvoISPDlg::ShowChipInfo_OnLine()
         CString info;
         info.Format(_T("%s\nFW Ver: 0x%X"), wcstr.c_str(), int(m_ucFW_VER));
         SetDlgItemText(IDC_STATIC_PARTNO, info);
-    } else {
+    }
+    else
+    {
         CString tips;
         tips.Format(_T("PDID: 0x%X, FW Ver: 0x%X"), m_ulDeviceID, int(m_ucFW_VER));
         SetDlgItemText(IDC_STATIC_PARTNO, tips);
@@ -859,12 +969,15 @@ void CNuvoISPDlg::ShowChipInfo_OnLine()
 
 void CNuvoISPDlg::OnSysCommand(UINT nID, LPARAM lParam)
 {
-    if ((nID & 0xFFF0) == IDM_ABOUTBOX) {
+    if ((nID & 0xFFF0) == IDM_ABOUTBOX)
+    {
         CString sTitle;
         GetWindowText(sTitle);
         CAboutDlg dlgAbout(sTitle);
         dlgAbout.DoModal();
-    } else {
+    }
+    else
+    {
         CDialog::OnSysCommand(nID, lParam);
     }
 }
@@ -878,17 +991,22 @@ void CNuvoISPDlg::UpdateAddrOffset()
     GetDlgItemText(IDC_EDIT_FLASH_BASE_ADDRESS, strAddr);
     unsigned int uAddr = ::_tcstoul(strAddr, 0, 16);
 
-    if (0x00550505 == m_ulDeviceID) {
+    if (0x00550505 == m_ulDeviceID)
+    {
         m_uAPROM_Addr = 0x4000;
         m_uAPROM_Size = 0x200000 - m_uAPROM_Addr;
 
-        if (1) {
+        if (1)
+        {
             m_uNVM_Addr = ::_tcstoul(strAddr, 0, 16);
             m_uNVM_Addr &= ~0xFF;
 
-            if (uAddr < m_uAPROM_Addr) {
+            if (uAddr < m_uAPROM_Addr)
+            {
                 uAddr = 0x100000;
-            } else if (uAddr > 0x200000) {
+            }
+            else if (uAddr > 0x200000)
+            {
                 uAddr = 0x100000;
             }
 
@@ -899,7 +1017,9 @@ void CNuvoISPDlg::UpdateAddrOffset()
         SetDlgItemText(IDC_EDIT_APROM_BASE_ADDRESS, _T("4000"));
         strAddr.Format(_T("%06X"), uAddr);
         SetDlgItemText(IDC_EDIT_FLASH_BASE_ADDRESS, strAddr);
-    } else {
+    }
+    else
+    {
         return;
     }
 }
@@ -917,7 +1037,8 @@ void CNuvoISPDlg::RegisterNotification()
 
 void CNuvoISPDlg::UnregisterNotification()
 {
-    if (m_hNotifyDevNode) {
+    if (m_hNotifyDevNode)
+    {
         UnregisterDeviceNotification(m_hNotifyDevNode);
         m_hNotifyDevNode = NULL;
     }
@@ -928,7 +1049,8 @@ LRESULT CNuvoISPDlg::OnDeviceChange(WPARAM  nEventType, LPARAM  dwData)
     PDEV_BROADCAST_DEVICEINTERFACE pdbi = (PDEV_BROADCAST_DEVICEINTERFACE)dwData;
     CString DevPathName = pdbi->dbcc_name;
 
-    switch (nEventType) {
+    switch (nEventType)
+    {
         case DBT_DEVICEARRIVAL:
             // A device has been inserted and is now available.
             //…
@@ -938,8 +1060,10 @@ LRESULT CNuvoISPDlg::OnDeviceChange(WPARAM  nEventType, LPARAM  dwData)
 
             // Device has been removed.
             //…
-            if (pdbi->dbcc_devicetype == DBT_DEVTYP_DEVICEINTERFACE) {
-                if (DevPathName.CompareNoCase(m_ISPLdDev.GetDevPathName()) == 0) {
+            if (pdbi->dbcc_devicetype == DBT_DEVTYP_DEVICEINTERFACE)
+            {
+                if (DevPathName.CompareNoCase(m_ISPLdDev.GetDevPathName()) == 0)
+                {
                     Set_ThreadAction(&CISPProc::Thread_Idle);
                 }
             }
@@ -955,43 +1079,58 @@ LRESULT CNuvoISPDlg::OnDeviceChange(WPARAM  nEventType, LPARAM  dwData)
 
 void CNuvoISPDlg::ChangeBtnText(int nBtn, LPTSTR pszText)
 {
-    if (0 == nBtn) {
+    if (0 == nBtn)
+    {
         SetDlgItemText(IDC_BUTTON_APROM, pszText);
         SetDlgItemText(IDC_CHECK_APROM, pszText);
-    } else if (1 == nBtn) {
+    }
+    else if (1 == nBtn)
+    {
         SetDlgItemText(IDC_BUTTON_NVM, pszText);
         SetDlgItemText(IDC_CHECK_NVM, pszText);
-    } else {
+    }
+    else
+    {
         return;
     }
 
     TC_ITEM ti;
     ti.mask = TCIF_TEXT;
     ti.pszText = pszText;
-    if (nBtn < m_TabData.GetItemCount()) {
+
+    if (nBtn < m_TabData.GetItemCount())
+    {
         VERIFY(m_TabData.SetItem(nBtn, &ti));
     }
 }
 
 void CNuvoISPDlg::OnKillfocusEditAPRomOffset()
 {
-    if ((gsChipCfgInfo.uSeriesCode != NUC_CHIP_TYPE_M2351)
-            && (gsChipCfgInfo.uSeriesCode != NUC_CHIP_TYPE_M2354)
-            && (gsChipCfgInfo.uSeriesCode != NUC_CHIP_TYPE_M2L31)) {
+    if ((gsChipCfgInfo.uSeriesCode != PROJ_M2351)
+            && (gsChipCfgInfo.uSeriesCode != PROJ_M2354)
+            && (gsChipCfgInfo.uSeriesCode != PROJ_M2354ES)
+            && (gsChipCfgInfo.uSeriesCode != PROJ_M2L31_512K)
+            && (gsChipCfgInfo.uSeriesCode != PROJ_M2L31_256K))
+    {
         return;
     }
 
     CString strAddr;
     GetDlgItemText(IDC_EDIT_APROM_BASE_ADDRESS, strAddr);
     m_uAPROM_Offset = ::_tcstoul(strAddr, 0, 16);
-    if (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2L31) {
+
+    if (gsChipCfgInfo.uSeriesCode == PROJ_M2L31_256K ||
+    gsChipCfgInfo.uSeriesCode == PROJ_M2L31_512K)
+    {
         m_uAPROM_Offset &= 0xFF000; // 4K page alignment
     }
-    else {
+    else
+    {
         m_uAPROM_Offset &= 0xFF800; // 2K page alignment
     }
 
-    if (m_uAPROM_Offset >= m_uAPROM_Size) {
+    if (m_uAPROM_Offset >= m_uAPROM_Size)
+    {
         m_uAPROM_Offset = 0;
     }
 
@@ -1000,12 +1139,14 @@ void CNuvoISPDlg::OnKillfocusEditAPRomOffset()
     TRACE(_T("OnKillfocusEditAPRomOffset\n"));
 }
 
-void CNuvoISPDlg::ShowNVMOptions(BOOL bShow) 
+void CNuvoISPDlg::ShowNVMOptions(BOOL bShow)
 {
-    if (m_bShowNVM == bShow) {
+    if (m_bShowNVM == bShow)
+    {
         return;
     }
-    else {
+    else
+    {
         m_bShowNVM = bShow;
     }
 
@@ -1021,21 +1162,24 @@ void CNuvoISPDlg::ShowNVMOptions(BOOL bShow)
     pWnd->GetWindowRect(&rect1);
     ScreenToClient(&rect1);
 
-    if (bShow) {
+    if (bShow)
+    {
         GetDlgItem(IDC_STATIC_FILEINFO_NVM)->GetWindowRect(&rect2);
     }
-    else {
+    else
+    {
         GetDlgItem(IDC_STATIC_FILEINFO_APROM)->GetWindowRect(&rect2);
     }
 
     ScreenToClient(&rect2);
     rect1.bottom = rect2.bottom + 10;
     pWnd->MoveWindow(rect1.left,
-        rect1.top,
-        rect1.Width(),
-        rect1.Height());
+                     rect1.top,
+                     rect1.Width(),
+                     rect1.Height());
     // Group - Config Bits
-    UINT32 nIds_CB[] = {
+    UINT32 nIds_CB[] =
+    {
         IDC_GROUP_CONFIG,
         IDC_BUTTON_CONFIG,
         IDC_STATIC_CONFIG_0,
@@ -1050,34 +1194,40 @@ void CNuvoISPDlg::ShowNVMOptions(BOOL bShow)
     ScreenToClient(&rect2);
     offset = rect2.top - rect1.top - rect1.Height() - 5;
 
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 7; i++)
+    {
         CRect rect;
         CWnd* pWnd = GetDlgItem(nIds_CB[i]);
         pWnd->GetWindowRect(&rect);
         ScreenToClient(&rect);
         pWnd->MoveWindow(rect.left,
-            rect.top - offset,
-            rect.Width(),
-            rect.Height());
+                         rect.top - offset,
+                         rect.Width(),
+                         rect.Height());
     }
 
     // Group - File Data
-    if (bShow) {
-        if (m_TabData.GetItemCount() <= 1) {
+    if (bShow)
+    {
+        if (m_TabData.GetItemCount() <= 1)
+        {
             CString strTab;
             GetDlgItemText(m_CtrlID[1].btn, strTab);
             m_TabData.InsertItem(1, strTab);
         }
     }
-    else {
-        if (m_TabData.GetItemCount() > 1) {
+    else
+    {
+        if (m_TabData.GetItemCount() > 1)
+        {
             m_TabData.DeleteItem(1);
         }
 
         pViewer[1]->ShowWindow(SW_HIDE);
     }
 
-    UINT32 nIds_FD[] = {
+    UINT32 nIds_FD[] =
+    {
         IDC_GROUP_FILE_DATA,
         IDC_TAB_DATA,
     };
@@ -1087,21 +1237,23 @@ void CNuvoISPDlg::ShowNVMOptions(BOOL bShow)
     ScreenToClient(&rect2);
     offset = rect2.top - rect1.top - rect1.Height() - 5;
 
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++)
+    {
         CRect rect;
         CWnd* pWnd = GetDlgItem(nIds_FD[i]);
         pWnd->GetWindowRect(&rect);
         ScreenToClient(&rect);
         pWnd->MoveWindow(rect.left,
-            rect.top - offset,
-            rect.Width(),
-            rect.Height());
+                         rect.top - offset,
+                         rect.Width(),
+                         rect.Height());
     }
 
     pViewer[2]->ShowWindow(bShow);
     // Group - Programming Options
     ShowDlgItem(IDC_CHECK_NVM, bShow);
-    UINT32 nIds_PO[] = {
+    UINT32 nIds_PO[] =
+    {
         IDC_GROUP_PROGRAM,
         IDC_CHECK_APROM,
         IDC_CHECK_NVM,
@@ -1118,16 +1270,18 @@ void CNuvoISPDlg::ShowNVMOptions(BOOL bShow)
     ScreenToClient(&rect2);
     offset = rect2.top - rect1.top - rect1.Height() - 5;
 
-    for (int i = 0; i < 9; i++) {
+    for (int i = 0; i < 9; i++)
+    {
         CRect rect;
         CWnd* pWnd = GetDlgItem(nIds_PO[i]);
         pWnd->GetWindowRect(&rect);
         ScreenToClient(&rect);
         pWnd->MoveWindow(rect.left,
-            rect.top - offset,
-            rect.Width(),
-            rect.Height());
+                         rect.top - offset,
+                         rect.Width(),
+                         rect.Height());
     }
+
     SetDlgItemText(IDC_CHECK_ERASE, _T("Erase All"));
     GetDlgItem(IDC_CHECK_APROM)->GetWindowRect(&rect2);
 
@@ -1137,24 +1291,26 @@ void CNuvoISPDlg::ShowNVMOptions(BOOL bShow)
     ScreenToClient(&rect1);
     rect1.bottom = rect2.bottom + 10;
     pWnd->MoveWindow(rect1.left,
-        rect1.top,
-        rect1.Width(),
-        rect1.Height());
+                     rect1.top,
+                     rect1.Width(),
+                     rect1.Height());
     // Progress Bar and Status
-    UINT32 nIds_PB[] = {
+    UINT32 nIds_PB[] =
+    {
         IDC_PROGRESS,
         IDC_STATIC_STATUS,
     };
 
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++)
+    {
         CRect rect;
         CWnd* pWnd = GetDlgItem(nIds_PB[i]);
         pWnd->GetWindowRect(&rect);
         ScreenToClient(&rect);
         pWnd->MoveWindow(rect.left,
-            rect1.bottom + 5,
-            rect.Width(),
-            rect.Height());
+                         rect1.bottom + 5,
+                         rect.Width(),
+                         rect.Height());
     }
 
     // Main Window
@@ -1162,16 +1318,19 @@ void CNuvoISPDlg::ShowNVMOptions(BOOL bShow)
     GetDlgItem(IDC_PROGRESS)->GetWindowRect(&rect2);
     m_rect.bottom = rect2.bottom + 10;
     MoveWindow(m_rect.left,
-        m_rect.top,
-        m_rect.Width(),
-        m_rect.Height());
+               m_rect.top,
+               m_rect.Width(),
+               m_rect.Height());
 }
 
 void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
 {
-    if (m_bShowSPI == bShow) {
+    if (m_bShowSPI == bShow)
+    {
         return;
-    } else {
+    }
+    else
+    {
         m_bShowSPI = bShow;
     }
 
@@ -1187,9 +1346,12 @@ void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
     pWnd->GetWindowRect(&rect1);
     ScreenToClient(&rect1);
 
-    if (bShow) {
+    if (bShow)
+    {
         GetDlgItem(IDC_STATIC_FILEINFO_SPI)->GetWindowRect(&rect2);
-    } else {
+    }
+    else
+    {
         GetDlgItem(IDC_STATIC_FILEINFO_NVM)->GetWindowRect(&rect2);
     }
 
@@ -1200,7 +1362,8 @@ void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
                      rect1.Width(),
                      rect1.Height());
     // Group - Config Bits
-    UINT32 nIds_CB[] = {
+    UINT32 nIds_CB[] =
+    {
         IDC_GROUP_CONFIG,
         IDC_BUTTON_CONFIG,
         IDC_STATIC_CONFIG_0,
@@ -1215,7 +1378,8 @@ void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
     ScreenToClient(&rect2);
     offset = rect2.top - rect1.top - rect1.Height() - 5;
 
-    for (int i = 0; i < 7; i++) {
+    for (int i = 0; i < 7; i++)
+    {
         CRect rect;
         CWnd *pWnd = GetDlgItem(nIds_CB[i]);
         pWnd->GetWindowRect(&rect);
@@ -1227,21 +1391,27 @@ void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
     }
 
     // Group - File Data
-    if (bShow) {
-        if (m_TabData.GetItemCount() != NUM_VIEW) {
+    if (bShow)
+    {
+        if (m_TabData.GetItemCount() != NUM_VIEW)
+        {
             CString strTab;
             GetDlgItemText(m_CtrlID[2].btn, strTab);
             m_TabData.InsertItem(2, strTab);
         }
-    } else {
-        if (m_TabData.GetItemCount() == NUM_VIEW) {
+    }
+    else
+    {
+        if (m_TabData.GetItemCount() == NUM_VIEW)
+        {
             m_TabData.DeleteItem(2);
         }
 
         pViewer[2]->ShowWindow(SW_HIDE);
     }
 
-    UINT32 nIds_FD[] = {
+    UINT32 nIds_FD[] =
+    {
         IDC_GROUP_FILE_DATA,
         IDC_TAB_DATA,
     };
@@ -1251,7 +1421,8 @@ void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
     ScreenToClient(&rect2);
     offset = rect2.top - rect1.top - rect1.Height() - 5;
 
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++)
+    {
         CRect rect;
         CWnd *pWnd = GetDlgItem(nIds_FD[i]);
         pWnd->GetWindowRect(&rect);
@@ -1266,7 +1437,8 @@ void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
     // Group - Programming Options
     ShowDlgItem(IDC_CHECK_SPI, bShow);
     ShowDlgItem(IDC_CHECK_ERASE_SPI, bShow);
-    UINT32 nIds_PO[] = {
+    UINT32 nIds_PO[] =
+    {
         IDC_GROUP_PROGRAM,
         IDC_CHECK_APROM,
         IDC_CHECK_NVM,
@@ -1283,7 +1455,8 @@ void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
     ScreenToClient(&rect2);
     offset = rect2.top - rect1.top - rect1.Height() - 5;
 
-    for (int i = 0; i < 9; i++) {
+    for (int i = 0; i < 9; i++)
+    {
         CRect rect;
         CWnd *pWnd = GetDlgItem(nIds_PO[i]);
         pWnd->GetWindowRect(&rect);
@@ -1294,10 +1467,13 @@ void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
                          rect.Height());
     }
 
-    if (bShow) {
+    if (bShow)
+    {
         SetDlgItemText(IDC_CHECK_ERASE, _T("Erase All (Exclude SPI)"));
         GetDlgItem(IDC_CHECK_SPI)->GetWindowRect(&rect2);
-    } else {
+    }
+    else
+    {
         SetDlgItemText(IDC_CHECK_ERASE, _T("Erase All"));
         GetDlgItem(IDC_CHECK_APROM)->GetWindowRect(&rect2);
     }
@@ -1312,12 +1488,14 @@ void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
                      rect1.Width(),
                      rect1.Height());
     // Progress Bar and Status
-    UINT32 nIds_PB[] = {
+    UINT32 nIds_PB[] =
+    {
         IDC_PROGRESS,
         IDC_STATIC_STATUS,
     };
 
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++)
+    {
         CRect rect;
         CWnd *pWnd = GetDlgItem(nIds_PB[i]);
         pWnd->GetWindowRect(&rect);
@@ -1338,12 +1516,20 @@ void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
                m_rect.Height());
 }
 
-void CNuvoISPDlg::ShowWarningMessage(void) {
-    if ((gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M460)
-        || (gsChipCfgInfo.uSeriesCode == NUC_CHIP_TYPE_M2L31)) {
-        if ((m_CONFIG_User[2] & 0x5A5A) != 0x5A5A) {
-            MessageBox(_T("When Advance Security Lock or Key Store Protection Lock is enabled, the secure boot verification routine will be enforced. And MCU will enter the revoked state after whole chip erase."), NULL, MB_ICONWARNING);
+void CNuvoISPDlg::ShowWarningMessage(void)
+{
+    if ((gsChipCfgInfo.uSeriesCode == PROJ_M460HD)
+    || (gsChipCfgInfo.uSeriesCode == PROJ_M460LD)
+    || (gsChipCfgInfo.uSeriesCode == PROJ_M2L31_256K)
+    || (gsChipCfgInfo.uSeriesCode == PROJ_M2L31_512K))
+    {
+        if ((m_CONFIG_User[2] & 0x5A5A) != 0x5A5A)
+        {
+            MessageBox(
+                _T("When Advance Security Lock or Key Store Protection Lock is enabled, the secure boot verification routine will be enforced. And MCU will enter the revoked state after whole chip erase."), NULL,
+                MB_ICONWARNING);
         }
-    } 
+    }
+
     //MessageBox(_T("Debug Message."), NULL, MB_ICONWARNING);
 }

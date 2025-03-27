@@ -2,12 +2,14 @@
 #define AFX_DIALOGCHIPSETTING_M2351_H__E0CD7A09_C5DC_481E_A871_03B422E615F8__INCLUDED_
 
 #if _MSC_VER > 1000
-#pragma once
+    #pragma once
 #endif // _MSC_VER > 1000
 // DialogChipSetting_M2351.h : header file
 //
 #include "ChipDefs.h"
 #include "DialogChipSetting_CFG_M2351.h"
+#include "DialogChipSetting_SECURE_M2351.h"
+
 
 // DialogChipSetting_M2351 dialog
 
@@ -16,11 +18,12 @@ class CDialogChipSetting_M2351 : public CDialogResize
     DECLARE_DYNAMIC(CDialogChipSetting_M2351)
 
 public:
-    CDialogChipSetting_M2351(unsigned int uChipSeries, CWnd *pParent = NULL);
+    CDialogChipSetting_M2351(unsigned int uProgramMemorySize = M2351_MAX_APROM_SIZE, unsigned int uFlashPageSize = NUMICRO_FLASH_PAGE_SIZE_2K, BOOL bSecureDebug = TRUE, BOOL bNSecureArea = TRUE,
+                             unsigned int uChipSeries = IDS_M2351_SERIES, CWnd* pParent = NULL);  // standard constructor
 
     virtual ~CDialogChipSetting_M2351();
 
-// Dialog Data
+    // Dialog Data
     enum { IDD = IDD_DIALOG_CHIP_SETTING_NUMICRO };
 
 protected:
@@ -32,7 +35,7 @@ protected:
     BOOL m_bNSecureArea;
 
     virtual BOOL OnInitDialog();
-    virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
     DECLARE_MESSAGE_MAP()
 public:
@@ -48,7 +51,8 @@ public:
     unsigned int m_uShowFlag;
 
     CTabCtrl m_TabChipSetting;
-    CDialogChipSetting_CFG_M2351	m_ChipSetting_CFG;
+    CDialogChipSetting_CFG_M2351    m_ChipSetting_CFG;
+    CDialogChipSetting_SECURE_M2351 m_ChipSetting_SECURE;
 
     afx_msg void OnTcnSelchangeTabChipsetting(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnOk();

@@ -5,24 +5,26 @@
 #include <deque>
 #include <string>
 #include <utility>
+#include "Lang.h"
 #include "ChipDefs.h"
 #include "NumEdit.h"
 #include "AppConfig.h"
 #include "DialogConfiguration_NUC1xx.h"
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+    #define new DEBUG_NEW
+    #undef THIS_FILE
+    static char THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_NUC1xx dialog
 
+
 CDialogConfiguration_NUC1xx::CDialogConfiguration_NUC1xx(BOOL bIsDataFlashFixed,
-        unsigned int uProgramMemorySize,
-        unsigned int uDataFlashSize,
-        CWnd *pParent /*=NULL*/)
+                                                         unsigned int uProgramMemorySize,
+                                                         unsigned int uDataFlashSize,
+                                                         CWnd* pParent /*=NULL*/)
     : CDialogResize(CDialogConfiguration_NUC1xx::IDD, pParent)
     , m_bIsDataFlashFixed(bIsDataFlashFixed)
     , m_uProgramMemorySize(uProgramMemorySize)
@@ -42,7 +44,8 @@ CDialogConfiguration_NUC1xx::CDialogConfiguration_NUC1xx(BOOL bIsDataFlashFixed,
     //}}AFX_DATA_INIT
 }
 
-void CDialogConfiguration_NUC1xx::DoDataExchange(CDataExchange *pDX)
+
+void CDialogConfiguration_NUC1xx::DoDataExchange(CDataExchange* pDX)
 {
     CDialogResize::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CDialogConfiguration_NUC1xx)
@@ -63,6 +66,7 @@ void CDialogConfiguration_NUC1xx::DoDataExchange(CDataExchange *pDX)
     DDX_Text(pDX, IDC_EDIT_DATA_FLASH_SIZE, m_sDataFlashSize);
     //}}AFX_DATA_MAP
 }
+
 
 BEGIN_MESSAGE_MAP(CDialogConfiguration_NUC1xx, CDialog)
     //{{AFX_MSG_MAP(CDialogConfiguration_NUC1xx)
@@ -94,16 +98,21 @@ END_MESSAGE_MAP()
 BOOL CDialogConfiguration_NUC1xx::OnInitDialog()
 {
     CDialog::OnInitDialog();
+
     // TODO: Add extra initialization here
     UDACCEL pAccel[1];
     pAccel[0].nInc = 1;
     pAccel[0].nSec = 0;
     m_SpinDataFlashSize.SetAccel(1, pAccel);
+
     ConfigToGUI();
+
     UpdateData(FALSE);
+
     m_bIsInitialized = true;
     GetWindowRect(m_rect);
     AdjustDPI();
+
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -113,7 +122,8 @@ void CDialogConfiguration_NUC1xx::ConfigToGUI()
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
     unsigned int uConfig1 = m_ConfigValue.m_value[1];
 
-    switch (uConfig0 & NUC1XX_FLASH_CONFIG_CBOV) {
+    switch (uConfig0 & NUC1XX_FLASH_CONFIG_CBOV)
+    {
         case NUC1XX_FLASH_CONFIG_CBOV_45:
             m_nRadioBov = 0;
             break;
@@ -133,18 +143,23 @@ void CDialogConfiguration_NUC1xx::ConfigToGUI()
     }
 
     m_nRadioBS = ((uConfig0 & NUC1XX_FLASH_CONFIG_CBS) == 0 ? 0 : 1);
+
     m_bCheckBrownOutDetect = ((uConfig0 & NUC1XX_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
     m_bCheckBrownOutReset = ((uConfig0 & NUC1XX_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
     m_bClockFilterEnable = ((uConfig0 & NUC1XX_FLASH_CONFIG_CKF) == NUC1XX_FLASH_CONFIG_CKF ? TRUE : FALSE);
-    m_bDataFlashEnable = ((uConfig0 & NUMICRO_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
-    m_bSecurityLock = ((uConfig0 & NUMICRO_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    m_bDataFlashEnable = ((uConfig0 & NUC1XX_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
+    m_bSecurityLock = ((uConfig0 & NUC1XX_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+
     unsigned int uFlashBaseAddress = uConfig1 & 0xFFFFF;
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
 
-    if (m_bIsDataFlashFixed) {
+    if (m_bIsDataFlashFixed)
+    {
         m_sDataFlashSize.Format(_T("%.2fK"), m_uDataFlashSize / 1024.);
         m_SpinDataFlashSize.EnableWindow(FALSE);
-    } else {
+    }
+    else
+    {
         unsigned int uPageNum = uFlashBaseAddress / NUMICRO_FLASH_PAGE_SIZE_512;
         unsigned int uLimitNum = m_uProgramMemorySize / NUMICRO_FLASH_PAGE_SIZE_512;
         unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * NUMICRO_FLASH_PAGE_SIZE_512) : 0;
@@ -153,6 +168,7 @@ void CDialogConfiguration_NUC1xx::ConfigToGUI()
     }
 
     GetDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS)->EnableWindow(m_bDataFlashEnable && (!m_bIsDataFlashFixed));
+
     m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
     m_sConfigValue1.Format(_T("0x%08X"), uConfig1);
 }
@@ -161,9 +177,11 @@ void CDialogConfiguration_NUC1xx::GUIToConfig()
 {
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
     unsigned int uConfig1;
+
     uConfig0 &= ~NUC1XX_FLASH_CONFIG_CBOV;
 
-    switch (m_nRadioBov) {
+    switch (m_nRadioBov)
+    {
         case 0:
             uConfig0 |= NUC1XX_FLASH_CONFIG_CBOV_45;
             break;
@@ -185,57 +203,58 @@ void CDialogConfiguration_NUC1xx::GUIToConfig()
             uConfig0 |= (m_ConfigValue.m_value[0] & NUC1XX_FLASH_CONFIG_CBOV);
     }
 
-    if (m_nRadioBS == 0) {
+    if (m_nRadioBS == 0)
         uConfig0 &= ~NUC1XX_FLASH_CONFIG_CBS;
-    } else {
+    else
         uConfig0 |= NUC1XX_FLASH_CONFIG_CBS;
-    }
 
-    if (m_bCheckBrownOutDetect) {
+    if (m_bCheckBrownOutDetect)
         uConfig0 &= ~NUC1XX_FLASH_CONFIG_CBODEN;
-    } else {
+    else
         uConfig0 |= NUC1XX_FLASH_CONFIG_CBODEN;
-    }
 
-    if (m_bCheckBrownOutReset) {
+    if (m_bCheckBrownOutReset)
         uConfig0 &= ~NUC1XX_FLASH_CONFIG_CBORST;
-    } else {
+    else
         uConfig0 |= NUC1XX_FLASH_CONFIG_CBORST;
-    }
 
-    if (m_bClockFilterEnable) {
+    if (m_bClockFilterEnable)
         uConfig0 |= NUC1XX_FLASH_CONFIG_CKF;
-    } else {
+    else
         uConfig0 &= ~NUC1XX_FLASH_CONFIG_CKF;
-    }
 
-    if (m_bDataFlashEnable) {
-        uConfig0 &= ~NUMICRO_FLASH_CONFIG_DFEN;
-    } else {
-        uConfig0 |= NUMICRO_FLASH_CONFIG_DFEN;
+    if (m_bDataFlashEnable)
+        uConfig0 &= ~NUC1XX_FLASH_CONFIG_DFEN;
+    else
+    {
+        uConfig0 |= NUC1XX_FLASH_CONFIG_DFEN;
         m_sFlashBaseAddress = "FFFFFFFF";
     }
 
-    if (m_bSecurityLock) {
-        uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
-    } else {
-        uConfig0 |= NUMICRO_FLASH_CONFIG_LOCK;
-    }
+    if (m_bSecurityLock)
+        uConfig0 &= ~NUC1XX_FLASH_CONFIG_LOCK;
+    else
+        uConfig0 |= NUC1XX_FLASH_CONFIG_LOCK;
 
     //Removed if(m_bWatchDogEnable)
     uConfig0 |= NUC1XX_FLASH_CONFIG_CWDTEN;
+
     m_ConfigValue.m_value[0] = uConfig0;
+
     TCHAR *pEnd;
     uConfig1 = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
     m_ConfigValue.m_value[1] = uConfig1;// | 0xFFF00000;
 }
 
+
 void CDialogConfiguration_NUC1xx::OnButtonClick()
 {
     // TODO: Add your control notification handler code here
     UpdateData(TRUE);
+
     GUIToConfig();
     ConfigToGUI();
+
     UpdateData(FALSE);
 }
 
@@ -248,9 +267,43 @@ void CDialogConfiguration_NUC1xx::OnKillfocusEditFlashBaseAddress()
 void CDialogConfiguration_NUC1xx::OnOK()
 {
     UpdateData(TRUE);
+
     OnKillfocusEditFlashBaseAddress();
     GUIToConfig();
+
     CDialog::OnOK();
+}
+
+
+CString CDialogConfiguration_NUC1xx::GetConfigWarning(const unsigned int config[2])
+{
+    CString str;
+    unsigned int uConfig0 = config[0];
+
+    switch (uConfig0 & NUC1XX_FLASH_CONFIG_CFOSC)
+    {
+        case NUC1XX_FLASH_CONFIG_E12M:
+            str += _T("   ") + _I(IDS_SELECT_EXTERNAL_12M_CLOCK);
+            break;
+
+        case NUC1XX_FLASH_CONFIG_E32K:
+            str += _T("   ") + _I(IDS_SELECT_EXTERNAL_32K_CLOCK);
+            break;
+
+        case NUC1XX_FLASH_CONFIG_PLL:
+            str += _T("   ") + _I(IDS_SELECT_PLL_CLOCK);
+            break;
+
+        default:
+            ;
+    }
+
+    BOOL bSecurityLock = ((uConfig0 & NUC1XX_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+
+    if (!bSecurityLock)
+        str += _T("   ") + _I(IDS_DISABLE_SECURITY_LOCK);
+
+    return str;
 }
 
 void CDialogConfiguration_NUC1xx::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)
@@ -259,11 +312,10 @@ void CDialogConfiguration_NUC1xx::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRE
     CDialogResize::OnDeltaposSpinDataFlashSize(pNMHDR, pResult, m_bDataFlashEnable, m_uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_512);
 }
 
-void CDialogConfiguration_NUC1xx::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
+void CDialogConfiguration_NUC1xx::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
-    if (pScrollBar != NULL && pScrollBar->GetDlgCtrlID() == m_SpinDataFlashSize.GetDlgCtrlID()) {
+    if (pScrollBar != NULL && pScrollBar->GetDlgCtrlID() == m_SpinDataFlashSize.GetDlgCtrlID())
         return;
-    }
 
     CDialogResize::OnVScroll(nSBCode, nPos, pScrollBar);
 }

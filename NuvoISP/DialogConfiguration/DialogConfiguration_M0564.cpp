@@ -5,6 +5,7 @@
 #include <deque>
 #include <string>
 #include <utility>
+#include "Lang.h"
 #include "ChipDefs.h"
 #include "NumEdit.h"
 #include "AppConfig.h"
@@ -12,16 +13,17 @@
 #include <cassert>
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+    #define new DEBUG_NEW
+    #undef THIS_FILE
+    static char THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_M0564 dialog
 
+
 CDialogConfiguration_M0564::CDialogConfiguration_M0564(unsigned int uProgramMemorySize,
-        CWnd *pParent /*=NULL*/)
+                                                       CWnd* pParent /*=NULL*/)
     : CDialogResize(CDialogConfiguration_M0564::IDD, pParent)
     , m_uProgramMemorySize(uProgramMemorySize)
 {
@@ -44,7 +46,8 @@ CDialogConfiguration_M0564::CDialogConfiguration_M0564(unsigned int uProgramMemo
     //}}AFX_DATA_INIT
 }
 
-void CDialogConfiguration_M0564::DoDataExchange(CDataExchange *pDX)
+
+void CDialogConfiguration_M0564::DoDataExchange(CDataExchange* pDX)
 {
     CDialogResize::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CDialogConfiguration_M0564)
@@ -113,21 +116,28 @@ BOOL CDialogConfiguration_M0564::OnInitDialog()
     pAccel[0].nInc = 1;
     pAccel[0].nSec = 0;
     m_SpinDataFlashSize.SetAccel(1, pAccel);
+
     ConfigToGUI(0);
     UpdateData(FALSE);
+
     m_bIsInitialized = true;
     GetWindowRect(m_rect);
     AdjustDPI();
+
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
 }
+
+
+
 
 void CDialogConfiguration_M0564::ConfigToGUI(int nEventID)
 {
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
     unsigned int uConfig1 = m_ConfigValue.m_value[1];
 
-    switch (uConfig0 & M0564_FLASH_CONFIG_CBOV) {
+    switch (uConfig0 & M0564_FLASH_CONFIG_CBOV)
+    {
         case M0564_FLASH_CONFIG_CBOV_45:
             m_nRadioBov = 0;
             break;
@@ -146,7 +156,8 @@ void CDialogConfiguration_M0564::ConfigToGUI(int nEventID)
             break;
     }
 
-    switch (uConfig0 & M0564_FLASH_CONFIG_CBS) {
+    switch (uConfig0 & M0564_FLASH_CONFIG_CBS)
+    {
         case M0564_FLASH_CONFIG_CBS_LD:
             m_nRadioBS = 0;
             break;
@@ -173,23 +184,24 @@ void CDialogConfiguration_M0564::ConfigToGUI(int nEventID)
     m_bWDTPowerDown = ((uConfig0 & M0564_FLASH_CONFIG_CWDTPDEN) == 0 ? TRUE : FALSE);
     m_bWDTEnable = ((uConfig0 & M0564_FLASH_CONFIG_CWDTEN) == 0 ? TRUE : FALSE);;
 
-    if (!m_bWDTEnable) {
-        m_bWDTPowerDown = FALSE;
-    }
+    if (!m_bWDTEnable) m_bWDTPowerDown = FALSE;
 
     m_bCheckBrownOutDetect = ((uConfig0 & M0564_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
     m_bCheckBrownOutReset = ((uConfig0 & M0564_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
-    m_bDataFlashEnable = ((uConfig0 & NUMICRO_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
+    m_bDataFlashEnable = ((uConfig0 & M0564_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
     m_bICELock = ((uConfig0 & M0564_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
-    m_bSecurityLock = ((uConfig0 & NUMICRO_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    m_bSecurityLock = ((uConfig0 & M0564_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+
     unsigned int uFlashBaseAddress = uConfig1 & 0xFFFFF;
     m_sFlashBaseAddress.Format(_T("%X"), uFlashBaseAddress);
+
     unsigned int uPageNum = uFlashBaseAddress / m_uPageSize;
     unsigned int uLimitNum = m_uProgramMemorySize / m_uPageSize;
     unsigned int uDataFlashSize = (uPageNum < uLimitNum) ? ((uLimitNum - uPageNum) * m_uPageSize) : 0;
     m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable ? uDataFlashSize : 0) / 1024.);
     m_SpinDataFlashSize.EnableWindow(m_bDataFlashEnable ? TRUE : FALSE);
     GetDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS)->EnableWindow(m_bDataFlashEnable);
+
     m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
     m_sConfigValue1.Format(_T("0x%08X"), uConfig1);
 }
@@ -198,9 +210,11 @@ void CDialogConfiguration_M0564::GUIToConfig(int nEventID)
 {
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
     unsigned int uConfig1;
+
     uConfig0 &= ~M0564_FLASH_CONFIG_CBOV;
 
-    switch (m_nRadioBov) {
+    switch (m_nRadioBov)
+    {
         case 0:
             uConfig0 |= M0564_FLASH_CONFIG_CBOV_45;
             break;
@@ -224,7 +238,8 @@ void CDialogConfiguration_M0564::GUIToConfig(int nEventID)
 
     uConfig0 &= ~M0564_FLASH_CONFIG_CBS;
 
-    switch (m_nRadioBS) {
+    switch (m_nRadioBS)
+    {
         case 0:
             uConfig0 |= M0564_FLASH_CONFIG_CBS_LD;
             break;
@@ -246,92 +261,100 @@ void CDialogConfiguration_M0564::GUIToConfig(int nEventID)
             uConfig0 |= (m_ConfigValue.m_value[0] & M0564_FLASH_CONFIG_CBS);
     }
 
-    if (m_nRadioGPG == 0) {
+    if (m_nRadioGPG == 0)
         uConfig0 &= ~M0564_FLASH_CONFIG_CGPFMFP;
-    } else {
+    else
         uConfig0 |= M0564_FLASH_CONFIG_CGPFMFP;
-    }
 
-    if (m_nRadioIO) {
+    if (m_nRadioIO)
         uConfig0 |= M0564_FLASH_CONFIG_CIOINI;
-    } else {
+    else
         uConfig0 &= ~M0564_FLASH_CONFIG_CIOINI;
-    }
 
-    if (m_bWDTPowerDown) {
+    if (m_bWDTPowerDown)
         uConfig0 &= ~M0564_FLASH_CONFIG_CWDTPDEN;
-    } else {
+    else
         uConfig0 |= M0564_FLASH_CONFIG_CWDTPDEN;
-    }
 
-    if (m_bWDTEnable) {
+    if (m_bWDTEnable)
+    {
         uConfig0 &= ~M0564_FLASH_CONFIG_CWDTEN;
 
-        if (!m_bWDTPowerDown) {
+        if (!m_bWDTPowerDown)
+        {
             uConfig0 &= ~M0564_FLASH_CONFIG_CWDTEN_BIT1;
             uConfig0 &= ~M0564_FLASH_CONFIG_CWDTEN_BIT0;
         }
-    } else {
+    }
+    else
+    {
         uConfig0 |= M0564_FLASH_CONFIG_CWDTEN;
     }
 
-    if (nEventID == IDC_CHECK_WDT_POWER_DOWN) {
-        if (m_bWDTPowerDown) {
+    if (nEventID == IDC_CHECK_WDT_POWER_DOWN)
+    {
+        if (m_bWDTPowerDown)
+        {
             uConfig0 &= ~M0564_FLASH_CONFIG_CWDTEN;
             uConfig0 |= M0564_FLASH_CONFIG_CWDTEN_BIT1;
             uConfig0 |= M0564_FLASH_CONFIG_CWDTEN_BIT0;
         }
-    } else {
-        if (!m_bWDTEnable) {
+    }
+    else
+    {
+        if (!m_bWDTEnable)
+        {
             uConfig0 |= M0564_FLASH_CONFIG_CWDTPDEN;
             uConfig0 |= M0564_FLASH_CONFIG_CWDTEN_BIT1;
             uConfig0 |= M0564_FLASH_CONFIG_CWDTEN_BIT0;
         }
     }
 
-    if (m_bCheckBrownOutDetect) {
+    if (m_bCheckBrownOutDetect)
         uConfig0 &= ~M0564_FLASH_CONFIG_CBODEN;
-    } else {
+    else
         uConfig0 |= M0564_FLASH_CONFIG_CBODEN;
-    }
 
-    if (m_bCheckBrownOutReset) {
+    if (m_bCheckBrownOutReset)
         uConfig0 &= ~M0564_FLASH_CONFIG_CBORST;
-    } else {
+    else
         uConfig0 |= M0564_FLASH_CONFIG_CBORST;
-    }
 
-    if (m_bDataFlashEnable) {
-        uConfig0 &= ~NUMICRO_FLASH_CONFIG_DFEN;
-    } else {
-        uConfig0 |= NUMICRO_FLASH_CONFIG_DFEN;
+    if (m_bDataFlashEnable)
+        uConfig0 &= ~M0564_FLASH_CONFIG_DFEN;
+    else
+    {
+        uConfig0 |= M0564_FLASH_CONFIG_DFEN;
         m_sFlashBaseAddress = "FFFFFFFF";
     }
 
-    if (m_bICELock) {
+    if (m_bICELock)
         uConfig0 &= ~M0564_FLASH_CONFIG_ICELOCK;
-    } else {
+    else
         uConfig0 |= M0564_FLASH_CONFIG_ICELOCK;
-    }
 
-    if (m_bSecurityLock) {
-        uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
-    } else {
-        uConfig0 |= NUMICRO_FLASH_CONFIG_LOCK;
-    }
+    if (m_bSecurityLock)
+        uConfig0 &= ~M0564_FLASH_CONFIG_LOCK;
+    else
+        uConfig0 |= M0564_FLASH_CONFIG_LOCK;
 
     m_ConfigValue.m_value[0] = uConfig0;
+
     TCHAR *pEnd;
     uConfig1 = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
     m_ConfigValue.m_value[1] = uConfig1;// | 0xFFF00000;
 }
 
+
+
 void CDialogConfiguration_M0564::OnGUIEvent(int nEventID)
 {
     // TODO: Add your control notification handler code here
     UpdateData(TRUE);
+
     GUIToConfig(nEventID);
     ConfigToGUI(nEventID);
+
     UpdateData(FALSE);
 }
 
@@ -357,9 +380,25 @@ void CDialogConfiguration_M0564::OnOK()
 {
     // TODO: Add extra validation here
     UpdateData(TRUE);
+
     OnKillfocusEditFlashBaseAddress();
     GUIToConfig(0);
+
     CDialog::OnOK();
+}
+
+
+CString CDialogConfiguration_M0564::GetConfigWarning(const CAppConfig::M0564_configs_t &config)
+{
+    CString str;
+    unsigned int uConfig0 = config.m_value[0];
+
+    BOOL bSecurityLock = ((uConfig0 & M0564_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+
+    if (!bSecurityLock)
+        str += _T("   ") + _I(IDS_DISABLE_SECURITY_LOCK);
+
+    return str;
 }
 
 void CDialogConfiguration_M0564::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)
@@ -368,11 +407,10 @@ void CDialogConfiguration_M0564::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRES
     CDialogResize::OnDeltaposSpinDataFlashSize(pNMHDR, pResult, m_bDataFlashEnable, m_uProgramMemorySize, m_uPageSize);
 }
 
-void CDialogConfiguration_M0564::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
+void CDialogConfiguration_M0564::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
-    if (pScrollBar != NULL && pScrollBar->GetDlgCtrlID() == m_SpinDataFlashSize.GetDlgCtrlID()) {
+    if (pScrollBar != NULL && pScrollBar->GetDlgCtrlID() == m_SpinDataFlashSize.GetDlgCtrlID())
         return;
-    }
 
     CDialogResize::OnVScroll(nSBCode, nPos, pScrollBar);
 }
@@ -380,7 +418,7 @@ void CDialogConfiguration_M0564::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_NUC121
 /////////////////////////////////////////////////////////////////////////////
-CDialogConfiguration_NUC121::CDialogConfiguration_NUC121(unsigned int uProgramMemorySize, CWnd *pParent /*=NULL*/)
+CDialogConfiguration_NUC121::CDialogConfiguration_NUC121(unsigned int uProgramMemorySize, CWnd* pParent /*=NULL*/)
     : CDialogConfiguration_M0564(uProgramMemorySize, pParent)
 {
 }
@@ -388,17 +426,34 @@ CDialogConfiguration_NUC121::CDialogConfiguration_NUC121(unsigned int uProgramMe
 BOOL CDialogConfiguration_NUC121::OnInitDialog()
 {
     m_uPageSize = NUMICRO_FLASH_PAGE_SIZE_512;
+
     return CDialogConfiguration_M0564::OnInitDialog();
 }
+
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_NUC1262
 /////////////////////////////////////////////////////////////////////////////
-CDialogConfiguration_NUC1262::CDialogConfiguration_NUC1262(unsigned int uProgramMemorySize, CWnd *pParent /*=NULL*/)
+CDialogConfiguration_NUC1262::CDialogConfiguration_NUC1262(unsigned int uProgramMemorySize, CWnd* pParent /*=NULL*/)
     : CDialogConfiguration_M0564(uProgramMemorySize, pParent)
 {
 }
 
 BOOL CDialogConfiguration_NUC1262::OnInitDialog()
+{
+    GetDlgItem(IDC_RADIO_GPF_GPIO)->EnableWindow(FALSE);
+    GetDlgItem(IDC_RADIO_GPF_CRYSTAL)->EnableWindow(FALSE);
+    return CDialogConfiguration_M0564::OnInitDialog();
+}
+
+/////////////////////////////////////////////////////////////////////////////
+// CDialogConfiguration_NUC1263
+/////////////////////////////////////////////////////////////////////////////
+CDialogConfiguration_NUC1263::CDialogConfiguration_NUC1263(unsigned int uProgramMemorySize, CWnd* pParent /*=NULL*/)
+    : CDialogConfiguration_M0564(uProgramMemorySize, pParent)
+{
+}
+
+BOOL CDialogConfiguration_NUC1263::OnInitDialog()
 {
     GetDlgItem(IDC_RADIO_GPF_GPIO)->EnableWindow(FALSE);
     GetDlgItem(IDC_RADIO_GPF_CRYSTAL)->EnableWindow(FALSE);

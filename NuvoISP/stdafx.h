@@ -8,11 +8,11 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #ifndef _SECURE_ATL
-#define _SECURE_ATL 1
+    #define _SECURE_ATL 1
 #endif
 
 #ifndef VC_EXTRALEAN
-#define VC_EXTRALEAN            // 從 Windows 標頭排除不常使用的成員
+    #define VC_EXTRALEAN            // 從 Windows 標頭排除不常使用的成員
 #endif
 
 #include "targetver.h"
@@ -30,10 +30,10 @@
 
 
 #ifndef _AFX_NO_OLE_SUPPORT
-#include <afxdtctl.h>           // MFC 支援的 Internet Explorer 4 通用控制項
+    #include <afxdtctl.h>           // MFC 支援的 Internet Explorer 4 通用控制項
 #endif
 #ifndef _AFX_NO_AFXCMN_SUPPORT
-#include <afxcmn.h>             // MFC 支援的 Windows 通用控制項
+    #include <afxcmn.h>             // MFC 支援的 Windows 通用控制項
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
 //#include <afxcontrolbars.h>     // 功能區和控制列的 MFC 支援

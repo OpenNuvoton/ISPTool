@@ -5,27 +5,27 @@
 #define _ISP_PROC_H_
 
 #if _MSC_VER > 1000
-#pragma once
+    #pragma once
 #endif // _MSC_VER > 1000
 
 #include "ISPLdCMD.h"
-
 #include "fileinfo.h"
 
 #define NUM_VIEW 3
 
-#define MSG_USER_EVENT				(WM_APP+1)
-#define MSG_UPDATE_ERASE_STATUS		3
-#define MSG_UPDATE_WRITE_STATUS		4
-#define MSG_UPDATE_CONNECT_STATUS	7
-#define CONNECT_STATUS_NONE			0
-#define CONNECT_STATUS_USB			1
-#define CONNECT_STATUS_CONNECTING	2
-#define CONNECT_STATUS_OK			3
+#define MSG_USER_EVENT              (WM_APP+1)
+#define MSG_UPDATE_ERASE_STATUS     3
+#define MSG_UPDATE_WRITE_STATUS     4
+#define MSG_UPDATE_CONNECT_STATUS   7
+#define CONNECT_STATUS_NONE         0
+#define CONNECT_STATUS_USB          1
+#define CONNECT_STATUS_CONNECTING   2
+#define CONNECT_STATUS_OK           3
 
 /////////////////////////////////////////////////////////////////////////////
 // CISPProc dialog
-enum EProcSts {
+enum EProcSts
+{
     EPS_OK = 0,
     // Thread_CheckUSBConnect
     EPS_ERR_OPENPORT = 1,
@@ -38,20 +38,23 @@ enum EProcSts {
     EPS_ERR_SIZE = 6,
     EPS_PROG_DONE = 7,
     EPS_ERR_SPI = 9,
-};	// m_eProcSts
+};  // m_eProcSts
 
 class CISPProc
 {
-// Construction
+    // Construction
 public:
-    CISPProc(HWND *pWnd);	// standard constructor
+    CISPProc(HWND *pWnd);   // standard constructor
     virtual ~CISPProc();
     fileinfo m_sFileInfo[NUM_VIEW];
     bool UpdateBinFile(int idx, CString fileName)
     {
-        if (idx < NUM_VIEW) {
+        if (idx < NUM_VIEW)
+        {
             return UpdateFileInfo(fileName, &m_sFileInfo[idx]);
-        } else {
+        }
+        else
+        {
             return false;
         }
     }
@@ -93,19 +96,19 @@ public:
     bool UpdateSizeInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfig1);
 
     // Programming Option is binding with UI
-    BOOL	m_bProgram_APROM;
-    BOOL	m_bProgram_NVM;
-    BOOL	m_bProgram_Config;
-    BOOL	m_bErase;
-    BOOL	m_bRunAPROM;
+    BOOL    m_bProgram_APROM;
+    BOOL    m_bProgram_NVM;
+    BOOL    m_bProgram_Config;
+    BOOL    m_bErase;
+    BOOL    m_bRunAPROM;
 
     // For M487KMCAN only
-    BOOL	m_bSupport_SPI; // CMD_Connect
-    BOOL	m_bProgram_SPI;
-    BOOL	m_bErase_SPI;
+    BOOL    m_bSupport_SPI; // CMD_Connect
+    BOOL    m_bProgram_SPI;
+    BOOL    m_bErase_SPI;
 
     // ISPLdCMD supports different protocol for CAN interface
-    ISPLdCMD	m_ISPLdDev;
+    ISPLdCMD    m_ISPLdDev;
     void SetInterface(unsigned int it, CString sComNum, CString sIPAddress, CString sIPPort)
     {
         m_ISPLdDev.SetInterface(it, sComNum, sIPAddress, sIPPort);

@@ -18,15 +18,15 @@ class CDialogChipSetting_M251 : public CDialogResize
     DECLARE_DYNAMIC(CDialogChipSetting_M251)
 
 public:
-    CDialogChipSetting_M251(int uParam = 0, unsigned int uProgramMemorySize = 192 * 1024, UINT nIDTemplate = CDialogChipSetting_M251::IDD, CWnd *pParent = NULL);   // standard constructor
+    CDialogChipSetting_M251(int uParam = 0, unsigned int uProgramMemorySize = 192 * 1024, UINT nIDTemplate = CDialogChipSetting_M251::IDD, CWnd* pParent = NULL);   // standard constructor
     virtual ~CDialogChipSetting_M251();
 
-// Dialog Data
+    // Dialog Data
     enum { IDD = IDD_DIALOG_CHIP_SETTING_M251 };
 
 protected:
     virtual BOOL OnInitDialog();
-    virtual void DoDataExchange(CDataExchange *pDX);
+    virtual void DoDataExchange(CDataExchange* pDX);
 
     DECLARE_MESSAGE_MAP()
 public:

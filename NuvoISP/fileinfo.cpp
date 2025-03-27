@@ -8,7 +8,8 @@ BOOL IsFolder2(const CString &path)
     BOOL ret = FALSE;
     HANDLE hFind = FindFirstFile(path, &fd);
 
-    if ((hFind != INVALID_HANDLE_VALUE) && (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
+    if ((hFind != INVALID_HANDLE_VALUE) && (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+    {
         ret = TRUE;
     }
 
@@ -25,7 +26,8 @@ size_t getFilesize(const std::tstring &filename)
 {
     struct _stat st;
 
-    if (_tstat(filename.c_str(), &st) != 0) {
+    if (_tstat(filename.c_str(), &st) != 0)
+    {
         return 0;
     }
 
@@ -40,7 +42,8 @@ bool UpdateFileInfo(CString strFN, struct fileinfo *sfinfo)
 {
     std::ifstream       file(strFN);
 
-    if (file) {
+    if (file)
+    {
         /*
          * Get the size of the file
          */
@@ -62,15 +65,19 @@ bool UpdateFileInfo(CString strFN, struct fileinfo *sfinfo)
         sfinfo->vbuf.resize(length);
         file.read(&(sfinfo->vbuf[0]), length);
 
-        if (file) {
+        if (file)
+        {
             printf("all characters read successfully.\n");
-        } else {
+        }
+        else
+        {
             printf("error: only %i could be read\n", file.gcount());
         }
 
         unsigned short cks = 0;
 
-        for (size_t i = 0; i < length; i++) {
+        for (size_t i = 0; i < length; i++)
+        {
             cks += sfinfo->vbuf[i];
         }
 
@@ -80,6 +87,7 @@ bool UpdateFileInfo(CString strFN, struct fileinfo *sfinfo)
 
     return false;
 }
+
 #else
 #include <string>
 #include <cstdio>
@@ -87,14 +95,16 @@ bool UpdateFileInfo(CString strFN, struct fileinfo *sfinfo)
 
 bool UpdateFileInfo(CString strFN, struct fileinfo *sfinfo)
 {
-    if (IsFolder2(strFN)) {
+    if (IsFolder2(strFN))
+    {
         printf("THis is a folder\n");
         return false;
     }
 
     std::FILE *fp = _tfopen(strFN.GetBuffer(0), _T("rb"));
 
-    if (fp) {
+    if (fp)
+    {
         std::fseek(fp, 0, SEEK_END);
         size_t length = std::ftell(fp);
         std::rewind(fp);
@@ -104,25 +114,28 @@ bool UpdateFileInfo(CString strFN, struct fileinfo *sfinfo)
         size_t result = 0;
         unsigned short cks = 0;
 
-        if (length) {
+        if (length)
+        {
             result = std::fread(&(sfinfo->vbuf[0]), 1, length, fp);
         }
 
-        for (size_t i = 0; i < length; i++) {
+        for (size_t i = 0; i < length; i++)
+        {
             cks += sfinfo->vbuf[i];
         }
 
         sfinfo->usCheckSum = cks;
         //if(result == length)
-        //	printf("all characters read successfully. (%d, %X)\n", length, cks);
+        //  printf("all characters read successfully. (%d, %X)\n", length, cks);
         //else
-        //	printf("error: only %i could be read\n", result);
+        //  printf("error: only %i could be read\n", result);
         std::fclose(fp);
         return (result == length);
     }
 
     return false;
 }
+
 #endif
 
 size_t mfwrite(const void *ptr, size_t len, _TCHAR *_FileName)

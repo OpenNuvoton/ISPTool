@@ -8,7 +8,8 @@
 class CTRSP
 {
 public:
-    enum INTF_E {
+    enum INTF_E
+    {
         INTF_E_WIFI = 0,
         INTF_E_BLE
     };

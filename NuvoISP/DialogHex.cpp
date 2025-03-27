@@ -6,26 +6,29 @@
 #include "DialogHex.h"
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+    #define new DEBUG_NEW
+    #undef THIS_FILE
+    static char THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
 // CDialogHex dialog
 
 /* DialogUpdateFW.h */
-#define MSG_USER_EVENT				(WM_APP+1)
-#define MSG_REFRESH_DATA			11
+#define MSG_USER_EVENT              (WM_APP+1)
+#define MSG_REFRESH_DATA            11
 /* DialogMain.h */
-#define MSG_REFRESH_DATA_EXT		21
+#define MSG_REFRESH_DATA_EXT        21
 
 template <class T>
 inline T *vector_ptr(std::vector<T> &v)
 {
-    if (v.size() > 0) {
+    if (v.size() > 0)
+    {
         return &v[0];
-    } else {
+    }
+    else
+    {
         return NULL;
     }
 }
@@ -33,9 +36,12 @@ inline T *vector_ptr(std::vector<T> &v)
 template <class T>
 inline const T *vector_ptr(const std::vector<T> &v)
 {
-    if (v.size() > 0) {
+    if (v.size() > 0)
+    {
         return &v[0];
-    } else {
+    }
+    else
+    {
         return NULL;
     }
 }
@@ -80,13 +86,16 @@ BOOL CDialogHex::OnInitDialog()
 {
     CDialog::OnInitDialog();
 
-    if (m_Font0.CreateFont(11, 0, 0, 0, 0, FALSE, FALSE, 0, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH | FF_MODERN, _T("Lucida Console"))) {
+    if (m_Font0.CreateFont(11, 0, 0, 0, 0, FALSE, FALSE, 0, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH | FF_MODERN, _T("Lucida Console")))
+    {
         m_REdit_DataView.SetFont(&m_Font0);
-    } else if (m_Font2.CreateFont(11, 0, 0, 0, 0, FALSE, FALSE, 0, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH | FF_MODERN, _T("FixedSys"))) {
+    }
+    else if (m_Font2.CreateFont(11, 0, 0, 0, 0, FALSE, FALSE, 0, ANSI_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, FIXED_PITCH | FF_MODERN, _T("FixedSys")))
+    {
         m_REdit_DataView.SetFont(&m_Font2);
     }
 
-    m_nRadioUINT = 0;	//8 bits hex viewer
+    m_nRadioUINT = 0;   //8 bits hex viewer
     UpdateData(FALSE);
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
@@ -100,7 +109,8 @@ void CDialogHex::OnSize(UINT nType, int cx, int cy)
     GetClientRect(rcClient);
     ClientToScreen(&rcClient);
 
-    if (m_ButtonSaveAs.GetSafeHwnd()) {
+    if (m_ButtonSaveAs.GetSafeHwnd())
+    {
         /* Set button */
         CRect rcButton;
         m_ButtonSaveAs.GetWindowRect(rcButton);
@@ -117,23 +127,26 @@ void CDialogHex::OnSize(UINT nType, int cx, int cy)
         /* Set edit area */
         CRect rcEdit;
         rcEdit.left = rcClient.left + 0;
-        rcEdit.right = rcClient.right - (rcButton.right - rcButton.left) - 12 - 12;		
+        rcEdit.right = rcClient.right - (rcButton.right - rcButton.left) - 12 - 12;
         rcEdit.top = rcClient.top + 1;
         rcEdit.bottom = rcClient.bottom - 0;
         ScreenToClient(rcEdit);
         m_REdit_DataView.MoveWindow(rcEdit);
         //m_Edit_DataView.MoveWindow(rcEdit);
         /* Set radio box */
-        int nRadioIDs[] = {
+        int nRadioIDs[] =
+        {
             IDC_RADIO_UINT8,
             IDC_RADIO_UINT16,
             IDC_RADIO_UINT32
         };
 
-        for (int i = 0; i < sizeof(nRadioIDs) / sizeof(nRadioIDs[0]); ++i) {
+        for (int i = 0; i < sizeof(nRadioIDs) / sizeof(nRadioIDs[0]); ++i)
+        {
             CButton *pRadio = (CButton *)GetDlgItem(nRadioIDs[i]);
 
-            if (pRadio != NULL && pRadio->GetSafeHwnd()) {
+            if (pRadio != NULL && pRadio->GetSafeHwnd())
+            {
                 CRect rcRadio;
                 pRadio->GetWindowRect(rcRadio);
                 ScreenToClient(&rcRadio);
@@ -177,7 +190,8 @@ void CDialogHex::SetHexData(const std::vector<unsigned char> *pHexData,
 
 void CDialogHex::UpdateHexView(int nWidth)
 {
-    if (m_pHexData == NULL || m_pHexData->size() == 0) {
+    if (m_pHexData == NULL || m_pHexData->size() == 0)
+    {
         m_REdit_DataView.SetWindowText(m_sAltInfo);
         return;
     }
@@ -200,25 +214,32 @@ void CDialogHex::UpdateHexView(int nWidth)
     std::vector<TCHAR> str;
     str.resize(nBufSize_Total + 1);
 
-    if (nWidth == 1) {
+    if (nWidth == 1)
+    {
         TCHAR *pLine = vector_ptr(str);
         //const TCHAR *pEnd = vector_ptr(str) + str.size();
         const unsigned char *pData = vector_ptr((*m_pHexData));
         const unsigned char *pDataEnd = (const unsigned char *)(vector_ptr((*m_pHexData))
-                                        + m_pHexData->size());
+                                                                + m_pHexData->size());
         pDataEnd = (const unsigned char *)((unsigned int)pDataEnd / nWidth * nWidth);
 
-        for (int j = 0; j < nLines; ++j) {
+        for (int j = 0; j < nLines; ++j)
+        {
             TCHAR *pPos = pLine;
 
-            if (pData < pDataEnd) {
+            if (pData < pDataEnd)
+            {
                 pPos += swprintf_s(pPos, 12/*pEnd - pPos*/, _T("%08X:  "), m_uStartByte + j * nBytes_InLine);
             }
 
-            for (int i = 0; i < nWords_InLine && pData < pDataEnd; ++i) {
-                if (i + 1 < nWords_InLine) {
+            for (int i = 0; i < nWords_InLine && pData < pDataEnd; ++i)
+            {
+                if (i + 1 < nWords_InLine)
+                {
                     pPos += swprintf_s(pPos, 4/*pEnd - pPos*/, _T("%02X "), (unsigned int) * pData);
-                } else {
+                }
+                else
+                {
                     pPos += swprintf_s(pPos, 5/*pEnd - pPos*/, _T("%02X\r\n"), (unsigned int) * pData);
                 }
 
@@ -227,32 +248,43 @@ void CDialogHex::UpdateHexView(int nWidth)
 
             pLine += nBufSize_Line;
         }
-    } else if (nWidth == 2) {
+    }
+    else if (nWidth == 2)
+    {
         TCHAR *pLine = vector_ptr(str);
         //const TCHAR *pEnd = vector_ptr(str) + str.size();
         const unsigned short *pData = (const unsigned short *)vector_ptr((*m_pHexData));
         const unsigned short *pDataEnd = (const unsigned short *)(vector_ptr((*m_pHexData))
-                                         + m_pHexData->size());
+                                                                  + m_pHexData->size());
 
-        for (int j = 0; j < nLines; ++j) {
+        for (int j = 0; j < nLines; ++j)
+        {
             TCHAR *pPos = pLine;
 
-            if (pData < pDataEnd) {
+            if (pData < pDataEnd)
+            {
                 pPos += swprintf_s(pPos, 12/*pEnd - pPos*/, _T("%08X:  "), m_uStartByte + j * nBytes_InLine);
             }
 
-            for (int i = 0; i < nWords_InLine && pData < pDataEnd; ++i) {
+            for (int i = 0; i < nWords_InLine && pData < pDataEnd; ++i)
+            {
                 unsigned int uValue = 0;
 
-                if (pData + 1 <= pDataEnd) {
+                if (pData + 1 <= pDataEnd)
+                {
                     uValue = (unsigned int) * pData;
-                } else {
+                }
+                else
+                {
                     memcpy(&uValue, pData, (unsigned char *)pDataEnd - (unsigned char *)pData);
                 }
 
-                if (i + 1 < nWords_InLine) {
+                if (i + 1 < nWords_InLine)
+                {
                     pPos += swprintf_s(pPos, 6/*pEnd - pPos*/, _T("%04X "), uValue);
-                } else {
+                }
+                else
+                {
                     pPos += swprintf_s(pPos, 7/*pEnd - pPos*/, _T("%04X\r\n"), uValue);
                 }
 
@@ -261,34 +293,45 @@ void CDialogHex::UpdateHexView(int nWidth)
 
             pLine += nBufSize_Line;
         }
-    } else { //if(nWidth == 4)
+    }
+    else     //if(nWidth == 4)
+    {
         TCHAR *pLine = vector_ptr(str);
         //const TCHAR *pEnd = vector_ptr(str) + str.size();
         const unsigned int *pData = (const unsigned int *)vector_ptr((*m_pHexData));
         const unsigned int *pDataEnd = (const unsigned int *)(vector_ptr((*m_pHexData))
-                                       + m_pHexData->size());
+                                                              + m_pHexData->size());
 
-        for (int j = 0; j < nLines; ++j) {
+        for (int j = 0; j < nLines; ++j)
+        {
             TCHAR *pPos = pLine;
 
-            if (pData < pDataEnd) {
+            if (pData < pDataEnd)
+            {
                 pPos += swprintf_s(pPos, 12/*pEnd - pPos*/, _T("%08X:  "), m_uStartByte + j * nBytes_InLine);
             }
 
             for (int i = 0;
                     i < nWords_InLine && pData < pDataEnd;
-                    ++i) {
+                    ++i)
+            {
                 unsigned int uValue = 0;
 
-                if (pData + 1 <= pDataEnd) {
+                if (pData + 1 <= pDataEnd)
+                {
                     uValue = (unsigned int) * pData;
-                } else {
+                }
+                else
+                {
                     memcpy(&uValue, pData, (unsigned char *)pDataEnd - (unsigned char *)pData);
                 }
 
-                if (i + 1 < nWords_InLine) {
+                if (i + 1 < nWords_InLine)
+                {
                     pPos += swprintf_s(pPos, 10/*pEnd - pPos*/, _T("%08X "), (unsigned int) * pData);
-                } else {
+                }
+                else
+                {
                     pPos += swprintf_s(pPos, 11/*pEnd - pPos*/, _T("%08X\r\n"), (unsigned int) * pData);
                 }
 
@@ -304,16 +347,19 @@ void CDialogHex::UpdateHexView(int nWidth)
 
 BOOL CDialogHex::EnableWindow(BOOL bEnable)
 {
-    int nRadioIDs[] = {
+    int nRadioIDs[] =
+    {
         IDC_RADIO_UINT8,
         IDC_RADIO_UINT16,
         IDC_RADIO_UINT32
     };
 
-    for (int i = 0; i < sizeof(nRadioIDs) / sizeof(nRadioIDs[0]); ++i) {
+    for (int i = 0; i < sizeof(nRadioIDs) / sizeof(nRadioIDs[0]); ++i)
+    {
         CButton *pRadio = (CButton *)GetDlgItem(nRadioIDs[i]);
 
-        if (pRadio != NULL && pRadio->GetSafeHwnd()) {
+        if (pRadio != NULL && pRadio->GetSafeHwnd())
+        {
             pRadio->EnableWindow(bEnable);
         }
     }
@@ -327,7 +373,8 @@ void CDialogHex::OnRadioUint()
     // TODO: Add your control notification handler code here
     UpdateData(TRUE);
 
-    switch (m_nRadioUINT) {
+    switch (m_nRadioUINT)
+    {
         case 0:
             UpdateHexView(1);
             break;

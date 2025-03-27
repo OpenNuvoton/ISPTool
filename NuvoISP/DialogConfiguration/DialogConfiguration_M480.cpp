@@ -5,6 +5,7 @@
 #include <deque>
 #include <string>
 #include <utility>
+#include "Lang.h"
 #include "ChipDefs.h"
 #include "NumEdit.h"
 #include "AppConfig.h"
@@ -12,9 +13,9 @@
 #include <cassert>
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+    #define new DEBUG_NEW
+    #undef THIS_FILE
+    static char THIS_FILE[] = __FILE__;
 #endif
 
 #define page_size NUMICRO_FLASH_PAGE_SIZE_4K
@@ -22,10 +23,11 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_M480 dialog
 
+
 CDialogConfiguration_M480::CDialogConfiguration_M480(unsigned int uProgramMemorySize,
-        unsigned int uPID,
-        UINT nIDTemplate,
-        CWnd *pParent /*=NULL*/)
+                                                     unsigned int uPID,
+                                                     UINT nIDTemplate,
+                                                     CWnd* pParent /*=NULL*/)
     : CDialogResize(nIDTemplate, pParent)
     , m_uProgramMemorySize(uProgramMemorySize)
     , m_uPID(uPID)
@@ -52,7 +54,8 @@ CDialogConfiguration_M480::CDialogConfiguration_M480(unsigned int uProgramMemory
     //}}AFX_DATA_INIT
 }
 
-void CDialogConfiguration_M480::DoDataExchange(CDataExchange *pDX)
+
+void CDialogConfiguration_M480::DoDataExchange(CDataExchange* pDX)
 {
     CDialogResize::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CDialogConfiguration_M480)
@@ -140,11 +143,15 @@ BOOL CDialogConfiguration_M480::OnInitDialog()
     pAccel[0].nInc = 1;
     pAccel[0].nSec = 0;
     m_SpinDataFlashSize.SetAccel(1, pAccel);
+
     ConfigToGUI(0);
+
     UpdateData(FALSE);
+
     m_bIsInitialized = true;
     GetWindowRect(m_rect);
     AdjustDPI();
+
     return TRUE;  // return TRUE unless you set the focus to a control
     // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -157,7 +164,8 @@ void CDialogConfiguration_M480::ConfigToGUI(int nEventID)
     unsigned int uConfig3 = m_ConfigValue.m_value[3];
     unsigned int uFlashBaseAddress = uConfig1;
 
-    switch (uConfig0 & M480_FLASH_CONFIG_CBOV) {
+    switch (uConfig0 & M480_FLASH_CONFIG_CBOV)
+    {
         case M480_FLASH_CONFIG_CBOV_30:
             m_nRadioBov = 0;
             break;
@@ -195,7 +203,8 @@ void CDialogConfiguration_M480::ConfigToGUI(int nEventID)
             uConfig0 |= (m_ConfigValue.m_value[0] & M480_FLASH_CONFIG_CBOV);
     }
 
-    switch (uConfig0 & M480_FLASH_CONFIG_CBS2) {
+    switch (uConfig0 & M480_FLASH_CONFIG_CBS2)
+    {
         case M480_FLASH_CONFIG_CBS_LD:
             m_nRadioBS = 0;
             break;
@@ -222,19 +231,18 @@ void CDialogConfiguration_M480::ConfigToGUI(int nEventID)
     m_bWDTPowerDown = ((uConfig0 & M480_FLASH_CONFIG_CWDTPDEN) == 0 ? TRUE : FALSE);
     m_bWDTEnable = ((uConfig0 & M480_FLASH_CONFIG_CWDTEN) == 0 ? TRUE : FALSE);;
 
-    if (!m_bWDTEnable) {
-        m_bWDTPowerDown = FALSE;
-    }
+    if (!m_bWDTEnable) m_bWDTPowerDown = FALSE;
 
     m_bCheckBrownOutDetect = ((uConfig0 & M480_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
     m_bCheckBrownOutReset = ((uConfig0 & M480_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
     m_bCheckBootLoader = ((uConfig0 & M480_FLASH_CONFIG_BOOTLOADER) == 0 ? TRUE : FALSE);
-    m_bDataFlashEnable = ((uConfig0 & NUMICRO_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
-    m_bSecurityLock = ((uConfig0 & NUMICRO_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    m_bDataFlashEnable = ((uConfig0 & M480_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
+    m_bSecurityLock = ((uConfig0 & M480_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
     m_bICELock = ((uConfig0 & M480_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
     m_bSpromLockCacheable = ((uConfig0 & M480_FLASH_CONFIG_SPLCAEN) == 0 ? FALSE : TRUE);
 
-    if (m_bDataFlashEnable) {
+    if (m_bDataFlashEnable)
+    {
         uFlashBaseAddress = ((uFlashBaseAddress >= page_size) && (uFlashBaseAddress < m_uProgramMemorySize)) ? uFlashBaseAddress : (m_uProgramMemorySize - page_size);
         uFlashBaseAddress = (uFlashBaseAddress & M480_FLASH_CONFIG_DFBA) / page_size * page_size;
         uConfig1 = uFlashBaseAddress;
@@ -244,10 +252,12 @@ void CDialogConfiguration_M480::ConfigToGUI(int nEventID)
     m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable && (uFlashBaseAddress < m_uProgramMemorySize)) ? ((m_uProgramMemorySize - uFlashBaseAddress) / 1024.) : 0.);
     m_SpinDataFlashSize.EnableWindow(m_bDataFlashEnable);
     GetDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS)->EnableWindow(m_bDataFlashEnable);
+
     m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
     m_sConfigValue1.Format(_T("0x%08X"), uConfig1);// | 0xFFF00000);
 
-    switch (uConfig3 & M480_FLASH_CONFIG_SPIM) {
+    switch (uConfig3 & M480_FLASH_CONFIG_SPIM)
+    {
         case M480_FLASH_CONFIG_SPIM_SEL0:
             GetDlgItem(IDC_RADIO_UART1_SEL2)->EnableWindow(FALSE);
             m_nRadioSPIM = 0;
@@ -273,7 +283,8 @@ void CDialogConfiguration_M480::ConfigToGUI(int nEventID)
             break;
     }
 
-    switch (uConfig3 & M480_FLASH_CONFIG_UART1) {
+    switch (uConfig3 & M480_FLASH_CONFIG_UART1)
+    {
         case M480_FLASH_CONFIG_UART1_SEL0:
             GetDlgItem(IDC_RADIO_SPIM_SEL0)->EnableWindow(TRUE);
             m_nRadioUART = 0;
@@ -299,7 +310,8 @@ void CDialogConfiguration_M480::ConfigToGUI(int nEventID)
             break;
     }
 
-    if (m_uPID == 0x00D4874E) {
+    if (m_uPID == 0x00D4874E)
+    {
         GetDlgItem(IDC_RADIO_SPIM_SEL0)->EnableWindow(FALSE);
         GetDlgItem(IDC_RADIO_SPIM_SEL1)->EnableWindow(FALSE);
         GetDlgItem(IDC_RADIO_SPIM_SEL2)->EnableWindow(FALSE);
@@ -316,9 +328,11 @@ void CDialogConfiguration_M480::GUIToConfig(int nEventID)
     unsigned int uConfig1;
     unsigned int uConfig2 = m_ConfigValue.m_value[2];
     unsigned int uConfig3 = m_ConfigValue.m_value[3];
+
     uConfig0 &= ~M480_FLASH_CONFIG_CBOV;
 
-    switch (m_nRadioBov) {
+    switch (m_nRadioBov)
+    {
         case 0:
             uConfig0 |= M480_FLASH_CONFIG_CBOV_30;
             break;
@@ -358,7 +372,8 @@ void CDialogConfiguration_M480::GUIToConfig(int nEventID)
 
     uConfig0 &= ~M480_FLASH_CONFIG_CBS2;
 
-    switch (m_nRadioBS) {
+    switch (m_nRadioBS)
+    {
         case 0:
             uConfig0 |= M480_FLASH_CONFIG_CBS_LD;
             break;
@@ -380,105 +395,117 @@ void CDialogConfiguration_M480::GUIToConfig(int nEventID)
             uConfig0 |= (m_ConfigValue.m_value[0] & M480_FLASH_CONFIG_CBS2);
     }
 
-    if (m_nRadioGPG == 0) {
+    if (m_nRadioGPG == 0)
         uConfig0 &= ~M480_FLASH_CONFIG_CGPFMFP;
-    } else {
+    else
         uConfig0 |= M480_FLASH_CONFIG_CGPFMFP;
-    }
 
-    if (m_nRadioIO == 0) {
+    if (m_nRadioIO == 0)
         uConfig0 |= M480_FLASH_CONFIG_CIOINI;
-    } else {
+    else
         uConfig0 &= ~M480_FLASH_CONFIG_CIOINI;
-    }
 
-    if (m_bWDTPowerDown) {
+    if (m_bWDTPowerDown)
         uConfig0 &= ~M480_FLASH_CONFIG_CWDTPDEN;
-    } else {
+    else
         uConfig0 |= M480_FLASH_CONFIG_CWDTPDEN;
-    }
 
-    if (m_bWDTEnable) {
+    if (m_bWDTEnable)
+    {
         uConfig0 &= ~M480_FLASH_CONFIG_CWDTEN;
 
-        if (!m_bWDTPowerDown) {
+        if (!m_bWDTPowerDown)
+        {
             uConfig0 &= ~M480_FLASH_CONFIG_CWDTEN_BIT1;
             uConfig0 &= ~M480_FLASH_CONFIG_CWDTEN_BIT0;
         }
-    } else {
+    }
+    else
+    {
         uConfig0 |= M480_FLASH_CONFIG_CWDTEN;
     }
 
-    if (nEventID == IDC_CHECK_WDT_POWER_DOWN) {
-        if (m_bWDTPowerDown) {
+    if (nEventID == IDC_CHECK_WDT_POWER_DOWN)
+    {
+        if (m_bWDTPowerDown)
+        {
             uConfig0 &= ~M480_FLASH_CONFIG_CWDTEN;
             uConfig0 |= M480_FLASH_CONFIG_CWDTEN_BIT1;
             uConfig0 |= M480_FLASH_CONFIG_CWDTEN_BIT0;
         }
-    } else {
-        if (!m_bWDTEnable) {
+    }
+    else
+    {
+        if (!m_bWDTEnable)
+        {
             uConfig0 |= M480_FLASH_CONFIG_CWDTPDEN;
             uConfig0 |= M480_FLASH_CONFIG_CWDTEN_BIT1;
             uConfig0 |= M480_FLASH_CONFIG_CWDTEN_BIT0;
         }
     }
 
-    if (m_bCheckBrownOutDetect) {
+    if (m_bCheckBrownOutDetect)
         uConfig0 &= ~M480_FLASH_CONFIG_CBODEN;
-    } else {
+    else
         uConfig0 |= M480_FLASH_CONFIG_CBODEN;
-    }
 
-    if (m_bCheckBrownOutReset) {
+    if (m_bCheckBrownOutReset)
         uConfig0 &= ~M480_FLASH_CONFIG_CBORST;
-    } else {
+    else
         uConfig0 |= M480_FLASH_CONFIG_CBORST;
-    }
 
-    if (m_bCheckBootLoader) {
+    if (m_bCheckBootLoader)
+    {
         uConfig0 &= ~M480_FLASH_CONFIG_BOOTLOADER;
         uConfig2 &= ~M480_FLASH_CONFIG_SBLOCK;
-    } else {
+    }
+    else
+    {
         uConfig0 |= M480_FLASH_CONFIG_BOOTLOADER;
         uConfig2 &= ~M480_FLASH_CONFIG_SBLOCK;
         uConfig2 |= 0x00005A00;
     }
 
-    if (m_bDataFlashEnable) {
-        uConfig0 &= ~NUMICRO_FLASH_CONFIG_DFEN;
-    } else {
-        uConfig0 |= NUMICRO_FLASH_CONFIG_DFEN;
+    if (m_bDataFlashEnable)
+        uConfig0 &= ~M480_FLASH_CONFIG_DFEN;
+    else
+    {
+        uConfig0 |= M480_FLASH_CONFIG_DFEN;
         m_sFlashBaseAddress = "FFFFFFFF";
     }
 
-    if (m_bSecurityLock) {
-        uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
+    if (m_bSecurityLock)
+    {
+        uConfig0 &= ~M480_FLASH_CONFIG_LOCK;
         uConfig2 &= ~M480_FLASH_CONFIG_ALOCK;
-    } else {
-        uConfig0 |= NUMICRO_FLASH_CONFIG_LOCK;
+    }
+    else
+    {
+        uConfig0 |= M480_FLASH_CONFIG_LOCK;
         uConfig2 &= ~M480_FLASH_CONFIG_ALOCK;
         uConfig2 |= 0x0000005A;
     }
 
-    if (m_bICELock) {
+    if (m_bICELock)
         uConfig0 &= ~M480_FLASH_CONFIG_ICELOCK;
-    } else {
+    else
         uConfig0 |= M480_FLASH_CONFIG_ICELOCK;
-    }
 
-    if (m_bSpromLockCacheable) {
+    if (m_bSpromLockCacheable)
         uConfig0 |= M480_FLASH_CONFIG_SPLCAEN;
-    } else {
+    else
         uConfig0 &= ~M480_FLASH_CONFIG_SPLCAEN;
-    }
 
     m_ConfigValue.m_value[0] = uConfig0;
+
     TCHAR *pEnd;
     uConfig1 = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
     m_ConfigValue.m_value[1] = uConfig1;// | 0xFFF00000;
+
     uConfig3 &= ~M480_FLASH_CONFIG_SPIM;
 
-    switch (m_nRadioSPIM) {
+    switch (m_nRadioSPIM)
+    {
         case 0:
             uConfig3 |= M480_FLASH_CONFIG_SPIM_SEL0;
             break;
@@ -502,7 +529,8 @@ void CDialogConfiguration_M480::GUIToConfig(int nEventID)
 
     uConfig3 &= ~M480_FLASH_CONFIG_UART1;
 
-    switch (m_nRadioUART) {
+    switch (m_nRadioUART)
+    {
         case 0:
             uConfig3 |= M480_FLASH_CONFIG_UART1_SEL0;
             break;
@@ -526,14 +554,19 @@ void CDialogConfiguration_M480::GUIToConfig(int nEventID)
 
     m_ConfigValue.m_value[2] = uConfig2;
     m_ConfigValue.m_value[3] = uConfig3;
+
 }
+
+
 
 void CDialogConfiguration_M480::OnGUIEvent(int nEventID)
 {
     // TODO: Add your control notification handler code here
     UpdateData(TRUE);
+
     GUIToConfig(nEventID);
     ConfigToGUI(nEventID);
+
     UpdateData(FALSE);
 }
 
@@ -555,12 +588,39 @@ void CDialogConfiguration_M480::OnKillfocusEditFlashBaseAddress()
     CDialogResize::OnKillfocusEditFlashBaseAddress(m_bDataFlashEnable, m_uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_4K);
 }
 
+
 void CDialogConfiguration_M480::OnOK()
 {
     UpdateData(TRUE);
+
     OnKillfocusEditFlashBaseAddress();
     GUIToConfig(0);
+
     CDialog::OnOK();
+}
+
+
+CString CDialogConfiguration_M480::GetConfigWarning(const CAppConfig::M480_configs_t &config)
+{
+    CString str;
+    unsigned int uConfig0 = config.m_value[0];
+
+    switch (uConfig0 & M480_FLASH_CONFIG_CFOSC)
+    {
+        case M480_FLASH_CONFIG_E12M:
+            str += _T("   ") + _I(IDS_SELECT_EXTERNAL_12M_CLOCK);
+            break;
+
+        default:
+            ;
+    }
+
+    BOOL bSecurityLock = ((uConfig0 & M480_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+
+    if (!bSecurityLock)
+        str += _T("   ") + _I(IDS_DISABLE_SECURITY_LOCK);
+
+    return str;
 }
 
 void CDialogConfiguration_M480::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)
@@ -569,26 +629,28 @@ void CDialogConfiguration_M480::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESU
     CDialogResize::OnDeltaposSpinDataFlashSize(pNMHDR, pResult, m_bDataFlashEnable, m_uProgramMemorySize, NUMICRO_FLASH_PAGE_SIZE_4K);
 }
 
-void CDialogConfiguration_M480::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
+void CDialogConfiguration_M480::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
-    if (pScrollBar != NULL && pScrollBar->GetDlgCtrlID() == m_SpinDataFlashSize.GetDlgCtrlID()) {
+    if (pScrollBar != NULL && pScrollBar->GetDlgCtrlID() == m_SpinDataFlashSize.GetDlgCtrlID())
         return;
-    }
 
     CDialogResize::OnVScroll(nSBCode, nPos, pScrollBar);
 }
 
+
+
 ///////////////////////////////////////////////////////////////////////////////
 //// CDialogChipSetting_CFG_M480LD dialog
 
+
 CDialogChipSetting_CFG_M480LD::CDialogChipSetting_CFG_M480LD(unsigned int uProgramMemorySize,
-        UINT nIDTemplate,
-        CWnd *pParent /*=NULL*/)
+                                                             UINT nIDTemplate,
+                                                             CWnd* pParent /*=NULL*/)
     : CDialogConfiguration_M480(uProgramMemorySize, 0, nIDTemplate, pParent)
 {
 }
 
-void CDialogChipSetting_CFG_M480LD::DoDataExchange(CDataExchange *pDX)
+void CDialogChipSetting_CFG_M480LD::DoDataExchange(CDataExchange* pDX)
 {
     CDialogResize::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CDialogChipSetting_CFG_M480LD)
@@ -625,7 +687,8 @@ void CDialogChipSetting_CFG_M480LD::ConfigToGUI(int nEventID)
     unsigned int uConfig3 = m_uConfigValue[3];
     unsigned int uFlashBaseAddress = uConfig1 & 0xFFFFF;
 
-    switch (uConfig0 & M480_FLASH_CONFIG_CBOV) {
+    switch (uConfig0 & M480_FLASH_CONFIG_CBOV)
+    {
         case M480_FLASH_CONFIG_CBOV_30:
             m_nRadioBov = 0;
             break;
@@ -663,7 +726,8 @@ void CDialogChipSetting_CFG_M480LD::ConfigToGUI(int nEventID)
             uConfig0 |= (m_uConfigValue[0] & M480_FLASH_CONFIG_CBOV);
     }
 
-    switch (uConfig0 & M480_FLASH_CONFIG_CBS2) {
+    switch (uConfig0 & M480_FLASH_CONFIG_CBS2)
+    {
         case M480_FLASH_CONFIG_CBS_LD:
             m_nRadioBS = 0;
             break;
@@ -690,19 +754,18 @@ void CDialogChipSetting_CFG_M480LD::ConfigToGUI(int nEventID)
     m_bWDTPowerDown = ((uConfig0 & M480_FLASH_CONFIG_CWDTPDEN) == 0 ? TRUE : FALSE);
     m_bWDTEnable = ((uConfig0 & M480_FLASH_CONFIG_CWDTEN) == 0 ? TRUE : FALSE);;
 
-    if (!m_bWDTEnable) {
-        m_bWDTPowerDown = FALSE;
-    }
+    if (!m_bWDTEnable) m_bWDTPowerDown = FALSE;
 
     m_bCheckBrownOutDetect = ((uConfig0 & M480_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
     m_bCheckBrownOutReset = ((uConfig0 & M480_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
     m_bCheckBootLoader = ((uConfig0 & M480_FLASH_CONFIG_BOOTLOADER) == 0 ? TRUE : FALSE);
-    m_bDataFlashEnable = ((uConfig0 & NUMICRO_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
-    m_bSecurityLock = ((uConfig0 & NUMICRO_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    m_bDataFlashEnable = ((uConfig0 & M480_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
+    m_bSecurityLock = ((uConfig0 & M480_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
     m_bSecurityBootLock = ((uConfig2 & M480_FLASH_CONFIG_SBLOCK) == 0x5A00 ? FALSE : TRUE);
     m_bICELock = ((uConfig0 & M480_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
 
-    if (m_bDataFlashEnable) {
+    if (m_bDataFlashEnable)
+    {
         uFlashBaseAddress = ((uFlashBaseAddress >= page_size) && (uFlashBaseAddress < m_uProgramMemorySize)) ? uFlashBaseAddress : (m_uProgramMemorySize - page_size);
         uFlashBaseAddress = (uFlashBaseAddress & M480_FLASH_CONFIG_DFBA) / page_size * page_size;
         uConfig1 = uFlashBaseAddress;
@@ -713,6 +776,7 @@ void CDialogChipSetting_CFG_M480LD::ConfigToGUI(int nEventID)
     m_sDataFlashSize.Format(_T("%.2fK"), (m_bDataFlashEnable && (uFlashBaseAddress < m_uProgramMemorySize)) ? ((m_uProgramMemorySize - uFlashBaseAddress) / 1024.) : 0.);
     m_SpinDataFlashSize.EnableWindow(m_bDataFlashEnable);
     GetDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS)->EnableWindow(m_bDataFlashEnable);
+
     m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
     m_sConfigValue1.Format(_T("0x%08X"), uConfig1);// | 0xFFF00000);
     m_sConfigValue2.Format(_T("0x%08X"), uConfig2);
@@ -725,9 +789,11 @@ void CDialogChipSetting_CFG_M480LD::GUIToConfig(int nEventID)
     unsigned int uConfig1;
     unsigned int uConfig2 = m_uConfigValue[2];
     unsigned int uConfig3 = m_uConfigValue[3];
+
     uConfig0 &= ~M480_FLASH_CONFIG_CBOV;
 
-    switch (m_nRadioBov) {
+    switch (m_nRadioBov)
+    {
         case 0:
             uConfig0 |= M480_FLASH_CONFIG_CBOV_30;
             break;
@@ -767,7 +833,8 @@ void CDialogChipSetting_CFG_M480LD::GUIToConfig(int nEventID)
 
     uConfig0 &= ~M480_FLASH_CONFIG_CBS2;
 
-    switch (m_nRadioBS) {
+    switch (m_nRadioBS)
+    {
         case 0:
             uConfig0 |= M480_FLASH_CONFIG_CBS_LD;
             break;
@@ -789,98 +856,108 @@ void CDialogChipSetting_CFG_M480LD::GUIToConfig(int nEventID)
             uConfig0 |= (m_uConfigValue[0] & M480_FLASH_CONFIG_CBS2);
     }
 
-    if (m_nRadioGPG == 0) {
+    if (m_nRadioGPG == 0)
         uConfig0 &= ~M480_FLASH_CONFIG_CGPFMFP;
-    } else {
+    else
         uConfig0 |= M480_FLASH_CONFIG_CGPFMFP;
-    }
 
-    if (m_nRadioIO == 0) {
+    if (m_nRadioIO == 0)
         uConfig0 |= M480_FLASH_CONFIG_CIOINI;
-    } else {
+    else
         uConfig0 &= ~M480_FLASH_CONFIG_CIOINI;
-    }
 
-    if (m_bWDTPowerDown) {
+    if (m_bWDTPowerDown)
         uConfig0 &= ~M480_FLASH_CONFIG_CWDTPDEN;
-    } else {
+    else
         uConfig0 |= M480_FLASH_CONFIG_CWDTPDEN;
-    }
 
-    if (m_bWDTEnable) {
+    if (m_bWDTEnable)
+    {
         uConfig0 &= ~M480_FLASH_CONFIG_CWDTEN;
 
-        if (!m_bWDTPowerDown) {
+        if (!m_bWDTPowerDown)
+        {
             uConfig0 &= ~M480_FLASH_CONFIG_CWDTEN_BIT1;
             uConfig0 &= ~M480_FLASH_CONFIG_CWDTEN_BIT0;
         }
-    } else {
+    }
+    else
+    {
         uConfig0 |= M480_FLASH_CONFIG_CWDTEN;
     }
 
-    if (nEventID == IDC_CHECK_WDT_POWER_DOWN) {
-        if (m_bWDTPowerDown) {
+    if (nEventID == IDC_CHECK_WDT_POWER_DOWN)
+    {
+        if (m_bWDTPowerDown)
+        {
             uConfig0 &= ~M480_FLASH_CONFIG_CWDTEN;
             uConfig0 |= M480_FLASH_CONFIG_CWDTEN_BIT1;
             uConfig0 |= M480_FLASH_CONFIG_CWDTEN_BIT0;
         }
-    } else {
-        if (!m_bWDTEnable) {
+    }
+    else
+    {
+        if (!m_bWDTEnable)
+        {
             uConfig0 |= M480_FLASH_CONFIG_CWDTPDEN;
             uConfig0 |= M480_FLASH_CONFIG_CWDTEN_BIT1;
             uConfig0 |= M480_FLASH_CONFIG_CWDTEN_BIT0;
         }
     }
 
-    if (m_bCheckBrownOutDetect) {
+    if (m_bCheckBrownOutDetect)
         uConfig0 &= ~M480_FLASH_CONFIG_CBODEN;
-    } else {
+    else
         uConfig0 |= M480_FLASH_CONFIG_CBODEN;
-    }
 
-    if (m_bCheckBrownOutReset) {
+    if (m_bCheckBrownOutReset)
         uConfig0 &= ~M480_FLASH_CONFIG_CBORST;
-    } else {
+    else
         uConfig0 |= M480_FLASH_CONFIG_CBORST;
-    }
 
-    if (m_bCheckBootLoader) {
+    if (m_bCheckBootLoader)
         uConfig0 &= ~M480_FLASH_CONFIG_BOOTLOADER;
-    } else {
+    else
         uConfig0 |= M480_FLASH_CONFIG_BOOTLOADER;
-    }
 
-    if (m_bDataFlashEnable) {
-        uConfig0 &= ~NUMICRO_FLASH_CONFIG_DFEN;
-    } else {
-        uConfig0 |= NUMICRO_FLASH_CONFIG_DFEN;
+    if (m_bDataFlashEnable)
+        uConfig0 &= ~M480_FLASH_CONFIG_DFEN;
+    else
+    {
+        uConfig0 |= M480_FLASH_CONFIG_DFEN;
         m_sFlashBaseAddress = "FFFFFFFF";
     }
 
-    if (m_bSecurityLock) {
-        uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
+    if (m_bSecurityLock)
+    {
+        uConfig0 &= ~M480_FLASH_CONFIG_LOCK;
         uConfig2 &= ~M480_FLASH_CONFIG_ALOCK;
-    } else {
-        uConfig0 |= NUMICRO_FLASH_CONFIG_LOCK;
+    }
+    else
+    {
+        uConfig0 |= M480_FLASH_CONFIG_LOCK;
         uConfig2 &= ~M480_FLASH_CONFIG_ALOCK;
         uConfig2 |= 0x0000005A;
     }
 
-    if (m_bSecurityBootLock) {
+    if (m_bSecurityBootLock)
+    {
         uConfig2 &= ~M480_FLASH_CONFIG_SBLOCK;
-    } else {
+    }
+    else
+    {
         uConfig2 &= ~M480_FLASH_CONFIG_SBLOCK;
         uConfig2 |= 0x00005A00;
     }
 
-    if (m_bICELock) {
+    if (m_bICELock)
         uConfig0 &= ~M480_FLASH_CONFIG_ICELOCK;
-    } else {
+    else
         uConfig0 |= M480_FLASH_CONFIG_ICELOCK;
-    }
 
     m_ConfigValue.m_value[0] = uConfig0;
     m_uConfigValue[0] = uConfig0;
+
     TCHAR *pEnd;
     uConfig1 = ::_tcstoul(m_sFlashBaseAddress, &pEnd, 16);
     m_uConfigValue[1] = uConfig1;// | 0xFFF00000;

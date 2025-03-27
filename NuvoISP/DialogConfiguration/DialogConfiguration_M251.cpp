@@ -1,13 +1,14 @@
 // DialogConfiguration_M251.cpp : implementation file
 //
 #include "stdafx.h"
+#include "Lang.h"
 #include "ChipDefs.h"
 #include "DialogConfiguration_M251.h"
 
 #ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+    #define new DEBUG_NEW
+    #undef THIS_FILE
+    static char THIS_FILE[] = __FILE__;
 #endif
 
 #define page_size NUMICRO_FLASH_PAGE_SIZE_512
@@ -15,9 +16,10 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_M251 dialog
 
+
 CDialogConfiguration_M251::CDialogConfiguration_M251(unsigned int uProgramMemorySize,
-        UINT nIDTemplate,
-        CWnd *pParent /*=NULL*/)
+                                                     UINT nIDTemplate,
+                                                     CWnd* pParent /*=NULL*/)
     : CDialogResize(nIDTemplate, pParent)
     , m_uProgramMemorySize(uProgramMemorySize)
 {
@@ -33,7 +35,8 @@ CDialogConfiguration_M251::CDialogConfiguration_M251(unsigned int uProgramMemory
     m_nRadioIO = -1;
 }
 
-void CDialogConfiguration_M251::DoDataExchange(CDataExchange *pDX)
+
+void CDialogConfiguration_M251::DoDataExchange(CDataExchange* pDX)
 {
     CDialogResize::DoDataExchange(pDX);
     DDX_Radio(pDX, IDC_RADIO_BOV_0, m_nRadioBov);
@@ -84,19 +87,27 @@ END_MESSAGE_MAP()
 BOOL CDialogConfiguration_M251::OnInitDialog()
 {
     CDialog::OnInitDialog();
+
     ConfigToGUI(0);
+
     UpdateData(FALSE);
+
     m_bIsInitialized = true;
     GetWindowRect(m_rect);
     AdjustDPI();
+
     return TRUE;
 }
+
+
+
 
 void CDialogConfiguration_M251::ConfigToGUI(int nEventID)
 {
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
 
-    switch (uConfig0 & M480_FLASH_CONFIG_CBOV) {
+    switch (uConfig0 & M480_FLASH_CONFIG_CBOV)
+    {
         case M480_FLASH_CONFIG_CBOV_30:
             m_nRadioBov = 0;
             break;
@@ -134,7 +145,8 @@ void CDialogConfiguration_M251::ConfigToGUI(int nEventID)
             uConfig0 |= (m_ConfigValue.m_value[0] & M480_FLASH_CONFIG_CBOV);
     }
 
-    switch (uConfig0 & M480_FLASH_CONFIG_CBS2) {
+    switch (uConfig0 & M480_FLASH_CONFIG_CBS2)
+    {
         case M480_FLASH_CONFIG_CBS_LD:
             m_nRadioBS = 0;
             break;
@@ -160,23 +172,24 @@ void CDialogConfiguration_M251::ConfigToGUI(int nEventID)
     m_bWDTPowerDown = ((uConfig0 & M480_FLASH_CONFIG_CWDTPDEN) == 0 ? TRUE : FALSE);
     m_bWDTEnable = ((uConfig0 & M480_FLASH_CONFIG_CWDTEN) == 0 ? TRUE : FALSE);;
 
-    if (!m_bWDTEnable) {
-        m_bWDTPowerDown = FALSE;
-    }
+    if (!m_bWDTEnable) m_bWDTPowerDown = FALSE;
 
     m_bCheckBrownOutDetect = ((uConfig0 & M480_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
     m_bCheckBrownOutReset = ((uConfig0 & M480_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
-    m_bSecurityLock = ((uConfig0 & NUMICRO_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    m_bSecurityLock = ((uConfig0 & M480_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
     m_bICELock = ((uConfig0 & M251_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
+
     m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
 }
 
 void CDialogConfiguration_M251::GUIToConfig(int nEventID)
 {
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
+
     uConfig0 &= ~M480_FLASH_CONFIG_CBOV;
 
-    switch (m_nRadioBov) {
+    switch (m_nRadioBov)
+    {
         case 0:
             uConfig0 |= M480_FLASH_CONFIG_CBOV_30;
             break;
@@ -216,7 +229,8 @@ void CDialogConfiguration_M251::GUIToConfig(int nEventID)
 
     uConfig0 &= ~M480_FLASH_CONFIG_CBS2;
 
-    switch (m_nRadioBS) {
+    switch (m_nRadioBS)
+    {
         case 0:
             uConfig0 |= M480_FLASH_CONFIG_CBS_LD;
             break;
@@ -238,66 +252,69 @@ void CDialogConfiguration_M251::GUIToConfig(int nEventID)
             uConfig0 |= (m_ConfigValue.m_value[0] & M480_FLASH_CONFIG_CBS2);
     }
 
-    if (m_nRadioIO == 0) {
+    if (m_nRadioIO == 0)
         uConfig0 |= M480_FLASH_CONFIG_CIOINI;
-    } else {
+    else
         uConfig0 &= ~M480_FLASH_CONFIG_CIOINI;
-    }
 
-    if (m_bWDTPowerDown) {
+    if (m_bWDTPowerDown)
         uConfig0 &= ~M480_FLASH_CONFIG_CWDTPDEN;
-    } else {
+    else
         uConfig0 |= M480_FLASH_CONFIG_CWDTPDEN;
-    }
 
-    if (m_bWDTEnable) {
+    if (m_bWDTEnable)
+    {
         uConfig0 &= ~M480_FLASH_CONFIG_CWDTEN;
 
-        if (!m_bWDTPowerDown) {
+        if (!m_bWDTPowerDown)
+        {
             uConfig0 &= ~M480_FLASH_CONFIG_CWDTEN_BIT1;
             uConfig0 &= ~M480_FLASH_CONFIG_CWDTEN_BIT0;
         }
-    } else {
+    }
+    else
+    {
         uConfig0 |= M480_FLASH_CONFIG_CWDTEN;
     }
 
-    if (nEventID == IDC_CHECK_WDT_POWER_DOWN) {
-        if (m_bWDTPowerDown) {
+    if (nEventID == IDC_CHECK_WDT_POWER_DOWN)
+    {
+        if (m_bWDTPowerDown)
+        {
             uConfig0 &= ~M480_FLASH_CONFIG_CWDTEN;
             uConfig0 |= M480_FLASH_CONFIG_CWDTEN_BIT1;
             uConfig0 |= M480_FLASH_CONFIG_CWDTEN_BIT0;
         }
-    } else {
-        if (!m_bWDTEnable) {
+    }
+    else
+    {
+        if (!m_bWDTEnable)
+        {
             uConfig0 |= M480_FLASH_CONFIG_CWDTPDEN;
             uConfig0 |= M480_FLASH_CONFIG_CWDTEN_BIT1;
             uConfig0 |= M480_FLASH_CONFIG_CWDTEN_BIT0;
         }
     }
 
-    if (m_bCheckBrownOutDetect) {
+    if (m_bCheckBrownOutDetect)
         uConfig0 &= ~M480_FLASH_CONFIG_CBODEN;
-    } else {
+    else
         uConfig0 |= M480_FLASH_CONFIG_CBODEN;
-    }
 
-    if (m_bCheckBrownOutReset) {
+    if (m_bCheckBrownOutReset)
         uConfig0 &= ~M480_FLASH_CONFIG_CBORST;
-    } else {
+    else
         uConfig0 |= M480_FLASH_CONFIG_CBORST;
-    }
 
-    if (m_bSecurityLock) {
-        uConfig0 &= ~NUMICRO_FLASH_CONFIG_LOCK;
-    } else {
-        uConfig0 |= NUMICRO_FLASH_CONFIG_LOCK;
-    }
+    if (m_bSecurityLock)
+        uConfig0 &= ~M480_FLASH_CONFIG_LOCK;
+    else
+        uConfig0 |= M480_FLASH_CONFIG_LOCK;
 
-    if (m_bICELock) {
+    if (m_bICELock)
         uConfig0 &= ~M251_FLASH_CONFIG_ICELOCK;
-    } else {
+    else
         uConfig0 |= M251_FLASH_CONFIG_ICELOCK;
-    }
 
     m_ConfigValue.m_value[0] = uConfig0;
 }
@@ -306,8 +323,10 @@ void CDialogConfiguration_M251::OnGUIEvent(int nEventID)
 {
     // TODO: Add your control notification handler code here
     UpdateData(TRUE);
+
     GUIToConfig(nEventID);
     ConfigToGUI(nEventID);
+
     UpdateData(FALSE);
 }
 
@@ -336,11 +355,23 @@ void CDialogConfiguration_M251::OnCancel()
     //CDialog::OnCancel ();
 }
 
-void CDialogConfiguration_M251::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *pScrollBar)
+CString CDialogConfiguration_M251::GetConfigWarning(const CAppConfig::M251_configs_t &config)
 {
-    if (pScrollBar != NULL && pScrollBar->GetDlgCtrlID() == m_SpinDataFlashSize.GetDlgCtrlID()) {
+    CString str;
+    unsigned int uConfig0 = config.m_value[0];
+
+    BOOL bSecurityLock = ((uConfig0 & M480_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+
+    if (!bSecurityLock)
+        str += _T("   ") + _I(IDS_DISABLE_SECURITY_LOCK);
+
+    return str;
+}
+
+void CDialogConfiguration_M251::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+    if (pScrollBar != NULL && pScrollBar->GetDlgCtrlID() == m_SpinDataFlashSize.GetDlgCtrlID())
         return;
-    }
 
     CDialogResize::OnVScroll(nSBCode, nPos, pScrollBar);
 }
@@ -348,13 +379,13 @@ void CDialogConfiguration_M251::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar *p
 /////////////////////////////////////////////////////////////////////////////
 // CDialogConfiguration_M258
 /////////////////////////////////////////////////////////////////////////////
-CDialogConfiguration_M258::CDialogConfiguration_M258(unsigned int uProgramMemorySize, UINT nIDTemplate, CWnd *pParent /*=NULL*/)
+CDialogConfiguration_M258::CDialogConfiguration_M258(unsigned int uProgramMemorySize, UINT nIDTemplate, CWnd* pParent /*=NULL*/)
     : CDialogConfiguration_M251(uProgramMemorySize, nIDTemplate, pParent)
 {
     m_nRadioBootClkSel = -1;
 }
 
-void CDialogConfiguration_M258::DoDataExchange(CDataExchange *pDX)
+void CDialogConfiguration_M258::DoDataExchange(CDataExchange* pDX)
 {
     CDialogConfiguration_M251::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CDialogConfiguration_M258)
@@ -380,11 +411,10 @@ void CDialogConfiguration_M258::GUIToConfig(int nEventID)
 {
     unsigned int uConfig0 = m_ConfigValue.m_value[0];
 
-    if (m_nRadioBootClkSel == 0) {
+    if (m_nRadioBootClkSel == 0)
         uConfig0 &= ~M258_FLASH_CONFIG_BOOTCLOCKSEL;
-    } else {
+    else
         uConfig0 |= M258_FLASH_CONFIG_BOOTCLOCKSEL;
-    }
 
     m_ConfigValue.m_value[0] = uConfig0;
     CDialogConfiguration_M251::GUIToConfig(nEventID);
