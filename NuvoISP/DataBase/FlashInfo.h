@@ -260,12 +260,5 @@ bool GetInfo_AU9100(//unsigned int uDID,
     unsigned int *puAPROM_Size,
     unsigned int *puNVM_Size);
 
-void GetChipInfo(unsigned int uPID,
-                 sChipInfo *ChipInfo,
-                 unsigned int *uConfig,
-                 unsigned int uConfigNum,
-                 unsigned int *uUCID = NULL,
-                 unsigned int uDID = 0);
-
 #endif
 

@@ -861,19 +861,19 @@ struct CPartNumID g_PartNumIDs[] =
     {"KN44490A", 0x01F03CFF, PROJ_M2003},
 
     /* M2U51 */
-    //{"M2U54KG6AE", 0x03200140, PROJ_M2U51G},
-    //{"M2U54KE4AE", 0x03200141, PROJ_M2U51G},
-    //{"M2U54AG6AE", 0x03200150, PROJ_M2U51G},
-    //{"M2U54AE4AE", 0x03200151, PROJ_M2U51G},
-    //{"M2U54SG6AE", 0x03200110, PROJ_M2U51G},
-    //{"M2U54SE4AE", 0x03200111, PROJ_M2U51G},
-    //{"M2U54YG6AE", 0x03200190, PROJ_M2U51G},
-    //{"M2U54YE4AE", 0x03200191, PROJ_M2U51G},
-    //{"M2U51YD3AE", 0x03200092, PROJ_M2U51G},
-    //{"M2U51YC2AE", 0x03201093, PROJ_M2U51C},
-    //{"M2U51TC2AE", 0x032010C3, PROJ_M2U51C},
-    //{"M2U51EC2AE", 0x032010A3, PROJ_M2U51C},
-    //{"M2U51FC2AE", 0x032010B3, PROJ_M2U51C},
+    {"M2U54KG6AE", 0x03200140, PROJ_M2U51G},
+    {"M2U54KE4AE", 0x03200141, PROJ_M2U51G},
+    {"M2U54AG6AE", 0x03200150, PROJ_M2U51G},
+    {"M2U54AE4AE", 0x03200151, PROJ_M2U51G},
+    {"M2U54SG6AE", 0x03200110, PROJ_M2U51G},
+    {"M2U54SE4AE", 0x03200111, PROJ_M2U51G},
+    {"M2U54YG6AE", 0x03200190, PROJ_M2U51G},
+    {"M2U54YE4AE", 0x03200191, PROJ_M2U51G},
+    {"M2U51YD3AE", 0x03200092, PROJ_M2U51G},
+    {"M2U51YC2AE", 0x03201093, PROJ_M2U51C},
+    {"M2U51TC2AE", 0x032010C3, PROJ_M2U51C},
+    {"M2U51EC2AE", 0x032010A3, PROJ_M2U51C},
+    {"M2U51FC2AE", 0x032010B3, PROJ_M2U51C},
 
     /* NTNJ */
     {"CM2003CF2AE", 0x01F03CB1, PROJ_M2003},
@@ -1086,6 +1086,12 @@ struct CPartNumID_51 g_PartNumIDs_51[] =
     {"CM1003BF2AE", 0x2B006721, PROJ_MG51},
     {"CM1003CF3AE", 0x25006731, PROJ_MG51},
     {"CM1003CF2AE", 0x2B006731, PROJ_MG51},
+
+    {"CM1003DL8AE", 0x20007244, PROJ_MG51D},
+    {"CM1003DJ3AE", 0x2C007244, PROJ_MG51D},
+    {"CM1003DJ8AE", 0x21007244, PROJ_MG51D},
+    {"CM1003CJ3AE", 0x2C007234, PROJ_MG51D},
+    {"CM1003CH2AE", 0x22007234, PROJ_MG51D},
 };
 
 CPartNum::CPartNum()
@@ -1134,47 +1140,6 @@ std::string CPartNum::GetPartNumber(unsigned int uID, unsigned int uCoreType, un
 
     char szBuf[64];
     _snprintf_s(szBuf, sizeof(szBuf), _TRUNCATE, "[%08x]", uID);
-    return szBuf;
-}
-
-std::string CPartNum::GetPartNumber(unsigned int auUCID[], unsigned int uDefaultID) const
-{
-    char szBuf[64] = {0};
-
-    if ((auUCID[0] != 0xFFFFFFFF)
-            || (auUCID[1] != 0xFFFFFFFF)
-            || (auUCID[2] != 0xFFFFFFFF)
-            || (auUCID[3] != 0xFFFFFFFF))
-    {
-        if (((auUCID[3] >> 28) & 0x3) == 2) //Show normal part no.
-        {
-        }
-        else if (((auUCID[3] >> 28) & 0x3) == 0) //Show PDID
-        {
-            _snprintf_s(szBuf, sizeof(szBuf), _TRUNCATE, "[%08X]", uDefaultID);
-        }
-        else //Show special part no.
-        {
-            unsigned int uBlank = 0;
-
-            for (unsigned int i = 0; i < 3; i++) //auUCID[0] ~ auUCID[2]
-            {
-                for (unsigned int j = 0; j < 4; j++) //each byte of auUCID[n]
-                {
-                    if ((auUCID[2 - i] >> ((3 - j) * 8) & 0xFF) != 0xFF)
-                        szBuf[i * 4 + j] = auUCID[2 - i] >> ((3 - j) * 8) & 0xFF;
-                    else
-                        uBlank++;
-                }
-            }
-
-            for (unsigned int i = 0; i < (12 - uBlank); i++) //auUCID[0] ~ auUCID[2] have 12 bytes
-                szBuf[i] = szBuf[i + uBlank]; //delete first # of 0xff (uBlank)
-
-            szBuf[12 - uBlank] = '\0';
-        }
-    }
-
     return szBuf;
 }
 
@@ -1378,16 +1343,6 @@ const char *CPartNum_GetPartNumber(unsigned int uID, unsigned int uCoreType, uns
     memset(szBuf, 0, sizeof(szBuf));
 
     _snprintf_s(szBuf, sizeof(szBuf), _TRUNCATE, "%s", CPartNum().GetPartNumber(uID, uCoreType, puProjectCode).c_str());
-
-    return szBuf;
-}
-
-const char *CPartNum_GetPartNumber_UCID(unsigned int auUCID[], unsigned int uDefaultID)
-{
-    static char szBuf[64];
-    memset(szBuf, 0, sizeof(szBuf));
-
-    _snprintf_s(szBuf, sizeof(szBuf), _TRUNCATE, "%s", CPartNum().GetPartNumber(auUCID, uDefaultID).c_str());
 
     return szBuf;
 }

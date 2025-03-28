@@ -31,7 +31,6 @@ class CPartNum
 {
 public:
     std::string GetPartNumber(unsigned int uID, unsigned int uCoreType = 0, unsigned int *puProjectCode = NULL) const;
-    std::string GetPartNumber(unsigned int auUCID[], unsigned int uDefaultID = 0) const;
     NUC_CHIP_TYPE_E GetChipType(const char *sPartNo) const;
 
     bool IsSupportedPID_8051(unsigned int uSID) const;
@@ -162,8 +161,6 @@ static const char *g_sProjsName[] = { PROJS };
 
     EXTERN_C EMSCRIPTEN_KEEPALIVE
     const char *CPartNum_GetPartNumber(unsigned int uID, unsigned int uCoreType = 0, unsigned int *puProjectCode = NULL);
-    EXTERN_C EMSCRIPTEN_KEEPALIVE
-    const char *CPartNum_GetPartNumber_UCID(unsigned int auUCID[], unsigned int uDefaultID = 0);
     EXTERN_C EMSCRIPTEN_KEEPALIVE
     bool CPartNum_IsSupportedPID_8051(unsigned int uSID);
 #else

@@ -739,8 +739,10 @@ void *GetInfo(unsigned int uPID,
         {2048 * 1024,   0 * 1024, 1552 * 1024,    0x00000000,   8 * 1024,    0xA2000040}, //M5531K2LJAE
         {2048 * 1024,   0 * 1024, 1552 * 1024,    0x00000000,   8 * 1024,    0xA2000020}, //M5531R2LJAE
         {1024 * 1024,   0 * 1024, 1232 * 1024,    0x00000000,   8 * 1024,    0xA2000021}, //M5531R2JIAE
-        {  32 * 1024,   0 * 1024,   4 * 1024,    0x00008000,   4 * 1024,    0x01F03CB0}, //M2003FC1AE
-        {  32 * 1024,   0 * 1024,   4 * 1024,    0x00008000,   4 * 1024,    0x01F03C80}, //M2003XC1AE
+        {  32 * 1024,   0 * 1024,   4 * 1024,    0x00008000,   4 * 1024,    0x01F03CB0}, //CM2003CF2AE
+        {  32 * 1024,   0 * 1024,   4 * 1024,    0x00008000,   4 * 1024,    0x01F03C80}, //CM2003CF3AE
+        {  32 * 1024,   0 * 1024,   4 * 1024,    0x00008000,   4 * 1024,    0x01F03CB1}, //M2003FC1AE
+        {  32 * 1024,   0 * 1024,   4 * 1024,    0x00008000,   4 * 1024,    0x01F03C81}, //M2003XC1AE
         {  32 * 1024,   0 * 1024,   4 * 1024,    0x00008000,   4 * 1024,    0x01F03C9F}, //M2P481QC1AE
         {  32 * 1024,   0 * 1024,   4 * 1024,    0x00008000,   4 * 1024,    0x01F03CFF}, //KN44490A
         { 256 * 1024,   0 * 1024,  24 * 1024,    0x00040000,   4 * 1024,    0x02100010}, //M2A23SG5ACU
@@ -758,19 +760,19 @@ void *GetInfo(unsigned int uPID,
         {  64 * 1024,   0 * 1024,  24 * 1024,    0x00010000,   4 * 1024,    0x02100211}, //M2A23SD5AC
         {  64 * 1024,   0 * 1024,  24 * 1024,    0x00010000,   4 * 1024,    0x02100201}, //M2A23LD5AC
         {  64 * 1024,   0 * 1024,  24 * 1024,    0x00010000,   4 * 1024,    0x02100291}, //M2A23YD5AC
-        //{ 256*1024,   0*1024,  32*1024,    0x00040000,   4*1024,    0x03200140}, //M2U54KG6AE
-        //{ 128*1024,   0*1024,  24*1024,    0x00020000,   4*1024,    0x03200141}, //M2U54KE4AE
-        //{ 256*1024,   0*1024,  32*1024,    0x00040000,   4*1024,    0x03200150}, //M2U54AG6AE
-        //{ 128*1024,   0*1024,  24*1024,    0x00020000,   4*1024,    0x03200151}, //M2U54AE4AE
-        //{ 256*1024,   0*1024,  32*1024,    0x00040000,   4*1024,    0x03200110}, //M2U54SG6AE
-        //{ 128*1024,   0*1024,  24*1024,    0x00020000,   4*1024,    0x03200111}, //M2U54SE4AE
-        //{ 256*1024,   0*1024,  32*1024,    0x00040000,   4*1024,    0x03200190}, //M2U54YG6AE
-        //{ 128*1024,   0*1024,  24*1024,    0x00020000,   4*1024,    0x03200191}, //M2U54YE4AE
-        //{  64*1024,   0*1024,  16*1024,    0x00010000,   4*1024,    0x03200092}, //M2U51YD3AE
-        //{  32*1024,   0*1024,   6*1024,    0x00008000,   4*1024,    0x03201093}, //M2U51YC2AE
-        //{  32*1024,   0*1024,   6*1024,    0x00008000,   4*1024,    0x032010C3}, //M2U51TC2AE
-        //{  32*1024,   0*1024,   6*1024,    0x00008000,   4*1024,    0x032010A3}, //M2U51EC2AE
-        //{  32*1024,   0*1024,   6*1024,    0x00008000,   4*1024,    0x032010B3}, //M2U51FC2AE
+        { 256 * 1024,   0 * 1024,  32 * 1024,    0x00040000,   4 * 1024,    0x03200140}, //M2U54KG6AE
+        { 128 * 1024,   0 * 1024,  24 * 1024,    0x00020000,   4 * 1024,    0x03200141}, //M2U54KE4AE
+        { 256 * 1024,   0 * 1024,  32 * 1024,    0x00040000,   4 * 1024,    0x03200150}, //M2U54AG6AE
+        { 128 * 1024,   0 * 1024,  24 * 1024,    0x00020000,   4 * 1024,    0x03200151}, //M2U54AE4AE
+        { 256 * 1024,   0 * 1024,  32 * 1024,    0x00040000,   4 * 1024,    0x03200110}, //M2U54SG6AE
+        { 128 * 1024,   0 * 1024,  24 * 1024,    0x00020000,   4 * 1024,    0x03200111}, //M2U54SE4AE
+        { 256 * 1024,   0 * 1024,  32 * 1024,    0x00040000,   4 * 1024,    0x03200190}, //M2U54YG6AE
+        { 128 * 1024,   0 * 1024,  24 * 1024,    0x00020000,   4 * 1024,    0x03200191}, //M2U54YE4AE
+        {  64 * 1024,   0 * 1024,  16 * 1024,    0x00010000,   4 * 1024,    0x03200092}, //M2U51YD3AE
+        {  32 * 1024,   0 * 1024,   6 * 1024,    0x00008000,   4 * 1024,    0x03201093}, //M2U51YC2AE
+        {  32 * 1024,   0 * 1024,   6 * 1024,    0x00008000,   4 * 1024,    0x032010C3}, //M2U51TC2AE
+        {  32 * 1024,   0 * 1024,   6 * 1024,    0x00008000,   4 * 1024,    0x032010A3}, //M2U51EC2AE
+        {  32 * 1024,   0 * 1024,   6 * 1024,    0x00008000,   4 * 1024,    0x032010B3}, //M2U51FC2AE
     };
 
     unsigned int i;
@@ -847,103 +849,6 @@ void GetFlashSize_NuMicro(unsigned int uConfig0,
 
     *puAPROM_Size = uAPROM_Size;
     *puNVM_Size = uNVM_Size;
-}
-
-void GetChipInfo(unsigned int uPID, sChipInfo *ChipInfo, unsigned int *uConfig, unsigned int uConfigNum, unsigned int *uUCID, unsigned int uDID)
-{
-    sChipInfo info;
-    CString csInfo;
-    CString csDllFileName;
-    TCHAR szFolder[_MAX_PATH];
-    GetDllInstallFolder(szFolder);
-    CString csStr(szFolder);
-    csStr += _T("\\");
-
-    csDllFileName = csStr + GETCHIPINFO_LIBRARY_NAME;
-    HMODULE hGetChipInfoTool = ::LoadLibrary(csDllFileName);
-
-    if (hGetChipInfoTool != NULL)
-    {
-        CREATE_CHIPINFO_MANAGER pCreateChipInfoManager = (CREATE_CHIPINFO_MANAGER)::GetProcAddress(hGetChipInfoTool, "CreateChipInfoManager");
-
-        if (pCreateChipInfoManager)
-        {
-            I_ChipInfoManager *pChipInfoManager = NULL;
-
-            if (pCreateChipInfoManager(&pChipInfoManager) == TRUE)
-            {
-                sFindChipInfo FindChipInfo;
-
-                FindChipInfo.dwChipID = uPID;
-
-                if (uUCID == NULL)
-                {
-                    FindChipInfo.bSkipUCID = true;
-                }
-                else if ((uUCID[0] != 0xffffffff) || (uUCID[1] != 0xffffffff) || (uUCID[2] != 0xffffffff) || (uUCID[3] != 0xffffffff))
-                {
-                    FindChipInfo.bSkipUCID = false;
-                    FindChipInfo.dwChipUCID[0] = uUCID[0];
-                    FindChipInfo.dwChipUCID[1] = uUCID[1];
-                    FindChipInfo.dwChipUCID[2] = uUCID[2];
-                    FindChipInfo.dwChipUCID[3] = uUCID[3];
-                }
-                else
-                {
-                    FindChipInfo.bSkipUCID = true;
-                }
-
-                FindChipInfo.dwCfgNum = uConfigNum;
-
-                if (uConfigNum == 1)
-                {
-                    FindChipInfo.dwConfig[0] = uConfig[0];
-                }
-                else if (uConfigNum == 2)
-                {
-                    FindChipInfo.dwConfig[0] = uConfig[0];
-                    FindChipInfo.dwConfig[1] = uConfig[1];
-                }
-
-                eChipInfoError nRet;
-                nRet = pChipInfoManager->GetChipInfoByFindInfo(FindChipInfo, info, uDID);
-
-                if ((nRet == ECE_NO_ERROR) || (nRet == ECE_USE_DEFAULT_CHIP))
-                {
-                    ChipInfo->dwChipID = info.dwChipID;
-                    memcpy(ChipInfo->sChipName, info.sChipName, sizeof(info.sChipName));
-                    ChipInfo->dwAPROMSize = info.dwAPROMSize;
-                    ChipInfo->dwLDROMSize = info.dwLDROMSize;
-                    ChipInfo->dwDataFlashSize = info.dwDataFlashSize;
-                    ChipInfo->dwDataFlashAddress = info.dwDataFlashAddress;
-                    ChipInfo->dwEmbeedSPIFlashSize = info.dwEmbeedSPIFlashSize;
-                    ChipInfo->dwSRAMSize = info.dwSRAMSize;
-                    ChipInfo->dwErasePageSize = info.dwErasePageSize;
-                    ChipInfo->dwSeriesEnum = info.dwSeriesEnum;
-                }
-                else
-                {
-                    ChipInfo->dwSeriesEnum = 0;
-                }
-
-                pChipInfoManager->ReleaseDLL();
-            }
-            else
-            {
-                ChipInfo->dwSeriesEnum = 0;
-            }
-        }
-        else
-        {
-            ChipInfo->dwSeriesEnum = 0;
-        }
-
-        FreeLibrary(hGetChipInfoTool);
-    }
-    else
-    {
-        ChipInfo->dwSeriesEnum = 0;
-    }
 }
 
 bool GetInfo_AU9100(//unsigned int uDID,
