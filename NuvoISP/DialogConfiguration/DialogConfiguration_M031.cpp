@@ -152,13 +152,9 @@ void CDialogConfiguration_M031::ConfigToGUI(int nEventID)
     switch (uConfig0 & M031_FLASH_CONFIG_CBOV)
     {
         case M031_FLASH_CONFIG_CBOV_0:
-            m_nRadioBov = 0;
-            break;
-
+		m_nRadioBov = 0; break;
         case M031_FLASH_CONFIG_CBOV_1:
-            m_nRadioBov = 1;
-            break;
-
+		m_nRadioBov = 1; break;
         default:
             /* Keep old value */
             uConfig0 |= (m_ConfigValue.m_value[0] & M031_FLASH_CONFIG_CBOV);
@@ -167,21 +163,13 @@ void CDialogConfiguration_M031::ConfigToGUI(int nEventID)
     switch (uConfig0 & MINI51_FLASH_CONFIG_CBS2)
     {
         case MINI51_FLASH_CONFIG_CBS_LD:
-            m_nRadioBS = 0;
-            break;
-
+		m_nRadioBS = 0; break;
         case MINI51_FLASH_CONFIG_CBS_AP:
-            m_nRadioBS = 1;
-            break;
-
+		m_nRadioBS = 1; break;
         case MINI51_FLASH_CONFIG_CBS_LD_AP:
-            m_nRadioBS = 2;
-            break;
-
+		m_nRadioBS = 2; break;
         case MINI51_FLASH_CONFIG_CBS_AP_LD:
-            m_nRadioBS = 3;
-            break;
-
+		m_nRadioBS = 3; break;
         default:
             /* Keep old value */
             uConfig0 |= (m_ConfigValue.m_value[0] & MINI51_FLASH_CONFIG_CBS2);
@@ -226,13 +214,9 @@ void CDialogConfiguration_M031::GUIToConfig(int nEventID)
     switch (m_nRadioBov)
     {
         case 0:
-            uConfig0 |= M031_FLASH_CONFIG_CBOV_0;
-            break;
-
+		uConfig0 |= M031_FLASH_CONFIG_CBOV_0; break;
         case 1:
-            uConfig0 |= M031_FLASH_CONFIG_CBOV_1;
-            break;
-
+		uConfig0 |= M031_FLASH_CONFIG_CBOV_1; break;
         default:
             /* Keep old value */
             uConfig0 |= (m_ConfigValue.m_value[0] & M031_FLASH_CONFIG_CBOV);
@@ -243,21 +227,13 @@ void CDialogConfiguration_M031::GUIToConfig(int nEventID)
     switch (m_nRadioBS)
     {
         case 0:
-            uConfig0 |= MINI51_FLASH_CONFIG_CBS_LD;
-            break;
-
+		uConfig0 |= MINI51_FLASH_CONFIG_CBS_LD; break;
         case 1:
-            uConfig0 |= MINI51_FLASH_CONFIG_CBS_AP;
-            break;
-
+		uConfig0 |= MINI51_FLASH_CONFIG_CBS_AP; break;
         case 2:
-            uConfig0 |= MINI51_FLASH_CONFIG_CBS_LD_AP;
-            break;
-
+		uConfig0 |= MINI51_FLASH_CONFIG_CBS_LD_AP; break;
         case 3:
-            uConfig0 |= MINI51_FLASH_CONFIG_CBS_AP_LD;
-            break;
-
+		uConfig0 |= MINI51_FLASH_CONFIG_CBS_AP_LD; break;
         default:
             /* Keep old value */
             uConfig0 |= (m_ConfigValue.m_value[0] & MINI51_FLASH_CONFIG_CBS2);

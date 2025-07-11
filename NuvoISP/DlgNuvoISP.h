@@ -63,6 +63,9 @@ protected:
     afx_msg void OnSelchangeTabData(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnDropFiles(HDROP hDropInfo);
     afx_msg void OnButtonConfig();
+    afx_msg void OnButtonMenuLoad();
+    afx_msg void OnButtonMenuSave();
+    afx_msg void OnButtonMenuSaveLua();
     afx_msg void OnPaint();
     afx_msg void OnKillfocusEditAPRomOffset();
     //}}AFX_MSG

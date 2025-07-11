@@ -22,7 +22,7 @@ public:
 
     static CString GetConfigWarning();
 
-    unsigned int m_uConfigValue[14];
+    unsigned int m_uConfigValue[config_amount];
 
     // Dialog Data
     enum { IDD = IDD_DIALOG_CHIP_SETTING_M2351 };

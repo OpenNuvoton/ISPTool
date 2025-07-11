@@ -146,7 +146,13 @@ bool GetChipStaticInfo(unsigned int uID)
             }
 
             // Step3.2: Page Size Type: 0x000 (512 Bytes, default), 0x200 (2K), 0x300 (4K)
-            if ((uSeriesCode == PROJ_NUC400AE)
+            if ((uSeriesCode == PROJ_M3331IG)
+            || (uSeriesCode == PROJ_M3331G))
+            {
+                uFlashType |= 0x100;
+            }
+            
+            else if ((uSeriesCode == PROJ_NUC400AE)
             || (uSeriesCode == PROJ_M451HD)
             || (uSeriesCode == PROJ_M451LD)
             || (uSeriesCode == PROJ_M4521)

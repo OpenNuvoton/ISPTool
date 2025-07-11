@@ -57,6 +57,9 @@
 #define CHIP_INDEX_NSC128           78
 #define CHIP_INDEX_M3331            79
 #define CHIP_INDEX_M2U51            80
+#define CHIP_INDEX_M5531			81
+#define CHIP_INDEX_CM2U51			82
+#define CHIP_INDEX_CM3031			83
 #define CHIP_INDEX_UNKNOWN          9999
 
 
@@ -193,7 +196,8 @@ typedef struct : FLASH_INFO_BY_DID_T
     unsigned int    uKS_OTPKeyCount;
     unsigned int    uKS_OTPKeyAttribute;    // Bit 0-7: Key Owner, Bit 8: Secure, Bit 9: Privilege, Bit 10: Readable, Bit 11: Boot State, Bit 12: MTP
     unsigned int    uKS_ROTPKCount;
-    unsigned int    uKS_ROTPKAttribute;     // ROTPK (Root of Trust Public Key)
+	unsigned int	uKS_ROTPKAttribute;			// P-256 ROTPK (Root of Trust Public Key)
+	unsigned int	uKS_ROTPKAttribute_P521;	// P-521 ROTPK
     BOOL            bBankRemap;
     BOOL            bDualBank;
     BOOL            bMirrorBoundary;

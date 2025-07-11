@@ -368,6 +368,8 @@ void CDialogMain::EnableDlgItem(int nID, BOOL bEnable)
 #include "DialogChipSetting_M2L31.h"
 #include "DialogChipSetting_M55M1.h"
 #include "DialogChipSetting_M2A23.h"
+#include "DialogChipSetting_M3331.h"
+#include "DialogChipSetting_M2U51.h"
 
 bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigned int uSeriesCode /* = 0*/)
 {
@@ -616,6 +618,12 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 Config = (((CDialogConfiguration_NUC4xx *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
+            case PROJ_M3331IG:
+                pConfigDlg = new CDialogChipSetting_M3331(uSeriesCode);
+
+                Config = (((CDialogChipSetting_M3331*)pConfigDlg)->m_uConfigValue);
+                break;
+
             case PROJ_NM1120:
             case PROJ_NM1230:
             case PROJ_NM1240:
@@ -775,6 +783,13 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 Config = (((CDialogChipSetting_NuMicro*)pConfigDlg)->m_uConfigValue);
                 break;
 
+            case PROJ_M2U51G: 
+            case PROJ_M2U51C:
+                pConfigDlg = new CDialogChipSetting_M2U51(uID, uID & 0xFFFF, uSeriesCode);
+
+                Config = (((CDialogChipSetting_M2U51*)pConfigDlg)->m_uConfigValue);
+                break;
+
             case PROJ_M55M1:
                 pConfigDlg = new CDialogChipSetting_M55M1(TRUE, uID, uID & 0xFFFF, uSeriesCode);
 
@@ -835,6 +850,17 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 Config = (((CDialogConfiguration_N574*)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
+            case NSC_SERIES:
+                if (uProgramMemorySize)
+                {
+                    pConfigDlg = new CDialogConfiguration_NSC128(uProgramMemorySize);
+                }
+                else
+                {
+                    pConfigDlg = new CDialogConfiguration_NSC128();
+                }
+                Config = (((CDialogConfiguration_NSC128*)pConfigDlg)->m_ConfigValue.m_value);
+
             case NUVOICE_N569_SERIES:
             case NUVOICE_N569J_SERIES:
                 pConfigDlg = new CDialogConfiguration_AU9100();
@@ -845,6 +871,8 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
             case NUVOICE_N570_SERIES:
             case NUVOICE_N570H_SERIES:
             case NUVOICE_N570J_SERIES:
+            case NUVOICE_JNK561_SERIES:
+            case NUVOICE_JNK561H_SERIES:
                 if (uProgramMemorySize)
                 {
                     pConfigDlg = new CDialogConfiguration_N570(uProgramMemorySize);

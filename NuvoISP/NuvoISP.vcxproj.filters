@@ -170,6 +170,19 @@
     <ClCompile Include="Interface\CTRSP.cpp">
       <Filter>Interface</Filter>
     </ClCompile>
+    <ClCompile Include="CDialogOfflineExport.cpp" />
+    <ClCompile Include="DialogChipSetting\DialogChipSetting_CFG_M2U51.cpp">
+      <Filter>DialogChipSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogChipSetting\DialogChipSetting_CFG_M3331.cpp">
+      <Filter>DialogChipSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogChipSetting\DialogChipSetting_M3331.cpp">
+      <Filter>DialogChipSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="DialogChipSetting\DialogChipSetting_M2U51.cpp">
+      <Filter>DialogChipSetting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lang.h" />
@@ -238,6 +251,22 @@
       <Filter>DialogChipSetting</Filter>
     </ClInclude>
     <ClInclude Include="DialogChipSetting\DialogChipSetting_M2354.h">
+      <Filter>DialogChipSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="CDialogOfflineExport.h" />
+    <ClInclude Include="DialogChipSetting\DialogChipSetting_CFG_M2U51.h">
+      <Filter>DialogChipSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="DataBase\ChipDefs_N57x.h">
+      <Filter>DataBase</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogChipSetting\DialogChipSetting_CFG_M3331.h">
+      <Filter>DialogChipSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogChipSetting\DialogChipSetting_M3331.h">
+      <Filter>DialogChipSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogChipSetting\DialogChipSetting_M2U51.h">
       <Filter>DialogChipSetting</Filter>
     </ClInclude>
   </ItemGroup>

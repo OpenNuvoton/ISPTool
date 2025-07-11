@@ -38,7 +38,7 @@ public:
     std::vector<std::pair<CString, unsigned int >> m_Interfaces;
     CComboBox   m_SelInterface;
     CComboBox   m_SelComPort;
-    unsigned int m_Interface;
+    //unsigned int m_Interface;
     CIPAddressCtrl m_IPAddress;
     CEdit m_EditIPPort;
     CEdit m_EditBDName;

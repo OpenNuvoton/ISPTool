@@ -2,6 +2,8 @@
 
 #include "resource.h"
 
+#define config_amount 19
+
 class CDialogResize : public CDialog
 {
     DECLARE_DYNAMIC(CDialogResize)

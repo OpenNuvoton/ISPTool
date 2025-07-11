@@ -38,7 +38,7 @@ protected:
 
     DECLARE_MESSAGE_MAP()
 public:
-    unsigned int    m_uConfigValue[14];
+    unsigned int    m_uConfigValue[config_amount];
 
     unsigned int    m_uNSCBA_NSAddr;
 

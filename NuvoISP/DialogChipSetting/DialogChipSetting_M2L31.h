@@ -35,7 +35,7 @@ protected:
 
     DECLARE_MESSAGE_MAP()
 public:
-    unsigned int    m_uConfigValue[14];
+    unsigned int    m_uConfigValue[config_amount];
 
     int             m_nSel;
     unsigned int    m_uShowFlag;

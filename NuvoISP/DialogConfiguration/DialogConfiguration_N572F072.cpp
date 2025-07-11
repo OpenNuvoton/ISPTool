@@ -8,7 +8,7 @@
 #include <utility>
 #include "Lang.h"
 #include "ChipDefs.h"
-//#include "ChipDefs_N57x.h"
+#include "ChipDefs_N57x.h"
 #include "NumEdit.h"
 #include "AppConfig.h"
 #include "DialogConfiguration_N572F072.h"
