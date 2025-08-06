@@ -90,7 +90,7 @@ BOOL CDialogChipSetting_M55M1::OnInitDialog()
     memset(&chipInfo, 0, sizeof(chipInfo));
 
     GetInfo(m_uPID, &chipInfo);
-    chipInfo.uFlashType = GetFlashType(m_uPID, m_uConfigValue[0], m_uConfigValue[1]);
+    chipInfo.uFlashType = gsChipCfgInfo.uFlashType;
 
     if (m_uShowFlag & 0x01)
     {

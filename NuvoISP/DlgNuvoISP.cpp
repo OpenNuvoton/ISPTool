@@ -3,11 +3,10 @@
 #include "DlgNuvoISP.h"
 #include "About.h"
 #include "ChipDefs.h"
-#include "NuDataBase.h"
 #include <dbt.h>
 #include "CDialogOfflineExport.h"
 
-//#include "NuDataBase.h"
+#include "NuDataBase.h"
 #include <sstream>
 
 #ifdef _DEBUG
@@ -125,7 +124,6 @@ void CNuvoISPDlg::DoDataExchange(CDataExchange *pDX)
     DDX_Check(pDX, IDC_CHECK_CONFIG, m_bProgram_Config);
     DDX_Check(pDX, IDC_CHECK_ERASE, m_bErase);
     DDX_Check(pDX, IDC_CHECK_RUN_APROM, m_bRunAPROM);
-    DDX_Control(pDX, IDC_TAB_DATA, m_TabData);
     DDX_Control(pDX, IDC_PROGRESS, m_Progress);
     DDX_Text(pDX, IDC_STATIC_STATUS, m_sStatus);
     DDX_Control(pDX, IDC_COMBO_COM_PORT, m_SelComPort);

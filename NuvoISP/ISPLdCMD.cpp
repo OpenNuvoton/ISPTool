@@ -476,7 +476,7 @@ void ISPLdCMD::ReadConfig(unsigned int config[])
     {
         unsigned int addr = (!bSpec_addr) ? FMC_USER_CONFIG_0 : SPEC_FMC_USER_CONFIG_0;
 
-        for (int i = 0; i < 14; i++)
+        for (int i = 0; i < 19; i++)
         {
             if (WriteFileCAN(CAN_CMD_READ_CONFIG, addr + 4 * i))
             {
@@ -489,13 +489,14 @@ void ISPLdCMD::ReadConfig(unsigned int config[])
 
         return;
     }
-
-    WriteFile(
-        CMD_READ_CONFIG,
-        NULL,
-        0,
-        USBCMD_TIMEOUT);
-    ReadFile((char *)config, 56, USBCMD_TIMEOUT, TRUE);
+    for (int i = 0; i < sizeof(config); i += 14) {
+        WriteFile(
+            CMD_READ_CONFIG,
+            NULL,
+            0,
+            USBCMD_TIMEOUT);
+        ReadFile((char*)&config[i], 56, USBCMD_TIMEOUT, TRUE);
+    }
 }
 
 void ISPLdCMD::UpdateConfig(unsigned int config[], unsigned int response[])
@@ -504,7 +505,7 @@ void ISPLdCMD::UpdateConfig(unsigned int config[], unsigned int response[])
     {
         unsigned int addr = (!bSpec_addr) ? FMC_USER_CONFIG_0 : SPEC_FMC_USER_CONFIG_0;
 
-        for (int i = 0; i < 14; i++)
+        for (int i = 0; i < 19; i++)
         {
             if (WriteFileCAN(addr + 4 * i, config[i]))
             {
@@ -517,13 +518,15 @@ void ISPLdCMD::UpdateConfig(unsigned int config[], unsigned int response[])
 
         return;
     }
-
-    WriteFile(
-        CMD_UPDATE_CONFIG,
-        (const char *)config,
-        56,
-        USBCMD_TIMEOUT_LONG);
-    ReadFile((char *)response, 56, USBCMD_TIMEOUT_LONG, TRUE);
+    
+    for (int i = 0; i < sizeof(config); i += 14) {
+        WriteFile(
+            CMD_UPDATE_CONFIG,
+            (const char*)&config[i],
+            56,
+            USBCMD_TIMEOUT_LONG);
+        ReadFile((char*)&response[i], 56, USBCMD_TIMEOUT_LONG, TRUE);
+    }
 }
 
 void ISPLdCMD::UpdateAPROM(unsigned long start_addr,

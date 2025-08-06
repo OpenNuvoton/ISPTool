@@ -149,7 +149,7 @@ bool GetChipStaticInfo(unsigned int uID)
             if ((uSeriesCode == PROJ_M3331IG)
             || (uSeriesCode == PROJ_M3331G))
             {
-                uFlashType |= 0x100;
+                uFlashType |= 0x104;
             }
             
             else if ((uSeriesCode == PROJ_NUC400AE)
@@ -200,7 +200,8 @@ static bool HasNoDynamicInfo()
     if ((gsChipCfgInfo.uSeriesCode == PROJ_M2351)
     || (gsChipCfgInfo.uSeriesCode == PROJ_M2354)
     || (gsChipCfgInfo.uSeriesCode == PROJ_M2354ES)
-    || (gsChipCfgInfo.uSeriesCode == PROJ_M55M1))
+    || (gsChipCfgInfo.uSeriesCode == PROJ_M55M1)
+    || (gsChipCfgInfo.uSeriesCode == PROJ_M3331IG))
     {
         return true;
     }
@@ -270,18 +271,6 @@ bool GetChipDynamicInfo(unsigned int uID, unsigned int uConfig0, unsigned int uC
         return true;
     }
     else if (uProductLine == 2)
-    {
-        GetFlashSize_NuMicro(uConfig0, uConfig1,
-                             uProgramMemorySize, uFlashType, uAPROM_Addr,
-                             &uNVM_Addr, &uAPROM_Size, &uNVM_Size);
-        gsChipCfgInfo.uConfig0 = uConfig0;
-        gsChipCfgInfo.uConfig1 = uConfig1;
-        gsChipCfgInfo.uAPROM_Size = uAPROM_Size;
-        gsChipCfgInfo.uNVM_Addr = uNVM_Addr;
-        gsChipCfgInfo.uNVM_Size = uNVM_Size;
-        return true;
-    }
-    else if (uProductLine == 4)
     {
         GetFlashSize_NuMicro(uConfig0, uConfig1,
                              uProgramMemorySize, uFlashType, uAPROM_Addr,

@@ -20,7 +20,7 @@ CDialogChipSetting_M3331::CDialogChipSetting_M3331(BOOL bSecureDebug, unsigned i
 	, m_uDID(uDID)
 	, m_uChipSeries(uChipSeries)
 	, m_nSel(0)
-	, m_uShowFlag(0x07)
+	, m_uShowFlag(0x0F)
 {
 	//{{AFX_DATA_INIT(CDialogChipSetting_M3331)
 		// NOTE: the ClassWizard will add member initialization here
@@ -38,6 +38,11 @@ CDialogChipSetting_M3331::CDialogChipSetting_M3331(BOOL bSecureDebug, unsigned i
 	m_uConfigValue[11]		= 0xFFFFFFFF;
 	m_uConfigValue[12]		= 0xFFFFFFFF;
 	m_uConfigValue[13]		= 0xFFFFFFFF;
+	m_uConfigValue[14]		= 0xFFFFFFFF;
+	m_uConfigValue[15]		= 0xFFFFFFFF;
+	m_uConfigValue[16]		= 0xFFFFFFFF;
+	m_uConfigValue[17]		= 0xFFFFFFFF;
+	m_uConfigValue[18]		= 0xFFFFFFFF;
 
 	m_bNSCBA_Write			= FALSE;
 	m_uNSCBA_NSAddr			= 0xFFFFFFFF;
@@ -64,6 +69,11 @@ CDialogChipSetting_M3331::~CDialogChipSetting_M3331()
 	if (m_uShowFlag & 0x04)
 	{
 		delete m_pChipSetting_NSCBA;
+	}
+
+	if (m_uShowFlag & 0x08)
+	{
+		delete m_pChipSetting_LDWPROT;
 	}
 }
 
@@ -96,7 +106,7 @@ BOOL CDialogChipSetting_M3331::OnInitDialog()
 	memset(&chipInfo, 0, sizeof(chipInfo));
 
 	GetInfo(m_uPID, &chipInfo);
-	chipInfo.uFlashType = GetFlashType(m_uPID, m_uConfigValue[0], m_uConfigValue[1]);
+	chipInfo.uFlashType = gsChipCfgInfo.uFlashType;
 
 	if (m_uShowFlag & 0x01)
 	{
@@ -157,6 +167,26 @@ BOOL CDialogChipSetting_M3331::OnInitDialog()
 		m_pChipSetting_NSCBA->Create(CDialogChipSetting_NSCBA_LOCK::IDD, &m_TabChipSetting);
 	}
 
+	if (m_uShowFlag & 0x08)
+	{
+		m_TabChipSetting.InsertItem(nItem++, _T("CONFIG 16-18"));
+
+		m_pChipSetting_LDWPROT = new CDialogChipSetting_LDWPROT();
+
+		m_pChipSetting_LDWPROT->m_uLDROM_Addr			= NUMICRO_M55_LDROM_ADDR;
+		m_pChipSetting_LDWPROT->m_uLDROM_Size			= M3331_LDWPROT_REGION_SIZE;
+		m_pChipSetting_LDWPROT->m_uLDROM_RegionSize		= M3331_LDWPROT_REGION_SIZE;
+
+		m_pChipSetting_LDWPROT->m_uDATAFLASH_Addr		= M3331_FLASH_DATAFLASH_ADDR;
+		m_pChipSetting_LDWPROT->m_uDATAFLASH_Size		= M3331_FLASH_DATAFLASH_SIZE;
+		m_pChipSetting_LDWPROT->m_uDATAFLASH_RegionSize	= M3331_DFWPROT_REGION_SIZE;
+
+		m_pChipSetting_LDWPROT->m_uConfigValue[0]		= m_uConfigValue[16];
+		m_pChipSetting_LDWPROT->m_uConfigValue[1]		= m_uConfigValue[17];
+		m_pChipSetting_LDWPROT->m_uConfigValue[2]		= m_uConfigValue[18];
+
+		m_pChipSetting_LDWPROT->Create(CDialogChipSetting_LDWPROT::IDD, &m_TabChipSetting);
+	}
 	CRect rcClient;
 	m_TabChipSetting.GetClientRect(rcClient);
 	m_TabChipSetting.AdjustRect(FALSE, rcClient);
@@ -166,6 +196,7 @@ BOOL CDialogChipSetting_M3331::OnInitDialog()
 		m_pChipSetting_CFG,
 		m_pChipSetting_APWPROT,
 		m_pChipSetting_NSCBA,
+		m_pChipSetting_LDWPROT,
 	};
 
 	m_TabChipSetting.SetCurSel(m_nSel);
@@ -202,6 +233,7 @@ void CDialogChipSetting_M3331::OnTcnSelchangeTabChipsetting(NMHDR *pNMHDR, LRESU
 		m_pChipSetting_CFG,
 		m_pChipSetting_APWPROT,
 		m_pChipSetting_NSCBA,
+		m_pChipSetting_LDWPROT,
 	};
 
 	m_nSel = m_TabChipSetting.GetCurSel();
@@ -255,6 +287,13 @@ void CDialogChipSetting_M3331::OnOk()
 		m_bSCRLOCK_Enable		= m_pChipSetting_NSCBA->m_bSCRLOCK;
 		m_bARLOCK_Enable		= m_pChipSetting_NSCBA->m_bARLOCK;
 
+	}
+	
+	if (m_uShowFlag & 0x08)
+	{
+		m_uConfigValue[16]		= m_pChipSetting_LDWPROT->m_uConfigValue[0];
+		m_uConfigValue[17]		= m_pChipSetting_LDWPROT->m_uConfigValue[1];
+		m_uConfigValue[18]		= m_pChipSetting_LDWPROT->m_uConfigValue[2];
 	}
 
 	CDialog::OnOK();

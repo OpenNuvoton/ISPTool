@@ -11,6 +11,7 @@
 #include "DialogChipSetting_CFG_M3331.h"
 #include "DialogChipSetting_APWPROT.h"
 #include "DialogChipSetting_SECURE_M2351.h"
+#include "DialogChipSetting_LDWPROT.h"
 
 // CDialogChipSetting_M3331 dialog
 
@@ -62,6 +63,7 @@ public:
 	CDialogChipSetting_CFG_M3331	*m_pChipSetting_CFG;
 	CDialogChipSetting_APWPROT		*m_pChipSetting_APWPROT;
 	CDialogChipSetting_NSCBA_LOCK	*m_pChipSetting_NSCBA;
+	CDialogChipSetting_LDWPROT		*m_pChipSetting_LDWPROT;
 
 	afx_msg void OnTcnSelchangeTabChipsetting(NMHDR *pNMHDR, LRESULT *pResult);
 	afx_msg void OnOk();

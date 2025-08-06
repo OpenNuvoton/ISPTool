@@ -183,6 +183,9 @@
     <ClCompile Include="DialogChipSetting\DialogChipSetting_M2U51.cpp">
       <Filter>DialogChipSetting</Filter>
     </ClCompile>
+    <ClCompile Include="DialogChipSetting\DialogChipSetting_LDWPROT.cpp">
+      <Filter>DialogChipSetting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Lang.h" />
@@ -267,6 +270,9 @@
       <Filter>DialogChipSetting</Filter>
     </ClInclude>
     <ClInclude Include="DialogChipSetting\DialogChipSetting_M2U51.h">
+      <Filter>DialogChipSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="DialogChipSetting\DialogChipSetting_LDWPROT.h">
       <Filter>DialogChipSetting</Filter>
     </ClInclude>
   </ItemGroup>

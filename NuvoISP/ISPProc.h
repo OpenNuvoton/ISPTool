@@ -83,8 +83,8 @@ public:
 
     unsigned char m_ucFW_VER;
     unsigned int m_ulDeviceID;
-    unsigned int m_CONFIG[14];
-    unsigned int m_CONFIG_User[14];
+    unsigned int m_CONFIG[19];
+    unsigned int m_CONFIG_User[19];
 
     unsigned int m_uAPROM_Addr;
     unsigned int m_uAPROM_Size;

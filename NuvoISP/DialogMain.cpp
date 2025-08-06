@@ -837,6 +837,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
             case NUVOICE_NSC74128_SERIES:
             case NUVOICE_NSC741K5_SERIES:
             case NUVOICE_NSC128L42_SERIES:
+            case NUVOICE_CA2001_SERIES:
             case NUVOICE_N576_SERIES:
                 if (uProgramMemorySize)
                 {
@@ -1198,10 +1199,11 @@ std::string int_to_hex(T val, size_t width = sizeof(T) * 2)
 // call by OnButtonConfig
 bool CDialogMain::DemoConfigDlg(UINT Template /* = 0 */)
 {
-    unsigned int CFG[14] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
+    unsigned int CFG[19] = {0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
                             0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
                             0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
-                            0xFFFFFFFF, 0xFFFFFFFF
+                            0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
+                            0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF
                            };
 
     if (Template == 0)
@@ -1301,10 +1303,11 @@ LRESULT CDialogMain::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
     if (message == WM_COMMAND)
     {
         unsigned int i;
-        unsigned int CFG[14] = { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
+        unsigned int CFG[19] = { 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
                                  0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
                                  0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF,
-                                 0xFFFFFFFF, 0xFFFFFFFF
+                                 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 
+                                 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF
                                };
 
         if (wParam == 0xFFFFFFFF)   // Test ALL
