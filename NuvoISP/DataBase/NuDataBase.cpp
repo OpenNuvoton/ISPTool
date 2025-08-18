@@ -199,9 +199,7 @@ static bool HasNoDynamicInfo()
 
     if ((gsChipCfgInfo.uSeriesCode == PROJ_M2351)
     || (gsChipCfgInfo.uSeriesCode == PROJ_M2354)
-    || (gsChipCfgInfo.uSeriesCode == PROJ_M2354ES)
-    || (gsChipCfgInfo.uSeriesCode == PROJ_M55M1)
-    || (gsChipCfgInfo.uSeriesCode == PROJ_M3331IG))
+    || (gsChipCfgInfo.uSeriesCode == PROJ_M2354ES))
     {
         return true;
     }

@@ -893,16 +893,16 @@ void GetFlashSize_NuMicro(unsigned int uConfig0,
 
         *puNVM_Addr = uAPROM_Addr + uAPROM_Size;
     }
-    else if (uType == 4) {  // for M3331
-        uAPROM_Size = uProgramMemorySize;
-        uNVM_Size = 0x1000;
-        *puNVM_Addr = 0x0F200000;
-    }
     else
     {
         uAPROM_Size = uProgramMemorySize;
         uNVM_Size = 0x1000;
-        *puNVM_Addr = 0x1F000;
+        if ((uType & 0x04) != 0) {  // for M3331
+            *puNVM_Addr = 0x0F200000;
+        }
+        else {
+            *puNVM_Addr = 0x1F000;
+        }
     }
 
     *puAPROM_Size = uAPROM_Size;
