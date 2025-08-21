@@ -13,7 +13,7 @@ public:
     /* Global configurations */
     struct configs_t
     {
-        unsigned int m_value[14];
+        unsigned int m_value[19];
     };
 
 #define I96000_configs_t configs_t
