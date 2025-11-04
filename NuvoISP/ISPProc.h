@@ -114,6 +114,8 @@ public:
         m_ISPLdDev.SetInterface(it, sComNum, sIPAddress, sIPPort);
     };
 
+    unsigned int Check_64bit_Program(void);
+
     EProcSts m_eProcSts;
 
     unsigned int m_uProgTime;

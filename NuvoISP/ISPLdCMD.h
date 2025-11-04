@@ -94,6 +94,8 @@ public:
         CMD_RESET           = 0x000000AD,
         CMD_CONNECT         = 0x000000AE,
         CMD_UPDATE_DATAFLASH = 0x000000C3,
+        CMD_READ_CONFIG_EXT = 0x000000E0,
+        CMD_UPDATE_CONFIG_EXT = 0x000000E1,
         CMD_RESEND_PACKET   = 0x000000FF,
         CMD_ERASE_SPIFLASH  = 0x000000D0,
         CMD_UPDATE_SPIFLASH = 0x000000D1,
@@ -106,6 +108,7 @@ public:
         CAN_CMD_READ_CONFIG = 0xA2000000,
         CAN_CMD_RUN_APROM = 0xAB000000,
         CAN_CMD_GET_DEVICEID = 0xB1000000,
+        CAN_CMD_SECOND_READ = 0xB3000000,
     };
 
     BOOL CMD_Connect(DWORD dwMilliseconds = 30);
@@ -116,17 +119,21 @@ public:
     unsigned char GetVersion();
     unsigned long GetDeviceID();
     void ReadConfig(unsigned int config[]);
+    void ReadConfig_Ext(unsigned int config[], unsigned int i);
     void UpdateConfig(unsigned int config[], unsigned int response[]);
+    void UpdateConfig_Ext(unsigned int config[], unsigned int response[], unsigned int i);
     void UpdateAPROM(unsigned long start_addr,
                      unsigned long total_len,
                      unsigned long cur_addr,
                      const char *buffer,
-                     unsigned long *update_len);
+                     unsigned long *update_len,
+                     unsigned long program_64bit);
     void UpdateNVM(unsigned long start_addr,
                    unsigned long total_len,
                    unsigned long cur_addr,
                    const char *buffer,
-                   unsigned long *update_len);
+                   unsigned long *update_len,
+                   unsigned long program_64bit);
 
     BOOL EraseAll();
 

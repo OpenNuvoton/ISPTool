@@ -618,6 +618,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 Config = (((CDialogConfiguration_NUC4xx *)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
+            case PROJ_M3331G:
             case PROJ_M3331IG:
                 pConfigDlg = new CDialogChipSetting_M3331(uSeriesCode);
 
@@ -837,7 +838,6 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
             case NUVOICE_NSC74128_SERIES:
             case NUVOICE_NSC741K5_SERIES:
             case NUVOICE_NSC128L42_SERIES:
-            case NUVOICE_NSC23_SERIES:
             case NUVOICE_N576_SERIES:
                 if (uProgramMemorySize)
                 {
@@ -849,6 +849,19 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 }
 
                 Config = (((CDialogConfiguration_N574*)pConfigDlg)->m_ConfigValue.m_value);
+                break;
+
+            case ISD_91500_SERIES:               
+                if (uProgramMemorySize)
+                {
+                    pConfigDlg = new CDialogConfiguration_I91500(uProgramMemorySize);
+                }
+                else
+                {
+                    pConfigDlg = new CDialogConfiguration_I91500();
+                }
+
+                Config = (((CDialogConfiguration_I91500*)pConfigDlg)->m_ConfigValue.m_value);
                 break;
 
             case NSC_SERIES:

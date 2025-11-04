@@ -236,7 +236,15 @@ void CISPProc::Thread_CheckDeviceConnect()
                 m_ISPLdDev.SyncPackno();
                 m_ucFW_VER = m_ISPLdDev.GetVersion();
                 m_ulDeviceID = m_ISPLdDev.GetDeviceID();
-                m_ISPLdDev.ReadConfig(m_CONFIG);
+                if ((m_ulDeviceID & 0xFFFFF000) == 0x03300000 
+                 || (m_ulDeviceID & 0xFFFFF000) == 0x06300000) {  // M3331, over 14
+                    for (int i = 0; i < 19; i++) {
+                        m_ISPLdDev.ReadConfig_Ext(m_CONFIG, i);
+                    }
+                }
+                else {
+                    m_ISPLdDev.ReadConfig(m_CONFIG);
+                }
                 memcpy(m_CONFIG_User, m_CONFIG, sizeof(m_CONFIG));
                 m_bSupport_SPI = m_ISPLdDev.bSupport_SPI;
                 m_eProcSts = EPS_OK;
@@ -313,7 +321,15 @@ void CISPProc::Thread_ProgramFlash()
 
         if (m_bProgram_Config)
         {
-            m_ISPLdDev.UpdateConfig(m_CONFIG_User, m_CONFIG);
+            //m_ISPLdDev.UpdateConfig(m_CONFIG_User, m_CONFIG);
+            if ((m_ulDeviceID & 0xFFFFF000) == 0x03300000
+                || (m_ulDeviceID & 0xFFFFF000) == 0x06300000) {
+                for(int i = 0; i < 19; i = i + 2)
+                    m_ISPLdDev.UpdateConfig_Ext(m_CONFIG_User, m_CONFIG, i);
+            }
+            else {
+                m_ISPLdDev.UpdateConfig(m_CONFIG_User, m_CONFIG);
+            }
 
             if ((m_CONFIG_User[0] != m_CONFIG[0]) || (m_CONFIG_User[1] != m_CONFIG[1]))
             {
@@ -371,7 +387,7 @@ void CISPProc::Thread_ProgramFlash()
                 {
                     m_ISPLdDev.UpdateAPROM(uAddr, uSize, uAddr + i,
                                            (const char *)(pBuffer + i),
-                                           &uLen);
+                                           &uLen, Check_64bit_Program());
 
                     if (m_ISPLdDev.bResendFlag)
                     {
@@ -439,7 +455,7 @@ void CISPProc::Thread_ProgramFlash()
                 {
                     m_ISPLdDev.UpdateNVM(uAddr, uSize, uAddr + i,
                                          (const char *)(pBuffer + i),
-                                         &uLen);
+                                         &uLen, Check_64bit_Program());
 
                     if (m_ISPLdDev.bResendFlag)
                     {
@@ -620,3 +636,9 @@ bool CISPProc::UpdateSizeInfo(unsigned int uID, unsigned int uConfig0, unsigned 
         return false;
     }
 }
+
+unsigned int CISPProc::Check_64bit_Program(void)
+{
+    return ((m_ulDeviceID & 0xFFFFF000) == 0x03300000 || (m_ulDeviceID & 0xFFFFF000) == 0x06300000);
+}
+

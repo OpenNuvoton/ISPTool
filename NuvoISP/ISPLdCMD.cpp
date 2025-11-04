@@ -7,9 +7,11 @@
 
 #define BLE_SERV_F01_UUID    0xABF0
 #define BLE_CHAR_W01_UUID    0xABF1
-#define BLE_CHAR_N01_UUID    0xABF2
+#define BLE_CHAR_N01_UUID    0xABF2    
 
 #define printf(...)
+
+#define CONFIG_64
 
 ISPLdCMD::ISPLdCMD()
     : m_bOpenPort(FALSE)
@@ -476,7 +478,7 @@ void ISPLdCMD::ReadConfig(unsigned int config[])
     {
         unsigned int addr = (!bSpec_addr) ? FMC_USER_CONFIG_0 : SPEC_FMC_USER_CONFIG_0;
 
-        for (int i = 0; i < 19; i++)
+        for (int i = 0; i < 14; i++)
         {
             if (WriteFileCAN(CAN_CMD_READ_CONFIG, addr + 4 * i))
             {
@@ -489,14 +491,46 @@ void ISPLdCMD::ReadConfig(unsigned int config[])
 
         return;
     }
-    for (int i = 0; i < sizeof(config); i += 14) {
-        WriteFile(
-            CMD_READ_CONFIG,
-            NULL,
-            0,
-            USBCMD_TIMEOUT);
-        ReadFile((char*)&config[i], 56, USBCMD_TIMEOUT, TRUE);
+    WriteFile(
+        CMD_READ_CONFIG,
+        NULL,
+        0,
+        USBCMD_TIMEOUT);
+    ReadFile((char*)&config[0], 56, USBCMD_TIMEOUT, TRUE);
+}
+
+void ISPLdCMD::ReadConfig_Ext(unsigned int config[], unsigned int i)
+{
+    if (m_uInterface == INTF_CAN)
+    {
+        unsigned int addr = (!bSpec_addr) ? FMC_USER_CONFIG_0 : SPEC_FMC_USER_CONFIG_0;
+        
+        unsigned int index = i;
+        if (i >= 16 && i <= 18) {
+            index += 16;  // CONFIG_16 at 0x0F300080 not 0x0F300040
+        }
+
+        if (WriteFileCAN(CAN_CMD_READ_CONFIG, addr + 4 * index))
+        {
+            if (ReadFileCAN())
+            {
+                config[i] = *((ULONG*)&m_acBuffer[5]);
+            }
+        }
+
+        return;
     }
+
+    unsigned int index = i;
+    if (i >= 16 && i <= 18) {
+        index += 16;  // CONFIG_16 at 0x0F300080 not 0x0F300040
+    }
+    WriteFile(
+        CMD_READ_CONFIG_EXT,
+        (const char*)&index,
+        4,
+        USBCMD_TIMEOUT);
+    ReadFile((char*)&config[i], 4, USBCMD_TIMEOUT, TRUE);
 }
 
 void ISPLdCMD::UpdateConfig(unsigned int config[], unsigned int response[])
@@ -505,7 +539,7 @@ void ISPLdCMD::UpdateConfig(unsigned int config[], unsigned int response[])
     {
         unsigned int addr = (!bSpec_addr) ? FMC_USER_CONFIG_0 : SPEC_FMC_USER_CONFIG_0;
 
-        for (int i = 0; i < 19; i++)
+        for (int i = 0; i < 14; i++)
         {
             if (WriteFileCAN(addr + 4 * i, config[i]))
             {
@@ -519,42 +553,126 @@ void ISPLdCMD::UpdateConfig(unsigned int config[], unsigned int response[])
         return;
     }
     
-    for (int i = 0; i < sizeof(config); i += 14) {
-        WriteFile(
-            CMD_UPDATE_CONFIG,
-            (const char*)&config[i],
-            56,
-            USBCMD_TIMEOUT_LONG);
-        ReadFile((char*)&response[i], 56, USBCMD_TIMEOUT_LONG, TRUE);
+    WriteFile(
+        CMD_UPDATE_CONFIG,
+        (const char*)&config[0],
+        56,
+        USBCMD_TIMEOUT_LONG);
+    ReadFile((char*)&response[0], 56, USBCMD_TIMEOUT_LONG, TRUE);
+
+}
+
+void ISPLdCMD::UpdateConfig_Ext(unsigned int config[], unsigned int response[], unsigned int i)
+{
+    if (m_uInterface == INTF_CAN)
+    {
+        unsigned int addr = (!bSpec_addr) ? FMC_USER_CONFIG_0 : SPEC_FMC_USER_CONFIG_0;
+
+        if (WriteFileCAN(addr + 4 * i, config[i]))
+        {
+            if (ReadFileCAN())
+            {
+                response[i] = *((ULONG*)&m_acBuffer[5]);
+            }
+        }
+        return;
     }
+    char ext_buffer[8];
+    unsigned int index = i;
+    if (i >= 16 && i <= 18) {
+        index += 16;  // CONFIG_16 at 0x0F300080 not 0x0F300040
+    }
+
+#ifdef CONFIG_64
+    unsigned int j = i - i % 2;
+    unsigned int index_j = index - index % 2;
+    memcpy(&ext_buffer[0], &index_j, 4);
+    memcpy(&ext_buffer[4], &config[j], 4);
+    if (j + 1 <= 18) {
+        memcpy(&ext_buffer[8], &config[j + 1], 4);
+    }
+    else {
+		unsigned int empty = 0xFFFFFFFF;
+        memcpy(&ext_buffer[8], &empty, 4);
+    }
+    WriteFile(
+        CMD_UPDATE_CONFIG_EXT,
+        ext_buffer,
+        12,
+        USBCMD_TIMEOUT_LONG);
+    ReadFile((char*)&response[j], 8, USBCMD_TIMEOUT_LONG, TRUE);
+#else
+    memcpy(&ext_buffer[0], &index, 4);
+    memcpy(&ext_buffer[4], &config[i], 4);
+
+    WriteFile(
+        CMD_UPDATE_CONFIG_EXT,
+        ext_buffer,
+        8,
+        USBCMD_TIMEOUT_LONG);
+    ReadFile((char*)&response[i], 4, USBCMD_TIMEOUT_LONG, TRUE);
+#endif
 }
 
 void ISPLdCMD::UpdateAPROM(unsigned long start_addr,
                            unsigned long total_len,
                            unsigned long cur_addr,
                            const char *buffer,
-                           unsigned long *update_len)
+                           unsigned long *update_len,
+                           unsigned long program_64bit)
 {
     if (m_uInterface == INTF_CAN)
     {
         bResendFlag = 1;
         unsigned long write_len = total_len - (cur_addr - start_addr);
-
-        if (write_len > 4)
+        int m_write_len = (program_64bit) ? 8 : 4;
+        if (write_len > m_write_len)
         {
-            write_len = 4;
+            write_len = m_write_len;
         }
 
         if (write_len)
         {
-            unsigned long data = 0;
-            memcpy(&data, buffer, write_len);
-
-            if (WriteFileCAN(cur_addr, data))
-            {
-                if (ReadFileCAN())
+            if (program_64bit) {
+				BOOL ret_1 = 1, ret_2 = 1, ret_3 = 1;
+                unsigned long data_1 = 0;
+                unsigned long data_2 = 0;
+                memcpy(&data_1, buffer, 4);
+                memcpy(&data_2, buffer + 4, 4);
+                if (WriteFileCAN(cur_addr, data_1))
                 {
-                    bResendFlag = 0;
+                    if (ReadFileCAN())
+                    {
+                        ret_1 = 0;
+                    }
+                }
+                if (WriteFileCAN(cur_addr + 4, data_2))
+                {
+                    if (ReadFileCAN())
+                    {
+                        ret_2 = 0;
+                    }
+                }
+                if (WriteFileCAN(CAN_CMD_SECOND_READ, cur_addr + 4)) {
+                    if (ReadFileCAN())
+                    {
+                        ret_3 = 0;
+                    }
+                }
+
+                bResendFlag = ret_1 | ret_2 | ret_3;
+
+            }
+            else {
+                unsigned long data = 0;
+                memcpy(&data, buffer, write_len);
+
+                if (WriteFileCAN(cur_addr, data))
+                {
+                    if (ReadFileCAN())
+                    {
+                        bResendFlag = 0;
+                    }
                 }
             }
         }
@@ -615,11 +733,12 @@ void ISPLdCMD::UpdateNVM(unsigned long start_addr,
                          unsigned long total_len,
                          unsigned long cur_addr,
                          const char *buffer,
-                         unsigned long *update_len)
+                         unsigned long *update_len,
+                         unsigned long program_64bit)
 {
     if (m_uInterface == INTF_CAN)
     {
-        UpdateAPROM(start_addr, total_len, cur_addr, buffer, update_len);
+        UpdateAPROM(start_addr, total_len, cur_addr, buffer, update_len, program_64bit);
         return;
     }
 

@@ -2479,7 +2479,6 @@ BEGIN
     BEGIN
         MENUITEM "&Import .isp",                ID_MENUITEM_LOAD
         MENUITEM "&Export .isp",                ID_MENUITEM_SAVE_ALL
-        MENUITEM "&Export .lua for Offline ISP", ID_MENUITEM_SAVE_LUA
     END
 END
 
