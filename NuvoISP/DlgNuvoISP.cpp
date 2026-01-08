@@ -148,6 +148,7 @@ BEGIN_MESSAGE_MAP(CNuvoISPDlg, CDialog)
     ON_BN_CLICKED(IDC_BUTTON_CONFIG, OnButtonConfig)
     ON_BN_CLICKED(ID_MENUITEM_LOAD, OnButtonMenuLoad)
     ON_BN_CLICKED(ID_MENUITEM_SAVE_ALL, OnButtonMenuSave)
+    ON_BN_CLICKED(ID_MENUITEM_SPIFLASH, OnButtonMenuSPIFlash)
     //}}AFX_MSG_MAP
     ON_WM_DROPFILES()
     ON_WM_CTLCOLOR()
@@ -162,6 +163,7 @@ BEGIN_MESSAGE_MAP(CNuvoISPDlg, CDialog)
     //ON_WM_DEVICECHANGE()
     ON_MESSAGE(WM_DEVICECHANGE, OnDeviceChange)
     ON_EN_KILLFOCUS(IDC_EDIT_APROM_BASE_ADDRESS, OnKillfocusEditAPRomOffset)
+    ON_EN_KILLFOCUS(IDC_EDIT_SPIFLASH_BASE_ADDRESS, OnKillfocusEditSPIFlashOffset)
     ON_EN_CHANGE(IDC_EDIT_IPADDRESS, OnIPAddressChange)
     ON_EN_CHANGE(IDC_EDIT_IPPORT, OnIPPortChange)
 END_MESSAGE_MAP()
@@ -228,7 +230,7 @@ BOOL CNuvoISPDlg::OnInitDialog()
     RegisterNotification();
     ShowSPIOptions(FALSE);
     ShowNVMOptions(TRUE);
-    // ShowSPIOptions(TRUE);
+    //ShowSPIOptions(TRUE);
 
     m_IPAddress.SetAddress(192, 168, 4, 1);
     m_iIPPort = 333;
@@ -623,6 +625,7 @@ void CNuvoISPDlg::OnButtonStart()
 
         // In case user press "Enter" after typing offset, need to call OnKillfocusEditAPRomOffset manually
         OnKillfocusEditAPRomOffset();
+		OnKillfocusEditSPIFlashOffset();
         UpdateAddrOffset();
 
         if (strErr.IsEmpty())
@@ -850,6 +853,26 @@ void CNuvoISPDlg::OnButtonMenuSave()
     }
 }
 
+void CNuvoISPDlg::OnButtonMenuSPIFlash()
+{
+    CMenu* pMenu = GetMenu();
+    UINT nState = pMenu->GetMenuState(ID_MENUITEM_SPIFLASH, MF_BYCOMMAND);
+    if (nState & MF_CHECKED)
+    {
+        ShowSPIOptions(FALSE);
+        m_bSupport_SPI = FALSE;
+        pMenu->CheckMenuItem(ID_MENUITEM_SPIFLASH, MF_UNCHECKED | MF_BYCOMMAND);
+        return;
+	}
+    else 
+    {
+        ShowSPIOptions(TRUE);
+        m_bSupport_SPI = TRUE;
+        pMenu->CheckMenuItem(ID_MENUITEM_SPIFLASH, MF_CHECKED | MF_BYCOMMAND);
+        return;
+    }
+}
+
 void CNuvoISPDlg::OnButtonMenuSaveLua()
 {
     LockGUI();
@@ -996,6 +1019,8 @@ void CNuvoISPDlg::ShowChipInfo_NUC505(void)
     EnableDlgItem(IDC_EDIT_APROM_BASE_ADDRESS, 0);
     ShowDlgItem(IDC_STATIC_FLASH_BASE_ADDRESS, 1);
     ShowDlgItem(IDC_EDIT_FLASH_BASE_ADDRESS, 1);
+    ShowDlgItem(IDC_EDIT_SPIFLASH_BASE_ADDRESS, 1);
+    ShowDlgItem(IDC_STATIC_SPIFLASH_BASE_ADDRESS, 1);
     CString info;
     info.Format(_T("RAM:128K, SPI Flash:2M\nFW Ver: 0x%X"), int(m_ucFW_VER));
     SetDlgItemText(IDC_STATIC_PARTNO, info);
@@ -1098,8 +1123,12 @@ void CNuvoISPDlg::ShowChipInfo_OnLine()
     if (bSizeValid)
     {
         std::ostringstream os;
-
-        if (m_uNVM_Size != 0)
+        if (m_bSupport_SPI) {
+            os << "APROM: " << size_str(m_uAPROM_Size) << ","
+                " Data: " << size_str(m_uNVM_Size) << ","
+                " SPI Flash: " << size_str(m_uSPI_Size);
+        }
+        else if (m_uNVM_Size != 0)
         {
             os << "APROM: " << size_str(m_uAPROM_Size) << ","
                " Data: " << size_str(m_uNVM_Size);
@@ -1300,6 +1329,29 @@ void CNuvoISPDlg::OnKillfocusEditAPRomOffset()
     TRACE(_T("OnKillfocusEditAPRomOffset\n"));
 }
 
+void CNuvoISPDlg::OnKillfocusEditSPIFlashOffset()
+{
+    if (!m_bSupport_SPI)
+    {
+        return;
+    }
+
+    CString strAddr;
+    GetDlgItemText(IDC_EDIT_SPIFLASH_BASE_ADDRESS, strAddr);
+    m_uSPIFlash_Offset = ::_tcstoul(strAddr, 0, 16);
+
+    m_uSPIFlash_Offset &= 0xFF800; // 2K page alignment
+
+    if (m_uSPIFlash_Offset >= m_uSPI_Size)
+    {
+        m_uSPIFlash_Offset = 0;
+    }
+
+    strAddr.Format(_T("%06X"), m_uSPIFlash_Offset);
+    SetDlgItemText(IDC_EDIT_SPIFLASH_BASE_ADDRESS, strAddr);
+    TRACE(_T("OnKillfocusEditSPIFlashOffset\n"));
+}
+
 void CNuvoISPDlg::ShowNVMOptions(BOOL bShow)
 {
     if (m_bShowNVM == bShow)
@@ -1495,6 +1547,11 @@ void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
         m_bShowSPI = bShow;
     }
 
+    if (m_uSPI_Size == 0)
+    {
+        m_uSPI_Size = 2048 * 1024;
+    }
+
     CWnd *pWnd = NULL;
     CRect rect1, rect2;
     int offset;
@@ -1503,6 +1560,8 @@ void CNuvoISPDlg::ShowSPIOptions(BOOL bShow)
     ShowDlgItem(IDC_STATIC_FILENAME_SPI, bShow);
     ShowDlgItem(IDC_EDIT_FILEPATH_SPI, bShow);
     ShowDlgItem(IDC_STATIC_FILEINFO_SPI, bShow);
+    ShowDlgItem(IDC_STATIC_SPIFLASH_BASE_ADDRESS, bShow);
+    ShowDlgItem(IDC_EDIT_SPIFLASH_BASE_ADDRESS, bShow);
     pWnd = GetDlgItem(IDC_GROUP_FLASH_FILE);
     pWnd->GetWindowRect(&rect1);
     ScreenToClient(&rect1);

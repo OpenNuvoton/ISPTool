@@ -469,6 +469,63 @@ unsigned long ISPLdCMD::GetDeviceID()
     return uID;
 }
 
+unsigned long ISPLdCMD::GetSPIFlashSize()
+{
+    if (m_uInterface == INTF_CAN)
+    {
+        return 0;
+    }
+
+    WriteFile(
+        CMD_SIZE_SPIFLASH,
+        NULL,
+        0,
+        USBCMD_TIMEOUT);
+    unsigned long uSize = 0;
+    unsigned long JID = 0;
+    ReadFile((char*)&JID, 4, USBCMD_TIMEOUT, TRUE);
+    switch (JID)
+    {
+        case 0xEF3010: // W25X05
+            uSize = 0x10000;
+            break;
+        case 0xEF3011: // W25X10
+            uSize = 0x20000;
+            break;
+        case 0xEF3012: // W25X20
+            uSize = 0x40000;
+            break;
+        case 0xEF3013: // W25X40
+            uSize = 0x80000;
+            break;
+        case 0xEF3014: // W25X80
+            uSize = 0x100000;
+            break;
+        case 0xEF3015: // W25X16
+            uSize = 0x200000;
+            break;
+        case 0xEF3016: // W25X32
+            uSize = 0x400000;
+            break;
+        case 0xEF4017: // W25Q64FV
+            uSize = 0x800000;
+            break;
+        case 0xEF4018: // W25Q128FV
+            uSize = 0x1000000;
+            break;
+        case 0xC22018: // GD25Q128C
+            uSize = 0x1000000;
+            break;
+        case 0x1C3018: // ESMT F25L128
+            uSize = 0x1000000;
+            break;
+        default:
+            uSize = 0;
+            break;
+	}
+    return uSize;
+}
+
 #define FMC_USER_CONFIG_0       0x00300000UL
 #define SPEC_FMC_USER_CONFIG_0  0x0F300000UL
 
@@ -846,6 +903,7 @@ BOOL ISPLdCMD::CMD_Connect(DWORD dwMilliseconds)
     {
         m_uCmdIndex = 3;
         bSupport_SPI = (uID == 0x001540EF);
+        //bSupport_SPI = (TRUE);
     }
     else if (m_uInterface == 3)
     {

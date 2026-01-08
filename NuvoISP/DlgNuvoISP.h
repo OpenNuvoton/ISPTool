@@ -66,8 +66,10 @@ protected:
     afx_msg void OnButtonMenuLoad();
     afx_msg void OnButtonMenuSave();
     afx_msg void OnButtonMenuSaveLua();
+    afx_msg void OnButtonMenuSPIFlash();
     afx_msg void OnPaint();
     afx_msg void OnKillfocusEditAPRomOffset();
+    afx_msg void OnKillfocusEditSPIFlashOffset();
     //}}AFX_MSG
     virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
     virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);

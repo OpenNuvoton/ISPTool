@@ -236,6 +236,9 @@ void CISPProc::Thread_CheckDeviceConnect()
                 m_ISPLdDev.SyncPackno();
                 m_ucFW_VER = m_ISPLdDev.GetVersion();
                 m_ulDeviceID = m_ISPLdDev.GetDeviceID();
+                if (m_bSupport_SPI) {
+                    m_uSPI_Size = m_ISPLdDev.GetSPIFlashSize();
+                }
                 if ((m_ulDeviceID & 0xFFFFF000) == 0x03300000 
                  || (m_ulDeviceID & 0xFFFFF000) == 0x06300000) {  // M3331, over 14
                     for (int i = 0; i < 19; i++) {
@@ -246,7 +249,7 @@ void CISPProc::Thread_CheckDeviceConnect()
                     m_ISPLdDev.ReadConfig(m_CONFIG);
                 }
                 memcpy(m_CONFIG_User, m_CONFIG, sizeof(m_CONFIG));
-                m_bSupport_SPI = m_ISPLdDev.bSupport_SPI;
+                //m_bSupport_SPI = m_ISPLdDev.bSupport_SPI;
                 m_eProcSts = EPS_OK;
 
                 if (MainHWND != NULL)   // UI Mode
@@ -491,11 +494,12 @@ void CISPProc::Thread_ProgramFlash()
 
             if (m_bProgram_SPI)
             {
+                uAddr = m_uSPIFlash_Offset;
                 uSize = m_sFileInfo[2].st_size;
                 pBuffer = vector_ptr(m_sFileInfo[2].vbuf);
             }
 
-            if (2048 * 1024 < uSize)
+            if (m_uSPI_Size < uSize)
             {
                 m_eProcSts = EPS_ERR_SIZE;
                 Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
@@ -506,7 +510,7 @@ void CISPProc::Thread_ProgramFlash()
 
             if (m_bErase_SPI)
             {
-                uSize_t = 2048 * 1024;
+                uSize_t = m_uSPI_Size;
             }
 
             if (!m_ISPLdDev.Cmd_ERASE_SPIFLASH(uAddr, uSize_t))

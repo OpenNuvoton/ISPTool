@@ -90,8 +90,10 @@ public:
     unsigned int m_uAPROM_Size;
     unsigned int m_uNVM_Addr;
     unsigned int m_uNVM_Size;
+    unsigned int m_uSPI_Size;
 
     unsigned int m_uAPROM_Offset;
+    unsigned int m_uSPIFlash_Offset;
 
     bool UpdateSizeInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfig1);
 

@@ -99,6 +99,7 @@ public:
         CMD_RESEND_PACKET   = 0x000000FF,
         CMD_ERASE_SPIFLASH  = 0x000000D0,
         CMD_UPDATE_SPIFLASH = 0x000000D1,
+        CMD_SIZE_SPIFLASH   = 0x000000D2,
     };
 
     // For Code size consideration, CAN only implements some basic isp commands.
@@ -165,6 +166,7 @@ public:
         return m_strDevPathName;
     }
 
+    unsigned long GetSPIFlashSize();
     BOOL Cmd_ERASE_SPIFLASH(unsigned long offset, unsigned long total_len);
     BOOL Cmd_UPDATE_SPIFLASH(unsigned long offset, unsigned long total_len, const char *buffer);
 
