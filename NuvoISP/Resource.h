@@ -346,6 +346,7 @@
 #define IDC_CHECK_DATAFLASH_WPROT_5     1896
 #define IDC_CHECK_DATAFLASH_WPROT_6     1897
 #define IDC_CHECK_DATAFLASH_WPROT_7     1898
+#define IDC_CHECK_SRAM_ECC              1941
 #define IDS_SIZE_M_BYTES                2017
 #define IDS_SIZE_K_BYTES                2018
 #define IDS_SIZE_BYTES                  2019

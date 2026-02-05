@@ -147,7 +147,8 @@ bool GetChipStaticInfo(unsigned int uID)
 
             // Step3.2: Page Size Type: 0x000 (512 Bytes, default), 0x200 (2K), 0x300 (4K)
             if ((uSeriesCode == PROJ_M3331IG)
-            || (uSeriesCode == PROJ_M3331G))
+    || (uSeriesCode == PROJ_M3331G)
+	|| (uSeriesCode == PROJ_M3351))
             {
                 uFlashType |= 0x104;
             }
@@ -278,6 +279,7 @@ bool GetChipDynamicInfo(unsigned int uID, unsigned int uConfig0, unsigned int uC
         gsChipCfgInfo.uAPROM_Size = uAPROM_Size;
         gsChipCfgInfo.uNVM_Addr = uNVM_Addr;
         gsChipCfgInfo.uNVM_Size = uNVM_Size;
+        gsChipCfgInfo.uLDROM_Addr = NUMICRO_FLASH_LDROM_ADDR + NUMICRO_SPECIAL_FLASH_OFFSET;
         return true;
     }
     else
