@@ -183,8 +183,6 @@ void CDialogChipSetting_M2U51::OnTcnSelchangeTabChipsetting(NMHDR *pNMHDR, LRESU
 
 void CDialogChipSetting_M2U51::OnOk()
 {
-	int i;
-
 	this->SetFocus();
 
 	if (m_uShowFlag & 0x01)

@@ -83,7 +83,6 @@ BOOL CDialogChipSetting_M55M1::OnInitDialog()
     CDialog::OnInitDialog();
 
     int i, nItem = 0;
-    unsigned int uFlash_PageSize;
 
     FLASH_PID_INFO_BASE_T chipInfo;
 

@@ -53,7 +53,7 @@ inline std::string size_str(unsigned int size)
     char buf[128];
 
     if (size == 0)
-        _snprintf_s(buf, sizeof(buf), _TRUNCATE, "0K", size);
+        _snprintf_s(buf, sizeof(buf), _TRUNCATE, "0K");
     else if (size <= 1)
         _snprintf_s(buf, sizeof(buf), _TRUNCATE, "%d byte", size);
     else if (size < 1024)
@@ -90,7 +90,7 @@ inline std::string size_str1(unsigned int size)
 
     if (size == 0)
     {
-        _snprintf_s(buf, sizeof(buf), _TRUNCATE, "0K", size);
+        _snprintf_s(buf, sizeof(buf), _TRUNCATE, "0K");
     }
     else if (size < 1024)
     {

@@ -12,12 +12,6 @@
     #define new DEBUG_NEW
 #endif
 
-#ifdef __WASM__
-    #define _countof(array)                               (sizeof(array) / sizeof(array[0]))
-    #define _snprintf_s(buf, size, count, format, ...)    snprintf(buf, size, format, __VA_ARGS__)
-    #define _stricmp(string1, string2)                    strncasecmp(string1, string2, strlen(string1))
-#endif
-
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -25,7 +19,7 @@
 
 struct CPartNumID g_PartNumIDs[] =
 {
-    /* NUC1xx's Part Number */
+    /* NUC100 */
     {"NUC100LE3AN", 0x00010000, PROJ_NUC100AN},
     {"NUC100LD3AN", 0x00010003, PROJ_NUC100AN},
     {"NUC100RE3AN", 0x00010009, PROJ_NUC100AN},
@@ -65,7 +59,7 @@ struct CPartNumID g_PartNumIDs[] =
     {"NUC122LC1DN", 0x30012208, PROJ_NUC122DN},
     {"NUC122SC1DN", 0x30012226, PROJ_NUC122DN},
 
-    /* NUC123 series */
+    /* NUC123 */
     {"NUC123SC2AN1", 0x00012305, PROJ_NUC123AN},
     {"NUC123SD4AN0", 0x00012315, PROJ_NUC123AN},
     {"NUC123LC2AN1", 0x00012325, PROJ_NUC123AN},
@@ -73,7 +67,7 @@ struct CPartNumID g_PartNumIDs[] =
     {"NUC123ZC2AN1", 0x00012345, PROJ_NUC123AN},
     {"NUC123ZD4AN0", 0x00012355, PROJ_NUC123AN},
 
-    /* NUC123 series */
+    /* NUC123 */
     {"NUC123SC2AE1", 0x10012305, PROJ_NUC123AE},
     {"NUC123SD4AE0", 0x10012315, PROJ_NUC123AE},
     {"NUC123LC2AE1", 0x10012325, PROJ_NUC123AE},
@@ -81,8 +75,7 @@ struct CPartNumID g_PartNumIDs[] =
     {"NUC123ZC2AE1", 0x10012345, PROJ_NUC123AE},
     {"NUC123ZD4AE0", 0x10012355, PROJ_NUC123AE},
 
-    /* NUC1xx series low density */
-
+    /* NUC100 (low density) */
     {"NUC130LE3CN", 0x20013000, PROJ_NUC100CN},
     {"NUC130LD2CN", 0x20013004, PROJ_NUC100CN},
     {"NUC130LC1CN", 0x20013008, PROJ_NUC100CN},
@@ -128,17 +121,17 @@ struct CPartNumID g_PartNumIDs[] =
     {"NUC120RD1DN", 0x30012032, PROJ_NUC100DN},
     {"NUC120RC1DN", 0x30012035, PROJ_NUC100DN},
 
-    /* NUC1xxEN */
+    /* NUC100EN */
     {"NUC100VE3DE", 0x40010018, PROJ_NUC200AE},
 
     {"NUC120LD2DE", 0x40012004, PROJ_NUC200AE},
 
-    /* NUC1311AE */
+    /* NUC1311 */
     {"NUC1311LD2AE", 0x11413100, PROJ_NUC1311},
     {"NUC1311LC2AE", 0x11413101, PROJ_NUC1311},
     {"M0515LDE", 0x11413103, PROJ_NUC1311},
 
-    /* NUC131AE */
+    /* NUC131 */
     {"NUC131LD2AEU", 0xF0013100, PROJ_M0518},
     {"NUC131LC2AEU", 0xF0013103, PROJ_M0518},
     {"NUC131SD2AEU", 0xF0013110, PROJ_M0518},
@@ -151,7 +144,7 @@ struct CPartNumID g_PartNumIDs[] =
     /* M0A86 */
     {"M0A86SD2AE", 0x100A8610, PROJ_M0518},
 
-    /* M0518AE */
+    /* M0518 */
     {"M0518LD2AE", 0x10051800, PROJ_M0518},
     {"M0518LC2AE", 0x10051803, PROJ_M0518},
     {"M0518SD2AE", 0x10051810, PROJ_M0518},
@@ -159,8 +152,7 @@ struct CPartNumID g_PartNumIDs[] =
 
     {"NM1320LC2AE", 0x00032003, PROJ_M0518},
 
-    /* NUC2xxAE */
-
+    /* NUC200AE */
     {"NUC220LE3AE", 0x40022000, PROJ_NUC200AE},
 
     {"NUC230LC2AE", 0x10023007, PROJ_NUC200AE},
@@ -183,7 +175,7 @@ struct CPartNumID g_PartNumIDs[] =
     {"NUC2201LE3AE", 0x20024000, PROJ_NUC2201},
     {"NUC2201SE3AE", 0x20024027, PROJ_NUC2201},
 
-    /* NUC200xxxAN */
+    /* NUC200AN */
     {"NUC200LE3AN", 0x00020000, PROJ_NUC100DN},
     {"NUC200LD2AN", 0x00020004, PROJ_NUC100DN},
     {"NUC200LC2AN", 0x00020007, PROJ_NUC100DN},
@@ -263,7 +255,7 @@ struct CPartNumID g_PartNumIDs[] =
     {"M032EC1AE", 0x01132CA0, PROJ_M032D},
     {"M032TC1AE", 0x01132CE0, PROJ_M032D},
 
-    /* M05x's Part Number */
+    /* M051 */
     {"M052LAN", 0x00005200, PROJ_M051AN},
     {"M052ZAN", 0x00005203, PROJ_M051AN},
     {"M054LAN", 0x00005400, PROJ_M051AN},
@@ -287,7 +279,7 @@ struct CPartNumID g_PartNumIDs[] =
     {"M0516LBN", 0x10005A00, PROJ_M051BN},
     {"M0516ZBN", 0x10005A03, PROJ_M051BN},
 
-    /* M051DN*/
+    /* M051DN */
     {"M052LDN", 0x20005200, PROJ_M051DN},
     {"M052ZDN", 0x20005203, PROJ_M051DN},
     {"M054LDN", 0x20005400, PROJ_M051DN},
@@ -297,7 +289,7 @@ struct CPartNumID g_PartNumIDs[] =
     {"M0516LDN", 0x20005A00, PROJ_M051DN},
     {"M0516ZDN", 0x20005A03, PROJ_M051DN},
 
-    /* M051DE*/
+    /* M051DE */
     {"M052LDE", 0x30005200, PROJ_M051DE},
     {"M052ZDE", 0x30005203, PROJ_M051DE},
     {"M054LDE", 0x30005400, PROJ_M051DE},
@@ -311,7 +303,7 @@ struct CPartNumID g_PartNumIDs[] =
     {"NM1330LC1AE", 0x30005810, PROJ_M051DE},
     {"NM1330LD2AE", 0x30005A10, PROJ_M051DE},
 
-    //Nano112
+    /* Nano112 */
     {"Nano112LB1AN", 0x00111202, PROJ_NANO102AN},
     {"Nano112LC2AN", 0x00111204, PROJ_NANO102AN},
     {"Nano112SB1AN", 0x00111206, PROJ_NANO102AN},
@@ -326,7 +318,7 @@ struct CPartNumID g_PartNumIDs[] =
     {"Nano102LC2AN", 0x00110208, PROJ_NANO102AN},
     {"Nano102SC2AN", 0x00110212, PROJ_NANO102AN},
 
-    //Nano103
+    /* Nano103 */
     {"Nano103SD3AE", 0x00110301, PROJ_NANO103},
     {"Nano103LD3AE", 0x00110304, PROJ_NANO103},
     {"Nano103ZD3AE", 0x00110307, PROJ_NANO103},
@@ -358,7 +350,7 @@ struct CPartNumID g_PartNumIDs[] =
 
     {"Nano130VD3AN", 0x00113012, PROJ_NANO100AN},
 
-    //Nano100
+    /* Nano100 */
     {"Nano100KE3BN", 0x00110030, PROJ_NANO100BN},
     {"Nano100SE3BN", 0x00110034, PROJ_NANO100BN},
     {"Nano100LE3BN", 0x00110036, PROJ_NANO100BN},
@@ -373,6 +365,7 @@ struct CPartNumID g_PartNumIDs[] =
     {"Nano100ND3BN", 0x00110045, PROJ_NANO100BN},
     {"Nano100ND2BN", 0x00110046, PROJ_NANO100BN},
     {"Nano100WE3BN", 0x00110047, PROJ_NANO100BN},
+    {"Nano100NC2BN", 0x00110048, PROJ_NANO100BN},
 
     {"Nano110KE3BN", 0x00111030, PROJ_NANO100BN},
     {"Nano110SE3BN", 0x00111034, PROJ_NANO100BN},
@@ -410,7 +403,7 @@ struct CPartNumID g_PartNumIDs[] =
     {"Nano130KC2BN", 0x00113040, PROJ_NANO100BN},
     {"Nano130SC2BN", 0x00113042, PROJ_NANO100BN},
 
-    //Mini51
+    /* Mini51 */
     {"MINI51LAN", 0x00205100, PROJ_MINI51AN},
     {"MINI51ZAN", 0x00205103, PROJ_MINI51AN},
     {"MINI51TAN", 0x00205104, PROJ_MINI51AN},
@@ -421,7 +414,7 @@ struct CPartNumID g_PartNumIDs[] =
     {"MINI54ZAN", 0x00205403, PROJ_MINI51AN},
     {"MINI54TAN", 0x00205404, PROJ_MINI51AN},
 
-    /* MINI51DE */
+    /* Mini51DE */
     {"MINI51LDE", 0x20205100, PROJ_MINI51DE},
     {"MINI51QDE", 0x20205101, PROJ_MINI51DE},
     {"MINI51ZDE", 0x20205103, PROJ_MINI51DE},
@@ -439,7 +432,7 @@ struct CPartNumID g_PartNumIDs[] =
     {"MINI54FDE", 0x20205405, PROJ_MINI51DE},
     {"MINI54FHC", 0x20205406, PROJ_MINI51DE},
 
-    /* MINI51X NM1200 */
+    /* Mini51X NM1200 */
     {"MINI55LDE", 0x00505500, PROJ_MINI55},
     {"MINI55ZDE", 0x00505503, PROJ_MINI55},
     {"MINI55TDE", 0x00505504, PROJ_MINI55},
@@ -471,11 +464,6 @@ struct CPartNumID g_PartNumIDs[] =
     {"MINI57EDE", 0x00B05740, PROJ_NM1120},
     {"MINI57XDE", 0x00B05750, PROJ_NM1120},
     {"MINI57TDE", 0x00B05760, PROJ_NM1120},
-
-    //NDA102EC1 for device list sync
-    //NDA102FC1 for device list sync
-    //NDA103EC1 for device list sync
-    //NDA103FC1 for device list sync
 
     /* NM1120 */
     {"NM1120FC1AE", 0x00B01420, PROJ_NM1120},
@@ -532,14 +520,14 @@ struct CPartNumID g_PartNumIDs[] =
     {"NM1530VD3AE", 0x00353032, PROJ_NM1500AE},
     {"NM1530VE3AE", 0x00353030, PROJ_NM1500AE},
 
-    //M0519 series
+    /* M0519 */
     {"M0519VE3AE", 0x00051930, PROJ_NM1500AE},
     {"M0519SE3AE", 0x00051920, PROJ_NM1500AE},
     {"M0519SD3AE", 0x00051922, PROJ_NM1500AE},
     {"M0519LE3AE", 0x00051900, PROJ_NM1500AE},
     {"M0519LD3AE", 0x00051902, PROJ_NM1500AE},
 
-    //M0564 series
+    /* M0564 */
     {"M0564LE4AE", 0x00C56405, PROJ_M0564},
     {"M0564LG4AE", 0x00C56404, PROJ_M0564},
     {"M0564SSAE", 0x00C56415, PROJ_M0564},
@@ -553,20 +541,20 @@ struct CPartNumID g_PartNumIDs[] =
     {"NUC126SG4AE", 0x00C05212, PROJ_M0564},
     {"NUC126VG4AE", 0x00C05231, PROJ_M0564},
 
-    //NUC1261
+    /* NUC1261 */
     {"NUC1261SG4AE", 0x01205212, PROJ_NUC1261},
     {"NUC1261SE4AE", 0x01205213, PROJ_NUC1261},
     {"NUC1261LG4AE", 0x01205204, PROJ_NUC1261},
     {"NUC1261LE4AE", 0x01205205, PROJ_NUC1261},
     {"NUC1261NE4AE", 0x01205206, PROJ_NUC1261},
 
-    //NUC1262
+    /* NUC1262 */
     {"NUC1262SE4AE", 0x01812610, PROJ_NUC1262},
     {"NUC1262LE4AE", 0x01812600, PROJ_NUC1262},
     {"NUC1262NE4AE", 0x01812690, PROJ_NUC1262},
     {"NUC1262YE4AE", 0x01812691, PROJ_NUC1262},
 
-    //NUC1263
+    /* NUC1263 */
     {"NUC1263SD4AE", 0x01D12610, PROJ_NUC1263},
     {"NUC1263LD4AE", 0x01D12600, PROJ_NUC1263},
     {"NUC1263ND4AE", 0x01D12690, PROJ_NUC1263},
@@ -577,7 +565,7 @@ struct CPartNumID g_PartNumIDs[] =
     {"NUC1263ZD4CE", 0x21D126E0, PROJ_NUC1263},
     {"NSPD5ZD4AE",   0x21D126E1, PROJ_NUC1263},
 
-    /* NUC4xx series*/
+    /* NUC400 */
     {"NUC472HI8AE", 0x00047201, PROJ_NUC400AE},
     {"NUC472HG8AE", 0x00047203, PROJ_NUC400AE},
     {"NUC472JI8AE", 0x00047204, PROJ_NUC400AE},
@@ -601,24 +589,22 @@ struct CPartNumID g_PartNumIDs[] =
     {"M3334KGGAE", 0x03300041, PROJ_M3331IG},
     {"M3333KIGAE", 0x03300142, PROJ_M3331IG},
     {"M3333KGGAE", 0x03300143, PROJ_M3331IG},
-    {"M3331KIGAE", 0x03300244, PROJ_M3331IG},
-    {"M3331KGGAE", 0x03300245, PROJ_M3331IG},
     {"M3334SIGAE", 0x03300010, PROJ_M3331IG},
     {"M3334SGGAE", 0x03300011, PROJ_M3331IG},
     {"M3333SIGAE", 0x03300112, PROJ_M3331IG},
     {"M3333SGGAE", 0x03300113, PROJ_M3331IG},
-    {"M3331SIGAE", 0x03300214, PROJ_M3331IG},
-    {"M3331SGGAE", 0x03300215, PROJ_M3331IG},
     {"M3334LIGAE", 0x03300000, PROJ_M3331IG},
     {"M3334LGGAE", 0x03300001, PROJ_M3331IG},
     {"M3333LIGAE", 0x03300102, PROJ_M3331IG},
     {"M3333LGGAE", 0x03300103, PROJ_M3331IG},
-    {"M3331LIGAE", 0x03300204, PROJ_M3331IG},
-    {"M3331LGGAE", 0x03300205, PROJ_M3331IG},
+    {"M3334YIGAE", 0x03300090, PROJ_M3331IG},
+    {"M3334YGGAE", 0x03300091, PROJ_M3331IG},
+    {"M3333YIGAE", 0x03300092, PROJ_M3331IG},
+    {"M3333YGGAE", 0x03300093, PROJ_M3331IG},
     {"M3334TIGAE", 0x033000E0, PROJ_M3331IG},
     {"M3334TGGAE", 0x033000E1, PROJ_M3331IG},
-    {"M3331TIGAE", 0x033002E2, PROJ_M3331IG},
-    {"M3331TGGAE", 0x033002E3, PROJ_M3331IG},
+    {"M3333TIGAE", 0x033002E2, PROJ_M3331IG},
+    {"M3333TGGAE", 0x033002E3, PROJ_M3331IG},
 
     /* M3351 */
     {"M3351LJCAE", 0x03302100, PROJ_M3351},
@@ -632,9 +618,7 @@ struct CPartNumID g_PartNumIDs[] =
     {"M3351VICAE", 0x03302131, PROJ_M3351},
     {"M3351KICAE", 0x03302141, PROJ_M3351},
 
-    {"M55M1H3H2LJAE", 0xA2000260, PROJ_M55M1},
-    {"M55M1H3K2LJAE", 0xA2000240, PROJ_M55M1},
-    {"M55M1H3R2LJAE", 0xA2000220, PROJ_M55M1},
+    {"M55M1R2LNAE", 0xA2000220, PROJ_M55M1},
     {"M55M1H2LJAE", 0xA2000160, PROJ_M55M1},
     {"M55M1K2LJAE", 0xA2000140, PROJ_M55M1},
     {"M55M1R2LJAE", 0xA2000120, PROJ_M55M1},
@@ -642,7 +626,7 @@ struct CPartNumID g_PartNumIDs[] =
     {"M5531K2LJAE", 0xA2000040, PROJ_M55M1},
     {"M5531R2LJAE", 0xA2000020, PROJ_M55M1},
 
-    /* M451 series */
+    /* M451 */
     {"M451VG6AE", 0x00845130, PROJ_M451HD},
     {"M451VE6AE", 0x00845131, PROJ_M451HD},
     {"M451RG6AE", 0x00845120, PROJ_M451HD},
@@ -697,11 +681,11 @@ struct CPartNumID g_PartNumIDs[] =
     {"M451MLD3AE", 0x00945000, PROJ_M451LD},
     {"M451MLC3AE", 0x00945001, PROJ_M451LD},
 
-    /* M4521 series */
+    /* M4521 */
     {"M4521SE6AE", 0x00E45210, PROJ_M4521},
     {"M4521LE6AE", 0x00E45200, PROJ_M4521},
 
-    /* M481 series */
+    /* M481 */
     {"M481SIDAE", 0x00D48110, PROJ_M480},
     {"M481LIDAE", 0x00D48100, PROJ_M480},
     {"M481ZIDAE", 0x00D481E0, PROJ_M480},
@@ -724,7 +708,7 @@ struct CPartNumID g_PartNumIDs[] =
     {"M487KIDAE", 0x00D48740, PROJ_M480},
     {"M487SIDAE", 0x00D48710, PROJ_M480},
 
-    /* M480LD series */
+    /* M480LD */
     {"M481SGCAE", 0x01348110, PROJ_M480LD},
     {"M481SE8AE", 0x01348112, PROJ_M480LD},
     {"M481SGCAE2A", 0x01348114, PROJ_M480LD},
@@ -748,12 +732,12 @@ struct CPartNumID g_PartNumIDs[] =
     {"M433SE8AE", 0x01343312, PROJ_M480LD},
     {"M433LE8AE", 0x01343302, PROJ_M480LD},
 
-    /* M479 series */
+    /* M479 */
     {"M479SG8AEE", 0x01347911, PROJ_M480LD},
     {"M479LG8AEE", 0x01347901, PROJ_M480LD},
     {"M479NG8AEE", 0x01347991, PROJ_M480LD},
 
-    /* M252_C series */
+    /* M252_C */
     {"M252FC2AE", 0x00F252B0, PROJ_M252_C},
     {"M252EC2AE", 0x00F252A0, PROJ_M252_C},
     {"M252ZC2AE", 0x00F252E0, PROJ_M252_C},
@@ -761,7 +745,7 @@ struct CPartNumID g_PartNumIDs[] =
     {"M251EC2AE", 0x00F251A0, PROJ_M252_C},
     {"M251ZC2AE", 0x00F251E0, PROJ_M252_C},
 
-    /* M252_D series */
+    /* M252_D */
     {"M251SD2AE", 0x00F25110, PROJ_M252_D},
     {"M251LD2AE", 0x00F25101, PROJ_M252_D},
     {"M251ZD2AE", 0x00F251C2, PROJ_M252_D},
@@ -779,7 +763,7 @@ struct CPartNumID g_PartNumIDs[] =
     {"NDA102TD2", 0x00F251C5, PROJ_M252_D},
     {"NDA102SE3", 0x00F25116, PROJ_M252_E},
 
-    /* M252_E series */
+    /* M252_E */
     {"M252KE3AE", 0x00F25243, PROJ_M252_E},
     {"M252SE3AE", 0x00F25214, PROJ_M252_E},
     {"M252LE3AE", 0x00F25205, PROJ_M252_E},
@@ -787,7 +771,7 @@ struct CPartNumID g_PartNumIDs[] =
     {"M251SE3AE", 0x00F25114, PROJ_M252_E},
     {"M251LE3AE", 0x00F25105, PROJ_M252_E},
 
-    /* M252_G series */
+    /* M252_G */
     {"M252KG6AE", 0x00F25240, PROJ_M252_G},
     {"M252SG6AE", 0x00F25211, PROJ_M252_G},
     {"M252LG6AE", 0x00F25202, PROJ_M252_G},
@@ -795,7 +779,7 @@ struct CPartNumID g_PartNumIDs[] =
     {"M251SG6AE", 0x00F25111, PROJ_M252_G},
     {"M251LG6AE", 0x00F25102, PROJ_M252_G},
 
-    /* M254/6/8 series */
+    /* M254/6/8 */
     {"M254SD3AE", 0x00F25410, PROJ_M258},
     {"M254SE3AE", 0x00F25411, PROJ_M258},
     {"M254KE3AE", 0x00F25441, PROJ_M258},
@@ -813,13 +797,13 @@ struct CPartNumID g_PartNumIDs[] =
     {"M253LD3AE", 0x00F25000, PROJ_M253},
     {"M253LD3BE", 0x00F25002, PROJ_M253},
 
-    /* M256D series */
+    /* M256D */
     {"M254SD2AE", 0x01A25411, PROJ_M256D},
     {"M256MD2AE", 0x01A256A1, PROJ_M256D},
     {"M256SD2AE", 0x01A25611, PROJ_M256D},
     {"M254MD2AE", 0x01A254A1, PROJ_M256D},
 
-    /* M258G series */
+    /* M258G */
     {"M258KG6AE", 0x01925841, PROJ_M258G},
     {"M256KG6AE", 0x01925641, PROJ_M258G},
     {"M254KG6AE", 0x01925441, PROJ_M258G},
@@ -827,24 +811,15 @@ struct CPartNumID g_PartNumIDs[] =
     {"M256SG6AE", 0x01925611, PROJ_M258G},
     {"M254SG6AE", 0x01925411, PROJ_M258G},
 
-    /* NUC505 series */
-    //{"NUC505", 0x00000505, PROJ_NUC505},
-    //NUC505DLA for device list sync
-    //NUC505YLA for device list sync
-    //NUC505YLA2Y for device list sync
-    //NUC505DSA for device list sync
-    //NUC505DL13Y for device list sync
-    //NUC505DS13Y for device list sync
-    //NUC505YO13Y for device list sync
 
-    /* M2351 series */
+    /* M2351 */
     {"M2351KIAAE", 0x00235100, PROJ_M2351},
     {"M2351SIAAE", 0x00235101, PROJ_M2351},
     {"M2351CIAAE", 0x00235102, PROJ_M2351},
     {"M2351ZIAAE", 0x00235103, PROJ_M2351},
     {"M2351SFSIAAP", 0x00235300, PROJ_M2351},
 
-    /* M261 series */
+    /* M261 */
     {"M261ZIAAE", 0x00261000, PROJ_M2351},
     {"M261SIAAE", 0x00261001, PROJ_M2351},
     {"M261KIAAE", 0x00261002, PROJ_M2351},
@@ -855,8 +830,7 @@ struct CPartNumID g_PartNumIDs[] =
     {"M263SIAAE", 0x00263001, PROJ_M2351},
     {"M263KIAAE", 0x00263002, PROJ_M2351},
 
-    /* M2354 series */
-    {"M2354ES", 0x00235500, PROJ_M2354ES}, //TC8250
+    /* M2354 */
     {"M2354CJFBE", 0xB17354E0, PROJ_M2354},
     {"M2354CJFAE", 0xA17354E0, PROJ_M2354},
     {"M2354KJFBE", 0xB1735440, PROJ_M2354},
@@ -911,7 +885,6 @@ struct CPartNumID g_PartNumIDs[] =
     {"M2U51EC2AE", 0x032010A3, PROJ_M2U51C},
     {"M2U51FC2AE", 0x032010B3, PROJ_M2U51C},
 
-    /* NTNJ */
     {"CM2003CF2AE", 0x01F03CB1, PROJ_M2003},
     {"CM2003CF3AE", 0x01F03C81, PROJ_M2003},
 
@@ -926,27 +899,15 @@ struct CPartNumID g_PartNumIDs[] =
     {"CM2U51DL3AE", 0x06200092, PROJ_M2U51G},
 
     {"CM3034HS8AE", 0x06300040, PROJ_M3331IG},
-    {"CM3034GS8AE", 0x06300041, PROJ_M3331IG},
     {"CM3033HS8AE", 0x06300142, PROJ_M3331IG},
-    {"CM3033GS8AE", 0x06300143, PROJ_M3331IG},
-    {"CM3031HS8AE", 0x06300244, PROJ_M3331IG},
-    {"CM3031GS8AE", 0x06300245, PROJ_M3331IG},
     {"CM3034HN8AE", 0x06300010, PROJ_M3331IG},
-    {"CM3034GN8AE", 0x06300011, PROJ_M3331IG},
     {"CM3033HN8AE", 0x06300112, PROJ_M3331IG},
-    {"CM3033GN8AE", 0x06300113, PROJ_M3331IG},
-    {"CM3031HN8AE", 0x06300214, PROJ_M3331IG},
-    {"CM3031GN8AE", 0x06300215, PROJ_M3331IG},
     {"CM3034HL8AE", 0x06300000, PROJ_M3331IG},
-    {"CM3034GL8AE", 0x06300001, PROJ_M3331IG},
     {"CM3033HL8AE", 0x06300102, PROJ_M3331IG},
-    {"CM3033GL8AE", 0x06300103, PROJ_M3331IG},
-    {"CM3031HL8AE", 0x06300204, PROJ_M3331IG},
-    {"CM3031GL8AE", 0x06300205, PROJ_M3331IG},
+    {"CM3034HL3AE", 0x06300090, PROJ_M3331IG},
+    {"CM3033HL3AE", 0x06300092, PROJ_M3331IG},
     {"CM3034HJ3AE", 0x063000E0, PROJ_M3331IG},
-    {"CM3034GJ3AE", 0x063000E1, PROJ_M3331IG},
-    {"CM3031HJ3AE", 0x063002E2, PROJ_M3331IG},
-    {"CM3031GJ3AE", 0x063002E3, PROJ_M3331IG},
+    {"CM3033HJ3AE", 0x063002E2, PROJ_M3331IG},
 
     /* M2A23 */
     {"M2A23SG5ACU", 0x02100010, PROJ_M2A23},
@@ -1019,7 +980,7 @@ struct CPartNumID g_PartNumIDs[] =
     {"M463KGCAE", 0x01C46340, PROJ_M460LD},
     {"M463VGCAE", 0x01C46330, PROJ_M460LD},
     {"M463SGCAE", 0x01C46310, PROJ_M460LD},
-    {"M464SGCAE", 0x01C46410, PROJ_M460LD}, //not release
+    {"M464SGCAE", 0x01C46410, PROJ_M460LD},
     {"M463LGCAE", 0x01C46300, PROJ_M460LD},
     {"M463YGCAE", 0x01C46390, PROJ_M460LD},
     {"M460KGCAE", 0x01C46040, PROJ_M460LD},
@@ -1055,29 +1016,10 @@ struct CPartNumID g_PartNumIDs[] =
 /* 8051 1T N76 & ML51 & MS51 series */
 struct CPartNumID_51 g_PartNumIDs_51[] =
 {
-    /* FA8251 */
     {"N76E885",   0x00002150, PROJ_N76E885},
-    //N76E885AT28 for device list sync
-    //N76E885AT20 for device list sync
-    //N76E885AQ20 for device list sync
-    //N76E885AS28 for device list sync
-
-    /* FA8261 */
     {"N76E616",   0x00002F50, PROJ_N76E616},
-    //N76E616AL48 for device list sync
-    //N76E616AF44 for device list sync
-    //N76E616AM44 for device list sync
-
-    /* FA8265 */
     {"N76E003",   0x00003650, PROJ_N76E003},
-    //N76E003AT20 for device list sync
-    //N76E003AS20 for device list sync
-    //N76E003AQ20 for device list sync
-    //N76E003BQ20 for device list sync
-    //N76E003CQ20 for device list sync
 
-    // For ML51, Version A (PID0 = 0x00), Version B (PID0 = 0x10)
-    /* HAG023 */
     {"ML51TC0AE", 0x0C104832, PROJ_ML51_32K},
     {"ML51PC0AE", 0x01104832, PROJ_ML51_32K},
     {"ML51EC0AE", 0x02104832, PROJ_ML51_32K},
@@ -1085,7 +1027,6 @@ struct CPartNumID_51 g_PartNumIDs_51[] =
     {"ML51TB9AE", 0x0C104821, PROJ_ML51_32K},
     {"ML51PB9AE", 0x01104821, PROJ_ML51_32K},
 
-    /* HAG024 */
     {"ML51UB9AE", 0x03104721, PROJ_ML51_16K},
     {"ML51EB9AE", 0x02104721, PROJ_ML51_16K},
     {"ML51XB9AE", 0x0D104721, PROJ_ML51_16K},
@@ -1094,18 +1035,15 @@ struct CPartNumID_51 g_PartNumIDs_51[] =
     {"ML51DB9AE", 0x09104721, PROJ_ML51_16K},
     {"ML51BB9AE", 0x06104721, PROJ_ML51_16K},
 
-    /* HAG030 */
     {"MS51FB9AE", 0x0B004B21, PROJ_MS51_16K},
     {"MS51XB9AE", 0x05004B21, PROJ_MS51_16K},
     {"MS51XB9BE", 0x0E004B21, PROJ_MS51_16K},
 
     {"NM18002Y", 0x1D004B21, PROJ_MS51_16K},
 
-    /* HAG034 */
     {"MS51DA9AE", 0x0A005211, PROJ_MS51_8K},
     {"MS51BA9AE", 0x06005211, PROJ_MS51_8K},
 
-    /* HAG035 */
     {"MS51FC0AE", 0x0B005332, PROJ_MS51_32K},
     {"MS51XC0BE", 0x0E005332, PROJ_MS51_32K},
     {"MS51EC0AE", 0x02005332, PROJ_MS51_32K},
@@ -1114,7 +1052,6 @@ struct CPartNumID_51 g_PartNumIDs_51[] =
 
     {"MS51EB0AE", 0x02005322, PROJ_MS51_32K},
 
-    /* HAG037 */
     {"ML56SD1AE", 0x08125744, PROJ_ML56},
     {"ML56LD1AE", 0x00125744, PROJ_ML56},
     {"ML56MD1AE", 0x07125744, PROJ_ML56},
@@ -1127,11 +1064,9 @@ struct CPartNumID_51 g_PartNumIDs_51[] =
     {"ML51LD1AE", 0x00105744, PROJ_ML56},
     {"ML51TD1AE", 0x0C105744, PROJ_ML56},
 
-    /* HAG049 */
     {"MUG51TB9AE", 0x0C106321, PROJ_MUG51},
     {"MUG51W",     0xFFFF6321, PROJ_MUG51},
 
-    /* KAG056 */
     {"MG51XB9AE", 0x05006721, PROJ_MG51},
     {"MG51FB9AE", 0x0B006721, PROJ_MG51},
     {"MG51XC9AE", 0x05006731, PROJ_MG51},
@@ -1139,7 +1074,6 @@ struct CPartNumID_51 g_PartNumIDs_51[] =
     {"N76S003AQ20", 0x05006750, PROJ_MG51},
     {"N76S003AT20", 0x0B006750, PROJ_MG51},
 
-    /* KAG065 */
     {"MG51LD1AE", 0x00007244, PROJ_MG51D},
     {"MG51TD1AE", 0x0C007244, PROJ_MG51D},
     {"MG51PD1AE", 0x01007244, PROJ_MG51D},
@@ -1148,10 +1082,7 @@ struct CPartNumID_51 g_PartNumIDs_51[] =
     {"MG51PC1AE", 0x01007234, PROJ_MG51D},
     {"MG51EC1AE", 0x02007234, PROJ_MG51D},
 
-    /* FA8235 */
-    {"N79E815/855/715", 0x00001252, 0xFFFFFFFF},
 
-    /* NTNJ */
     {"CM1003BF3AE", 0x25006721, PROJ_MG51},
     {"CM1003BF2AE", 0x2B006721, PROJ_MG51},
     {"CM1003CF3AE", 0x25006731, PROJ_MG51},
@@ -1161,7 +1092,6 @@ struct CPartNumID_51 g_PartNumIDs_51[] =
     {"CM1003DJ3AE", 0x2C007244, PROJ_MG51D},
     {"CM1003DJ8AE", 0x21007244, PROJ_MG51D},
     {"CM1003CJ3AE", 0x2C007234, PROJ_MG51D},
-    {"CM1003CH2AE", 0x22007234, PROJ_MG51D},
 };
 
 CPartNum::CPartNum()
@@ -1213,213 +1143,3 @@ std::string CPartNum::GetPartNumber(unsigned int uID, unsigned int uCoreType, un
     return szBuf;
 }
 
-NUC_CHIP_TYPE_E CPartNum::GetChipType(const char *sPartNo) const
-{
-    for (int i = 0; i < _countof(g_PartNumIDs); ++i)
-    {
-        if (_stricmp(g_PartNumIDs[i].szPartNumber, sPartNo) == 0)
-        {
-            switch (g_PartNumIDs[i].uProjectCode)
-            {
-                case PROJ_NUC100AN:
-                case PROJ_NUC100BN:
-                case PROJ_NUC100CN:
-                case PROJ_NUC122AN:
-                case PROJ_NUC100DN:
-                case PROJ_NUC123AN:
-                case PROJ_M0518:
-                case PROJ_MINI55:
-                case PROJ_NUC121:
-                case PROJ_NUC2201:
-                case PROJ_NUC1311:
-                case PROJ_NUC122DN:
-                case PROJ_NUC200AE:
-                case PROJ_NUC123AE:
-                case PROJ_NM1500AE:
-                {
-                    return NUC_CHIP_TYPE_NUC1XX;
-                }
-
-                case PROJ_M051AN:
-                case PROJ_M051BN:
-                case PROJ_M058SAN:
-                case PROJ_M051DN:
-                case PROJ_M051DE:
-                {
-                    return NUC_CHIP_TYPE_M05X;
-                }
-
-                case PROJ_NANO100AN:
-                case PROJ_NANO102AN:
-                case PROJ_NANO103:
-                case PROJ_NANO100BN:
-                {
-                    return NUC_CHIP_TYPE_NANO100;
-                }
-
-                case PROJ_MINI51AN:
-                case PROJ_MINI58:
-                case PROJ_MINI51DE:
-                {
-                    return NUC_CHIP_TYPE_MINI51;
-                }
-
-                case PROJ_NM1120:
-                case PROJ_NM1230:
-                case PROJ_NM1240:
-                {
-                    return NUC_CHIP_TYPE_NM1120;
-                }
-
-                case PROJ_M0564:
-                case PROJ_NUC1261:
-                case PROJ_NUC1262:
-                case PROJ_NUC1263:
-                {
-                    return NUC_CHIP_TYPE_M0564;
-                }
-
-                case PROJ_M031_32K:
-                case PROJ_M031_128K:
-                case PROJ_M031_64K:
-                case PROJ_M031_16K:
-                case PROJ_M031_512K:
-                case PROJ_M031_256K:
-                case PROJ_M032D:
-                {
-                    return NUC_CHIP_TYPE_M031;
-                }
-
-                case PROJ_M0A21:
-                {
-                    return NUC_CHIP_TYPE_M0A21;
-                }
-
-                case PROJ_M2A23:
-                {
-                    return NUC_CHIP_TYPE_M2A23;
-                }
-
-                case PROJ_M030G:
-                case PROJ_M031GPON:
-                {
-                    return NUC_CHIP_TYPE_M030G;
-                }
-
-                case PROJ_M252_G:
-                case PROJ_M252_E:
-                case PROJ_M252_D:
-                case PROJ_M252_C:
-                case PROJ_M258:
-                case PROJ_M253:
-                {
-                    return NUC_CHIP_TYPE_M251;
-                }
-
-                case PROJ_M2351:
-                {
-                    return NUC_CHIP_TYPE_M2351;
-                }
-
-                case PROJ_M2354:
-                case PROJ_M2354ES:
-                {
-                    return NUC_CHIP_TYPE_M2354;
-                }
-
-                case PROJ_NUC400AE:
-                {
-                    return NUC_CHIP_TYPE_NUC4XX;
-                }
-
-                case PROJ_M451HD:
-                case PROJ_M4521:
-                case PROJ_M451LD:
-                {
-                    return NUC_CHIP_TYPE_M451;
-                }
-
-                case PROJ_M471:
-                {
-                    return NUC_CHIP_TYPE_M471;
-                }
-
-                case PROJ_M480:
-                case PROJ_M480LD:
-                {
-                    return NUC_CHIP_TYPE_M480;
-                }
-
-                case PROJ_NUC505:
-                {
-                    return NUC_CHIP_TYPE_NUC505;
-                }
-            }
-        }
-    }
-
-    for (int i = 0; i < _countof(g_PartNumIDs_51); ++i)
-    {
-        if (strcmp(g_PartNumIDs_51[i].szPartNumber, sPartNo) == 0)
-        {
-            return NUC_CHIP_TYPE_GENERAL_1T;
-        }
-    }
-
-    return NUC_CHIP_TYPE_GENERAL_V7M;
-}
-
-bool CPartNum::IsSupportedPID_8051(unsigned int uSID) const
-{
-    switch (uSID)
-    {
-        case OT8051_SID_ML51_16K:
-        case OT8051_SID_ML51_32K:
-        case OT8051_SID_ML51_64K:
-        case OT8051_SID_MS51_16K:
-        case OT8051_SID_MS51_8K:
-        case OT8051_SID_MS51_32K:
-        case OT8051_SID_ML56_64K:
-        case OT8051_SID_MUG51_16K:
-        case OT8051_SID_N76S003_MG51:
-        case OT8051_SID_MG51_64K:
-            return true;
-    }
-
-    return false;
-}
-
-
-unsigned int CPartNum_GetProjectCount()
-{
-    return _countof(g_sProjsName);
-}
-
-const char *CPartNum_GetProjectName(int index)
-{
-    static char szBuf[64];
-    memset(szBuf, 0, sizeof(szBuf));
-
-    if (index < _countof(g_sProjsName))
-        _snprintf_s(szBuf, sizeof(szBuf), _TRUNCATE, "%s", g_sProjsName[index]);
-
-    return szBuf;
-}
-
-#ifdef __WASM__
-const char *CPartNum_GetPartNumber(unsigned int uID, unsigned int uCoreType, unsigned int *puProjectCode)
-{
-    static char szBuf[64];
-    memset(szBuf, 0, sizeof(szBuf));
-
-    _snprintf_s(szBuf, sizeof(szBuf), _TRUNCATE, "%s", CPartNum().GetPartNumber(uID, uCoreType, puProjectCode).c_str());
-
-    return szBuf;
-}
-
-bool CPartNum_IsSupportedPID_8051(unsigned int uSID)
-{
-    return CPartNum().IsSupportedPID_8051(uSID);
-}
-
-#endif

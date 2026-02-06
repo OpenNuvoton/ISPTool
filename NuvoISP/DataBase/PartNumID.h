@@ -31,9 +31,6 @@ class CPartNum
 {
 public:
     std::string GetPartNumber(unsigned int uID, unsigned int uCoreType = 0, unsigned int *puProjectCode = NULL) const;
-    NUC_CHIP_TYPE_E GetChipType(const char *sPartNo) const;
-
-    bool IsSupportedPID_8051(unsigned int uSID) const;
 
     CPartNum();
     virtual ~CPartNum();
@@ -116,7 +113,7 @@ public:
     _E(M2U51C)        \
     _E(M3331IG)       \
     _E(M3331G)        \
-    _E(M3351)        \
+    _E(M3351)         \
     \
     _E(N76E885)       \
     _E(N76E616)       \
@@ -129,46 +126,11 @@ public:
     _E(ML56)          \
     _E(MUG51)         \
     _E(MG51)          \
-    _E(MG51D)         \
-    \
-    _E(MA35D1)                      \
-    \
-    _E(KM1M7AB)                     \
-    _E(KM1M4B)                      \
-    _E(KM1M7C)                      \
-    _E(KM1M0D)                      \
-    _E(KM1M0G)
+    _E(MG51D)
 
 
- #define _E(Name) PROJ_##Name,
+#define _E(Name) PROJ_##Name,
 enum ProjsList { PROJS };
 #undef _E
-
- #define _E(Name) "PROJ_" #Name,
-static const char *g_sProjsName[] = { PROJS };
-#undef _E
-
-#ifdef __WASM__
-    #include <emscripten.h>
-
-    #ifdef __cplusplus
-        #define EXTERN_C    extern "C"
-    #else
-        #define EXTERN_C
-    #endif
-
-    EXTERN_C EMSCRIPTEN_KEEPALIVE
-    unsigned int CPartNum_GetProjectCount();
-    EXTERN_C EMSCRIPTEN_KEEPALIVE
-    const char *CPartNum_GetProjectName(int index);
-
-    EXTERN_C EMSCRIPTEN_KEEPALIVE
-    const char *CPartNum_GetPartNumber(unsigned int uID, unsigned int uCoreType = 0, unsigned int *puProjectCode = NULL);
-    EXTERN_C EMSCRIPTEN_KEEPALIVE
-    bool CPartNum_IsSupportedPID_8051(unsigned int uSID);
-#else
-    unsigned int CPartNum_GetProjectCount();
-    const char *CPartNum_GetProjectName(int index);
-#endif
 
 #endif // !defined(AFX_PARTNUMID_H__224714FF_DE1A_41FC_81B6_4B998BDC9FE6__INCLUDED_)
