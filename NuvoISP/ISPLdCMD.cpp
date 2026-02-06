@@ -68,11 +68,15 @@ bool ISPLdCMD::Open_Port()
         case INTF_RS485:
         case INTF_CAN:
         case INTF_LIN:
-            if (m_hidIO.OpenDevice(0x0416, 0x5201, 5))      // Nu-Link2 with ISP-Bridge
+            if (m_hidIO.OpenDevice(0x0416, 0x200A, 4))
+            {
+                m_uUSB_PID = 0x200A;
+            }
+            else if (m_hidIO.OpenDevice(0x0416, 0x5201, 5))    // Nu-Link2 with ISP-Bridge
             {
                 m_uUSB_PID = 0x5201;
             }
-            else if (m_hidIO.OpenDevice(0x0416, 0x5203, 5))     // Nu-Link2 with ISP-Bridge
+            else if (m_hidIO.OpenDevice(0x0416, 0x5203, 5))    // Nu-Link2 with ISP-Bridge
             {
                 m_uUSB_PID = 0x5203;
             }
@@ -84,7 +88,7 @@ bool ISPLdCMD::Open_Port()
             {
                 m_uUSB_PID = 0x2009;
             }
-            else if (m_hidIO.OpenDevice(0x0416, 0x3F10, -1))        // ISP-Bridge
+            else if (m_hidIO.OpenDevice(0x0416, 0x3F10, -1))    // ISP-Bridge
             {
                 m_uUSB_PID = 0x3F10;
             }
@@ -625,7 +629,8 @@ void ISPLdCMD::UpdateAPROM(unsigned long start_addr,
     {
         bResendFlag = 1;
         unsigned long write_len = total_len - (cur_addr - start_addr);
-        int m_write_len = (program_64bit) ? 8 : 4;
+        unsigned long m_write_len = (program_64bit) ? 8 : 4;
+
         if (write_len > m_write_len)
         {
             write_len = m_write_len;

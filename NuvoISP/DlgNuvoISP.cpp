@@ -735,47 +735,7 @@ void CNuvoISPDlg::OnButtonMenuLoad()
     CString sText, sline;
     if (myFile.Open(sProjectPath, CFile::modeRead | CFile::typeText))
     {
-        while (myFile.ReadString(sline)) {
-            sText += sline + _T("\n");    
-        }
-
-        CMap<CString, LPCTSTR, CString, CString> keyValueMap;
-
-        CString line;
-        int curPos = 0;
-        line = sText.Tokenize(_T("\n"), curPos);
-
-        while (!line.IsEmpty())
-        {
-            int equalPos = line.Find(_T('='));
-            if (equalPos != -1)
-            {
-                CString key = line.Left(equalPos).Trim();
-                CString value = line.Mid(equalPos + 1).Trim();
-                keyValueMap[key] = value;
-            }
-
-            line = sText.Tokenize(_T("\n"), curPos);
-        }
-
-        CString searchKey;   
-        CString value;
-
-        searchKey = _T("Interface");
-        if (keyValueMap.Lookup(searchKey, value))
-        {
-            m_SelInterface.SetCurSel(_ttoi(value));
-        }
-        searchKey = _T("APROM file"); 
-        if (keyValueMap.Lookup(searchKey, value))
-        {
-            SetDlgItemText(IDC_EDIT_FILEPATH_APROM, value);
-        }
-        searchKey = _T("Data Flash file");
-        if (keyValueMap.Lookup(searchKey, value))
-        {
-            SetDlgItemText(IDC_EDIT_FILEPATH_NVM, value);
-        }
+        // TODO
 
         myFile.Close();
     }
@@ -813,39 +773,12 @@ void CNuvoISPDlg::OnButtonMenuSave()
     if (szCurDir[0] != (TCHAR)'\0')
         SetCurrentDirectory(szCurDir);
 
-    // need a fio system to write lua script and .isp file
     CStdioFile  myFile;
     CString sText;
     if (myFile.Open(sPath, CFile::modeCreate | CFile::modeWrite | CFile::typeText))
     {
-        sText.Format(_T("Interface = %d\n"), m_SelInterface.GetCurSel());
-        myFile.WriteString(sText);
-        if (m_SelInterface.GetCurSel() == INTF_WIFI) {
-            unsigned char* uIP;
-            DWORD dwIP;
-            m_IPAddress.GetAddress(dwIP);
-            uIP = (unsigned char*)&dwIP;
-            sText.Format(_T("IP Address = %u.%u.%u.%u\n"), *(uIP + 3), *(uIP + 2), *(uIP + 1), *uIP);
-            myFile.WriteString(sText);
-            CString str;
-            GetDlgItemText(IDC_EDIT_IPPORT, str);
-            sText.Format(_T("IP Port = %d\n"), _ttoi(str));
-            myFile.WriteString(sText);
-        }
-        CString str;
-        GetDlgItemText(IDC_EDIT_FILEPATH_APROM, str);
-        sText.Format(_T("APROM file = %s\n"), str);
-        myFile.WriteString(sText);
-        GetDlgItemText(IDC_EDIT_FILEPATH_NVM, str);
-        sText.Format(_T("Data Flash file = %s\n"), str);
-        myFile.WriteString(sText);
-        if (m_bSupport_SPI) {
-            GetDlgItemText(IDC_EDIT_FILEPATH_SPI, str);
-            sText.Format(_T("SPI Flash file = %s\n"), str);
-            myFile.WriteString(sText);
-        }
-        myFile.Flush();
-        myFile.Seek(0, CFile::begin);
+        // TODO
+
         myFile.Close();
     }
 }
