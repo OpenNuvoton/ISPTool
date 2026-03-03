@@ -17,6 +17,8 @@ ISPLdCMD::ISPLdCMD()
     : m_bOpenPort(FALSE)
     , m_uCmdIndex(18)   //Do not use 0 to avoid firmware already has index 0 occasionally.
     , m_uInterface(0)
+    , m_bSupport_SPI(FALSE)
+    , m_bSpecConfigAddr(FALSE)
 {
 }
 
@@ -480,7 +482,7 @@ void ISPLdCMD::ReadConfig(unsigned int config[])
 {
     if (m_uInterface == INTF_CAN)
     {
-        unsigned int addr = (!bSpec_addr) ? FMC_USER_CONFIG_0 : SPEC_FMC_USER_CONFIG_0;
+        unsigned int addr = (!m_bSpecConfigAddr) ? FMC_USER_CONFIG_0 : SPEC_FMC_USER_CONFIG_0;
 
         for (int i = 0; i < 14; i++)
         {
@@ -507,7 +509,7 @@ void ISPLdCMD::ReadConfig_Ext(unsigned int config[], unsigned int i)
 {
     if (m_uInterface == INTF_CAN)
     {
-        unsigned int addr = (!bSpec_addr) ? FMC_USER_CONFIG_0 : SPEC_FMC_USER_CONFIG_0;
+        unsigned int addr = (!m_bSpecConfigAddr) ? FMC_USER_CONFIG_0 : SPEC_FMC_USER_CONFIG_0;
         
         unsigned int index = i;
         if (i >= 16 && i <= 18) {
@@ -541,7 +543,7 @@ void ISPLdCMD::UpdateConfig(unsigned int config[], unsigned int response[])
 {
     if (m_uInterface == INTF_CAN)
     {
-        unsigned int addr = (!bSpec_addr) ? FMC_USER_CONFIG_0 : SPEC_FMC_USER_CONFIG_0;
+        unsigned int addr = (!m_bSpecConfigAddr) ? FMC_USER_CONFIG_0 : SPEC_FMC_USER_CONFIG_0;
 
         for (int i = 0; i < 14; i++)
         {
@@ -570,7 +572,7 @@ void ISPLdCMD::UpdateConfig_Ext(unsigned int config[], unsigned int response[], 
 {
     if (m_uInterface == INTF_CAN)
     {
-        unsigned int addr = (!bSpec_addr) ? FMC_USER_CONFIG_0 : SPEC_FMC_USER_CONFIG_0;
+        unsigned int addr = (!m_bSpecConfigAddr) ? FMC_USER_CONFIG_0 : SPEC_FMC_USER_CONFIG_0;
 
         if (WriteFileCAN(addr + 4 * i, config[i]))
         {
@@ -810,8 +812,8 @@ BOOL ISPLdCMD::EraseAll()
 
 BOOL ISPLdCMD::CMD_Connect(DWORD dwMilliseconds)
 {
-    bSupport_SPI = 0;
-    bSpec_addr = 0;
+    m_bSupport_SPI = FALSE;
+    m_bSpecConfigAddr = FALSE;
 
     if (m_uInterface == INTF_CAN)
     {
@@ -826,8 +828,7 @@ BOOL ISPLdCMD::CMD_Connect(DWORD dwMilliseconds)
         {
             ULONG CAN_uID = *((ULONG*)&m_acBuffer[5]);
             // M460, M2L31, M55M1
-            bSpec_addr = ((CAN_uID == 0x00551000) || ((CAN_uID & 0xFFFFFF00) == 0x01F31000)
-            || ((CAN_uID & 0xFFFFF000) == 0x01B46000) || ((CAN_uID & 0xFFFFF000) == 0x01C46000));
+            m_bSpecConfigAddr = ((CAN_uID == 0x00551000) || ((CAN_uID & 0xFFFFFF00) == 0x01F31000) || ((CAN_uID & 0xFFFFF000) == 0x01B46000) || ((CAN_uID & 0xFFFFF000) == 0x01C46000));
         }
 
         return ret;
@@ -850,7 +851,7 @@ BOOL ISPLdCMD::CMD_Connect(DWORD dwMilliseconds)
     if (ret)
     {
         m_uCmdIndex = 3;
-        bSupport_SPI = (uID == 0x001540EF);
+        m_bSupport_SPI = (uID == 0x001540EF);
     }
     else if (m_uInterface == 3)
     {

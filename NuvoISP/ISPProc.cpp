@@ -67,10 +67,8 @@ CISPProc::CISPProc(HWND *pWnd)
                           &dwThreadID
                           //LPDWORD lpThreadId                         // pointer to receive thread ID
                       );
-    m_CONFIG[0] = 0xFFFFFFFF;
-    m_CONFIG[1] = 0xFFFFFFFF;
-    m_CONFIG_User[0] = 0xFFFFFFFF;
-    m_CONFIG_User[1] = 0xFFFFFFFF;
+    memset(m_CONFIG, 0xFF, sizeof(m_CONFIG));
+    memset(m_CONFIG_User, 0xFF, sizeof(m_CONFIG_User));
     m_pAssistThread->m_bAutoDelete = TRUE;
     m_eProcSts = EPS_OK;
 }
@@ -246,7 +244,7 @@ void CISPProc::Thread_CheckDeviceConnect()
                     m_ISPLdDev.ReadConfig(m_CONFIG);
                 }
                 memcpy(m_CONFIG_User, m_CONFIG, sizeof(m_CONFIG));
-                m_bSupport_SPI = m_ISPLdDev.bSupport_SPI;
+                m_bSupport_SPI = m_ISPLdDev.m_bSupport_SPI;
                 m_eProcSts = EPS_OK;
 
                 if (MainHWND != NULL)   // UI Mode

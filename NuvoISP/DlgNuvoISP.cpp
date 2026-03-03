@@ -5,9 +5,11 @@
 #include "ChipDefs.h"
 #include <dbt.h>
 #include "CDialogOfflineExport.h"
+#include "inipp.h"
 
 #include "NuDataBase.h"
 #include <sstream>
+#include <set>
 
 #ifdef _DEBUG
     #define new DEBUG_NEW
@@ -146,8 +148,7 @@ BEGIN_MESSAGE_MAP(CNuvoISPDlg, CDialog)
     ON_BN_CLICKED(IDC_BUTTON_START, OnButtonStart)
     ON_NOTIFY(TCN_SELCHANGE, IDC_TAB_DATA, OnSelchangeTabData)
     ON_BN_CLICKED(IDC_BUTTON_CONFIG, OnButtonConfig)
-    ON_BN_CLICKED(ID_MENUITEM_LOAD, OnButtonMenuLoad)
-    ON_BN_CLICKED(ID_MENUITEM_SAVE_ALL, OnButtonMenuSave)
+    ON_BN_CLICKED(ID_MENUITEM_EXPORT, OnButtonMenuExport)
     //}}AFX_MSG_MAP
     ON_WM_DROPFILES()
     ON_WM_CTLCOLOR()
@@ -222,6 +223,7 @@ BOOL CNuvoISPDlg::OnInitDialog()
     pViewer[0]->ShowWindow(SW_SHOW);
     m_Progress.SetRange(0, 100);
     EnableDlgItem(IDC_BUTTON_START, m_bConnect);
+    GetMenu()->EnableMenuItem(ID_MENUITEM_EXPORT, m_bConnect ? MF_ENABLED : MF_DISABLED);
     InitComboBox();
     SetDlgItemText(IDC_EDIT_FLASH_BASE_ADDRESS, _T("100000"));
     Set_ThreadAction(&CISPProc::Thread_Idle);
@@ -538,6 +540,7 @@ LRESULT CNuvoISPDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
             m_bConnect = (lParam == CONNECT_STATUS_OK);
             EnableDlgItem(IDC_BUTTON_START, m_bConnect);
+            GetMenu()->EnableMenuItem(ID_MENUITEM_EXPORT, m_bConnect ? MF_ENABLED : MF_DISABLED);
             UpdateData(false);
         }
         else if (wParam == MSG_UPDATE_ERASE_STATUS)
@@ -703,53 +706,45 @@ void CNuvoISPDlg::OnDropFiles(HDROP hDropInfo)
     CDialog::OnDropFiles(hDropInfo);
 }
 
-void CNuvoISPDlg::OnButtonMenuLoad() 
+static BOOL _ShellExecute(const TCHAR *sCommand, const TCHAR *sParameters)
 {
-    CString FileName = _T("");
-    // Backup current directory
-    TCHAR szCurDir[MAX_PATH];
+    SHELLEXECUTEINFO ShExecInfo = {0};
+    ShExecInfo.cbSize = sizeof(SHELLEXECUTEINFO);
+    ShExecInfo.fMask = SEE_MASK_NOCLOSEPROCESS;
+    ShExecInfo.hwnd = NULL;
+    ShExecInfo.lpVerb = L"open";
+    ShExecInfo.lpFile = sCommand;
+    ShExecInfo.lpParameters = sParameters;
+    ShExecInfo.lpDirectory = NULL;
+    ShExecInfo.nShow = SW_HIDE;
+    ShExecInfo.hInstApp = NULL;
 
-    if (GetCurrentDirectory(sizeof(szCurDir) / sizeof(szCurDir[0]), szCurDir) == 0)
+    if (ShellExecuteEx(&ShExecInfo))
     {
-        szCurDir[0] = (TCHAR)'\0';
+        DWORD dwExitCode = 1;
+
+        if (ShExecInfo.hProcess != NULL)
+        {
+            DWORD dwWaitResult = WaitForSingleObject(ShExecInfo.hProcess, INFINITE);
+
+            if (dwWaitResult == WAIT_OBJECT_0)
+                GetExitCodeProcess(ShExecInfo.hProcess, &dwExitCode);
+
+            CloseHandle(ShExecInfo.hProcess);
+        }
+
+        if (dwExitCode == 0)
+            return true;
     }
 
-    // Open file dialog
-    CFileDialog dialog(TRUE, NULL, NULL,
-        OFN_EXPLORER | OFN_ENABLESIZING | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY,
-        _T("ISP Setting Files (*.isp)|*.isp||"),
-        this);
-
-    int nDoModal = dialog.DoModal();
-    // Restore current directory
-    if (szCurDir[0] != (TCHAR)'\0')
-        SetCurrentDirectory(szCurDir);
-
-    CString sProjectPath;
-    if (nDoModal == IDOK)
-    {
-        sProjectPath = dialog.GetPathName();
-    }
-
-    CStdioFile  myFile;
-    CString sText, sline;
-    if (myFile.Open(sProjectPath, CFile::modeRead | CFile::typeText))
-    {
-        // TODO
-
-        myFile.Close();
-    }
-    
-    LockGUI();
-    UpdateData(TRUE);
-    UnlockGUI();
+    return false;
 }
 
-void CNuvoISPDlg::OnButtonMenuSave()
+void CNuvoISPDlg::OnButtonMenuExport()
 {
+    EnableProgramOption(FALSE);
     LockGUI();
     UpdateData(TRUE);
-    UnlockGUI();
 
     CString sPath = _T("");
 
@@ -761,26 +756,124 @@ void CNuvoISPDlg::OnButtonMenuSave()
     // Open file dialog
     CFileDialog dialog(FALSE, _T("isp"), NULL,
         OFN_EXPLORER | OFN_ENABLESIZING | OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT,
-        _T("ISP Setting Files (*.isp)|*.isp||"),
+        _T("Offline ISP Settings Files (*.isp)|*.isp||"),
         this);
 
     if (dialog.DoModal() == IDOK)
-    {
         sPath = dialog.GetPathName();
-    }
 
     // Restore current directory
     if (szCurDir[0] != (TCHAR)'\0')
         SetCurrentDirectory(szCurDir);
 
-    CStdioFile  myFile;
-    CString sText;
-    if (myFile.Open(sPath, CFile::modeCreate | CFile::modeWrite | CFile::typeText))
+    if (!sPath.IsEmpty())
     {
-        // TODO
+        TCHAR szTempPath[MAX_PATH] = {0};
+        TCHAR szTempName[MAX_PATH] = {0};
+        std::wofstream iniFile;
 
-        myFile.Close();
+        GetTempPath(MAX_PATH, szTempPath);
+        GetTempFileName(szTempPath, _T("ISPTOOL"), 0, szTempName);
+
+        {
+            inipp::Ini<TCHAR> iniConfig;
+            TCHAR szFilePath[2][MAX_PATH] = {{0}, {0}}, *pszFileName[2] = {NULL, NULL};
+            TCHAR szConfig[32], szValue[32];
+
+            GetFullPathName(m_sFileInfo[0].filename, MAX_PATH, szFilePath[0], &pszFileName[0]);
+            GetFullPathName(m_sFileInfo[1].filename, MAX_PATH, szFilePath[1], &pszFileName[1]);
+
+            switch (m_Interfaces[m_SelInterface.GetCurSel()].second)
+            {
+                case INTF_UART:
+                    _stprintf(szValue, _T("%d"), 0);
+                    break;
+                case INTF_SPI:
+                    _stprintf(szValue, _T("%d"), 1);
+                    break;
+                case INTF_I2C:
+                    _stprintf(szValue, _T("%d"), 2);
+                    break;
+                case INTF_RS485:
+                    _stprintf(szValue, _T("%d"), 3);
+                    break;
+                case INTF_CAN:
+                    _stprintf(szValue, _T("%d"), 4);
+                    break;
+                case INTF_HID:
+                    _stprintf(szValue, _T("%d"), 5);
+                    break;
+                default:
+                    goto export_fail;
+            };
+            iniConfig.sections[_T("Connection Interface")][_T("Bridge")] = szValue;
+
+            iniConfig.sections[_T("Files")][_T("APROM")]     = m_bProgram_APROM ? CString(pszFileName[0]) : _T("");
+            iniConfig.sections[_T("Files")][_T("DataFlash")] = m_bProgram_NVM   ? CString(pszFileName[1]) : _T("");
+
+            for (unsigned int i = 0; i < 14; i++)
+            {
+                _stprintf(szConfig, _T("Config%u"), i);
+                _stprintf(szValue, _T("0x%08X"), m_bProgram_Config ? m_CONFIG_User[i] : 0xFFFFFFFF);
+
+                iniConfig.sections[_T("Config Bits")][szConfig] = szValue;
+            }
+
+            iniConfig.sections[_T("Programming Options")][_T("APROM")]       = m_bProgram_APROM  ? _T("1") : _T("0");
+            iniConfig.sections[_T("Programming Options")][_T("DataFlash")]   = m_bProgram_NVM    ? _T("1") : _T("0");
+            iniConfig.sections[_T("Programming Options")][_T("Config")]      = m_bProgram_Config ? _T("1") : _T("0");
+            iniConfig.sections[_T("Programming Options")][_T("EraseAll")]    = m_bErase          ? _T("1") : _T("0");
+            iniConfig.sections[_T("Programming Options")][_T("ResetAndRun")] = m_bRunAPROM       ? _T("1") : _T("0");
+
+            if (m_Interfaces[m_SelInterface.GetCurSel()].second == INTF_CAN)
+            {
+                _stprintf(szValue, _T("0x%08X"), m_uNVM_Addr);
+
+                iniConfig.sections[_T("ISP CAN")][_T("DataFlashBaseAddress")] = szValue;
+                iniConfig.sections[_T("ISP CAN")][_T("ConfigBaseSel")] = m_ISPLdDev.m_bSpecConfigAddr ? _T("1") : _T("0");
+            }
+
+            iniFile.open(szTempName);
+            iniConfig.generate(iniFile);
+        }
+
+        {
+            TCHAR szParameters[1024 + 1];
+            int iLength = 0, iOffset = 0;
+            std::set<CString> asFileNames = {m_bProgram_APROM ? m_sFileInfo[0].filename : _T(""),
+                                             m_bProgram_NVM   ? m_sFileInfo[1].filename : _T("")};
+
+            if ((iOffset = _sntprintf(szParameters + iOffset, 1024 - iOffset, _T("-i %s -o %s -s"), szTempName, (const TCHAR*)sPath)) < 0)
+                goto export_fail;
+
+            for (std::set<CString>::iterator iter = asFileNames.begin(); iter != asFileNames.end(); ++iter)
+            {
+                if ((iLength = _sntprintf(szParameters + iOffset, 1024 - iOffset, _T(" %s"), iter->GetString())) < 0)
+                    goto export_fail;
+
+                iOffset += iLength;
+            }
+
+            if (!_ShellExecute(L"cmd.exe", L"/c \"( offline_isp_file_converter.exe -v ) | findstr /r \"\\<1\\.0\\.0\\>\" >nul && exit /b 0 || exit /b 1\""))
+                goto export_fail;
+
+            if (!_ShellExecute(L"offline_isp_file_converter.exe", szParameters))
+                goto export_fail;
+        }
+
+        DeleteFile(szTempName);
+        MessageBox(_T("Settings saved successfully"));
+        goto export_end;
+
+export_fail:
+        DeleteFile(szTempName);
+        MessageBox(_T("Failed to export settings"), NULL, MB_ICONWARNING);
+        goto export_end;
     }
+
+export_end:
+    EnableProgramOption(TRUE);
+    UnlockGUI();
 }
 
 void CNuvoISPDlg::OnButtonMenuSaveLua()
@@ -838,6 +931,8 @@ void CNuvoISPDlg::EnableProgramOption(BOOL bEnable)
     EnableDlgItem(IDC_CHECK_ERASE, bEnable);
     EnableDlgItem(IDC_CHECK_RUN_APROM, bEnable);
     EnableDlgItem(IDC_BUTTON_START, bEnable);
+    GetMenu()->EnableMenuItem(ID_MENUITEM_EXPORT, bEnable ? MF_ENABLED : MF_DISABLED);
+
     // SPI Option
     EnableDlgItem(IDC_BUTTON_SPI, bEnable);
     EnableDlgItem(IDC_CHECK_SPI, bEnable);
