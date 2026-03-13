@@ -2504,12 +2504,12 @@ BEGIN
         BLOCK "040004b0"
         BEGIN
             VALUE "FileDescription", "ISP Programming Tool"
-            VALUE "FileVersion", "4.16"
+            VALUE "FileVersion", "4.17"
             VALUE "InternalName", "ISPTool"
-            VALUE "LegalCopyright", "Copyright (C) 2021~2025"
+            VALUE "LegalCopyright", "Copyright (C) 2021~2026"
             VALUE "OriginalFilename", "NuvoISP.exe"
             VALUE "ProductName", "ISP Programming Tool"
-            VALUE "ProductVersion", "4.16"
+            VALUE "ProductVersion", "4.17"
         END
     END
     BLOCK "VarFileInfo"

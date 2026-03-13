@@ -75,7 +75,7 @@ CNuvoISPDlg::CNuvoISPDlg(UINT Template,
     : CDialogMain(Template, pParent)
     , CISPProc(&m_hWnd)
 {
-    m_sCaption = _T("Nuvoton NuMicro ISP Programming Tool 4.16");
+    m_sCaption = _T("Nuvoton NuMicro ISP Programming Tool 4.17");
     m_bConnect = false;
     int i = 0, j = 0;
 
