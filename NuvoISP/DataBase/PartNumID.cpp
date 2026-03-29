@@ -1011,6 +1011,8 @@ struct CPartNumID g_PartNumIDs[] =
     {"M071SD3AE", 0x01607113, PROJ_NUC2201},
     {"M071SE3AE", 0x01607112, PROJ_NUC2201},
     {"M071VG4AE", 0x01607130, PROJ_M0564},
+
+    {"---------", 0xFFFFFFFF, 0},
 };
 
 /* 8051 1T N76 & ML51 & MS51 series */
@@ -1092,6 +1094,8 @@ struct CPartNumID_51 g_PartNumIDs_51[] =
     {"CM1003DJ3AE", 0x2C007244, PROJ_MG51D},
     {"CM1003DJ8AE", 0x21007244, PROJ_MG51D},
     {"CM1003CJ3AE", 0x2C007234, PROJ_MG51D},
+
+    {"---------", 0xFFFFFFFF, 0},
 };
 
 CPartNum::CPartNum()

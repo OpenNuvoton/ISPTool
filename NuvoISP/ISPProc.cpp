@@ -247,6 +247,11 @@ void CISPProc::Thread_CheckDeviceConnect()
                 m_bSupport_SPI = m_ISPLdDev.m_bSupport_SPI;
                 m_eProcSts = EPS_OK;
 
+                m_uAPROM_Addr = 0;
+                m_uAPROM_Size = 0;
+                m_uNVM_Addr = 0;
+                m_uNVM_Size = 0;
+
                 if (MainHWND != NULL)   // UI Mode
                 {
                     Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);

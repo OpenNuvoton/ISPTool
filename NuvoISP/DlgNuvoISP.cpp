@@ -1175,7 +1175,6 @@ void CNuvoISPDlg::OnSysCommand(UINT nID, LPARAM lParam)
 // User can specify the spi flash address.
 void CNuvoISPDlg::UpdateAddrOffset()
 {
-    m_uAPROM_Addr = 0;
     CString strAddr;
     GetDlgItemText(IDC_EDIT_FLASH_BASE_ADDRESS, strAddr);
     unsigned int uAddr = ::_tcstoul(strAddr, 0, 16);

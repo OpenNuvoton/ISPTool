@@ -54,7 +54,7 @@ typedef struct
 } FLASH_INFO_BY_DID_T;
 
 
-void GetFlashSize_NuMicro(unsigned int uConfig0,
+bool GetFlashSize_NuMicro(unsigned int uConfig0,
                           unsigned int uConfig1,
                           unsigned int uProgramMemorySize,
                           unsigned int uFlashType,
