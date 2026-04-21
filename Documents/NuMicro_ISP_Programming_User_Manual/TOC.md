@@ -1,0 +1,33 @@
+# NuMicro® ISP Programming Tool — User Manual
+
+## Table of Contents
+
+1. [Introduction](#introduction)
+2. [Getting Started](#getting-started)
+   - 2.1 [System Requirements](#system-requirements)
+   - 2.2 [Launching the Application](#launching-the-application)
+3. [Main Window Overview](#main-window-overview)
+   - 3.1 [Connecting to a Target Device](#connecting-to-a-target-device)
+      - 3.1.1 [Selecting the Communication Interface](#selecting-the-communication-interface)
+      - 3.1.2 [Configuring Interface Options](#configuring-interface-options)
+      - 3.1.3 [Establishing a Connection](#establishing-a-connection)
+      - 3.1.4 [Viewing Chip Information](#viewing-chip-information)
+   - 3.2 [Loading Firmware Files](#loading-firmware-files)
+      - 3.2.1 [Loading an APROM File](#loading-an-aprom-file)
+      - 3.2.2 [Loading a Data Flash File](#loading-a-data-flash-file)
+      - 3.2.3 [Loading a SPI Flash File](#loading-a-spi-flash-file)
+      - 3.2.4 [Drag-and-Drop Support](#drag-and-drop-support)
+   - 3.3 [Viewing Hex Data](#viewing-hex-data)
+   - 3.4 [Configuring Chip Settings](#configuring-chip-settings)
+   - 3.5 [Programming the Device](#programming-the-device)
+      - 3.5.1 [Setting Programming Options](#setting-programming-options)
+      - 3.5.2 [Starting the Programming Process](#starting-the-programming-process)
+      - 3.5.3 [Understanding the Programming Sequence](#understanding-the-programming-sequence)
+      - 3.5.4 [Error Handling](#error-handling)
+   - 3.6 [Exporting Offline ISP Settings](#exporting-offline-isp-settings)
+   - 3.7 [Offline Programming Workflow](#offline-programming-workflow)
+4. [Command-Line Mode](#command-line-mode)
+   - 4.1 [Syntax](#syntax)
+   - 4.2 [Parameters](#parameters)
+   - 4.3 [Examples](#examples)
+
