@@ -23,7 +23,7 @@ All fields are little-endian unsigned integers.
 |:-----------:|:----:|-------|-------------|
 | 0–1 | 2 | Checksum | 16-bit checksum of the corresponding command packet. |
 | 2–3 | 2 | (reserved) | — |
-| 4–7 | 4 | Packet Index | Must equal the command packet's index minus 1. |
+| 4–7 | 4 | Packet Index | Must equal the command packet's index plus 1. |
 | 8–63 | 56 | Payload | Response data. |
 
 > **Note:** For USB HID, an extra report ID byte (0x00) is prepended to all packets, making them 65 bytes on the wire. The byte offsets above refer to the logical payload starting after the report ID.
@@ -53,17 +53,17 @@ Each command/ACK exchange uses a packet index to detect duplicates and ordering 
 
 - The host initializes the packet index to `1` after `CMD_SYNC_PACKNO`.
 - After each successful `WriteFile`, the host increments the index by 2.
-- The ACK packet's index must equal the command's index minus 1.
+- The ACK packet's index must equal the command's index plus 1.
 - If the ACK index or checksum doesn't match, the host sets a resend flag and may retry with `CMD_RESEND_PACKET`.
 
 **Example sequence:**
 
 | Step | Host Sends (Index) | Device Returns (Index) |
 |------|--------------------|------------------------|
-| SYNC_PACKNO | 1 | 0 |
-| GET_VERSION | 3 | 2 |
-| GET_DEVICEID | 5 | 4 |
-| READ_CONFIG | 7 | 6 |
+| SYNC_PACKNO | 1 | (not validated) |
+| GET_VERSION | 3 | 4 |
+| GET_DEVICEID | 5 | 6 |
+| READ_CONFIG | 7 | 8 |
 
 
 # Communication Interfaces
@@ -748,6 +748,7 @@ Phase 5: Program Data Flash (optional)
 
 Phase 6: SPI Flash (optional, if supported)
   └─ CMD_ERASE_SPIFLASH  (loop per 64 KB block)
+  └─ CMD_SYNC_PACKNO
   └─ CMD_UPDATE_SPIFLASH  (loop per 48-byte chunk)
 
 Phase 7: Run APROM (optional)
