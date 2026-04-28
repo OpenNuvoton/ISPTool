@@ -225,11 +225,6 @@ bool GetChipDynamicInfo(unsigned int uID, unsigned int uConfig0, unsigned int uC
         {
             return true;
         }
-
-        if (HasNoDynamicInfo())
-        {
-            return false;
-        }
     }
 
     unsigned int uProductLine = 0;
