@@ -583,7 +583,7 @@ void ISPLdCMD::UpdateConfig_Ext(unsigned int config[], unsigned int response[], 
         }
         return;
     }
-    char ext_buffer[8];
+    char ext_buffer[12];
     unsigned int index = i;
     if (i >= 16 && i <= 18) {
         index += 16;  // CONFIG_16 at 0x0F300080 not 0x0F300040

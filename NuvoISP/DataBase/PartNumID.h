@@ -107,7 +107,9 @@ public:
     _E(M2L31_512K)    \
     _E(M2L31_256K)    \
     _E(M55M1)         \
-    _E(M2003)         \
+    _E(M2003C)        \
+    _E(M2003G)        \
+    _E(M2003_E)       \
     _E(M2A23)         \
     _E(M2U51G)        \
     _E(M2U51C)        \
@@ -126,8 +128,8 @@ public:
     _E(ML56)          \
     _E(MUG51)         \
     _E(MG51)          \
-    _E(MG51D)
-
+    _E(MG51D)         \
+    _E(KM1M2)         \
 
 #define _E(Name) PROJ_##Name,
 enum ProjsList { PROJS };

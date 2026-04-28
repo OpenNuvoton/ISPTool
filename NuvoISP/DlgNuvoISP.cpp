@@ -75,7 +75,7 @@ CNuvoISPDlg::CNuvoISPDlg(UINT Template,
     : CDialogMain(Template, pParent)
     , CISPProc(&m_hWnd)
 {
-    m_sCaption = _T("Nuvoton NuMicro ISP Programming Tool 4.17");
+    m_sCaption = _T("Nuvoton NuMicro ISP Programming Tool 4.18");
     m_bConnect = false;
     int i = 0, j = 0;
 
@@ -1114,8 +1114,8 @@ void CNuvoISPDlg::ShowChipInfo_OnLine()
         ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 1);
     }
     else if (((gsChipCfgInfo.uSeriesCode >= PROJ_N76E885) && (gsChipCfgInfo.uSeriesCode <= PROJ_MG51D))   // 8051
-    || (gsChipCfgInfo.uSeriesCode == PROJ_M55M1)
-    || (gsChipCfgInfo.uSeriesCode == PROJ_M2003))
+    || (gsChipCfgInfo.uSeriesCode == PROJ_M55M1) || (gsChipCfgInfo.uSeriesCode == PROJ_M2003C)
+    || (gsChipCfgInfo.uSeriesCode == PROJ_M2003G) || (gsChipCfgInfo.uSeriesCode == PROJ_M2003_E))
     {
         m_bProgram_NVM = 0;
         EnableDlgItem(IDC_CHECK_NVM, 0);

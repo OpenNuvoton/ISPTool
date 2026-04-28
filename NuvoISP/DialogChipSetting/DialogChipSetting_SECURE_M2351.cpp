@@ -310,20 +310,39 @@ IMPLEMENT_DYNAMIC(CDialogChipSetting_NSCBA_LOCK, CDialog)
 
 CDialogChipSetting_NSCBA_LOCK::CDialogChipSetting_NSCBA_LOCK(CWnd* pParent /*=NULL*/)
     : CDialogResize(CDialogChipSetting_NSCBA_LOCK::IDD, pParent)
-    , m_NSAddr(16, 8)
+    , m_FNSAddr(16, 8)
 {
     //{{AFX_DATA_INIT(CDialogChipSetting_NSCBA)
     // NOTE: the ClassWizard will add member initialization here
-    m_bSecureDebug      = TRUE;
-    m_bSupportLock      = TRUE;
+    m_bSecureDebug          = TRUE;
+    m_bSupportLock          = TRUE;
+    m_bSupportDFMC_NSCBA    = FALSE;
+    m_bSupportDFMC_EEPROM   = FALSE;
 
-    m_bWrite            = FALSE;
-    m_bMirBoundEnable   = FALSE;
+    m_uFlash_BaseAddr       = NUMICRO_FLASH_APROM_ADDR;
+    m_uFlash_Size           = 0;
+    m_uFlash_PageSize       = 0;
 
-    m_uNSAddr           = 0xFFFFFFFF;
+    m_uFNSAddr              = 0xFFFFFFFF;
+    m_uFNSAddr_min          = NUMICRO_FLASH_APROM_ADDR + NUMICRO_FLASH_PAGE_SIZE_8K;
 
-    m_bSCRLOCK          = FALSE;
-    m_bARLOCK           = FALSE;
+    m_bWrite                = FALSE;
+    m_bMirBoundEnable       = FALSE;
+
+    m_bSCRLOCK              = FALSE;
+    m_bARLOCK               = FALSE;
+
+    m_uDFlash_BaseAddr      = 0xFFFFFFFF;
+    m_uDFlash_Size          = 0;
+    m_uDFlash_PageSize      = 0;
+
+    m_bEEPROM_EN            = FALSE;
+    m_bEEPROM_SEC           = FALSE;
+
+    m_uConfigValue[0]       = 0xFFFFFFFF;
+    m_uConfigValue[1]       = 0xFFFFFFFF;
+    m_uConfigValue[2]       = 0xFFFFFFFF;
+    m_uConfigValue[3]       = 0xFFFFFFFF;
     //}}AFX_DATA_INIT
 }
 
@@ -339,8 +358,11 @@ void CDialogChipSetting_NSCBA_LOCK::DoDataExchange(CDataExchange* pDX)
     DDX_Check(pDX, IDC_CHECK_MIRROR_BOUNDARY,       m_bMirBoundEnable);
     DDX_Check(pDX, IDC_CHECK_SECURITYBOOT_LOCK,     m_bSCRLOCK);
     DDX_Check(pDX, IDC_CHECK_SECURITY_LOCK,         m_bARLOCK);
-    DDX_Control(pDX, IDC_EDIT_FLASH_BASE_ADDRESS,   m_NSAddr);
-    DDX_Text(pDX, IDC_EDIT_FLASH_BASE_ADDRESS,      m_sNSAddr);
+    DDX_Check(pDX, IDC_CHECK_DFMC_EEPROM,           m_bEEPROM_EN);
+    DDX_Check(pDX, IDC_CHECK_DFMC_EEPROM_SEC,       m_bEEPROM_SEC);
+    DDX_Control(pDX, IDC_EDIT_FLASH_BASE_ADDRESS,   m_FNSAddr);
+    DDX_Text(pDX, IDC_EDIT_FLASH_BASE_ADDRESS,      m_sFNSAddr);
+    DDX_Text(pDX, IDC_EDIT_DFMC_NSCBA,              m_sDFNSAddr);
     //}}AFX_DATA_MAP
 }
 
@@ -350,12 +372,10 @@ BEGIN_MESSAGE_MAP(CDialogChipSetting_NSCBA_LOCK, CDialog)
     ON_BN_CLICKED(IDC_CHECK_MIRROR_BOUNDARY,        OnCheckClick)
     ON_BN_CLICKED(IDC_CHECK_SECURITYBOOT_LOCK,      OnCheckClick)
     ON_BN_CLICKED(IDC_CHECK_SECURITY_LOCK,          OnCheckClick)
+    ON_BN_CLICKED(IDC_CHECK_DFMC_EEPROM,            OnCheckClick)
+    ON_BN_CLICKED(IDC_CHECK_DFMC_EEPROM_SEC,        OnCheckClick)
     ON_EN_KILLFOCUS(IDC_EDIT_FLASH_BASE_ADDRESS,    OnKillfocusEditNSCBA)
-    //ON_WM_SIZE()
-    ON_WM_VSCROLL()
-    ON_WM_HSCROLL()
-    ON_WM_GETMINMAXINFO()
-    ON_WM_MOUSEWHEEL()
+    ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_DFMC_NSCBA,    OnDeltaposSpinDFNSCBA)
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -383,14 +403,26 @@ BOOL CDialogChipSetting_NSCBA_LOCK::OnInitDialog()
         GetDlgItem(IDC_CHECK_SECURITY_LOCK)->ShowWindow(SW_HIDE);
     }
 
+    if (!m_bSupportDFMC_NSCBA)
+    {
+        GetDlgItem(IDC_GROUP_DFMC_CONFIG)->ShowWindow(SW_HIDE);	
+        GetDlgItem(IDC_CHECK_DFMC_EEPROM)->ShowWindow(SW_HIDE);
+        GetDlgItem(IDC_CHECK_DFMC_EEPROM_SEC)->ShowWindow(SW_HIDE);
+        GetDlgItem(IDC_STATIC_DFMC_NSCBA)->ShowWindow(SW_HIDE);
+        GetDlgItem(IDC_EDIT_DFMC_NSCBA)->ShowWindow(SW_HIDE);
+        GetDlgItem(IDC_SPIN_DFMC_NSCBA)->ShowWindow(SW_HIDE);
+    }
+
     {
         GetDlgItem(IDC_GROUP_CONFIG_VALUE)->ShowWindow(SW_HIDE);
         GetDlgItem(IDC_STATIC_CONFIG_11)->ShowWindow(SW_HIDE);
         GetDlgItem(IDC_STATIC_CONFIG_12)->ShowWindow(SW_HIDE);
         GetDlgItem(IDC_STATIC_CONFIG_13)->ShowWindow(SW_HIDE);
+        GetDlgItem(IDC_STATIC_CONFIG_14)->ShowWindow(SW_HIDE);
         GetDlgItem(IDC_STATIC_CONFIG_VALUE_11)->ShowWindow(SW_HIDE);
         GetDlgItem(IDC_STATIC_CONFIG_VALUE_12)->ShowWindow(SW_HIDE);
         GetDlgItem(IDC_STATIC_CONFIG_VALUE_13)->ShowWindow(SW_HIDE);
+        GetDlgItem(IDC_STATIC_CONFIG_VALUE_14)->ShowWindow(SW_HIDE);
     }
 
     ConfigToGUI();
@@ -407,36 +439,39 @@ void CDialogChipSetting_NSCBA_LOCK::UpdateConfigString()
 {
 }
 
-void CDialogChipSetting_NSCBA_LOCK::OnCheckClick()
-{
-    GUIToConfig();
-    ConfigToGUI();
-}
-
 void CDialogChipSetting_NSCBA_LOCK::ConfigToGUI()
 {
-    m_uNSAddr &= ~(m_uFlashPageSize - 1);
+    m_uFNSAddr &= ~(m_uFlash_PageSize - 1);
 
     if (m_bSecureDebug && m_bWrite)
     {
-        unsigned int uBoundary = (!m_bMirBoundEnable) ? m_uProgramMemorySize : m_uProgramMemorySize / 2;
+        unsigned int uBoundary = (!m_bMirBoundEnable)? m_uFlash_Size : m_uFlash_Size/2;
 
-        uBoundary += m_uFlashBaseAddr;
+        uBoundary += m_uFlash_BaseAddr;
 
-        if (m_uNSAddr > (uBoundary - m_uFlashPageSize))
-            m_uNSAddr = (uBoundary - m_uFlashPageSize);
+        if (m_uFNSAddr > (uBoundary - m_uFlash_PageSize))
+            m_uFNSAddr = (uBoundary - m_uFlash_PageSize);
 
-        if (m_uNSAddr < m_uNSAddr_min)
-            m_uNSAddr = m_uNSAddr_min;
+        if (m_uFNSAddr < m_uFNSAddr_min)
+            m_uFNSAddr = m_uFNSAddr_min;
     }
 
-    m_NSAddr.EnableWindow(m_bSecureDebug && m_bWrite);
+    m_FNSAddr.EnableWindow(m_bSecureDebug && m_bWrite);
     ((CButton*)GetDlgItem(IDC_STATIC_FLASH_BASE_ADDRESS))->EnableWindow(m_bSecureDebug && m_bWrite);
     ((CButton*)GetDlgItem(IDC_CHECK_MIRROR_BOUNDARY))->EnableWindow(m_bSecureDebug && m_bWrite);
 
     unsigned int uOffset = (m_bSecureDebug) ? 0 : NUMICRO_NS_OFFSET;
 
-    m_sNSAddr.Format(_T("%08X"), m_uNSAddr | uOffset);
+    m_sFNSAddr.Format(_T("%08X"), m_uFNSAddr | uOffset);
+
+    m_bEEPROM_EN    = ((m_uConfigValue[3] & M3351_FLASH_CONFIG_DFMC_EE) == 0) ? TRUE : FALSE;
+    m_bEEPROM_SEC   = ((m_uConfigValue[3] & M3351_FLASH_CONFIG_DFMC_EE_SEC) == 0) ? TRUE : FALSE;
+
+    unsigned int uDFNS_Addr;
+
+    uDFNS_Addr = m_uDFlash_BaseAddr + (((m_uConfigValue[3] & 0x0F) + 1) * m_uDFlash_PageSize);
+
+    m_sDFNSAddr.Format(_T("%X"), uDFNS_Addr);
 
     UpdateData(FALSE);
 }
@@ -445,14 +480,79 @@ void CDialogChipSetting_NSCBA_LOCK::GUIToConfig()
 {
     UpdateData(TRUE);
 
-    m_uNSAddr = ::_tcstoul(m_sNSAddr, NULL, 16);
-    m_uNSAddr &= ~NUMICRO_NS_OFFSET;
+    m_uFNSAddr = ::_tcstoul(m_sFNSAddr, NULL, 16);
+    m_uFNSAddr &= ~NUMICRO_NS_OFFSET;
+
+    if (m_bEEPROM_SEC)
+        m_uConfigValue[3] &= ~M3351_FLASH_CONFIG_DFMC_EE_SEC;
+    else
+        m_uConfigValue[3] |=  M3351_FLASH_CONFIG_DFMC_EE_SEC;
+
+    if (m_bEEPROM_EN)
+        m_uConfigValue[3] &= ~M3351_FLASH_CONFIG_DFMC_EE;
+    else
+        m_uConfigValue[3] |=  M3351_FLASH_CONFIG_DFMC_EE;
+
+    if (!(m_uConfigValue[3] & M3351_FLASH_CONFIG_DFMC_EE))
+    {
+        unsigned int uDFlash_Size;
+
+        uDFlash_Size = ((m_uConfigValue[3] & 0x0F) + 1) * m_uDFlash_PageSize;
+
+        if (uDFlash_Size > (m_uDFlash_Size - (m_uDFlash_PageSize * 2)))
+            uDFlash_Size = (m_uDFlash_Size - (m_uDFlash_PageSize * 2));
+
+        m_uConfigValue[3] = (m_uConfigValue[3] & ~0x0F) | ((uDFlash_Size / m_uDFlash_PageSize) - 1);
+    }
+}
+
+void CDialogChipSetting_NSCBA_LOCK::OnCheckClick()
+{
+    GUIToConfig();
+    ConfigToGUI();
 }
 
 void CDialogChipSetting_NSCBA_LOCK::OnKillfocusEditNSCBA()
 {
     GUIToConfig();
     ConfigToGUI();
+}
+
+void CDialogChipSetting_NSCBA_LOCK::OnDeltaposSpinDFNSCBA(NMHDR *pNMHDR, LRESULT *pResult)
+{
+    unsigned int uDFlash_Size = m_uDFlash_Size;
+
+    if (!(m_uConfigValue[3] & M3351_FLASH_CONFIG_DFMC_EE))
+    {
+        uDFlash_Size -= (m_uDFlash_PageSize * 2);
+    }
+
+    unsigned int uDFlashNS_Addr;
+
+    uDFlashNS_Addr = m_uDFlash_BaseAddr + (((m_uConfigValue[3] & 0x0F) + 1) * m_uDFlash_PageSize);
+
+    LPNMUPDOWN pNMUpDown = reinterpret_cast<LPNMUPDOWN>(pNMHDR);
+
+    if (pNMUpDown->iDelta == 1)
+    {
+        uDFlashNS_Addr -= m_uDFlash_PageSize;
+    }
+    else if (pNMUpDown->iDelta == -1)
+    {
+        uDFlashNS_Addr += m_uDFlash_PageSize;
+    }
+
+    if (uDFlashNS_Addr < (m_uDFlash_BaseAddr + m_uDFlash_PageSize))
+        uDFlashNS_Addr = (m_uDFlash_BaseAddr + m_uDFlash_PageSize);
+
+    if (uDFlashNS_Addr > (m_uDFlash_BaseAddr + uDFlash_Size))
+        uDFlashNS_Addr = (m_uDFlash_BaseAddr + uDFlash_Size);
+
+    m_uConfigValue[3] = (m_uConfigValue[3] & ~0x0F) | (((uDFlashNS_Addr - m_uDFlash_BaseAddr) / m_uDFlash_PageSize) - 1);
+
+    ConfigToGUI();
+
+    *pResult = 0;
 }
 
 void CDialogChipSetting_NSCBA_LOCK::OnOK()

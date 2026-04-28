@@ -53,6 +53,75 @@ typedef struct
     };
 } FLASH_INFO_BY_DID_T;
 
+typedef struct : FLASH_INFO_BY_DID_T
+{
+    unsigned int    uAPROM_Addr;
+    unsigned int    uAPROM_Size;
+    unsigned int    uAPROM1_Addr;
+    unsigned int    uAPROM1_Size;
+    unsigned int    uAPROMNS_Addr;
+    unsigned int    uAPROMNS_Size;
+    unsigned int    uAPROMNS1_Addr;
+    unsigned int    uAPROMNS1_Size;
+    unsigned int    uLDROM_Addr;
+    unsigned int    uLDROM_Size;
+    unsigned int    uNVM_Addr;                    // FMC
+    unsigned int    uNVM_Size;
+    unsigned int    uDATAROM_Addr;                // DFMC
+    unsigned int    uDATAROM_Size;
+    unsigned int    uDATAROMNS_Addr;
+    unsigned int    uDATAROMNS_Size;
+    unsigned int    uEEPROM_Addr;
+    unsigned int    uEEPROM_Size;
+    unsigned int    uEEPROMNS_Addr;
+    unsigned int    uEEPROMNS_Size;
+    unsigned int    uCONFIG_Addr;
+    unsigned int    uCONFIG_Size;
+    unsigned int    uOTP_Addr;
+    unsigned int    uOTP_Count;                    // 64-Bit Data & 32-bit Lock Bit
+    unsigned int    uSOTP_Addr;
+    unsigned int    uSOTP_Size;
+    unsigned int    uSPIM_Addr;
+    unsigned int    uSPIM_Size;
+    unsigned int    uITCM_Size;
+    unsigned int    uDTCM_Size;
+    unsigned int    uFlash_PageSize;
+    unsigned int    uDATAROM_PageSize;
+    unsigned int    uSRAM_BlockSize_L;            // Bit 0-15
+    unsigned int    uSRAM_BlockSize_H;            // Bit 16-31
+    unsigned int    uISPSTS_VECMAP_Msk;
+    unsigned int    uAPWPROT_RegionNum;
+    unsigned int    uAPWPROT_RegionSize;
+    unsigned int    uLDWPROT_RegionSize;
+    unsigned int    uDFWPROT_RegionSize;
+    unsigned int    uUID_Num;
+    unsigned int    uXOM_Num;
+    unsigned int    uXOM_RangeStart;
+    unsigned int    uXOM_RangeEnd;
+    unsigned int    uXOM_MaxCount;
+    unsigned int    uKS_OTPKeyCount;
+    unsigned int    uKS_OTPKeyAttribute;        // Bit 0-7: Key Owner, Bit 8: Secure, Bit 9: Privilege, Bit 10: Readable, Bit 11: Boot State, Bit 12: MTP
+    unsigned int    uKS_ROTPKCount;
+    unsigned int    uKS_ROTPKAttribute;            // P-256 ROTPK (Root of Trust Public Key)
+    unsigned int    uKS_ROTPKAttribute_P521;    // P-521 ROTPK
+    BOOL            bBankRemap;
+    BOOL            bDualBank;
+    BOOL            bMirrorBoundary;
+    BOOL            bDPM;
+    BOOL            bDIU;
+    BOOL            bPLM;
+    BOOL            bNPU;
+    BOOL            bDFMC_NSCBA;
+    BOOL            bDFMC_EEPROM;
+    unsigned int    uMassEraseTime;                // Mass Erase Time in ms + ?% Tolerance
+    unsigned int    uPageEraseTime;                // Page Erase Time in ms + ?% Tolerance
+    unsigned int    uIOVoltageFlag;                // Bit 0: 1.8V, Bit 1: 2.5V, Bit 2: 3.3V, Bit 3: 5.0V
+    unsigned int    uAlgoLoad_RAMAddr;
+    unsigned int    uAlgoLoad_RAMSize;
+    unsigned int    uAlgoLoad_ChipClock;
+    unsigned int    uChipIndex;                    // ICP Tool
+    const char        *pszSeriesName;
+} CHIP_INFO_NUMICRO_TZ_T;
 
 bool GetFlashSize_NuMicro(unsigned int uConfig0,
                           unsigned int uConfig1,

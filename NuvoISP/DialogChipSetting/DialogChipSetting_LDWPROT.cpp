@@ -17,14 +17,15 @@ CDialogChipSetting_LDWPROT::CDialogChipSetting_LDWPROT(CWnd* pParent /*=NULL*/)
 	, m_uLDROM_Addr(NUMICRO_FLASH_LDROM_ADDR + NUMICRO_SPECIAL_FLASH_OFFSET)
 	, m_uLDROM_Size(NUMICRO_FLASH_LDROM_SIZE_8K)
 	, m_uLDROM_RegionSize(M3331_LDWPROT_REGION_SIZE)
-	, m_uDATAFLASH_Addr(M3331_FLASH_DATAFLASH_ADDR)
-	, m_uDATAFLASH_Size(M3331_FLASH_DATAFLASH_SIZE)
-	, m_uDATAFLASH_RegionSize(M3331_DFWPROT_REGION_SIZE)
+	, m_uDFLASH_Addr(M3331_FLASH_DFLASH_ADDR)
+	, m_uDFLASH_Size(M3331_FLASH_DFLASH_SIZE)
+	, m_uDFLASH_RegionSize(M3331_DFWPROT_REGION_SIZE)
 {
 	//{{AFX_DATA_INIT(CDialogChipSetting_LDWPROT)
 	m_nRadioLDWPLVL		= -1;
 
-	m_bCheckLDPROEN		= FALSE;
+	m_bCheckLDPROEN[0]	= FALSE;
+	m_bCheckLDPROEN[1]	= FALSE;
 
 	m_bCheckDFPROEN[0]	= FALSE;
 	m_bCheckDFPROEN[1]	= FALSE;
@@ -47,11 +48,12 @@ void CDialogChipSetting_LDWPROT::DoDataExchange(CDataExchange* pDX)
 	//{{AFX_DATA_MAP(CDialogChipSetting_LDWPROT)
 	DDX_Radio(pDX, IDC_RADIO_LDROM_WPROT_LEVEL0,	m_nRadioLDWPLVL);
 
-	DDX_Check(pDX, IDC_CHECK_LDROM_WPROT_0,			m_bCheckLDPROEN);
-	DDX_Check(pDX, IDC_CHECK_DATAFLASH_WPROT_0,		m_bCheckDFPROEN[0]);
-	DDX_Check(pDX, IDC_CHECK_DATAFLASH_WPROT_1,		m_bCheckDFPROEN[1]);
-	DDX_Check(pDX, IDC_CHECK_DATAFLASH_WPROT_2,		m_bCheckDFPROEN[2]);
-	DDX_Check(pDX, IDC_CHECK_DATAFLASH_WPROT_3,		m_bCheckDFPROEN[3]);
+	DDX_Check(pDX, IDC_CHECK_LDROM_WPROT_0,			m_bCheckLDPROEN[0]);
+	DDX_Check(pDX, IDC_CHECK_LDROM_WPROT_1,			m_bCheckLDPROEN[1]);
+	DDX_Check(pDX, IDC_CHECK_DFLASH_WPROT_0,		m_bCheckDFPROEN[0]);
+	DDX_Check(pDX, IDC_CHECK_DFLASH_WPROT_1,		m_bCheckDFPROEN[1]);
+	DDX_Check(pDX, IDC_CHECK_DFLASH_WPROT_2,		m_bCheckDFPROEN[2]);
+	DDX_Check(pDX, IDC_CHECK_DFLASH_WPROT_3,		m_bCheckDFPROEN[3]);
 
 	DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_16,		m_sConfigValue16);
 	DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_17,		m_sConfigValue17);
@@ -66,10 +68,11 @@ BEGIN_MESSAGE_MAP(CDialogChipSetting_LDWPROT, CDialog)
 	ON_BN_CLICKED(IDC_RADIO_LDROM_WPROT_LEVEL1,		OnRadioClick)
 
 	ON_BN_CLICKED(IDC_CHECK_LDROM_WPROT_0,			OnCheckClick)
-	ON_BN_CLICKED(IDC_CHECK_DATAFLASH_WPROT_0,		OnCheckClick)
-	ON_BN_CLICKED(IDC_CHECK_DATAFLASH_WPROT_1,		OnCheckClick)
-	ON_BN_CLICKED(IDC_CHECK_DATAFLASH_WPROT_2,		OnCheckClick)
-	ON_BN_CLICKED(IDC_CHECK_DATAFLASH_WPROT_3,		OnCheckClick)
+	ON_BN_CLICKED(IDC_CHECK_LDROM_WPROT_1,			OnCheckClick)
+	ON_BN_CLICKED(IDC_CHECK_DFLASH_WPROT_0,			OnCheckClick)
+	ON_BN_CLICKED(IDC_CHECK_DFLASH_WPROT_1,			OnCheckClick)
+	ON_BN_CLICKED(IDC_CHECK_DFLASH_WPROT_2,			OnCheckClick)
+	ON_BN_CLICKED(IDC_CHECK_DFLASH_WPROT_3,			OnCheckClick)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -81,22 +84,33 @@ BOOL CDialogChipSetting_LDWPROT::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	int i;
+	unsigned int i;
 	CString str;
 
 	// LDROM
-	i = 0;
-
+	for (i = 0; i < 2; i++)
+	{
 	str.Format(_I(IDS_WPROT_REGION), i, m_uLDROM_Addr + (m_uLDROM_RegionSize * i), (m_uLDROM_Addr + (m_uLDROM_RegionSize * (i + 1))) - 1);
 
 	GetDlgItem(IDC_CHECK_LDROM_WPROT_0 + i)->SetWindowText(str);
+	}
+
+	for (i = (m_uLDROM_Size / m_uLDROM_RegionSize); i < 2; i++)
+	{
+		GetDlgItem(IDC_CHECK_LDROM_WPROT_0 + i)->ShowWindow(SW_HIDE);
+	}
 
 	// Data Flash
 	for (i = 0; i < 4; i++)
 	{
-		str.Format(_I(IDS_WPROT_REGION), i, m_uDATAFLASH_Addr + (m_uDATAFLASH_RegionSize * i), (m_uDATAFLASH_Addr + (m_uDATAFLASH_RegionSize * (i + 1))) - 1);
+		str.Format(_I(IDS_WPROT_REGION), i, m_uDFLASH_Addr + (m_uDFLASH_RegionSize * i), (m_uDFLASH_Addr + (m_uDFLASH_RegionSize * (i + 1))) - 1);
 
-		GetDlgItem(IDC_CHECK_DATAFLASH_WPROT_0 + i)->SetWindowText(str);
+		GetDlgItem(IDC_CHECK_DFLASH_WPROT_0 + i)->SetWindowText(str);
+	}
+
+	for (i = (m_uDFLASH_Size / m_uDFLASH_RegionSize); i < 4; i++)
+	{
+		GetDlgItem(IDC_CHECK_DFLASH_WPROT_0 + i)->ShowWindow(SW_HIDE);
 	}
 
 	UpdateUI();
@@ -123,7 +137,11 @@ void CDialogChipSetting_LDWPROT::ConfigToGUI()
 
 	unsigned int i;
 
-	m_bCheckLDPROEN = ((m_uConfigValue_t[0] & (1 << 0)) == 0) ? TRUE : FALSE;
+	// LDROM
+	for (i = 0; i < 2; i++)
+	{
+		m_bCheckLDPROEN[i] = ((m_uConfigValue_t[0] & (1 << i)) == 0) ? TRUE : FALSE;
+	}
 
 	switch(m_uConfigValue_t[1] & 0xFFFF)
 	{
@@ -134,6 +152,7 @@ void CDialogChipSetting_LDWPROT::ConfigToGUI()
 			m_nRadioLDWPLVL = 1;
 	}
 
+	// Data Flash
 	for (i = 0; i < 4; i++)
 	{
 		m_bCheckDFPROEN[i] = ((m_uConfigValue_t[2] & (1 << i)) == 0) ? TRUE : FALSE;
@@ -156,10 +175,14 @@ void CDialogChipSetting_LDWPROT::GUIToConfig()
 
 	unsigned int i;
 
-	if (m_bCheckLDPROEN)
-		m_uConfigValue_t[0] &= ~(1 << 0);
+	// LDROM
+	for (i = 0; i < 2; i++)
+	{
+		if (m_bCheckLDPROEN[i])
+			m_uConfigValue_t[0] &= ~(1 << i);
 	else
-		m_uConfigValue_t[0] |=  (1 << 0);
+			m_uConfigValue_t[0] |=  (1 << i);
+	}
 
 	m_uConfigValue_t[1] &= ~0xFFFF0000;
 
@@ -176,6 +199,7 @@ void CDialogChipSetting_LDWPROT::GUIToConfig()
 
 	m_uConfigValue_t[1] |= 0xFFFF0000;
 
+	// Data Flash
 	for (i = 0; i < 4; i++)
 	{
 		if (m_bCheckDFPROEN[i])

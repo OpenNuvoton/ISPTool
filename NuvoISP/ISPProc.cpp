@@ -325,8 +325,8 @@ void CISPProc::Thread_ProgramFlash()
         if (m_bProgram_Config)
         {
             //m_ISPLdDev.UpdateConfig(m_CONFIG_User, m_CONFIG);
-            if ((m_ulDeviceID & 0xFFFFF000) == 0x03300000
-                || (m_ulDeviceID & 0xFFFFF000) == 0x06300000) {
+            if (0){//(m_ulDeviceID & 0xFFFFF000) == 0x03300000
+                //|| (m_ulDeviceID & 0xFFFFF000) == 0x06300000) {
                 for(int i = 0; i < 19; i = i + 2)
                     m_ISPLdDev.UpdateConfig_Ext(m_CONFIG_User, m_CONFIG, i);
             }
@@ -375,6 +375,7 @@ void CISPProc::Thread_ProgramFlash()
             }
 
             m_ISPLdDev.SyncPackno();
+            unsigned int bit64_Program = Check_64bit_Program();
 
             for (unsigned long i = 0; i < uSize;)
             {
@@ -390,7 +391,7 @@ void CISPProc::Thread_ProgramFlash()
                 {
                     m_ISPLdDev.UpdateAPROM(uAddr, uSize, uAddr + i,
                                            (const char *)(pBuffer + i),
-                                           &uLen, Check_64bit_Program());
+                                           &uLen, bit64_Program);
 
                     if (m_ISPLdDev.bResendFlag)
                     {

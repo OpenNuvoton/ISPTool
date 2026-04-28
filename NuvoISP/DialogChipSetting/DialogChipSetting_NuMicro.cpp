@@ -114,6 +114,11 @@ BOOL CDialogChipSetting_NuMicro::OnInitDialog()
             m_pChipSetting_CFG = new CDialogChipSetting_CFG_M471();
         }
 
+        if (m_uChipSeries == IDS_KM1M2_SERIES)
+        {
+            m_pChipSetting_CFG = new CDialogChipSetting_CFG_KM1M2();
+        }
+
         m_pChipSetting_CFG->m_uProgramMemorySize    = chipInfo.uProgramMemorySize;
         m_pChipSetting_CFG->m_uFlashPageSize        = (1 << (((chipInfo.uFlashType & 0x0000FF00) >> 8) + 9));
         m_pChipSetting_CFG->m_uConfigValue[0]       = m_uConfigValue[0];

@@ -620,9 +620,12 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
 
             case PROJ_M3331G:
             case PROJ_M3331IG:
-            case PROJ_M3351:
-                pConfigDlg = new CDialogChipSetting_M3331(uSeriesCode);
+                pConfigDlg = new CDialogChipSetting_M3331(TRUE, uID, 0x7600, uSeriesCode);
+                Config = (((CDialogChipSetting_M3331*)pConfigDlg)->m_uConfigValue);
+                break;
 
+            case PROJ_M3351:
+                pConfigDlg = new CDialogChipSetting_M3331(TRUE, uID, 0x7800, uSeriesCode);
                 Config = (((CDialogChipSetting_M3331*)pConfigDlg)->m_uConfigValue);
                 break;
 
@@ -780,7 +783,9 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 Config = (((CDialogChipSetting_M2A23*)pConfigDlg)->m_uConfigValue);
                 break;
 
-            case PROJ_M2003:
+            case PROJ_M2003C:
+            case PROJ_M2003G:
+            case PROJ_M2003_E:
                 pConfigDlg = new CDialogChipSetting_NuMicro(uID, uID & 0xFFFF, IDS_M2003_SERIES);
                 Config = (((CDialogChipSetting_NuMicro*)pConfigDlg)->m_uConfigValue);
                 break;
@@ -980,6 +985,11 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
             case PROJ_M471:
                 pConfigDlg = new CDialogChipSetting_NuMicro(uID, uID & 0xFFFF, IDS_M471_SERIES);
                 Config = (((CDialogChipSetting_NuMicro *)pConfigDlg)->m_uConfigValue);
+                break;
+
+            case PROJ_KM1M2:
+                pConfigDlg = new CDialogChipSetting_NuMicro(uID, uID & 0xFFFF, IDS_KM1M2_SERIES);
+                Config = (((CDialogChipSetting_NuMicro*)pConfigDlg)->m_uConfigValue);
                 break;
 
             default:

@@ -177,11 +177,11 @@ void CDialogChipSetting_CFG_M460::ConfigToGUI()
     CFG2GUI_DFEN();
     CFG2GUI_KSPLOCK();
 
-    m_bCheckISP_UART = ((m_uConfigValue_t[3] & M460_FLASH_CONFIG_UARTISPEN) != 0 ? TRUE : FALSE);
-    m_bCheckISP_USB = ((m_uConfigValue_t[3] & M460_FLASH_CONFIG_USBISPDIS) == 0 ? TRUE : FALSE);
-    m_bCheckISP_CAN = ((m_uConfigValue_t[3] & M460_FLASH_CONFIG_CANISPEN) != 0 ? TRUE : FALSE);
-    m_bCheckISP_I2C = ((m_uConfigValue_t[3] & M460_FLASH_CONFIG_I2CISPEN) != 0 ? TRUE : FALSE);
-    m_bCheckISP_SPI = ((m_uConfigValue_t[3] & M460_FLASH_CONFIG_SPIISPEN) != 0 ? TRUE : FALSE);
+    m_bCheckISP_UART = ((m_uConfigValue_t[3] & NUMICRO_FLASH_CONFIG_UARTISPEN) != 0 ? TRUE : FALSE);
+    m_bCheckISP_USB = ((m_uConfigValue_t[3] & NUMICRO_FLASH_CONFIG_USBISPDIS) == 0 ? TRUE : FALSE);
+    m_bCheckISP_CAN = ((m_uConfigValue_t[3] & NUMICRO_FLASH_CONFIG_CANISPEN) != 0 ? TRUE : FALSE);
+    m_bCheckISP_I2C = ((m_uConfigValue_t[3] & NUMICRO_FLASH_CONFIG_I2CISPEN) != 0 ? TRUE : FALSE);
+    m_bCheckISP_SPI = ((m_uConfigValue_t[3] & NUMICRO_FLASH_CONFIG_SPIISPEN) != 0 ? TRUE : FALSE);
 
     m_sConfigValue0.Format(_T("0x%08X"), m_uConfigValue_t[0]);
     m_sConfigValue1.Format(_T("0x%08X"), m_uConfigValue_t[1]);
@@ -209,29 +209,29 @@ void CDialogChipSetting_CFG_M460::GUIToConfig()
     GUI2CFG_KSPLOCK();
 
     if (m_bCheckISP_UART)
-        m_uConfigValue_t[3] |=  M460_FLASH_CONFIG_UARTISPEN;
+        m_uConfigValue_t[3] |=  NUMICRO_FLASH_CONFIG_UARTISPEN;
     else
-        m_uConfigValue_t[3] &= ~M460_FLASH_CONFIG_UARTISPEN;
+        m_uConfigValue_t[3] &= ~NUMICRO_FLASH_CONFIG_UARTISPEN;
 
     if (!m_bCheckISP_USB)
-        m_uConfigValue_t[3] |=  M460_FLASH_CONFIG_USBISPDIS;
+        m_uConfigValue_t[3] |=  NUMICRO_FLASH_CONFIG_USBISPDIS;
     else
-        m_uConfigValue_t[3] &= ~M460_FLASH_CONFIG_USBISPDIS;
+        m_uConfigValue_t[3] &= ~NUMICRO_FLASH_CONFIG_USBISPDIS;
 
     if (m_bCheckISP_CAN)
-        m_uConfigValue_t[3] |=  M460_FLASH_CONFIG_CANISPEN;
+        m_uConfigValue_t[3] |=  NUMICRO_FLASH_CONFIG_CANISPEN;
     else
-        m_uConfigValue_t[3] &= ~M460_FLASH_CONFIG_CANISPEN;
+        m_uConfigValue_t[3] &= ~NUMICRO_FLASH_CONFIG_CANISPEN;
 
     if (m_bCheckISP_I2C)
-        m_uConfigValue_t[3] |=  M460_FLASH_CONFIG_I2CISPEN;
+        m_uConfigValue_t[3] |=  NUMICRO_FLASH_CONFIG_I2CISPEN;
     else
-        m_uConfigValue_t[3] &= ~M460_FLASH_CONFIG_I2CISPEN;
+        m_uConfigValue_t[3] &= ~NUMICRO_FLASH_CONFIG_I2CISPEN;
 
     if (m_bCheckISP_SPI)
-        m_uConfigValue_t[3] |=  M460_FLASH_CONFIG_SPIISPEN;
+        m_uConfigValue_t[3] |=  NUMICRO_FLASH_CONFIG_SPIISPEN;
     else
-        m_uConfigValue_t[3] &= ~M460_FLASH_CONFIG_SPIISPEN;
+        m_uConfigValue_t[3] &= ~NUMICRO_FLASH_CONFIG_SPIISPEN;
 
     m_uConfigValue[0] = m_uConfigValue_t[0];
     m_uConfigValue[1] = m_uConfigValue_t[1];

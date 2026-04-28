@@ -132,22 +132,35 @@ public:
 
     BOOL            m_bSecureDebug;
     BOOL            m_bSupportLock;
+    BOOL            m_bSupportDFMC_NSCBA;
+    BOOL            m_bSupportDFMC_EEPROM;
 
-    unsigned int    m_uFlashBaseAddr;
-    unsigned int    m_uProgramMemorySize;
-    unsigned int    m_uFlashPageSize;
+    unsigned int    m_uFlash_BaseAddr;
+    unsigned int    m_uFlash_Size;
+    unsigned int    m_uFlash_PageSize;
 
-    unsigned int    m_uNSAddr;
-    unsigned int    m_uNSAddr_min;
+    unsigned int    m_uFNSAddr;
+    unsigned int    m_uFNSAddr_min;
+
     BOOL            m_bWrite;
     BOOL            m_bMirBoundEnable;
 
     BOOL            m_bSCRLOCK;
     BOOL            m_bARLOCK;
 
-    CNumEdit        m_NSAddr;
-    CString         m_sNSAddr;
+    unsigned int    m_uDFlash_BaseAddr;
+    unsigned int    m_uDFlash_Size;
+    unsigned int    m_uDFlash_PageSize;
 
+    BOOL            m_bEEPROM_EN;
+    BOOL            m_bEEPROM_SEC;
+
+    CNumEdit        m_FNSAddr;
+    CString         m_sFNSAddr;
+
+    CString         m_sDFNSAddr;
+
+    unsigned int    m_uConfigValue[4];
     // Implementation
 protected:
     // Generated message map functions
@@ -159,6 +172,7 @@ protected:
     virtual void GUIToConfig();
     afx_msg void OnCheckClick();
     afx_msg void OnKillfocusEditNSCBA();
+    afx_msg void OnDeltaposSpinDFNSCBA(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnOK();
     afx_msg void OnCancel();
     //}}AFX_MSG

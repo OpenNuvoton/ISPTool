@@ -184,11 +184,11 @@ void CDialogChipSetting_CFG_M55M1::ConfigToGUI()
     /* Security Lock */
     CFG2GUI_LOCK();
 
-    m_bCheckISP_UART = ((m_uConfigValue_t[3] & M55M1_FLASH_CONFIG_UARTISPEN) != 0) ? TRUE : FALSE;
-    m_bCheckISP_USB = ((m_uConfigValue_t[3] & M55M1_FLASH_CONFIG_USBISPDIS) == 0) ? TRUE : FALSE;
-    m_bCheckISP_CAN = ((m_uConfigValue_t[3] & M55M1_FLASH_CONFIG_CANISPEN) != 0) ? TRUE : FALSE;
-    m_bCheckISP_I2C = ((m_uConfigValue_t[3] & M55M1_FLASH_CONFIG_I2CISPEN) != 0) ? TRUE : FALSE;
-    m_bCheckISP_SPI = ((m_uConfigValue_t[3] & M55M1_FLASH_CONFIG_SPIISPEN) != 0) ? TRUE : FALSE;
+    m_bCheckISP_UART = ((m_uConfigValue_t[3] & NUMICRO_FLASH_CONFIG_UARTISPEN) != 0) ? TRUE : FALSE;
+    m_bCheckISP_USB = ((m_uConfigValue_t[3] & NUMICRO_FLASH_CONFIG_USBISPDIS) == 0) ? TRUE : FALSE;
+    m_bCheckISP_CAN = ((m_uConfigValue_t[3] & NUMICRO_FLASH_CONFIG_CANISPEN) != 0) ? TRUE : FALSE;
+    m_bCheckISP_I2C = ((m_uConfigValue_t[3] & NUMICRO_FLASH_CONFIG_I2CISPEN) != 0) ? TRUE : FALSE;
+    m_bCheckISP_SPI = ((m_uConfigValue_t[3] & NUMICRO_FLASH_CONFIG_SPIISPEN) != 0) ? TRUE : FALSE;
 
     /* UART0 multi-function pin selection */
     switch (m_uConfigValue_t[3] & M55M1_FLASH_CONFIG_UARTPSL)
@@ -271,29 +271,29 @@ void CDialogChipSetting_CFG_M55M1::GUIToConfig()
     m_uConfigValue_t[3] &= ~M55M1_FLASH_CONFIG_UARTPSL;
 
     if (m_bCheckISP_UART)
-        m_uConfigValue_t[3] |=  M55M1_FLASH_CONFIG_UARTISPEN;
+        m_uConfigValue_t[3] |=  NUMICRO_FLASH_CONFIG_UARTISPEN;
     else
-        m_uConfigValue_t[3] &= ~M55M1_FLASH_CONFIG_UARTISPEN;
+        m_uConfigValue_t[3] &= ~NUMICRO_FLASH_CONFIG_UARTISPEN;
 
     if (!m_bCheckISP_USB)
-        m_uConfigValue_t[3] |=  M55M1_FLASH_CONFIG_USBISPDIS;
+        m_uConfigValue_t[3] |=  NUMICRO_FLASH_CONFIG_USBISPDIS;
     else
-        m_uConfigValue_t[3] &= ~M55M1_FLASH_CONFIG_USBISPDIS;
+        m_uConfigValue_t[3] &= ~NUMICRO_FLASH_CONFIG_USBISPDIS;
 
     if (m_bCheckISP_CAN)
-        m_uConfigValue_t[3] |=  M55M1_FLASH_CONFIG_CANISPEN;
+        m_uConfigValue_t[3] |=  NUMICRO_FLASH_CONFIG_CANISPEN;
     else
-        m_uConfigValue_t[3] &= ~M55M1_FLASH_CONFIG_CANISPEN;
+        m_uConfigValue_t[3] &= ~NUMICRO_FLASH_CONFIG_CANISPEN;
 
     if (m_bCheckISP_I2C)
-        m_uConfigValue_t[3] |=  M55M1_FLASH_CONFIG_I2CISPEN;
+        m_uConfigValue_t[3] |=  NUMICRO_FLASH_CONFIG_I2CISPEN;
     else
-        m_uConfigValue_t[3] &= ~M55M1_FLASH_CONFIG_I2CISPEN;
+        m_uConfigValue_t[3] &= ~NUMICRO_FLASH_CONFIG_I2CISPEN;
 
     if (m_bCheckISP_SPI)
-        m_uConfigValue_t[3] |=  M55M1_FLASH_CONFIG_SPIISPEN;
+        m_uConfigValue_t[3] |=  NUMICRO_FLASH_CONFIG_SPIISPEN;
     else
-        m_uConfigValue_t[3] &= ~M55M1_FLASH_CONFIG_SPIISPEN;
+        m_uConfigValue_t[3] &= ~NUMICRO_FLASH_CONFIG_SPIISPEN;
 
     /* UART0 multi-function pin selection */
     switch (m_nRadioUARTPSL)

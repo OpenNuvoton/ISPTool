@@ -34,8 +34,8 @@ protected:
     unsigned int    m_uDID;
     unsigned int    m_uChipSeries;
 
-    virtual BOOL OnInitDialog();
-    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+    virtual BOOL    OnInitDialog();
+    virtual void    DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
     DECLARE_MESSAGE_MAP()
 public:
@@ -55,15 +55,15 @@ public:
     unsigned int    m_uXOM_Count[4];
     unsigned int    m_uXOM_Ctrl[4];
 
-    int                m_nSel;
+    int             m_nSel;
     unsigned int    m_uShowFlag;
 
     CTabCtrl                        m_TabChipSetting;
 
     CDialogChipSetting_CFG_M3331    *m_pChipSetting_CFG;
-    CDialogChipSetting_APWPROT        *m_pChipSetting_APWPROT;
-    CDialogChipSetting_NSCBA_LOCK    *m_pChipSetting_NSCBA;
-    CDialogChipSetting_LDWPROT        *m_pChipSetting_LDWPROT;
+    CDialogChipSetting_APWPROT      *m_pChipSetting_APWPROT;
+    CDialogChipSetting_NSCBA_LOCK   *m_pChipSetting_NSCBA;
+  //CDialogChipSetting_LDWPROT      *m_pChipSetting_LDWPROT;
 
     afx_msg void OnTcnSelchangeTabChipsetting(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnOk();

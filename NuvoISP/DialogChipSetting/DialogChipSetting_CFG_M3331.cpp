@@ -21,11 +21,11 @@ CDialogChipSetting_CFG_M3331::CDialogChipSetting_CFG_M3331(CWnd* pParent /*=NULL
     m_nRadioCIOINI        = -1;
     m_nRadioCBS           = -1;
 
-    m_bCheckSRAM_ECC    = FALSE;
-    m_bCheckCBORST      = FALSE;
-    m_bCheckCBODEN      = FALSE;
-    m_bCheckICELOCK     = FALSE;
-    m_bCheckSCEN        = FALSE;
+    m_bCheckSRAM_ECC      = FALSE;
+    m_bCheckCBORST        = FALSE;
+    m_bCheckCBODEN        = FALSE;
+    m_bCheckICELOCK       = FALSE;
+    m_bCheckSCEN          = FALSE;
 
     m_bCheckISP_UART       = TRUE;
     m_bCheckISP_USB        = FALSE;
@@ -44,18 +44,18 @@ CDialogChipSetting_CFG_M3331::CDialogChipSetting_CFG_M3331(CWnd* pParent /*=NULL
     m_sConfigValue5        = _T("");
     m_sConfigValue6        = _T("");
 
-    m_uProgramMemorySize    = M3331_MAX_APROM_SIZE;
-    m_uFlashPageSize        = NUMICRO_FLASH_PAGE_SIZE_1K;
-    m_uLDROM_Addr           = NUMICRO_FLASH_LDROM_ADDR + NUMICRO_SPECIAL_FLASH_OFFSET;
-    m_uLDROM_Size           = NUMICRO_FLASH_LDROM_SIZE_8K;
+    m_uProgramMemorySize   = NUMICRO_FLASH_APROM_SIZE_512K;
+    m_uFlashPageSize       = NUMICRO_FLASH_PAGE_SIZE_1K;
+    m_uLDROM_Addr          = NUMICRO_FLASH_LDROM_ADDR + NUMICRO_SPECIAL_FLASH_OFFSET;
+    m_uLDROM_Size          = NUMICRO_FLASH_LDROM_SIZE_8K;
 
-    m_uConfigValue[0]        = 0xFFFFFFFF;
-    m_uConfigValue[1]        = 0xFFFFFFFF;
-    m_uConfigValue[2]        = 0xFFFFFFFF;
-    m_uConfigValue[3]        = 0xFFFFFFFF;
-    m_uConfigValue[4]        = 0xFFFFFFFF;
-    m_uConfigValue[5]        = 0xFFFFFFFF;
-    m_uConfigValue[6]        = 0xFFFFFFFF;
+    m_uConfigValue[0]      = 0xFFFFFFFF;
+    m_uConfigValue[1]      = 0xFFFFFFFF;
+    m_uConfigValue[2]      = 0xFFFFFFFF;
+    m_uConfigValue[3]      = 0xFFFFFFFF;
+    m_uConfigValue[4]      = 0xFFFFFFFF;
+    m_uConfigValue[5]      = 0xFFFFFFFF;
+    m_uConfigValue[6]      = 0xFFFFFFFF;
     //}}AFX_DATA_INIT
 }
 
@@ -67,24 +67,24 @@ void CDialogChipSetting_CFG_M3331::DoDataExchange(CDataExchange* pDX)
 {
     CDialogResize::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CDialogChipSetting_CFG_M3331)
-    DDX_Radio(pDX, IDC_RADIO_WDT_DISABLE,                m_nRadioCWDTEN);
-    DDX_Radio(pDX, IDC_RADIO_BOV_7,                        m_nRadioCBOV);
+    DDX_Radio(pDX, IDC_RADIO_WDT_DISABLE,               m_nRadioCWDTEN);
+    DDX_Radio(pDX, IDC_RADIO_BOV_7,                     m_nRadioCBOV);
     DDX_Radio(pDX, IDC_RADIO_IO_TRI,                    m_nRadioCIOINI);
     DDX_Radio(pDX, IDC_RADIO_BS_APROM_LDROM,            m_nRadioCBS);
-    DDX_Check(pDX, IDC_CHECK_SRAM_ECC,                    m_bCheckSRAM_ECC);
-    DDX_Check(pDX, IDC_CHECK_BROWN_OUT_RESET,            m_bCheckCBORST);
-    DDX_Check(pDX, IDC_CHECK_BROWN_OUT_DETECT,            m_bCheckCBODEN);
-    DDX_Check(pDX, IDC_CHECK_ICE_LOCK,                    m_bCheckICELOCK);
+    DDX_Check(pDX, IDC_CHECK_SRAM_ECC,                  m_bCheckSRAM_ECC);
+    DDX_Check(pDX, IDC_CHECK_BROWN_OUT_RESET,           m_bCheckCBORST);
+    DDX_Check(pDX, IDC_CHECK_BROWN_OUT_DETECT,          m_bCheckCBODEN);
+    DDX_Check(pDX, IDC_CHECK_ICE_LOCK,                  m_bCheckICELOCK);
     DDX_Check(pDX, IDC_CHECK_SECURE_CONCEAL,            m_bCheckSCEN);
-    DDX_Check(pDX, IDC_CHECK_ISP_MODE_UART,                m_bCheckISP_UART);
-    DDX_Check(pDX, IDC_CHECK_ISP_MODE_USB,                m_bCheckISP_USB);
-    DDX_Check(pDX, IDC_CHECK_ISP_MODE_CAN,                m_bCheckISP_CAN);
-    DDX_Check(pDX, IDC_CHECK_ISP_MODE_I2C,                m_bCheckISP_I2C);
-    DDX_Check(pDX, IDC_CHECK_ISP_MODE_SPI,                m_bCheckISP_SPI);
-    DDX_Control(pDX, IDC_EDIT_SECURE_CONCEAL_BASE_ADDR,    m_SC_BaseAddr);
+    DDX_Check(pDX, IDC_CHECK_ISP_MODE_UART,             m_bCheckISP_UART);
+    DDX_Check(pDX, IDC_CHECK_ISP_MODE_USB,              m_bCheckISP_USB);
+    DDX_Check(pDX, IDC_CHECK_ISP_MODE_CAN,              m_bCheckISP_CAN);
+    DDX_Check(pDX, IDC_CHECK_ISP_MODE_I2C,              m_bCheckISP_I2C);
+    DDX_Check(pDX, IDC_CHECK_ISP_MODE_SPI,              m_bCheckISP_SPI);
+    DDX_Control(pDX, IDC_EDIT_SECURE_CONCEAL_BASE_ADDR, m_SC_BaseAddr);
     DDX_Control(pDX, IDC_EDIT_SECURE_CONCEAL_PAGE_COUNT,m_SC_PageCount);
     DDX_Text(pDX, IDC_EDIT_SECURE_CONCEAL_BASE_ADDR,    m_sSC_BaseAddr);
-    DDX_Text(pDX, IDC_EDIT_SECURE_CONCEAL_PAGE_COUNT,    m_sSC_PageCount);
+    DDX_Text(pDX, IDC_EDIT_SECURE_CONCEAL_PAGE_COUNT,   m_sSC_PageCount);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_0,            m_sConfigValue0);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_1,            m_sConfigValue1);
     DDX_Text(pDX, IDC_STATIC_CONFIG_VALUE_2,            m_sConfigValue2);
@@ -101,31 +101,31 @@ BEGIN_MESSAGE_MAP(CDialogChipSetting_CFG_M3331, CDialog)
     ON_BN_CLICKED(IDC_RADIO_WDT_DISABLE,                OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_WDT_ENABLE_KEEP,            OnRadioClick)
     ON_BN_CLICKED(IDC_RADIO_WDT_ENABLE_STOP,            OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_7,                        OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_6,                        OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_5,                        OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_4,                        OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_3,                        OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_2,                        OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_1,                        OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BOV_0,                        OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_IO_TRI,                        OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_IO_BI,                        OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM,                OnRadioClick)
-    ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM,                OnRadioClick)
-    ON_BN_CLICKED(IDC_CHECK_SRAM_ECC,                    OnCheckClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_7,                      OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_6,                      OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_5,                      OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_4,                      OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_3,                      OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_2,                      OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_1,                      OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BOV_0,                      OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_IO_TRI,                     OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_IO_BI,                      OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_APROM_LDROM,             OnRadioClick)
+    ON_BN_CLICKED(IDC_RADIO_BS_LDROM_APROM,             OnRadioClick)
+    ON_BN_CLICKED(IDC_CHECK_SRAM_ECC,                   OnCheckClick)
     ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_RESET,            OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT,            OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_ICE_LOCK,                    OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_SECURE_CONCEAL,                OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_ISP_MODE_UART,                OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_ISP_MODE_USB,                OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_ISP_MODE_CAN,                OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_ISP_MODE_I2C,                OnCheckClick)
-    ON_BN_CLICKED(IDC_CHECK_ISP_MODE_SPI,                OnCheckClick)
+    ON_BN_CLICKED(IDC_CHECK_BROWN_OUT_DETECT,           OnCheckClick)
+    ON_BN_CLICKED(IDC_CHECK_ICE_LOCK,                   OnCheckClick)
+    ON_BN_CLICKED(IDC_CHECK_SECURE_CONCEAL,             OnCheckClick)
+    ON_BN_CLICKED(IDC_CHECK_ISP_MODE_UART,              OnCheckClick)
+    ON_BN_CLICKED(IDC_CHECK_ISP_MODE_USB,               OnCheckClick)
+    ON_BN_CLICKED(IDC_CHECK_ISP_MODE_CAN,               OnCheckClick)
+    ON_BN_CLICKED(IDC_CHECK_ISP_MODE_I2C,               OnCheckClick)
+    ON_BN_CLICKED(IDC_CHECK_ISP_MODE_SPI,               OnCheckClick)
 
-    ON_EN_KILLFOCUS(IDC_EDIT_SECURE_CONCEAL_BASE_ADDR,    OnKillfocusEditSCAddrCount)
-    ON_EN_KILLFOCUS(IDC_EDIT_SECURE_CONCEAL_PAGE_COUNT,    OnKillfocusEditSCAddrCount)
+    ON_EN_KILLFOCUS(IDC_EDIT_SECURE_CONCEAL_BASE_ADDR,      OnKillfocusEditSCAddrCount)
+    ON_EN_KILLFOCUS(IDC_EDIT_SECURE_CONCEAL_PAGE_COUNT,     OnKillfocusEditSCAddrCount)
     //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -607,7 +607,7 @@ void CDialogChipSetting_CFG_M3351::UpdateUI()
 {
     GetDlgItem(IDC_RADIO_BOV_7)->SetWindowText(_T("4.4V"));
     GetDlgItem(IDC_RADIO_BOV_6)->SetWindowText(_T("3.7V"));
-    GetDlgItem(IDC_RADIO_BOV_5)->SetWindowText(_T("2.7V"));
+    GetDlgItem(IDC_RADIO_BOV_5)->SetWindowText(_T("2.8V"));
     GetDlgItem(IDC_RADIO_BOV_4)->SetWindowText(_T("Reserved"));
 
     GetDlgItem(IDC_GROUP_IO_STATE)->ShowWindow(SW_HIDE);
@@ -732,7 +732,7 @@ void CDialogChipSetting_CFG_M3351::CFG2GUI_CBOD()
         case NUMICRO_FLASH_CONFIG_CBOV_5:
             m_nRadioCBOV = 1;
             break;
-        case NUMICRO_FLASH_CONFIG_CBOV_2:
+        case NUMICRO_FLASH_CONFIG_CBOV_3:
             m_nRadioCBOV = 2;
             break;
         default:
@@ -777,7 +777,7 @@ void CDialogChipSetting_CFG_M3351::GUI2CFG_CBOD()
             m_uConfigValue_t[0] |= NUMICRO_FLASH_CONFIG_CBOV_5;
             break;
         case 2:
-            m_uConfigValue_t[0] |= NUMICRO_FLASH_CONFIG_CBOV_2;
+            m_uConfigValue_t[0] |= NUMICRO_FLASH_CONFIG_CBOV_3;
             break;
         case 3:
             m_uConfigValue_t[0] |= NUMICRO_FLASH_CONFIG_CBOV_0;

@@ -16,38 +16,38 @@
 
 class CDialogChipSetting_M2U51 : public CDialogResize
 {
-	DECLARE_DYNAMIC(CDialogChipSetting_M2U51)
+    DECLARE_DYNAMIC(CDialogChipSetting_M2U51)
 
 public:
-	CDialogChipSetting_M2U51(unsigned int uPID, unsigned int uDID, unsigned int uChipSeries, CWnd* pParent = NULL);		// standard constructor
+    CDialogChipSetting_M2U51(unsigned int uPID, unsigned int uDID, unsigned int uChipSeries, CWnd* pParent = NULL);        // standard constructor
 
-	virtual ~CDialogChipSetting_M2U51();
+    virtual ~CDialogChipSetting_M2U51();
 
 // Dialog Data
-	enum { IDD = IDD_DIALOG_CHIP_SETTING_NUMICRO2 };
+    enum { IDD = IDD_DIALOG_CHIP_SETTING_NUMICRO2 };
 
 protected:
-	unsigned int	m_uPID;
-	unsigned int	m_uDID;
-	unsigned int	m_uChipSeries;
+    unsigned int    m_uPID;
+    unsigned int    m_uDID;
+    unsigned int    m_uChipSeries;
 
-	virtual BOOL OnInitDialog();
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+    virtual BOOL OnInitDialog();
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-	DECLARE_MESSAGE_MAP()
+    DECLARE_MESSAGE_MAP()
 public:
-	unsigned int	m_uConfigValue[config_amount];
+    unsigned int    m_uConfigValue[config_amount];
 
-	int				m_nSel;
-	unsigned int	m_uShowFlag;
+    int             m_nSel;
+    unsigned int    m_uShowFlag;
 
-	CTabCtrl						m_TabChipSetting;
+    CTabCtrl                        m_TabChipSetting;
 
-	CDialogChipSetting_CFG_M2U51	*m_pChipSetting_CFG;
-	CDialogChipSetting_APWPROT		*m_pChipSetting_APWPROT;
+    CDialogChipSetting_CFG_M2U51    *m_pChipSetting_CFG;
+    CDialogChipSetting_APWPROT      *m_pChipSetting_APWPROT;
 
-	afx_msg void OnTcnSelchangeTabChipsetting(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnOk();
+    afx_msg void OnTcnSelchangeTabChipsetting(NMHDR *pNMHDR, LRESULT *pResult);
+    afx_msg void OnOk();
 };
 
 //{{AFX_INSERT_LOCATION}}

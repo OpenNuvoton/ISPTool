@@ -172,8 +172,8 @@ protected:
     virtual void ConfigToGUI();
     virtual void GUIToConfig();
 
-    void CFG2GUI_CBOD_4();
-    void GUI2CFG_CBOD_4();
+    virtual void CFG2GUI_CBOD_4();
+    virtual void GUI2CFG_CBOD_4();
 };
 
 
@@ -221,6 +221,27 @@ protected:
     virtual void UpdateUI();
     virtual void ConfigToGUI();
     virtual void GUIToConfig();
+};
+
+
+/////////////////////////////////////////////////////////////////////////////
+// CDialogChipSetting_CFG_KM1M2 dialog
+
+class CDialogChipSetting_CFG_KM1M2 : public CDialogChipSetting_CFG_M2003
+{
+    DECLARE_DYNAMIC(CDialogChipSetting_CFG_KM1M2)
+
+// Construction
+public:
+    CDialogChipSetting_CFG_KM1M2(CWnd* pParent = NULL);    // standard constructor
+
+// Dialog Data
+    //{{AFX_DATA(CDialogChipSetting_CFG_KM1M2)
+    //}}AFX_DATA
+
+protected:
+    virtual void CFG2GUI_CBOD_4();
+    virtual void GUI2CFG_CBOD_4();
 };
 
 

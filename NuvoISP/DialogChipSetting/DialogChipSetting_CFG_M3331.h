@@ -26,10 +26,10 @@ public:
     //{{AFX_DATA(CDialogChipSetting_CFG_M3331)
     enum { IDD = IDD_DIALOG_CHIP_SETTING_CFG_M3331 };
 
-    int                m_nRadioCWDTEN;
-    int                m_nRadioCBOV;
-    int                m_nRadioCIOINI;
-    int                m_nRadioCBS;
+    int             m_nRadioCWDTEN;
+    int             m_nRadioCBOV;
+    int             m_nRadioCIOINI;
+    int             m_nRadioCBS;
 
     BOOL            m_bCheckSRAM_ECC;
     BOOL            m_bCheckCBORST;
@@ -46,16 +46,16 @@ public:
     CNumEdit        m_SC_BaseAddr;
     CNumEdit        m_SC_PageCount;
 
-    CString            m_sSC_BaseAddr;
-    CString            m_sSC_PageCount;
+    CString         m_sSC_BaseAddr;
+    CString         m_sSC_PageCount;
 
-    CString            m_sConfigValue0;
-    CString            m_sConfigValue1;
-    CString            m_sConfigValue2;
-    CString            m_sConfigValue3;
-    CString            m_sConfigValue4;
-    CString            m_sConfigValue5;
-    CString            m_sConfigValue6;
+    CString         m_sConfigValue0;
+    CString         m_sConfigValue1;
+    CString         m_sConfigValue2;
+    CString         m_sConfigValue3;
+    CString         m_sConfigValue4;
+    CString         m_sConfigValue5;
+    CString         m_sConfigValue6;
 
     unsigned int    m_uProgramMemorySize;
     unsigned int    m_uFlashPageSize;

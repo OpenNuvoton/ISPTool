@@ -10,7 +10,7 @@
 
 class CDialogOfflineExport : public CDialogResize
 {
-	DECLARE_DYNAMIC(CDialogOfflineExport)
+    DECLARE_DYNAMIC(CDialogOfflineExport)
 
     // Construction
 public:

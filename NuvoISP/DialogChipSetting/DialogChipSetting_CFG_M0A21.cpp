@@ -158,18 +158,37 @@ void CDialogChipSetting_CFG_M0A21::ConfigToGUI()
     m_uConfigValue_t[1] = m_uConfigValue[1];
     m_uConfigValue_t[2] = m_uConfigValue[2];
 
-    m_nRadioCFGXT1  = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CFGXT1) ? 0 : 1);
-    m_nRadioCFGRPS  = ((m_uConfigValue_t[0] & M0A21_FLASH_CONFIG_CFGRPS) ? 0 : 1);
-    m_nRadioRSTEXT  = ((m_uConfigValue_t[0] & M0A21_FLASH_CONFIG_RSTEXT) ? 0 : 1);
-    m_nRadioRSTWSEL = ((m_uConfigValue_t[0] & M0A21_FLASH_CONFIG_RSTWSEL) ? 0 : 1);
+    /* HXT mode selection */
+    m_nRadioCFGXT1    = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CFGXT1)) ? 0 : 1;
 
-    m_bCheckICELOCK = ((m_uConfigValue_t[0] & NUMICRO_M0_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
+    /* GPA.3 mode selection */
+    m_nRadioCFGRPS    = ((m_uConfigValue_t[0] & M0A21_FLASH_CONFIG_CFGRPS)) ? 0 : 1;
 
+    /* Reset Time Extend */
+    m_nRadioRSTEXT    = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_RSTEXT)) ? 0 : 1;
+
+    /* Reset Width Time Select */
+    m_nRadioRSTWSEL    = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_RSTWSEL)) ? 0 : 1;
+
+    /* ICE Lock */
+    m_bCheckICELOCK    = ((m_uConfigValue_t[0] & NUMICRO_M0_FLASH_CONFIG_ICELOCK) == 0) ? TRUE : FALSE;
+
+    /* Watchdog */
     CFG2GUI_CWDT();
+
+    /* Brown Out Detector */
     CFG2GUI_CBOD_4();
+
+    /* I/O Initial State Select */
     CFG2GUI_CIOINI();
+
+    /* Boot Select */
     CFG2GUI_CBS_4();
+
+    /* Data Flash */
     CFG2GUI_DFEN();
+
+    /* Security Lock */
     CFG2GUI_ALOCK();
 
     m_sConfigValue0.Format(_T("0x%08X"), m_uConfigValue_t[0]);
@@ -187,36 +206,52 @@ void CDialogChipSetting_CFG_M0A21::GUIToConfig()
     m_uConfigValue_t[1] = m_uConfigValue[1];
     m_uConfigValue_t[2] = m_uConfigValue[2];
 
+    /* HXT mode selection */
     if (m_nRadioCFGXT1 == 0)
         m_uConfigValue_t[0] |=  NUMICRO_FLASH_CONFIG_CFGXT1;
     else
         m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_CFGXT1;
 
+    /* GPA.3 mode selection */
     if (m_nRadioCFGRPS == 0)
         m_uConfigValue_t[0] |=  M0A21_FLASH_CONFIG_CFGRPS;
     else
         m_uConfigValue_t[0] &= ~M0A21_FLASH_CONFIG_CFGRPS;
 
+    /* Reset Time Extend */
     if (m_nRadioRSTEXT == 0)
-        m_uConfigValue_t[0] |=  M0A21_FLASH_CONFIG_RSTEXT;
+        m_uConfigValue_t[0] |=  NUMICRO_FLASH_CONFIG_RSTEXT;
     else
-        m_uConfigValue_t[0] &= ~M0A21_FLASH_CONFIG_RSTEXT;
+        m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_RSTEXT;
 
+    /* Reset Width Time Select */
     if (m_nRadioRSTWSEL == 0)
-        m_uConfigValue_t[0] |=  M0A21_FLASH_CONFIG_RSTWSEL;
+        m_uConfigValue_t[0] |=  NUMICRO_FLASH_CONFIG_RSTWSEL;
     else
-        m_uConfigValue_t[0] &= ~M0A21_FLASH_CONFIG_RSTWSEL;
+        m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_RSTWSEL;
 
+    /* ICE Lock */
     if (m_bCheckICELOCK)
         m_uConfigValue_t[0] &= ~NUMICRO_M0_FLASH_CONFIG_ICELOCK;
     else
         m_uConfigValue_t[0] |=  NUMICRO_M0_FLASH_CONFIG_ICELOCK;
 
+    /* Watchdog */
     GUI2CFG_CWDT();
+
+    /* Brown Out Detector */
     GUI2CFG_CBOD_4();
+
+    /* I/O Initial State Select */
     GUI2CFG_CIOINI();
+
+    /* Boot Select */
     GUI2CFG_CBS_4();
+
+    /* Data Flash */
     GUI2CFG_DFEN();
+
+    /* Security Lock */
     GUI2CFG_ALOCK();
 
     m_uConfigValue[0] = m_uConfigValue_t[0];
@@ -226,6 +261,7 @@ void CDialogChipSetting_CFG_M0A21::GUIToConfig()
 
 void CDialogChipSetting_CFG_M0A21::CFG2GUI_CWDT()
 {
+    /* Watchdog */
     switch (m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CWDTEN)
     {
         case NUMICRO_FLASH_CONFIG_CWDTEN_INACTIVE:
@@ -247,6 +283,7 @@ void CDialogChipSetting_CFG_M0A21::CFG2GUI_CWDT()
 
 void CDialogChipSetting_CFG_M0A21::CFG2GUI_CBOD_4()
 {
+    /* Brown Out Voltage */
     switch (m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBOV_4_LEVEL)
     {
         case NUMICRO_FLASH_CONFIG_CBOV_3:
@@ -269,12 +306,16 @@ void CDialogChipSetting_CFG_M0A21::CFG2GUI_CBOD_4()
             m_nRadioCBOV = 0;
     }
 
-    m_bCheckCBORST = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
-    m_bCheckCBODEN = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
+    /* Brown Out Reset Enable */
+    m_bCheckCBORST = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBORST) == 0) ? TRUE : FALSE;
+
+    /* Brown Out Detector Enable */
+    m_bCheckCBODEN = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBODEN) == 0) ? TRUE : FALSE;
 }
 
 void CDialogChipSetting_CFG_M0A21::CFG2GUI_CBOD_2()
 {
+    /* Brown Out Voltage */
     switch (m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBOV_2_LEVEL)
     {
         case NUMICRO_FLASH_CONFIG_CBOV_1:
@@ -289,17 +330,22 @@ void CDialogChipSetting_CFG_M0A21::CFG2GUI_CBOD_2()
             m_nRadioCBOV = 0;
     }
 
-    m_bCheckCBORST = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
-    m_bCheckCBODEN = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
+    /* Brown Out Reset Enable */
+    m_bCheckCBORST = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBORST) == 0) ? TRUE : FALSE;
+
+    /* Brown Out Detector Enable */
+    m_bCheckCBODEN = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBODEN) == 0) ? TRUE : FALSE;
 }
 
 void CDialogChipSetting_CFG_M0A21::CFG2GUI_CIOINI()
 {
-    m_nRadioCIOINI = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CIOINI) ? 0 : 1);
+    /* I/O Initial State Select */
+    m_nRadioCIOINI = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CIOINI)) ? 0 : 1;
 }
 
 void CDialogChipSetting_CFG_M0A21::CFG2GUI_CBS_4()
 {
+    /* Boot Select */
     switch (m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBS_4_MODE)
     {
         case NUMICRO_FLASH_CONFIG_CBS_AP:
@@ -325,6 +371,7 @@ void CDialogChipSetting_CFG_M0A21::CFG2GUI_CBS_4()
 
 void CDialogChipSetting_CFG_M0A21::CFG2GUI_CBS_2()
 {
+    /* Boot Select */
     switch (m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBS_2_MODE)
     {
         case NUMICRO_FLASH_CONFIG_CBS_AP_IAP:
@@ -344,7 +391,8 @@ void CDialogChipSetting_CFG_M0A21::CFG2GUI_DFEN()
 {
     unsigned int uDataFlashBase, uDataFlashSize;
 
-    m_bCheckDFEN = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_DFEN) == 0 ? TRUE : FALSE);
+    /* Data Flash Enable */
+    m_bCheckDFEN = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_DFEN) == 0) ? TRUE : FALSE;
 
     if (m_bCheckDFEN)
     {
@@ -372,18 +420,20 @@ void CDialogChipSetting_CFG_M0A21::CFG2GUI_DFEN()
 
 void CDialogChipSetting_CFG_M0A21::CFG2GUI_LOCK()
 {
-    m_bCheckLOCK = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    /* Security Lock */
+    m_bCheckLOCK = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_LOCK) == 0) ? TRUE : FALSE;
 }
 
 void CDialogChipSetting_CFG_M0A21::CFG2GUI_ALOCK()
 {
-    m_bCheckLOCK = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_LOCK) == 0 ? TRUE : FALSE);
+    m_bCheckLOCK = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_LOCK) == 0) ? TRUE : FALSE;
 
     m_sALOCK.Format(_T("%02X"), m_uConfigValue_t[2] & 0xFF);
 }
 
 void CDialogChipSetting_CFG_M0A21::GUI2CFG_CWDT()
 {
+    /* Watchdog Enable */
     switch (m_nRadioCWDTEN)
     {
         case 0:
@@ -408,6 +458,7 @@ void CDialogChipSetting_CFG_M0A21::GUI2CFG_CWDT()
 
 void CDialogChipSetting_CFG_M0A21::GUI2CFG_CBOD_4()
 {
+    /* Brown Out Voltage */
     m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_CBOV_4_LEVEL;
 
     switch (m_nRadioCBOV)
@@ -432,11 +483,13 @@ void CDialogChipSetting_CFG_M0A21::GUI2CFG_CBOD_4()
             m_uConfigValue_t[0] |= NUMICRO_FLASH_CONFIG_CBOV_3;
     }
 
+    /* Brown Out Reset Enable */
     if (m_bCheckCBORST)
         m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_CBORST;
     else
         m_uConfigValue_t[0] |=  NUMICRO_FLASH_CONFIG_CBORST;
 
+    /* Brown Out Detector Enable */
     if (m_bCheckCBODEN)
         m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_CBODEN;
     else
@@ -445,6 +498,7 @@ void CDialogChipSetting_CFG_M0A21::GUI2CFG_CBOD_4()
 
 void CDialogChipSetting_CFG_M0A21::GUI2CFG_CBOD_2()
 {
+    /* Brown Out Voltage */
     m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_CBOV_2_LEVEL;
 
     switch (m_nRadioCBOV)
@@ -461,11 +515,13 @@ void CDialogChipSetting_CFG_M0A21::GUI2CFG_CBOD_2()
             m_uConfigValue_t[0] |= NUMICRO_FLASH_CONFIG_CBOV_1;
     }
 
+    /* Brown Out Reset Enable */
     if (m_bCheckCBORST)
         m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_CBORST;
     else
         m_uConfigValue_t[0] |=  NUMICRO_FLASH_CONFIG_CBORST;
 
+    /* Brown Out Detector Enable */
     if (m_bCheckCBODEN)
         m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_CBODEN;
     else
@@ -474,6 +530,7 @@ void CDialogChipSetting_CFG_M0A21::GUI2CFG_CBOD_2()
 
 void CDialogChipSetting_CFG_M0A21::GUI2CFG_CIOINI()
 {
+    /* I/O Initial State Select */
     if (m_nRadioCIOINI == 0)
         m_uConfigValue_t[0] |=  NUMICRO_FLASH_CONFIG_CIOINI;
     else
@@ -482,6 +539,7 @@ void CDialogChipSetting_CFG_M0A21::GUI2CFG_CIOINI()
 
 void CDialogChipSetting_CFG_M0A21::GUI2CFG_CBS_4()
 {
+    /* Boot Select */
     m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_CBS_4_MODE;
 
     switch (m_nRadioCBS)
@@ -509,6 +567,7 @@ void CDialogChipSetting_CFG_M0A21::GUI2CFG_CBS_4()
 
 void CDialogChipSetting_CFG_M0A21::GUI2CFG_CBS_2()
 {
+    /* Boot Select */
     m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_CBS_2_MODE;
 
     switch (m_nRadioCBS)
@@ -528,6 +587,7 @@ void CDialogChipSetting_CFG_M0A21::GUI2CFG_CBS_2()
 
 void CDialogChipSetting_CFG_M0A21::GUI2CFG_DFEN()
 {
+    /* Data Flash Enable */
     if (m_bCheckDFEN)
     {
         m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_DFEN;
@@ -552,6 +612,7 @@ void CDialogChipSetting_CFG_M0A21::GUI2CFG_DFEN()
 
 void CDialogChipSetting_CFG_M0A21::GUI2CFG_LOCK()
 {
+    /* Security Lock */
     if (m_bCheckLOCK)
         m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_LOCK;
     else
@@ -560,6 +621,7 @@ void CDialogChipSetting_CFG_M0A21::GUI2CFG_LOCK()
 
 void CDialogChipSetting_CFG_M0A21::GUI2CFG_ALOCK()
 {
+    /* Advance Security Lock */
     BOOL bEdit = FALSE;
 
     if (m_bCheckLOCK)
@@ -722,8 +784,7 @@ void CDialogChipSetting_CFG_M030G::UpdateUI()
 
     int i;
     int nID0s[] = { IDC_GROUP_WDT, IDC_RADIO_WDT_DISABLE, IDC_RADIO_WDT_ENABLE_KEEP, IDC_RADIO_WDT_ENABLE_STOP,
-                    IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2
-                  };
+                    IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2};
 
     for (i = 0; i < _countof(nID0s); i++)
     {
@@ -742,15 +803,28 @@ void CDialogChipSetting_CFG_M030G::ConfigToGUI()
     m_uConfigValue_t[1] = m_uConfigValue[1];
     m_uConfigValue_t[2] = m_uConfigValue[2];
 
-    m_nRadioRSTEXT  = ((m_uConfigValue_t[0] & M0A21_FLASH_CONFIG_RSTEXT) ? 0 : 1);
-    m_nRadioRSTWSEL = ((m_uConfigValue_t[0] & M0A21_FLASH_CONFIG_RSTWSEL) ? 0 : 1);
+    /* Reset Time Extend */
+    m_nRadioRSTEXT    = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_RSTEXT)) ? 0 : 1;
 
-    m_bCheckICELOCK = ((m_uConfigValue_t[0] & NUMICRO_M0_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
+    /* Reset Width Time Select */
+    m_nRadioRSTWSEL    = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_RSTWSEL)) ? 0 : 1;
 
+    /* ICE Lock */
+    m_bCheckICELOCK    = ((m_uConfigValue_t[0] & NUMICRO_M0_FLASH_CONFIG_ICELOCK) == 0) ? TRUE : FALSE;
+
+    /* Watchdog */
     CFG2GUI_CWDT();
+
+    /* I/O Initial State Select */
     CFG2GUI_CIOINI();
+
+    /* Boot Select */
     CFG2GUI_CBS_4();
+
+    /* Data Flash */
     CFG2GUI_DFEN();
+
+    /* Security Lock */
     CFG2GUI_ALOCK();
 
     m_sConfigValue0.Format(_T("0x%08X"), m_uConfigValue_t[0]);
@@ -768,25 +842,37 @@ void CDialogChipSetting_CFG_M030G::GUIToConfig()
     m_uConfigValue_t[1] = m_uConfigValue[1];
     m_uConfigValue_t[2] = m_uConfigValue[2];
 
+    /* Reset Time Extend */
     if (m_nRadioRSTEXT == 0)
-        m_uConfigValue_t[0] |=  M0A21_FLASH_CONFIG_RSTEXT;
+        m_uConfigValue_t[0] |=  NUMICRO_FLASH_CONFIG_RSTEXT;
     else
-        m_uConfigValue_t[0] &= ~M0A21_FLASH_CONFIG_RSTEXT;
+        m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_RSTEXT;
 
+    /* Reset Width Time Select */
     if (m_nRadioRSTWSEL == 0)
-        m_uConfigValue_t[0] |=  M0A21_FLASH_CONFIG_RSTWSEL;
+        m_uConfigValue_t[0] |=  NUMICRO_FLASH_CONFIG_RSTWSEL;
     else
-        m_uConfigValue_t[0] &= ~M0A21_FLASH_CONFIG_RSTWSEL;
+        m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_RSTWSEL;
 
+    /* ICE Lock */
     if (m_bCheckICELOCK)
         m_uConfigValue_t[0] &= ~NUMICRO_M0_FLASH_CONFIG_ICELOCK;
     else
         m_uConfigValue_t[0] |=  NUMICRO_M0_FLASH_CONFIG_ICELOCK;
 
+    /* Watchdog */
     GUI2CFG_CWDT();
+
+    /* I/O Initial State Select */
     GUI2CFG_CIOINI();
+
+    /* Boot Select */
     GUI2CFG_CBS_4();
+
+    /* Data Flash */
     GUI2CFG_DFEN();
+
+    /* Security Lock */
     GUI2CFG_ALOCK();
 
     m_uConfigValue[0] = m_uConfigValue_t[0];
@@ -796,6 +882,7 @@ void CDialogChipSetting_CFG_M030G::GUIToConfig()
 
 void CDialogChipSetting_CFG_M030G::CFG2GUI_CWDT()
 {
+    /* Watchdog */
     switch (m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CWDTEN)
     {
         case NUMICRO_FLASH_CONFIG_CWDTEN_INACTIVE:
@@ -809,6 +896,7 @@ void CDialogChipSetting_CFG_M030G::CFG2GUI_CWDT()
 
 void CDialogChipSetting_CFG_M030G::GUI2CFG_CWDT()
 {
+    /* Watchdog */
     switch (m_nRadioCWDTEN)
     {
         case 0:
@@ -861,8 +949,7 @@ void CDialogChipSetting_CFG_M031::UpdateUI()
 
     int i;
     int nID0s[] = { IDC_GROUP_GPF, IDC_RADIO_GPF_CRYSTAL, IDC_RADIO_GPF_GPIO, IDC_GROUP_WDT, IDC_RADIO_WDT_DISABLE, IDC_RADIO_WDT_ENABLE_KEEP, IDC_RADIO_WDT_ENABLE_STOP,
-                    IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2
-                  };
+                    IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2};
 
     for (i = 0; i < _countof(nID0s); i++)
     {
@@ -881,17 +968,34 @@ void CDialogChipSetting_CFG_M031::ConfigToGUI()
     m_uConfigValue_t[1] = m_uConfigValue[1];
     m_uConfigValue_t[2] = m_uConfigValue[2];
 
-    m_nRadioCFGXT1  = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CFGXT1) ? 0 : 1);
-    m_nRadioRSTEXT  = ((m_uConfigValue_t[0] & M0A21_FLASH_CONFIG_RSTEXT) ? 0 : 1);
-    m_nRadioRSTWSEL = ((m_uConfigValue_t[0] & M0A21_FLASH_CONFIG_RSTWSEL) ? 0 : 1);
+    /* HXT mode selection */
+    m_nRadioCFGXT1    = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CFGXT1)) ? 0 : 1;
 
-    m_bCheckICELOCK = ((m_uConfigValue_t[0] & NUMICRO_M0_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
+    /* Reset Time Extend */
+    m_nRadioRSTEXT    = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_RSTEXT)) ? 0 : 1;
 
+    /* Reset Width Time Select */
+    m_nRadioRSTWSEL    = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_RSTWSEL)) ? 0 : 1;
+
+    /* ICE Lock */
+    m_bCheckICELOCK    = ((m_uConfigValue_t[0] & NUMICRO_M0_FLASH_CONFIG_ICELOCK) == 0) ? TRUE : FALSE;
+
+    /* Watchdog */
     CFG2GUI_CWDT();
+
+    /* Brown Out Detector */
     CFG2GUI_CBOD_2();
+
+    /* I/O Initial State Select */
     CFG2GUI_CIOINI();
+
+    /* Boot Select */
     CFG2GUI_CBS_4();
+
+    /* Data Flash Enable */
     CFG2GUI_DFEN();
+
+    /* Security Lock */
     CFG2GUI_ALOCK();
 
     m_sConfigValue0.Format(_T("0x%08X"), m_uConfigValue_t[0]);
@@ -909,31 +1013,46 @@ void CDialogChipSetting_CFG_M031::GUIToConfig()
     m_uConfigValue_t[1] = m_uConfigValue[1];
     m_uConfigValue_t[2] = m_uConfigValue[2];
 
+    /* HXT mode selection */
     if (m_nRadioCFGXT1 == 0)
         m_uConfigValue_t[0] |=  NUMICRO_FLASH_CONFIG_CFGXT1;
     else
         m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_CFGXT1;
 
+    /* Reset Time Extend */
     if (m_nRadioRSTEXT == 0)
-        m_uConfigValue_t[0] |=  M0A21_FLASH_CONFIG_RSTEXT;
+        m_uConfigValue_t[0] |=  NUMICRO_FLASH_CONFIG_RSTEXT;
     else
-        m_uConfigValue_t[0] &= ~M0A21_FLASH_CONFIG_RSTEXT;
+        m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_RSTEXT;
 
+    /* Reset Width Time Select */
     if (m_nRadioRSTWSEL == 0)
-        m_uConfigValue_t[0] |=  M0A21_FLASH_CONFIG_RSTWSEL;
+        m_uConfigValue_t[0] |=  NUMICRO_FLASH_CONFIG_RSTWSEL;
     else
-        m_uConfigValue_t[0] &= ~M0A21_FLASH_CONFIG_RSTWSEL;
+        m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_RSTWSEL;
 
+    /* ICE Lock */
     if (m_bCheckICELOCK)
         m_uConfigValue_t[0] &= ~NUMICRO_M0_FLASH_CONFIG_ICELOCK;
     else
         m_uConfigValue_t[0] |=  NUMICRO_M0_FLASH_CONFIG_ICELOCK;
 
+    /* Watchdog */
     GUI2CFG_CWDT();
+
+    /* Brown Out Detector Enable */
     GUI2CFG_CBOD_2();
+
+    /* I/O Initial State Select */
     GUI2CFG_CIOINI();
+
+    /* Boot Select */
     GUI2CFG_CBS_4();
+
+    /* Data Flash */
     GUI2CFG_DFEN();
+
+    /* Security Lock */
     GUI2CFG_ALOCK();
 
     m_uConfigValue[0] = m_uConfigValue_t[0];
@@ -951,7 +1070,7 @@ CDialogChipSetting_CFG_M2003::CDialogChipSetting_CFG_M2003(CWnd* pParent /*=NULL
     : CDialogChipSetting_CFG_M0A21(pParent)
 {
     //{{AFX_DATA_INIT(CDialogChipSetting_CFG_M2003)
-    m_uProgramMemorySize    = M2003_MAX_APROM_SIZE;
+    m_uProgramMemorySize    = NUMICRO_FLASH_APROM_SIZE_256K;
     m_uFlashPageSize        = NUMICRO_FLASH_PAGE_SIZE_512;
     //}}AFX_DATA_INIT
 }
@@ -999,8 +1118,7 @@ void CDialogChipSetting_CFG_M2003::UpdateUI()
     int i;
     int nID0s[] = { IDC_GROUP_IO_STATE, IDC_RADIO_IO_TRI, IDC_RADIO_IO_BI,
                     IDC_GROUP_BROWN_OUT_VOLTAGE, IDC_RADIO_BOV_3, IDC_RADIO_BOV_2, IDC_RADIO_BOV_1, IDC_RADIO_BOV_0, IDC_CHECK_BROWN_OUT_DETECT, IDC_CHECK_BROWN_OUT_RESET,
-                    IDC_GROUP_RPD, IDC_RADIO_RPD_RESET, IDC_RADIO_RPD_INPUT
-                  };
+                    IDC_GROUP_RPD, IDC_RADIO_RPD_RESET, IDC_RADIO_RPD_INPUT};
 
     for (i = 0; i < _countof(nID0s); i++)
     {
@@ -1029,8 +1147,7 @@ void CDialogChipSetting_CFG_M2003::UpdateUI()
     lDiff = rcGroupCFGXT1.bottom - rcGroupCFGRPS.bottom;
 
     int nID2s[] = { IDC_GROUP_WDT, IDC_RADIO_WDT_DISABLE, IDC_RADIO_WDT_ENABLE_KEEP, IDC_RADIO_WDT_ENABLE_STOP,
-                    IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2
-                  };
+                    IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2};
 
     for (i = 0; i < _countof(nID2s); i++)
     {
@@ -1049,13 +1166,25 @@ void CDialogChipSetting_CFG_M2003::ConfigToGUI()
     m_uConfigValue_t[1] = m_uConfigValue[1];
     m_uConfigValue_t[2] = m_uConfigValue[2];
 
-    m_nRadioCFGRPS  = ((m_uConfigValue_t[0] & M0A21_FLASH_CONFIG_CFGRPS) ? 0 : 1);
-    m_bCheckICELOCK = ((m_uConfigValue_t[0] & NUMICRO_M23_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
+    /* GPE.15 mode selection */
+    m_nRadioCFGRPS    = ((m_uConfigValue_t[0] & M0A21_FLASH_CONFIG_CFGRPS))? 0 : 1;
 
+    /* ICE Lock */
+    m_bCheckICELOCK    = ((m_uConfigValue_t[0] & NUMICRO_M23_FLASH_CONFIG_ICELOCK) == 0) ? TRUE : FALSE;
+
+    /* Watchdog */
     CFG2GUI_CWDT();
+
+    /* Brown Out Detector Enable */
     CFG2GUI_CBOD_4();
+
+    /* I/O Initial State Select */
     CFG2GUI_CIOINI();
+
+    /* Boot Select */
     CFG2GUI_CBS_2();
+
+    /* Security Lock */
     CFG2GUI_ALOCK();
 
     m_sConfigValue0.Format(_T("0x%08X"), m_uConfigValue_t[0]);
@@ -1073,20 +1202,31 @@ void CDialogChipSetting_CFG_M2003::GUIToConfig()
     m_uConfigValue_t[1] = 0xFFFFFFFF;
     m_uConfigValue_t[2] = m_uConfigValue[2];
 
+    /* GPE.15 mode selection */
     if (m_nRadioCFGRPS == 0)
         m_uConfigValue_t[0] |=  M0A21_FLASH_CONFIG_CFGRPS;
     else
         m_uConfigValue_t[0] &= ~M0A21_FLASH_CONFIG_CFGRPS;
 
+    /* ICE Lock */
     if (m_bCheckICELOCK)
         m_uConfigValue_t[0] &= ~NUMICRO_M23_FLASH_CONFIG_ICELOCK;
     else
         m_uConfigValue_t[0] |=  NUMICRO_M23_FLASH_CONFIG_ICELOCK;
 
+    /* Watchdog */
     GUI2CFG_CWDT();
+
+    /* Brown Out Detector */
     GUI2CFG_CBOD_4();
+
+    /* I/O Initial State Select */
     GUI2CFG_CIOINI();
+
+    /* Boot Select */
     GUI2CFG_CBS_2();
+
+    /* Security Lock */
     GUI2CFG_ALOCK();
 
     m_uConfigValue[0] = m_uConfigValue_t[0];
@@ -1096,6 +1236,7 @@ void CDialogChipSetting_CFG_M2003::GUIToConfig()
 
 void CDialogChipSetting_CFG_M2003::CFG2GUI_CBOD_4()
 {
+    /* Brown Out Voltage */
     switch (m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBOV_8_LEVEL)
     {
         case NUMICRO_FLASH_CONFIG_CBOV_7:
@@ -1122,12 +1263,16 @@ void CDialogChipSetting_CFG_M2003::CFG2GUI_CBOD_4()
             m_nRadioCBOV = 0;
     }
 
-    m_bCheckCBORST = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
-    m_bCheckCBODEN = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBODEN) == 0 ? TRUE : FALSE);
+    /* Brown Out Reset Enable */
+    m_bCheckCBORST = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBORST) == 0) ? TRUE : FALSE;
+
+    /* Brown Out Detector Enable */
+    m_bCheckCBODEN = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBODEN) == 0) ? TRUE : FALSE;
 }
 
 void CDialogChipSetting_CFG_M2003::GUI2CFG_CBOD_4()
 {
+    /* Brown Out Voltage */
     m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_CBOV_8_LEVEL;
 
     switch (m_nRadioCBOV)
@@ -1152,11 +1297,13 @@ void CDialogChipSetting_CFG_M2003::GUI2CFG_CBOD_4()
             m_uConfigValue_t[0] |= NUMICRO_FLASH_CONFIG_CBOV_7;
     }
 
+    /* Brown Out Reset Enable */
     if (m_bCheckCBORST)
         m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_CBORST;
     else
         m_uConfigValue_t[0] |=  NUMICRO_FLASH_CONFIG_CBORST;
 
+    /* Brown Out Detector Enable */
     if (m_bCheckCBODEN)
         m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_CBODEN;
     else
@@ -1215,8 +1362,7 @@ void CDialogChipSetting_CFG_M451::UpdateUI()
 
     int i;
     int nID0s[] = { IDC_GROUP_IO_STATE, IDC_RADIO_IO_TRI, IDC_RADIO_IO_BI,
-                    IDC_GROUP_BROWN_OUT_VOLTAGE, IDC_RADIO_BOV_3, IDC_RADIO_BOV_2, IDC_RADIO_BOV_1, IDC_RADIO_BOV_0, IDC_CHECK_BROWN_OUT_DETECT, IDC_CHECK_BROWN_OUT_RESET
-                  };
+                    IDC_GROUP_BROWN_OUT_VOLTAGE, IDC_RADIO_BOV_3, IDC_RADIO_BOV_2, IDC_RADIO_BOV_1, IDC_RADIO_BOV_0, IDC_CHECK_BROWN_OUT_DETECT, IDC_CHECK_BROWN_OUT_RESET};
 
     for (i = 0; i < _countof(nID0s); i++)
     {
@@ -1231,8 +1377,7 @@ void CDialogChipSetting_CFG_M451::UpdateUI()
     lDiff = rcGroupCFGRPS.bottom - rcGroupCBOD.bottom;
 
     int nID1s[] = { IDC_GROUP_GPF, IDC_RADIO_GPF_CRYSTAL, IDC_RADIO_GPF_GPIO, IDC_GROUP_WDT, IDC_RADIO_WDT_DISABLE, IDC_RADIO_WDT_ENABLE_KEEP, IDC_RADIO_WDT_ENABLE_STOP,
-                    IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2
-                  };
+                    IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2};
 
     for (i = 0; i < _countof(nID1s); i++)
     {
@@ -1251,13 +1396,25 @@ void CDialogChipSetting_CFG_M451::ConfigToGUI()
     m_uConfigValue_t[1] = m_uConfigValue[1];
     m_uConfigValue_t[2] = m_uConfigValue[2];
 
-    m_nRadioCFGXT1  = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CFGXT1) ? 0 : 1);
+    /* HXT mode selection */
+    m_nRadioCFGXT1    = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CFGXT1)) ? 0 : 1;
 
+    /* Watchdog */
     CFG2GUI_CWDT();
+
+    /* Brown Out Detector */
     CFG2GUI_CBOD_4();
+
+    /* I/O Initial State Select */
     CFG2GUI_CIOINI();
+
+    /* Boot Select */
     CFG2GUI_CBS_4();
+
+    /* Security Lock */
     CFG2GUI_LOCK();
+
+    /* Data Flash */
     CFG2GUI_DFEN();
 
     m_sConfigValue0.Format(_T("0x%08X"), m_uConfigValue_t[0]);
@@ -1275,16 +1432,28 @@ void CDialogChipSetting_CFG_M451::GUIToConfig()
     m_uConfigValue_t[1] = m_uConfigValue[1];
     m_uConfigValue_t[2] = m_uConfigValue[2];
 
+    /* HXT mode selection */
     if (m_nRadioCFGXT1 == 0)
         m_uConfigValue_t[0] |=  NUMICRO_FLASH_CONFIG_CFGXT1;
     else
         m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_CFGXT1;
 
+    /* Watchdog */
     GUI2CFG_CWDT();
+
+    /* Brown Out Detector Enable */
     GUI2CFG_CBOD_4();
+
+    /* I/O Initial State Select */
     GUI2CFG_CIOINI();
+
+    /* Boot Select */
     GUI2CFG_CBS_4();
+
+    /* Security Lock */
     GUI2CFG_LOCK();
+
+    /* Data Flash Enable */
     GUI2CFG_DFEN();
 
     m_uConfigValue[0] = m_uConfigValue_t[0];
@@ -1294,6 +1463,7 @@ void CDialogChipSetting_CFG_M451::GUIToConfig()
 
 void CDialogChipSetting_CFG_M451::CFG2GUI_CBOD_4()
 {
+    /* Brown Out Voltage */
     switch (m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBOV_4_LEVEL)
     {
         case NUMICRO_FLASH_CONFIG_CBOV_3:
@@ -1316,12 +1486,16 @@ void CDialogChipSetting_CFG_M451::CFG2GUI_CBOD_4()
             m_nRadioCBOV = 0;
     }
 
-    m_bCheckCBORST = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBORST) == 0 ? TRUE : FALSE);
-    m_bCheckCBODEN = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBODEN0) == 0 ? TRUE : FALSE);
+    /* Brown Out Reset Enable */
+    m_bCheckCBORST = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBORST) == 0) ? TRUE : FALSE;
+
+    /* Brown Out Detector Enable */
+    m_bCheckCBODEN = ((m_uConfigValue_t[0] & NUMICRO_FLASH_CONFIG_CBODEN0) == 0) ? TRUE : FALSE;
 }
 
 void CDialogChipSetting_CFG_M451::GUI2CFG_CBOD_4()
 {
+    /* Brown Out Voltage */
     m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_CBOV_4_LEVEL;
 
     switch (m_nRadioCBOV)
@@ -1346,11 +1520,13 @@ void CDialogChipSetting_CFG_M451::GUI2CFG_CBOD_4()
             m_uConfigValue_t[0] |= NUMICRO_FLASH_CONFIG_CBOV_3;
     }
 
+    /* Brown Out Reset Enable */
     if (m_bCheckCBORST)
         m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_CBORST;
     else
         m_uConfigValue_t[0] |=  NUMICRO_FLASH_CONFIG_CBORST;
 
+    /* Brown Out Detector Enable */
     if (m_bCheckCBODEN)
         m_uConfigValue_t[0] &= ~NUMICRO_FLASH_CONFIG_CBODEN0;
     else
@@ -1413,8 +1589,7 @@ void CDialogChipSetting_CFG_M471::UpdateUI()
 
     int i;
     int nID0s[] = { IDC_GROUP_IO_STATE, IDC_RADIO_IO_TRI, IDC_RADIO_IO_BI,
-                    IDC_GROUP_BROWN_OUT_VOLTAGE, IDC_RADIO_BOV_3, IDC_RADIO_BOV_2, IDC_RADIO_BOV_1, IDC_RADIO_BOV_0, IDC_CHECK_BROWN_OUT_DETECT, IDC_CHECK_BROWN_OUT_RESET
-                  };
+                    IDC_GROUP_BROWN_OUT_VOLTAGE, IDC_RADIO_BOV_3, IDC_RADIO_BOV_2, IDC_RADIO_BOV_1, IDC_RADIO_BOV_0, IDC_CHECK_BROWN_OUT_DETECT, IDC_CHECK_BROWN_OUT_RESET};
 
     for (i = 0; i < _countof(nID0s); i++)
     {
@@ -1443,8 +1618,7 @@ void CDialogChipSetting_CFG_M471::UpdateUI()
     lDiff = rcGroupCFGXT1.bottom - rcGroupCBOD.bottom;
 
     int nID2s[] = { IDC_GROUP_WDT, IDC_RADIO_WDT_DISABLE, IDC_RADIO_WDT_ENABLE_KEEP, IDC_RADIO_WDT_ENABLE_STOP,
-                    IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2
-                  };
+                    IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2};
 
     for (i = 0; i < _countof(nID2s); i++)
     {
@@ -1463,12 +1637,22 @@ void CDialogChipSetting_CFG_M471::ConfigToGUI()
     m_uConfigValue_t[1] = m_uConfigValue[1];
     m_uConfigValue_t[2] = m_uConfigValue[2];
 
-    m_bCheckICELOCK = ((m_uConfigValue_t[0] & NUMICRO_M4_FLASH_CONFIG_ICELOCK) == 0 ? TRUE : FALSE);
+    /* ICE Lock */
+    m_bCheckICELOCK    = ((m_uConfigValue_t[0] & NUMICRO_M4_FLASH_CONFIG_ICELOCK) == 0) ? TRUE : FALSE;
 
+    /* Watchdog */
     CFG2GUI_CWDT();
+
+    /* Brown Out Detector Enable */
     CFG2GUI_CBOD_4();
+
+    /* I/O Initial State Select */
     CFG2GUI_CIOINI();
+
+    /* Boot Select */
     CFG2GUI_CBS_4();
+
+    /* Security Lock */
     CFG2GUI_ALOCK();
 
     m_sConfigValue0.Format(_T("0x%08X"), m_uConfigValue_t[0]);
@@ -1486,20 +1670,55 @@ void CDialogChipSetting_CFG_M471::GUIToConfig()
     m_uConfigValue_t[1] = 0xFFFFFFFF;
     m_uConfigValue_t[2] = m_uConfigValue[2];
 
+    /* ICE Lock */
     if (m_bCheckICELOCK)
         m_uConfigValue_t[0] &= ~NUMICRO_M4_FLASH_CONFIG_ICELOCK;
     else
         m_uConfigValue_t[0] |=  NUMICRO_M4_FLASH_CONFIG_ICELOCK;
 
+    /* Watchdog */
     GUI2CFG_CWDT();
+
+    /* Brown Out Detector */
     GUI2CFG_CBOD_4();
+
+    /* I/O Initial State Select */
     GUI2CFG_CIOINI();
+
+    /* Boot Select */
     GUI2CFG_CBS_4();
+
+    /* Security Lock */
     GUI2CFG_ALOCK();
 
     m_uConfigValue[0] = m_uConfigValue_t[0];
     m_uConfigValue[1] = m_uConfigValue_t[1];
     m_uConfigValue[2] = m_uConfigValue_t[2];
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+// CDialogChipSetting_CFG_KM1M2 dialog
+
+IMPLEMENT_DYNAMIC(CDialogChipSetting_CFG_KM1M2, CDialog)
+
+CDialogChipSetting_CFG_KM1M2::CDialogChipSetting_CFG_KM1M2(CWnd* pParent /*=NULL*/)
+    : CDialogChipSetting_CFG_M2003(pParent)
+{
+    //{{AFX_DATA_INIT(CDialogChipSetting_CFG_KM1M2)
+    m_uProgramMemorySize    = NUMICRO_FLASH_APROM_SIZE_1M;
+    m_uFlashPageSize        = NUMICRO_FLASH_PAGE_SIZE_512;
+    //}}AFX_DATA_INIT
+}
+
+void CDialogChipSetting_CFG_KM1M2::CFG2GUI_CBOD_4()
+{
+    CDialogChipSetting_CFG_M0A21::CFG2GUI_CBOD_4();
+}
+
+void CDialogChipSetting_CFG_KM1M2::GUI2CFG_CBOD_4()
+{
+    CDialogChipSetting_CFG_M0A21::GUI2CFG_CBOD_4();
 }
 
 
@@ -1535,8 +1754,7 @@ void CDialogChipSetting_CFG_M2A23::UpdateUI()
 
     int i;
     int nID0s[] = { IDC_GROUP_WDT, IDC_RADIO_WDT_DISABLE, IDC_RADIO_WDT_ENABLE_KEEP, IDC_RADIO_WDT_ENABLE_STOP,
-                    IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2
-                  };
+                    IDC_GROUP_CONFIG_VALUE, IDC_STATIC_CONFIG_0, IDC_STATIC_CONFIG_VALUE_0, IDC_STATIC_CONFIG_1, IDC_STATIC_CONFIG_VALUE_1, IDC_STATIC_CONFIG_2, IDC_STATIC_CONFIG_VALUE_2};
 
     for (i = 0; i < _countof(nID0s); i++)
     {

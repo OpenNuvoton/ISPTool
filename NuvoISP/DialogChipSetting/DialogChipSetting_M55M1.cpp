@@ -135,11 +135,11 @@ BOOL CDialogChipSetting_M55M1::OnInitDialog()
 
         m_pChipSetting_NSCBA->m_bSecureDebug        = m_bSecureDebug;
         m_pChipSetting_NSCBA->m_bSupportLock        = FALSE;
-        m_pChipSetting_NSCBA->m_uFlashBaseAddr      = NUMICRO_M55_APROM_ADDR;
-        m_pChipSetting_NSCBA->m_uProgramMemorySize  = chipInfo.uProgramMemorySize;
-        m_pChipSetting_NSCBA->m_uFlashPageSize      = (1 << (((chipInfo.uFlashType & 0x0000FF00) >> 8) + 9));
-        m_pChipSetting_NSCBA->m_uNSAddr             = m_uNSCBA_NSAddr;
-        m_pChipSetting_NSCBA->m_uNSAddr_min         = NUMICRO_M55_APROM_ADDR + (1 << (((chipInfo.uFlashType & 0x0000FF00) >> 8) + 9));
+        m_pChipSetting_NSCBA->m_uFlash_BaseAddr      = NUMICRO_M55_APROM_ADDR;
+        m_pChipSetting_NSCBA->m_uFlash_Size  = chipInfo.uProgramMemorySize;
+        m_pChipSetting_NSCBA->m_uFlash_PageSize      = (1 << (((chipInfo.uFlashType & 0x0000FF00) >> 8) + 9));
+        m_pChipSetting_NSCBA->m_uFNSAddr             = m_uNSCBA_NSAddr;
+        m_pChipSetting_NSCBA->m_uFNSAddr_min         = NUMICRO_M55_APROM_ADDR + (1 << (((chipInfo.uFlashType & 0x0000FF00) >> 8) + 9));
         m_pChipSetting_NSCBA->m_bWrite              = m_bNSCBA_Write;
         m_pChipSetting_NSCBA->m_bMirBoundEnable     = m_bNSCBA_MirBoundEnable;
 
@@ -239,7 +239,7 @@ void CDialogChipSetting_M55M1::OnOk()
     {
         m_bNSCBA_Write          = (m_pChipSetting_NSCBA->m_bWrite && m_bSecureDebug) ? TRUE : FALSE;
         m_bNSCBA_MirBoundEnable =  m_pChipSetting_NSCBA->m_bMirBoundEnable;
-        m_uNSCBA_NSAddr         =  m_pChipSetting_NSCBA->m_uNSAddr;
+        m_uNSCBA_NSAddr         =  m_pChipSetting_NSCBA->m_uFNSAddr;
     }
 
     CDialog::OnOK();
