@@ -1,0 +1,40 @@
+# NuvoISP manually confirmed third-party components.
+#
+# This file is intentionally limited to third-party components that are not
+# reliably detected by Microsoft SBOM Tool because they are vendored source files
+# or header-only files rather than package-manager dependencies.
+#
+# Confirmed non-third-party / excluded:
+# - NuvoISP.exe
+# - NuvoISP.lib / NuvoISP.exp / NuvoISP.pdb
+# - GetChipInformation.dll
+# - offline_isp_file_converter.exe
+# - BleIO.lib
+# - BleIOd.lib
+
+components:
+  - name: hidapi
+    spdxId: SPDXRef-Package-hidapi
+    version: 0.8.0-rc1
+    supplier: "NOASSERTION"
+    licenseDeclared: HIDAPI
+    licenseConcluded: HIDAPI
+    copyrightText: "Copyright 2009, Alan Ott, Signal 11 Software. All Rights Reserved."
+    downloadLocation: "NOASSERTION"
+    sourcePath: "NuvoISP/ThirdParty/hidapi"
+    relationship: DEPENDS_ON
+    relationshipFrom: SPDXRef-RootPackage
+    notes: "Vendored HIDAPI source code used by NuvoISP."
+
+  - name: inipp
+    spdxId: SPDXRef-Package-inipp
+    version: NOASSERTION
+    supplier: "Person: Matthias C. M. Troffaes"
+    licenseDeclared: MIT
+    licenseConcluded: MIT
+    copyrightText: "Copyright (c) 2017-2020 Matthias C. M. Troffaes"
+    downloadLocation: "NOASSERTION"
+    sourcePath: "NuvoISP/inipp.h"
+    relationship: DEPENDS_ON
+    relationshipFrom: SPDXRef-RootPackage
+    notes: "Header-only INI parser used by NuvoISP."

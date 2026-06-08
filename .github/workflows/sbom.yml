@@ -1,0 +1,132 @@
+name: Generate SBOM
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+  pull_request:
+    branches:
+      - master
+      - main
+
+permissions:
+  contents: read
+
+env:
+  PRODUCT_NAME: NuvoISP
+  PRODUCT_SUPPLIER: "Nuvoton Technology Corporation"
+  NAMESPACE_BASE_URI: "https://www.nuvoton.com/sbom"
+  SOLUTION_PATH: "NuvoISP/NuvoISP_VS2019.sln"
+  BUILD_CONFIGURATION: "Release"
+  BUILD_PLATFORM: "Win32"
+  BUILD_DROP_PATH: "NuvoISP/Release"
+  BUILD_COMPONENTS_PATH: "NuvoISP"
+  SPDX_FORMAT: "SPDX:2.2"
+
+jobs:
+  generate-sbom:
+    name: Generate and validate SBOM
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Determine product version
+        id: version
+        shell: pwsh
+        run: |
+          if ("${{ github.ref_type }}" -eq "tag") {
+            $version = "${{ github.ref_name }}" -replace '^v', ''
+          } else {
+            $version = "0.0.0-${{ github.run_number }}"
+          }
+
+          "PRODUCT_VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "value=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+
+      - name: Build NuvoISP
+        shell: pwsh
+        run: |
+          msbuild "$env:SOLUTION_PATH" `
+            /m `
+            /p:Configuration="$env:BUILD_CONFIGURATION" `
+            /p:Platform="$env:BUILD_PLATFORM"
+
+      - name: Verify build drop path
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "$env:BUILD_DROP_PATH")) {
+            Write-Error "Build drop path not found: $env:BUILD_DROP_PATH"
+          }
+          Get-ChildItem "$env:BUILD_DROP_PATH" -Force
+
+      - name: Download Microsoft SBOM Tool
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $release = Invoke-RestMethod `
+            -Uri "https://api.github.com/repos/microsoft/sbom-tool/releases/latest" `
+            -Headers @{ "User-Agent" = "github-actions" }
+          $asset = $release.assets |
+            Where-Object { $_.name -match 'sbom-tool-win-x64\.exe$' } |
+            Select-Object -First 1
+          if (-not $asset) {
+            Write-Error "Cannot find sbom-tool-win-x64.exe in the latest Microsoft SBOM Tool release."
+          }
+          New-Item -ItemType Directory -Force -Path ".tools" | Out-Null
+          Invoke-WebRequest -Uri $asset.browser_download_url -OutFile ".tools/sbom-tool-win-x64.exe"
+          .\.tools\sbom-tool-win-x64.exe -h
+
+      - name: Generate base SBOM
+        shell: pwsh
+        run: |
+          .\.tools\sbom-tool-win-x64.exe generate `
+            -b "$env:BUILD_DROP_PATH" `
+            -bc "$env:BUILD_COMPONENTS_PATH" `
+            -pn "$env:PRODUCT_NAME" `
+            -pv "$env:PRODUCT_VERSION" `
+            -ps "$env:PRODUCT_SUPPLIER" `
+            -nsb "$env:NAMESPACE_BASE_URI" `
+            -mi "$env:SPDX_FORMAT"
+
+      - name: Add manually confirmed third-party components
+        shell: pwsh
+        run: |
+          .\scripts\update-sbom-manual-components.ps1 `
+            -ManifestPath "$env:BUILD_DROP_PATH\_manifest\spdx_2.2\manifest.spdx.json" `
+            -ComponentsPath "sbom\third-party-components.yml"
+
+      - name: Recalculate manifest SHA-256
+        shell: pwsh
+        run: |
+          $manifest = "$env:BUILD_DROP_PATH\_manifest\spdx_2.2\manifest.spdx.json"
+          if (-not (Test-Path $manifest)) {
+            Write-Error "Manifest not found: $manifest"
+          }
+          (Get-FileHash $manifest -Algorithm SHA256).Hash.ToLower() |
+            Set-Content "$manifest.sha256" -NoNewline
+          Write-Host "Updated $manifest.sha256"
+
+      - name: Validate SBOM
+        shell: pwsh
+        run: |
+          .\.tools\sbom-tool-win-x64.exe validate `
+            -b "$env:BUILD_DROP_PATH" `
+            -o "sbom-validation.json" `
+            -mi "$env:SPDX_FORMAT"
+
+      - name: Upload SBOM artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: NuvoISP-SBOM-${{ env.PRODUCT_VERSION }}
+          if-no-files-found: error
+          path: |
+            ${{ env.BUILD_DROP_PATH }}/_manifest/spdx_2.2/manifest.spdx.json
+            ${{ env.BUILD_DROP_PATH }}/_manifest/spdx_2.2/manifest.spdx.json.sha256
+            sbom-validation.json
+            sbom/third-party-components.yml
