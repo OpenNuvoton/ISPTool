@@ -63,24 +63,34 @@ jobs:
           if (-not (Test-Path "$env:BUILD_DROP_PATH")) {
             Write-Error "Build drop path not found: $env:BUILD_DROP_PATH"
           }
+
           Get-ChildItem "$env:BUILD_DROP_PATH" -Force
 
       - name: Download Microsoft SBOM Tool
         shell: pwsh
         run: |
           $ErrorActionPreference = "Stop"
+
           $release = Invoke-RestMethod `
             -Uri "https://api.github.com/repos/microsoft/sbom-tool/releases/latest" `
             -Headers @{ "User-Agent" = "github-actions" }
+
           $asset = $release.assets |
             Where-Object { $_.name -match 'sbom-tool-win-x64\.exe$' } |
             Select-Object -First 1
+
           if (-not $asset) {
             Write-Error "Cannot find sbom-tool-win-x64.exe in the latest Microsoft SBOM Tool release."
           }
+
           New-Item -ItemType Directory -Force -Path ".tools" | Out-Null
           Invoke-WebRequest -Uri $asset.browser_download_url -OutFile ".tools/sbom-tool-win-x64.exe"
-          .\.tools\sbom-tool-win-x64.exe -h
+
+          if (-not (Test-Path ".tools/sbom-tool-win-x64.exe")) {
+            Write-Error "SBOM Tool download failed."
+          }
+
+          Write-Host "Downloaded Microsoft SBOM Tool from $($asset.browser_download_url)"
 
       - name: Generate base SBOM
         shell: pwsh
@@ -105,11 +115,14 @@ jobs:
         shell: pwsh
         run: |
           $manifest = "$env:BUILD_DROP_PATH\_manifest\spdx_2.2\manifest.spdx.json"
+
           if (-not (Test-Path $manifest)) {
             Write-Error "Manifest not found: $manifest"
           }
+
           (Get-FileHash $manifest -Algorithm SHA256).Hash.ToLower() |
             Set-Content "$manifest.sha256" -NoNewline
+
           Write-Host "Updated $manifest.sha256"
 
       - name: Validate SBOM
