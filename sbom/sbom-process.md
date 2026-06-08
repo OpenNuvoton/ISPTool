@@ -33,7 +33,8 @@ The workflow performs these steps:
 7. Add manually confirmed third-party components.
 8. Recalculate `manifest.spdx.json.sha256`.
 9. Validate the SBOM.
-10. Upload the SBOM and validation report as workflow artifacts.
+10. Verify expected output files.
+11. Upload the SBOM and validation report as workflow artifacts.
 
 ## Staged files
 

@@ -32,6 +32,10 @@ env:
   # Source/component path scanned by Microsoft SBOM Tool.
   BUILD_COMPONENTS_PATH: "NuvoISP"
 
+  # Validation output folder and file.
+  VALIDATION_OUTPUT_DIR: "artifacts/sbom-validation"
+  VALIDATION_OUTPUT_PATH: "artifacts/sbom-validation/sbom-validation.json"
+
   SPDX_FORMAT: "SPDX:2.2"
   SBOM_TOOL_VERSION: "v4.1.5"
 
@@ -177,10 +181,32 @@ jobs:
       - name: Validate SBOM
         shell: pwsh
         run: |
+          New-Item -ItemType Directory -Force -Path "$env:VALIDATION_OUTPUT_DIR" | Out-Null
+
           .\.tools\sbom-tool-win-x64.exe validate `
             -b "$env:BUILD_DROP_PATH" `
-            -o "sbom-validation.json" `
+            -o "$env:VALIDATION_OUTPUT_PATH" `
             -mi "$env:SPDX_FORMAT"
+
+          if (-not (Test-Path "$env:VALIDATION_OUTPUT_PATH")) {
+            Write-Error "SBOM validation output was not created: $env:VALIDATION_OUTPUT_PATH"
+          }
+
+      - name: Verify final SBOM outputs
+        shell: pwsh
+        run: |
+          $outputs = @(
+            "$env:BUILD_DROP_PATH/_manifest/spdx_2.2/manifest.spdx.json",
+            "$env:BUILD_DROP_PATH/_manifest/spdx_2.2/manifest.spdx.json.sha256",
+            "$env:VALIDATION_OUTPUT_PATH"
+          )
+
+          foreach ($file in $outputs) {
+            if (-not (Test-Path $file)) {
+              Write-Error "Expected output not found: $file"
+            }
+            Write-Host "Verified output: $file"
+          }
 
       - name: Upload SBOM artifacts
         uses: actions/upload-artifact@v4
@@ -190,5 +216,5 @@ jobs:
           path: |
             ${{ env.BUILD_DROP_PATH }}/_manifest/spdx_2.2/manifest.spdx.json
             ${{ env.BUILD_DROP_PATH }}/_manifest/spdx_2.2/manifest.spdx.json.sha256
-            sbom-validation.json
+            ${{ env.VALIDATION_OUTPUT_PATH }}
             sbom/third-party-components.yml
