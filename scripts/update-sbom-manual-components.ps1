@@ -1,8 +1,24 @@
+<#
+.SYNOPSIS
+  Adds manually confirmed third-party components to an SPDX 2.2 manifest.
+
+.DESCRIPTION
+  Microsoft SBOM Tool may not detect vendored C/C++ source code or header-only
+  files as package-manager components. This script reads
+  sbom/third-party-components.yml and appends manually confirmed packages and
+  DEPENDS_ON relationships to the generated manifest.spdx.json.
+
+  The YAML parser is intentionally minimal and supports only the simple
+  key/value component list used by this repository.
+#>
+
 param(
   [Parameter(Mandatory = $true)]
+  [ValidateNotNullOrEmpty()]
   [string] $ManifestPath,
 
   [Parameter(Mandatory = $true)]
+  [ValidateNotNullOrEmpty()]
   [string] $ComponentsPath
 )
 
@@ -10,9 +26,15 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
 function Unquote-YamlValue {
-  param([AllowEmptyString()][string] $Value)
+  param(
+    [AllowEmptyString()]
+    [string] $Value
+  )
 
-  $v = $Value.Trim()
+  $v = ""
+  if ($null -ne $Value) {
+    $v = $Value.Trim()
+  }
 
   if ($v.Length -ge 2) {
     if (($v.StartsWith('"') -and $v.EndsWith('"')) -or
@@ -24,23 +46,43 @@ function Unquote-YamlValue {
   return $v
 }
 
-function Convert-SimpleYamlComponents {
-  param([Parameter(Mandatory = $true)][string[]] $Lines)
+function Read-ManualComponents {
+  param(
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string] $Path
+  )
 
+  if (-not (Test-Path $Path)) {
+    throw "Components metadata file not found: $Path"
+  }
+
+  $lines = [System.IO.File]::ReadAllLines((Resolve-Path $Path))
   $components = New-Object System.Collections.Generic.List[hashtable]
   $current = $null
 
-  foreach ($rawLine in $Lines) {
+  foreach ($rawLine in $lines) {
     $line = $rawLine.TrimEnd()
 
-    if ([string]::IsNullOrWhiteSpace($line)) { continue }
-    if ($line.TrimStart().StartsWith("#")) { continue }
-    if ($line -match '^\s*components\s*:\s*$') { continue }
+    if ([string]::IsNullOrWhiteSpace($line)) {
+      continue
+    }
+
+    if ($line.TrimStart().StartsWith("#")) {
+      continue
+    }
+
+    if ($line -match '^\s*components\s*:\s*$') {
+      continue
+    }
 
     if ($line -match '^\s*-\s+name\s*:\s*(.+?)\s*$') {
-      if ($null -ne $current) { $components.Add($current) }
+      if ($null -ne $current) {
+        $components.Add($current)
+      }
+
       $current = @{}
-      $current["name"] = (Unquote-YamlValue $Matches[1])
+      $current["name"] = Unquote-YamlValue $Matches[1]
       continue
     }
 
@@ -54,27 +96,59 @@ function Convert-SimpleYamlComponents {
       $current[$key] = $value
       continue
     }
+
+    throw "Unsupported metadata line: $line"
   }
 
-  if ($null -ne $current) { $components.Add($current) }
-  return $components
+  if ($null -ne $current) {
+    $components.Add($current)
+  }
+
+  return @($components)
 }
 
 function Assert-RequiredField {
-  param([hashtable] $Component, [string] $Field)
+  param(
+    [Parameter(Mandatory = $true)]
+    [hashtable] $Component,
+
+    [Parameter(Mandatory = $true)]
+    [string] $Field
+  )
+
+  $componentName = "<unknown>"
+  if ($Component.ContainsKey("name")) {
+    $componentName = [string] $Component["name"]
+  }
 
   if (-not $Component.ContainsKey($Field) -or
       [string]::IsNullOrWhiteSpace([string] $Component[$Field])) {
-    throw "Component '$($Component["name"])' is missing required field '$Field'."
+    throw "Component '$componentName' is missing required field '$Field'."
+  }
+}
+
+function Add-Or-Replace-JsonProperty {
+  param(
+    [Parameter(Mandatory = $true)]
+    [object] $Object,
+
+    [Parameter(Mandatory = $true)]
+    [string] $Name,
+
+    [AllowNull()]
+    [object] $Value
+  )
+
+  $property = $Object.PSObject.Properties[$Name]
+  if ($null -eq $property) {
+    $Object | Add-Member -MemberType NoteProperty -Name $Name -Value $Value
+  } else {
+    $Object.$Name = $Value
   }
 }
 
 if (-not (Test-Path $ManifestPath)) {
   throw "Manifest not found: $ManifestPath"
-}
-
-if (-not (Test-Path $ComponentsPath)) {
-  throw "Components metadata file not found: $ComponentsPath"
 }
 
 $manifest = Get-Content $ManifestPath -Raw -Encoding UTF8 | ConvertFrom-Json -Depth 100
@@ -83,45 +157,45 @@ if ($manifest.spdxVersion -ne "SPDX-2.2") {
   throw "Unsupported SPDX version '$($manifest.spdxVersion)'. This script expects SPDX-2.2."
 }
 
-$components = Convert-SimpleYamlComponents -Lines (Get-Content $ComponentsPath -Encoding UTF8)
+$components = Read-ManualComponents -Path $ComponentsPath
 
 if ($components.Count -eq 0) {
   throw "No manual components found in $ComponentsPath."
 }
 
-if ($null -eq $manifest.packages) {
-  $manifest | Add-Member -MemberType NoteProperty -Name packages -Value @()
+$packages = @()
+if ($null -ne $manifest.packages) {
+  $packages = @($manifest.packages)
 }
 
-if ($null -eq $manifest.relationships) {
-  $manifest | Add-Member -MemberType NoteProperty -Name relationships -Value @()
+$relationships = @()
+if ($null -ne $manifest.relationships) {
+  $relationships = @($manifest.relationships)
 }
 
 $rootPackageId = "SPDXRef-RootPackage"
-$existingPackageIds = @{}
-
-foreach ($pkg in $manifest.packages) {
-  $existingPackageIds[$pkg.SPDXID] = $true
-}
+$requiredFields = @(
+  "name",
+  "spdxId",
+  "supplier",
+  "licenseDeclared",
+  "licenseConcluded",
+  "copyrightText",
+  "downloadLocation",
+  "relationship",
+  "relationshipFrom"
+)
 
 foreach ($component in $components) {
-  foreach ($field in @(
-    "name",
-    "spdxId",
-    "supplier",
-    "licenseDeclared",
-    "licenseConcluded",
-    "copyrightText",
-    "downloadLocation",
-    "relationship",
-    "relationshipFrom"
-  )) {
+  foreach ($field in $requiredFields) {
     Assert-RequiredField -Component $component -Field $field
   }
 
   $spdxId = [string] $component["spdxId"]
 
-  if (-not $existingPackageIds.ContainsKey($spdxId)) {
+  $existingPackage = $packages | Where-Object { $_.SPDXID -eq $spdxId } | Select-Object -First 1
+
+  if ($null -eq $existingPackage) {
     $package = [ordered] @{
       name = [string] $component["name"]
       SPDXID = $spdxId
@@ -139,8 +213,7 @@ foreach ($component in $components) {
       $package["versionInfo"] = [string] $component["version"]
     }
 
-    $manifest.packages += [pscustomobject] $package
-    $existingPackageIds[$spdxId] = $true
+    $packages += [pscustomobject] $package
     Write-Host "Added package: $spdxId"
   } else {
     Write-Host "Package already exists, skipping: $spdxId"
@@ -153,18 +226,16 @@ foreach ($component in $components) {
     throw "Unsupported relationshipFrom '$relationshipFrom'. Expected '$rootPackageId'."
   }
 
-  $exists = $false
-  foreach ($rel in $manifest.relationships) {
-    if ($rel.spdxElementId -eq $relationshipFrom -and
-        $rel.relationshipType -eq $relationshipType -and
-        $rel.relatedSpdxElement -eq $spdxId) {
-      $exists = $true
-      break
-    }
-  }
+  $existingRelationship = $relationships |
+    Where-Object {
+      $_.spdxElementId -eq $relationshipFrom -and
+      $_.relationshipType -eq $relationshipType -and
+      $_.relatedSpdxElement -eq $spdxId
+    } |
+    Select-Object -First 1
 
-  if (-not $exists) {
-    $manifest.relationships += [pscustomobject] ([ordered] @{
+  if ($null -eq $existingRelationship) {
+    $relationships += [pscustomobject] ([ordered] @{
       relationshipType = $relationshipType
       relatedSpdxElement = $spdxId
       spdxElementId = $relationshipFrom
@@ -176,24 +247,36 @@ foreach ($component in $components) {
   }
 }
 
+Add-Or-Replace-JsonProperty -Object $manifest -Name "packages" -Value @($packages)
+Add-Or-Replace-JsonProperty -Object $manifest -Name "relationships" -Value @($relationships)
+
+# Basic structural checks before writing.
 $allIds = New-Object System.Collections.Generic.HashSet[string]
 [void] $allIds.Add([string] $manifest.SPDXID)
 
-foreach ($pkg in $manifest.packages) {
+foreach ($pkg in @($manifest.packages)) {
+  if ([string]::IsNullOrWhiteSpace([string] $pkg.SPDXID)) {
+    throw "A package is missing SPDXID."
+  }
+
   if (-not $allIds.Add([string] $pkg.SPDXID)) {
     throw "Duplicate SPDXID found: $($pkg.SPDXID)"
   }
 }
 
 if ($null -ne $manifest.files) {
-  foreach ($file in $manifest.files) {
+  foreach ($file in @($manifest.files)) {
+    if ([string]::IsNullOrWhiteSpace([string] $file.SPDXID)) {
+      throw "A file is missing SPDXID."
+    }
+
     if (-not $allIds.Add([string] $file.SPDXID)) {
       throw "Duplicate SPDXID found: $($file.SPDXID)"
     }
   }
 }
 
-foreach ($rel in $manifest.relationships) {
+foreach ($rel in @($manifest.relationships)) {
   if (-not $allIds.Contains([string] $rel.spdxElementId)) {
     throw "Relationship spdxElementId does not exist: $($rel.spdxElementId)"
   }
@@ -205,6 +288,6 @@ foreach ($rel in $manifest.relationships) {
 
 $manifest |
   ConvertTo-Json -Depth 100 |
-  Set-Content $ManifestPath -Encoding UTF8
+  Set-Content $ManifestPath -Encoding utf8
 
 Write-Host "Updated manifest: $ManifestPath"

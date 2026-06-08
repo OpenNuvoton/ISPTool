@@ -1,18 +1,20 @@
 # NuvoISP SBOM Process
 
+> This file is an optional copy of `sbom/PROCESS.md` for reviewers who expect process documents under `docs/`.
+
 This document describes the SBOM generation process for the NuvoISP project.
 
 ## Scope
 
-The SBOM is generated for the NuvoISP release build output. The SBOM process covers:
+The SBOM is generated for the staged NuvoISP release/drop folder:
 
-- NuvoISP release artifacts produced by the build
-- Automatically detected package-manager dependencies, if any
-- Manually confirmed third-party components that are vendored or header-only and may not be detected automatically
+```text
+artifacts/NuvoISP
+```
 
-## Tooling
+The workflow intentionally stages distributable files first instead of running Microsoft SBOM Tool directly on the raw MSBuild output folder. This avoids unintentionally treating build intermediates such as `.pdb`, `.lib`, and `.exp` files as release artifacts.
 
-The workflow uses Microsoft SBOM Tool to generate an SPDX 2.2 SBOM.
+## Workflow
 
 The GitHub Actions workflow is located at:
 
@@ -23,41 +25,34 @@ The GitHub Actions workflow is located at:
 The workflow performs these steps:
 
 1. Check out the repository.
-2. Build NuvoISP with MSBuild.
-3. Download Microsoft SBOM Tool.
-4. Generate a base SPDX 2.2 SBOM.
-5. Add manually confirmed third-party components.
-6. Recalculate `manifest.spdx.json.sha256`.
-7. Validate the SBOM.
-8. Upload the SBOM and validation report as workflow artifacts.
+2. Verify that required SBOM files exist.
+3. Build NuvoISP with MSBuild.
+4. Stage distributable files into `artifacts/NuvoISP`.
+5. Download Microsoft SBOM Tool.
+6. Generate a base SPDX 2.2 SBOM.
+7. Add manually confirmed third-party components.
+8. Recalculate `manifest.spdx.json.sha256`.
+9. Validate the SBOM.
+10. Upload the SBOM and validation report as workflow artifacts.
 
-## Build drop path
+## Staged files
 
-The workflow currently uses:
-
-```text
-NuvoISP/Release
-```
-
-as the build drop path. This is the folder passed to Microsoft SBOM Tool with `-b`.
-
-If the Visual Studio project output path changes, update `BUILD_DROP_PATH` in:
+The workflow always stages:
 
 ```text
-.github/workflows/sbom.yml
+NuvoISP.exe
 ```
 
-## Build components path
-
-The workflow currently uses:
+If present, it also stages these Nuvoton internal runtime files:
 
 ```text
-NuvoISP
+GetChipInformation.dll
+offline_isp_file_converter.exe
 ```
 
-as the build components path. This is the folder passed to Microsoft SBOM Tool with `-bc`.
+These files are not treated as third-party components, but they should be present in the SBOM build drop if they are distributed with NuvoISP.
 
-## Manual third-party component handling
+## Manual third-party components
 
 Some C/C++ third-party components are directly vendored into the source tree or provided as header-only files. They may not be detected as package-manager dependencies by Microsoft SBOM Tool.
 
@@ -82,8 +77,6 @@ scripts/update-sbom-manual-components.ps1
 
 ## Confirmed non-third-party items
 
-The following items are not treated as third-party components:
-
 | Item | Reason |
 |---|---|
 | `GetChipInformation.dll` | Nuvoton internal file |
@@ -92,21 +85,15 @@ The following items are not treated as third-party components:
 | `BleIOd.lib` | Confirmed non-third-party |
 | NuvoISP build outputs | Project-produced artifacts |
 
-## Output artifacts
+## Workflow output artifacts
 
-The workflow uploads the following files:
+The workflow uploads:
 
 ```text
 manifest.spdx.json
 manifest.spdx.json.sha256
 sbom-validation.json
 sbom/third-party-components.yml
-```
-
-The generated SBOM is located under the build output folder:
-
-```text
-NuvoISP/Release/_manifest/spdx_2.2/manifest.spdx.json
 ```
 
 ## When to update this process
@@ -116,6 +103,6 @@ Update the SBOM metadata and process when:
 - A new third-party component is added
 - A third-party component version changes
 - A third-party component license changes
+- Release packaging changes
 - The build output path changes
 - The project starts using a package manager such as vcpkg, Conan, NuGet, or another dependency manager
-- The release packaging changes

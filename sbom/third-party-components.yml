@@ -1,16 +1,17 @@
 # NuvoISP manually confirmed third-party components.
 #
-# This file is intentionally limited to third-party components that are not
-# reliably detected by Microsoft SBOM Tool because they are vendored source files
-# or header-only files rather than package-manager dependencies.
+# This file lists third-party components that are not reliably detected by
+# Microsoft SBOM Tool because they are vendored source files or header-only files.
 #
 # Confirmed non-third-party / excluded:
 # - NuvoISP.exe
-# - NuvoISP.lib / NuvoISP.exp / NuvoISP.pdb
 # - GetChipInformation.dll
 # - offline_isp_file_converter.exe
 # - BleIO.lib
 # - BleIOd.lib
+#
+# Build intermediates such as .pdb, .lib, and .exp files are not staged into the
+# SBOM build drop by the default workflow.
 
 components:
   - name: hidapi

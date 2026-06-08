@@ -17,12 +17,23 @@ env:
   PRODUCT_NAME: NuvoISP
   PRODUCT_SUPPLIER: "Nuvoton Technology Corporation"
   NAMESPACE_BASE_URI: "https://www.nuvoton.com/sbom"
+
   SOLUTION_PATH: "NuvoISP/NuvoISP_VS2019.sln"
   BUILD_CONFIGURATION: "Release"
   BUILD_PLATFORM: "Win32"
-  BUILD_DROP_PATH: "NuvoISP/Release"
+
+  # MSBuild output folder that contains NuvoISP.exe.
+  MSBUILD_OUTPUT_PATH: "NuvoISP/Release"
+
+  # Staged release/drop folder used by Microsoft SBOM Tool.
+  # This should contain only files intended for distribution.
+  BUILD_DROP_PATH: "artifacts/NuvoISP"
+
+  # Source/component path scanned by Microsoft SBOM Tool.
   BUILD_COMPONENTS_PATH: "NuvoISP"
+
   SPDX_FORMAT: "SPDX:2.2"
+  SBOM_TOOL_VERSION: "v4.1.5"
 
 jobs:
   generate-sbom:
@@ -32,6 +43,21 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
+
+      - name: Preflight repository files
+        shell: pwsh
+        run: |
+          $requiredFiles = @(
+            "$env:SOLUTION_PATH",
+            "sbom/third-party-components.yml",
+            "scripts/update-sbom-manual-components.ps1"
+          )
+
+          foreach ($file in $requiredFiles) {
+            if (-not (Test-Path $file)) {
+              Write-Error "Required file not found: $file"
+            }
+          }
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
@@ -57,13 +83,42 @@ jobs:
             /p:Configuration="$env:BUILD_CONFIGURATION" `
             /p:Platform="$env:BUILD_PLATFORM"
 
-      - name: Verify build drop path
+      - name: Stage distributable files
         shell: pwsh
         run: |
-          if (-not (Test-Path "$env:BUILD_DROP_PATH")) {
-            Write-Error "Build drop path not found: $env:BUILD_DROP_PATH"
+          $ErrorActionPreference = "Stop"
+
+          if (Test-Path "$env:BUILD_DROP_PATH") {
+            Remove-Item "$env:BUILD_DROP_PATH" -Recurse -Force
           }
 
+          New-Item -ItemType Directory -Force -Path "$env:BUILD_DROP_PATH" | Out-Null
+
+          $mainExe = Join-Path "$env:MSBUILD_OUTPUT_PATH" "NuvoISP.exe"
+          if (-not (Test-Path $mainExe)) {
+            Write-Error "NuvoISP.exe not found: $mainExe"
+          }
+
+          Copy-Item $mainExe "$env:BUILD_DROP_PATH" -Force
+
+          # Internal Nuvoton runtime files. These are not third-party components,
+          # but if they are distributed with NuvoISP, they should be present in
+          # the build drop so SBOM Tool can list them as files.
+          $runtimeFiles = @(
+            "NuvoISP/GetChipInformation.dll",
+            "NuvoISP/offline_isp_file_converter.exe"
+          )
+
+          foreach ($file in $runtimeFiles) {
+            if (Test-Path $file) {
+              Copy-Item $file "$env:BUILD_DROP_PATH" -Force
+              Write-Host "Staged runtime file: $file"
+            } else {
+              Write-Warning "Runtime file not found and not staged: $file"
+            }
+          }
+
+          Write-Host "Final staged build drop:"
           Get-ChildItem "$env:BUILD_DROP_PATH" -Force
 
       - name: Download Microsoft SBOM Tool
@@ -71,26 +126,18 @@ jobs:
         run: |
           $ErrorActionPreference = "Stop"
 
-          $release = Invoke-RestMethod `
-            -Uri "https://api.github.com/repos/microsoft/sbom-tool/releases/latest" `
-            -Headers @{ "User-Agent" = "github-actions" }
-
-          $asset = $release.assets |
-            Where-Object { $_.name -match 'sbom-tool-win-x64\.exe$' } |
-            Select-Object -First 1
-
-          if (-not $asset) {
-            Write-Error "Cannot find sbom-tool-win-x64.exe in the latest Microsoft SBOM Tool release."
-          }
-
           New-Item -ItemType Directory -Force -Path ".tools" | Out-Null
-          Invoke-WebRequest -Uri $asset.browser_download_url -OutFile ".tools/sbom-tool-win-x64.exe"
 
-          if (-not (Test-Path ".tools/sbom-tool-win-x64.exe")) {
-            Write-Error "SBOM Tool download failed."
+          $toolUrl = "https://github.com/microsoft/sbom-tool/releases/download/$env:SBOM_TOOL_VERSION/sbom-tool-win-x64.exe"
+          $toolPath = ".tools/sbom-tool-win-x64.exe"
+
+          Invoke-WebRequest -Uri $toolUrl -OutFile $toolPath
+
+          if (-not (Test-Path $toolPath)) {
+            Write-Error "SBOM Tool download failed: $toolPath"
           }
 
-          Write-Host "Downloaded Microsoft SBOM Tool from $($asset.browser_download_url)"
+          Write-Host "Downloaded Microsoft SBOM Tool: $toolUrl"
 
       - name: Generate base SBOM
         shell: pwsh
@@ -107,21 +154,23 @@ jobs:
       - name: Add manually confirmed third-party components
         shell: pwsh
         run: |
+          $manifest = Join-Path "$env:BUILD_DROP_PATH" "_manifest/spdx_2.2/manifest.spdx.json"
+
           .\scripts\update-sbom-manual-components.ps1 `
-            -ManifestPath "$env:BUILD_DROP_PATH\_manifest\spdx_2.2\manifest.spdx.json" `
-            -ComponentsPath "sbom\third-party-components.yml"
+            -ManifestPath $manifest `
+            -ComponentsPath "sbom/third-party-components.yml"
 
       - name: Recalculate manifest SHA-256
         shell: pwsh
         run: |
-          $manifest = "$env:BUILD_DROP_PATH\_manifest\spdx_2.2\manifest.spdx.json"
+          $manifest = Join-Path "$env:BUILD_DROP_PATH" "_manifest/spdx_2.2/manifest.spdx.json"
 
           if (-not (Test-Path $manifest)) {
             Write-Error "Manifest not found: $manifest"
           }
 
           (Get-FileHash $manifest -Algorithm SHA256).Hash.ToLower() |
-            Set-Content "$manifest.sha256" -NoNewline
+            Set-Content "$manifest.sha256" -NoNewline -Encoding utf8
 
           Write-Host "Updated $manifest.sha256"
 
