@@ -180,7 +180,8 @@ bool GetChipStaticInfo(unsigned int uID)
             || (uSeriesCode == PROJ_M460HD)
             || (uSeriesCode == PROJ_M460LD)
             || (uSeriesCode == PROJ_M2L31_512K)
-            || (uSeriesCode == PROJ_M2L31_256K))
+            || (uSeriesCode == PROJ_M2L31_256K)
+            || (uSeriesCode == PROJ_M2L31_E))
             {
                 uFlashType |= 0x300;
             }

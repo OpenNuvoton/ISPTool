@@ -66,6 +66,8 @@
       <AdditionalLibraryDirectories>$(ProjectDir)\Interface</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateMapFile>true</GenerateMapFile>
+      <EntryPointSymbol>
+      </EntryPointSymbol>
     </Link>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>

@@ -1106,7 +1106,8 @@ void CNuvoISPDlg::ShowChipInfo_OnLine()
     || (gsChipCfgInfo.uSeriesCode == PROJ_M460HD)
     || (gsChipCfgInfo.uSeriesCode == PROJ_M460LD)
     || (gsChipCfgInfo.uSeriesCode == PROJ_M2L31_256K)
-    || (gsChipCfgInfo.uSeriesCode == PROJ_M2L31_512K))
+    || (gsChipCfgInfo.uSeriesCode == PROJ_M2L31_512K)
+    || (gsChipCfgInfo.uSeriesCode == PROJ_M2L31_E))
     {
         SetDlgItemText(IDC_STATIC_CONFIG_0, _T("Config 0-3:"));
         ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 1);
@@ -1302,7 +1303,8 @@ void CNuvoISPDlg::OnKillfocusEditAPRomOffset()
             && (gsChipCfgInfo.uSeriesCode != PROJ_M2354)
             && (gsChipCfgInfo.uSeriesCode != PROJ_M2354ES)
             && (gsChipCfgInfo.uSeriesCode != PROJ_M2L31_512K)
-            && (gsChipCfgInfo.uSeriesCode != PROJ_M2L31_256K))
+            && (gsChipCfgInfo.uSeriesCode != PROJ_M2L31_256K)
+            && (gsChipCfgInfo.uSeriesCode != PROJ_M2L31_E))
     {
         return;
     }
@@ -1312,7 +1314,8 @@ void CNuvoISPDlg::OnKillfocusEditAPRomOffset()
     m_uAPROM_Offset = ::_tcstoul(strAddr, 0, 16);
 
     if (gsChipCfgInfo.uSeriesCode == PROJ_M2L31_256K ||
-    gsChipCfgInfo.uSeriesCode == PROJ_M2L31_512K)
+    gsChipCfgInfo.uSeriesCode == PROJ_M2L31_512K ||
+    gsChipCfgInfo.uSeriesCode == PROJ_M2L31_E)
     {
         m_uAPROM_Offset &= 0xFF000; // 4K page alignment
     }
@@ -1713,7 +1716,8 @@ void CNuvoISPDlg::ShowWarningMessage(void)
     if ((gsChipCfgInfo.uSeriesCode == PROJ_M460HD)
     || (gsChipCfgInfo.uSeriesCode == PROJ_M460LD)
     || (gsChipCfgInfo.uSeriesCode == PROJ_M2L31_256K)
-    || (gsChipCfgInfo.uSeriesCode == PROJ_M2L31_512K))
+    || (gsChipCfgInfo.uSeriesCode == PROJ_M2L31_512K)
+    || (gsChipCfgInfo.uSeriesCode == PROJ_M2L31_E))
     {
         if ((m_CONFIG_User[2] & 0x5A5A) != 0x5A5A)
         {

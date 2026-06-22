@@ -765,6 +765,7 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
 
             case PROJ_M2L31_256K:
             case PROJ_M2L31_512K:
+            case PROJ_M2L31_E:
                 pConfigDlg = new CDialogChipSetting_M2L31(uID, uID & 0xFFFF, uSeriesCode);
 
                 Config = (((CDialogChipSetting_M2L31*)pConfigDlg)->m_uConfigValue);
