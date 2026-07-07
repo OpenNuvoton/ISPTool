@@ -1014,6 +1014,7 @@ void CNuvoISPDlg::ShowChipInfo_NUC505(void)
     ChangeBtnText(1,  _T("Data"));
     SetDlgItemText(IDC_STATIC_CONFIG_VALUE_0, _T("NA"));
     SetDlgItemText(IDC_STATIC_CONFIG_VALUE_1, _T("NA"));
+    m_uAPROM_Size = gsChipCfgInfo.uProgramMemorySize;
     m_bProgram_Config = 0;
     m_bErase = 0;
     EnableDlgItem(IDC_CHECK_CONFIG, 0);
