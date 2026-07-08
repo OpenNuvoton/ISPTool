@@ -4,6 +4,7 @@
 #include "PartNumID.h"
 #include "FlashInfo.h"
 extern struct CPartNumID g_PartNumIDs[];
+extern struct CPartNumID_51 g_PartNumIDs_51[];
 
 CChipConfigInfo gsChipCfgInfo;
 struct sChipInfo gNuVoiceChip;
@@ -96,6 +97,22 @@ bool GetChipStaticInfo(unsigned int uID)
 
         i++;
     }
+
+    int j = 0;
+
+    while (g_PartNumIDs_51[j].uID != 0xFFFFFFFF)
+    {
+        if (g_PartNumIDs_51[j].uID == uID)
+        {
+            gsChipCfgInfo.uID = uID;
+            gsChipCfgInfo.uSeriesCode = g_PartNumIDs_51[j].uProjectCode;
+            memcpy(gsChipCfgInfo.szPartNumber, g_PartNumIDs_51[j].szPartNumber, 32);
+            break;
+        }
+
+        j++;
+    }
+
 
     // Step2: get flash info. from FlashInfo
     if (gsChipCfgInfo.uID == uID)
