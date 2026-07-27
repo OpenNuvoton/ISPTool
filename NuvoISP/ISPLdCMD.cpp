@@ -262,6 +262,7 @@ BOOL ISPLdCMD::ReadFile(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, B
             case INTF_HID:
                 if (!m_hidIO.ReadFile(m_acBuffer, 65, &dwLength, dwMilliseconds))
                 {
+                    bResendFlag = TRUE;
                     return FALSE;
                 }
 
@@ -271,6 +272,7 @@ BOOL ISPLdCMD::ReadFile(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, B
                 if (!m_comIO.ReadFile(m_acBuffer + 1, 64, &dwLength, dwMilliseconds))
                 {
                     printf("NG in m_comIO.ReadFile\n");
+                    bResendFlag = TRUE;
                     return FALSE;
                 }
 
@@ -280,6 +282,7 @@ BOOL ISPLdCMD::ReadFile(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, B
             case INTF_BLE:
                 if (!m_trsp.Read(m_acBuffer + 1, 64, &dwLength, dwMilliseconds))
                 {
+                    bResendFlag = TRUE;
                     return FALSE;
                 }
 
@@ -291,12 +294,14 @@ BOOL ISPLdCMD::ReadFile(char *pcBuffer, size_t szMaxLen, DWORD dwMilliseconds, B
             case INTF_LIN:
                 if (!m_hidIO.ReadFile(m_acBuffer, 65, &dwLength, dwMilliseconds))
                 {
+                    bResendFlag = TRUE;
                     return FALSE;
                 }
 
                 break;
 
             default:
+                bResendFlag = TRUE;
                 return FALSE;
                 break;
         }

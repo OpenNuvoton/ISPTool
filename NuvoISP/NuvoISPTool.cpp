@@ -147,7 +147,7 @@ public:
 };
 
 
-BOOL CISPToolApp::InitInstance()
+int CISPToolApp::InitInstance()
 {
     CWinApp::InitInstance();
     AfxInitRichEdit();
@@ -174,9 +174,49 @@ BOOL CISPToolApp::InitInstance()
             }
         }
 
-        freopen("CONIN$", "r+t", stdin);
-        freopen("CONOUT$", "w+t", stdout);
+        HANDLE hStdIn = GetStdHandle(STD_INPUT_HANDLE);
+        HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+        HANDLE hStdErr = GetStdHandle(STD_ERROR_HANDLE);
+
+        bool bStdInRedirected = false;
+        bool bStdOutRedirected = false;
+        bool bStdErrRedirected = false;
+
+        if (hStdIn != NULL && hStdIn != INVALID_HANDLE_VALUE)
+        {
+            DWORD ft = GetFileType(hStdIn);
+            bStdInRedirected = (ft == FILE_TYPE_DISK || ft == FILE_TYPE_PIPE);
+        }
+
+        if (hStdOut != NULL && hStdOut != INVALID_HANDLE_VALUE)
+        {
+            DWORD ft = GetFileType(hStdOut);
+            bStdOutRedirected = (ft == FILE_TYPE_DISK || ft == FILE_TYPE_PIPE);
+        }
+
+        if (hStdErr != NULL && hStdErr != INVALID_HANDLE_VALUE)
+        {
+            DWORD ft = GetFileType(hStdErr);
+            bStdErrRedirected = (ft == FILE_TYPE_DISK || ft == FILE_TYPE_PIPE);
+        }
+
+        if (!bStdInRedirected)
+        {
+            freopen("CONIN$", "r+t", stdin);
+        }
+
+        if (!bStdOutRedirected)
+        {
+            freopen("CONOUT$", "w+t", stdout);
+        }
+
+        if (!bStdErrRedirected)
+        {
+            freopen("CONOUT$", "w+t", stderr);
+        }
+
         setbuf(stdout, NULL);
+        setbuf(stderr, NULL);
         /* Parse command line */
         CMyCommandLineInfo rCmdInfo;
         ParseCommandLine(rCmdInfo);
@@ -193,6 +233,7 @@ BOOL CISPToolApp::InitInstance()
                 if (fnThreadProcStatus == fnThreadProcStatus_backup)   // status not changed, check again
                 {
                     fnThreadProcStatus = rCmdInfo.m_fnThreadProcStatus;
+                    Sleep(1); // avoid busy loop and high CPU
                     continue;
                 }
                 else     // status changed
@@ -289,12 +330,15 @@ BOOL CISPToolApp::InitInstance()
 
         _tprintf(_T("\n Bye. \n\n"));
         fflush(stdout);
-        return FALSE;
+        if (rCmdInfo.m_eProcSts == EPS_OK || rCmdInfo.m_eProcSts == EPS_PROG_DONE) {
+            return 0;
+        }
+        return rCmdInfo.m_eProcSts;
     }
 
 _UI_MODE:
     SetRegistryKey(_T("NuvotonISP"));
     CNuvoISPDlg MainDlg;
     MainDlg.DoModal();
-    return FALSE;
+    return 0;
 }

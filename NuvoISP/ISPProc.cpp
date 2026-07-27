@@ -133,7 +133,11 @@ void CISPProc::Thread_Idle()
     }
 
     m_ISPLdDev.Close_Port();
-    m_eProcSts = EPS_OK;
+
+    if (MainHWND != NULL)
+    {
+        m_eProcSts = EPS_OK;
+    }
 
     while (m_fnThreadProcStatus == &CISPProc::Thread_Idle)
     {
@@ -158,8 +162,18 @@ void CISPProc::Thread_CheckUSBConnect()
     DWORD dwConnectTime = 0;
     DWORD dwDefaultBaudRate = BAUD_RATE_115200;
 
+    const DWORD dwCliTimeout = 10000; // 10 sec
+    DWORD dwCliStart = GetTickCount();
+
     while (m_fnThreadProcStatus == &CISPProc::Thread_CheckUSBConnect)
     {
+        if (MainHWND == NULL && (GetTickCount() - dwCliStart) > dwCliTimeout)
+        {
+            m_eProcSts = EPS_ERR_OPENPORT;
+            Set_ThreadAction(&CISPProc::Thread_Idle);
+            return;
+        }
+
         if (m_ISPLdDev.Open_Port())
         {
             m_eProcSts = EPS_ERR_CONNECT;
@@ -609,6 +623,10 @@ void CISPProc::Thread_ProgramFlash()
         if (MainHWND != NULL)
         {
             MessageBox(*MainHWND, _T("Lost connection!!!"), NULL, MB_ICONSTOP);
+        }
+        else 
+        {
+            m_eProcSts = EPS_ERR_CONNECT;
         }
 
         Set_ThreadAction(&CISPProc::Thread_Idle);
