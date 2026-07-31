@@ -330,9 +330,12 @@ int CISPToolApp::InitInstance()
 
         _tprintf(_T("\n Bye. \n\n"));
         fflush(stdout);
-        if (rCmdInfo.m_eProcSts == EPS_OK || rCmdInfo.m_eProcSts == EPS_PROG_DONE) {
-            return 0;
+        int exitCode = 0;
+        if (rCmdInfo.m_eProcSts != EPS_OK && rCmdInfo.m_eProcSts != EPS_PROG_DONE) {
+            //return 0;
+            exitCode = rCmdInfo.m_eProcSts;
         }
+        exit(exitCode);
         return rCmdInfo.m_eProcSts;
     }
 
