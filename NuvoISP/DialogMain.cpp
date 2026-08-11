@@ -757,7 +757,6 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
                 Config = (((CDialogChipSetting_M2351*)pConfigDlg)->m_uConfigValue);
                 break;
 
-            case PROJ_M2354ES:
             case PROJ_M2354:
                 pConfigDlg = new CDialogChipSetting_M2354(M2354_MAX_APROM_SIZE, NUMICRO_FLASH_PAGE_SIZE_2K, TRUE, NUC_CHIP_TYPE_M2354);
                 Config = (((CDialogChipSetting_M2354 *)pConfigDlg)->m_uConfigValue);

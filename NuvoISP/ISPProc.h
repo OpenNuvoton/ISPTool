@@ -90,8 +90,11 @@ public:
     unsigned int m_uAPROM_Size;
     unsigned int m_uNVM_Addr;
     unsigned int m_uNVM_Size;
+    unsigned int m_uConfig_Addr;
 
     unsigned int m_uAPROM_Offset;
+    bool m_bProgram_64bit;
+    bool m_bConfig_Ext;
 
     bool UpdateSizeInfo(unsigned int uID, unsigned int uConfig0, unsigned int uConfig1);
 
@@ -113,8 +116,6 @@ public:
     {
         m_ISPLdDev.SetInterface(it, sComNum, sIPAddress, sIPPort);
     };
-
-    unsigned int Check_64bit_Program(void);
 
     EProcSts m_eProcSts;
 

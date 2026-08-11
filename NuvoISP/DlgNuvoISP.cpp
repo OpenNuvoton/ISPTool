@@ -830,7 +830,7 @@ void CNuvoISPDlg::OnButtonMenuExport()
                 _stprintf(szValue, _T("0x%08X"), m_uNVM_Addr);
 
                 iniConfig.sections[_T("ISP CAN")][_T("DataFlashBaseAddress")] = szValue;
-                iniConfig.sections[_T("ISP CAN")][_T("ConfigBaseSel")] = m_ISPLdDev.m_bSpecConfigAddr ? _T("1") : _T("0");
+                iniConfig.sections[_T("ISP CAN")][_T("ConfigBaseSel")] = (m_uConfig_Addr == (NUMICRO_SPECIAL_FLASH_OFFSET + NUMICRO_FLASH_CONFIG_ADDR)) ? _T("1") : _T("0");
             }
 
             iniFile.open(szTempName);
@@ -1038,16 +1038,13 @@ void CNuvoISPDlg::ShowChipInfo_M2351(void)
     ShowDlgItem(IDC_STATIC_CONFIG_VALUE_2, 1);
     ShowDlgItem(IDC_STATIC_CONFIG_VALUE_3, 1);
     // ChangeBtnText(1, _T("APROM_NS"));
-    m_uAPROM_Size = gsChipCfgInfo.uProgramMemorySize;
     ShowDlgItem(IDC_STATIC_APOFFSET, 1);
     ShowDlgItem(IDC_EDIT_APROM_BASE_ADDRESS, 1);
     EnableDlgItem(IDC_EDIT_APROM_BASE_ADDRESS, 1);
-    m_uNVM_Size = gsChipCfgInfo.uNVM_Size;
-    m_uNVM_Addr = gsChipCfgInfo.uNVM_Addr;
     EnableDlgItem(IDC_BUTTON_NVM, (m_uNVM_Size != 0));
     EnableDlgItem(IDC_CHECK_NVM, (m_uNVM_Size != 0));
     std::ostringstream os;
-    os << "APROM: " << size_str(gsChipCfgInfo.uProgramMemorySize);
+    os << "APROM: " << size_str(m_uAPROM_Size);
     if (m_uNVM_Size != 0)
     {
         os << ", Data: " << size_str(m_uNVM_Size);
@@ -1096,8 +1093,7 @@ void CNuvoISPDlg::ShowChipInfo_OnLine()
     }
 
     if ((gsChipCfgInfo.uSeriesCode == PROJ_M2351)
-    || (gsChipCfgInfo.uSeriesCode == PROJ_M2354)
-    || (gsChipCfgInfo.uSeriesCode == PROJ_M2354ES))
+    || (gsChipCfgInfo.uSeriesCode == PROJ_M2354))
     {
         ShowChipInfo_M2351();
         return;
@@ -1302,7 +1298,6 @@ void CNuvoISPDlg::OnKillfocusEditAPRomOffset()
 {
     if ((gsChipCfgInfo.uSeriesCode != PROJ_M2351)
             && (gsChipCfgInfo.uSeriesCode != PROJ_M2354)
-            && (gsChipCfgInfo.uSeriesCode != PROJ_M2354ES)
             && (gsChipCfgInfo.uSeriesCode != PROJ_M2L31_512K)
             && (gsChipCfgInfo.uSeriesCode != PROJ_M2L31_256K)
             && (gsChipCfgInfo.uSeriesCode != PROJ_M2L31_E))

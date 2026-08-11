@@ -18,7 +18,6 @@ ISPLdCMD::ISPLdCMD()
     , m_uCmdIndex(18)   //Do not use 0 to avoid firmware already has index 0 occasionally.
     , m_uInterface(0)
     , m_bSupport_SPI(FALSE)
-    , m_bSpecConfigAddr(FALSE)
 {
 }
 
@@ -480,15 +479,10 @@ unsigned long ISPLdCMD::GetDeviceID()
     return uID;
 }
 
-#define FMC_USER_CONFIG_0       0x00300000UL
-#define SPEC_FMC_USER_CONFIG_0  0x0F300000UL
-
-void ISPLdCMD::ReadConfig(unsigned int config[])
+void ISPLdCMD::ReadConfig(unsigned int addr, unsigned int config[])
 {
     if (m_uInterface == INTF_CAN)
     {
-        unsigned int addr = (!m_bSpecConfigAddr) ? FMC_USER_CONFIG_0 : SPEC_FMC_USER_CONFIG_0;
-
         for (int i = 0; i < 14; i++)
         {
             if (WriteFileCAN(CAN_CMD_READ_CONFIG, addr + 4 * i))
@@ -510,12 +504,10 @@ void ISPLdCMD::ReadConfig(unsigned int config[])
     ReadFile((char*)&config[0], 56, USBCMD_TIMEOUT, TRUE);
 }
 
-void ISPLdCMD::ReadConfig_Ext(unsigned int config[], unsigned int i)
+void ISPLdCMD::ReadConfig_Ext(unsigned int addr, unsigned int config[], unsigned int i)
 {
     if (m_uInterface == INTF_CAN)
     {
-        unsigned int addr = (!m_bSpecConfigAddr) ? FMC_USER_CONFIG_0 : SPEC_FMC_USER_CONFIG_0;
-        
         unsigned int index = i;
         if (i >= 16 && i <= 18) {
             index += 16;  // CONFIG_16 at 0x0F300080 not 0x0F300040
@@ -544,12 +536,10 @@ void ISPLdCMD::ReadConfig_Ext(unsigned int config[], unsigned int i)
     ReadFile((char*)&config[i], 4, USBCMD_TIMEOUT, TRUE);
 }
 
-void ISPLdCMD::UpdateConfig(unsigned int config[], unsigned int response[])
+void ISPLdCMD::UpdateConfig(unsigned int addr, unsigned int config[], unsigned int response[])
 {
     if (m_uInterface == INTF_CAN)
     {
-        unsigned int addr = (!m_bSpecConfigAddr) ? FMC_USER_CONFIG_0 : SPEC_FMC_USER_CONFIG_0;
-
         for (int i = 0; i < 14; i++)
         {
             if (WriteFileCAN(addr + 4 * i, config[i]))
@@ -573,12 +563,10 @@ void ISPLdCMD::UpdateConfig(unsigned int config[], unsigned int response[])
 
 }
 
-void ISPLdCMD::UpdateConfig_Ext(unsigned int config[], unsigned int response[], unsigned int i)
+void ISPLdCMD::UpdateConfig_Ext(unsigned int addr, unsigned int config[], unsigned int response[], unsigned int i)
 {
     if (m_uInterface == INTF_CAN)
     {
-        unsigned int addr = (!m_bSpecConfigAddr) ? FMC_USER_CONFIG_0 : SPEC_FMC_USER_CONFIG_0;
-
         if (WriteFileCAN(addr + 4 * i, config[i]))
         {
             if (ReadFileCAN())
@@ -630,7 +618,7 @@ void ISPLdCMD::UpdateAPROM(unsigned long start_addr,
                            unsigned long cur_addr,
                            const char *buffer,
                            unsigned long *update_len,
-                           unsigned long program_64bit)
+                           bool program_64bit)
 {
     if (m_uInterface == INTF_CAN)
     {
@@ -746,7 +734,7 @@ void ISPLdCMD::UpdateNVM(unsigned long start_addr,
                          unsigned long cur_addr,
                          const char *buffer,
                          unsigned long *update_len,
-                         unsigned long program_64bit)
+                         bool program_64bit)
 {
     if (m_uInterface == INTF_CAN)
     {
@@ -818,8 +806,6 @@ BOOL ISPLdCMD::EraseAll()
 BOOL ISPLdCMD::CMD_Connect(DWORD dwMilliseconds)
 {
     m_bSupport_SPI = FALSE;
-    m_bSpecConfigAddr = FALSE;
-
     if (m_uInterface == INTF_CAN)
     {
         BOOL ret = FALSE;
@@ -827,13 +813,6 @@ BOOL ISPLdCMD::CMD_Connect(DWORD dwMilliseconds)
         if (WriteFileCAN(CAN_CMD_GET_DEVICEID, 0))
         {
             ret = ReadFileCAN();
-        }
-
-        if (ret)
-        {
-            ULONG CAN_uID = *((ULONG*)&m_acBuffer[5]);
-            // M460, M2L31, M55M1
-            m_bSpecConfigAddr = ((CAN_uID == 0x00551000) || ((CAN_uID & 0xFFFFFF00) == 0x01F31000) || ((CAN_uID & 0xFFFFF000) == 0x01B46000) || ((CAN_uID & 0xFFFFF000) == 0x01C46000));
         }
 
         return ret;

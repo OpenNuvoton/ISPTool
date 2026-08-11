@@ -34,6 +34,9 @@ struct CChipConfigInfo
     unsigned int uLDROM_Addr;
     unsigned int uLDROM_Size;
     unsigned int uUCID[4];
+    unsigned int uConfig_Addr;
+    bool bProgram_64bit;
+    bool bConfig_Ext;
 };
 
 extern CChipConfigInfo gsChipCfgInfo;

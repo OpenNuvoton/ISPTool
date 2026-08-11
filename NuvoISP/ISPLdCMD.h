@@ -55,8 +55,6 @@ protected:
 
 public:
     BOOL m_bSupport_SPI;
-    BOOL m_bSpecConfigAddr;
-
     BOOL bResendFlag;   // This flag is set by ReadFile
     ISPLdCMD();
     virtual ~ISPLdCMD();
@@ -117,22 +115,22 @@ public:
     void SyncPackno();
     unsigned char GetVersion();
     unsigned long GetDeviceID();
-    void ReadConfig(unsigned int config[]);
-    void ReadConfig_Ext(unsigned int config[], unsigned int i);
-    void UpdateConfig(unsigned int config[], unsigned int response[]);
-    void UpdateConfig_Ext(unsigned int config[], unsigned int response[], unsigned int i);
+    void ReadConfig(unsigned int addr, unsigned int config[]);
+    void ReadConfig_Ext(unsigned int addr, unsigned int config[], unsigned int i);
+    void UpdateConfig(unsigned int addr, unsigned int config[], unsigned int response[]);
+    void UpdateConfig_Ext(unsigned int addr, unsigned int config[], unsigned int response[], unsigned int i);
     void UpdateAPROM(unsigned long start_addr,
                      unsigned long total_len,
                      unsigned long cur_addr,
                      const char *buffer,
                      unsigned long *update_len,
-                     unsigned long program_64bit);
+                     bool program_64bit);
     void UpdateNVM(unsigned long start_addr,
                    unsigned long total_len,
                    unsigned long cur_addr,
                    const char *buffer,
                    unsigned long *update_len,
-                   unsigned long program_64bit);
+                   bool program_64bit);
 
     BOOL EraseAll();
 

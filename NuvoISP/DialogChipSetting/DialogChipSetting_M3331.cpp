@@ -158,10 +158,14 @@ BOOL CDialogChipSetting_M3331::OnInitDialog()
 
     if (m_uShowFlag & 0x04)
     {
+#if 0
         if (m_uChipSeries != PROJ_M3351)
             m_TabChipSetting.InsertItem(nItem++, _T("CONFIG 11-13"));
         else
             m_TabChipSetting.InsertItem(nItem++, _T("CONFIG 11-14"));
+#else
+        m_TabChipSetting.InsertItem(nItem++, _T("CONFIG 11-13"));
+#endif
 
         m_pChipSetting_NSCBA = new CDialogChipSetting_NSCBA_LOCK();
 
@@ -178,6 +182,7 @@ BOOL CDialogChipSetting_M3331::OnInitDialog()
         m_pChipSetting_NSCBA->m_bSCRLOCK                = m_bSCRLOCK_Enable;
         m_pChipSetting_NSCBA->m_bARLOCK                    = m_bARLOCK_Enable;
 
+#if 0
         if (m_uChipSeries == PROJ_M3351)
         {
             m_pChipSetting_NSCBA->m_bSupportDFMC_NSCBA  = TRUE;
@@ -188,6 +193,7 @@ BOOL CDialogChipSetting_M3331::OnInitDialog()
 
             m_pChipSetting_NSCBA->m_uConfigValue[3]     = m_uConfigValue[14];
         }
+#endif
 
         m_pChipSetting_NSCBA->Create(CDialogChipSetting_NSCBA_LOCK::IDD, &m_TabChipSetting);
     }
