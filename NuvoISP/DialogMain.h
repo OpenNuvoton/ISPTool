@@ -47,7 +47,7 @@ public:
     afx_msg void OnComboChange();
     afx_msg void OnIPAddressChange();
     afx_msg void OnIPPortChange();
-    void InitComboBox(int iSupportNL2 = 1);
+    void InitComboBox();
     void EnableInterface(bool bEnable);
     UINT ScanPCCom();
 #ifdef _DEBUG

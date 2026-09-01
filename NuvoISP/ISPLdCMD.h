@@ -12,8 +12,9 @@
 #define INTF_RS485   (5)
 #define INTF_CAN     (6)
 #define INTF_LIN     (7)
-#define INTF_WIFI    (8)
-#define INTF_BLE     (9)
+#define INTF_CANFD   (8)
+#define INTF_WIFI    (9)
+#define INTF_BLE     (10)
 
 #include "CScopedMutex.hpp"
 #include "Interface\CHidIO2.h"

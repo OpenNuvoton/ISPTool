@@ -1080,21 +1080,18 @@ UINT CDialogMain::ScanPCCom()
     return nComNum;
 }
 
-void CDialogMain::InitComboBox(int iSupportNL2)
+void CDialogMain::InitComboBox()
 {
     m_Interfaces.clear();
     m_Interfaces.push_back(std::make_pair(_T("USB"), INTF_HID));
     m_Interfaces.push_back(std::make_pair(_T("UART"), INTF_UART));
 
-    // Nu-Link2 ISP Bridge interfaces
-    if (iSupportNL2)
-    {
-        m_Interfaces.push_back(std::make_pair(_T("SPI"), INTF_SPI));
-        m_Interfaces.push_back(std::make_pair(_T("I2C"), INTF_I2C));
-        m_Interfaces.push_back(std::make_pair(_T("RS485"), INTF_RS485));
-        m_Interfaces.push_back(std::make_pair(_T("CAN"), INTF_CAN));
-        m_Interfaces.push_back(std::make_pair(_T("LIN"), INTF_LIN));
-    }
+    m_Interfaces.push_back(std::make_pair(_T("SPI"), INTF_SPI));
+    m_Interfaces.push_back(std::make_pair(_T("I2C"), INTF_I2C));
+    m_Interfaces.push_back(std::make_pair(_T("RS485"), INTF_RS485));
+    m_Interfaces.push_back(std::make_pair(_T("CAN"), INTF_CAN));
+    m_Interfaces.push_back(std::make_pair(_T("CANFD"), INTF_CANFD));
+    m_Interfaces.push_back(std::make_pair(_T("LIN"), INTF_LIN));
 
     m_Interfaces.push_back(std::make_pair(_T("Wi-Fi"), INTF_WIFI));
     m_Interfaces.push_back(std::make_pair(_T("BLE"), INTF_BLE));

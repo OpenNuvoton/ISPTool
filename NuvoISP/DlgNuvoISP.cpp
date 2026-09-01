@@ -803,6 +803,12 @@ void CNuvoISPDlg::OnButtonMenuExport()
                 case INTF_HID:
                     _stprintf(szValue, _T("%d"), 5);
                     break;
+                case INTF_CANFD:
+                    _stprintf(szValue, _T("%d"), 6);
+                    break;
+                case INTF_LIN:
+                    _stprintf(szValue, _T("%d"), 7);
+                    break;
                 default:
                     goto export_fail;
             };
