@@ -620,12 +620,12 @@ bool CDialogMain::ConfigDlgSel(unsigned int *pConfig, unsigned int size, unsigne
 
             case PROJ_M3331G:
             case PROJ_M3331IG:
-                pConfigDlg = new CDialogChipSetting_M3331(TRUE, uID, 0x7600, uSeriesCode);
+                pConfigDlg = new CDialogChipSetting_M3331(TRUE, uID, uID & 0xFFFF, uSeriesCode);
                 Config = (((CDialogChipSetting_M3331*)pConfigDlg)->m_uConfigValue);
                 break;
 
             case PROJ_M3351:
-                pConfigDlg = new CDialogChipSetting_M3331(TRUE, uID, 0x7800, uSeriesCode);
+                pConfigDlg = new CDialogChipSetting_M3331(TRUE, uID, uID & 0xFFFF, uSeriesCode);
                 Config = (((CDialogChipSetting_M3331*)pConfigDlg)->m_uConfigValue);
                 break;
 

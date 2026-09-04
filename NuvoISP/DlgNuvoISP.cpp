@@ -817,7 +817,7 @@ void CNuvoISPDlg::OnButtonMenuExport()
             iniConfig.sections[_T("Files")][_T("APROM")]     = m_bProgram_APROM ? CString(pszFileName[0]) : _T("");
             iniConfig.sections[_T("Files")][_T("DataFlash")] = m_bProgram_NVM   ? CString(pszFileName[1]) : _T("");
 
-            for (unsigned int i = 0; i < 14; i++)
+            for (unsigned int i = 0; i < (m_bConfig_Ext ? 19 : 14); i++)
             {
                 _stprintf(szConfig, _T("Config%u"), i);
                 _stprintf(szValue, _T("0x%08X"), m_bProgram_Config ? m_CONFIG_User[i] : 0xFFFFFFFF);

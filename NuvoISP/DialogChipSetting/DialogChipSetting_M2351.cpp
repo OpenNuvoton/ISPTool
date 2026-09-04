@@ -17,7 +17,7 @@ CDialogChipSetting_M2351::CDialogChipSetting_M2351(unsigned int uProgramMemorySi
                                                    CWnd* pParent /*=NULL*/)
     : CDialogResize(CDialogChipSetting_M2351::IDD, pParent)
     , m_nSel(0)
-    , m_uShowFlag(0x03)
+    , m_uShowFlag(0x01)
     , m_uProgramMemorySize(uProgramMemorySize)
     , m_uFlashPageSize(uFlashPageSize)
     , m_bSecureDebug(bSecureDebug)
@@ -63,15 +63,6 @@ BOOL CDialogChipSetting_M2351::OnInitDialog()
     m_ChipSetting_CFG.m_uConfigValue[2]     = m_uConfigValue[2];
     m_ChipSetting_CFG.m_uConfigValue[3]     = m_uConfigValue[3];
 
-    m_ChipSetting_SECURE.m_bSecureDebug     = m_bSecureDebug;
-    m_ChipSetting_SECURE.m_bNSecureArea     = m_bNSecureArea;
-    m_ChipSetting_SECURE.m_uProgramMemorySize   = m_uProgramMemorySize;
-    m_ChipSetting_SECURE.m_uNSecure_Addr    = m_uNSecure_Addr;
-
-    m_ChipSetting_SECURE.m_bNSAddr_Write    = (m_bNSAddr_Write) ? TRUE : FALSE;
-    m_ChipSetting_SECURE.m_bSecure_Lock     = (m_bSecure_Lock) ? TRUE : FALSE;
-    m_ChipSetting_SECURE.m_bAll_Lock        = (m_bAll_Lock) ? TRUE : FALSE;
-
     int nItem = 0;
 
     if (m_uShowFlag & 0x01)
@@ -80,20 +71,11 @@ BOOL CDialogChipSetting_M2351::OnInitDialog()
         m_ChipSetting_CFG.Create(CDialogChipSetting_CFG_M2351::IDD, &m_TabChipSetting);
     }
 
-    if (m_uShowFlag & 0x02)
-    {
-        m_TabChipSetting.InsertItem(nItem++, _T("Secure Setting"));
-        m_ChipSetting_SECURE.Create(CDialogChipSetting_SECURE_M2351::IDD, &m_TabChipSetting);
-    }
-
     CRect rcTmpTab, rcTmp;
 
     m_TabChipSetting.GetWindowRect(&rcTmpTab);
 
-    if (m_bSecureDebug)
-        m_ChipSetting_CFG.GetWindowRect(&rcTmp);
-    else
-        m_ChipSetting_SECURE.GetWindowRect(&rcTmp);
+    m_ChipSetting_CFG.GetWindowRect(&rcTmp);
 
     LONG lDiff = rcTmpTab.bottom - rcTmp.bottom;
 
@@ -124,7 +106,6 @@ BOOL CDialogChipSetting_M2351::OnInitDialog()
     CDialog *pChipSetting[] =
     {
         &m_ChipSetting_CFG,
-        &m_ChipSetting_SECURE
     };
 
     m_TabChipSetting.SetCurSel(m_nSel);
@@ -159,7 +140,6 @@ void CDialogChipSetting_M2351::OnTcnSelchangeTabChipsetting(NMHDR *pNMHDR, LRESU
     CDialog *pChipSetting[] =
     {
         &m_ChipSetting_CFG,
-        &m_ChipSetting_SECURE
     };
 
     m_nSel = m_TabChipSetting.GetCurSel();
@@ -192,11 +172,6 @@ void CDialogChipSetting_M2351::OnOk()
     m_uConfigValue[1] = m_ChipSetting_CFG.m_uConfigValue[1];
     m_uConfigValue[2] = m_ChipSetting_CFG.m_uConfigValue[2];
     m_uConfigValue[3] = m_ChipSetting_CFG.m_uConfigValue[3];
-
-    m_bNSAddr_Write = (m_ChipSetting_SECURE.m_bNSAddr_Write) ? true : false;
-    m_bSecure_Lock  = (m_ChipSetting_SECURE.m_bSecure_Lock) ? true : false;
-    m_bAll_Lock     = (m_ChipSetting_SECURE.m_bAll_Lock) ? true : false;
-    m_uNSecure_Addr =  m_ChipSetting_SECURE.m_uNSecure_Addr;
 
     CDialog::OnOK();
 }

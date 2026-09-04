@@ -20,7 +20,7 @@ CDialogChipSetting_M2354::CDialogChipSetting_M2354(unsigned int uProgramMemorySi
     , m_bSecureDebug(bSecureDebug)
     , m_uChipSeries(uChipSeries)
     , m_nSel(0)
-    , m_uShowFlag(0x3)
+    , m_uShowFlag(0x1)
 {
     //{{AFX_DATA_INIT(CDialogChipSetting_M2354)
     // NOTE: the ClassWizard will add member initialization here
@@ -55,7 +55,6 @@ BOOL CDialogChipSetting_M2354::OnInitDialog()
     CDialog::OnInitDialog();
 
     m_pChipSetting_CFG = new CDialogChipSetting_CFG_M2351();
-    m_pChipSetting_NSCBA = new CDialogChipSetting_NSCBA();
 
     m_pChipSetting_CFG->m_uChipType             = NUC_CHIP_TYPE_M2354;
 
@@ -63,16 +62,6 @@ BOOL CDialogChipSetting_M2354::OnInitDialog()
     m_pChipSetting_CFG->m_uConfigValue[1]       = m_uConfigValue[1];
     m_pChipSetting_CFG->m_uConfigValue[2]       = m_uConfigValue[2];
     m_pChipSetting_CFG->m_uConfigValue[3]       = m_uConfigValue[3];
-
-    m_pChipSetting_NSCBA->m_bSecureDebug        = m_bSecureDebug;
-    m_pChipSetting_NSCBA->m_bCanWrite           = m_bNSCBA_CanWrite;
-    m_pChipSetting_NSCBA->m_uFlashBaseAddr      = NUMICRO_FLASH_APROM_ADDR;
-    m_pChipSetting_NSCBA->m_uProgramMemorySize  = m_uProgramMemorySize;
-    m_pChipSetting_NSCBA->m_uFlashPageSize      = m_uFlashPageSize;
-
-    m_pChipSetting_NSCBA->m_uNSAddr             = m_uNSCBA_NSAddr;
-    m_pChipSetting_NSCBA->m_bNSAddrWrite        = (m_bNSCBA_Write) ? TRUE : FALSE;
-    m_pChipSetting_NSCBA->m_bMirrorEnable       = (m_bNSCBA_MirrorEnable) ? TRUE : FALSE;
 
     int i, nItem = 0;
 
@@ -83,20 +72,11 @@ BOOL CDialogChipSetting_M2354::OnInitDialog()
         m_pChipSetting_CFG->Create(CDialogChipSetting_CFG_M2351::IDD, &m_TabChipSetting);
     }
 
-    if (m_uShowFlag & 0x02)
-    {
-        m_TabChipSetting.InsertItem(nItem++, _T("NSCBA"));
-        m_pChipSetting_NSCBA->Create(CDialogChipSetting_NSCBA::IDD, &m_TabChipSetting);
-    }
-
     CRect rcTmpTab, rcTmp;
 
     m_TabChipSetting.GetWindowRect(&rcTmpTab);
 
-    if (m_bSecureDebug)
-        m_pChipSetting_CFG->GetWindowRect(&rcTmp);
-    else
-        m_pChipSetting_NSCBA->GetWindowRect(&rcTmp);
+    m_pChipSetting_CFG->GetWindowRect(&rcTmp);
 
     LONG lDiff = rcTmpTab.bottom - rcTmp.bottom;
 
@@ -127,7 +107,6 @@ BOOL CDialogChipSetting_M2354::OnInitDialog()
     CDialog *pChipSetting[] =
     {
         m_pChipSetting_CFG,
-        m_pChipSetting_NSCBA,
     };
 
     m_TabChipSetting.SetCurSel(m_nSel);
@@ -162,7 +141,6 @@ void CDialogChipSetting_M2354::OnTcnSelchangeTabChipsetting(NMHDR *pNMHDR, LRESU
     CDialog *pChipSetting[] =
     {
         m_pChipSetting_CFG,
-        m_pChipSetting_NSCBA,
     };
 
     m_nSel = m_TabChipSetting.GetCurSel();
@@ -193,10 +171,6 @@ void CDialogChipSetting_M2354::OnOk()
     m_uConfigValue[1] = m_pChipSetting_CFG->m_uConfigValue[1];
     m_uConfigValue[2] = m_pChipSetting_CFG->m_uConfigValue[2];
     m_uConfigValue[3] = m_pChipSetting_CFG->m_uConfigValue[3];
-
-    m_bNSCBA_Write          = (m_pChipSetting_NSCBA->m_bNSAddrWrite && m_bSecureDebug) ? true : false;
-    m_bNSCBA_MirrorEnable   = (m_pChipSetting_NSCBA->m_bMirrorEnable) ? true : false;
-    m_uNSCBA_NSAddr         =  m_pChipSetting_NSCBA->m_uNSAddr;
 
     CDialog::OnOK();
 }

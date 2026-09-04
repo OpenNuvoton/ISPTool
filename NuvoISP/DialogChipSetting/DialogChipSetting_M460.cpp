@@ -5,7 +5,6 @@
 #include <deque>
 #include <string>
 #include <utility>
-#include "Lang.h"
 #include "DialogChipSetting_M460.h"
 
 
@@ -62,13 +61,10 @@ BOOL CDialogChipSetting_M460::OnInitDialog()
     CDialog::OnInitDialog();
 
     int i, nItem = 0;
-
-    FLASH_PID_INFO_BASE_T chipInfo;
-
-    memset(&chipInfo, 0, sizeof(chipInfo));
+    unsigned int uFlash_PageSize = NUMICRO_FLASH_PAGE_SIZE_4K;
+    FLASH_PID_INFO_BASE_T chipInfo = {0};
 
     GetInfo(m_uPID, &chipInfo);
-    chipInfo.uFlashType = GetFlashType(m_uPID, m_uConfigValue[0], m_uConfigValue[1]);
 
     if (m_uShowFlag & 0x01)
     {
@@ -77,7 +73,7 @@ BOOL CDialogChipSetting_M460::OnInitDialog()
         m_pChipSetting_CFG = new CDialogChipSetting_CFG_M460();
 
         m_pChipSetting_CFG->m_uProgramMemorySize    = chipInfo.uProgramMemorySize;
-        m_pChipSetting_CFG->m_uFlashPageSize        = (1 << (((chipInfo.uFlashType & 0x0000FF00) >> 8) + 9));
+        m_pChipSetting_CFG->m_uFlashPageSize        = uFlash_PageSize;
         m_pChipSetting_CFG->m_uConfigValue[0]       = m_uConfigValue[0];
         m_pChipSetting_CFG->m_uConfigValue[1]       = m_uConfigValue[1];
         m_pChipSetting_CFG->m_uConfigValue[2]       = m_uConfigValue[2];
