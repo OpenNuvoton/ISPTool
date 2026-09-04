@@ -120,8 +120,6 @@ BOOL CDialogConfiguration_NUC4xx::OnInitDialog()
 
     au32Config[0] = m_ConfigValue.m_value[0];
     au32Config[1] = m_ConfigValue.m_value[1];
-    au32Config[2] = m_ConfigValue.m_value[2];
-    au32Config[3] = m_ConfigValue.m_value[3];
     ConfigToGUI(0);
 
     UpdateData(FALSE);
@@ -204,8 +202,6 @@ void CDialogConfiguration_NUC4xx::ConfigToGUI(int nEventID)
 
     m_sConfigValue0.Format(_T("0x%08X"), uConfig0);
     m_sConfigValue1.Format(_T("0x%08X"), uConfig1);
-    m_sConfigValue2.Format(_T("0x%08X"), m_ConfigValue.m_value[2]);
-    m_sConfigValue3.Format(_T("0x%08X"), m_ConfigValue.m_value[3]);
 }
 
 void CDialogConfiguration_NUC4xx::GUIToConfig(int nEventID)
@@ -335,7 +331,6 @@ void CDialogConfiguration_NUC4xx::GUIToConfig(int nEventID)
 
     au32Config[0] = m_ConfigValue.m_value[0];
     au32Config[1] = m_ConfigValue.m_value[1];
-    au32Config[2] = m_ConfigValue.m_value[2];
 }
 
 void CDialogConfiguration_NUC4xx::OnGUIEvent(int nEventID)
@@ -343,8 +338,6 @@ void CDialogConfiguration_NUC4xx::OnGUIEvent(int nEventID)
     UpdateData(TRUE);
 
     GUIToConfig(nEventID);
-    au32Config[3] = FMC_CRC8(au32Config, 3);
-    m_ConfigValue.m_value[3] = au32Config[3];
     ConfigToGUI(nEventID);
 
     UpdateData(FALSE);
@@ -372,8 +365,6 @@ void CDialogConfiguration_NUC4xx::OnOK()
 
     OnKillfocusEditFlashBaseAddress();
     GUIToConfig(0);
-    au32Config[3] = FMC_CRC8(au32Config, 3);
-    m_ConfigValue.m_value[3] = au32Config[3];
 
     CDialog::OnOK();
 }
@@ -389,37 +380,6 @@ CString CDialogConfiguration_NUC4xx::GetConfigWarning(const CAppConfig::NUC4xx_c
         str += _T("   ") + _I(IDS_DISABLE_SECURITY_LOCK);
 
     return str;
-}
-
-unsigned int CDialogConfiguration_NUC4xx::FMC_CRC8(unsigned int au32Data[], unsigned int i32Count)
-{
-    int         i32ByteIdx;
-    unsigned char     i, u8Cnt, u8InData;
-    unsigned char    au8CRC[4] = { 0xff, 0xff, 0xff, 0xff };
-
-    for (i32ByteIdx = 0; i32ByteIdx < 4; i32ByteIdx++)
-    {
-        for (u8Cnt = 0; u8Cnt < i32Count; u8Cnt++)
-        {
-            for (i = 0x80; i != 0; i /= 2)
-            {
-                if ((au8CRC[i32ByteIdx] & 0x80) != 0)
-                {
-                    au8CRC[i32ByteIdx] *= 2;
-                    au8CRC[i32ByteIdx] ^= 7;
-                }
-                else
-                    au8CRC[i32ByteIdx] *= 2;
-
-                u8InData = (au32Data[u8Cnt] >> (i32ByteIdx * 8)) & 0xff;
-
-                if ((u8InData & i) != 0)
-                    au8CRC[i32ByteIdx] ^= 0x7;
-            }
-        }
-    }
-
-    return (au8CRC[0] | au8CRC[1] << 8 | au8CRC[2] << 16 | au8CRC[3] << 24);
 }
 
 void CDialogConfiguration_NUC4xx::OnDeltaposSpinDataFlashSize(NMHDR *pNMHDR, LRESULT *pResult)

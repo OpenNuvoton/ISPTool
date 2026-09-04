@@ -483,11 +483,11 @@ unsigned long ISPLdCMD::GetDeviceID()
     return uID;
 }
 
-void ISPLdCMD::ReadConfig(unsigned int addr, unsigned int config[])
+void ISPLdCMD::ReadConfig(unsigned int addr, unsigned int config[], unsigned int count)
 {
     if (m_uInterface == INTF_CAN)
     {
-        for (int i = 0; i < 14; i++)
+        for (int i = 0; i < count; i++)
         {
             if (WriteFileCAN(CAN_CMD_READ_CONFIG, addr + 4 * i))
             {
@@ -500,51 +500,39 @@ void ISPLdCMD::ReadConfig(unsigned int addr, unsigned int config[])
 
         return;
     }
-    WriteFile(
-        CMD_READ_CONFIG,
-        NULL,
-        0,
-        USBCMD_TIMEOUT);
-    ReadFile((char*)&config[0], 56, USBCMD_TIMEOUT, TRUE);
+
+    if (count <= 14)
+    {
+        WriteFile(
+            CMD_READ_CONFIG,
+            NULL,
+            0,
+            USBCMD_TIMEOUT);
+        ReadFile((char*)&config[0], 56, USBCMD_TIMEOUT, TRUE);
+    }
+    else if (count <= 19)
+    {
+        WriteFile(
+            CMD_READ_CONFIG,
+            NULL,
+            0,
+            USBCMD_TIMEOUT);
+        ReadFile((char*)&config[0], 56, USBCMD_TIMEOUT, TRUE);
+
+        WriteFile(
+            0,
+            NULL,
+            0,
+            USBCMD_TIMEOUT);
+        ReadFile((char*)&config[14], 20, USBCMD_TIMEOUT, TRUE);
+    }
 }
 
-void ISPLdCMD::ReadConfig_Ext(unsigned int addr, unsigned int config[], unsigned int i)
+void ISPLdCMD::UpdateConfig(unsigned int addr, unsigned int config[], unsigned int response[], unsigned int count)
 {
     if (m_uInterface == INTF_CAN)
     {
-        unsigned int index = i;
-        if (i >= 16 && i <= 18) {
-            index += 16;  // CONFIG_16 at 0x0F300080 not 0x0F300040
-        }
-
-        if (WriteFileCAN(CAN_CMD_READ_CONFIG, addr + 4 * index))
-        {
-            if (ReadFileCAN())
-            {
-                config[i] = *((ULONG*)&m_acBuffer[5]);
-            }
-        }
-
-        return;
-    }
-
-    unsigned int index = i;
-    if (i >= 16 && i <= 18) {
-        index += 16;  // CONFIG_16 at 0x0F300080 not 0x0F300040
-    }
-    WriteFile(
-        CMD_READ_CONFIG_EXT,
-        (const char*)&index,
-        4,
-        USBCMD_TIMEOUT);
-    ReadFile((char*)&config[i], 4, USBCMD_TIMEOUT, TRUE);
-}
-
-void ISPLdCMD::UpdateConfig(unsigned int addr, unsigned int config[], unsigned int response[])
-{
-    if (m_uInterface == INTF_CAN)
-    {
-        for (int i = 0; i < 14; i++)
+        for (int i = 0; i < count; i++)
         {
             if (WriteFileCAN(addr + 4 * i, config[i]))
             {
@@ -557,64 +545,32 @@ void ISPLdCMD::UpdateConfig(unsigned int addr, unsigned int config[], unsigned i
 
         return;
     }
-    
-    WriteFile(
-        CMD_UPDATE_CONFIG,
-        (const char*)&config[0],
-        56,
-        USBCMD_TIMEOUT_LONG);
-    ReadFile((char*)&response[0], 56, USBCMD_TIMEOUT_LONG, TRUE);
 
-}
-
-void ISPLdCMD::UpdateConfig_Ext(unsigned int addr, unsigned int config[], unsigned int response[], unsigned int i)
-{
-    if (m_uInterface == INTF_CAN)
+    if (count <= 14)
     {
-        if (WriteFileCAN(addr + 4 * i, config[i]))
-        {
-            if (ReadFileCAN())
-            {
-                response[i] = *((ULONG*)&m_acBuffer[5]);
-            }
-        }
-        return;
+        WriteFile(
+            CMD_UPDATE_CONFIG,
+            (const char*)&config[0],
+            56,
+            USBCMD_TIMEOUT_LONG);
+        ReadFile((char*)&response[0], 56, USBCMD_TIMEOUT_LONG, TRUE);
     }
-    char ext_buffer[12];
-    unsigned int index = i;
-    if (i >= 16 && i <= 18) {
-        index += 16;  // CONFIG_16 at 0x0F300080 not 0x0F300040
-    }
+    else if (count <= 19)
+    {
+        WriteFile(
+            CMD_UPDATE_CONFIG,
+            (const char*)&config[0],
+            56,
+            USBCMD_TIMEOUT_LONG);
+        ReadFile((char*)&response[0], 56, USBCMD_TIMEOUT_LONG, TRUE);
 
-#ifdef CONFIG_64
-    unsigned int j = i - i % 2;
-    unsigned int index_j = index - index % 2;
-    memcpy(&ext_buffer[0], &index_j, 4);
-    memcpy(&ext_buffer[4], &config[j], 4);
-    if (j + 1 <= 18) {
-        memcpy(&ext_buffer[8], &config[j + 1], 4);
+        WriteFile(
+            0,
+            (const char*)&config[14],
+            20,
+            USBCMD_TIMEOUT_LONG);
+        ReadFile((char*)&response[14], 20, USBCMD_TIMEOUT_LONG, TRUE);
     }
-    else {
-		unsigned int empty = 0xFFFFFFFF;
-        memcpy(&ext_buffer[8], &empty, 4);
-    }
-    WriteFile(
-        CMD_UPDATE_CONFIG_EXT,
-        ext_buffer,
-        12,
-        USBCMD_TIMEOUT_LONG);
-    ReadFile((char*)&response[j], 8, USBCMD_TIMEOUT_LONG, TRUE);
-#else
-    memcpy(&ext_buffer[0], &index, 4);
-    memcpy(&ext_buffer[4], &config[i], 4);
-
-    WriteFile(
-        CMD_UPDATE_CONFIG_EXT,
-        ext_buffer,
-        8,
-        USBCMD_TIMEOUT_LONG);
-    ReadFile((char*)&response[i], 4, USBCMD_TIMEOUT_LONG, TRUE);
-#endif
 }
 
 void ISPLdCMD::UpdateAPROM(unsigned long start_addr,

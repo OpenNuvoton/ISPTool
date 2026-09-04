@@ -605,6 +605,12 @@ CDialogChipSetting_CFG_M3351::CDialogChipSetting_CFG_M3351(CWnd* pParent /*=NULL
 
 void CDialogChipSetting_CFG_M3351::UpdateUI()
 {
+    GetDlgItem(IDC_CHECK_ISP_MODE_UART)->SetWindowText(_T("UART0 (PB.12/PB.13)"));
+    GetDlgItem(IDC_CHECK_ISP_MODE_USB)->SetWindowText(_T("USB"));
+    GetDlgItem(IDC_CHECK_ISP_MODE_CAN)->SetWindowText(_T("CAN0 (PA.4/PA.5)"));
+    GetDlgItem(IDC_CHECK_ISP_MODE_I2C)->SetWindowText(_T("I2C0 (PC.0/PC.1)"));
+    GetDlgItem(IDC_CHECK_ISP_MODE_SPI)->SetWindowText(_T("SPI0 (PA.0/PA.1/PA.2/PA.3)"));
+
     GetDlgItem(IDC_RADIO_BOV_7)->SetWindowText(_T("4.4V"));
     GetDlgItem(IDC_RADIO_BOV_6)->SetWindowText(_T("3.7V"));
     GetDlgItem(IDC_RADIO_BOV_5)->SetWindowText(_T("2.8V"));

@@ -20,10 +20,10 @@ CDialogChipSetting_M3331::CDialogChipSetting_M3331(BOOL bSecureDebug, unsigned i
     , m_uDID(uDID)
     , m_uChipSeries(uChipSeries)
     , m_nSel(0)
-    , m_uShowFlag(0x07)
+    , m_uShowFlag(0x0F)
 {
     //{{AFX_DATA_INIT(CDialogChipSetting_M3331)
-        // NOTE: the ClassWizard will add member initialization here
+    // NOTE: the ClassWizard will add member initialization here
     m_uConfigValue[0]        = 0xFFFFFFFF;
     m_uConfigValue[1]        = 0xFFFFFFFF;
     m_uConfigValue[2]        = 0xFFFFFFFF;
@@ -71,10 +71,10 @@ CDialogChipSetting_M3331::~CDialogChipSetting_M3331()
         delete m_pChipSetting_NSCBA;
     }
 
-    //if (m_uShowFlag & 0x08)
-    //{
-    //    delete m_pChipSetting_LDWPROT;
-    //}
+    if (m_uShowFlag & 0x08)
+    {
+        delete m_pChipSetting_LDWPROT;
+    }
 }
 
 void CDialogChipSetting_M3331::DoDataExchange(CDataExchange* pDX)
@@ -99,36 +99,34 @@ BOOL CDialogChipSetting_M3331::OnInitDialog()
     CDialog::OnInitDialog();
 
     int i, nItem = 0;
+    unsigned int uFlash_PageSize = 0;
+    FLASH_PID_INFO_BASE_T chipInfo = {0};
 
-    FLASH_PID_INFO_BASE_T chipInfo;
-
-    memset(&chipInfo, 0, sizeof(chipInfo));
+    if (m_uChipSeries == PROJ_M3351)
+        uFlash_PageSize = NUMICRO_FLASH_PAGE_SIZE_8K;
+    else
+        uFlash_PageSize = NUMICRO_FLASH_PAGE_SIZE_1K;
 
     GetInfo(m_uPID, &chipInfo);
-    chipInfo.uFlashType = gsChipCfgInfo.uFlashType;
 
     if (m_uShowFlag & 0x01)
     {
         m_TabChipSetting.InsertItem(nItem++, _T("CONFIG 0-6"));
-        //chipInfo.uFlashType = 0x104;
-        if ((m_uChipSeries == PROJ_M3331G) || (m_uChipSeries == PROJ_M3331IG))
-            m_pChipSetting_CFG = new CDialogChipSetting_CFG_M3331();
-            //chipInfo.uProgramMemorySize = M3331_MAX_APROM_SIZE;
 
         if (m_uChipSeries == PROJ_M3351)
             m_pChipSetting_CFG = new CDialogChipSetting_CFG_M3351();
-            //chipInfo.uProgramMemorySize = NUMICRO_FLASH_APROM_SIZE_1M;
+        else
+            m_pChipSetting_CFG = new CDialogChipSetting_CFG_M3331();
 
-        //m_pChipSetting_CFG->m_uChipType                = NUC_CHIP_TYPE_M3331;
         m_pChipSetting_CFG->m_uProgramMemorySize    = chipInfo.uProgramMemorySize;
-        m_pChipSetting_CFG->m_uFlashPageSize        = (1 << (((chipInfo.uFlashType & 0x0000FF00) >> 8) + 9));
-        m_pChipSetting_CFG->m_uConfigValue[0]        = m_uConfigValue[0];
-        m_pChipSetting_CFG->m_uConfigValue[1]        = m_uConfigValue[1];
-        m_pChipSetting_CFG->m_uConfigValue[2]        = m_uConfigValue[2];
-        m_pChipSetting_CFG->m_uConfigValue[3]        = m_uConfigValue[3];
-        m_pChipSetting_CFG->m_uConfigValue[4]        = m_uConfigValue[4];
-        m_pChipSetting_CFG->m_uConfigValue[5]        = m_uConfigValue[5];
-        m_pChipSetting_CFG->m_uConfigValue[6]        = m_uConfigValue[6];
+        m_pChipSetting_CFG->m_uFlashPageSize        = uFlash_PageSize;
+        m_pChipSetting_CFG->m_uConfigValue[0]       = m_uConfigValue[0];
+        m_pChipSetting_CFG->m_uConfigValue[1]       = m_uConfigValue[1];
+        m_pChipSetting_CFG->m_uConfigValue[2]       = m_uConfigValue[2];
+        m_pChipSetting_CFG->m_uConfigValue[3]       = m_uConfigValue[3];
+        m_pChipSetting_CFG->m_uConfigValue[4]       = m_uConfigValue[4];
+        m_pChipSetting_CFG->m_uConfigValue[5]       = m_uConfigValue[5];
+        m_pChipSetting_CFG->m_uConfigValue[6]       = m_uConfigValue[6];
 
         m_pChipSetting_CFG->Create(CDialogChipSetting_CFG_M3331::IDD, &m_TabChipSetting);
     }
@@ -141,93 +139,124 @@ BOOL CDialogChipSetting_M3331::OnInitDialog()
 
         m_pChipSetting_APWPROT->m_uAPROMAddr        = NUMICRO_FLASH_APROM_ADDR;
         m_pChipSetting_APWPROT->m_uAPROMSize        = chipInfo.uProgramMemorySize;
-        if ((m_uChipSeries == PROJ_M3331G) || (m_uChipSeries == PROJ_M3331IG)) {
-            m_pChipSetting_APWPROT->m_uRegionNum = 64;
-            m_pChipSetting_APWPROT->m_uRegionSize = 0x2000;
+
+        if (m_uChipSeries == PROJ_M3351)
+        {
+            m_pChipSetting_APWPROT->m_uRegionNum    = 32;
+            m_pChipSetting_APWPROT->m_uRegionSize   = M3351_APWPROT_REGION_SIZE;
         }
-        if (m_uChipSeries == PROJ_M3351) {
-            m_pChipSetting_APWPROT->m_uRegionNum = chipInfo.uProgramMemorySize / 0x8000;
-            m_pChipSetting_APWPROT->m_uRegionSize = 0x8000;
+        else
+        {
+            m_pChipSetting_APWPROT->m_uRegionNum    = 64;
+            m_pChipSetting_APWPROT->m_uRegionSize   = M3331_APWPROT_REGION_SIZE;
         }
-        m_pChipSetting_APWPROT->m_uConfigValue[0]    = m_uConfigValue[8];
-        m_pChipSetting_APWPROT->m_uConfigValue[1]    = m_uConfigValue[9];
-        m_pChipSetting_APWPROT->m_uConfigValue[2]    = m_uConfigValue[10];
+
+        m_pChipSetting_APWPROT->m_uConfigValue[0]   = m_uConfigValue[8];
+        m_pChipSetting_APWPROT->m_uConfigValue[1]   = m_uConfigValue[9];
+        m_pChipSetting_APWPROT->m_uConfigValue[2]   = m_uConfigValue[10];
 
         m_pChipSetting_APWPROT->Create(CDialogChipSetting_APWPROT::IDD, &m_TabChipSetting);
     }
 
     if (m_uShowFlag & 0x04)
     {
-#if 0
-        if (m_uChipSeries != PROJ_M3351)
-            m_TabChipSetting.InsertItem(nItem++, _T("CONFIG 11-13"));
-        else
+        if (m_uChipSeries == PROJ_M3351)
             m_TabChipSetting.InsertItem(nItem++, _T("CONFIG 11-14"));
-#else
-        m_TabChipSetting.InsertItem(nItem++, _T("CONFIG 11-13"));
-#endif
+        else
+            m_TabChipSetting.InsertItem(nItem++, _T("CONFIG 11-13"));
 
         m_pChipSetting_NSCBA = new CDialogChipSetting_NSCBA_LOCK();
 
+        {
+            const uint32_t uFNSAddr_min = NUMICRO_FLASH_APROM_ADDR + uFlash_PageSize;
+            const uint32_t uFNSAddr_max = NUMICRO_FLASH_APROM_ADDR + chipInfo.uProgramMemorySize;
+
+            m_uNSCBA_NSAddr         = m_uConfigValue[12] & 0x00FFFFFF;
+            m_bNSCBA_Write          = FALSE;
+            m_bNSCBA_MirBoundEnable = (m_uConfigValue[12] & 0x80000000) ? TRUE : FALSE;
+            m_bSCRLOCK_Enable       = ((m_uConfigValue[11] & 0xFF) == 0x5A) ? FALSE : TRUE;
+            m_bARLOCK_Enable        = ((m_uConfigValue[13] & 0xFF) == 0x5A) ? FALSE : TRUE;
+
+            if (m_uNSCBA_NSAddr < uFNSAddr_min)
+                m_uNSCBA_NSAddr = uFNSAddr_min;
+            else if (m_uNSCBA_NSAddr > uFNSAddr_max)
+                m_uNSCBA_NSAddr = uFNSAddr_max;
+        }
+
         m_pChipSetting_NSCBA->m_bSecureDebug            = m_bSecureDebug;
         m_pChipSetting_NSCBA->m_bSupportLock            = TRUE;
-        m_pChipSetting_NSCBA->m_uFlash_BaseAddr            = NUMICRO_FLASH_APROM_ADDR;
-        m_pChipSetting_NSCBA->m_uFlash_Size        = chipInfo.uProgramMemorySize;
-        m_pChipSetting_NSCBA->m_uFlash_PageSize            = (1 << (((chipInfo.uFlashType & 0x0000FF00) >> 8) + 9));
-        m_pChipSetting_NSCBA->m_uFNSAddr                    = m_uNSCBA_NSAddr;
-        m_pChipSetting_NSCBA->m_uFNSAddr_min                = NUMICRO_FLASH_APROM_ADDR + (1 << (((chipInfo.uFlashType & 0x0000FF00) >> 8) + 9));
-        m_pChipSetting_NSCBA->m_bWrite                    = m_bNSCBA_Write;
-        m_pChipSetting_NSCBA->m_bMirBoundEnable            = m_bNSCBA_MirBoundEnable;
+        m_pChipSetting_NSCBA->m_uFlash_BaseAddr         = NUMICRO_FLASH_APROM_ADDR;
+        m_pChipSetting_NSCBA->m_uFlash_Size             = chipInfo.uProgramMemorySize;
+        m_pChipSetting_NSCBA->m_uFlash_PageSize         = uFlash_PageSize;
+        m_pChipSetting_NSCBA->m_uFNSAddr                = m_uNSCBA_NSAddr;
+        m_pChipSetting_NSCBA->m_uFNSAddr_min            = NUMICRO_FLASH_APROM_ADDR + uFlash_PageSize;
+        m_pChipSetting_NSCBA->m_bWrite                  = m_bNSCBA_Write;
+        m_pChipSetting_NSCBA->m_bMirBoundEnable         = m_bNSCBA_MirBoundEnable;
 
         m_pChipSetting_NSCBA->m_bSCRLOCK                = m_bSCRLOCK_Enable;
-        m_pChipSetting_NSCBA->m_bARLOCK                    = m_bARLOCK_Enable;
+        m_pChipSetting_NSCBA->m_bARLOCK                 = m_bARLOCK_Enable;
 
-#if 0
+        m_pChipSetting_NSCBA->m_uConfigValue[0]         = m_uConfigValue[11];
+        m_pChipSetting_NSCBA->m_uConfigValue[1]         = m_uConfigValue[12];
+        m_pChipSetting_NSCBA->m_uConfigValue[2]         = m_uConfigValue[13];
+
         if (m_uChipSeries == PROJ_M3351)
         {
             m_pChipSetting_NSCBA->m_bSupportDFMC_NSCBA  = TRUE;
 
-            m_pChipSetting_NSCBA->m_uDFlash_BaseAddr    = NUMICRO_FLASH_APROM_ADDR;
-            m_pChipSetting_NSCBA->m_uDFlash_Size        = chipInfo.uProgramMemorySize;
-            m_pChipSetting_NSCBA->m_uDFlash_PageSize    = (1 << (((chipInfo.uFlashType & 0x0000FF00) >> 8) + 9));
+            m_pChipSetting_NSCBA->m_uDFlash_BaseAddr    = M3351_FLASH_DFLASH1_ADDR;
+            m_pChipSetting_NSCBA->m_uDFlash_Size        = M3351_FLASH_DFLASH1_SIZE;
+            m_pChipSetting_NSCBA->m_uDFlash_PageSize    = NUMICRO_FLASH_PAGE_SIZE_4K;
 
             m_pChipSetting_NSCBA->m_uConfigValue[3]     = m_uConfigValue[14];
         }
-#endif
 
         m_pChipSetting_NSCBA->Create(CDialogChipSetting_NSCBA_LOCK::IDD, &m_TabChipSetting);
     }
-    /*
+
     if (m_uShowFlag & 0x08)
     {
         m_TabChipSetting.InsertItem(nItem++, _T("CONFIG 16-18"));
 
         m_pChipSetting_LDWPROT = new CDialogChipSetting_LDWPROT();
 
-        m_pChipSetting_LDWPROT->m_uLDROM_Addr            = NUMICRO_M55_LDROM_ADDR;
-        m_pChipSetting_LDWPROT->m_uLDROM_Size            = M3331_LDWPROT_REGION_SIZE;
-        m_pChipSetting_LDWPROT->m_uLDROM_RegionSize      = M3331_LDWPROT_REGION_SIZE;
+        m_pChipSetting_LDWPROT->m_uLDROM_Addr            = NUMICRO_FLASH_LDROM_ADDR + NUMICRO_SPECIAL_FLASH_OFFSET;
+        m_pChipSetting_LDWPROT->m_uLDROM_Size            = chipInfo.uISPFlashSize;
 
-        m_pChipSetting_LDWPROT->m_uDFLASH_Addr           = M3331_FLASH_DFLASH_ADDR;
-        m_pChipSetting_LDWPROT->m_uDFLASH_Size           = M3331_FLASH_DFLASH_SIZE;
-        m_pChipSetting_LDWPROT->m_uDFLASH_RegionSize     = M3331_DFWPROT_REGION_SIZE;
+        if (m_uChipSeries == PROJ_M3351)
+        {
+            m_pChipSetting_LDWPROT->m_uLDROM_RegionSize  = M3351_LDWPROT_REGION_SIZE;
+
+            m_pChipSetting_LDWPROT->m_uDFLASH_Addr       = M3351_FLASH_DFLASH0_ADDR;
+            m_pChipSetting_LDWPROT->m_uDFLASH_Size       = M3351_FLASH_DFLASH0_SIZE;
+            m_pChipSetting_LDWPROT->m_uDFLASH_RegionSize = M3351_DFWPROT_REGION_SIZE;
+        }
+        else
+        {
+            m_pChipSetting_LDWPROT->m_uLDROM_RegionSize  = M3331_LDWPROT_REGION_SIZE;
+
+            m_pChipSetting_LDWPROT->m_uDFLASH_Addr       = M3331_FLASH_DFLASH_ADDR;
+            m_pChipSetting_LDWPROT->m_uDFLASH_Size       = M3331_FLASH_DFLASH_SIZE;
+            m_pChipSetting_LDWPROT->m_uDFLASH_RegionSize = M3331_DFWPROT_REGION_SIZE;
+        }
 
         m_pChipSetting_LDWPROT->m_uConfigValue[0]        = m_uConfigValue[16];
         m_pChipSetting_LDWPROT->m_uConfigValue[1]        = m_uConfigValue[17];
         m_pChipSetting_LDWPROT->m_uConfigValue[2]        = m_uConfigValue[18];
 
         m_pChipSetting_LDWPROT->Create(CDialogChipSetting_LDWPROT::IDD, &m_TabChipSetting);
-    }*/
+    }
+
     CRect rcClient;
     m_TabChipSetting.GetClientRect(rcClient);
     m_TabChipSetting.AdjustRect(FALSE, rcClient);
 
-    CDialog *pChipSetting[] = 
+    CDialog *pChipSetting[] =
     {
         m_pChipSetting_CFG,
         m_pChipSetting_APWPROT,
         m_pChipSetting_NSCBA,
-        //m_pChipSetting_LDWPROT,
+        m_pChipSetting_LDWPROT,
     };
 
     m_TabChipSetting.SetCurSel(m_nSel);
@@ -259,12 +288,12 @@ BOOL CDialogChipSetting_M3331::OnInitDialog()
 
 void CDialogChipSetting_M3331::OnTcnSelchangeTabChipsetting(NMHDR *pNMHDR, LRESULT *pResult)
 {
-    CDialog *pChipSetting[] = 
+    CDialog *pChipSetting[] =
     {
         m_pChipSetting_CFG,
         m_pChipSetting_APWPROT,
         m_pChipSetting_NSCBA,
-        //m_pChipSetting_LDWPROT,
+        m_pChipSetting_LDWPROT,
     };
 
     m_nSel = m_TabChipSetting.GetCurSel();
@@ -293,39 +322,58 @@ void CDialogChipSetting_M3331::OnOk()
 
     if (m_uShowFlag & 0x01)
     {
-        m_uConfigValue[0]        = m_pChipSetting_CFG->m_uConfigValue[0];
-        m_uConfigValue[1]        = m_pChipSetting_CFG->m_uConfigValue[1];
-        m_uConfigValue[2]        = m_pChipSetting_CFG->m_uConfigValue[2];
-        m_uConfigValue[3]        = m_pChipSetting_CFG->m_uConfigValue[3];
-        m_uConfigValue[4]        = m_pChipSetting_CFG->m_uConfigValue[4];
-        m_uConfigValue[5]        = m_pChipSetting_CFG->m_uConfigValue[5];
-        m_uConfigValue[6]        = m_pChipSetting_CFG->m_uConfigValue[6];
+        m_uConfigValue[0]       = m_pChipSetting_CFG->m_uConfigValue[0];
+        m_uConfigValue[1]       = m_pChipSetting_CFG->m_uConfigValue[1];
+        m_uConfigValue[2]       = m_pChipSetting_CFG->m_uConfigValue[2];
+        m_uConfigValue[3]       = m_pChipSetting_CFG->m_uConfigValue[3];
+        m_uConfigValue[4]       = m_pChipSetting_CFG->m_uConfigValue[4];
+        m_uConfigValue[5]       = m_pChipSetting_CFG->m_uConfigValue[5];
+        m_uConfigValue[6]       = m_pChipSetting_CFG->m_uConfigValue[6];
     }
 
     if (m_uShowFlag & 0x02)
     {
-        m_uConfigValue[8]        = m_pChipSetting_APWPROT->m_uConfigValue[0] | m_pChipSetting_APWPROT->m_uConfigValue_c[0];
-        m_uConfigValue[9]        = m_pChipSetting_APWPROT->m_uConfigValue[1] | m_pChipSetting_APWPROT->m_uConfigValue_c[1];
-        m_uConfigValue[10]        = m_pChipSetting_APWPROT->m_uConfigValue[2];
+        m_uConfigValue[8]       = m_pChipSetting_APWPROT->m_uConfigValue[0] | m_pChipSetting_APWPROT->m_uConfigValue_c[0];
+        m_uConfigValue[9]       = m_pChipSetting_APWPROT->m_uConfigValue[1] | m_pChipSetting_APWPROT->m_uConfigValue_c[1];
+        m_uConfigValue[10]      = m_pChipSetting_APWPROT->m_uConfigValue[2];
     }
 
     if (m_uShowFlag & 0x04)
     {
-        m_bNSCBA_Write            = (m_pChipSetting_NSCBA->m_bWrite && m_bSecureDebug)? TRUE : FALSE;
-        m_bNSCBA_MirBoundEnable    =  m_pChipSetting_NSCBA->m_bMirBoundEnable;
-        m_uNSCBA_NSAddr            =  m_pChipSetting_NSCBA->m_uFNSAddr;
+        m_bNSCBA_Write          = (m_pChipSetting_NSCBA->m_bWrite && m_bSecureDebug) ? TRUE : FALSE;
+        m_bNSCBA_MirBoundEnable = m_pChipSetting_NSCBA->m_bMirBoundEnable;
+        m_uNSCBA_NSAddr         = m_pChipSetting_NSCBA->m_uFNSAddr;
 
-        m_bSCRLOCK_Enable        = m_pChipSetting_NSCBA->m_bSCRLOCK;
+        m_bSCRLOCK_Enable       = m_pChipSetting_NSCBA->m_bSCRLOCK;
         m_bARLOCK_Enable        = m_pChipSetting_NSCBA->m_bARLOCK;
 
+        {
+            if (m_bSCRLOCK_Enable)
+                m_uConfigValue[11] = ((m_uConfigValue[11] & 0xFF) == 0x5A) ? 0xFFFFFF00 : m_uConfigValue[11];
+            else
+                m_uConfigValue[11] = (m_uConfigValue[11] & ~0xFF) | 0x5A;
+
+            if (m_bNSCBA_Write)
+                m_uConfigValue[12] = (m_bNSCBA_MirBoundEnable ? 0x80000000 : 0) + (m_uNSCBA_NSAddr & 0x00FFFFFF);
+
+            if (m_bARLOCK_Enable)
+                m_uConfigValue[13] = ((m_uConfigValue[13] & 0xFF) == 0x5A) ? 0xFFFFFF00 : m_uConfigValue[13];
+            else
+                m_uConfigValue[13] = (m_uConfigValue[13] & ~0xFF) | 0x5A;
+        }
+
+        if (m_uChipSeries == PROJ_M3351)
+        {
+            m_uConfigValue[14] = m_pChipSetting_NSCBA->m_uConfigValue[3];
+        }
     }
- /*
+
     if (m_uShowFlag & 0x08)
     {
-        m_uConfigValue[16]        = m_pChipSetting_LDWPROT->m_uConfigValue[0];
-        m_uConfigValue[17]        = m_pChipSetting_LDWPROT->m_uConfigValue[1];
-        m_uConfigValue[18]        = m_pChipSetting_LDWPROT->m_uConfigValue[2];
+        m_uConfigValue[16]      = m_pChipSetting_LDWPROT->m_uConfigValue[0];
+        m_uConfigValue[17]      = m_pChipSetting_LDWPROT->m_uConfigValue[1];
+        m_uConfigValue[18]      = m_pChipSetting_LDWPROT->m_uConfigValue[2];
     }
-*/
+
     CDialog::OnOK();
 }

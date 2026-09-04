@@ -8,7 +8,6 @@
 //
 #include "ChipDefs.h"
 #include "DialogChipSetting_CFG_M2351.h"
-#include "DialogChipSetting_SECURE_M2351.h"
 
 
 // DialogChipSetting_M2351 dialog
@@ -41,18 +40,11 @@ protected:
 public:
     unsigned int m_uConfigValue[config_amount];
 
-    unsigned int m_uNSecure_Addr;
-
-    bool m_bNSAddr_Write;
-    bool m_bSecure_Lock;
-    bool m_bAll_Lock;
-
     unsigned int m_nSel;
     unsigned int m_uShowFlag;
 
     CTabCtrl m_TabChipSetting;
     CDialogChipSetting_CFG_M2351    m_ChipSetting_CFG;
-    CDialogChipSetting_SECURE_M2351 m_ChipSetting_SECURE;
 
     afx_msg void OnTcnSelchangeTabChipsetting(NMHDR *pNMHDR, LRESULT *pResult);
     afx_msg void OnOk();

@@ -92,8 +92,6 @@ public:
         CMD_RESET           = 0x000000AD,
         CMD_CONNECT         = 0x000000AE,
         CMD_UPDATE_DATAFLASH = 0x000000C3,
-        CMD_READ_CONFIG_EXT = 0x000000E0,
-        CMD_UPDATE_CONFIG_EXT = 0x000000E1,
         CMD_RESEND_PACKET   = 0x000000FF,
         CMD_ERASE_SPIFLASH  = 0x000000D0,
         CMD_UPDATE_SPIFLASH = 0x000000D1,
@@ -116,10 +114,8 @@ public:
     void SyncPackno();
     unsigned char GetVersion();
     unsigned long GetDeviceID();
-    void ReadConfig(unsigned int addr, unsigned int config[]);
-    void ReadConfig_Ext(unsigned int addr, unsigned int config[], unsigned int i);
-    void UpdateConfig(unsigned int addr, unsigned int config[], unsigned int response[]);
-    void UpdateConfig_Ext(unsigned int addr, unsigned int config[], unsigned int response[], unsigned int i);
+    void ReadConfig(unsigned int addr, unsigned int config[], unsigned int count);
+    void UpdateConfig(unsigned int addr, unsigned int config[], unsigned int response[], unsigned int count);
     void UpdateAPROM(unsigned long start_addr,
                      unsigned long total_len,
                      unsigned long cur_addr,
@@ -165,7 +161,6 @@ public:
 
     BOOL Cmd_ERASE_SPIFLASH(unsigned long offset, unsigned long total_len);
     BOOL Cmd_UPDATE_SPIFLASH(unsigned long offset, unsigned long total_len, const char *buffer);
-
 };
 
 #ifdef _DEBUG

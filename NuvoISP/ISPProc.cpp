@@ -261,19 +261,24 @@ void CISPProc::Thread_CheckDeviceConnect()
                 memset(m_CONFIG, 0xFF, sizeof(m_CONFIG));
 
                 UpdateSizeInfo(m_ulDeviceID, m_CONFIG[0], m_CONFIG[1]);
-#if 0
-                if (m_bConfig_Ext)
+
+                if (m_ISPLdDev.GetInterface() == INTF_CAN)
                 {
-                    for (int i = 0; i < 19; i++)
-                        m_ISPLdDev.ReadConfig_Ext(m_uConfig_Addr, m_CONFIG, i);
+                    if (m_bConfig_Ext)
+                    {
+                        m_ISPLdDev.ReadConfig(m_uConfig_Addr, &m_CONFIG[0], 16);
+                        m_ISPLdDev.ReadConfig(m_uConfig_Addr + 0x40 + (16 * 4), &m_CONFIG[16], 3);
+                    }
+                    else
+                    {
+                        m_ISPLdDev.ReadConfig(m_uConfig_Addr, &m_CONFIG[0], 14);
+                    }
                 }
                 else
                 {
-                    m_ISPLdDev.ReadConfig(m_uConfig_Addr, m_CONFIG);
+                    m_ISPLdDev.ReadConfig(m_uConfig_Addr, &m_CONFIG[0], (m_bConfig_Ext ? 19 : 14));
                 }
-#else
-                m_ISPLdDev.ReadConfig(m_uConfig_Addr, m_CONFIG);
-#endif
+
                 memcpy(m_CONFIG_User, m_CONFIG, sizeof(m_CONFIG));
                 m_eProcSts = EPS_OK;
 
@@ -337,7 +342,22 @@ void CISPProc::Thread_ProgramFlash()
         {
             if (m_ISPLdDev.EraseAll())
             {
-                m_ISPLdDev.ReadConfig(m_uConfig_Addr, m_CONFIG);
+                if (m_ISPLdDev.GetInterface() == INTF_CAN)
+                {
+                    if (m_bConfig_Ext)
+                    {
+                        m_ISPLdDev.ReadConfig(m_uConfig_Addr, &m_CONFIG[0], 16);
+                        m_ISPLdDev.ReadConfig(m_uConfig_Addr + 0x40 + (16 * 4), &m_CONFIG[16], 3);
+                    }
+                    else
+                    {
+                        m_ISPLdDev.ReadConfig(m_uConfig_Addr, &m_CONFIG[0], 14);
+                    }
+                }
+                else
+                {
+                    m_ISPLdDev.ReadConfig(m_uConfig_Addr, &m_CONFIG[0], (m_bConfig_Ext ? 19 : 14));
+                }
             }
             else
             {
@@ -349,28 +369,26 @@ void CISPProc::Thread_ProgramFlash()
 
         if (m_bProgram_Config)
         {
-#if 0
-            if (m_bConfig_Ext)
+            if (m_ISPLdDev.GetInterface() == INTF_CAN)
             {
-                for (int i = 0; i < 19; i = i + 2)
-                    m_ISPLdDev.UpdateConfig_Ext(m_uConfig_Addr, m_CONFIG_User, m_CONFIG, i);
+                if (m_bConfig_Ext)
+                {
+                    m_ISPLdDev.UpdateConfig(m_uConfig_Addr, &m_CONFIG_User[0], &m_CONFIG[0], 16);
+                    m_ISPLdDev.UpdateConfig(m_uConfig_Addr + 0x40 + (16 * 4), &m_CONFIG_User[16], &m_CONFIG[16], 3);
+                }
+                else
+                {
+                    m_ISPLdDev.UpdateConfig(m_uConfig_Addr, &m_CONFIG_User[0], &m_CONFIG[0], 14);
+                }
             }
             else
             {
-                m_ISPLdDev.UpdateConfig(m_uConfig_Addr, m_CONFIG_User, m_CONFIG);
+                m_ISPLdDev.UpdateConfig(m_uConfig_Addr, &m_CONFIG_User[0], &m_CONFIG[0], (m_bConfig_Ext ? 19 : 14));
             }
-#else
-            m_ISPLdDev.UpdateConfig(m_uConfig_Addr, m_CONFIG_User, m_CONFIG);
-#endif
-            if ((m_CONFIG_User[0] != m_CONFIG[0]) || (m_CONFIG_User[1] != m_CONFIG[1]))
+
+            for (int i = 0; i < (m_bConfig_Ext ? 19 : 14); ++i)
             {
-                m_eProcSts = EPS_ERR_CONFIG;
-                Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);
-                return;
-            }
-            else if ((m_ulDeviceID & 0xFFFFF000) == 0x00D48000)
-            {
-                if ((m_CONFIG_User[2] != m_CONFIG[2]) || (m_CONFIG_User[3] != m_CONFIG[3]))
+                if (m_CONFIG_User[i] != m_CONFIG[i])
                 {
                     m_eProcSts = EPS_ERR_CONFIG;
                     Set_ThreadAction(&CISPProc::Thread_CheckDisconnect);

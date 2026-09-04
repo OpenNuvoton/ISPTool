@@ -44,7 +44,9 @@ public:
 
     BOOL            m_bNSCBA_Write;
     BOOL            m_bNSCBA_MirBoundEnable;
-    BOOL            m_bNSCBA_CanWrite;
+
+    BOOL            m_bSCRLOCK_Enable;
+    BOOL            m_bARLOCK_Enable;
 
     int             m_nSel;
     unsigned int    m_uShowFlag;
