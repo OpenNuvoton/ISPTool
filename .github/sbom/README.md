@@ -7,7 +7,8 @@ This folder contains metadata used by the NuvoISP SBOM generation workflow.
 | File | Purpose |
 |---|---|
 | `third-party-components.yml` | Manually confirmed third-party components that Microsoft SBOM Tool may not detect automatically |
-| `PROCESS.md` | Operational notes for the NuvoISP SBOM workflow |
+| `NuvoISP-third-party-components.md` | Human-readable third-party component note bundled into the released `SBOM_result.zip` |
+| `sbom-process.md` | Operational notes for the NuvoISP SBOM workflow |
 
 ## Current manual components
 
@@ -29,10 +30,10 @@ artifacts/NuvoISP
 Then Microsoft SBOM Tool generates a base SPDX 2.2 SBOM. After that, this script runs:
 
 ```text
-scripts/update-sbom-manual-components.ps1
+.github/scripts/update-sbom-manual-components.ps1
 ```
 
-The script reads `sbom/third-party-components.yml` and appends the listed packages and dependency relationships to:
+The script reads `.github/sbom/third-party-components.yml` and appends the listed packages and dependency relationships to:
 
 ```text
 artifacts/NuvoISP/_manifest/spdx_2.2/manifest.spdx.json

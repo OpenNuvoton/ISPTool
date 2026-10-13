@@ -1,6 +1,6 @@
 # NuvoISP SBOM Process
 
-> This file is an optional copy of `sbom/PROCESS.md` for reviewers who expect process documents under `docs/`.
+> Operational process notes for the NuvoISP SBOM workflow. Located under `.github/sbom/`.
 
 This document describes the SBOM generation process for the NuvoISP project.
 
@@ -34,7 +34,9 @@ The workflow performs these steps:
 8. Recalculate `manifest.spdx.json.sha256`.
 9. Validate the SBOM.
 10. Verify expected output files.
-11. Upload the SBOM and validation report as workflow artifacts.
+11. Package `SBOM_result.zip` (manifest, third-party note, validation report).
+12. Package `Executable.zip` (`NuvoISP.exe`, internal runtime files, and `SBOM_result.zip`).
+13. On a published release, attach `Executable.zip` to the release; on manual runs, upload it as a workflow artifact.
 
 ## Staged files
 
@@ -60,13 +62,13 @@ Some C/C++ third-party components are directly vendored into the source tree or 
 Manual component metadata is maintained in:
 
 ```text
-sbom/third-party-components.yml
+.github/sbom/third-party-components.yml
 ```
 
 The workflow applies this metadata using:
 
 ```text
-scripts/update-sbom-manual-components.ps1
+.github/scripts/update-sbom-manual-components.ps1
 ```
 
 ## Currently confirmed third-party components
@@ -88,13 +90,25 @@ scripts/update-sbom-manual-components.ps1
 
 ## Workflow output artifacts
 
-The workflow uploads:
+On a published release, the workflow attaches `Executable.zip` to the GitHub release.
+On manual (`workflow_dispatch`) runs, the same `Executable.zip` is uploaded as a workflow artifact.
+
+`Executable.zip` contains:
 
 ```text
-manifest.spdx.json
-manifest.spdx.json.sha256
-sbom-validation.json
-sbom/third-party-components.yml
+NuvoISP.exe
+GetChipInformation.dll
+offline_isp_file_converter.exe
+SBOM_result.zip
+```
+
+`SBOM_result.zip` contains:
+
+```text
+_manifest/spdx_2.2/manifest.spdx.json
+_manifest/spdx_2.2/manifest.spdx.json.sha256
+NuvoISP-third-party-components.md
+sbom-validation-after-manual-update.json
 ```
 
 ## When to update this process

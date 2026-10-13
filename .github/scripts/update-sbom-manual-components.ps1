@@ -5,7 +5,7 @@
 .DESCRIPTION
   Microsoft SBOM Tool may not detect vendored C/C++ source code or header-only
   files as package-manager components. This script reads
-  sbom/third-party-components.yml and appends manually confirmed packages and
+  .github/sbom/third-party-components.yml and appends manually confirmed packages and
   DEPENDS_ON relationships to the generated manifest.spdx.json.
 
   The YAML parser is intentionally minimal and supports only the simple

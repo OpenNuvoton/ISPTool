@@ -2,16 +2,11 @@ name: Generate SBOM
 
 on:
   workflow_dispatch:
-  push:
-    tags:
-      - "v*"
-  pull_request:
-    branches:
-      - master
-      - main
+  release:
+    types: [published]
 
 permissions:
-  contents: read
+  contents: write
 
 env:
   PRODUCT_NAME: NuvoISP
@@ -34,7 +29,7 @@ env:
 
   # Validation output folder and file.
   VALIDATION_OUTPUT_DIR: "artifacts/sbom-validation"
-  VALIDATION_OUTPUT_PATH: "artifacts/sbom-validation/sbom-validation.json"
+  VALIDATION_OUTPUT_PATH: "artifacts/sbom-validation/sbom-validation-after-manual-update.json"
 
   SPDX_FORMAT: "SPDX:2.2"
   SBOM_TOOL_VERSION: "v4.1.5"
@@ -53,8 +48,9 @@ jobs:
         run: |
           $requiredFiles = @(
             "$env:SOLUTION_PATH",
-            "sbom/third-party-components.yml",
-            "scripts/update-sbom-manual-components.ps1"
+            ".github/sbom/third-party-components.yml",
+            ".github/sbom/NuvoISP-third-party-components.md",
+            ".github/scripts/update-sbom-manual-components.ps1"
           )
 
           foreach ($file in $requiredFiles) {
@@ -70,15 +66,13 @@ jobs:
         id: version
         shell: pwsh
         run: |
-          if ("${{ github.ref_type }}" -eq "tag") {
-            $version = "${{ github.ref_name }}" -replace '^v', ''
+          if ("${{ github.event_name }}" -eq "release") {
+            $version = "${{ github.event.release.tag_name }}" -replace '^v', ''
           } else {
             $version = "0.0.0-${{ github.run_number }}"
           }
-
           "PRODUCT_VERSION=$version" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-          "value=$version" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
-
+      
       - name: Build NuvoISP
         shell: pwsh
         run: |
@@ -160,9 +154,9 @@ jobs:
         run: |
           $manifest = Join-Path "$env:BUILD_DROP_PATH" "_manifest/spdx_2.2/manifest.spdx.json"
 
-          .\scripts\update-sbom-manual-components.ps1 `
+          .\.github\scripts\update-sbom-manual-components.ps1 `
             -ManifestPath $manifest `
-            -ComponentsPath "sbom/third-party-components.yml"
+            -ComponentsPath ".github/sbom/third-party-components.yml"
 
       - name: Recalculate manifest SHA-256
         shell: pwsh
@@ -208,13 +202,69 @@ jobs:
             Write-Host "Verified output: $file"
           }
 
-      - name: Upload SBOM artifacts
+      - name: Package SBOM_result.zip
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+
+          $stage = "artifacts/sbom_result"
+          if (Test-Path $stage) { Remove-Item $stage -Recurse -Force }
+          New-Item -ItemType Directory -Force -Path $stage | Out-Null
+
+          # 1. _manifest folder (keeps _manifest/spdx_2.2/ structure).
+          Copy-Item "$env:BUILD_DROP_PATH/_manifest" $stage -Recurse -Force
+
+          # 2. Human-readable third-party component note.
+          Copy-Item ".github/sbom/NuvoISP-third-party-components.md" $stage -Force
+
+          # 3. Validation report produced after the manual component update.
+          Copy-Item "$env:VALIDATION_OUTPUT_PATH" $stage -Force
+
+          $sbomZip = "artifacts/SBOM_result.zip"
+          Compress-Archive -Path "$stage/*" -DestinationPath $sbomZip -Force
+          Write-Host "Created $sbomZip"
+
+      - name: Package Executable.zip
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+
+          $stage = "artifacts/executable"
+          if (Test-Path $stage) { Remove-Item $stage -Recurse -Force }
+          New-Item -ItemType Directory -Force -Path $stage | Out-Null
+
+          # NuvoISP.exe is produced by this workflow (replaces the manual build).
+          $required = [ordered] @{
+            "NuvoISP.exe"                    = (Join-Path "$env:MSBUILD_OUTPUT_PATH" "NuvoISP.exe")
+            "GetChipInformation.dll"         = "NuvoISP/GetChipInformation.dll"
+            "offline_isp_file_converter.exe" = "NuvoISP/offline_isp_file_converter.exe"
+            "SBOM_result.zip"                = "artifacts/SBOM_result.zip"
+          }
+
+          foreach ($name in $required.Keys) {
+            $path = $required[$name]
+            if (-not (Test-Path $path)) {
+              Write-Error "Required file for Executable.zip not found: $name ($path)"
+            }
+            Copy-Item $path $stage -Force
+          }
+
+          $exeZip = "artifacts/Executable.zip"
+          Compress-Archive -Path "$stage/*" -DestinationPath $exeZip -Force
+          "RELEASE_ZIP=$exeZip" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          Write-Host "Created $exeZip"
+
+      - name: Attach Executable.zip to release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ env.RELEASE_ZIP }}
+
+      - name: Upload Executable.zip for manual runs
+        if: github.event_name != 'release'
         uses: actions/upload-artifact@v4
         with:
-          name: NuvoISP-SBOM-${{ env.PRODUCT_VERSION }}
+          name: NuvoISP-Executable-${{ env.PRODUCT_VERSION }}
           if-no-files-found: error
-          path: |
-            ${{ env.BUILD_DROP_PATH }}/_manifest/spdx_2.2/manifest.spdx.json
-            ${{ env.BUILD_DROP_PATH }}/_manifest/spdx_2.2/manifest.spdx.json.sha256
-            ${{ env.VALIDATION_OUTPUT_PATH }}
-            sbom/third-party-components.yml
+          path: artifacts/Executable.zip
+
