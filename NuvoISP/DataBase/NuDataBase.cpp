@@ -205,7 +205,8 @@ bool GetChipStaticInfo(unsigned int uID)
                 uFlashType |= 0x300;
             }
             else if ((uSeriesCode == PROJ_M55M1)
-            || (uSeriesCode == PROJ_M3351))
+            || (uSeriesCode == PROJ_M3351)
+            || (uSeriesCode == PROJ_M3351_G))
             {
                 uFlashType |= 0x400;
             }
@@ -227,6 +228,7 @@ bool GetChipStaticInfo(unsigned int uID)
             || (uSeriesCode == PROJ_M3331IG)
             || (uSeriesCode == PROJ_M3331G)
             || (uSeriesCode == PROJ_M3351)
+            || (uSeriesCode == PROJ_M3351_G)
             || (uSeriesCode == PROJ_KM1M2))
             {
                 gsChipCfgInfo.uConfig_Addr = NUMICRO_SPECIAL_FLASH_OFFSET + NUMICRO_FLASH_CONFIG_ADDR;
@@ -240,7 +242,8 @@ bool GetChipStaticInfo(unsigned int uID)
 
             if ((uSeriesCode == PROJ_M3331IG)
             || (uSeriesCode == PROJ_M3331G)
-            || (uSeriesCode == PROJ_M3351))
+            || (uSeriesCode == PROJ_M3351)
+            || (uSeriesCode == PROJ_M3351_G))
             {
                 gsChipCfgInfo.bConfig_Ext = true;
             }

@@ -102,7 +102,7 @@ BOOL CDialogChipSetting_M3331::OnInitDialog()
     unsigned int uFlash_PageSize = 0;
     FLASH_PID_INFO_BASE_T chipInfo = {0};
 
-    if (m_uChipSeries == PROJ_M3351)
+    if (m_uChipSeries == PROJ_M3351 || m_uChipSeries == PROJ_M3351_G)
         uFlash_PageSize = NUMICRO_FLASH_PAGE_SIZE_8K;
     else
         uFlash_PageSize = NUMICRO_FLASH_PAGE_SIZE_1K;
@@ -113,7 +113,7 @@ BOOL CDialogChipSetting_M3331::OnInitDialog()
     {
         m_TabChipSetting.InsertItem(nItem++, _T("CONFIG 0-6"));
 
-        if (m_uChipSeries == PROJ_M3351)
+        if (m_uChipSeries == PROJ_M3351 || m_uChipSeries == PROJ_M3351_G)
             m_pChipSetting_CFG = new CDialogChipSetting_CFG_M3351();
         else
             m_pChipSetting_CFG = new CDialogChipSetting_CFG_M3331();
@@ -140,7 +140,7 @@ BOOL CDialogChipSetting_M3331::OnInitDialog()
         m_pChipSetting_APWPROT->m_uAPROMAddr        = NUMICRO_FLASH_APROM_ADDR;
         m_pChipSetting_APWPROT->m_uAPROMSize        = chipInfo.uProgramMemorySize;
 
-        if (m_uChipSeries == PROJ_M3351)
+        if (m_uChipSeries == PROJ_M3351 || m_uChipSeries == PROJ_M3351_G)
         {
             m_pChipSetting_APWPROT->m_uRegionNum    = 32;
             m_pChipSetting_APWPROT->m_uRegionSize   = M3351_APWPROT_REGION_SIZE;
@@ -223,7 +223,7 @@ BOOL CDialogChipSetting_M3331::OnInitDialog()
         m_pChipSetting_LDWPROT->m_uLDROM_Addr            = NUMICRO_FLASH_LDROM_ADDR + NUMICRO_SPECIAL_FLASH_OFFSET;
         m_pChipSetting_LDWPROT->m_uLDROM_Size            = chipInfo.uISPFlashSize;
 
-        if (m_uChipSeries == PROJ_M3351)
+        if (m_uChipSeries == PROJ_M3351 || m_uChipSeries == PROJ_M3351_G)
         {
             m_pChipSetting_LDWPROT->m_uLDROM_RegionSize  = M3351_LDWPROT_REGION_SIZE;
 
