@@ -173,9 +173,10 @@ bool GetChipStaticInfo(unsigned int uID)
 
             // Step3.2: Page Size Type: 0x000 (512 Bytes, default)
             if ((uSeriesCode == PROJ_M3331IG)
-            || (uSeriesCode == PROJ_M3331G))
+            || (uSeriesCode == PROJ_M3331G)
+            || (uSeriesCode == PROJ_CM3031_E))
             {
-                uFlashType |= 0x100;
+                uFlashType |= 0x100; // 1K
             }
             else if ((uSeriesCode == PROJ_NUC400AE)
             || (uSeriesCode == PROJ_M451HD)
@@ -192,7 +193,7 @@ bool GetChipStaticInfo(unsigned int uID)
             || (uSeriesCode == PROJ_M2354)
             || (uSeriesCode == PROJ_M2A23))
             {
-                uFlashType |= 0x200;
+                uFlashType |= 0x200; // 2K
             }
             else if ((uSeriesCode == PROJ_M480)
             || (uSeriesCode == PROJ_M480LD)
@@ -202,13 +203,13 @@ bool GetChipStaticInfo(unsigned int uID)
             || (uSeriesCode == PROJ_M2L31_256K)
             || (uSeriesCode == PROJ_M2L31_E))
             {
-                uFlashType |= 0x300;
+                uFlashType |= 0x300; // 4K
             }
             else if ((uSeriesCode == PROJ_M55M1)
             || (uSeriesCode == PROJ_M3351)
             || (uSeriesCode == PROJ_M3351_G))
             {
-                uFlashType |= 0x400;
+                uFlashType |= 0x400; // 8K
             }
 
             gsChipCfgInfo.uFlashType = uFlashType;
@@ -229,13 +230,15 @@ bool GetChipStaticInfo(unsigned int uID)
             || (uSeriesCode == PROJ_M3331G)
             || (uSeriesCode == PROJ_M3351)
             || (uSeriesCode == PROJ_M3351_G)
-            || (uSeriesCode == PROJ_KM1M2))
+            || (uSeriesCode == PROJ_M2003_J)
+            || (uSeriesCode == PROJ_CM3031_E))
             {
                 gsChipCfgInfo.uConfig_Addr = NUMICRO_SPECIAL_FLASH_OFFSET + NUMICRO_FLASH_CONFIG_ADDR;
             }
 
             if ((uSeriesCode == PROJ_M3331IG)
-            || (uSeriesCode == PROJ_M3331G))
+            || (uSeriesCode == PROJ_M3331G)
+            || (uSeriesCode == PROJ_CM3031_E))
             {
                 gsChipCfgInfo.bProgram_64bit = true;
             }
@@ -243,7 +246,8 @@ bool GetChipStaticInfo(unsigned int uID)
             if ((uSeriesCode == PROJ_M3331IG)
             || (uSeriesCode == PROJ_M3331G)
             || (uSeriesCode == PROJ_M3351)
-            || (uSeriesCode == PROJ_M3351_G))
+            || (uSeriesCode == PROJ_M3351_G)
+            || (uSeriesCode == PROJ_CM3031_E))
             {
                 gsChipCfgInfo.bConfig_Ext = true;
             }

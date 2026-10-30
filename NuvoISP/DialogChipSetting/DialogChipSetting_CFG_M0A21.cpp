@@ -1698,7 +1698,7 @@ void CDialogChipSetting_CFG_M471::GUIToConfig()
 
 
 /////////////////////////////////////////////////////////////////////////////
-// CDialogChipSetting_CFG_KM1M2 dialog
+// CDialogChipSetting_CFG_KM1M2 dialog // M2003_J
 
 IMPLEMENT_DYNAMIC(CDialogChipSetting_CFG_KM1M2, CDialog)
 
